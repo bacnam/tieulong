@@ -1,0 +1,129 @@
+/*     */ package bsh;
+/*     */ 
+/*     */ import java.util.Stack;
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ class JJTParserState
+/*     */ {
+/*  14 */   private Stack nodes = new Stack();
+/*  15 */   private Stack marks = new Stack();
+/*  16 */   private int sp = 0;
+/*  17 */   private int mk = 0;
+/*     */ 
+/*     */   
+/*     */   private boolean node_created;
+/*     */ 
+/*     */   
+/*     */   boolean nodeCreated() {
+/*  24 */     return this.node_created;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   void reset() {
+/*  30 */     this.nodes.removeAllElements();
+/*  31 */     this.marks.removeAllElements();
+/*  32 */     this.sp = 0;
+/*  33 */     this.mk = 0;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   Node rootNode() {
+/*  39 */     return this.nodes.elementAt(0);
+/*     */   }
+/*     */ 
+/*     */   
+/*     */   void pushNode(Node n) {
+/*  44 */     this.nodes.push(n);
+/*  45 */     this.sp++;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   Node popNode() {
+/*  51 */     if (--this.sp < this.mk) {
+/*  52 */       this.mk = ((Integer)this.marks.pop()).intValue();
+/*     */     }
+/*  54 */     return this.nodes.pop();
+/*     */   }
+/*     */ 
+/*     */   
+/*     */   Node peekNode() {
+/*  59 */     return this.nodes.peek();
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   int nodeArity() {
+/*  65 */     return this.sp - this.mk;
+/*     */   }
+/*     */ 
+/*     */   
+/*     */   void clearNodeScope(Node n) {
+/*  70 */     while (this.sp > this.mk) {
+/*  71 */       popNode();
+/*     */     }
+/*  73 */     this.mk = ((Integer)this.marks.pop()).intValue();
+/*     */   }
+/*     */ 
+/*     */   
+/*     */   void openNodeScope(Node n) {
+/*  78 */     this.marks.push(new Integer(this.mk));
+/*  79 */     this.mk = this.sp;
+/*  80 */     n.jjtOpen();
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   void closeNodeScope(Node n, int num) {
+/*  89 */     this.mk = ((Integer)this.marks.pop()).intValue();
+/*  90 */     while (num-- > 0) {
+/*  91 */       Node c = popNode();
+/*  92 */       c.jjtSetParent(n);
+/*  93 */       n.jjtAddChild(c, num);
+/*     */     } 
+/*  95 */     n.jjtClose();
+/*  96 */     pushNode(n);
+/*  97 */     this.node_created = true;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   void closeNodeScope(Node n, boolean condition) {
+/* 107 */     if (condition) {
+/* 108 */       int a = nodeArity();
+/* 109 */       this.mk = ((Integer)this.marks.pop()).intValue();
+/* 110 */       while (a-- > 0) {
+/* 111 */         Node c = popNode();
+/* 112 */         c.jjtSetParent(n);
+/* 113 */         n.jjtAddChild(c, a);
+/*     */       } 
+/* 115 */       n.jjtClose();
+/* 116 */       pushNode(n);
+/* 117 */       this.node_created = true;
+/*     */     } else {
+/* 119 */       this.mk = ((Integer)this.marks.pop()).intValue();
+/* 120 */       this.node_created = false;
+/*     */     } 
+/*     */   }
+/*     */ }
+
+
+/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/bsh/JJTParserState.class
+ * Java compiler version: 5 (49.0)
+ * JD-Core Version:       1.1.3
+ */

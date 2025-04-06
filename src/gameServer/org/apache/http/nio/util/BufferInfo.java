@@ -1,0 +1,16 @@
+package org.apache.http.nio.util;
+
+@Deprecated
+public interface BufferInfo {
+  int length();
+  
+  int capacity();
+  
+  int available();
+}
+
+
+/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/util/BufferInfo.class
+ * Java compiler version: 6 (50.0)
+ * JD-Core Version:       1.1.3
+ */

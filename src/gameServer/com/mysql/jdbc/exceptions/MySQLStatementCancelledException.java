@@ -1,0 +1,52 @@
+/*    */ package com.mysql.jdbc.exceptions;
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ 
+/*    */ public class MySQLStatementCancelledException
+/*    */   extends MySQLNonTransientException
+/*    */ {
+/*    */   static final long serialVersionUID = -8762717748377197378L;
+/*    */   
+/*    */   public MySQLStatementCancelledException(String reason, String SQLState, int vendorCode) {
+/* 32 */     super(reason, SQLState, vendorCode);
+/*    */   }
+/*    */   
+/*    */   public MySQLStatementCancelledException(String reason, String SQLState) {
+/* 36 */     super(reason, SQLState);
+/*    */   }
+/*    */   
+/*    */   public MySQLStatementCancelledException(String reason) {
+/* 40 */     super(reason);
+/*    */   }
+/*    */   
+/*    */   public MySQLStatementCancelledException() {
+/* 44 */     super("Statement cancelled due to client request");
+/*    */   }
+/*    */ }
+
+
+/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/exceptions/MySQLStatementCancelledException.class
+ * Java compiler version: 5 (49.0)
+ * JD-Core Version:       1.1.3
+ */
