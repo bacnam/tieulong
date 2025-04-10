@@ -40,129 +40,129 @@ import core.network.client2game.ClientAcceptor;
 import core.network.game2world.WorldConnector;
 import core.network.game2zone.ZoneConnector;
 import core.network.http.handler.Recharge;
+
 import java.io.File;
 
-public class GameServer extends IApp
-{
-public static void main(String[] args) throws EvalError {
-GameServer app = new GameServer();
-app.init(args);
-app.start();
-}
+public class GameServer extends IApp {
+    public static void main(String[] args) throws EvalError {
+        GameServer app = new GameServer();
+        app.init(args);
+        app.start();
+    }
 
-protected void beforeInit(String configdit) {
-loadBasicConfig(configdit, "logback_game.xml");
-loadRemoteConfig("server_id", System.getProperty("game_sid"), configdit, "game.properties");
-}
+    protected void beforeInit(String configdit) {
+        loadBasicConfig(configdit, "logback_game.xml");
+        loadRemoteConfig("server_id", System.getProperty("game_sid"), configdit, "game.properties");
+    }
 
-protected boolean initBase() {
-ConsoleTaskManager.GetInstance().setRunner(new BshRunner());
+    protected boolean initBase() {
+        ConsoleTaskManager.GetInstance().setRunner(new BshRunner());
 
-RefDataMgr.getInstance().reload();
+        RefDataMgr.getInstance().reload();
 
-ServerConfig.checkMapPath();
+        ServerConfig.checkMapPath();
 
-SensitiveWordMgr.getInstance().init(String.valueOf(RefDataMgr.getInstance().getRefPath()) + File.separator + "keywords.txt");
-SensitiveWordMgr.getInstance().reload();
+        SensitiveWordMgr.getInstance().init(String.valueOf(RefDataMgr.getInstance().getRefPath()) + File.separator + "keywords.txt");
+        SensitiveWordMgr.getInstance().reload();
 
-DBCons.setDBFactory((IDBConnectionFactory)new DatabaseFactory(ServerConfig.DBUrl(), ServerConfig.DBUser(), ServerConfig.DBPassword()));
-DBCons.setLogDBFactory((IDBConnectionFactory)new DatabaseFactory(ServerConfig.LogDBUrl(), ServerConfig.LogDBUser(), ServerConfig.LogDBPassword()));
+        DBCons.setDBFactory((IDBConnectionFactory) new DatabaseFactory(ServerConfig.DBUrl(), ServerConfig.DBUser(), ServerConfig.DBPassword()));
+        DBCons.setLogDBFactory((IDBConnectionFactory) new DatabaseFactory(ServerConfig.LogDBUrl(), ServerConfig.LogDBUser(), ServerConfig.LogDBPassword()));
 
-Game_DBVersionManager.getInstance().checkAndUpdateVersion("core.database.game.bo");
-DBFlowMgr.getInstance().updateDB("core.logger.flow.impl.db");
+        Game_DBVersionManager.getInstance().checkAndUpdateVersion("core.database.game.bo");
+        DBFlowMgr.getInstance().updateDB("core.logger.flow.impl.db");
 
-Game_DBVersionManager.getInstance().setNewestVersion("1.0.0.1");
-Log_DBVersionManager.getInstance().setNewestVersion("1.0.0.1");
+        Game_DBVersionManager.getInstance().setNewestVersion("1.0.0.1");
+        Log_DBVersionManager.getInstance().setNewestVersion("1.0.0.1");
 
-if (!Game_DBVersionManager.getInstance().runAutoVersionUpdate("core.database.game.update") || 
-!Log_DBVersionManager.getInstance().runAutoVersionUpdate("core.database.log.update")) {
-CommLog.error("!!!!!!!!! 数据库版本升级失败 !!!!!!!!!!");
-return false;
-} 
+        if (!Game_DBVersionManager.getInstance().runAutoVersionUpdate("core.database.game.update") ||
+                !Log_DBVersionManager.getInstance().runAutoVersionUpdate("core.database.log.update")) {
+            CommLog.error("!!!!!!!!! 数据库版本升级失败 !!!!!!!!!!");
+            return false;
+        }
 
-FlowLogger.getInstance().init(GameFlowLogger.class, "core.logger.flow.impl");
-DBFlowMgr.getInstance().start();
-RedisFlowMgr.getInstance().start();
+        FlowLogger.getInstance().init(GameFlowLogger.class, "core.logger.flow.impl");
+        DBFlowMgr.getInstance().start();
+        RedisFlowMgr.getInstance().start();
 
-OpenSeverTime.getInstance().init();
+        OpenSeverTime.getInstance().init();
 
-Monitor.getInstance().regCleanMemory(CleanMemory.GetInstance());
-return true;
-}
+        Monitor.getInstance().regCleanMemory(CleanMemory.GetInstance());
+        return true;
+    }
 
-protected boolean startNet() {
-ClientAcceptor.getInstance().startSocket(Integer.getInteger("GameServer.ClientPort"));
-if ("on".equalsIgnoreCase(System.getProperty("GameServer.ZoneOpen"))) {
-ZoneConnector.getInstance().reconnect(System.getProperty("GameServer.Zone_IP", "127.0.0.1"), Integer.getInteger("GameServer.Zone_Port", 8002).intValue());
-}
-if ("on".equalsIgnoreCase(System.getProperty("GameServer.WorldOpen"))) {
-WorldConnector.getInstance().reconnect(System.getProperty("GameServer.World_IP", "127.0.0.1"), Integer.getInteger("GameServer.World_Port", 8003).intValue());
-}
-starHttp();
-return true;
-}
+    protected boolean startNet() {
+        ClientAcceptor.getInstance().startSocket(Integer.getInteger("GameServer.ClientPort"));
+        if ("on".equalsIgnoreCase(System.getProperty("GameServer.ZoneOpen"))) {
+            ZoneConnector.getInstance().reconnect(System.getProperty("GameServer.Zone_IP", "127.0.0.1"), Integer.getInteger("GameServer.Zone_Port", 8002).intValue());
+        }
+        if ("on".equalsIgnoreCase(System.getProperty("GameServer.WorldOpen"))) {
+            WorldConnector.getInstance().reconnect(System.getProperty("GameServer.World_IP", "127.0.0.1"), Integer.getInteger("GameServer.World_Port", 8003).intValue());
+        }
+        starHttp();
+        return true;
+    }
 
-protected boolean initLogic() {
-DynamicConfig.init();
+    protected boolean initLogic() {
+        DynamicConfig.init();
 
-RechargeMgr.getInstance().init();
+        RechargeMgr.getInstance().init();
 
-RankManager.getInstance().init();
+        RankManager.getInstance().init();
 
-CommandMgr.getInstance().init();
+        CommandMgr.getInstance().init();
 
-PlayerMgr.getInstance().init();
+        PlayerMgr.getInstance().init();
 
-RobotManager.getInstance().init();
+        RobotManager.getInstance().init();
 
-MailCenter.getInstance().init();
+        MailCenter.getInstance().init();
 
-TimerMailMgr.getInstance().init();
+        TimerMailMgr.getInstance().init();
 
-RewardConfMgr.getInstance().init();
+        RewardConfMgr.getInstance().init();
 
-NoticeMgr.getInstance().init();
+        NoticeMgr.getInstance().init();
 
-ArenaManager.getInstance().init();
+        ArenaManager.getInstance().init();
 
-WorldBossMgr.getInstance().init();
+        WorldBossMgr.getInstance().init();
 
-ActivityMgr.getInstance().init();
+        ActivityMgr.getInstance().init();
 
-GuildMgr.getInstance().init();
+        GuildMgr.getInstance().init();
 
-GuildWarMgr.getInstance().init();
+        GuildWarMgr.getInstance().init();
 
-RedPacketMgr.getInstance().init();
+        RedPacketMgr.getInstance().init();
 
-return true;
-}
+        return true;
+    }
 
-protected void afterInit() {
-RefreshMgr.getInstance().init();
-}
+    protected void afterInit() {
+        RefreshMgr.getInstance().init();
+    }
 
-protected void start() {
-HeartBeat.start();
-}
+    protected void start() {
+        HeartBeat.start();
+    }
 
-public void starHttp() {
-try {
-HttpDispather dispather = new HttpDispather();
-String pack = Recharge.class.getPackage().getName();
-dispather.init(pack);
-HttpServer httpServer = MGHttpServer.createServer(Integer.getInteger("Server.HttpServer", 9888).intValue(), dispather, "/");
-httpServer.start();
-} catch (Exception e) {
-CommLog.error("启动Http错误", e);
-System.exit(-1);
-} 
-}
+    public void starHttp() {
+        try {
+            HttpDispather dispather = new HttpDispather();
+            String pack = Recharge.class.getPackage().getName();
+            dispather.init(pack);
+            HttpServer httpServer = MGHttpServer.createServer(Integer.getInteger("Server.HttpServer", 9888).intValue(), dispather, "/");
+            httpServer.start();
+        } catch (Exception e) {
+            CommLog.error("启动Http错误", e);
+            System.exit(-1);
+        }
+    }
 
-public static void reload() {
-RefDataMgr.getInstance().reload();
-SensitiveWordMgr.getInstance().reload();
-RefreshMgr.getInstance().reload();
-}
+    public static void reload() {
+        RefDataMgr.getInstance().reload();
+        SensitiveWordMgr.getInstance().reload();
+        RefreshMgr.getInstance().reload();
+    }
 }
 
