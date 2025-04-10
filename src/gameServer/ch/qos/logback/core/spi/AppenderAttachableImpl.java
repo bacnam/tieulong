@@ -1,147 +1,87 @@
-/*     */ package ch.qos.logback.core.spi;
-/*     */ 
-/*     */ import ch.qos.logback.core.Appender;
-/*     */ import java.util.Iterator;
-/*     */ import java.util.concurrent.CopyOnWriteArrayList;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class AppenderAttachableImpl<E>
-/*     */   implements AppenderAttachable<E>
-/*     */ {
-/*  29 */   private final CopyOnWriteArrayList<Appender<E>> appenderList = new CopyOnWriteArrayList<Appender<E>>();
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void addAppender(Appender<E> newAppender) {
-/*  36 */     if (newAppender == null) {
-/*  37 */       throw new IllegalArgumentException("Null argument disallowed");
-/*     */     }
-/*  39 */     this.appenderList.addIfAbsent(newAppender);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int appendLoopOnAppenders(E e) {
-/*  46 */     int size = 0;
-/*  47 */     for (Appender<E> appender : this.appenderList) {
-/*  48 */       appender.doAppend(e);
-/*  49 */       size++;
-/*     */     } 
-/*  51 */     return size;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public Iterator<Appender<E>> iteratorForAppenders() {
-/*  61 */     return this.appenderList.iterator();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public Appender<E> getAppender(String name) {
-/*  71 */     if (name == null) {
-/*  72 */       return null;
-/*     */     }
-/*  74 */     Appender<E> found = null;
-/*  75 */     for (Appender<E> appender : this.appenderList) {
-/*  76 */       if (name.equals(appender.getName())) {
-/*  77 */         return appender;
-/*     */       }
-/*     */     } 
-/*  80 */     return null;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean isAttached(Appender<E> appender) {
-/*  90 */     if (appender == null) {
-/*  91 */       return false;
-/*     */     }
-/*  93 */     for (Appender<E> a : this.appenderList) {
-/*  94 */       if (a == appender) return true; 
-/*     */     } 
-/*  96 */     return false;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void detachAndStopAllAppenders() {
-/* 103 */     for (Appender<E> a : this.appenderList) {
-/* 104 */       a.stop();
-/*     */     }
-/* 106 */     this.appenderList.clear();
-/*     */   }
-/*     */   
-/* 109 */   static final long START = System.currentTimeMillis();
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean detachAppender(Appender<E> appender) {
-/* 116 */     if (appender == null) {
-/* 117 */       return false;
-/*     */     }
-/*     */     
-/* 120 */     boolean result = this.appenderList.remove(appender);
-/* 121 */     return result;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean detachAppender(String name) {
-/* 129 */     if (name == null) {
-/* 130 */       return false;
-/*     */     }
-/* 132 */     boolean removed = false;
-/* 133 */     for (Appender<E> a : this.appenderList) {
-/* 134 */       if (name.equals(a.getName())) {
-/* 135 */         removed = this.appenderList.remove(a);
-/*     */         break;
-/*     */       } 
-/*     */     } 
-/* 139 */     return removed;
-/*     */   }
-/*     */ }
+package ch.qos.logback.core.spi;
 
+import ch.qos.logback.core.Appender;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/spi/AppenderAttachableImpl.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class AppenderAttachableImpl<E>
+implements AppenderAttachable<E>
+{
+private final CopyOnWriteArrayList<Appender<E>> appenderList = new CopyOnWriteArrayList<Appender<E>>();
+
+public void addAppender(Appender<E> newAppender) {
+if (newAppender == null) {
+throw new IllegalArgumentException("Null argument disallowed");
+}
+this.appenderList.addIfAbsent(newAppender);
+}
+
+public int appendLoopOnAppenders(E e) {
+int size = 0;
+for (Appender<E> appender : this.appenderList) {
+appender.doAppend(e);
+size++;
+} 
+return size;
+}
+
+public Iterator<Appender<E>> iteratorForAppenders() {
+return this.appenderList.iterator();
+}
+
+public Appender<E> getAppender(String name) {
+if (name == null) {
+return null;
+}
+Appender<E> found = null;
+for (Appender<E> appender : this.appenderList) {
+if (name.equals(appender.getName())) {
+return appender;
+}
+} 
+return null;
+}
+
+public boolean isAttached(Appender<E> appender) {
+if (appender == null) {
+return false;
+}
+for (Appender<E> a : this.appenderList) {
+if (a == appender) return true; 
+} 
+return false;
+}
+
+public void detachAndStopAllAppenders() {
+for (Appender<E> a : this.appenderList) {
+a.stop();
+}
+this.appenderList.clear();
+}
+
+static final long START = System.currentTimeMillis();
+
+public boolean detachAppender(Appender<E> appender) {
+if (appender == null) {
+return false;
+}
+
+boolean result = this.appenderList.remove(appender);
+return result;
+}
+
+public boolean detachAppender(String name) {
+if (name == null) {
+return false;
+}
+boolean removed = false;
+for (Appender<E> a : this.appenderList) {
+if (name.equals(a.getName())) {
+removed = this.appenderList.remove(a);
+break;
+} 
+} 
+return removed;
+}
+}
+

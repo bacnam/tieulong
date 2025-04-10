@@ -8,12 +8,7 @@ import org.apache.http.nio.IOControl;
 @Deprecated
 public interface ConsumingNHttpEntity extends HttpEntity {
   void consumeContent(ContentDecoder paramContentDecoder, IOControl paramIOControl) throws IOException;
-  
+
   void finish() throws IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/entity/ConsumingNHttpEntity.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

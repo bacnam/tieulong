@@ -12,8 +12,3 @@ public @interface GuildRanks {
   GuildRankType[] value();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/business/global/guild/GuildRanks.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

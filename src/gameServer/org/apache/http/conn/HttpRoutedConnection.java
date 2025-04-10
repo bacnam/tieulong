@@ -7,14 +7,9 @@ import org.apache.http.conn.routing.HttpRoute;
 @Deprecated
 public interface HttpRoutedConnection extends HttpInetConnection {
   boolean isSecure();
-  
+
   HttpRoute getRoute();
-  
+
   SSLSession getSSLSession();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/HttpRoutedConnection.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

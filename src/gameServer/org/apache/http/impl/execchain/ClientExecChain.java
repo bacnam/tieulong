@@ -12,8 +12,3 @@ public interface ClientExecChain {
   CloseableHttpResponse execute(HttpRoute paramHttpRoute, HttpRequestWrapper paramHttpRequestWrapper, HttpClientContext paramHttpClientContext, HttpExecutionAware paramHttpExecutionAware) throws IOException, HttpException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/impl/execchain/ClientExecChain.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

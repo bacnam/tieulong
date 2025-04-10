@@ -1,17 +1,12 @@
-/*   */ package business.global.battle;
-/*   */ 
-/*   */ class Point {
-/*   */   int x;
-/*   */   int y;
-/*   */   
-/*   */   public Point(int x, int y) {
-/* 8 */     this.x = x;
-/* 9 */     this.y = y;
-/*   */   }
-/*   */ }
+package business.global.battle;
 
+class Point {
+int x;
+int y;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/business/global/battle/Point.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+public Point(int x, int y) {
+this.x = x;
+this.y = y;
+}
+}
+

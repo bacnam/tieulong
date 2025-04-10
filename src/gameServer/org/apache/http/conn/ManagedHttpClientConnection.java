@@ -8,16 +8,11 @@ import org.apache.http.HttpInetConnection;
 
 public interface ManagedHttpClientConnection extends HttpClientConnection, HttpInetConnection {
   String getId();
-  
+
   void bind(Socket paramSocket) throws IOException;
-  
+
   Socket getSocket();
-  
+
   SSLSession getSSLSession();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/ManagedHttpClientConnection.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

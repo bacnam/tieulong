@@ -7,18 +7,13 @@ import java.sql.SQLException;
 
 public interface StatementCache extends ClosableResource {
   Object checkoutStatement(Connection paramConnection, Method paramMethod, Object[] paramArrayOfObject) throws SQLException;
-  
+
   void checkinStatement(Object paramObject) throws SQLException;
-  
+
   void checkinAll(Connection paramConnection) throws SQLException;
-  
+
   void closeAll(Connection paramConnection) throws SQLException;
-  
+
   void close() throws SQLException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mchange/v2/c3p0/stmt/StatementCache.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

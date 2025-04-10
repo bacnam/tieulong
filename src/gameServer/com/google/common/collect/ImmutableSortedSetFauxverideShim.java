@@ -1,169 +1,54 @@
-/*     */ package com.google.common.collect;
-/*     */ 
-/*     */ import com.google.common.annotations.GwtCompatible;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @GwtCompatible
-/*     */ abstract class ImmutableSortedSetFauxverideShim<E>
-/*     */   extends ImmutableSet<E>
-/*     */ {
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet.Builder<E> builder() {
-/*  49 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E element) {
-/*  62 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E e1, E e2) {
-/*  75 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3) {
-/*  88 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3, E e4) {
-/* 103 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3, E e4, E e5) {
-/* 118 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... remaining) {
-/* 133 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> of(E[] elements) {
-/* 148 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public static <E> ImmutableSortedSet<E> copyOf(E[] elements) {
-/* 161 */     throw new UnsupportedOperationException();
-/*     */   }
-/*     */ }
+package com.google.common.collect;
 
+import com.google.common.annotations.GwtCompatible;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/collect/ImmutableSortedSetFauxverideShim.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+@GwtCompatible
+abstract class ImmutableSortedSetFauxverideShim<E>
+extends ImmutableSet<E>
+{
+@Deprecated
+public static <E> ImmutableSortedSet.Builder<E> builder() {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E element) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E e1, E e2) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3, E e4) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3, E e4, E e5) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E... remaining) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> of(E[] elements) {
+throw new UnsupportedOperationException();
+}
+
+@Deprecated
+public static <E> ImmutableSortedSet<E> copyOf(E[] elements) {
+throw new UnsupportedOperationException();
+}
+}
+

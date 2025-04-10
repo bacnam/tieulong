@@ -1,67 +1,26 @@
-/*    */ package org.apache.http.nio;
-/*    */ 
-/*    */ import java.io.IOException;
-/*    */ import java.nio.ByteBuffer;
-/*    */ import java.nio.channels.WritableByteChannel;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ContentEncoderChannel
-/*    */   implements WritableByteChannel
-/*    */ {
-/*    */   private final ContentEncoder contentEncoder;
-/*    */   
-/*    */   public ContentEncoderChannel(ContentEncoder contentEncoder) {
-/* 46 */     this.contentEncoder = contentEncoder;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public int write(ByteBuffer src) throws IOException {
-/* 51 */     return this.contentEncoder.write(src);
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public void close() {}
-/*    */ 
-/*    */   
-/*    */   public boolean isOpen() {
-/* 59 */     return true;
-/*    */   }
-/*    */ }
+package org.apache.http.nio;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/ContentEncoderChannel.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class ContentEncoderChannel
+implements WritableByteChannel
+{
+private final ContentEncoder contentEncoder;
+
+public ContentEncoderChannel(ContentEncoder contentEncoder) {
+this.contentEncoder = contentEncoder;
+}
+
+public int write(ByteBuffer src) throws IOException {
+return this.contentEncoder.write(src);
+}
+
+public void close() {}
+
+public boolean isOpen() {
+return true;
+}
+}
+

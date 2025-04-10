@@ -1,74 +1,21 @@
-/*    */ package org.apache.http.conn.ssl;
-/*    */ 
-/*    */ import javax.net.ssl.SSLException;
-/*    */ import org.apache.http.annotation.Immutable;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ @Deprecated
-/*    */ @Immutable
-/*    */ public class BrowserCompatHostnameVerifier
-/*    */   extends AbstractVerifier
-/*    */ {
-/* 54 */   public static final BrowserCompatHostnameVerifier INSTANCE = new BrowserCompatHostnameVerifier();
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public final void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {
-/* 61 */     verify(host, cns, subjectAlts, false);
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public final String toString() {
-/* 66 */     return "BROWSER_COMPATIBLE";
-/*    */   }
-/*    */ }
+package org.apache.http.conn.ssl;
 
+import javax.net.ssl.SSLException;
+import org.apache.http.annotation.Immutable;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/ssl/BrowserCompatHostnameVerifier.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@Deprecated
+@Immutable
+public class BrowserCompatHostnameVerifier
+extends AbstractVerifier
+{
+public static final BrowserCompatHostnameVerifier INSTANCE = new BrowserCompatHostnameVerifier();
+
+public final void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {
+verify(host, cns, subjectAlts, false);
+}
+
+public final String toString() {
+return "BROWSER_COMPATIBLE";
+}
+}
+

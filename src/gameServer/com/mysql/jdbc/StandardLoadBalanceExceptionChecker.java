@@ -1,125 +1,90 @@
-/*     */ package com.mysql.jdbc;
-/*     */ 
-/*     */ import java.sql.SQLException;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.Iterator;
-/*     */ import java.util.List;
-/*     */ import java.util.Properties;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class StandardLoadBalanceExceptionChecker
-/*     */   implements LoadBalanceExceptionChecker
-/*     */ {
-/*     */   private List<String> sqlStateList;
-/*     */   private List<Class<?>> sqlExClassList;
-/*     */   
-/*     */   public boolean shouldExceptionTriggerFailover(SQLException ex) {
-/*  39 */     String sqlState = ex.getSQLState();
-/*     */     
-/*  41 */     if (sqlState != null) {
-/*  42 */       if (sqlState.startsWith("08"))
-/*     */       {
-/*  44 */         return true;
-/*     */       }
-/*  46 */       if (this.sqlStateList != null)
-/*     */       {
-/*  48 */         for (Iterator<String> i = this.sqlStateList.iterator(); i.hasNext();) {
-/*  49 */           if (sqlState.startsWith(((String)i.next()).toString())) {
-/*  50 */             return true;
-/*     */           }
-/*     */         } 
-/*     */       }
-/*     */     } 
-/*     */ 
-/*     */     
-/*  57 */     if (ex instanceof CommunicationsException) {
-/*  58 */       return true;
-/*     */     }
-/*  60 */     if (this.sqlExClassList != null)
-/*     */     {
-/*  62 */       for (Iterator<Class<?>> i = this.sqlExClassList.iterator(); i.hasNext();) {
-/*  63 */         if (((Class)i.next()).isInstance(ex)) {
-/*  64 */           return true;
-/*     */         }
-/*     */       } 
-/*     */     }
-/*     */     
-/*  69 */     return false;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void destroy() {}
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void init(Connection conn, Properties props) throws SQLException {
-/*  79 */     configureSQLStateList(props.getProperty("loadBalanceSQLStateFailover", null));
-/*  80 */     configureSQLExceptionSubclassList(props.getProperty("loadBalanceSQLExceptionSubclassFailover", null));
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private void configureSQLStateList(String sqlStates) {
-/*  85 */     if (sqlStates == null || "".equals(sqlStates)) {
-/*     */       return;
-/*     */     }
-/*  88 */     List<String> states = StringUtils.split(sqlStates, ",", true);
-/*  89 */     List<String> newStates = new ArrayList<String>();
-/*     */     
-/*  91 */     for (String state : states) {
-/*  92 */       if (state.length() > 0) {
-/*  93 */         newStates.add(state);
-/*     */       }
-/*     */     } 
-/*  96 */     if (newStates.size() > 0) {
-/*  97 */       this.sqlStateList = newStates;
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   private void configureSQLExceptionSubclassList(String sqlExClasses) {
-/* 102 */     if (sqlExClasses == null || "".equals(sqlExClasses)) {
-/*     */       return;
-/*     */     }
-/* 105 */     List<String> classes = StringUtils.split(sqlExClasses, ",", true);
-/* 106 */     List<Class<?>> newClasses = new ArrayList<Class<?>>();
-/*     */     
-/* 108 */     for (String exClass : classes) {
-/*     */       try {
-/* 110 */         Class<?> c = Class.forName(exClass);
-/* 111 */         newClasses.add(c);
-/* 112 */       } catch (Exception e) {}
-/*     */     } 
-/*     */ 
-/*     */     
-/* 116 */     if (newClasses.size() > 0)
-/* 117 */       this.sqlExClassList = newClasses; 
-/*     */   }
-/*     */ }
+package com.mysql.jdbc;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/StandardLoadBalanceExceptionChecker.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class StandardLoadBalanceExceptionChecker
+implements LoadBalanceExceptionChecker
+{
+private List<String> sqlStateList;
+private List<Class<?>> sqlExClassList;
+
+public boolean shouldExceptionTriggerFailover(SQLException ex) {
+String sqlState = ex.getSQLState();
+
+if (sqlState != null) {
+if (sqlState.startsWith("08"))
+{
+return true;
+}
+if (this.sqlStateList != null)
+{
+for (Iterator<String> i = this.sqlStateList.iterator(); i.hasNext();) {
+if (sqlState.startsWith(((String)i.next()).toString())) {
+return true;
+}
+} 
+}
+} 
+
+if (ex instanceof CommunicationsException) {
+return true;
+}
+if (this.sqlExClassList != null)
+{
+for (Iterator<Class<?>> i = this.sqlExClassList.iterator(); i.hasNext();) {
+if (((Class)i.next()).isInstance(ex)) {
+return true;
+}
+} 
+}
+
+return false;
+}
+
+public void destroy() {}
+
+public void init(Connection conn, Properties props) throws SQLException {
+configureSQLStateList(props.getProperty("loadBalanceSQLStateFailover", null));
+configureSQLExceptionSubclassList(props.getProperty("loadBalanceSQLExceptionSubclassFailover", null));
+}
+
+private void configureSQLStateList(String sqlStates) {
+if (sqlStates == null || "".equals(sqlStates)) {
+return;
+}
+List<String> states = StringUtils.split(sqlStates, ",", true);
+List<String> newStates = new ArrayList<String>();
+
+for (String state : states) {
+if (state.length() > 0) {
+newStates.add(state);
+}
+} 
+if (newStates.size() > 0) {
+this.sqlStateList = newStates;
+}
+}
+
+private void configureSQLExceptionSubclassList(String sqlExClasses) {
+if (sqlExClasses == null || "".equals(sqlExClasses)) {
+return;
+}
+List<String> classes = StringUtils.split(sqlExClasses, ",", true);
+List<Class<?>> newClasses = new ArrayList<Class<?>>();
+
+for (String exClass : classes) {
+try {
+Class<?> c = Class.forName(exClass);
+newClasses.add(c);
+} catch (Exception e) {}
+} 
+
+if (newClasses.size() > 0)
+this.sqlExClassList = newClasses; 
+}
+}
+

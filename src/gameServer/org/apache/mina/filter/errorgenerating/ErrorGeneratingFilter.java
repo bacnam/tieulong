@@ -1,314 +1,218 @@
-/*     */ package org.apache.mina.filter.errorgenerating;
-/*     */ 
-/*     */ import java.util.Random;
-/*     */ import org.apache.mina.core.buffer.IoBuffer;
-/*     */ import org.apache.mina.core.filterchain.IoFilter;
-/*     */ import org.apache.mina.core.filterchain.IoFilterAdapter;
-/*     */ import org.apache.mina.core.session.IoSession;
-/*     */ import org.apache.mina.core.write.DefaultWriteRequest;
-/*     */ import org.apache.mina.core.write.WriteRequest;
-/*     */ import org.slf4j.Logger;
-/*     */ import org.slf4j.LoggerFactory;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class ErrorGeneratingFilter
-/*     */   extends IoFilterAdapter
-/*     */ {
-/*  56 */   private int removeByteProbability = 0;
-/*     */   
-/*  58 */   private int insertByteProbability = 0;
-/*     */   
-/*  60 */   private int changeByteProbability = 0;
-/*     */   
-/*  62 */   private int removePduProbability = 0;
-/*     */   
-/*  64 */   private int duplicatePduProbability = 0;
-/*     */   
-/*  66 */   private int resendPduLasterProbability = 0;
-/*     */   
-/*  68 */   private int maxInsertByte = 10;
-/*     */   
-/*     */   private boolean manipulateWrites = false;
-/*     */   
-/*     */   private boolean manipulateReads = false;
-/*     */   
-/*  74 */   private Random rng = new Random();
-/*     */   
-/*  76 */   private final Logger logger = LoggerFactory.getLogger(ErrorGeneratingFilter.class);
-/*     */   
-/*     */   public void filterWrite(IoFilter.NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
-/*     */     DefaultWriteRequest defaultWriteRequest;
-/*  80 */     if (this.manipulateWrites)
-/*     */     {
-/*  82 */       if (writeRequest.getMessage() instanceof IoBuffer) {
-/*  83 */         manipulateIoBuffer(session, (IoBuffer)writeRequest.getMessage());
-/*  84 */         IoBuffer buffer = insertBytesToNewIoBuffer(session, (IoBuffer)writeRequest.getMessage());
-/*  85 */         if (buffer != null) {
-/*  86 */           defaultWriteRequest = new DefaultWriteRequest(buffer, writeRequest.getFuture(), writeRequest.getDestination());
-/*     */         }
-/*     */       }
-/*     */       else {
-/*     */         
-/*  91 */         if (this.duplicatePduProbability > this.rng.nextInt()) {
-/*  92 */           nextFilter.filterWrite(session, (WriteRequest)defaultWriteRequest);
-/*     */         }
-/*     */         
-/*  95 */         if (this.resendPduLasterProbability > this.rng.nextInt());
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */         
-/* 100 */         if (this.removePduProbability > this.rng.nextInt()) {
-/*     */           return;
-/*     */         }
-/*     */       } 
-/*     */     }
-/* 105 */     nextFilter.filterWrite(session, (WriteRequest)defaultWriteRequest);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public void messageReceived(IoFilter.NextFilter nextFilter, IoSession session, Object message) throws Exception {
-/* 110 */     if (this.manipulateReads && 
-/* 111 */       message instanceof IoBuffer) {
-/*     */       
-/* 113 */       manipulateIoBuffer(session, (IoBuffer)message);
-/* 114 */       IoBuffer buffer = insertBytesToNewIoBuffer(session, (IoBuffer)message);
-/* 115 */       if (buffer != null) {
-/* 116 */         message = buffer;
-/*     */       }
-/*     */     } 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 123 */     nextFilter.messageReceived(session, message);
-/*     */   }
-/*     */   
-/*     */   private IoBuffer insertBytesToNewIoBuffer(IoSession session, IoBuffer buffer) {
-/* 127 */     if (this.insertByteProbability > this.rng.nextInt(1000)) {
-/* 128 */       this.logger.info(buffer.getHexDump());
-/*     */       
-/* 130 */       int pos = this.rng.nextInt(buffer.remaining()) - 1;
-/*     */ 
-/*     */       
-/* 133 */       int count = this.rng.nextInt(this.maxInsertByte - 1) + 1;
-/*     */       
-/* 135 */       IoBuffer newBuff = IoBuffer.allocate(buffer.remaining() + count); int i;
-/* 136 */       for (i = 0; i < pos; i++)
-/* 137 */         newBuff.put(buffer.get()); 
-/* 138 */       for (i = 0; i < count; i++) {
-/* 139 */         newBuff.put((byte)this.rng.nextInt(256));
-/*     */       }
-/* 141 */       while (buffer.remaining() > 0) {
-/* 142 */         newBuff.put(buffer.get());
-/*     */       }
-/* 144 */       newBuff.flip();
-/*     */       
-/* 146 */       this.logger.info("Inserted " + count + " bytes.");
-/* 147 */       this.logger.info(newBuff.getHexDump());
-/* 148 */       return newBuff;
-/*     */     } 
-/* 150 */     return null;
-/*     */   }
-/*     */   
-/*     */   private void manipulateIoBuffer(IoSession session, IoBuffer buffer) {
-/* 154 */     if (buffer.remaining() > 0 && this.removeByteProbability > this.rng.nextInt(1000)) {
-/* 155 */       this.logger.info(buffer.getHexDump());
-/*     */       
-/* 157 */       int pos = this.rng.nextInt(buffer.remaining());
-/*     */       
-/* 159 */       int count = this.rng.nextInt(buffer.remaining() - pos) + 1;
-/* 160 */       if (count == buffer.remaining()) {
-/* 161 */         count = buffer.remaining() - 1;
-/*     */       }
-/* 163 */       IoBuffer newBuff = IoBuffer.allocate(buffer.remaining() - count);
-/* 164 */       for (int i = 0; i < pos; i++) {
-/* 165 */         newBuff.put(buffer.get());
-/*     */       }
-/* 167 */       buffer.skip(count);
-/* 168 */       while (newBuff.remaining() > 0)
-/* 169 */         newBuff.put(buffer.get()); 
-/* 170 */       newBuff.flip();
-/*     */       
-/* 172 */       buffer.rewind();
-/* 173 */       buffer.put(newBuff);
-/* 174 */       buffer.flip();
-/* 175 */       this.logger.info("Removed " + count + " bytes at position " + pos + ".");
-/* 176 */       this.logger.info(buffer.getHexDump());
-/*     */     } 
-/* 178 */     if (buffer.remaining() > 0 && this.changeByteProbability > this.rng.nextInt(1000)) {
-/* 179 */       this.logger.info(buffer.getHexDump());
-/*     */       
-/* 181 */       int count = this.rng.nextInt(buffer.remaining() - 1) + 1;
-/*     */       
-/* 183 */       byte[] values = new byte[count];
-/* 184 */       this.rng.nextBytes(values);
-/* 185 */       for (int i = 0; i < values.length; i++) {
-/* 186 */         int pos = this.rng.nextInt(buffer.remaining());
-/* 187 */         buffer.put(pos, values[i]);
-/*     */       } 
-/* 189 */       this.logger.info("Modified " + count + " bytes.");
-/* 190 */       this.logger.info(buffer.getHexDump());
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   public int getChangeByteProbability() {
-/* 195 */     return this.changeByteProbability;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setChangeByteProbability(int changeByteProbability) {
-/* 205 */     this.changeByteProbability = changeByteProbability;
-/*     */   }
-/*     */   
-/*     */   public int getDuplicatePduProbability() {
-/* 209 */     return this.duplicatePduProbability;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setDuplicatePduProbability(int duplicatePduProbability) {
-/* 217 */     this.duplicatePduProbability = duplicatePduProbability;
-/*     */   }
-/*     */   
-/*     */   public int getInsertByteProbability() {
-/* 221 */     return this.insertByteProbability;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setInsertByteProbability(int insertByteProbability) {
-/* 231 */     this.insertByteProbability = insertByteProbability;
-/*     */   }
-/*     */   
-/*     */   public boolean isManipulateReads() {
-/* 235 */     return this.manipulateReads;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setManipulateReads(boolean manipulateReads) {
-/* 243 */     this.manipulateReads = manipulateReads;
-/*     */   }
-/*     */   
-/*     */   public boolean isManipulateWrites() {
-/* 247 */     return this.manipulateWrites;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setManipulateWrites(boolean manipulateWrites) {
-/* 255 */     this.manipulateWrites = manipulateWrites;
-/*     */   }
-/*     */   
-/*     */   public int getRemoveByteProbability() {
-/* 259 */     return this.removeByteProbability;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setRemoveByteProbability(int removeByteProbability) {
-/* 269 */     this.removeByteProbability = removeByteProbability;
-/*     */   }
-/*     */   
-/*     */   public int getRemovePduProbability() {
-/* 273 */     return this.removePduProbability;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setRemovePduProbability(int removePduProbability) {
-/* 281 */     this.removePduProbability = removePduProbability;
-/*     */   }
-/*     */   
-/*     */   public int getResendPduLasterProbability() {
-/* 285 */     return this.resendPduLasterProbability;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setResendPduLasterProbability(int resendPduLasterProbability) {
-/* 293 */     this.resendPduLasterProbability = resendPduLasterProbability;
-/*     */   }
-/*     */   
-/*     */   public int getMaxInsertByte() {
-/* 297 */     return this.maxInsertByte;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setMaxInsertByte(int maxInsertByte) {
-/* 306 */     this.maxInsertByte = maxInsertByte;
-/*     */   }
-/*     */ }
+package org.apache.mina.filter.errorgenerating;
 
+import java.util.Random;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.filterchain.IoFilter;
+import org.apache.mina.core.filterchain.IoFilterAdapter;
+import org.apache.mina.core.session.IoSession;
+import org.apache.mina.core.write.DefaultWriteRequest;
+import org.apache.mina.core.write.WriteRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/mina/filter/errorgenerating/ErrorGeneratingFilter.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class ErrorGeneratingFilter
+extends IoFilterAdapter
+{
+private int removeByteProbability = 0;
+
+private int insertByteProbability = 0;
+
+private int changeByteProbability = 0;
+
+private int removePduProbability = 0;
+
+private int duplicatePduProbability = 0;
+
+private int resendPduLasterProbability = 0;
+
+private int maxInsertByte = 10;
+
+private boolean manipulateWrites = false;
+
+private boolean manipulateReads = false;
+
+private Random rng = new Random();
+
+private final Logger logger = LoggerFactory.getLogger(ErrorGeneratingFilter.class);
+
+public void filterWrite(IoFilter.NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
+DefaultWriteRequest defaultWriteRequest;
+if (this.manipulateWrites)
+{
+if (writeRequest.getMessage() instanceof IoBuffer) {
+manipulateIoBuffer(session, (IoBuffer)writeRequest.getMessage());
+IoBuffer buffer = insertBytesToNewIoBuffer(session, (IoBuffer)writeRequest.getMessage());
+if (buffer != null) {
+defaultWriteRequest = new DefaultWriteRequest(buffer, writeRequest.getFuture(), writeRequest.getDestination());
+}
+}
+else {
+
+if (this.duplicatePduProbability > this.rng.nextInt()) {
+nextFilter.filterWrite(session, (WriteRequest)defaultWriteRequest);
+}
+
+if (this.resendPduLasterProbability > this.rng.nextInt());
+
+if (this.removePduProbability > this.rng.nextInt()) {
+return;
+}
+} 
+}
+nextFilter.filterWrite(session, (WriteRequest)defaultWriteRequest);
+}
+
+public void messageReceived(IoFilter.NextFilter nextFilter, IoSession session, Object message) throws Exception {
+if (this.manipulateReads && 
+message instanceof IoBuffer) {
+
+manipulateIoBuffer(session, (IoBuffer)message);
+IoBuffer buffer = insertBytesToNewIoBuffer(session, (IoBuffer)message);
+if (buffer != null) {
+message = buffer;
+}
+} 
+
+nextFilter.messageReceived(session, message);
+}
+
+private IoBuffer insertBytesToNewIoBuffer(IoSession session, IoBuffer buffer) {
+if (this.insertByteProbability > this.rng.nextInt(1000)) {
+this.logger.info(buffer.getHexDump());
+
+int pos = this.rng.nextInt(buffer.remaining()) - 1;
+
+int count = this.rng.nextInt(this.maxInsertByte - 1) + 1;
+
+IoBuffer newBuff = IoBuffer.allocate(buffer.remaining() + count); int i;
+for (i = 0; i < pos; i++)
+newBuff.put(buffer.get()); 
+for (i = 0; i < count; i++) {
+newBuff.put((byte)this.rng.nextInt(256));
+}
+while (buffer.remaining() > 0) {
+newBuff.put(buffer.get());
+}
+newBuff.flip();
+
+this.logger.info("Inserted " + count + " bytes.");
+this.logger.info(newBuff.getHexDump());
+return newBuff;
+} 
+return null;
+}
+
+private void manipulateIoBuffer(IoSession session, IoBuffer buffer) {
+if (buffer.remaining() > 0 && this.removeByteProbability > this.rng.nextInt(1000)) {
+this.logger.info(buffer.getHexDump());
+
+int pos = this.rng.nextInt(buffer.remaining());
+
+int count = this.rng.nextInt(buffer.remaining() - pos) + 1;
+if (count == buffer.remaining()) {
+count = buffer.remaining() - 1;
+}
+IoBuffer newBuff = IoBuffer.allocate(buffer.remaining() - count);
+for (int i = 0; i < pos; i++) {
+newBuff.put(buffer.get());
+}
+buffer.skip(count);
+while (newBuff.remaining() > 0)
+newBuff.put(buffer.get()); 
+newBuff.flip();
+
+buffer.rewind();
+buffer.put(newBuff);
+buffer.flip();
+this.logger.info("Removed " + count + " bytes at position " + pos + ".");
+this.logger.info(buffer.getHexDump());
+} 
+if (buffer.remaining() > 0 && this.changeByteProbability > this.rng.nextInt(1000)) {
+this.logger.info(buffer.getHexDump());
+
+int count = this.rng.nextInt(buffer.remaining() - 1) + 1;
+
+byte[] values = new byte[count];
+this.rng.nextBytes(values);
+for (int i = 0; i < values.length; i++) {
+int pos = this.rng.nextInt(buffer.remaining());
+buffer.put(pos, values[i]);
+} 
+this.logger.info("Modified " + count + " bytes.");
+this.logger.info(buffer.getHexDump());
+} 
+}
+
+public int getChangeByteProbability() {
+return this.changeByteProbability;
+}
+
+public void setChangeByteProbability(int changeByteProbability) {
+this.changeByteProbability = changeByteProbability;
+}
+
+public int getDuplicatePduProbability() {
+return this.duplicatePduProbability;
+}
+
+public void setDuplicatePduProbability(int duplicatePduProbability) {
+this.duplicatePduProbability = duplicatePduProbability;
+}
+
+public int getInsertByteProbability() {
+return this.insertByteProbability;
+}
+
+public void setInsertByteProbability(int insertByteProbability) {
+this.insertByteProbability = insertByteProbability;
+}
+
+public boolean isManipulateReads() {
+return this.manipulateReads;
+}
+
+public void setManipulateReads(boolean manipulateReads) {
+this.manipulateReads = manipulateReads;
+}
+
+public boolean isManipulateWrites() {
+return this.manipulateWrites;
+}
+
+public void setManipulateWrites(boolean manipulateWrites) {
+this.manipulateWrites = manipulateWrites;
+}
+
+public int getRemoveByteProbability() {
+return this.removeByteProbability;
+}
+
+public void setRemoveByteProbability(int removeByteProbability) {
+this.removeByteProbability = removeByteProbability;
+}
+
+public int getRemovePduProbability() {
+return this.removePduProbability;
+}
+
+public void setRemovePduProbability(int removePduProbability) {
+this.removePduProbability = removePduProbability;
+}
+
+public int getResendPduLasterProbability() {
+return this.resendPduLasterProbability;
+}
+
+public void setResendPduLasterProbability(int resendPduLasterProbability) {
+this.resendPduLasterProbability = resendPduLasterProbability;
+}
+
+public int getMaxInsertByte() {
+return this.maxInsertByte;
+}
+
+public void setMaxInsertByte(int maxInsertByte) {
+this.maxInsertByte = maxInsertByte;
+}
+}
+

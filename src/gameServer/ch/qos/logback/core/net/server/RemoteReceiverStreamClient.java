@@ -1,151 +1,99 @@
-/*     */ package ch.qos.logback.core.net.server;
-/*     */ 
-/*     */ import ch.qos.logback.core.spi.ContextAwareBase;
-/*     */ import ch.qos.logback.core.util.CloseUtil;
-/*     */ import java.io.IOException;
-/*     */ import java.io.ObjectOutputStream;
-/*     */ import java.io.OutputStream;
-/*     */ import java.io.Serializable;
-/*     */ import java.net.Socket;
-/*     */ import java.net.SocketException;
-/*     */ import java.util.concurrent.BlockingQueue;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ class RemoteReceiverStreamClient
-/*     */   extends ContextAwareBase
-/*     */   implements RemoteReceiverClient
-/*     */ {
-/*     */   private final String clientId;
-/*     */   private final Socket socket;
-/*     */   private final OutputStream outputStream;
-/*     */   private BlockingQueue<Serializable> queue;
-/*     */   
-/*     */   public RemoteReceiverStreamClient(String id, Socket socket) {
-/*  49 */     this.clientId = "client " + id + ": ";
-/*  50 */     this.socket = socket;
-/*  51 */     this.outputStream = null;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   RemoteReceiverStreamClient(String id, OutputStream outputStream) {
-/*  64 */     this.clientId = "client " + id + ": ";
-/*  65 */     this.socket = null;
-/*  66 */     this.outputStream = outputStream;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setQueue(BlockingQueue<Serializable> queue) {
-/*  73 */     this.queue = queue;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean offer(Serializable event) {
-/*  80 */     if (this.queue == null) {
-/*  81 */       throw new IllegalStateException("client has no event queue");
-/*     */     }
-/*  83 */     return this.queue.offer(event);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void close() {
-/*  90 */     if (this.socket == null)
-/*  91 */       return;  CloseUtil.closeQuietly(this.socket);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void run() {
-/*  98 */     addInfo(this.clientId + "connected");
-/*     */     
-/* 100 */     ObjectOutputStream oos = null;
-/*     */     try {
-/* 102 */       int counter = 0;
-/* 103 */       oos = createObjectOutputStream();
-/* 104 */       while (!Thread.currentThread().isInterrupted()) {
-/*     */         try {
-/* 106 */           Serializable event = this.queue.take();
-/* 107 */           oos.writeObject(event);
-/* 108 */           oos.flush();
-/* 109 */           if (++counter >= 70)
-/*     */           {
-/*     */             
-/* 112 */             counter = 0;
-/* 113 */             oos.reset();
-/*     */           }
-/*     */         
-/* 116 */         } catch (InterruptedException ex) {
-/* 117 */           Thread.currentThread().interrupt();
-/*     */         }
-/*     */       
-/*     */       } 
-/* 121 */     } catch (SocketException ex) {
-/* 122 */       addInfo(this.clientId + ex);
-/*     */     }
-/* 124 */     catch (IOException ex) {
-/* 125 */       addError(this.clientId + ex);
-/*     */     }
-/* 127 */     catch (RuntimeException ex) {
-/* 128 */       addError(this.clientId + ex);
-/*     */     } finally {
-/*     */       
-/* 131 */       if (oos != null) {
-/* 132 */         CloseUtil.closeQuietly(oos);
-/*     */       }
-/* 134 */       close();
-/* 135 */       addInfo(this.clientId + "connection closed");
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private ObjectOutputStream createObjectOutputStream() throws IOException {
-/* 140 */     if (this.socket == null) {
-/* 141 */       return new ObjectOutputStream(this.outputStream);
-/*     */     }
-/* 143 */     return new ObjectOutputStream(this.socket.getOutputStream());
-/*     */   }
-/*     */ }
+package ch.qos.logback.core.net.server;
 
+import ch.qos.logback.core.spi.ContextAwareBase;
+import ch.qos.logback.core.util.CloseUtil;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.concurrent.BlockingQueue;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/net/server/RemoteReceiverStreamClient.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+class RemoteReceiverStreamClient
+extends ContextAwareBase
+implements RemoteReceiverClient
+{
+private final String clientId;
+private final Socket socket;
+private final OutputStream outputStream;
+private BlockingQueue<Serializable> queue;
+
+public RemoteReceiverStreamClient(String id, Socket socket) {
+this.clientId = "client " + id + ": ";
+this.socket = socket;
+this.outputStream = null;
+}
+
+RemoteReceiverStreamClient(String id, OutputStream outputStream) {
+this.clientId = "client " + id + ": ";
+this.socket = null;
+this.outputStream = outputStream;
+}
+
+public void setQueue(BlockingQueue<Serializable> queue) {
+this.queue = queue;
+}
+
+public boolean offer(Serializable event) {
+if (this.queue == null) {
+throw new IllegalStateException("client has no event queue");
+}
+return this.queue.offer(event);
+}
+
+public void close() {
+if (this.socket == null)
+return;  CloseUtil.closeQuietly(this.socket);
+}
+
+public void run() {
+addInfo(this.clientId + "connected");
+
+ObjectOutputStream oos = null;
+try {
+int counter = 0;
+oos = createObjectOutputStream();
+while (!Thread.currentThread().isInterrupted()) {
+try {
+Serializable event = this.queue.take();
+oos.writeObject(event);
+oos.flush();
+if (++counter >= 70)
+{
+
+counter = 0;
+oos.reset();
+}
+
+} catch (InterruptedException ex) {
+Thread.currentThread().interrupt();
+}
+
+} 
+} catch (SocketException ex) {
+addInfo(this.clientId + ex);
+}
+catch (IOException ex) {
+addError(this.clientId + ex);
+}
+catch (RuntimeException ex) {
+addError(this.clientId + ex);
+} finally {
+
+if (oos != null) {
+CloseUtil.closeQuietly(oos);
+}
+close();
+addInfo(this.clientId + "connection closed");
+} 
+}
+
+private ObjectOutputStream createObjectOutputStream() throws IOException {
+if (this.socket == null) {
+return new ObjectOutputStream(this.outputStream);
+}
+return new ObjectOutputStream(this.socket.getOutputStream());
+}
+}
+

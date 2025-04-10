@@ -1,32 +1,4 @@
-// Protocol Buffers - Google's data interchange format
-// Copyright 2008 Google Inc.  All rights reserved.
-// http://code.google.com/p/protobuf/
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 package com.google.protobuf;
 
@@ -38,21 +10,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * An implementation of {@link Message} that can represent arbitrary types,
- * given a {@link Descriptors.Descriptor}.
- *
- * @author kenton@google.com Kenton Varda
- */
 public final class DynamicMessage extends AbstractMessage {
   private final Descriptor type;
   private final FieldSet<FieldDescriptor> fields;
   private final UnknownFieldSet unknownFields;
   private int memoizedSize = -1;
 
-  /**
-   * Construct a {@code DynamicMessage} using the given {@code FieldSet}.
-   */
   private DynamicMessage(Descriptor type, FieldSet<FieldDescriptor> fields,
                          UnknownFieldSet unknownFields) {
     this.type = type;
@@ -60,23 +23,17 @@ public final class DynamicMessage extends AbstractMessage {
     this.unknownFields = unknownFields;
   }
 
-  /**
-   * Get a {@code DynamicMessage} representing the default instance of the
-   * given type.
-   */
   public static DynamicMessage getDefaultInstance(Descriptor type) {
     return new DynamicMessage(type, FieldSet.<FieldDescriptor>emptySet(),
                               UnknownFieldSet.getDefaultInstance());
   }
 
-  /** Parse a message of the given type from the given input stream. */
   public static DynamicMessage parseFrom(Descriptor type,
                                          CodedInputStream input)
                                          throws IOException {
     return newBuilder(type).mergeFrom(input).buildParsed();
   }
 
-  /** Parse a message of the given type from the given input stream. */
   public static DynamicMessage parseFrom(
       Descriptor type,
       CodedInputStream input,
@@ -85,60 +42,46 @@ public final class DynamicMessage extends AbstractMessage {
     return newBuilder(type).mergeFrom(input, extensionRegistry).buildParsed();
   }
 
-  /** Parse {@code data} as a message of the given type and return it. */
   public static DynamicMessage parseFrom(Descriptor type, ByteString data)
                                          throws InvalidProtocolBufferException {
     return newBuilder(type).mergeFrom(data).buildParsed();
   }
 
-  /** Parse {@code data} as a message of the given type and return it. */
   public static DynamicMessage parseFrom(Descriptor type, ByteString data,
                                          ExtensionRegistry extensionRegistry)
                                          throws InvalidProtocolBufferException {
     return newBuilder(type).mergeFrom(data, extensionRegistry).buildParsed();
   }
 
-  /** Parse {@code data} as a message of the given type and return it. */
   public static DynamicMessage parseFrom(Descriptor type, byte[] data)
                                          throws InvalidProtocolBufferException {
     return newBuilder(type).mergeFrom(data).buildParsed();
   }
 
-  /** Parse {@code data} as a message of the given type and return it. */
   public static DynamicMessage parseFrom(Descriptor type, byte[] data,
                                          ExtensionRegistry extensionRegistry)
                                          throws InvalidProtocolBufferException {
     return newBuilder(type).mergeFrom(data, extensionRegistry).buildParsed();
   }
 
-  /** Parse a message of the given type from {@code input} and return it. */
   public static DynamicMessage parseFrom(Descriptor type, InputStream input)
                                          throws IOException {
     return newBuilder(type).mergeFrom(input).buildParsed();
   }
 
-  /** Parse a message of the given type from {@code input} and return it. */
   public static DynamicMessage parseFrom(Descriptor type, InputStream input,
                                          ExtensionRegistry extensionRegistry)
                                          throws IOException {
     return newBuilder(type).mergeFrom(input, extensionRegistry).buildParsed();
   }
 
-  /** Construct a {@link Message.Builder} for the given type. */
   public static Builder newBuilder(Descriptor type) {
     return new Builder(type);
   }
 
-  /**
-   * Construct a {@link Message.Builder} for a message of the same type as
-   * {@code prototype}, and initialize it with {@code prototype}'s contents.
-   */
   public static Builder newBuilder(Message prototype) {
     return new Builder(prototype.getDescriptorForType()).mergeFrom(prototype);
   }
-
-  // -----------------------------------------------------------------
-  // Implementation of Message interface.
 
   public Descriptor getDescriptorForType() {
     return type;
@@ -188,7 +131,7 @@ public final class DynamicMessage extends AbstractMessage {
 
   private static boolean isInitialized(Descriptor type,
                                        FieldSet<FieldDescriptor> fields) {
-    // Check that all required fields are present.
+
     for (final FieldDescriptor field : type.getFields()) {
       if (field.isRequired()) {
         if (!fields.hasField(field)) {
@@ -197,7 +140,6 @@ public final class DynamicMessage extends AbstractMessage {
       }
     }
 
-    // Check that embedded messages are initialized.
     return fields.isInitialized();
   }
 
@@ -262,7 +204,6 @@ public final class DynamicMessage extends AbstractMessage {
     };
   }
 
-  /** Verifies that the field is a field of this message. */
   private void verifyContainingType(FieldDescriptor field) {
     if (field.getContainingType() != type) {
       throw new IllegalArgumentException(
@@ -270,25 +211,16 @@ public final class DynamicMessage extends AbstractMessage {
     }
   }
 
-  // =================================================================
-
-  /**
-   * Builder for {@link DynamicMessage}s.
-   */
   public static final class Builder extends AbstractMessage.Builder<Builder> {
     private final Descriptor type;
     private FieldSet<FieldDescriptor> fields;
     private UnknownFieldSet unknownFields;
 
-    /** Construct a {@code Builder} for the given type. */
     private Builder(Descriptor type) {
       this.type = type;
       this.fields = FieldSet.newFieldSet();
       this.unknownFields = UnknownFieldSet.getDefaultInstance();
     }
-
-    // ---------------------------------------------------------------
-    // Implementation of Message.Builder interface.
 
     @Override
     public Builder clear() {
@@ -304,7 +236,7 @@ public final class DynamicMessage extends AbstractMessage {
     @Override
     public Builder mergeFrom(Message other) {
       if (other instanceof DynamicMessage) {
-        // This should be somewhat faster than calling super.mergeFrom().
+
         DynamicMessage otherDynamicMessage = (DynamicMessage) other;
         if (otherDynamicMessage.type != type) {
           throw new IllegalArgumentException(
@@ -327,11 +259,6 @@ public final class DynamicMessage extends AbstractMessage {
       return buildPartial();
     }
 
-    /**
-     * Helper for DynamicMessage.parseFrom() methods to call.  Throws
-     * {@link InvalidProtocolBufferException} instead of
-     * {@link UninitializedMessageException}.
-     */
     private DynamicMessage buildParsed() throws InvalidProtocolBufferException {
       if (!isInitialized()) {
         throw newUninitializedMessageException(
@@ -458,7 +385,6 @@ public final class DynamicMessage extends AbstractMessage {
       return this;
     }
 
-    /** Verifies that the field is a field of this message. */
     private void verifyContainingType(FieldDescriptor field) {
       if (field.getContainingType() != type) {
         throw new IllegalArgumentException(
@@ -474,7 +400,7 @@ public final class DynamicMessage extends AbstractMessage {
 
     @Override
     public com.google.protobuf.Message.Builder getFieldBuilder(FieldDescriptor field) {
-      // TODO(xiangl): need implementation for dynamic message
+
       throw new UnsupportedOperationException(
         "getFieldBuilder() called on a dynamic message type.");
     }

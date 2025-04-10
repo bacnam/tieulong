@@ -10,22 +10,22 @@ import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.exceptions.JedisDataException;
 
 public class Pipeline extends Queable {
-	
+
     private MultiResponseBuilder currentMulti;
-    
+
     private class MultiResponseBuilder extends Builder<List<Object>>{
     	private List<Response<?>> responses = new ArrayList<Response<?>>();
-		
+
 		@Override
 		public List<Object> build(Object data) {
 			@SuppressWarnings("unchecked")
 			List<Object> list = (List<Object>)data;
 			List<Object> values = new ArrayList<Object>();
-			
+
 			if(list.size() != responses.size()){
 				throw new JedisDataException("Expected data size " + responses.size() + " but was " + list.size());
 			}
-			
+
 			for(int i=0;i<list.size();i++){
 				Response<?> response = responses.get(i);
 				response.set(list.get(i));
@@ -42,8 +42,8 @@ public class Pipeline extends Queable {
     @Override
     protected <T> Response<T> getResponse(Builder<T> builder) {
     	if(currentMulti != null){
-    		super.getResponse(BuilderFactory.STRING); //Expected QUEUED
-    		
+    		super.getResponse(BuilderFactory.STRING); 
+
     		Response<T> lr = new Response<T>(builder);
     		currentMulti.addResponse(lr);
     		return lr;
@@ -52,18 +52,13 @@ public class Pipeline extends Queable {
     		return super.getResponse(builder);
     	}
     }
-	
+
     private Client client;
-    
+
     public void setClient(Client client) {
         this.client = client;
     }
 
-    /**
-     * Syncronize pipeline by reading all responses. This operation close the
-     * pipeline. In order to get return values from pipelined commands, capture
-     * the different Response<?> of the commands you execute.
-     */
     public void sync() {
         List<Object> unformatted = client.getAll();
         for (Object o : unformatted) {
@@ -71,19 +66,10 @@ public class Pipeline extends Queable {
         }
     }
 
-    /**
-     * Syncronize pipeline by reading all responses. This operation close the
-     * pipeline. Whenever possible try to avoid using this version and use
-     * Pipeline.sync() as it won't go through all the responses and generate the
-     * right response type (usually it is a waste of time).
-     * 
-     * @return A list of all the responses in the order you executed them.
-     * @see sync
-     */
     public List<Object> syncAndReturnAll() {
         List<Object> unformatted = client.getAll();
         List<Object> formatted = new ArrayList<Object>();
-        
+
         for (Object o : unformatted) {
             try {
             	formatted.add(generateResponse(o).get());
@@ -943,7 +929,7 @@ public class Pipeline extends Queable {
             double max) {
         return zrangeByScore(key, toByteArray(min), toByteArray(max));
     }
-    
+
     public Response<Set<String>> zrangeByScore(String key, String min,
             String max) {
         client.zrangeByScore(key, min, max);
@@ -966,7 +952,7 @@ public class Pipeline extends Queable {
             double max, int offset, int count) {
         return zrangeByScore(key, toByteArray(min), toByteArray(max), offset, count);
     }
-    
+
     public Response<Set<String>> zrangeByScore(byte[] key, byte[] min,
     		byte[] max, int offset, int count) {
         client.zrangeByScore(key, min, max, offset, count);
@@ -983,7 +969,7 @@ public class Pipeline extends Queable {
             double max) {
         return zrangeByScoreWithScores(key, toByteArray(min), toByteArray(max));
     }
-    
+
     public Response<Set<Tuple>> zrangeByScoreWithScores(byte[] key, byte[] min,
     		byte[] max) {
         client.zrangeByScoreWithScores(key, min, max);
@@ -1001,7 +987,7 @@ public class Pipeline extends Queable {
         client.zrangeByScoreWithScores(key, toByteArray(min), toByteArray(max), offset, count);
         return getResponse(BuilderFactory.TUPLE_ZSET);
     }
-    
+
     public Response<Set<Tuple>> zrangeByScoreWithScores(byte[] key, byte[] min,
     		byte[] max, int offset, int count) {
         client.zrangeByScoreWithScores(key, min, max, offset, count);
@@ -1043,7 +1029,7 @@ public class Pipeline extends Queable {
         client.zrevrangeByScore(key, toByteArray(max), toByteArray(min), offset, count);
         return getResponse(BuilderFactory.STRING_ZSET);
     }
-    
+
     public Response<Set<String>> zrevrangeByScore(byte[] key, byte[] max,
     		byte[] min, int offset, int count) {
         client.zrevrangeByScore(key, max, min, offset, count);
@@ -1061,7 +1047,7 @@ public class Pipeline extends Queable {
         client.zrevrangeByScoreWithScores(key, toByteArray(max), toByteArray(min));
         return getResponse(BuilderFactory.TUPLE_ZSET);
     }
-    
+
     public Response<Set<Tuple>> zrevrangeByScoreWithScores(byte[] key,
     		byte[] max, byte[] min) {
         client.zrevrangeByScoreWithScores(key, max, min);
@@ -1079,7 +1065,7 @@ public class Pipeline extends Queable {
         client.zrevrangeByScoreWithScores(key, toByteArray(max), toByteArray(min), offset, count);
         return getResponse(BuilderFactory.TUPLE_ZSET);
     }
-    
+
     public Response<Set<Tuple>> zrevrangeByScoreWithScores(byte[] key,
     		byte[] max, byte[] min, int offset, int count) {
         client.zrevrangeByScoreWithScores(key, max, min, offset, count);
@@ -1135,7 +1121,7 @@ public class Pipeline extends Queable {
         client.zremrangeByScore(key, toByteArray(start), toByteArray(end));
         return getResponse(BuilderFactory.LONG);
     }
-    
+
     public Response<Long> zremrangeByScore(byte[] key, byte[] start, byte[] end) {
         client.zremrangeByScore(key, start, end);
         return getResponse(BuilderFactory.LONG);
@@ -1266,7 +1252,7 @@ public class Pipeline extends Queable {
 
     public void multi() {
         client.multi();
-        getResponse(BuilderFactory.STRING); //Expecting OK
+        getResponse(BuilderFactory.STRING); 
         currentMulti = new MultiResponseBuilder();
     }
 
@@ -1284,37 +1270,37 @@ public class Pipeline extends Queable {
         client.flushDB();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> flushAll() {
         client.flushAll();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> info() {
         client.info();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<Long> dbSize() {
         client.dbSize();
         return getResponse(BuilderFactory.LONG);
     }
-    
+
     public Response<String> shutdown() {
         client.shutdown();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> ping() {
         client.ping();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> randomKey() {
         client.randomKey();
         return getResponse(BuilderFactory.STRING);
     }   
-    
+
     public Response<String> select(int index){
     	client.select(index);
     	return getResponse(BuilderFactory.STRING);

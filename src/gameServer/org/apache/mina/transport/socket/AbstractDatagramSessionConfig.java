@@ -1,150 +1,76 @@
-/*     */ package org.apache.mina.transport.socket;
-/*     */ 
-/*     */ import org.apache.mina.core.session.AbstractIoSessionConfig;
-/*     */ import org.apache.mina.core.session.IoSessionConfig;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public abstract class AbstractDatagramSessionConfig
-/*     */   extends AbstractIoSessionConfig
-/*     */   implements DatagramSessionConfig
-/*     */ {
-/*     */   private static final boolean DEFAULT_CLOSE_ON_PORT_UNREACHABLE = true;
-/*     */   private boolean closeOnPortUnreachable = true;
-/*     */   
-/*     */   protected void doSetAll(IoSessionConfig config) {
-/*  42 */     if (!(config instanceof DatagramSessionConfig)) {
-/*     */       return;
-/*     */     }
-/*     */     
-/*  46 */     if (config instanceof AbstractDatagramSessionConfig) {
-/*     */       
-/*  48 */       AbstractDatagramSessionConfig cfg = (AbstractDatagramSessionConfig)config;
-/*  49 */       if (cfg.isBroadcastChanged()) {
-/*  50 */         setBroadcast(cfg.isBroadcast());
-/*     */       }
-/*  52 */       if (cfg.isReceiveBufferSizeChanged()) {
-/*  53 */         setReceiveBufferSize(cfg.getReceiveBufferSize());
-/*     */       }
-/*  55 */       if (cfg.isReuseAddressChanged()) {
-/*  56 */         setReuseAddress(cfg.isReuseAddress());
-/*     */       }
-/*  58 */       if (cfg.isSendBufferSizeChanged()) {
-/*  59 */         setSendBufferSize(cfg.getSendBufferSize());
-/*     */       }
-/*  61 */       if (cfg.isTrafficClassChanged() && getTrafficClass() != cfg.getTrafficClass()) {
-/*  62 */         setTrafficClass(cfg.getTrafficClass());
-/*     */       }
-/*     */     } else {
-/*  65 */       DatagramSessionConfig cfg = (DatagramSessionConfig)config;
-/*  66 */       setBroadcast(cfg.isBroadcast());
-/*  67 */       setReceiveBufferSize(cfg.getReceiveBufferSize());
-/*  68 */       setReuseAddress(cfg.isReuseAddress());
-/*  69 */       setSendBufferSize(cfg.getSendBufferSize());
-/*  70 */       if (getTrafficClass() != cfg.getTrafficClass()) {
-/*  71 */         setTrafficClass(cfg.getTrafficClass());
-/*     */       }
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected boolean isBroadcastChanged() {
-/*  84 */     return true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected boolean isReceiveBufferSizeChanged() {
-/*  95 */     return true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected boolean isReuseAddressChanged() {
-/* 106 */     return true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected boolean isSendBufferSizeChanged() {
-/* 117 */     return true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected boolean isTrafficClassChanged() {
-/* 128 */     return true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean isCloseOnPortUnreachable() {
-/* 135 */     return this.closeOnPortUnreachable;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setCloseOnPortUnreachable(boolean closeOnPortUnreachable) {
-/* 142 */     this.closeOnPortUnreachable = closeOnPortUnreachable;
-/*     */   }
-/*     */ }
+package org.apache.mina.transport.socket;
 
+import org.apache.mina.core.session.AbstractIoSessionConfig;
+import org.apache.mina.core.session.IoSessionConfig;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/mina/transport/socket/AbstractDatagramSessionConfig.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public abstract class AbstractDatagramSessionConfig
+extends AbstractIoSessionConfig
+implements DatagramSessionConfig
+{
+private static final boolean DEFAULT_CLOSE_ON_PORT_UNREACHABLE = true;
+private boolean closeOnPortUnreachable = true;
+
+protected void doSetAll(IoSessionConfig config) {
+if (!(config instanceof DatagramSessionConfig)) {
+return;
+}
+
+if (config instanceof AbstractDatagramSessionConfig) {
+
+AbstractDatagramSessionConfig cfg = (AbstractDatagramSessionConfig)config;
+if (cfg.isBroadcastChanged()) {
+setBroadcast(cfg.isBroadcast());
+}
+if (cfg.isReceiveBufferSizeChanged()) {
+setReceiveBufferSize(cfg.getReceiveBufferSize());
+}
+if (cfg.isReuseAddressChanged()) {
+setReuseAddress(cfg.isReuseAddress());
+}
+if (cfg.isSendBufferSizeChanged()) {
+setSendBufferSize(cfg.getSendBufferSize());
+}
+if (cfg.isTrafficClassChanged() && getTrafficClass() != cfg.getTrafficClass()) {
+setTrafficClass(cfg.getTrafficClass());
+}
+} else {
+DatagramSessionConfig cfg = (DatagramSessionConfig)config;
+setBroadcast(cfg.isBroadcast());
+setReceiveBufferSize(cfg.getReceiveBufferSize());
+setReuseAddress(cfg.isReuseAddress());
+setSendBufferSize(cfg.getSendBufferSize());
+if (getTrafficClass() != cfg.getTrafficClass()) {
+setTrafficClass(cfg.getTrafficClass());
+}
+} 
+}
+
+protected boolean isBroadcastChanged() {
+return true;
+}
+
+protected boolean isReceiveBufferSizeChanged() {
+return true;
+}
+
+protected boolean isReuseAddressChanged() {
+return true;
+}
+
+protected boolean isSendBufferSizeChanged() {
+return true;
+}
+
+protected boolean isTrafficClassChanged() {
+return true;
+}
+
+public boolean isCloseOnPortUnreachable() {
+return this.closeOnPortUnreachable;
+}
+
+public void setCloseOnPortUnreachable(boolean closeOnPortUnreachable) {
+this.closeOnPortUnreachable = closeOnPortUnreachable;
+}
+}
+

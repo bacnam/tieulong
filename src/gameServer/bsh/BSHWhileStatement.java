@@ -1,104 +1,62 @@
-/*    */ package bsh;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ class BSHWhileStatement
-/*    */   extends SimpleNode
-/*    */   implements ParserConstants
-/*    */ {
-/*    */   public boolean isDoStatement;
-/*    */   
-/*    */   BSHWhileStatement(int id) {
-/* 44 */     super(id);
-/*    */   }
-/*    */   
-/*    */   public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
-/*    */     SimpleNode condExp;
-/* 49 */     int numChild = jjtGetNumChildren();
-/*    */ 
-/*    */     
-/* 52 */     SimpleNode body = null;
-/*    */     
-/* 54 */     if (this.isDoStatement) {
-/* 55 */       condExp = (SimpleNode)jjtGetChild(1);
-/* 56 */       body = (SimpleNode)jjtGetChild(0);
-/*    */     } else {
-/* 58 */       condExp = (SimpleNode)jjtGetChild(0);
-/* 59 */       if (numChild > 1) {
-/* 60 */         body = (SimpleNode)jjtGetChild(1);
-/*    */       }
-/*    */     } 
-/* 63 */     boolean doOnceFlag = this.isDoStatement;
-/*    */     
-/* 65 */     while (doOnceFlag || BSHIfStatement.evaluateCondition(condExp, callstack, interpreter)) {
-/*    */ 
-/*    */ 
-/*    */       
-/* 69 */       if (body == null) {
-/*    */         continue;
-/*    */       }
-/* 72 */       Object ret = body.eval(callstack, interpreter);
-/*    */       
-/* 74 */       boolean breakout = false;
-/* 75 */       if (ret instanceof ReturnControl)
-/*    */       {
-/* 77 */         switch (((ReturnControl)ret).kind) {
-/*    */           
-/*    */           case 46:
-/* 80 */             return ret;
-/*    */           
-/*    */           case 19:
-/*    */             continue;
-/*    */           
-/*    */           case 12:
-/* 86 */             breakout = true;
-/*    */             break;
-/*    */         } 
-/*    */       }
-/* 90 */       if (breakout) {
-/*    */         break;
-/*    */       }
-/* 93 */       doOnceFlag = false;
-/*    */     } 
-/*    */     
-/* 96 */     return Primitive.VOID;
-/*    */   }
-/*    */ }
+package bsh;
 
+class BSHWhileStatement
+extends SimpleNode
+implements ParserConstants
+{
+public boolean isDoStatement;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/bsh/BSHWhileStatement.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+BSHWhileStatement(int id) {
+super(id);
+}
+
+public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
+SimpleNode condExp;
+int numChild = jjtGetNumChildren();
+
+SimpleNode body = null;
+
+if (this.isDoStatement) {
+condExp = (SimpleNode)jjtGetChild(1);
+body = (SimpleNode)jjtGetChild(0);
+} else {
+condExp = (SimpleNode)jjtGetChild(0);
+if (numChild > 1) {
+body = (SimpleNode)jjtGetChild(1);
+}
+} 
+boolean doOnceFlag = this.isDoStatement;
+
+while (doOnceFlag || BSHIfStatement.evaluateCondition(condExp, callstack, interpreter)) {
+
+if (body == null) {
+continue;
+}
+Object ret = body.eval(callstack, interpreter);
+
+boolean breakout = false;
+if (ret instanceof ReturnControl)
+{
+switch (((ReturnControl)ret).kind) {
+
+case 46:
+return ret;
+
+case 19:
+continue;
+
+case 12:
+breakout = true;
+break;
+} 
+}
+if (breakout) {
+break;
+}
+doOnceFlag = false;
+} 
+
+return Primitive.VOID;
+}
+}
+

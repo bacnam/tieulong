@@ -1,58 +1,20 @@
-/*    */ package bsh;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ class BSHStatementExpressionList
-/*    */   extends SimpleNode
-/*    */ {
-/*    */   BSHStatementExpressionList(int id) {
-/* 39 */     super(id);
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
-/* 44 */     int n = jjtGetNumChildren();
-/* 45 */     for (int i = 0; i < n; i++) {
-/*    */       
-/* 47 */       SimpleNode node = (SimpleNode)jjtGetChild(i);
-/* 48 */       node.eval(callstack, interpreter);
-/*    */     } 
-/* 50 */     return Primitive.VOID;
-/*    */   }
-/*    */ }
+package bsh;
 
+class BSHStatementExpressionList
+extends SimpleNode
+{
+BSHStatementExpressionList(int id) {
+super(id);
+}
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/bsh/BSHStatementExpressionList.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
+int n = jjtGetNumChildren();
+for (int i = 0; i < n; i++) {
+
+SimpleNode node = (SimpleNode)jjtGetChild(i);
+node.eval(callstack, interpreter);
+} 
+return Primitive.VOID;
+}
+}
+

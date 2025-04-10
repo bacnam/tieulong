@@ -6,8 +6,3 @@ public interface HttpConnectionFactory<T, C extends org.apache.http.HttpConnecti
   C create(T paramT, ConnectionConfig paramConnectionConfig);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/HttpConnectionFactory.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

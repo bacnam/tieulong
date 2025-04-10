@@ -1,99 +1,70 @@
-/*    */ package ch.qos.logback.core.joran.spi;
-/*    */ 
-/*    */ import ch.qos.logback.core.spi.ContextAwareBase;
-/*    */ import java.io.File;
-/*    */ import java.net.URL;
-/*    */ import java.net.URLDecoder;
-/*    */ import java.util.ArrayList;
-/*    */ import java.util.List;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ConfigurationWatchList
-/*    */   extends ContextAwareBase
-/*    */ {
-/*    */   URL mainURL;
-/* 31 */   List<File> fileWatchList = new ArrayList<File>();
-/* 32 */   List<Long> lastModifiedList = new ArrayList<Long>();
-/*    */   
-/*    */   public void clear() {
-/* 35 */     this.mainURL = null;
-/* 36 */     this.lastModifiedList.clear();
-/* 37 */     this.fileWatchList.clear();
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public void setMainURL(URL mainURL) {
-/* 46 */     this.mainURL = mainURL;
-/* 47 */     if (mainURL != null)
-/* 48 */       addAsFileToWatch(mainURL); 
-/*    */   }
-/*    */   
-/*    */   private void addAsFileToWatch(URL url) {
-/* 52 */     File file = convertToFile(url);
-/* 53 */     if (file != null) {
-/* 54 */       this.fileWatchList.add(file);
-/* 55 */       this.lastModifiedList.add(Long.valueOf(file.lastModified()));
-/*    */     } 
-/*    */   }
-/*    */   
-/*    */   public void addToWatchList(URL url) {
-/* 60 */     addAsFileToWatch(url);
-/*    */   }
-/*    */   
-/*    */   public URL getMainURL() {
-/* 64 */     return this.mainURL;
-/*    */   }
-/*    */   
-/*    */   public List<File> getCopyOfFileWatchList() {
-/* 68 */     return new ArrayList<File>(this.fileWatchList);
-/*    */   }
-/*    */   
-/*    */   public boolean changeDetected() {
-/* 72 */     int len = this.fileWatchList.size();
-/* 73 */     for (int i = 0; i < len; i++) {
-/* 74 */       long lastModified = ((Long)this.lastModifiedList.get(i)).longValue();
-/* 75 */       File file = this.fileWatchList.get(i);
-/* 76 */       if (lastModified != file.lastModified()) {
-/* 77 */         return true;
-/*    */       }
-/*    */     } 
-/* 80 */     return false;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   File convertToFile(URL url) {
-/* 86 */     String protocol = url.getProtocol();
-/* 87 */     if ("file".equals(protocol)) {
-/* 88 */       return new File(URLDecoder.decode(url.getFile()));
-/*    */     }
-/* 90 */     addInfo("URL [" + url + "] is not of type file");
-/* 91 */     return null;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.joran.spi;
 
+import ch.qos.logback.core.spi.ContextAwareBase;
+import java.io.File;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/joran/spi/ConfigurationWatchList.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class ConfigurationWatchList
+extends ContextAwareBase
+{
+URL mainURL;
+List<File> fileWatchList = new ArrayList<File>();
+List<Long> lastModifiedList = new ArrayList<Long>();
+
+public void clear() {
+this.mainURL = null;
+this.lastModifiedList.clear();
+this.fileWatchList.clear();
+}
+
+public void setMainURL(URL mainURL) {
+this.mainURL = mainURL;
+if (mainURL != null)
+addAsFileToWatch(mainURL); 
+}
+
+private void addAsFileToWatch(URL url) {
+File file = convertToFile(url);
+if (file != null) {
+this.fileWatchList.add(file);
+this.lastModifiedList.add(Long.valueOf(file.lastModified()));
+} 
+}
+
+public void addToWatchList(URL url) {
+addAsFileToWatch(url);
+}
+
+public URL getMainURL() {
+return this.mainURL;
+}
+
+public List<File> getCopyOfFileWatchList() {
+return new ArrayList<File>(this.fileWatchList);
+}
+
+public boolean changeDetected() {
+int len = this.fileWatchList.size();
+for (int i = 0; i < len; i++) {
+long lastModified = ((Long)this.lastModifiedList.get(i)).longValue();
+File file = this.fileWatchList.get(i);
+if (lastModified != file.lastModified()) {
+return true;
+}
+} 
+return false;
+}
+
+File convertToFile(URL url) {
+String protocol = url.getProtocol();
+if ("file".equals(protocol)) {
+return new File(URLDecoder.decode(url.getFile()));
+}
+addInfo("URL [" + url + "] is not of type file");
+return null;
+}
+}
+

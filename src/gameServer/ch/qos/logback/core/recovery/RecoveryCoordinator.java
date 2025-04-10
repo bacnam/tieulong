@@ -1,61 +1,42 @@
-/*    */ package ch.qos.logback.core.recovery;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class RecoveryCoordinator
-/*    */ {
-/*    */   public static final long BACKOFF_COEFFICIENT_MIN = 20L;
-/* 19 */   static long BACKOFF_COEFFICIENT_MAX = 327680L;
-/*    */   
-/* 21 */   private long backOffCoefficient = 20L;
-/*    */   
-/* 23 */   private static long UNSET = -1L;
-/* 24 */   private long currentTime = UNSET;
-/* 25 */   long next = System.currentTimeMillis() + getBackoffCoefficient();
-/*    */   
-/*    */   public boolean isTooSoon() {
-/* 28 */     long now = getCurrentTime();
-/* 29 */     if (now > this.next) {
-/* 30 */       this.next = now + getBackoffCoefficient();
-/* 31 */       return false;
-/*    */     } 
-/* 33 */     return true;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   void setCurrentTime(long forcedTime) {
-/* 38 */     this.currentTime = forcedTime;
-/*    */   }
-/*    */   
-/*    */   private long getCurrentTime() {
-/* 42 */     if (this.currentTime != UNSET) {
-/* 43 */       return this.currentTime;
-/*    */     }
-/* 45 */     return System.currentTimeMillis();
-/*    */   }
-/*    */   
-/*    */   private long getBackoffCoefficient() {
-/* 49 */     long currentCoeff = this.backOffCoefficient;
-/* 50 */     if (this.backOffCoefficient < BACKOFF_COEFFICIENT_MAX) {
-/* 51 */       this.backOffCoefficient *= 4L;
-/*    */     }
-/* 53 */     return currentCoeff;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.recovery;
 
+public class RecoveryCoordinator
+{
+public static final long BACKOFF_COEFFICIENT_MIN = 20L;
+static long BACKOFF_COEFFICIENT_MAX = 327680L;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/recovery/RecoveryCoordinator.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+private long backOffCoefficient = 20L;
+
+private static long UNSET = -1L;
+private long currentTime = UNSET;
+long next = System.currentTimeMillis() + getBackoffCoefficient();
+
+public boolean isTooSoon() {
+long now = getCurrentTime();
+if (now > this.next) {
+this.next = now + getBackoffCoefficient();
+return false;
+} 
+return true;
+}
+
+void setCurrentTime(long forcedTime) {
+this.currentTime = forcedTime;
+}
+
+private long getCurrentTime() {
+if (this.currentTime != UNSET) {
+return this.currentTime;
+}
+return System.currentTimeMillis();
+}
+
+private long getBackoffCoefficient() {
+long currentCoeff = this.backOffCoefficient;
+if (this.backOffCoefficient < BACKOFF_COEFFICIENT_MAX) {
+this.backOffCoefficient *= 4L;
+}
+return currentCoeff;
+}
+}
+

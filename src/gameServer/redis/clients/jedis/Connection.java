@@ -81,7 +81,7 @@ public class Connection {
         pipelinedCommands++;
         return this;
     }
-    
+
     protected Connection sendCommand(final Command cmd) {
         connect();
         Protocol.sendCommand(outputStream, cmd, new byte[0][]);
@@ -112,19 +112,18 @@ public class Connection {
     }
 
     public Connection() {
-    	
+
     }
 
     public void connect() {
         if (!isConnected()) {
             try {
                 socket = new Socket();
-                //->@wjw_add
+
                 socket.setReuseAddress(true);
-                socket.setKeepAlive(true);  //Will monitor the TCP connection is valid
-                socket.setTcpNoDelay(true);  //Socket buffer Whetherclosed, to ensure timely delivery of data
-                socket.setSoLinger(true,0);  //Control calls close () method, the underlying socket is closed immediately
-                //<-@wjw_add
+                socket.setKeepAlive(true);  
+                socket.setTcpNoDelay(true);  
+                socket.setSoLinger(true,0);  
 
                 socket.connect(new InetSocketAddress(host, port), timeout);
                 socket.setSoTimeout(timeout);
@@ -205,7 +204,7 @@ public class Connection {
         pipelinedCommands--;
         return (List<Object>) Protocol.read(inputStream);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Long> getIntegerMultiBulkReply() {
         flush();

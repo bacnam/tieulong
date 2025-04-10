@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Common interface for sharded and non-sharded Jedis
- */
 public interface JedisCommands {
     String set(String key, String value);
 
@@ -107,7 +104,7 @@ public interface JedisCommands {
     String srandmember(String key);
 
     Long zadd(String key, double score, String member);
-    
+
     Long zadd(String key, Map<Double, String> scoreMembers);
 
     Set<String> zrange(String key, long start, long end);
@@ -161,12 +158,12 @@ public interface JedisCommands {
 
     Set<Tuple> zrangeByScoreWithScores(String key, double min, double max,
             int offset, int count);
-    
+
     Set<String> zrevrangeByScore(String key, String max, String min,
             int offset, int count);
 
     Set<Tuple> zrangeByScoreWithScores(String key, String min, String max);
-    
+
     Set<Tuple> zrevrangeByScoreWithScores(String key, String max, String min);
 
     Set<Tuple> zrangeByScoreWithScores(String key, String min, String max,
@@ -174,20 +171,20 @@ public interface JedisCommands {
 
     Set<Tuple> zrevrangeByScoreWithScores(String key, double max, double min,
             int offset, int count);
-    
+
     Set<Tuple> zrevrangeByScoreWithScores(String key, String max, String min,
             int offset, int count);
 
     Long zremrangeByRank(String key, long start, long end);
 
     Long zremrangeByScore(String key, double start, double end);
-    
+
     Long zremrangeByScore(String key, String start, String end);
 
     Long linsert(String key, Client.LIST_POSITION where, String pivot,
             String value);
-    
+
     Long lpushx(String key, String string);
-    
+
     Long rpushx(String key, String string); 
 }

@@ -11,8 +11,3 @@ public @interface Since {
   double value();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/gson/annotations/Since.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

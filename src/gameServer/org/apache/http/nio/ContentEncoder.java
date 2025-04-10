@@ -5,14 +5,9 @@ import java.nio.ByteBuffer;
 
 public interface ContentEncoder {
   int write(ByteBuffer paramByteBuffer) throws IOException;
-  
+
   void complete() throws IOException;
-  
+
   boolean isCompleted();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/ContentEncoder.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -11,22 +11,17 @@ import org.apache.http.protocol.HttpContext;
 
 public interface HttpAsyncResponseConsumer<T> extends Closeable, Cancellable {
   void responseReceived(HttpResponse paramHttpResponse) throws IOException, HttpException;
-  
+
   void consumeContent(ContentDecoder paramContentDecoder, IOControl paramIOControl) throws IOException;
-  
+
   void responseCompleted(HttpContext paramHttpContext);
-  
+
   void failed(Exception paramException);
-  
+
   Exception getException();
-  
+
   T getResult();
-  
+
   boolean isDone();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/HttpAsyncResponseConsumer.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -11,8 +11,3 @@ import org.apache.http.params.CoreProtocolPNames;
 @Deprecated
 public interface AllClientPNames extends CoreConnectionPNames, CoreProtocolPNames, ClientPNames, AuthPNames, CookieSpecPNames, ConnConnectionPNames, ConnManagerPNames, ConnRoutePNames {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/params/AllClientPNames.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -7,24 +7,19 @@ import java.util.List;
 
 public interface JMXConfiguratorMBean {
   void reloadDefaultConfiguration() throws JoranException;
-  
+
   void reloadByFileName(String paramString) throws JoranException, FileNotFoundException;
-  
+
   void reloadByURL(URL paramURL) throws JoranException;
-  
+
   void setLoggerLevel(String paramString1, String paramString2);
-  
+
   String getLoggerLevel(String paramString);
-  
+
   String getLoggerEffectiveLevel(String paramString);
-  
+
   List<String> getLoggerList();
-  
+
   List<String> getStatuses();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/jmx/JMXConfiguratorMBean.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

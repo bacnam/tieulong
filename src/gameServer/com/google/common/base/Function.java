@@ -6,12 +6,7 @@ import javax.annotation.Nullable;
 @GwtCompatible
 public interface Function<F, T> {
   T apply(@Nullable F paramF);
-  
+
   boolean equals(@Nullable Object paramObject);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/base/Function.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

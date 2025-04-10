@@ -1,262 +1,204 @@
-/*     */ package com.mchange.v2.c3p0.test;
-/*     */ 
-/*     */ import com.mchange.v2.c3p0.ComboPooledDataSource;
-/*     */ import java.sql.Connection;
-/*     */ import java.sql.ResultSet;
-/*     */ import java.sql.SQLException;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.Iterator;
-/*     */ import java.util.List;
-/*     */ import java.util.Map;
-/*     */ import java.util.TreeMap;
-/*     */ import javax.sql.DataSource;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public final class ConnectionDispersionTest
-/*     */ {
-/*     */   private static final int DELAY_TIME = 120000;
-/*     */   private static final int NUM_THREADS = 600;
-/*  53 */   private static final Integer ZERO = new Integer(0);
-/*     */   
-/*     */   private static boolean should_go = false;
-/*     */   
-/*     */   private static DataSource cpds;
-/*     */   
-/*  59 */   private static int ready_count = 0;
-/*     */   
-/*     */   private static synchronized void setDataSource(DataSource ds) {
-/*  62 */     cpds = ds;
-/*     */   }
-/*     */   private static synchronized DataSource getDataSource() {
-/*  65 */     return cpds;
-/*     */   }
-/*     */   private static synchronized int ready() {
-/*  68 */     return ++ready_count;
-/*     */   }
-/*     */   private static synchronized boolean isReady() {
-/*  71 */     return (ready_count == 600);
-/*     */   }
-/*     */   
-/*     */   private static synchronized void start() {
-/*  75 */     should_go = true;
-/*  76 */     ConnectionDispersionTest.class.notifyAll();
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private static synchronized void stop() {
-/*  81 */     should_go = false;
-/*  82 */     ConnectionDispersionTest.class.notifyAll();
-/*     */   }
-/*     */   
-/*     */   private static synchronized boolean shouldGo() {
-/*  86 */     return should_go;
-/*     */   }
-/*     */   
-/*     */   public static void main(String[] argv) {
-/*  90 */     String jdbc_url = null;
-/*  91 */     String username = null;
-/*  92 */     String password = null;
-/*  93 */     if (argv.length == 3) {
-/*     */       
-/*  95 */       jdbc_url = argv[0];
-/*  96 */       username = argv[1];
-/*  97 */       password = argv[2];
-/*     */     }
-/*  99 */     else if (argv.length == 1) {
-/*     */       
-/* 101 */       jdbc_url = argv[0];
-/* 102 */       username = null;
-/* 103 */       password = null;
-/*     */     } else {
-/*     */       
-/* 106 */       usage();
-/*     */     } 
-/* 108 */     if (!jdbc_url.startsWith("jdbc:")) {
-/* 109 */       usage();
-/*     */     }
-/*     */     
-/*     */     try {
-/* 113 */       ComboPooledDataSource ds = new ComboPooledDataSource();
-/* 114 */       ds.setJdbcUrl(jdbc_url);
-/* 115 */       ds.setUser(username);
-/* 116 */       ds.setPassword(password);
-/* 117 */       setDataSource((DataSource)ds);
-/*     */ 
-/*     */       
-/* 120 */       ds.getConnection().close();
-/*     */       
-/* 122 */       System.err.println("Generating thread list...");
-/* 123 */       List<Thread> threads = new ArrayList(600); int i;
-/* 124 */       for (i = 0; i < 600; i++) {
-/*     */         
-/* 126 */         Thread t = new CompeteThread();
-/* 127 */         t.start();
-/* 128 */         threads.add(t);
-/* 129 */         Thread.currentThread(); Thread.yield();
-/*     */       } 
-/* 131 */       System.err.println("Thread list generated.");
-/*     */       
-/* 133 */       synchronized (ConnectionDispersionTest.class) {
-/* 134 */         for (; !isReady(); ConnectionDispersionTest.class.wait());
-/*     */       } 
-/* 136 */       System.err.println("Starting the race.");
-/* 137 */       start();
-/*     */       
-/* 139 */       System.err.println("Sleeping 120.0 seconds to let the race run");
-/*     */       
-/* 141 */       Thread.sleep(120000L);
-/* 142 */       System.err.println("Stopping the race.");
-/* 143 */       stop();
-/*     */       
-/* 145 */       System.err.println("Waiting for Threads to complete.");
-/* 146 */       for (i = 0; i < 600; i++) {
-/* 147 */         ((Thread)threads.get(i)).join();
-/*     */       }
-/* 149 */       Map<Object, Object> outcomeMap = new TreeMap<Object, Object>();
-/* 150 */       for (int j = 0; j < 600; j++) {
-/*     */         
-/* 152 */         Integer outcome = new Integer(((CompeteThread)threads.get(j)).getCount());
-/* 153 */         Integer old = (Integer)outcomeMap.get(outcome);
-/* 154 */         if (old == null)
-/* 155 */           old = ZERO; 
-/* 156 */         outcomeMap.put(outcome, new Integer(old.intValue() + 1));
-/*     */       } 
-/*     */       
-/* 159 */       int last = 0;
-/* 160 */       for (Iterator<Integer> ii = outcomeMap.keySet().iterator(); ii.hasNext(); )
-/*     */       {
-/* 162 */         Integer outcome = ii.next();
-/* 163 */         Integer count = (Integer)outcomeMap.get(outcome);
-/* 164 */         int oc = outcome.intValue();
-/* 165 */         int c = count.intValue();
-/* 166 */         for (; last < oc; last++)
-/* 167 */           System.out.println(String.valueOf(10000 + last).substring(1) + ": "); 
-/* 168 */         last++;
-/* 169 */         System.out.print(String.valueOf(10000 + oc).substring(1) + ": ");
-/*     */ 
-/*     */         
-/* 172 */         for (int k = 0; k < c; k++)
-/* 173 */           System.out.print('*'); 
-/* 174 */         System.out.println();
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */       
-/*     */       }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     }
-/* 186 */     catch (Exception e) {
-/* 187 */       e.printStackTrace();
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   static class CompeteThread extends Thread {
-/*     */     DataSource ds;
-/*     */     int count;
-/*     */     
-/*     */     synchronized void increment() {
-/* 196 */       this.count++;
-/*     */     }
-/*     */     synchronized int getCount() {
-/* 199 */       return this.count;
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public void run() {
-/*     */       try {
-/* 205 */         this.ds = ConnectionDispersionTest.getDataSource();
-/* 206 */         synchronized (ConnectionDispersionTest.class) {
-/*     */ 
-/*     */ 
-/*     */           
-/* 210 */           ConnectionDispersionTest.ready();
-/* 211 */           ConnectionDispersionTest.class.wait();
-/*     */         } 
-/*     */ 
-/*     */         
-/* 215 */         while (ConnectionDispersionTest.shouldGo()) {
-/*     */           
-/* 217 */           Connection c = null;
-/* 218 */           ResultSet rs = null;
-/*     */           
-/*     */           try {
-/* 221 */             c = this.ds.getConnection();
-/* 222 */             increment();
-/* 223 */             rs = c.getMetaData().getTables(null, null, "PROBABLYNOT", new String[] { "TABLE" });
-/*     */ 
-/*     */ 
-/*     */           
-/*     */           }
-/* 228 */           catch (SQLException e) {
-/* 229 */             e.printStackTrace();
-/*     */           } finally {
-/*     */             try {
-/* 232 */               if (rs != null) rs.close(); 
-/* 233 */             } catch (Exception e) {
-/* 234 */               e.printStackTrace();
-/*     */             }  try {
-/* 236 */               if (c != null) c.close(); 
-/* 237 */             } catch (Exception e) {
-/* 238 */               e.printStackTrace();
-/*     */             }
-/*     */           
-/*     */           } 
-/*     */         } 
-/* 243 */       } catch (Exception e) {
-/* 244 */         e.printStackTrace();
-/*     */       } 
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   private static void usage() {
-/* 250 */     System.err.println("java -Djdbc.drivers=<comma_sep_list_of_drivers> " + ConnectionDispersionTest.class.getName() + " <jdbc_url> [<username> <password>]");
-/*     */ 
-/*     */ 
-/*     */     
-/* 254 */     System.exit(-1);
-/*     */   }
-/*     */ }
+package com.mchange.v2.c3p0.test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.sql.DataSource;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mchange/v2/c3p0/test/ConnectionDispersionTest.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public final class ConnectionDispersionTest
+{
+private static final int DELAY_TIME = 120000;
+private static final int NUM_THREADS = 600;
+private static final Integer ZERO = new Integer(0);
+
+private static boolean should_go = false;
+
+private static DataSource cpds;
+
+private static int ready_count = 0;
+
+private static synchronized void setDataSource(DataSource ds) {
+cpds = ds;
+}
+private static synchronized DataSource getDataSource() {
+return cpds;
+}
+private static synchronized int ready() {
+return ++ready_count;
+}
+private static synchronized boolean isReady() {
+return (ready_count == 600);
+}
+
+private static synchronized void start() {
+should_go = true;
+ConnectionDispersionTest.class.notifyAll();
+}
+
+private static synchronized void stop() {
+should_go = false;
+ConnectionDispersionTest.class.notifyAll();
+}
+
+private static synchronized boolean shouldGo() {
+return should_go;
+}
+
+public static void main(String[] argv) {
+String jdbc_url = null;
+String username = null;
+String password = null;
+if (argv.length == 3) {
+
+jdbc_url = argv[0];
+username = argv[1];
+password = argv[2];
+}
+else if (argv.length == 1) {
+
+jdbc_url = argv[0];
+username = null;
+password = null;
+} else {
+
+usage();
+} 
+if (!jdbc_url.startsWith("jdbc:")) {
+usage();
+}
+
+try {
+ComboPooledDataSource ds = new ComboPooledDataSource();
+ds.setJdbcUrl(jdbc_url);
+ds.setUser(username);
+ds.setPassword(password);
+setDataSource((DataSource)ds);
+
+ds.getConnection().close();
+
+System.err.println("Generating thread list...");
+List<Thread> threads = new ArrayList(600); int i;
+for (i = 0; i < 600; i++) {
+
+Thread t = new CompeteThread();
+t.start();
+threads.add(t);
+Thread.currentThread(); Thread.yield();
+} 
+System.err.println("Thread list generated.");
+
+synchronized (ConnectionDispersionTest.class) {
+for (; !isReady(); ConnectionDispersionTest.class.wait());
+} 
+System.err.println("Starting the race.");
+start();
+
+System.err.println("Sleeping 120.0 seconds to let the race run");
+
+Thread.sleep(120000L);
+System.err.println("Stopping the race.");
+stop();
+
+System.err.println("Waiting for Threads to complete.");
+for (i = 0; i < 600; i++) {
+((Thread)threads.get(i)).join();
+}
+Map<Object, Object> outcomeMap = new TreeMap<Object, Object>();
+for (int j = 0; j < 600; j++) {
+
+Integer outcome = new Integer(((CompeteThread)threads.get(j)).getCount());
+Integer old = (Integer)outcomeMap.get(outcome);
+if (old == null)
+old = ZERO; 
+outcomeMap.put(outcome, new Integer(old.intValue() + 1));
+} 
+
+int last = 0;
+for (Iterator<Integer> ii = outcomeMap.keySet().iterator(); ii.hasNext(); )
+{
+Integer outcome = ii.next();
+Integer count = (Integer)outcomeMap.get(outcome);
+int oc = outcome.intValue();
+int c = count.intValue();
+for (; last < oc; last++)
+System.out.println(String.valueOf(10000 + last).substring(1) + ": "); 
+last++;
+System.out.print(String.valueOf(10000 + oc).substring(1) + ": ");
+
+for (int k = 0; k < c; k++)
+System.out.print('*'); 
+System.out.println();
+
+}
+
+}
+catch (Exception e) {
+e.printStackTrace();
+} 
+}
+
+static class CompeteThread extends Thread {
+DataSource ds;
+int count;
+
+synchronized void increment() {
+this.count++;
+}
+synchronized int getCount() {
+return this.count;
+}
+
+public void run() {
+try {
+this.ds = ConnectionDispersionTest.getDataSource();
+synchronized (ConnectionDispersionTest.class) {
+
+ConnectionDispersionTest.ready();
+ConnectionDispersionTest.class.wait();
+} 
+
+while (ConnectionDispersionTest.shouldGo()) {
+
+Connection c = null;
+ResultSet rs = null;
+
+try {
+c = this.ds.getConnection();
+increment();
+rs = c.getMetaData().getTables(null, null, "PROBABLYNOT", new String[] { "TABLE" });
+
+}
+catch (SQLException e) {
+e.printStackTrace();
+} finally {
+try {
+if (rs != null) rs.close(); 
+} catch (Exception e) {
+e.printStackTrace();
+}  try {
+if (c != null) c.close(); 
+} catch (Exception e) {
+e.printStackTrace();
+}
+
+} 
+} 
+} catch (Exception e) {
+e.printStackTrace();
+} 
+}
+}
+
+private static void usage() {
+System.err.println("java -Djdbc.drivers=<comma_sep_list_of_drivers> " + ConnectionDispersionTest.class.getName() + " <jdbc_url> [<username> <password>]");
+
+System.exit(-1);
+}
+}
+

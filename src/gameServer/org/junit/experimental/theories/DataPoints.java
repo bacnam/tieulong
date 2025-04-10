@@ -9,12 +9,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface DataPoints {
   String[] value() default {};
-  
+
   Class<? extends Throwable>[] ignoredExceptions() default {};
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/experimental/theories/DataPoints.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

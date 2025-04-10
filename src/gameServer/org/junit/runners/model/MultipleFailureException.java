@@ -1,75 +1,42 @@
-/*    */ package org.junit.runners.model;
-/*    */ 
-/*    */ import java.util.ArrayList;
-/*    */ import java.util.Collections;
-/*    */ import java.util.List;
-/*    */ import org.junit.internal.Throwables;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class MultipleFailureException
-/*    */   extends Exception
-/*    */ {
-/*    */   private static final long serialVersionUID = 1L;
-/*    */   private final List<Throwable> fErrors;
-/*    */   
-/*    */   public MultipleFailureException(List<Throwable> errors) {
-/* 25 */     this.fErrors = new ArrayList<Throwable>(errors);
-/*    */   }
-/*    */   
-/*    */   public List<Throwable> getFailures() {
-/* 29 */     return Collections.unmodifiableList(this.fErrors);
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public String getMessage() {
-/* 34 */     StringBuilder sb = new StringBuilder(String.format("There were %d errors:", new Object[] { Integer.valueOf(this.fErrors.size()) }));
-/*    */     
-/* 36 */     for (Throwable e : this.fErrors) {
-/* 37 */       sb.append(String.format("\n  %s(%s)", new Object[] { e.getClass().getName(), e.getMessage() }));
-/*    */     } 
-/* 39 */     return sb.toString();
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public static void assertEmpty(List<Throwable> errors) throws Exception {
-/* 53 */     if (errors.isEmpty()) {
-/*    */       return;
-/*    */     }
-/* 56 */     if (errors.size() == 1) {
-/* 57 */       throw Throwables.rethrowAsException((Throwable)errors.get(0));
-/*    */     }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */     
-/* 67 */     throw new org.junit.internal.runners.model.MultipleFailureException(errors);
-/*    */   }
-/*    */ }
+package org.junit.runners.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.junit.internal.Throwables;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/runners/model/MultipleFailureException.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class MultipleFailureException
+extends Exception
+{
+private static final long serialVersionUID = 1L;
+private final List<Throwable> fErrors;
+
+public MultipleFailureException(List<Throwable> errors) {
+this.fErrors = new ArrayList<Throwable>(errors);
+}
+
+public List<Throwable> getFailures() {
+return Collections.unmodifiableList(this.fErrors);
+}
+
+public String getMessage() {
+StringBuilder sb = new StringBuilder(String.format("There were %d errors:", new Object[] { Integer.valueOf(this.fErrors.size()) }));
+
+for (Throwable e : this.fErrors) {
+sb.append(String.format("\n  %s(%s)", new Object[] { e.getClass().getName(), e.getMessage() }));
+} 
+return sb.toString();
+}
+
+public static void assertEmpty(List<Throwable> errors) throws Exception {
+if (errors.isEmpty()) {
+return;
+}
+if (errors.size() == 1) {
+throw Throwables.rethrowAsException((Throwable)errors.get(0));
+}
+
+throw new org.junit.internal.runners.model.MultipleFailureException(errors);
+}
+}
+

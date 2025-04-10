@@ -6,8 +6,3 @@ public interface FieldNamingStrategy {
   String translateName(Field paramField);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/gson/FieldNamingStrategy.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

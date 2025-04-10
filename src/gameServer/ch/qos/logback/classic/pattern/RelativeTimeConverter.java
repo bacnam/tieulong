@@ -1,41 +1,24 @@
-/*    */ package ch.qos.logback.classic.pattern;
-/*    */ 
-/*    */ import ch.qos.logback.classic.spi.ILoggingEvent;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class RelativeTimeConverter
-/*    */   extends ClassicConverter
-/*    */ {
-/* 20 */   long lastTimestamp = -1L;
-/* 21 */   String timesmapCache = null;
-/*    */   
-/*    */   public String convert(ILoggingEvent event) {
-/* 24 */     long now = event.getTimeStamp();
-/*    */     
-/* 26 */     synchronized (this) {
-/*    */       
-/* 28 */       if (now != this.lastTimestamp) {
-/* 29 */         this.lastTimestamp = now;
-/* 30 */         this.timesmapCache = Long.toString(now - event.getLoggerContextVO().getBirthTime());
-/*    */       } 
-/* 32 */       return this.timesmapCache;
-/*    */     } 
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.pattern;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/pattern/RelativeTimeConverter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class RelativeTimeConverter
+extends ClassicConverter
+{
+long lastTimestamp = -1L;
+String timesmapCache = null;
+
+public String convert(ILoggingEvent event) {
+long now = event.getTimeStamp();
+
+synchronized (this) {
+
+if (now != this.lastTimestamp) {
+this.lastTimestamp = now;
+this.timesmapCache = Long.toString(now - event.getLoggerContextVO().getBirthTime());
+} 
+return this.timesmapCache;
+} 
+}
+}
+

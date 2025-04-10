@@ -7,16 +7,11 @@ import org.apache.http.util.CharArrayBuffer;
 
 public interface HeaderValueParser {
   HeaderElement[] parseElements(CharArrayBuffer paramCharArrayBuffer, ParserCursor paramParserCursor) throws ParseException;
-  
+
   HeaderElement parseHeaderElement(CharArrayBuffer paramCharArrayBuffer, ParserCursor paramParserCursor) throws ParseException;
-  
+
   NameValuePair[] parseParameters(CharArrayBuffer paramCharArrayBuffer, ParserCursor paramParserCursor) throws ParseException;
-  
+
   NameValuePair parseNameValuePair(CharArrayBuffer paramCharArrayBuffer, ParserCursor paramParserCursor) throws ParseException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/message/HeaderValueParser.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

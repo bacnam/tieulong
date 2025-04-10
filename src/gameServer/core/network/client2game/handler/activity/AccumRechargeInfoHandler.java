@@ -1,31 +1,24 @@
-/*    */ package core.network.client2game.handler.activity;
-/*    */ 
-/*    */ import business.global.activity.ActivityMgr;
-/*    */ import business.global.activity.detail.AccumRecharge;
-/*    */ import business.player.Player;
-/*    */ import com.zhonglian.server.common.enums.ActivityStatus;
-/*    */ import com.zhonglian.server.websocket.def.ErrorCode;
-/*    */ import com.zhonglian.server.websocket.exception.WSException;
-/*    */ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
-/*    */ import core.network.client2game.handler.PlayerHandler;
-/*    */ import java.io.IOException;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class AccumRechargeInfoHandler
-/*    */   extends PlayerHandler
-/*    */ {
-/*    */   public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-/* 19 */     AccumRecharge accumRecharge = (AccumRecharge)ActivityMgr.getActivity(AccumRecharge.class);
-/* 20 */     if (accumRecharge.getStatus() == ActivityStatus.Close) {
-/* 21 */       throw new WSException(ErrorCode.Activity_Close, "活动[%s]已经关闭", new Object[] { accumRecharge.getType() });
-/*    */     }
-/* 23 */     request.response(accumRecharge.accumRechargeProto(player));
-/*    */   }
-/*    */ }
+package core.network.client2game.handler.activity;
 
+import business.global.activity.ActivityMgr;
+import business.global.activity.detail.AccumRecharge;
+import business.player.Player;
+import com.zhonglian.server.common.enums.ActivityStatus;
+import com.zhonglian.server.websocket.def.ErrorCode;
+import com.zhonglian.server.websocket.exception.WSException;
+import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
+import core.network.client2game.handler.PlayerHandler;
+import java.io.IOException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/core/network/client2game/handler/activity/AccumRechargeInfoHandler.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+public class AccumRechargeInfoHandler
+extends PlayerHandler
+{
+public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+AccumRecharge accumRecharge = (AccumRecharge)ActivityMgr.getActivity(AccumRecharge.class);
+if (accumRecharge.getStatus() == ActivityStatus.Close) {
+throw new WSException(ErrorCode.Activity_Close, "活动[%s]已经关闭", new Object[] { accumRecharge.getType() });
+}
+request.response(accumRecharge.accumRechargeProto(player));
+}
+}
+

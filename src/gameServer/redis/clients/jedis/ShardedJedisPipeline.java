@@ -527,25 +527,12 @@ public class ShardedJedisPipeline extends Queable {
         return r;
     }
 
-    /**
-     * Syncronize pipeline by reading all responses. This operation closes the
-     * pipeline. In order to get return values from pipelined commands, capture
-     * the different Response&lt;?&gt; of the commands you execute.
-     */
     public void sync() {
         for (Client client : clients) {
             generateResponse(client.getOne());
         }
     }
 
-    /**
-     * Syncronize pipeline by reading all responses. This operation closes the
-     * pipeline. Whenever possible try to avoid using this version and use
-     * ShardedJedisPipeline.sync() as it won't go through all the responses and generate the
-     * right response type (usually it is a waste of time).
-     *
-     * @return A list of all the responses in the order you executed them.
-     */
     public List<Object> syncAndReturnAll() {
         List<Object> formatted = new ArrayList<Object>();
         for (Client client : clients) {
@@ -554,10 +541,6 @@ public class ShardedJedisPipeline extends Queable {
         return formatted;
     }
 
-    /**
-     * This method will be removed in Jedis 3.0. Use the methods that return Response's and call
-     * sync().
-     */
     @Deprecated
     public void execute() {
     }

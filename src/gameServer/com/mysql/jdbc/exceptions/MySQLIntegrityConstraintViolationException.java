@@ -1,53 +1,22 @@
-/*    */ package com.mysql.jdbc.exceptions;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class MySQLIntegrityConstraintViolationException
-/*    */   extends MySQLNonTransientException
-/*    */ {
-/*    */   static final long serialVersionUID = -5528363270635808904L;
-/*    */   
-/*    */   public MySQLIntegrityConstraintViolationException() {}
-/*    */   
-/*    */   public MySQLIntegrityConstraintViolationException(String reason, String SQLState, int vendorCode) {
-/* 37 */     super(reason, SQLState, vendorCode);
-/*    */   }
-/*    */   
-/*    */   public MySQLIntegrityConstraintViolationException(String reason, String SQLState) {
-/* 41 */     super(reason, SQLState);
-/*    */   }
-/*    */   
-/*    */   public MySQLIntegrityConstraintViolationException(String reason) {
-/* 45 */     super(reason);
-/*    */   }
-/*    */ }
+package com.mysql.jdbc.exceptions;
 
+public class MySQLIntegrityConstraintViolationException
+extends MySQLNonTransientException
+{
+static final long serialVersionUID = -5528363270635808904L;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/exceptions/MySQLIntegrityConstraintViolationException.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public MySQLIntegrityConstraintViolationException() {}
+
+public MySQLIntegrityConstraintViolationException(String reason, String SQLState, int vendorCode) {
+super(reason, SQLState, vendorCode);
+}
+
+public MySQLIntegrityConstraintViolationException(String reason, String SQLState) {
+super(reason, SQLState);
+}
+
+public MySQLIntegrityConstraintViolationException(String reason) {
+super(reason);
+}
+}
+

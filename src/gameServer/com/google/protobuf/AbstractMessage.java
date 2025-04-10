@@ -1,32 +1,4 @@
-// Protocol Buffers - Google's data interchange format
-// Copyright 2008 Google Inc.  All rights reserved.
-// http://code.google.com/p/protobuf/
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 package com.google.protobuf;
 
@@ -41,17 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A partial implementation of the {@link Message} interface which implements
- * as many methods of that interface as possible in terms of other methods.
- *
- * @author kenton@google.com Kenton Varda
- */
 public abstract class AbstractMessage extends AbstractMessageLite
                                       implements Message {
   @SuppressWarnings("unchecked")
   public boolean isInitialized() {
-    // Check that all required fields are present.
+
     for (final FieldDescriptor field : getDescriptorForType().getFields()) {
       if (field.isRequired()) {
         if (!hasField(field)) {
@@ -60,7 +26,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       }
     }
 
-    // Check that embedded messages are initialized.
     for (final Map.Entry<FieldDescriptor, Object> entry :
         getAllFields().entrySet()) {
       final FieldDescriptor field = entry.getKey();
@@ -193,7 +158,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
     return hash;
   }
 
-  /** Get a hash code for given fields and values, using the given seed. */
   @SuppressWarnings("unchecked")
   protected int hashFields(int hash, Map<FieldDescriptor, Object> map) {
     for (Map.Entry<FieldDescriptor, Object> entry : map.entrySet()) {
@@ -212,43 +176,23 @@ public abstract class AbstractMessage extends AbstractMessageLite
     return hash;
   }
 
-  /**
-   * Helper method for implementing {@link Message#hashCode()}.
-   * @see Boolean#hashCode()
-   */
   protected static int hashLong(long n) {
     return (int) (n ^ (n >>> 32));
   }
 
-  /**
-   * Helper method for implementing {@link Message#hashCode()}.
-   * @see Boolean#hashCode()
-   */
   protected static int hashBoolean(boolean b) {
     return b ? 1231 : 1237;
   }
 
-  /**
-   * Package private helper method for AbstractParser to create
-   * UninitializedMessageException with missing field information.
-   */
   @Override
   UninitializedMessageException newUninitializedMessageException() {
     return Builder.newUninitializedMessageException(this);
   }
 
-  /**
-   * Helper method for implementing {@link Message#hashCode()}.
-   * <p>
-   * This is needed because {@link java.lang.Enum#hashCode()} is final, but we
-   * need to use the field number as the hash code to ensure compatibility
-   * between statically and dynamically generated enum objects.
-   */
   protected static int hashEnum(EnumLite e) {
     return e.getNumber();
   }
 
-  /** Helper method for implementing {@link Message#hashCode()}. */
   protected static int hashEnumList(List<? extends EnumLite> list) {
     int hash = 1;
     for (EnumLite e : list) {
@@ -257,18 +201,11 @@ public abstract class AbstractMessage extends AbstractMessageLite
     return hash;
   }
 
-  // =================================================================
-
-  /**
-   * A partial implementation of the {@link Message.Builder} interface which
-   * implements as many methods of that interface as possible in terms of
-   * other methods.
-   */
   @SuppressWarnings("unchecked")
   public static abstract class Builder<BuilderType extends Builder>
       extends AbstractMessageLite.Builder<BuilderType>
       implements Message.Builder {
-    // The compiler produces an error if this is not declared explicitly.
+
     @Override
     public abstract BuilderType clone();
 
@@ -293,15 +230,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
         throw new IllegalArgumentException(
           "mergeFrom(Message) can only merge messages of the same type.");
       }
-
-      // Note:  We don't attempt to verify that other's fields have valid
-      //   types.  Doing so would be a losing battle.  We'd have to verify
-      //   all sub-messages as well, and we'd have to make copies of all of
-      //   them to insure that they don't change after verification (since
-      //   the Message interface itself cannot enforce immutability of
-      //   implementations).
-      // TODO(kenton):  Provide a function somewhere called makeDeepCopy()
-      //   which allows people to make secure deep copies of messages.
 
       for (final Map.Entry<FieldDescriptor, Object> entry :
            other.getAllFields().entrySet()) {
@@ -352,7 +280,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
 
         if (!mergeFieldFrom(input, unknownFields, extensionRegistry,
                             getDescriptorForType(), this, null, tag)) {
-          // end group tag
+
           break;
         }
       }
@@ -360,7 +288,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       return (BuilderType) this;
     }
 
-    /** helper method to handle {@code builder} and {@code extensions}. */
     private static void addRepeatedField(
         Message.Builder builder,
         FieldSet<FieldDescriptor> extensions,
@@ -373,7 +300,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       }
     }
 
-    /** helper method to handle {@code builder} and {@code extensions}. */
     private static void setField(
         Message.Builder builder,
         FieldSet<FieldDescriptor> extensions,
@@ -386,7 +312,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       }
     }
 
-    /** helper method to handle {@code builder} and {@code extensions}. */
     private static boolean hasOriginalMessage(
         Message.Builder builder,
         FieldSet<FieldDescriptor> extensions,
@@ -398,7 +323,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       }
     }
 
-    /** helper method to handle {@code builder} and {@code extensions}. */
     private static Message getOriginalMessage(
         Message.Builder builder,
         FieldSet<FieldDescriptor> extensions,
@@ -410,7 +334,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       }
     }
 
-    /** helper method to handle {@code builder} and {@code extensions}. */
     private static void mergeOriginalMessage(
         Message.Builder builder,
         FieldSet<FieldDescriptor> extensions,
@@ -422,19 +345,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       }
     }
 
-    /**
-     * Like {@link #mergeFrom(CodedInputStream, ExtensionRegistryLite)}, but
-     * parses a single field.
-     *
-     * When {@code builder} is not null, the method will parse and merge the
-     * field into {@code builder}. Otherwise, it will try to parse the field
-     * into {@code extensions}, when it's called by the parsing constructor in
-     * generated classes.
-     *
-     * Package-private because it is used by GeneratedMessage.ExtendableMessage.
-     * @param tag The tag, which should have already been read.
-     * @return {@code true} unless the tag is an end-group tag.
-     */
     static boolean mergeFieldFrom(
         CodedInputStream input,
         UnknownFieldSet.Builder unknownFields,
@@ -457,11 +367,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
       Message defaultInstance = null;
 
       if (type.isExtensionNumber(fieldNumber)) {
-        // extensionRegistry may be either ExtensionRegistry or
-        // ExtensionRegistryLite.  Since the type we are parsing is a full
-        // message, only a full ExtensionRegistry could possibly contain
-        // extensions of it.  Otherwise we will treat the registry as if it
-        // were empty.
+
         if (extensionRegistry instanceof ExtensionRegistry) {
           final ExtensionRegistry.ExtensionInfo extension =
             ((ExtensionRegistry) extensionRegistry)
@@ -490,21 +396,21 @@ public abstract class AbstractMessage extends AbstractMessageLite
       boolean unknown = false;
       boolean packed = false;
       if (field == null) {
-        unknown = true;  // Unknown field.
+        unknown = true;  
       } else if (wireType == FieldSet.getWireFormatForFieldType(
                    field.getLiteType(),
-                   false  /* isPacked */)) {
+                   false)) {
         packed = false;
       } else if (field.isPackable() &&
                  wireType == FieldSet.getWireFormatForFieldType(
                    field.getLiteType(),
-                   true  /* isPacked */)) {
+                   true)) {
         packed = true;
       } else {
-        unknown = true;  // Unknown wire type.
+        unknown = true;  
       }
 
-      if (unknown) {  // Unknown field or wrong wire type.  Skip.
+      if (unknown) {  
         return unknownFields.mergeFieldFrom(tag, input);
       }
 
@@ -516,8 +422,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
             final int rawValue = input.readEnum();
             final Object value = field.getEnumType().findValueByNumber(rawValue);
             if (value == null) {
-              // If the number isn't recognized as a valid value for this
-              // enum, drop it (don't even add it to unknownFields).
+
               return true;
             }
             addRepeatedField(builder, extensions, field, value);
@@ -564,8 +469,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
           case ENUM:
             final int rawValue = input.readEnum();
             value = field.getEnumType().findValueByNumber(rawValue);
-            // If the number isn't recognized as a valid value for this enum,
-            // drop it.
+
             if (value == null) {
               unknownFields.mergeVarintField(fieldNumber, rawValue);
               return true;
@@ -586,12 +490,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       return true;
     }
 
-    /**
-     * Called by {@code #mergeFieldFrom()} to parse a MessageSet extension.
-     * If {@code builder} is not null, this method will merge MessageSet into
-     * the builder.  Otherwise, it will merge the MessageSet into {@code
-     * extensions}.
-     */
     private static void mergeMessageSetExtensionFromCodedStream(
         CodedInputStream input,
         UnknownFieldSet.Builder unknownFields,
@@ -600,28 +498,10 @@ public abstract class AbstractMessage extends AbstractMessageLite
         Message.Builder builder,
         FieldSet<FieldDescriptor> extensions) throws IOException {
 
-      // The wire format for MessageSet is:
-      //   message MessageSet {
-      //     repeated group Item = 1 {
-      //       required int32 typeId = 2;
-      //       required bytes message = 3;
-      //     }
-      //   }
-      // "typeId" is the extension's field number.  The extension can only be
-      // a message type, where "message" contains the encoded bytes of that
-      // message.
-      //
-      // In practice, we will probably never see a MessageSet item in which
-      // the message appears before the type ID, or where either field does not
-      // appear exactly once.  However, in theory such cases are valid, so we
-      // should be prepared to accept them.
-
       int typeId = 0;
-      ByteString rawBytes = null; // If we encounter "message" before "typeId"
+      ByteString rawBytes = null; 
       ExtensionRegistry.ExtensionInfo extension = null;
 
-      // Read bytes from input, if we get it's type first then parse it eagerly,
-      // otherwise we store the raw bytes in a local variable.
       while (true) {
         final int tag = input.readTag();
         if (tag == 0) {
@@ -631,11 +511,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
         if (tag == WireFormat.MESSAGE_SET_TYPE_ID_TAG) {
           typeId = input.readUInt32();
           if (typeId != 0) {
-            // extensionRegistry may be either ExtensionRegistry or
-            // ExtensionRegistryLite. Since the type we are parsing is a full
-            // message, only a full ExtensionRegistry could possibly contain
-            // extensions of it. Otherwise we will treat the registry as if it
-            // were empty.
+
             if (extensionRegistry instanceof ExtensionRegistry) {
               extension = ((ExtensionRegistry) extensionRegistry)
                   .findExtensionByNumber(type, typeId);
@@ -645,31 +521,29 @@ public abstract class AbstractMessage extends AbstractMessageLite
         } else if (tag == WireFormat.MESSAGE_SET_MESSAGE_TAG) {
           if (typeId != 0) {
             if (extension != null && ExtensionRegistryLite.isEagerlyParseMessageSets()) {
-              // We already know the type, so we can parse directly from the
-              // input with no copying.  Hooray!
+
               eagerlyMergeMessageSetExtension(
                   input, extension, extensionRegistry, builder, extensions);
               rawBytes = null;
               continue;
             }
           }
-          // We haven't seen a type ID yet or we want parse message lazily.
+
           rawBytes = input.readBytes();
 
-        } else { // Unknown tag. Skip it.
+        } else { 
           if (!input.skipField(tag)) {
-            break; // End of group
+            break; 
           }
         }
       }
       input.checkLastTagWas(WireFormat.MESSAGE_SET_ITEM_END_TAG);
 
-      // Process the raw bytes.
-      if (rawBytes != null && typeId != 0) { // Zero is not a valid type ID.
-        if (extension != null) { // We known the type
+      if (rawBytes != null && typeId != 0) { 
+        if (extension != null) { 
           mergeMessageSetExtensionFromBytes(
               rawBytes, extension, extensionRegistry, builder, extensions);
-        } else { // We don't know how to parse this. Ignore it.
+        } else { 
           if (rawBytes != null) {
             unknownFields.mergeField(typeId, UnknownFieldSet.Field.newBuilder()
                 .addLengthDelimited(rawBytes).build());
@@ -716,7 +590,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
       boolean hasOriginalValue = hasOriginalMessage(builder, extensions, field);
 
       if (hasOriginalValue || ExtensionRegistryLite.isEagerlyParseMessageSets()) {
-        // If the field already exists, we just parse the field.
+
         Message value = null;
         if (hasOriginalValue) {
           Message originalMessage =
@@ -730,13 +604,11 @@ public abstract class AbstractMessage extends AbstractMessageLite
         }
         setField(builder, extensions, field, value);
       } else {
-        // Use LazyField to load MessageSet lazily.
+
         LazyField lazyField = new LazyField(
             extension.defaultInstance, extensionRegistry, rawBytes);
         if (builder != null) {
-          // TODO(xiangl): it looks like this method can only be invoked by
-          // ExtendableBuilder, but I'm not sure. So I double check the type of
-          // builder here. It may be useless and need more investigation.
+
           if (builder instanceof ExtendableBuilder) {
             builder.setField(field, lazyField);
           } else {
@@ -761,19 +633,11 @@ public abstract class AbstractMessage extends AbstractMessageLite
           "getFieldBuilder() called on an unsupported message type.");
     }
 
-    /**
-     * Construct an UninitializedMessageException reporting missing fields in
-     * the given message.
-     */
     protected static UninitializedMessageException
         newUninitializedMessageException(Message message) {
       return new UninitializedMessageException(findMissingFields(message));
     }
 
-    /**
-     * Populates {@code this.missingFields} with the full "path" of each
-     * missing required field in the given message.
-     */
     private static List<String> findMissingFields(
         final MessageOrBuilder message) {
       final List<String> results = new ArrayList<String>();
@@ -781,7 +645,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       return results;
     }
 
-    /** Recursive helper implementing {@link #findMissingFields(Message)}. */
     private static void findMissingFields(final MessageOrBuilder message,
                                           final String prefix,
                                           final List<String> results) {
@@ -835,25 +698,6 @@ public abstract class AbstractMessage extends AbstractMessageLite
       result.append('.');
       return result.toString();
     }
-
-    // ===============================================================
-    // The following definitions seem to be required in order to make javac
-    // not produce weird errors like:
-    //
-    // java/com/google/protobuf/DynamicMessage.java:203: types
-    //   com.google.protobuf.AbstractMessage.Builder<
-    //     com.google.protobuf.DynamicMessage.Builder> and
-    //   com.google.protobuf.AbstractMessage.Builder<
-    //     com.google.protobuf.DynamicMessage.Builder> are incompatible; both
-    //   define mergeFrom(com.google.protobuf.ByteString), but with unrelated
-    //   return types.
-    //
-    // Strangely, these lines are only needed if javac is invoked separately
-    // on AbstractMessage.java and AbstractMessageLite.java.  If javac is
-    // invoked on both simultaneously, it works.  (Or maybe the important
-    // point is whether or not DynamicMessage.java is compiled together with
-    // AbstractMessageLite.java -- not sure.)  I suspect this is a compiler
-    // bug.
 
     @Override
     public BuilderType mergeFrom(final ByteString data)

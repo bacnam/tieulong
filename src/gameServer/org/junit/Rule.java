@@ -9,8 +9,3 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Rule {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/Rule.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

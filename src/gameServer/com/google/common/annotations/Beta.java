@@ -13,8 +13,3 @@ import java.lang.annotation.Target;
 @Beta
 public @interface Beta {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/annotations/Beta.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

@@ -1,60 +1,28 @@
-/*    */ package ch.qos.logback.classic.net;
-/*    */ 
-/*    */ import ch.qos.logback.classic.spi.ILoggingEvent;
-/*    */ import ch.qos.logback.core.net.AbstractSSLSocketAppender;
-/*    */ import ch.qos.logback.core.spi.PreSerializationTransformer;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class SSLSocketAppender
-/*    */   extends AbstractSSLSocketAppender<ILoggingEvent>
-/*    */ {
-/* 32 */   private final PreSerializationTransformer<ILoggingEvent> pst = new LoggingEventPreSerializationTransformer();
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   private boolean includeCallerData;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   protected void postProcessEvent(ILoggingEvent event) {
-/* 42 */     if (this.includeCallerData) {
-/* 43 */       event.getCallerData();
-/*    */     }
-/*    */   }
-/*    */   
-/*    */   public void setIncludeCallerData(boolean includeCallerData) {
-/* 48 */     this.includeCallerData = includeCallerData;
-/*    */   }
-/*    */   
-/*    */   public PreSerializationTransformer<ILoggingEvent> getPST() {
-/* 52 */     return this.pst;
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.net;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.net.AbstractSSLSocketAppender;
+import ch.qos.logback.core.spi.PreSerializationTransformer;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/net/SSLSocketAppender.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class SSLSocketAppender
+extends AbstractSSLSocketAppender<ILoggingEvent>
+{
+private final PreSerializationTransformer<ILoggingEvent> pst = new LoggingEventPreSerializationTransformer();
+
+private boolean includeCallerData;
+
+protected void postProcessEvent(ILoggingEvent event) {
+if (this.includeCallerData) {
+event.getCallerData();
+}
+}
+
+public void setIncludeCallerData(boolean includeCallerData) {
+this.includeCallerData = includeCallerData;
+}
+
+public PreSerializationTransformer<ILoggingEvent> getPST() {
+return this.pst;
+}
+}
+

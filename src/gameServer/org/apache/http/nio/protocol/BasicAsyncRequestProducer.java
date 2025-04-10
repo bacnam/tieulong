@@ -1,177 +1,101 @@
-/*     */ package org.apache.http.nio.protocol;
-/*     */ 
-/*     */ import java.io.IOException;
-/*     */ import org.apache.http.HttpEntity;
-/*     */ import org.apache.http.HttpEntityEnclosingRequest;
-/*     */ import org.apache.http.HttpHost;
-/*     */ import org.apache.http.HttpRequest;
-/*     */ import org.apache.http.nio.ContentEncoder;
-/*     */ import org.apache.http.nio.IOControl;
-/*     */ import org.apache.http.nio.entity.EntityAsyncContentProducer;
-/*     */ import org.apache.http.nio.entity.HttpAsyncContentProducer;
-/*     */ import org.apache.http.protocol.HttpContext;
-/*     */ import org.apache.http.util.Args;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class BasicAsyncRequestProducer
-/*     */   implements HttpAsyncRequestProducer
-/*     */ {
-/*     */   private final HttpHost target;
-/*     */   private final HttpRequest request;
-/*     */   private final HttpAsyncContentProducer producer;
-/*     */   
-/*     */   protected BasicAsyncRequestProducer(HttpHost target, HttpEntityEnclosingRequest request, HttpAsyncContentProducer producer) {
-/*  74 */     Args.notNull(target, "HTTP host");
-/*  75 */     Args.notNull(request, "HTTP request");
-/*  76 */     Args.notNull(producer, "HTTP content producer");
-/*  77 */     this.target = target;
-/*  78 */     this.request = (HttpRequest)request;
-/*  79 */     this.producer = producer;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public BasicAsyncRequestProducer(HttpHost target, HttpRequest request) {
-/*  91 */     Args.notNull(target, "HTTP host");
-/*  92 */     Args.notNull(request, "HTTP request");
-/*  93 */     this.target = target;
-/*  94 */     this.request = request;
-/*  95 */     if (request instanceof HttpEntityEnclosingRequest) {
-/*  96 */       HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
-/*  97 */       if (entity != null) {
-/*  98 */         if (entity instanceof HttpAsyncContentProducer) {
-/*  99 */           this.producer = (HttpAsyncContentProducer)entity;
-/*     */         } else {
-/* 101 */           this.producer = (HttpAsyncContentProducer)new EntityAsyncContentProducer(entity);
-/*     */         } 
-/*     */       } else {
-/* 104 */         this.producer = null;
-/*     */       } 
-/*     */     } else {
-/* 107 */       this.producer = null;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public HttpRequest generateRequest() {
-/* 113 */     return this.request;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public HttpHost getTarget() {
-/* 118 */     return this.target;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void produceContent(ContentEncoder encoder, IOControl ioctrl) throws IOException {
-/* 124 */     if (this.producer != null) {
-/* 125 */       this.producer.produceContent(encoder, ioctrl);
-/* 126 */       if (encoder.isCompleted()) {
-/* 127 */         this.producer.close();
-/*     */       }
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void requestCompleted(HttpContext context) {}
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void failed(Exception ex) {}
-/*     */ 
-/*     */   
-/*     */   public boolean isRepeatable() {
-/* 142 */     return (this.producer == null || this.producer.isRepeatable());
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public void resetRequest() throws IOException {
-/* 147 */     if (this.producer != null) {
-/* 148 */       this.producer.close();
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public void close() throws IOException {
-/* 154 */     if (this.producer != null) {
-/* 155 */       this.producer.close();
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public String toString() {
-/* 161 */     StringBuilder sb = new StringBuilder();
-/* 162 */     sb.append(this.target);
-/* 163 */     sb.append(' ');
-/* 164 */     sb.append(this.request);
-/* 165 */     if (this.producer != null) {
-/* 166 */       sb.append(' ');
-/* 167 */       sb.append(this.producer);
-/*     */     } 
-/* 169 */     return sb.toString();
-/*     */   }
-/*     */ }
+package org.apache.http.nio.protocol;
 
+import java.io.IOException;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.nio.ContentEncoder;
+import org.apache.http.nio.IOControl;
+import org.apache.http.nio.entity.EntityAsyncContentProducer;
+import org.apache.http.nio.entity.HttpAsyncContentProducer;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.Args;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/BasicAsyncRequestProducer.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class BasicAsyncRequestProducer
+implements HttpAsyncRequestProducer
+{
+private final HttpHost target;
+private final HttpRequest request;
+private final HttpAsyncContentProducer producer;
+
+protected BasicAsyncRequestProducer(HttpHost target, HttpEntityEnclosingRequest request, HttpAsyncContentProducer producer) {
+Args.notNull(target, "HTTP host");
+Args.notNull(request, "HTTP request");
+Args.notNull(producer, "HTTP content producer");
+this.target = target;
+this.request = (HttpRequest)request;
+this.producer = producer;
+}
+
+public BasicAsyncRequestProducer(HttpHost target, HttpRequest request) {
+Args.notNull(target, "HTTP host");
+Args.notNull(request, "HTTP request");
+this.target = target;
+this.request = request;
+if (request instanceof HttpEntityEnclosingRequest) {
+HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
+if (entity != null) {
+if (entity instanceof HttpAsyncContentProducer) {
+this.producer = (HttpAsyncContentProducer)entity;
+} else {
+this.producer = (HttpAsyncContentProducer)new EntityAsyncContentProducer(entity);
+} 
+} else {
+this.producer = null;
+} 
+} else {
+this.producer = null;
+} 
+}
+
+public HttpRequest generateRequest() {
+return this.request;
+}
+
+public HttpHost getTarget() {
+return this.target;
+}
+
+public void produceContent(ContentEncoder encoder, IOControl ioctrl) throws IOException {
+if (this.producer != null) {
+this.producer.produceContent(encoder, ioctrl);
+if (encoder.isCompleted()) {
+this.producer.close();
+}
+} 
+}
+
+public void requestCompleted(HttpContext context) {}
+
+public void failed(Exception ex) {}
+
+public boolean isRepeatable() {
+return (this.producer == null || this.producer.isRepeatable());
+}
+
+public void resetRequest() throws IOException {
+if (this.producer != null) {
+this.producer.close();
+}
+}
+
+public void close() throws IOException {
+if (this.producer != null) {
+this.producer.close();
+}
+}
+
+public String toString() {
+StringBuilder sb = new StringBuilder();
+sb.append(this.target);
+sb.append(' ');
+sb.append(this.request);
+if (this.producer != null) {
+sb.append(' ');
+sb.append(this.producer);
+} 
+return sb.toString();
+}
+}
+

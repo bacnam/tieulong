@@ -13,8 +13,3 @@ public @interface TestedOn {
   int[] ints();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/experimental/theories/suppliers/TestedOn.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

@@ -1,121 +1,50 @@
-/*     */ package org.apache.http.protocol;
-/*     */ 
-/*     */ import org.apache.http.HttpRequest;
-/*     */ import org.apache.http.annotation.ThreadSafe;
-/*     */ import org.apache.http.util.Args;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @ThreadSafe
-/*     */ public class UriHttpRequestHandlerMapper
-/*     */   implements HttpRequestHandlerMapper
-/*     */ {
-/*     */   private final UriPatternMatcher<HttpRequestHandler> matcher;
-/*     */   
-/*     */   protected UriHttpRequestHandlerMapper(UriPatternMatcher<HttpRequestHandler> matcher) {
-/*  58 */     this.matcher = (UriPatternMatcher<HttpRequestHandler>)Args.notNull(matcher, "Pattern matcher");
-/*     */   }
-/*     */   
-/*     */   public UriHttpRequestHandlerMapper() {
-/*  62 */     this(new UriPatternMatcher<HttpRequestHandler>());
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void register(String pattern, HttpRequestHandler handler) {
-/*  73 */     Args.notNull(pattern, "Pattern");
-/*  74 */     Args.notNull(handler, "Handler");
-/*  75 */     this.matcher.register(pattern, handler);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void unregister(String pattern) {
-/*  84 */     this.matcher.unregister(pattern);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected String getRequestPath(HttpRequest request) {
-/*  91 */     String uriPath = request.getRequestLine().getUri();
-/*  92 */     int index = uriPath.indexOf("?");
-/*  93 */     if (index != -1) {
-/*  94 */       uriPath = uriPath.substring(0, index);
-/*     */     } else {
-/*  96 */       index = uriPath.indexOf("#");
-/*  97 */       if (index != -1) {
-/*  98 */         uriPath = uriPath.substring(0, index);
-/*     */       }
-/*     */     } 
-/* 101 */     return uriPath;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public HttpRequestHandler lookup(HttpRequest request) {
-/* 112 */     Args.notNull(request, "HTTP request");
-/* 113 */     return this.matcher.lookup(getRequestPath(request));
-/*     */   }
-/*     */ }
+package org.apache.http.protocol;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.annotation.ThreadSafe;
+import org.apache.http.util.Args;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/protocol/UriHttpRequestHandlerMapper.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@ThreadSafe
+public class UriHttpRequestHandlerMapper
+implements HttpRequestHandlerMapper
+{
+private final UriPatternMatcher<HttpRequestHandler> matcher;
+
+protected UriHttpRequestHandlerMapper(UriPatternMatcher<HttpRequestHandler> matcher) {
+this.matcher = (UriPatternMatcher<HttpRequestHandler>)Args.notNull(matcher, "Pattern matcher");
+}
+
+public UriHttpRequestHandlerMapper() {
+this(new UriPatternMatcher<HttpRequestHandler>());
+}
+
+public void register(String pattern, HttpRequestHandler handler) {
+Args.notNull(pattern, "Pattern");
+Args.notNull(handler, "Handler");
+this.matcher.register(pattern, handler);
+}
+
+public void unregister(String pattern) {
+this.matcher.unregister(pattern);
+}
+
+protected String getRequestPath(HttpRequest request) {
+String uriPath = request.getRequestLine().getUri();
+int index = uriPath.indexOf("?");
+if (index != -1) {
+uriPath = uriPath.substring(0, index);
+} else {
+index = uriPath.indexOf("#");
+if (index != -1) {
+uriPath = uriPath.substring(0, index);
+}
+} 
+return uriPath;
+}
+
+public HttpRequestHandler lookup(HttpRequest request) {
+Args.notNull(request, "HTTP request");
+return this.matcher.lookup(getRequestPath(request));
+}
+}
+

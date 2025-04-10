@@ -8,8 +8,3 @@ public interface AppenderFactory<E> {
   Appender<E> buildAppender(Context paramContext, String paramString) throws JoranException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/sift/AppenderFactory.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

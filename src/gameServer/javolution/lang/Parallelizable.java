@@ -13,14 +13,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Parallelizable {
   boolean value() default true;
-  
+
   boolean mutexFree() default true;
-  
+
   String comment() default "";
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/javolution/lang/Parallelizable.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

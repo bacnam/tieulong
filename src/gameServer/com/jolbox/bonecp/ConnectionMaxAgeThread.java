@@ -1,141 +1,90 @@
-/*     */ package com.jolbox.bonecp;
-/*     */ 
-/*     */ import java.util.concurrent.ScheduledExecutorService;
-/*     */ import java.util.concurrent.TimeUnit;
-/*     */ import org.slf4j.Logger;
-/*     */ import org.slf4j.LoggerFactory;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class ConnectionMaxAgeThread
-/*     */   implements Runnable
-/*     */ {
-/*     */   private long maxAgeInMs;
-/*     */   private ConnectionPartition partition;
-/*     */   private ScheduledExecutorService scheduler;
-/*     */   private BoneCP pool;
-/*     */   private boolean lifoMode;
-/*  44 */   protected static Logger logger = LoggerFactory.getLogger(ConnectionTesterThread.class);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected ConnectionMaxAgeThread(ConnectionPartition connectionPartition, ScheduledExecutorService scheduler, BoneCP pool, long maxAgeInMs, boolean lifoMode) {
-/*  55 */     this.partition = connectionPartition;
-/*  56 */     this.scheduler = scheduler;
-/*  57 */     this.maxAgeInMs = maxAgeInMs;
-/*  58 */     this.pool = pool;
-/*  59 */     this.lifoMode = lifoMode;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void run() {
-/*  65 */     ConnectionHandle connection = null;
-/*     */     
-/*  67 */     long nextCheckInMs = this.maxAgeInMs;
-/*     */     
-/*  69 */     int partitionSize = this.partition.getAvailableConnections();
-/*  70 */     long currentTime = System.currentTimeMillis();
-/*  71 */     for (int i = 0; i < partitionSize; i++) {
-/*     */       try {
-/*  73 */         connection = (ConnectionHandle)this.partition.getFreeConnections().poll();
-/*     */         
-/*  75 */         if (connection != null) {
-/*  76 */           connection.setOriginatingPartition(this.partition);
-/*     */           
-/*  78 */           long tmp = this.maxAgeInMs - currentTime - connection.getConnectionCreationTimeInMs();
-/*     */           
-/*  80 */           if (tmp < nextCheckInMs) {
-/*  81 */             nextCheckInMs = tmp;
-/*     */           }
-/*     */           
-/*  84 */           if (connection.isExpired(currentTime)) {
-/*     */             
-/*  86 */             closeConnection(connection);
-/*     */           
-/*     */           }
-/*     */           else {
-/*     */ 
-/*     */             
-/*  92 */             if (this.lifoMode) {
-/*     */               
-/*  94 */               if (!((LIFOQueue<ConnectionHandle>)connection.getOriginatingPartition().getFreeConnections()).offerLast(connection)) {
-/*  95 */                 connection.internalClose();
-/*     */               }
-/*     */             } else {
-/*  98 */               this.pool.putConnectionBackInPartition(connection);
-/*     */             } 
-/*     */ 
-/*     */             
-/* 102 */             Thread.sleep(20L);
-/*     */           } 
-/*     */         } 
-/* 105 */       } catch (Exception e) {
-/* 106 */         if (this.scheduler.isShutdown()) {
-/* 107 */           logger.debug("Shutting down connection max age thread.");
-/*     */           break;
-/*     */         } 
-/* 110 */         logger.error("Connection max age thread exception.", e);
-/*     */       } 
-/*     */     } 
-/*     */ 
-/*     */     
-/* 115 */     if (!this.scheduler.isShutdown()) {
-/* 116 */       this.scheduler.schedule(this, nextCheckInMs, TimeUnit.MILLISECONDS);
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected void closeConnection(ConnectionHandle connection) {
-/* 126 */     if (connection != null)
-/*     */       try {
-/* 128 */         connection.internalClose();
-/* 129 */       } catch (Throwable t) {
-/* 130 */         logger.error("Destroy connection exception", t);
-/*     */       } finally {
-/* 132 */         this.pool.postDestroyConnection(connection);
-/*     */       }  
-/*     */   }
-/*     */ }
+package com.jolbox.bonecp;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/jolbox/bonecp/ConnectionMaxAgeThread.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class ConnectionMaxAgeThread
+implements Runnable
+{
+private long maxAgeInMs;
+private ConnectionPartition partition;
+private ScheduledExecutorService scheduler;
+private BoneCP pool;
+private boolean lifoMode;
+protected static Logger logger = LoggerFactory.getLogger(ConnectionTesterThread.class);
+
+protected ConnectionMaxAgeThread(ConnectionPartition connectionPartition, ScheduledExecutorService scheduler, BoneCP pool, long maxAgeInMs, boolean lifoMode) {
+this.partition = connectionPartition;
+this.scheduler = scheduler;
+this.maxAgeInMs = maxAgeInMs;
+this.pool = pool;
+this.lifoMode = lifoMode;
+}
+
+public void run() {
+ConnectionHandle connection = null;
+
+long nextCheckInMs = this.maxAgeInMs;
+
+int partitionSize = this.partition.getAvailableConnections();
+long currentTime = System.currentTimeMillis();
+for (int i = 0; i < partitionSize; i++) {
+try {
+connection = (ConnectionHandle)this.partition.getFreeConnections().poll();
+
+if (connection != null) {
+connection.setOriginatingPartition(this.partition);
+
+long tmp = this.maxAgeInMs - currentTime - connection.getConnectionCreationTimeInMs();
+
+if (tmp < nextCheckInMs) {
+nextCheckInMs = tmp;
+}
+
+if (connection.isExpired(currentTime)) {
+
+closeConnection(connection);
+
+}
+else {
+
+if (this.lifoMode) {
+
+if (!((LIFOQueue<ConnectionHandle>)connection.getOriginatingPartition().getFreeConnections()).offerLast(connection)) {
+connection.internalClose();
+}
+} else {
+this.pool.putConnectionBackInPartition(connection);
+} 
+
+Thread.sleep(20L);
+} 
+} 
+} catch (Exception e) {
+if (this.scheduler.isShutdown()) {
+logger.debug("Shutting down connection max age thread.");
+break;
+} 
+logger.error("Connection max age thread exception.", e);
+} 
+} 
+
+if (!this.scheduler.isShutdown()) {
+this.scheduler.schedule(this, nextCheckInMs, TimeUnit.MILLISECONDS);
+}
+}
+
+protected void closeConnection(ConnectionHandle connection) {
+if (connection != null)
+try {
+connection.internalClose();
+} catch (Throwable t) {
+logger.error("Destroy connection exception", t);
+} finally {
+this.pool.postDestroyConnection(connection);
+}  
+}
+}
+

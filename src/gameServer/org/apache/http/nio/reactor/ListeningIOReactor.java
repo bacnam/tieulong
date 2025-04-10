@@ -6,16 +6,11 @@ import java.util.Set;
 
 public interface ListeningIOReactor extends IOReactor {
   ListenerEndpoint listen(SocketAddress paramSocketAddress);
-  
+
   void pause() throws IOException;
-  
+
   void resume() throws IOException;
-  
+
   Set<ListenerEndpoint> getEndpoints();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/reactor/ListeningIOReactor.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

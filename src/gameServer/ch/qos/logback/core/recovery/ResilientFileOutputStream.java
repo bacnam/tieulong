@@ -1,66 +1,48 @@
-/*    */ package ch.qos.logback.core.recovery;
-/*    */ 
-/*    */ import java.io.BufferedOutputStream;
-/*    */ import java.io.File;
-/*    */ import java.io.FileNotFoundException;
-/*    */ import java.io.FileOutputStream;
-/*    */ import java.io.IOException;
-/*    */ import java.io.OutputStream;
-/*    */ import java.nio.channels.FileChannel;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ResilientFileOutputStream
-/*    */   extends ResilientOutputStreamBase
-/*    */ {
-/*    */   private File file;
-/*    */   private FileOutputStream fos;
-/*    */   
-/*    */   public ResilientFileOutputStream(File file, boolean append) throws FileNotFoundException {
-/* 27 */     this.file = file;
-/* 28 */     this.fos = new FileOutputStream(file, append);
-/* 29 */     this.os = new BufferedOutputStream(this.fos);
-/* 30 */     this.presumedClean = true;
-/*    */   }
-/*    */   
-/*    */   public FileChannel getChannel() {
-/* 34 */     if (this.os == null) {
-/* 35 */       return null;
-/*    */     }
-/* 37 */     return this.fos.getChannel();
-/*    */   }
-/*    */   
-/*    */   public File getFile() {
-/* 41 */     return this.file;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   String getDescription() {
-/* 46 */     return "file [" + this.file + "]";
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   OutputStream openNewOutputStream() throws IOException {
-/* 52 */     this.fos = new FileOutputStream(this.file, true);
-/* 53 */     return new BufferedOutputStream(this.fos);
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public String toString() {
-/* 58 */     return "c.q.l.c.recovery.ResilientFileOutputStream@" + System.identityHashCode(this);
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.recovery;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/recovery/ResilientFileOutputStream.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class ResilientFileOutputStream
+extends ResilientOutputStreamBase
+{
+private File file;
+private FileOutputStream fos;
+
+public ResilientFileOutputStream(File file, boolean append) throws FileNotFoundException {
+this.file = file;
+this.fos = new FileOutputStream(file, append);
+this.os = new BufferedOutputStream(this.fos);
+this.presumedClean = true;
+}
+
+public FileChannel getChannel() {
+if (this.os == null) {
+return null;
+}
+return this.fos.getChannel();
+}
+
+public File getFile() {
+return this.file;
+}
+
+String getDescription() {
+return "file [" + this.file + "]";
+}
+
+OutputStream openNewOutputStream() throws IOException {
+this.fos = new FileOutputStream(this.file, true);
+return new BufferedOutputStream(this.fos);
+}
+
+public String toString() {
+return "c.q.l.c.recovery.ResilientFileOutputStream@" + System.identityHashCode(this);
+}
+}
+

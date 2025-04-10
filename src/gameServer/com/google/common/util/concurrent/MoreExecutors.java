@@ -1,483 +1,238 @@
-/*     */ package com.google.common.util.concurrent;
-/*     */ 
-/*     */ import com.google.common.annotations.Beta;
-/*     */ import com.google.common.base.Preconditions;
-/*     */ import java.util.Collections;
-/*     */ import java.util.List;
-/*     */ import java.util.concurrent.Callable;
-/*     */ import java.util.concurrent.ExecutorService;
-/*     */ import java.util.concurrent.Executors;
-/*     */ import java.util.concurrent.RejectedExecutionException;
-/*     */ import java.util.concurrent.ScheduledExecutorService;
-/*     */ import java.util.concurrent.ScheduledFuture;
-/*     */ import java.util.concurrent.ScheduledThreadPoolExecutor;
-/*     */ import java.util.concurrent.ThreadPoolExecutor;
-/*     */ import java.util.concurrent.TimeUnit;
-/*     */ import java.util.concurrent.locks.Condition;
-/*     */ import java.util.concurrent.locks.Lock;
-/*     */ import java.util.concurrent.locks.ReentrantLock;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public final class MoreExecutors
-/*     */ {
-/*     */   @Beta
-/*     */   public static ExecutorService getExitingExecutorService(ThreadPoolExecutor executor, long terminationTimeout, TimeUnit timeUnit) {
-/*  70 */     executor.setThreadFactory((new ThreadFactoryBuilder()).setDaemon(true).setThreadFactory(executor.getThreadFactory()).build());
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*  75 */     ExecutorService service = Executors.unconfigurableExecutorService(executor);
-/*     */     
-/*  77 */     addDelayedShutdownHook(service, terminationTimeout, timeUnit);
-/*     */     
-/*  79 */     return service;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Beta
-/*     */   public static ScheduledExecutorService getExitingScheduledExecutorService(ScheduledThreadPoolExecutor executor, long terminationTimeout, TimeUnit timeUnit) {
-/* 102 */     executor.setThreadFactory((new ThreadFactoryBuilder()).setDaemon(true).setThreadFactory(executor.getThreadFactory()).build());
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 107 */     ScheduledExecutorService service = Executors.unconfigurableScheduledExecutorService(executor);
-/*     */ 
-/*     */     
-/* 110 */     addDelayedShutdownHook(service, terminationTimeout, timeUnit);
-/*     */     
-/* 112 */     return service;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Beta
-/*     */   public static void addDelayedShutdownHook(final ExecutorService service, final long terminationTimeout, final TimeUnit timeUnit) {
-/* 130 */     Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-/*     */           {
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */             
-/*     */             public void run()
-/*     */             {
-/*     */               try {
-/* 139 */                 service.shutdown();
-/* 140 */                 service.awaitTermination(terminationTimeout, timeUnit);
-/* 141 */               } catch (InterruptedException ignored) {}
-/*     */             }
-/*     */           }));
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Beta
-/*     */   public static ExecutorService getExitingExecutorService(ThreadPoolExecutor executor) {
-/* 166 */     return getExitingExecutorService(executor, 120L, TimeUnit.SECONDS);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Beta
-/*     */   public static ScheduledExecutorService getExitingScheduledExecutorService(ScheduledThreadPoolExecutor executor) {
-/* 187 */     return getExitingScheduledExecutorService(executor, 120L, TimeUnit.SECONDS);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static ListeningExecutorService sameThreadExecutor() {
-/* 224 */     return new SameThreadExecutorService();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private static class SameThreadExecutorService
-/*     */     extends AbstractListeningExecutorService
-/*     */   {
-/* 234 */     private final Lock lock = new ReentrantLock();
-/*     */ 
-/*     */     
-/* 237 */     private final Condition termination = this.lock.newCondition();
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 246 */     private int runningTasks = 0;
-/*     */     
-/*     */     private boolean shutdown = false;
-/*     */     
-/*     */     public void execute(Runnable command) {
-/* 251 */       startTask();
-/*     */       try {
-/* 253 */         command.run();
-/*     */       } finally {
-/* 255 */         endTask();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public boolean isShutdown() {
-/* 261 */       this.lock.lock();
-/*     */       try {
-/* 263 */         return this.shutdown;
-/*     */       } finally {
-/* 265 */         this.lock.unlock();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public void shutdown() {
-/* 271 */       this.lock.lock();
-/*     */       try {
-/* 273 */         this.shutdown = true;
-/*     */       } finally {
-/* 275 */         this.lock.unlock();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public List<Runnable> shutdownNow() {
-/* 282 */       shutdown();
-/* 283 */       return Collections.emptyList();
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public boolean isTerminated() {
-/* 288 */       this.lock.lock();
-/*     */       try {
-/* 290 */         return (this.shutdown && this.runningTasks == 0);
-/*     */       } finally {
-/* 292 */         this.lock.unlock();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-/* 299 */       long nanos = unit.toNanos(timeout);
-/* 300 */       this.lock.lock();
-/*     */       try {
-/*     */         while (true) {
-/* 303 */           if (isTerminated())
-/* 304 */             return true; 
-/* 305 */           if (nanos <= 0L) {
-/* 306 */             return false;
-/*     */           }
-/* 308 */           nanos = this.termination.awaitNanos(nanos);
-/*     */         } 
-/*     */       } finally {
-/*     */         
-/* 312 */         this.lock.unlock();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     private void startTask() {
-/* 324 */       this.lock.lock();
-/*     */       try {
-/* 326 */         if (isShutdown()) {
-/* 327 */           throw new RejectedExecutionException("Executor already shutdown");
-/*     */         }
-/* 329 */         this.runningTasks++;
-/*     */       } finally {
-/* 331 */         this.lock.unlock();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     private void endTask() {
-/* 339 */       this.lock.lock();
-/*     */       try {
-/* 341 */         this.runningTasks--;
-/* 342 */         if (isTerminated()) {
-/* 343 */           this.termination.signalAll();
-/*     */         }
-/*     */       } finally {
-/* 346 */         this.lock.unlock();
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     private SameThreadExecutorService() {}
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static ListeningExecutorService listeningDecorator(ExecutorService delegate) {
-/* 371 */     return (delegate instanceof ListeningExecutorService) ? (ListeningExecutorService)delegate : ((delegate instanceof ScheduledExecutorService) ? new ScheduledListeningDecorator((ScheduledExecutorService)delegate) : new ListeningDecorator(delegate));
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static ListeningScheduledExecutorService listeningDecorator(ScheduledExecutorService delegate) {
-/* 399 */     return (delegate instanceof ListeningScheduledExecutorService) ? (ListeningScheduledExecutorService)delegate : new ScheduledListeningDecorator(delegate);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private static class ListeningDecorator
-/*     */     extends AbstractListeningExecutorService
-/*     */   {
-/*     */     final ExecutorService delegate;
-/*     */     
-/*     */     ListeningDecorator(ExecutorService delegate) {
-/* 409 */       this.delegate = (ExecutorService)Preconditions.checkNotNull(delegate);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-/* 415 */       return this.delegate.awaitTermination(timeout, unit);
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public boolean isShutdown() {
-/* 420 */       return this.delegate.isShutdown();
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public boolean isTerminated() {
-/* 425 */       return this.delegate.isTerminated();
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public void shutdown() {
-/* 430 */       this.delegate.shutdown();
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public List<Runnable> shutdownNow() {
-/* 435 */       return this.delegate.shutdownNow();
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public void execute(Runnable command) {
-/* 440 */       this.delegate.execute(command);
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   private static class ScheduledListeningDecorator
-/*     */     extends ListeningDecorator implements ListeningScheduledExecutorService {
-/*     */     final ScheduledExecutorService delegate;
-/*     */     
-/*     */     ScheduledListeningDecorator(ScheduledExecutorService delegate) {
-/* 449 */       super(delegate);
-/* 450 */       this.delegate = (ScheduledExecutorService)Preconditions.checkNotNull(delegate);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
-/* 456 */       return this.delegate.schedule(command, delay, unit);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
-/* 462 */       return this.delegate.schedule(callable, delay, unit);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
-/* 468 */       return this.delegate.scheduleAtFixedRate(command, initialDelay, period, unit);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
-/* 474 */       return this.delegate.scheduleWithFixedDelay(command, initialDelay, delay, unit);
-/*     */     }
-/*     */   }
-/*     */ }
+package com.google.common.util.concurrent;
 
+import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/util/concurrent/MoreExecutors.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public final class MoreExecutors
+{
+@Beta
+public static ExecutorService getExitingExecutorService(ThreadPoolExecutor executor, long terminationTimeout, TimeUnit timeUnit) {
+executor.setThreadFactory((new ThreadFactoryBuilder()).setDaemon(true).setThreadFactory(executor.getThreadFactory()).build());
+
+ExecutorService service = Executors.unconfigurableExecutorService(executor);
+
+addDelayedShutdownHook(service, terminationTimeout, timeUnit);
+
+return service;
+}
+
+@Beta
+public static ScheduledExecutorService getExitingScheduledExecutorService(ScheduledThreadPoolExecutor executor, long terminationTimeout, TimeUnit timeUnit) {
+executor.setThreadFactory((new ThreadFactoryBuilder()).setDaemon(true).setThreadFactory(executor.getThreadFactory()).build());
+
+ScheduledExecutorService service = Executors.unconfigurableScheduledExecutorService(executor);
+
+addDelayedShutdownHook(service, terminationTimeout, timeUnit);
+
+return service;
+}
+
+@Beta
+public static void addDelayedShutdownHook(final ExecutorService service, final long terminationTimeout, final TimeUnit timeUnit) {
+Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+{
+
+public void run()
+{
+try {
+service.shutdown();
+service.awaitTermination(terminationTimeout, timeUnit);
+} catch (InterruptedException ignored) {}
+}
+}));
+}
+
+@Beta
+public static ExecutorService getExitingExecutorService(ThreadPoolExecutor executor) {
+return getExitingExecutorService(executor, 120L, TimeUnit.SECONDS);
+}
+
+@Beta
+public static ScheduledExecutorService getExitingScheduledExecutorService(ScheduledThreadPoolExecutor executor) {
+return getExitingScheduledExecutorService(executor, 120L, TimeUnit.SECONDS);
+}
+
+public static ListeningExecutorService sameThreadExecutor() {
+return new SameThreadExecutorService();
+}
+
+private static class SameThreadExecutorService
+extends AbstractListeningExecutorService
+{
+private final Lock lock = new ReentrantLock();
+
+private final Condition termination = this.lock.newCondition();
+
+private int runningTasks = 0;
+
+private boolean shutdown = false;
+
+public void execute(Runnable command) {
+startTask();
+try {
+command.run();
+} finally {
+endTask();
+} 
+}
+
+public boolean isShutdown() {
+this.lock.lock();
+try {
+return this.shutdown;
+} finally {
+this.lock.unlock();
+} 
+}
+
+public void shutdown() {
+this.lock.lock();
+try {
+this.shutdown = true;
+} finally {
+this.lock.unlock();
+} 
+}
+
+public List<Runnable> shutdownNow() {
+shutdown();
+return Collections.emptyList();
+}
+
+public boolean isTerminated() {
+this.lock.lock();
+try {
+return (this.shutdown && this.runningTasks == 0);
+} finally {
+this.lock.unlock();
+} 
+}
+
+public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+long nanos = unit.toNanos(timeout);
+this.lock.lock();
+try {
+while (true) {
+if (isTerminated())
+return true; 
+if (nanos <= 0L) {
+return false;
+}
+nanos = this.termination.awaitNanos(nanos);
+} 
+} finally {
+
+this.lock.unlock();
+} 
+}
+
+private void startTask() {
+this.lock.lock();
+try {
+if (isShutdown()) {
+throw new RejectedExecutionException("Executor already shutdown");
+}
+this.runningTasks++;
+} finally {
+this.lock.unlock();
+} 
+}
+
+private void endTask() {
+this.lock.lock();
+try {
+this.runningTasks--;
+if (isTerminated()) {
+this.termination.signalAll();
+}
+} finally {
+this.lock.unlock();
+} 
+}
+
+private SameThreadExecutorService() {}
+}
+
+public static ListeningExecutorService listeningDecorator(ExecutorService delegate) {
+return (delegate instanceof ListeningExecutorService) ? (ListeningExecutorService)delegate : ((delegate instanceof ScheduledExecutorService) ? new ScheduledListeningDecorator((ScheduledExecutorService)delegate) : new ListeningDecorator(delegate));
+}
+
+public static ListeningScheduledExecutorService listeningDecorator(ScheduledExecutorService delegate) {
+return (delegate instanceof ListeningScheduledExecutorService) ? (ListeningScheduledExecutorService)delegate : new ScheduledListeningDecorator(delegate);
+}
+
+private static class ListeningDecorator
+extends AbstractListeningExecutorService
+{
+final ExecutorService delegate;
+
+ListeningDecorator(ExecutorService delegate) {
+this.delegate = (ExecutorService)Preconditions.checkNotNull(delegate);
+}
+
+public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+return this.delegate.awaitTermination(timeout, unit);
+}
+
+public boolean isShutdown() {
+return this.delegate.isShutdown();
+}
+
+public boolean isTerminated() {
+return this.delegate.isTerminated();
+}
+
+public void shutdown() {
+this.delegate.shutdown();
+}
+
+public List<Runnable> shutdownNow() {
+return this.delegate.shutdownNow();
+}
+
+public void execute(Runnable command) {
+this.delegate.execute(command);
+}
+}
+
+private static class ScheduledListeningDecorator
+extends ListeningDecorator implements ListeningScheduledExecutorService {
+final ScheduledExecutorService delegate;
+
+ScheduledListeningDecorator(ScheduledExecutorService delegate) {
+super(delegate);
+this.delegate = (ScheduledExecutorService)Preconditions.checkNotNull(delegate);
+}
+
+public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
+return this.delegate.schedule(command, delay, unit);
+}
+
+public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
+return this.delegate.schedule(callable, delay, unit);
+}
+
+public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
+return this.delegate.scheduleAtFixedRate(command, initialDelay, period, unit);
+}
+
+public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
+return this.delegate.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+}
+}
+}
+

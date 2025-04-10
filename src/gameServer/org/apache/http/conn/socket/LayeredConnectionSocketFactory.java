@@ -9,8 +9,3 @@ public interface LayeredConnectionSocketFactory extends ConnectionSocketFactory 
   Socket createLayeredSocket(Socket paramSocket, String paramString, int paramInt, HttpContext paramHttpContext) throws IOException, UnknownHostException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/socket/LayeredConnectionSocketFactory.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -7,8 +7,3 @@ public interface TrustStrategy {
   boolean isTrusted(X509Certificate[] paramArrayOfX509Certificate, String paramString) throws CertificateException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/ssl/TrustStrategy.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

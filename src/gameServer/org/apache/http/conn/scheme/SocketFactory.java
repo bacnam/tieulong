@@ -10,14 +10,9 @@ import org.apache.http.params.HttpParams;
 @Deprecated
 public interface SocketFactory {
   Socket createSocket() throws IOException;
-  
+
   Socket connectSocket(Socket paramSocket, String paramString, int paramInt1, InetAddress paramInetAddress, int paramInt2, HttpParams paramHttpParams) throws IOException, UnknownHostException, ConnectTimeoutException;
-  
+
   boolean isSecure(Socket paramSocket) throws IllegalArgumentException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/scheme/SocketFactory.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -1,85 +1,55 @@
-/*    */ package ch.qos.logback.core.read;
-/*    */ 
-/*    */ import ch.qos.logback.core.AppenderBase;
-/*    */ import ch.qos.logback.core.helpers.CyclicBuffer;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class CyclicBufferAppender<E>
-/*    */   extends AppenderBase<E>
-/*    */ {
-/*    */   CyclicBuffer<E> cb;
-/* 29 */   int maxSize = 512;
-/*    */   
-/*    */   public void start() {
-/* 32 */     this.cb = new CyclicBuffer(this.maxSize);
-/* 33 */     super.start();
-/*    */   }
-/*    */   
-/*    */   public void stop() {
-/* 37 */     this.cb = null;
-/* 38 */     super.stop();
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   protected void append(E eventObject) {
-/* 43 */     if (!isStarted()) {
-/*    */       return;
-/*    */     }
-/* 46 */     this.cb.add(eventObject);
-/*    */   }
-/*    */   
-/*    */   public int getLength() {
-/* 50 */     if (isStarted()) {
-/* 51 */       return this.cb.length();
-/*    */     }
-/* 53 */     return 0;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public E get(int i) {
-/* 58 */     if (isStarted()) {
-/* 59 */       return (E)this.cb.get(i);
-/*    */     }
-/* 61 */     return null;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public void reset() {
-/* 66 */     this.cb.clear();
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public int getMaxSize() {
-/* 73 */     return this.maxSize;
-/*    */   }
-/*    */   
-/*    */   public void setMaxSize(int maxSize) {
-/* 77 */     this.maxSize = maxSize;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.read;
 
+import ch.qos.logback.core.AppenderBase;
+import ch.qos.logback.core.helpers.CyclicBuffer;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/read/CyclicBufferAppender.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class CyclicBufferAppender<E>
+extends AppenderBase<E>
+{
+CyclicBuffer<E> cb;
+int maxSize = 512;
+
+public void start() {
+this.cb = new CyclicBuffer(this.maxSize);
+super.start();
+}
+
+public void stop() {
+this.cb = null;
+super.stop();
+}
+
+protected void append(E eventObject) {
+if (!isStarted()) {
+return;
+}
+this.cb.add(eventObject);
+}
+
+public int getLength() {
+if (isStarted()) {
+return this.cb.length();
+}
+return 0;
+}
+
+public E get(int i) {
+if (isStarted()) {
+return (E)this.cb.get(i);
+}
+return null;
+}
+
+public void reset() {
+this.cb.clear();
+}
+
+public int getMaxSize() {
+return this.maxSize;
+}
+
+public void setMaxSize(int maxSize) {
+this.maxSize = maxSize;
+}
+}
+

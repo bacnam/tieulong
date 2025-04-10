@@ -5,23 +5,18 @@ import org.apache.http.HttpRequest;
 
 public interface AuthScheme {
   void processChallenge(Header paramHeader) throws MalformedChallengeException;
-  
+
   String getSchemeName();
-  
+
   String getParameter(String paramString);
-  
+
   String getRealm();
-  
+
   boolean isConnectionBased();
-  
+
   boolean isComplete();
-  
+
   @Deprecated
   Header authenticate(Credentials paramCredentials, HttpRequest paramHttpRequest) throws AuthenticationException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/auth/AuthScheme.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

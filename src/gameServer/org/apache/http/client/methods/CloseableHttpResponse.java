@@ -5,8 +5,3 @@ import org.apache.http.HttpResponse;
 
 public interface CloseableHttpResponse extends HttpResponse, Closeable {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/methods/CloseableHttpResponse.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

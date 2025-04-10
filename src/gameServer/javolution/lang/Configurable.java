@@ -1,295 +1,101 @@
-/*     */ package javolution.lang;
-/*     */ 
-/*     */ import java.lang.reflect.Field;
-/*     */ import javolution.context.LogContext;
-/*     */ import javolution.context.SecurityContext;
-/*     */ import javolution.osgi.internal.OSGiServices;
-/*     */ import javolution.text.TextContext;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public abstract class Configurable<T>
-/*     */ {
-/* 115 */   public static SecurityContext.Permission<Configurable<?>> RECONFIGURE_PERMISSION = new SecurityContext.Permission(Configurable.class, "reconfigure");
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private String name;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/* 143 */   private final SecurityContext.Permission<Configurable<T>> reconfigurePermission = new SecurityContext.Permission(Configurable.class, "reconfigure", this);
-/*     */   public Configurable() {
-/* 145 */     String name = getName();
-/* 146 */     T defaultValue = getDefault();
-/* 147 */     if (name != null) {
-/*     */       try {
-/* 149 */         String property = System.getProperty(name);
-/* 150 */         if (property != null) {
-/* 151 */           defaultValue = parse(property);
-/* 152 */           LogContext.debug(new Object[] { name, ", System Properties Value: ", defaultValue });
-/*     */         }
-/*     */       
-/* 155 */       } catch (SecurityException securityError) {}
-/*     */     }
-/*     */ 
-/*     */     
-/* 159 */     this.name = name;
-/* 160 */     this.value = initialized(defaultValue);
-/* 161 */     Object[] listeners = OSGiServices.getConfigurableListeners();
-/* 162 */     for (Object listener : listeners) {
-/* 163 */       ((Listener)listener).configurableInitialized(this, this.value);
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private volatile T value;
-/*     */   
-/*     */   public T get() {
-/* 171 */     return this.value;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getName() {
-/* 186 */     if (this.name != null)
-/* 187 */       return this.name; 
-/* 188 */     Class<?> thisClass = getClass();
-/* 189 */     Class<?> enclosingClass = thisClass.getEnclosingClass();
-/* 190 */     String fieldName = null;
-/* 191 */     for (Field field : enclosingClass.getFields()) {
-/* 192 */       if (field.getType().isAssignableFrom(thisClass)) {
-/* 193 */         if (fieldName != null) {
-/* 194 */           throw new UnsupportedOperationException("Multiple configurables static fields in the same classrequires the Configurable.getName() method to be overriden.");
-/*     */         }
-/*     */         
-/* 197 */         fieldName = field.getName();
-/*     */       } 
-/*     */     } 
-/* 200 */     return (fieldName != null) ? (enclosingClass.getName() + "#" + fieldName) : null;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public SecurityContext.Permission<Configurable<T>> getReconfigurePermission() {
-/* 208 */     return this.reconfigurePermission;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public T reconfigure(T newValue) {
-/* 225 */     SecurityContext.check(this.reconfigurePermission);
-/* 226 */     synchronized (this) {
-/* 227 */       T oldValue = this.value;
-/* 228 */       this.value = reconfigured(oldValue, newValue);
-/* 229 */       Object[] listeners = OSGiServices.getConfigurableListeners();
-/* 230 */       for (Object listener : listeners) {
-/* 231 */         ((Listener)listener).configurableReconfigured(this, oldValue, this.value);
-/*     */       }
-/*     */       
-/* 234 */       return this.value;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected abstract T getDefault();
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected T initialized(T value) {
-/* 253 */     return value;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected T parse(String str) {
-/* 265 */     Class<? extends T> type = (Class)getDefault().getClass();
-/* 266 */     return (T)TextContext.getFormat(type).parse(str);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected T reconfigured(T oldValue, T newValue) {
-/* 281 */     return newValue;
-/*     */   }
-/*     */   
-/*     */   public static interface Listener {
-/*     */     <T> void configurableInitialized(Configurable<T> param1Configurable, T param1T);
-/*     */     
-/*     */     <T> void configurableReconfigured(Configurable<T> param1Configurable, T param1T1, T param1T2);
-/*     */   }
-/*     */ }
+package javolution.lang;
 
+import java.lang.reflect.Field;
+import javolution.context.LogContext;
+import javolution.context.SecurityContext;
+import javolution.osgi.internal.OSGiServices;
+import javolution.text.TextContext;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/javolution/lang/Configurable.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public abstract class Configurable<T>
+{
+public static SecurityContext.Permission<Configurable<?>> RECONFIGURE_PERMISSION = new SecurityContext.Permission(Configurable.class, "reconfigure");
+
+private String name;
+
+private final SecurityContext.Permission<Configurable<T>> reconfigurePermission = new SecurityContext.Permission(Configurable.class, "reconfigure", this);
+public Configurable() {
+String name = getName();
+T defaultValue = getDefault();
+if (name != null) {
+try {
+String property = System.getProperty(name);
+if (property != null) {
+defaultValue = parse(property);
+LogContext.debug(new Object[] { name, ", System Properties Value: ", defaultValue });
+}
+
+} catch (SecurityException securityError) {}
+}
+
+this.name = name;
+this.value = initialized(defaultValue);
+Object[] listeners = OSGiServices.getConfigurableListeners();
+for (Object listener : listeners) {
+((Listener)listener).configurableInitialized(this, this.value);
+}
+}
+
+private volatile T value;
+
+public T get() {
+return this.value;
+}
+
+public String getName() {
+if (this.name != null)
+return this.name; 
+Class<?> thisClass = getClass();
+Class<?> enclosingClass = thisClass.getEnclosingClass();
+String fieldName = null;
+for (Field field : enclosingClass.getFields()) {
+if (field.getType().isAssignableFrom(thisClass)) {
+if (fieldName != null) {
+throw new UnsupportedOperationException("Multiple configurables static fields in the same classrequires the Configurable.getName() method to be overriden.");
+}
+
+fieldName = field.getName();
+} 
+} 
+return (fieldName != null) ? (enclosingClass.getName() + "#" + fieldName) : null;
+}
+
+public SecurityContext.Permission<Configurable<T>> getReconfigurePermission() {
+return this.reconfigurePermission;
+}
+
+public T reconfigure(T newValue) {
+SecurityContext.check(this.reconfigurePermission);
+synchronized (this) {
+T oldValue = this.value;
+this.value = reconfigured(oldValue, newValue);
+Object[] listeners = OSGiServices.getConfigurableListeners();
+for (Object listener : listeners) {
+((Listener)listener).configurableReconfigured(this, oldValue, this.value);
+}
+
+return this.value;
+} 
+}
+
+protected abstract T getDefault();
+
+protected T initialized(T value) {
+return value;
+}
+
+protected T parse(String str) {
+Class<? extends T> type = (Class)getDefault().getClass();
+return (T)TextContext.getFormat(type).parse(str);
+}
+
+protected T reconfigured(T oldValue, T newValue) {
+return newValue;
+}
+
+public static interface Listener {
+<T> void configurableInitialized(Configurable<T> param1Configurable, T param1T);
+
+<T> void configurableReconfigured(Configurable<T> param1Configurable, T param1T1, T param1T2);
+}
+}
+

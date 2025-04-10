@@ -1,91 +1,45 @@
-/*    */ package org.apache.http.impl.cookie;
-/*    */ 
-/*    */ import java.util.Collection;
-/*    */ import org.apache.http.annotation.Immutable;
-/*    */ import org.apache.http.cookie.CookieSpec;
-/*    */ import org.apache.http.cookie.CookieSpecFactory;
-/*    */ import org.apache.http.cookie.CookieSpecProvider;
-/*    */ import org.apache.http.params.HttpParams;
-/*    */ import org.apache.http.protocol.HttpContext;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ @Deprecated
-/*    */ @Immutable
-/*    */ public class NetscapeDraftSpecFactory
-/*    */   implements CookieSpecFactory, CookieSpecProvider
-/*    */ {
-/*    */   private final CookieSpec cookieSpec;
-/*    */   
-/*    */   public NetscapeDraftSpecFactory(String[] datepatterns) {
-/* 57 */     this.cookieSpec = new NetscapeDraftSpec(datepatterns);
-/*    */   }
-/*    */   
-/*    */   public NetscapeDraftSpecFactory() {
-/* 61 */     this(null);
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public CookieSpec newInstance(HttpParams params) {
-/* 66 */     if (params != null) {
-/*    */       
-/* 68 */       String[] patterns = null;
-/* 69 */       Collection<?> param = (Collection)params.getParameter("http.protocol.cookie-datepatterns");
-/*    */       
-/* 71 */       if (param != null) {
-/* 72 */         patterns = new String[param.size()];
-/* 73 */         patterns = param.<String>toArray(patterns);
-/*    */       } 
-/* 75 */       return new NetscapeDraftSpec(patterns);
-/*    */     } 
-/* 77 */     return new NetscapeDraftSpec();
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public CookieSpec create(HttpContext context) {
-/* 83 */     return this.cookieSpec;
-/*    */   }
-/*    */ }
+package org.apache.http.impl.cookie;
 
+import java.util.Collection;
+import org.apache.http.annotation.Immutable;
+import org.apache.http.cookie.CookieSpec;
+import org.apache.http.cookie.CookieSpecFactory;
+import org.apache.http.cookie.CookieSpecProvider;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/impl/cookie/NetscapeDraftSpecFactory.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@Deprecated
+@Immutable
+public class NetscapeDraftSpecFactory
+implements CookieSpecFactory, CookieSpecProvider
+{
+private final CookieSpec cookieSpec;
+
+public NetscapeDraftSpecFactory(String[] datepatterns) {
+this.cookieSpec = new NetscapeDraftSpec(datepatterns);
+}
+
+public NetscapeDraftSpecFactory() {
+this(null);
+}
+
+public CookieSpec newInstance(HttpParams params) {
+if (params != null) {
+
+String[] patterns = null;
+Collection<?> param = (Collection)params.getParameter("http.protocol.cookie-datepatterns");
+
+if (param != null) {
+patterns = new String[param.size()];
+patterns = param.<String>toArray(patterns);
+} 
+return new NetscapeDraftSpec(patterns);
+} 
+return new NetscapeDraftSpec();
+}
+
+public CookieSpec create(HttpContext context) {
+return this.cookieSpec;
+}
+}
+

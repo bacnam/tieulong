@@ -1,43 +1,37 @@
-/*    */ package core.network.proto;
-/*    */ 
-/*    */ import core.config.refdata.RefDataMgr;
-/*    */ import core.config.refdata.ref.RefWorldBoss;
-/*    */ import core.database.game.bo.WorldBossBO;
-/*    */ 
-/*    */ 
-/*    */ public class WorldBossInfo
-/*    */ {
-/*    */   long id;
-/*    */   long bossId;
-/*    */   long bossHp;
-/*    */   long bossMaxHp;
-/*    */   long bossLevel;
-/*    */   boolean isDead;
-/*    */   long deadTime;
-/*    */   long reviveTime;
-/*    */   long lastKillCid;
-/*    */   boolean canChalleng;
-/*    */   
-/*    */   public WorldBossInfo() {}
-/*    */   
-/*    */   public WorldBossInfo(WorldBossBO bo) {
-/* 24 */     this.id = bo.getId();
-/* 25 */     this.bossId = bo.getBossId();
-/* 26 */     this.bossHp = bo.getBossHp();
-/* 27 */     this.bossMaxHp = bo.getBossMaxHp();
-/* 28 */     this.bossLevel = bo.getBossLevel();
-/* 29 */     this.isDead = bo.getIsDead();
-/* 30 */     this.deadTime = bo.getDeadTime();
-/* 31 */     this.reviveTime = bo.getReviveTime();
-/* 32 */     this.lastKillCid = bo.getLastKillCid();
-/*    */     
-/* 34 */     RefWorldBoss ref = (RefWorldBoss)RefDataMgr.get(RefWorldBoss.class, Integer.valueOf((int)bo.getBossId()));
-/* 35 */     this.canChalleng = ref.isInOpenHour();
-/*    */   }
-/*    */ }
+package core.network.proto;
 
+import core.config.refdata.RefDataMgr;
+import core.config.refdata.ref.RefWorldBoss;
+import core.database.game.bo.WorldBossBO;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/core/network/proto/WorldBossInfo.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+public class WorldBossInfo
+{
+long id;
+long bossId;
+long bossHp;
+long bossMaxHp;
+long bossLevel;
+boolean isDead;
+long deadTime;
+long reviveTime;
+long lastKillCid;
+boolean canChalleng;
+
+public WorldBossInfo() {}
+
+public WorldBossInfo(WorldBossBO bo) {
+this.id = bo.getId();
+this.bossId = bo.getBossId();
+this.bossHp = bo.getBossHp();
+this.bossMaxHp = bo.getBossMaxHp();
+this.bossLevel = bo.getBossLevel();
+this.isDead = bo.getIsDead();
+this.deadTime = bo.getDeadTime();
+this.reviveTime = bo.getReviveTime();
+this.lastKillCid = bo.getLastKillCid();
+
+RefWorldBoss ref = (RefWorldBoss)RefDataMgr.get(RefWorldBoss.class, Integer.valueOf((int)bo.getBossId()));
+this.canChalleng = ref.isInOpenHour();
+}
+}
+

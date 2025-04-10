@@ -1,95 +1,47 @@
-/*    */ package ch.qos.logback.core.net;
-/*    */ 
-/*    */ import ch.qos.logback.core.net.ssl.ConfigurableSSLSocketFactory;
-/*    */ import ch.qos.logback.core.net.ssl.SSLComponent;
-/*    */ import ch.qos.logback.core.net.ssl.SSLConfiguration;
-/*    */ import ch.qos.logback.core.net.ssl.SSLParametersConfiguration;
-/*    */ import ch.qos.logback.core.spi.ContextAware;
-/*    */ import javax.net.SocketFactory;
-/*    */ import javax.net.ssl.SSLContext;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public abstract class AbstractSSLSocketAppender<E>
-/*    */   extends AbstractSocketAppender<E>
-/*    */   implements SSLComponent
-/*    */ {
-/*    */   private SSLConfiguration ssl;
-/*    */   private SocketFactory socketFactory;
-/*    */   
-/*    */   protected SocketFactory getSocketFactory() {
-/* 49 */     return this.socketFactory;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public void start() {
-/*    */     try {
-/* 58 */       SSLContext sslContext = getSsl().createContext((ContextAware)this);
-/* 59 */       SSLParametersConfiguration parameters = getSsl().getParameters();
-/* 60 */       parameters.setContext(getContext());
-/* 61 */       this.socketFactory = (SocketFactory)new ConfigurableSSLSocketFactory(parameters, sslContext.getSocketFactory());
-/*    */       
-/* 63 */       super.start();
-/*    */     }
-/* 65 */     catch (Exception ex) {
-/* 66 */       addError(ex.getMessage(), ex);
-/*    */     } 
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public SSLConfiguration getSsl() {
-/* 76 */     if (this.ssl == null) {
-/* 77 */       this.ssl = new SSLConfiguration();
-/*    */     }
-/* 79 */     return this.ssl;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public void setSsl(SSLConfiguration ssl) {
-/* 87 */     this.ssl = ssl;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.net;
 
+import ch.qos.logback.core.net.ssl.ConfigurableSSLSocketFactory;
+import ch.qos.logback.core.net.ssl.SSLComponent;
+import ch.qos.logback.core.net.ssl.SSLConfiguration;
+import ch.qos.logback.core.net.ssl.SSLParametersConfiguration;
+import ch.qos.logback.core.spi.ContextAware;
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLContext;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/net/AbstractSSLSocketAppender.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public abstract class AbstractSSLSocketAppender<E>
+extends AbstractSocketAppender<E>
+implements SSLComponent
+{
+private SSLConfiguration ssl;
+private SocketFactory socketFactory;
+
+protected SocketFactory getSocketFactory() {
+return this.socketFactory;
+}
+
+public void start() {
+try {
+SSLContext sslContext = getSsl().createContext((ContextAware)this);
+SSLParametersConfiguration parameters = getSsl().getParameters();
+parameters.setContext(getContext());
+this.socketFactory = (SocketFactory)new ConfigurableSSLSocketFactory(parameters, sslContext.getSocketFactory());
+
+super.start();
+}
+catch (Exception ex) {
+addError(ex.getMessage(), ex);
+} 
+}
+
+public SSLConfiguration getSsl() {
+if (this.ssl == null) {
+this.ssl = new SSLConfiguration();
+}
+return this.ssl;
+}
+
+public void setSsl(SSLConfiguration ssl) {
+this.ssl = ssl;
+}
+}
+

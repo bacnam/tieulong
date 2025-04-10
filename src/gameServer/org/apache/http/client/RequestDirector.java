@@ -12,8 +12,3 @@ public interface RequestDirector {
   HttpResponse execute(HttpHost paramHttpHost, HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws HttpException, IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/RequestDirector.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

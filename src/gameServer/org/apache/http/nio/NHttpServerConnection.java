@@ -6,16 +6,11 @@ import org.apache.http.HttpResponse;
 
 public interface NHttpServerConnection extends NHttpConnection {
   void submitResponse(HttpResponse paramHttpResponse) throws IOException, HttpException;
-  
+
   boolean isResponseSubmitted();
-  
+
   void resetInput();
-  
+
   void resetOutput();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/NHttpServerConnection.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

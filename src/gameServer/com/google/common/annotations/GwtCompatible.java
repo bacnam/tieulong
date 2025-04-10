@@ -12,12 +12,7 @@ import java.lang.annotation.Target;
 @GwtCompatible
 public @interface GwtCompatible {
   boolean serializable() default false;
-  
+
   boolean emulated() default false;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/annotations/GwtCompatible.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

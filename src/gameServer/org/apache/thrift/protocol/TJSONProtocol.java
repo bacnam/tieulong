@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 
 package org.apache.thrift.protocol;
 
@@ -27,20 +10,8 @@ import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransport;
 
-/**
- * JSON protocol implementation for thrift.
- *
- * This is a full-featured protocol supporting write and read.
- *
- * Please see the C++ class header for a detailed description of the
- * protocol's wire format.
- *
- */
 public class TJSONProtocol extends TProtocol {
 
-  /**
-   * Factory for JSON protocol objects
-   */
   public static class Factory implements TProtocolFactory {
 
     public TProtocol getProtocol(TTransport trans) {
@@ -64,10 +35,10 @@ public class TJSONProtocol extends TProtocol {
   private static final long  VERSION = 1;
 
   private static final byte[] JSON_CHAR_TABLE = {
-    /*  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F */
-    0,  0,  0,  0,  0,  0,  0,  0,'b','t','n',  0,'f','r',  0,  0, // 0
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, // 1
-    1,  1,'"',  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, // 2
+
+    0,  0,  0,  0,  0,  0,  0,  0,'b','t','n',  0,'f','r',  0,  0, 
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+    1,  1,'"',  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 
   };
 
   private static final String ESCAPE_CHARS = "\"\\bfnrt";
@@ -176,9 +147,6 @@ public class TJSONProtocol extends TProtocol {
     return result;
   }
 
-  // Base class for tracking JSON contexts that may require inserting/reading
-  // additional JSON syntax characters
-  // This base context does nothing.
   protected class JSONBaseContext {
     protected void write() throws TException {}
 
@@ -187,8 +155,6 @@ public class TJSONProtocol extends TProtocol {
     protected boolean escapeNum() { return false; }
   }
 
-  // Context for JSON lists. Will insert/read commas before each item except
-  // for the first one
   protected class JSONListContext extends JSONBaseContext {
     private boolean first_ = true;
 
@@ -211,10 +177,6 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Context for JSON records. Will insert/read colons before the value portion
-  // of each record pair, and commas before each key except the first. In
-  // addition, will indicate that numbers in the key position need to be
-  // escaped in quotes (since JSON keys must be strings).
   protected class JSONPairContext extends JSONBaseContext {
     private boolean first_ = true;
     private boolean colon_ = true;
@@ -247,14 +209,11 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Holds up to one byte from the transport
   protected class LookaheadReader {
 
     private boolean hasData_;
     private byte[] data_ = new byte[1];
 
-    // Return and consume the next byte to be read, either taking it from the
-    // data buffer if present or getting it from the transport otherwise.
     protected byte read() throws TException {
       if (hasData_) {
         hasData_ = false;
@@ -265,8 +224,6 @@ public class TJSONProtocol extends TProtocol {
       return data_[0];
     }
 
-    // Return the next byte to be read without consuming, filling the data
-    // buffer if it has not been filled already.
     protected byte peek() throws TException {
       if (!hasData_) {
         trans_.readAll(data_, 0, 1);
@@ -276,29 +233,21 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Stack of nested contexts that we may be in
   private Stack<JSONBaseContext> contextStack_ = new Stack<JSONBaseContext>();
 
-  // Current context that we are in
   private JSONBaseContext context_ = new JSONBaseContext();
 
-  // Reader that manages a 1-byte buffer
   private LookaheadReader reader_ = new LookaheadReader();
 
-  // Push a new JSON context onto the stack.
   private void pushContext(JSONBaseContext c) {
     contextStack_.push(context_);
     context_ = c;
   }
 
-  // Pop the last JSON context off the stack
   private void popContext() {
     context_ = contextStack_.pop();
   }
 
-  /**
-   * Constructor
-   */
   public TJSONProtocol(TTransport trans) {
     super(trans);
   }
@@ -310,12 +259,8 @@ public class TJSONProtocol extends TProtocol {
     reader_ = new LookaheadReader();
   }
 
-  // Temporary buffer used by several methods
   private byte[] tmpbuf_ = new byte[4];
 
-  // Read a byte that must match b[0]; otherwise an excpetion is thrown.
-  // Marked protected to avoid synthetic accessor in JSONListContext.read
-  // and JSONPairContext.read
   protected void readJSONSyntaxChar(byte[] b) throws TException {
     byte ch = reader_.read();
     if (ch != b[0]) {
@@ -324,8 +269,6 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Convert a byte containing a hex char ('0'-'9' or 'a'-'f') into its
-  // corresponding hex value
   private static final byte hexVal(byte ch) throws TException {
     if ((ch >= '0') && (ch <= '9')) {
       return (byte)((char)ch - '0');
@@ -339,7 +282,6 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Convert a byte containing a hex value to its corresponding hex character
   private static final byte hexChar(byte val) {
     val &= 0x0F;
     if (val < 10) {
@@ -350,7 +292,6 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Write the bytes in array buf as a JSON characters, escaping as needed
   private void writeJSONString(byte[] b) throws TException {
     context_.write();
     trans_.write(QUOTE);
@@ -385,8 +326,6 @@ public class TJSONProtocol extends TProtocol {
     trans_.write(QUOTE);
   }
 
-  // Write out number as a JSON value. If the context dictates so, it will be
-  // wrapped in quotes to output as a JSON string.
   private void writeJSONInteger(long num) throws TException {
     context_.write();
     String str = Long.toString(num);
@@ -405,19 +344,17 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Write out a double as a JSON value. If it is NaN or infinity or if the
-  // context dictates escaping, write out as JSON string.
   private void writeJSONDouble(double num) throws TException {
     context_.write();
     String str = Double.toString(num);
     boolean special = false;
     switch (str.charAt(0)) {
-    case 'N': // NaN
-    case 'I': // Infinity
+    case 'N': 
+    case 'I': 
       special = true;
       break;
     case '-':
-      if (str.charAt(1) == 'I') { // -Infinity
+      if (str.charAt(1) == 'I') { 
         special = true;
       }
       break;
@@ -438,22 +375,20 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Write out contents of byte array b as a JSON string with base-64 encoded
-  // data
   private void writeJSONBase64(byte[] b, int offset, int length) throws TException {
     context_.write();
     trans_.write(QUOTE);
     int len = length;
     int off = offset;
     while (len >= 3) {
-      // Encode 3 bytes at a time
+
       TBase64Utils.encode(b, off, 3, tmpbuf_, 0);
       trans_.write(tmpbuf_, 0, 4);
       off += 3;
       len -= 3;
     }
     if (len > 0) {
-      // Encode remainder
+
       TBase64Utils.encode(b, off, len, tmpbuf_, 0);
       trans_.write(tmpbuf_, 0, len + 1);
     }
@@ -610,12 +545,6 @@ public class TJSONProtocol extends TProtocol {
     writeJSONBase64(bin.array(), bin.position() + bin.arrayOffset(), bin.limit() - bin.position() - bin.arrayOffset());
   }
 
-  /**
-   * Reading methods.
-   */
-
-  // Read in a JSON string, unescaping as appropriate.. Skip reading from the
-  // context if skipContext is true.
   private TByteArrayOutputStream readJSONString(boolean skipContext)
     throws TException {
     TByteArrayOutputStream arr = new TByteArrayOutputStream(DEF_STRING_SIZE);
@@ -650,7 +579,6 @@ public class TJSONProtocol extends TProtocol {
     return arr;
   }
 
-  // Return true if the given byte could be a valid part of a JSON number.
   private boolean isJSONNumeric(byte b) {
     switch (b) {
     case '+':
@@ -673,8 +601,6 @@ public class TJSONProtocol extends TProtocol {
     return false;
   }
 
-  // Read in a sequence of characters that are all valid in JSON numbers. Does
-  // not do a complete regex check to validate that this is actually a number.
   private String readJSONNumericChars() throws TException {
     StringBuilder strbld = new StringBuilder();
     while (true) {
@@ -687,7 +613,6 @@ public class TJSONProtocol extends TProtocol {
     return strbld.toString();
   }
 
-  // Read in a JSON number. If the context dictates, read in enclosing quotes.
   private long readJSONInteger() throws TException {
     context_.read();
     if (context_.escapeNum()) {
@@ -706,8 +631,6 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Read in a JSON double value. Throw if the value is not wrapped in quotes
-  // when expected or if wrapped in quotes when not expected.
   private double readJSONDouble() throws TException {
     context_.read();
     if (reader_.peek() == QUOTE[0]) {
@@ -716,7 +639,7 @@ public class TJSONProtocol extends TProtocol {
         double dub = Double.valueOf(arr.toString("UTF-8"));
         if (!context_.escapeNum() && !Double.isNaN(dub) &&
             !Double.isInfinite(dub)) {
-          // Throw exception -- we should not be in a string in this case
+
           throw new TProtocolException(TProtocolException.INVALID_DATA,
                                        "Numeric data unexpectedly quoted");
         }
@@ -728,7 +651,7 @@ public class TJSONProtocol extends TProtocol {
     }
     else {
       if (context_.escapeNum()) {
-        // This will throw - we should have had a quote if escapeNum == true
+
         readJSONSyntaxChar(QUOTE);
       }
       try {
@@ -741,7 +664,6 @@ public class TJSONProtocol extends TProtocol {
     }
   }
 
-  // Read in a JSON string containing base-64 encoded data and decode it.
   private byte[] readJSONBase64() throws TException {
     TByteArrayOutputStream arr = readJSONString(false);
     byte[] b = arr.get();
@@ -749,20 +671,19 @@ public class TJSONProtocol extends TProtocol {
     int off = 0;
     int size = 0;
     while (len >= 4) {
-      // Decode 4 bytes at a time
-      TBase64Utils.decode(b, off, 4, b, size); // NB: decoded in place
+
+      TBase64Utils.decode(b, off, 4, b, size); 
       off += 4;
       len -= 4;
       size += 3;
     }
-    // Don't decode if we hit the end or got a single leftover byte (invalid
-    // base64 but legal for skip of regular string type)
+
     if (len > 1) {
-      // Decode remainder
-      TBase64Utils.decode(b, off, len, b, size); // NB: decoded in place
+
+      TBase64Utils.decode(b, off, len, b, size); 
       size += len - 1;
     }
-    // Sadly we must copy the byte[] (any way around this?)
+
     byte [] result = new byte[size];
     System.arraycopy(b, 0, result, 0, size);
     return result;

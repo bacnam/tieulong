@@ -1,459 +1,219 @@
-/*     */ package com.google.common.io;
-/*     */ 
-/*     */ import com.google.common.annotations.Beta;
-/*     */ import com.google.common.base.Preconditions;
-/*     */ import java.io.Closeable;
-/*     */ import java.io.EOFException;
-/*     */ import java.io.IOException;
-/*     */ import java.io.InputStream;
-/*     */ import java.io.InputStreamReader;
-/*     */ import java.io.OutputStream;
-/*     */ import java.io.OutputStreamWriter;
-/*     */ import java.io.Reader;
-/*     */ import java.io.StringReader;
-/*     */ import java.io.Writer;
-/*     */ import java.nio.CharBuffer;
-/*     */ import java.nio.charset.Charset;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.Arrays;
-/*     */ import java.util.List;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @Beta
-/*     */ public final class CharStreams
-/*     */ {
-/*     */   private static final int BUF_SIZE = 2048;
-/*     */   
-/*     */   public static InputSupplier<StringReader> newReaderSupplier(final String value) {
-/*  67 */     Preconditions.checkNotNull(value);
-/*  68 */     return new InputSupplier<StringReader>()
-/*     */       {
-/*     */         public StringReader getInput() {
-/*  71 */           return new StringReader(value);
-/*     */         }
-/*     */       };
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static InputSupplier<InputStreamReader> newReaderSupplier(final InputSupplier<? extends InputStream> in, final Charset charset) {
-/*  86 */     Preconditions.checkNotNull(in);
-/*  87 */     Preconditions.checkNotNull(charset);
-/*  88 */     return new InputSupplier<InputStreamReader>()
-/*     */       {
-/*     */         public InputStreamReader getInput() throws IOException {
-/*  91 */           return new InputStreamReader(in.getInput(), charset);
-/*     */         }
-/*     */       };
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static OutputSupplier<OutputStreamWriter> newWriterSupplier(final OutputSupplier<? extends OutputStream> out, final Charset charset) {
-/* 106 */     Preconditions.checkNotNull(out);
-/* 107 */     Preconditions.checkNotNull(charset);
-/* 108 */     return new OutputSupplier<OutputStreamWriter>()
-/*     */       {
-/*     */         public OutputStreamWriter getOutput() throws IOException {
-/* 111 */           return new OutputStreamWriter(out.getOutput(), charset);
-/*     */         }
-/*     */       };
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <W extends Appendable & Closeable> void write(CharSequence from, OutputSupplier<W> to) throws IOException {
-/* 126 */     Preconditions.checkNotNull(from);
-/* 127 */     boolean threw = true;
-/* 128 */     Appendable appendable = (Appendable)to.getOutput();
-/*     */     try {
-/* 130 */       appendable.append(from);
-/* 131 */       threw = false;
-/*     */     } finally {
-/* 133 */       Closeables.close((Closeable)appendable, threw);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <R extends Readable & Closeable, W extends Appendable & Closeable> long copy(InputSupplier<R> from, OutputSupplier<W> to) throws IOException {
-/* 150 */     boolean threw = true;
-/* 151 */     Readable readable = (Readable)from.getInput();
-/*     */     try {
-/* 153 */       Appendable appendable = (Appendable)to.getOutput();
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     }
-/*     */     finally {
-/*     */ 
-/*     */ 
-/*     */       
-/* 162 */       Closeables.close((Closeable)readable, threw);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <R extends Readable & Closeable> long copy(InputSupplier<R> from, Appendable to) throws IOException {
-/* 178 */     boolean threw = true;
-/* 179 */     Readable readable = (Readable)from.getInput();
-/*     */     try {
-/* 181 */       long count = copy(readable, to);
-/* 182 */       threw = false;
-/* 183 */       return count;
-/*     */     } finally {
-/* 185 */       Closeables.close((Closeable)readable, threw);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static long copy(Readable from, Appendable to) throws IOException {
-/* 199 */     CharBuffer buf = CharBuffer.allocate(2048);
-/* 200 */     long total = 0L;
-/*     */     while (true) {
-/* 202 */       int r = from.read(buf);
-/* 203 */       if (r == -1) {
-/*     */         break;
-/*     */       }
-/* 206 */       buf.flip();
-/* 207 */       to.append(buf, 0, r);
-/* 208 */       total += r;
-/*     */     } 
-/* 210 */     return total;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static String toString(Readable r) throws IOException {
-/* 222 */     return toStringBuilder(r).toString();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <R extends Readable & Closeable> String toString(InputSupplier<R> supplier) throws IOException {
-/*     */     // Byte code:
-/*     */     //   0: aload_0
-/*     */     //   1: invokestatic toStringBuilder : (Lcom/google/common/io/InputSupplier;)Ljava/lang/StringBuilder;
-/*     */     //   4: invokevirtual toString : ()Ljava/lang/String;
-/*     */     //   7: areturn
-/*     */     // Line number table:
-/*     */     //   Java source line number -> byte code offset
-/*     */     //   #235	-> 0
-/*     */     // Local variable table:
-/*     */     //   start	length	slot	name	descriptor
-/*     */     //   0	8	0	supplier	Lcom/google/common/io/InputSupplier;
-/*     */     // Local variable type table:
-/*     */     //   start	length	slot	name	signature
-/*     */     //   0	8	0	supplier	Lcom/google/common/io/InputSupplier<TR;>;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private static StringBuilder toStringBuilder(Readable r) throws IOException {
-/* 247 */     StringBuilder sb = new StringBuilder();
-/* 248 */     copy(r, sb);
-/* 249 */     return sb;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private static <R extends Readable & Closeable> StringBuilder toStringBuilder(InputSupplier<R> supplier) throws IOException {
-/* 261 */     boolean threw = true;
-/* 262 */     Readable readable = (Readable)supplier.getInput();
-/*     */     try {
-/* 264 */       StringBuilder result = toStringBuilder(readable);
-/* 265 */       threw = false;
-/* 266 */       return result;
-/*     */     } finally {
-/* 268 */       Closeables.close((Closeable)readable, threw);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <R extends Readable & Closeable> String readFirstLine(InputSupplier<R> supplier) throws IOException {
-/* 283 */     boolean threw = true;
-/* 284 */     Readable readable = (Readable)supplier.getInput();
-/*     */     try {
-/* 286 */       String line = (new LineReader(readable)).readLine();
-/* 287 */       threw = false;
-/* 288 */       return line;
-/*     */     } finally {
-/* 290 */       Closeables.close((Closeable)readable, threw);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <R extends Readable & Closeable> List<String> readLines(InputSupplier<R> supplier) throws IOException {
-/* 305 */     boolean threw = true;
-/* 306 */     Readable readable = (Readable)supplier.getInput();
-/*     */     try {
-/* 308 */       List<String> result = readLines(readable);
-/* 309 */       threw = false;
-/* 310 */       return result;
-/*     */     } finally {
-/* 312 */       Closeables.close((Closeable)readable, threw);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static List<String> readLines(Readable r) throws IOException {
-/* 330 */     List<String> result = new ArrayList<String>();
-/* 331 */     LineReader lineReader = new LineReader(r);
-/*     */     String line;
-/* 333 */     while ((line = lineReader.readLine()) != null) {
-/* 334 */       result.add(line);
-/*     */     }
-/* 336 */     return result;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <R extends Readable & Closeable, T> T readLines(InputSupplier<R> supplier, LineProcessor<T> callback) throws IOException {
-/* 351 */     boolean threw = true;
-/* 352 */     Readable readable = (Readable)supplier.getInput();
-/*     */     try {
-/* 354 */       LineReader lineReader = new LineReader(readable); String line; do {
-/*     */       
-/* 356 */       } while ((line = lineReader.readLine()) != null && 
-/* 357 */         callback.processLine(line));
-/*     */ 
-/*     */ 
-/*     */       
-/* 361 */       threw = false;
-/*     */     } finally {
-/* 363 */       Closeables.close((Closeable)readable, threw);
-/*     */     } 
-/* 365 */     return callback.getResult();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static InputSupplier<Reader> join(final Iterable<? extends InputSupplier<? extends Reader>> suppliers) {
-/* 385 */     return new InputSupplier<Reader>() {
-/*     */         public Reader getInput() throws IOException {
-/* 387 */           return new MultiReader(suppliers.iterator());
-/*     */         }
-/*     */       };
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static InputSupplier<Reader> join(InputSupplier<? extends Reader>... suppliers) {
-/* 395 */     return join(Arrays.asList(suppliers));
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static void skipFully(Reader reader, long n) throws IOException {
-/* 410 */     while (n > 0L) {
-/* 411 */       long amt = reader.skip(n);
-/* 412 */       if (amt == 0L) {
-/*     */         
-/* 414 */         if (reader.read() == -1) {
-/* 415 */           throw new EOFException();
-/*     */         }
-/* 417 */         n--; continue;
-/*     */       } 
-/* 419 */       n -= amt;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static Writer asWriter(Appendable target) {
-/* 435 */     if (target instanceof Writer) {
-/* 436 */       return (Writer)target;
-/*     */     }
-/* 438 */     return new AppendableWriter(target);
-/*     */   }
-/*     */ }
+package com.google.common.io;
 
+import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
+import java.io.Closeable;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/io/CharStreams.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+@Beta
+public final class CharStreams
+{
+private static final int BUF_SIZE = 2048;
+
+public static InputSupplier<StringReader> newReaderSupplier(final String value) {
+Preconditions.checkNotNull(value);
+return new InputSupplier<StringReader>()
+{
+public StringReader getInput() {
+return new StringReader(value);
+}
+};
+}
+
+public static InputSupplier<InputStreamReader> newReaderSupplier(final InputSupplier<? extends InputStream> in, final Charset charset) {
+Preconditions.checkNotNull(in);
+Preconditions.checkNotNull(charset);
+return new InputSupplier<InputStreamReader>()
+{
+public InputStreamReader getInput() throws IOException {
+return new InputStreamReader(in.getInput(), charset);
+}
+};
+}
+
+public static OutputSupplier<OutputStreamWriter> newWriterSupplier(final OutputSupplier<? extends OutputStream> out, final Charset charset) {
+Preconditions.checkNotNull(out);
+Preconditions.checkNotNull(charset);
+return new OutputSupplier<OutputStreamWriter>()
+{
+public OutputStreamWriter getOutput() throws IOException {
+return new OutputStreamWriter(out.getOutput(), charset);
+}
+};
+}
+
+public static <W extends Appendable & Closeable> void write(CharSequence from, OutputSupplier<W> to) throws IOException {
+Preconditions.checkNotNull(from);
+boolean threw = true;
+Appendable appendable = (Appendable)to.getOutput();
+try {
+appendable.append(from);
+threw = false;
+} finally {
+Closeables.close((Closeable)appendable, threw);
+} 
+}
+
+public static <R extends Readable & Closeable, W extends Appendable & Closeable> long copy(InputSupplier<R> from, OutputSupplier<W> to) throws IOException {
+boolean threw = true;
+Readable readable = (Readable)from.getInput();
+try {
+Appendable appendable = (Appendable)to.getOutput();
+
+}
+finally {
+
+Closeables.close((Closeable)readable, threw);
+} 
+}
+
+public static <R extends Readable & Closeable> long copy(InputSupplier<R> from, Appendable to) throws IOException {
+boolean threw = true;
+Readable readable = (Readable)from.getInput();
+try {
+long count = copy(readable, to);
+threw = false;
+return count;
+} finally {
+Closeables.close((Closeable)readable, threw);
+} 
+}
+
+public static long copy(Readable from, Appendable to) throws IOException {
+CharBuffer buf = CharBuffer.allocate(2048);
+long total = 0L;
+while (true) {
+int r = from.read(buf);
+if (r == -1) {
+break;
+}
+buf.flip();
+to.append(buf, 0, r);
+total += r;
+} 
+return total;
+}
+
+public static String toString(Readable r) throws IOException {
+return toStringBuilder(r).toString();
+}
+
+public static <R extends Readable & Closeable> String toString(InputSupplier<R> supplier) throws IOException {
+
+}
+
+private static StringBuilder toStringBuilder(Readable r) throws IOException {
+StringBuilder sb = new StringBuilder();
+copy(r, sb);
+return sb;
+}
+
+private static <R extends Readable & Closeable> StringBuilder toStringBuilder(InputSupplier<R> supplier) throws IOException {
+boolean threw = true;
+Readable readable = (Readable)supplier.getInput();
+try {
+StringBuilder result = toStringBuilder(readable);
+threw = false;
+return result;
+} finally {
+Closeables.close((Closeable)readable, threw);
+} 
+}
+
+public static <R extends Readable & Closeable> String readFirstLine(InputSupplier<R> supplier) throws IOException {
+boolean threw = true;
+Readable readable = (Readable)supplier.getInput();
+try {
+String line = (new LineReader(readable)).readLine();
+threw = false;
+return line;
+} finally {
+Closeables.close((Closeable)readable, threw);
+} 
+}
+
+public static <R extends Readable & Closeable> List<String> readLines(InputSupplier<R> supplier) throws IOException {
+boolean threw = true;
+Readable readable = (Readable)supplier.getInput();
+try {
+List<String> result = readLines(readable);
+threw = false;
+return result;
+} finally {
+Closeables.close((Closeable)readable, threw);
+} 
+}
+
+public static List<String> readLines(Readable r) throws IOException {
+List<String> result = new ArrayList<String>();
+LineReader lineReader = new LineReader(r);
+String line;
+while ((line = lineReader.readLine()) != null) {
+result.add(line);
+}
+return result;
+}
+
+public static <R extends Readable & Closeable, T> T readLines(InputSupplier<R> supplier, LineProcessor<T> callback) throws IOException {
+boolean threw = true;
+Readable readable = (Readable)supplier.getInput();
+try {
+LineReader lineReader = new LineReader(readable); String line; do {
+
+} while ((line = lineReader.readLine()) != null && 
+callback.processLine(line));
+
+threw = false;
+} finally {
+Closeables.close((Closeable)readable, threw);
+} 
+return callback.getResult();
+}
+
+public static InputSupplier<Reader> join(final Iterable<? extends InputSupplier<? extends Reader>> suppliers) {
+return new InputSupplier<Reader>() {
+public Reader getInput() throws IOException {
+return new MultiReader(suppliers.iterator());
+}
+};
+}
+
+public static InputSupplier<Reader> join(InputSupplier<? extends Reader>... suppliers) {
+return join(Arrays.asList(suppliers));
+}
+
+public static void skipFully(Reader reader, long n) throws IOException {
+while (n > 0L) {
+long amt = reader.skip(n);
+if (amt == 0L) {
+
+if (reader.read() == -1) {
+throw new EOFException();
+}
+n--; continue;
+} 
+n -= amt;
+} 
+}
+
+public static Writer asWriter(Appendable target) {
+if (target instanceof Writer) {
+return (Writer)target;
+}
+return new AppendableWriter(target);
+}
+}
+

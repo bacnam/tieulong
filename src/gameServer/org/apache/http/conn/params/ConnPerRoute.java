@@ -7,8 +7,3 @@ public interface ConnPerRoute {
   int getMaxForRoute(HttpRoute paramHttpRoute);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/params/ConnPerRoute.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

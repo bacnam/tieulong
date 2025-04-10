@@ -9,18 +9,13 @@ import javax.annotation.Nullable;
 @GwtCompatible
 public interface ListMultimap<K, V> extends Multimap<K, V> {
   List<V> get(@Nullable K paramK);
-  
+
   List<V> removeAll(@Nullable Object paramObject);
-  
+
   List<V> replaceValues(K paramK, Iterable<? extends V> paramIterable);
-  
+
   Map<K, Collection<V>> asMap();
-  
+
   boolean equals(@Nullable Object paramObject);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/collect/ListMultimap.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

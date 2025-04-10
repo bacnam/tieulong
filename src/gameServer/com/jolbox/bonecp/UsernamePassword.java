@@ -1,78 +1,36 @@
-/*    */ package com.jolbox.bonecp;
-/*    */ 
-/*    */ import com.google.common.base.Objects;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class UsernamePassword
-/*    */ {
-/*    */   private String username;
-/*    */   private String password;
-/*    */   
-/*    */   public UsernamePassword(String username, String password) {
-/* 37 */     this.username = username;
-/* 38 */     this.password = password;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public String getUsername() {
-/* 46 */     return this.username;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public String getPassword() {
-/* 54 */     return this.password;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public boolean equals(Object obj) {
-/* 60 */     if (obj instanceof UsernamePassword) {
-/* 61 */       UsernamePassword that = (UsernamePassword)obj;
-/* 62 */       return (Objects.equal(this.username, that.getUsername()) && Objects.equal(this.password, that.getPassword()));
-/*    */     } 
-/*    */     
-/* 65 */     return false;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public int hashCode() {
-/* 70 */     return Objects.hashCode(new Object[] { this.username, this.password });
-/*    */   }
-/*    */ }
+package com.jolbox.bonecp;
 
+import com.google.common.base.Objects;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/jolbox/bonecp/UsernamePassword.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class UsernamePassword
+{
+private String username;
+private String password;
+
+public UsernamePassword(String username, String password) {
+this.username = username;
+this.password = password;
+}
+
+public String getUsername() {
+return this.username;
+}
+
+public String getPassword() {
+return this.password;
+}
+
+public boolean equals(Object obj) {
+if (obj instanceof UsernamePassword) {
+UsernamePassword that = (UsernamePassword)obj;
+return (Objects.equal(this.username, that.getUsername()) && Objects.equal(this.password, that.getPassword()));
+} 
+
+return false;
+}
+
+public int hashCode() {
+return Objects.hashCode(new Object[] { this.username, this.password });
+}
+}
+

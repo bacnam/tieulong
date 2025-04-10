@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 
 package org.apache.thrift.server;
 
@@ -39,26 +22,16 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
-/**
- * Server which uses Java's built in ThreadPool management to spawn off
- * a worker pool that
- *
- */
 public class TThreadPoolServer extends TServer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TThreadPoolServer.class.getName());
 
-  // Executor service for handling client connections
   private ExecutorService executorService_;
 
-  // Flag for stopping the server
   private volatile boolean stopped_;
 
-  // Server options
   private Options options_;
 
-  // Customizable server options
   public static class Options {
     public int minWorkerThreads = 5;
     public int maxWorkerThreads = Integer.MAX_VALUE;
@@ -168,7 +141,6 @@ public class TThreadPoolServer extends TServer {
     options_ = options;
   }
 
-
   public void serve() {
     try {
       serverTransport_.listen();
@@ -194,10 +166,6 @@ public class TThreadPoolServer extends TServer {
 
     executorService_.shutdown();
 
-    // Loop until awaitTermination finally does return without a interrupted
-    // exception. If we don't do this, then we'll shut down prematurely. We want
-    // to let the executorService clear it's task queue, closing client sockets
-    // appropriately.
     long timeoutMS = options_.stopTimeoutUnit.toMillis(options_.stopTimeoutVal);
     long now = System.currentTimeMillis();
     while (timeoutMS >= 0) {
@@ -219,23 +187,12 @@ public class TThreadPoolServer extends TServer {
 
   private class WorkerProcess implements Runnable {
 
-    /**
-     * Client that this services.
-     */
     private TTransport client_;
 
-    /**
-     * Default constructor.
-     *
-     * @param client Transport to process
-     */
     private WorkerProcess(TTransport client) {
       client_ = client;
     }
 
-    /**
-     * Loops on processing a client forever
-     */
     public void run() {
       TProcessor processor = null;
       TTransport inputTransport = null;
@@ -248,11 +205,10 @@ public class TThreadPoolServer extends TServer {
         outputTransport = outputTransportFactory_.getTransport(client_);
         inputProtocol = inputProtocolFactory_.getProtocol(inputTransport);
         outputProtocol = outputProtocolFactory_.getProtocol(outputTransport);
-        // we check stopped_ first to make sure we're not supposed to be shutting
-        // down. this is necessary for graceful shutdown.
+
         while (!stopped_ && processor.process(inputProtocol, outputProtocol)) {}
       } catch (TTransportException ttx) {
-        // Assume the client died and continue silently
+
       } catch (TException tx) {
         LOGGER.error("Thrift error occurred during processing of message.", tx);
       } catch (Exception x) {

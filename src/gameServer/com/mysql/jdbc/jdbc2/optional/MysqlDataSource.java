@@ -1,451 +1,219 @@
-/*     */ package com.mysql.jdbc.jdbc2.optional;
-/*     */ 
-/*     */ import com.mysql.jdbc.ConnectionPropertiesImpl;
-/*     */ import com.mysql.jdbc.NonRegisteringDriver;
-/*     */ import java.io.PrintWriter;
-/*     */ import java.io.Serializable;
-/*     */ import java.sql.Connection;
-/*     */ import java.sql.SQLException;
-/*     */ import java.util.Iterator;
-/*     */ import java.util.Properties;
-/*     */ import javax.naming.NamingException;
-/*     */ import javax.naming.Reference;
-/*     */ import javax.naming.Referenceable;
-/*     */ import javax.naming.StringRefAddr;
-/*     */ import javax.sql.DataSource;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class MysqlDataSource
-/*     */   extends ConnectionPropertiesImpl
-/*     */   implements DataSource, Referenceable, Serializable
-/*     */ {
-/*     */   static final long serialVersionUID = -5515846944416881264L;
-/*     */   protected static final NonRegisteringDriver mysqlDriver;
-/*     */   
-/*     */   static {
-/*     */     try {
-/*  58 */       mysqlDriver = new NonRegisteringDriver();
-/*  59 */     } catch (Exception E) {
-/*  60 */       throw new RuntimeException("Can not load Driver class com.mysql.jdbc.Driver");
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*  66 */   protected transient PrintWriter logWriter = null;
-/*     */ 
-/*     */   
-/*  69 */   protected String databaseName = null;
-/*     */ 
-/*     */   
-/*  72 */   protected String encoding = null;
-/*     */ 
-/*     */   
-/*  75 */   protected String hostName = null;
-/*     */ 
-/*     */   
-/*  78 */   protected String password = null;
-/*     */ 
-/*     */   
-/*  81 */   protected String profileSql = "false";
-/*     */ 
-/*     */   
-/*  84 */   protected String url = null;
-/*     */ 
-/*     */   
-/*  87 */   protected String user = null;
-/*     */ 
-/*     */   
-/*     */   protected boolean explicitUrl = false;
-/*     */ 
-/*     */   
-/*  93 */   protected int port = 3306;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public Connection getConnection() throws SQLException {
-/* 111 */     return getConnection(this.user, this.password);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public Connection getConnection(String userID, String pass) throws SQLException {
-/* 129 */     Properties props = new Properties();
-/*     */     
-/* 131 */     if (userID != null) {
-/* 132 */       props.setProperty("user", userID);
-/*     */     }
-/*     */     
-/* 135 */     if (pass != null) {
-/* 136 */       props.setProperty("password", pass);
-/*     */     }
-/*     */     
-/* 139 */     exposeAsProperties(props);
-/*     */     
-/* 141 */     return getConnection(props);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setDatabaseName(String dbName) {
-/* 151 */     this.databaseName = dbName;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getDatabaseName() {
-/* 160 */     return (this.databaseName != null) ? this.databaseName : "";
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setLogWriter(PrintWriter output) throws SQLException {
-/* 169 */     this.logWriter = output;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public PrintWriter getLogWriter() {
-/* 178 */     return this.logWriter;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setLoginTimeout(int seconds) throws SQLException {}
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getLoginTimeout() {
-/* 199 */     return 0;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setPassword(String pass) {
-/* 209 */     this.password = pass;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setPort(int p) {
-/* 219 */     this.port = p;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getPort() {
-/* 228 */     return this.port;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setPortNumber(int p) {
-/* 240 */     setPort(p);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getPortNumber() {
-/* 249 */     return getPort();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setPropertiesViaRef(Reference ref) throws SQLException {
-/* 262 */     initializeFromRef(ref);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public Reference getReference() throws NamingException {
-/* 274 */     String factoryName = "com.mysql.jdbc.jdbc2.optional.MysqlDataSourceFactory";
-/* 275 */     Reference ref = new Reference(getClass().getName(), factoryName, null);
-/* 276 */     ref.add(new StringRefAddr("user", getUser()));
-/*     */     
-/* 278 */     ref.add(new StringRefAddr("password", this.password));
-/*     */     
-/* 280 */     ref.add(new StringRefAddr("serverName", getServerName()));
-/* 281 */     ref.add(new StringRefAddr("port", "" + getPort()));
-/* 282 */     ref.add(new StringRefAddr("databaseName", getDatabaseName()));
-/* 283 */     ref.add(new StringRefAddr("url", getUrl()));
-/* 284 */     ref.add(new StringRefAddr("explicitUrl", String.valueOf(this.explicitUrl)));
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     try {
-/* 291 */       storeToRef(ref);
-/* 292 */     } catch (SQLException sqlEx) {
-/* 293 */       throw new NamingException(sqlEx.getMessage());
-/*     */     } 
-/*     */     
-/* 296 */     return ref;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setServerName(String serverName) {
-/* 306 */     this.hostName = serverName;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getServerName() {
-/* 315 */     return (this.hostName != null) ? this.hostName : "";
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setURL(String url) {
-/* 330 */     setUrl(url);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getURL() {
-/* 339 */     return getUrl();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setUrl(String url) {
-/* 351 */     this.url = url;
-/* 352 */     this.explicitUrl = true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getUrl() {
-/* 361 */     if (!this.explicitUrl) {
-/* 362 */       String builtUrl = "jdbc:mysql://";
-/* 363 */       builtUrl = builtUrl + getServerName() + ":" + getPort() + "/" + getDatabaseName();
-/*     */ 
-/*     */       
-/* 366 */       return builtUrl;
-/*     */     } 
-/*     */     
-/* 369 */     return this.url;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setUser(String userID) {
-/* 379 */     this.user = userID;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getUser() {
-/* 388 */     return this.user;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected Connection getConnection(Properties props) throws SQLException {
-/* 404 */     String jdbcUrlToUse = null;
-/*     */     
-/* 406 */     if (!this.explicitUrl) {
-/* 407 */       StringBuffer jdbcUrl = new StringBuffer("jdbc:mysql://");
-/*     */       
-/* 409 */       if (this.hostName != null) {
-/* 410 */         jdbcUrl.append(this.hostName);
-/*     */       }
-/*     */       
-/* 413 */       jdbcUrl.append(":");
-/* 414 */       jdbcUrl.append(this.port);
-/* 415 */       jdbcUrl.append("/");
-/*     */       
-/* 417 */       if (this.databaseName != null) {
-/* 418 */         jdbcUrl.append(this.databaseName);
-/*     */       }
-/*     */       
-/* 421 */       jdbcUrlToUse = jdbcUrl.toString();
-/*     */     } else {
-/* 423 */       jdbcUrlToUse = this.url;
-/*     */     } 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 430 */     Properties urlProps = mysqlDriver.parseURL(jdbcUrlToUse, null);
-/* 431 */     urlProps.remove("DBNAME");
-/* 432 */     urlProps.remove("HOST");
-/* 433 */     urlProps.remove("PORT");
-/*     */     
-/* 435 */     Iterator<Object> keys = urlProps.keySet().iterator();
-/*     */     
-/* 437 */     while (keys.hasNext()) {
-/* 438 */       String key = (String)keys.next();
-/*     */       
-/* 440 */       props.setProperty(key, urlProps.getProperty(key));
-/*     */     } 
-/*     */     
-/* 443 */     return mysqlDriver.connect(jdbcUrlToUse, props);
-/*     */   }
-/*     */ }
+package com.mysql.jdbc.jdbc2.optional;
 
+import com.mysql.jdbc.ConnectionPropertiesImpl;
+import com.mysql.jdbc.NonRegisteringDriver;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Properties;
+import javax.naming.NamingException;
+import javax.naming.Reference;
+import javax.naming.Referenceable;
+import javax.naming.StringRefAddr;
+import javax.sql.DataSource;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/jdbc2/optional/MysqlDataSource.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class MysqlDataSource
+extends ConnectionPropertiesImpl
+implements DataSource, Referenceable, Serializable
+{
+static final long serialVersionUID = -5515846944416881264L;
+protected static final NonRegisteringDriver mysqlDriver;
+
+static {
+try {
+mysqlDriver = new NonRegisteringDriver();
+} catch (Exception E) {
+throw new RuntimeException("Can not load Driver class com.mysql.jdbc.Driver");
+} 
+}
+
+protected transient PrintWriter logWriter = null;
+
+protected String databaseName = null;
+
+protected String encoding = null;
+
+protected String hostName = null;
+
+protected String password = null;
+
+protected String profileSql = "false";
+
+protected String url = null;
+
+protected String user = null;
+
+protected boolean explicitUrl = false;
+
+protected int port = 3306;
+
+public Connection getConnection() throws SQLException {
+return getConnection(this.user, this.password);
+}
+
+public Connection getConnection(String userID, String pass) throws SQLException {
+Properties props = new Properties();
+
+if (userID != null) {
+props.setProperty("user", userID);
+}
+
+if (pass != null) {
+props.setProperty("password", pass);
+}
+
+exposeAsProperties(props);
+
+return getConnection(props);
+}
+
+public void setDatabaseName(String dbName) {
+this.databaseName = dbName;
+}
+
+public String getDatabaseName() {
+return (this.databaseName != null) ? this.databaseName : "";
+}
+
+public void setLogWriter(PrintWriter output) throws SQLException {
+this.logWriter = output;
+}
+
+public PrintWriter getLogWriter() {
+return this.logWriter;
+}
+
+public void setLoginTimeout(int seconds) throws SQLException {}
+
+public int getLoginTimeout() {
+return 0;
+}
+
+public void setPassword(String pass) {
+this.password = pass;
+}
+
+public void setPort(int p) {
+this.port = p;
+}
+
+public int getPort() {
+return this.port;
+}
+
+public void setPortNumber(int p) {
+setPort(p);
+}
+
+public int getPortNumber() {
+return getPort();
+}
+
+public void setPropertiesViaRef(Reference ref) throws SQLException {
+initializeFromRef(ref);
+}
+
+public Reference getReference() throws NamingException {
+String factoryName = "com.mysql.jdbc.jdbc2.optional.MysqlDataSourceFactory";
+Reference ref = new Reference(getClass().getName(), factoryName, null);
+ref.add(new StringRefAddr("user", getUser()));
+
+ref.add(new StringRefAddr("password", this.password));
+
+ref.add(new StringRefAddr("serverName", getServerName()));
+ref.add(new StringRefAddr("port", "" + getPort()));
+ref.add(new StringRefAddr("databaseName", getDatabaseName()));
+ref.add(new StringRefAddr("url", getUrl()));
+ref.add(new StringRefAddr("explicitUrl", String.valueOf(this.explicitUrl)));
+
+try {
+storeToRef(ref);
+} catch (SQLException sqlEx) {
+throw new NamingException(sqlEx.getMessage());
+} 
+
+return ref;
+}
+
+public void setServerName(String serverName) {
+this.hostName = serverName;
+}
+
+public String getServerName() {
+return (this.hostName != null) ? this.hostName : "";
+}
+
+public void setURL(String url) {
+setUrl(url);
+}
+
+public String getURL() {
+return getUrl();
+}
+
+public void setUrl(String url) {
+this.url = url;
+this.explicitUrl = true;
+}
+
+public String getUrl() {
+if (!this.explicitUrl) {
+String builtUrl = "jdbc:mysql:
+builtUrl = builtUrl + getServerName() + ":" + getPort() + "/" + getDatabaseName();
+
+return builtUrl;
+} 
+
+return this.url;
+}
+
+public void setUser(String userID) {
+this.user = userID;
+}
+
+public String getUser() {
+return this.user;
+}
+
+protected Connection getConnection(Properties props) throws SQLException {
+String jdbcUrlToUse = null;
+
+if (!this.explicitUrl) {
+StringBuffer jdbcUrl = new StringBuffer("jdbc:mysql:
+
+if (this.hostName != null) {
+jdbcUrl.append(this.hostName);
+}
+
+jdbcUrl.append(":");
+jdbcUrl.append(this.port);
+jdbcUrl.append("/");
+
+if (this.databaseName != null) {
+jdbcUrl.append(this.databaseName);
+}
+
+jdbcUrlToUse = jdbcUrl.toString();
+} else {
+jdbcUrlToUse = this.url;
+} 
+
+Properties urlProps = mysqlDriver.parseURL(jdbcUrlToUse, null);
+urlProps.remove("DBNAME");
+urlProps.remove("HOST");
+urlProps.remove("PORT");
+
+Iterator<Object> keys = urlProps.keySet().iterator();
+
+while (keys.hasNext()) {
+String key = (String)keys.next();
+
+props.setProperty(key, urlProps.getProperty(key));
+} 
+
+return mysqlDriver.connect(jdbcUrlToUse, props);
+}
+}
+

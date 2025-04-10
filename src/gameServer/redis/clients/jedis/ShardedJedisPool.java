@@ -30,9 +30,6 @@ public class ShardedJedisPool extends Pool<ShardedJedis> {
         super(poolConfig, new ShardedJedisFactory(shards, algo, keyTagPattern));
     }
 
-    /**
-     * PoolableObjectFactory custom impl.
-     */
     private static class ShardedJedisFactory extends BasePoolableObjectFactory {
         private List<JedisShardInfo> shards;
         private Hashing algo;

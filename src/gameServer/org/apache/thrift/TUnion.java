@@ -1,20 +1,4 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package org.apache.thrift;
 
 import java.util.ArrayList;
@@ -106,7 +90,7 @@ public abstract class TUnion<T extends TUnion, F extends TFieldIdEnum> implement
     if (fieldId != setField_) {
       throw new IllegalArgumentException("Cannot get the value of field " + fieldId + " because union's set field is " + setField_);
     }
-    
+
     return getFieldValue();
   }
 
@@ -117,7 +101,7 @@ public abstract class TUnion<T extends TUnion, F extends TFieldIdEnum> implement
   public boolean isSet() {
     return setField_ != null;
   }
-  
+
   public boolean isSet(F fieldId) {
     return setField_ == fieldId;
   }
@@ -140,9 +124,7 @@ public abstract class TUnion<T extends TUnion, F extends TFieldIdEnum> implement
     }
 
     iprot.readFieldEnd();
-    // this is so that we will eat the stop byte. we could put a check here to
-    // make sure that it actually *is* the stop byte, but it's faster to do it
-    // this way.
+
     iprot.readFieldBegin();
     iprot.readStructEnd();
   }
@@ -169,20 +151,8 @@ public abstract class TUnion<T extends TUnion, F extends TFieldIdEnum> implement
     oprot.writeStructEnd();
   }
 
-  /**
-   * Implementation should be generated so that we can efficiently type check 
-   * various values.
-   * @param setField
-   * @param value
-   */
   protected abstract void checkType(F setField, Object value) throws ClassCastException;
 
-  /**
-   * Implementation should be generated to read the right stuff from the wire 
-   * based on the field header. 
-   * @param field
-   * @return
-   */
   protected abstract Object readValue(TProtocol iprot, TField field) throws TException;
 
   protected abstract void writeValue(TProtocol oprot) throws TException;

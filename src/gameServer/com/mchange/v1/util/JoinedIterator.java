@@ -1,97 +1,54 @@
-/*    */ package com.mchange.v1.util;
-/*    */ 
-/*    */ import java.util.Iterator;
-/*    */ import java.util.NoSuchElementException;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class JoinedIterator
-/*    */   implements Iterator
-/*    */ {
-/*    */   Iterator[] its;
-/* 43 */   Iterator removeIterator = null;
-/*    */   boolean permit_removes;
-/* 45 */   int cur = 0;
-/*    */ 
-/*    */   
-/*    */   public JoinedIterator(Iterator[] paramArrayOfIterator, boolean paramBoolean) {
-/* 49 */     this.its = paramArrayOfIterator;
-/* 50 */     this.permit_removes = paramBoolean;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public boolean hasNext() {
-/* 55 */     if (this.cur == this.its.length)
-/* 56 */       return false; 
-/* 57 */     if (this.its[this.cur].hasNext()) {
-/* 58 */       return true;
-/*    */     }
-/*    */     
-/* 61 */     this.cur++;
-/* 62 */     return hasNext();
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public Object next() {
-/* 68 */     if (!hasNext()) {
-/* 69 */       throw new NoSuchElementException();
-/*    */     }
-/* 71 */     this.removeIterator = this.its[this.cur];
-/* 72 */     return this.removeIterator.next();
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public void remove() {
-/* 77 */     if (this.permit_removes) {
-/*    */       
-/* 79 */       if (this.removeIterator != null) {
-/*    */         
-/* 81 */         this.removeIterator.remove();
-/* 82 */         this.removeIterator = null;
-/*    */       } else {
-/*    */         
-/* 85 */         throw new IllegalStateException("next() not called, or element already removed.");
-/*    */       } 
-/*    */     } else {
-/* 88 */       throw new UnsupportedOperationException();
-/*    */     } 
-/*    */   }
-/*    */ }
+package com.mchange.v1.util;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mchange/v1/util/JoinedIterator.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class JoinedIterator
+implements Iterator
+{
+Iterator[] its;
+Iterator removeIterator = null;
+boolean permit_removes;
+int cur = 0;
+
+public JoinedIterator(Iterator[] paramArrayOfIterator, boolean paramBoolean) {
+this.its = paramArrayOfIterator;
+this.permit_removes = paramBoolean;
+}
+
+public boolean hasNext() {
+if (this.cur == this.its.length)
+return false; 
+if (this.its[this.cur].hasNext()) {
+return true;
+}
+
+this.cur++;
+return hasNext();
+}
+
+public Object next() {
+if (!hasNext()) {
+throw new NoSuchElementException();
+}
+this.removeIterator = this.its[this.cur];
+return this.removeIterator.next();
+}
+
+public void remove() {
+if (this.permit_removes) {
+
+if (this.removeIterator != null) {
+
+this.removeIterator.remove();
+this.removeIterator = null;
+} else {
+
+throw new IllegalStateException("next() not called, or element already removed.");
+} 
+} else {
+throw new UnsupportedOperationException();
+} 
+}
+}
+

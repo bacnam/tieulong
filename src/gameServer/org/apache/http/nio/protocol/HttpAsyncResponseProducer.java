@@ -9,16 +9,11 @@ import org.apache.http.protocol.HttpContext;
 
 public interface HttpAsyncResponseProducer extends Closeable {
   HttpResponse generateResponse();
-  
+
   void produceContent(ContentEncoder paramContentEncoder, IOControl paramIOControl) throws IOException;
-  
+
   void responseCompleted(HttpContext paramHttpContext);
-  
+
   void failed(Exception paramException);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/HttpAsyncResponseProducer.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -1,61 +1,21 @@
-/*    */ package com.mysql.jdbc.integration.jboss;
-/*    */ 
-/*    */ import java.sql.SQLException;
-/*    */ import org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public final class ExtendedMysqlExceptionSorter
-/*    */   extends MySQLExceptionSorter
-/*    */ {
-/*    */   static final long serialVersionUID = -2454582336945931069L;
-/*    */   
-/*    */   public boolean isExceptionFatal(SQLException ex) {
-/* 47 */     String sqlState = ex.getSQLState();
-/*    */     
-/* 49 */     if (sqlState != null && sqlState.startsWith("08")) {
-/* 50 */       return true;
-/*    */     }
-/*    */     
-/* 53 */     return super.isExceptionFatal(ex);
-/*    */   }
-/*    */ }
+package com.mysql.jdbc.integration.jboss;
 
+import java.sql.SQLException;
+import org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/integration/jboss/ExtendedMysqlExceptionSorter.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public final class ExtendedMysqlExceptionSorter
+extends MySQLExceptionSorter
+{
+static final long serialVersionUID = -2454582336945931069L;
+
+public boolean isExceptionFatal(SQLException ex) {
+String sqlState = ex.getSQLState();
+
+if (sqlState != null && sqlState.startsWith("08")) {
+return true;
+}
+
+return super.isExceptionFatal(ex);
+}
+}
+

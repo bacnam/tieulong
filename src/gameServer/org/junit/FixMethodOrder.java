@@ -12,8 +12,3 @@ public @interface FixMethodOrder {
   MethodSorters value() default MethodSorters.DEFAULT;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/FixMethodOrder.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

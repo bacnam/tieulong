@@ -1,96 +1,35 @@
-/*    */ package ch.qos.logback.core.net.ssl;
-/*    */ 
-/*    */ import java.security.NoSuchAlgorithmException;
-/*    */ import java.security.NoSuchProviderException;
-/*    */ import javax.net.ssl.KeyManagerFactory;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class KeyManagerFactoryFactoryBean
-/*    */ {
-/*    */   private String algorithm;
-/*    */   private String provider;
-/*    */   
-/*    */   public KeyManagerFactory createKeyManagerFactory() throws NoSuchProviderException, NoSuchAlgorithmException {
-/* 46 */     return (getProvider() != null) ? KeyManagerFactory.getInstance(getAlgorithm(), getProvider()) : KeyManagerFactory.getInstance(getAlgorithm());
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public String getAlgorithm() {
-/* 58 */     if (this.algorithm == null) {
-/* 59 */       return KeyManagerFactory.getDefaultAlgorithm();
-/*    */     }
-/* 61 */     return this.algorithm;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public void setAlgorithm(String algorithm) {
-/* 71 */     this.algorithm = algorithm;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public String getProvider() {
-/* 79 */     return this.provider;
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public void setProvider(String provider) {
-/* 88 */     this.provider = provider;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.net.ssl;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import javax.net.ssl.KeyManagerFactory;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/net/ssl/KeyManagerFactoryFactoryBean.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class KeyManagerFactoryFactoryBean
+{
+private String algorithm;
+private String provider;
+
+public KeyManagerFactory createKeyManagerFactory() throws NoSuchProviderException, NoSuchAlgorithmException {
+return (getProvider() != null) ? KeyManagerFactory.getInstance(getAlgorithm(), getProvider()) : KeyManagerFactory.getInstance(getAlgorithm());
+}
+
+public String getAlgorithm() {
+if (this.algorithm == null) {
+return KeyManagerFactory.getDefaultAlgorithm();
+}
+return this.algorithm;
+}
+
+public void setAlgorithm(String algorithm) {
+this.algorithm = algorithm;
+}
+
+public String getProvider() {
+return this.provider;
+}
+
+public void setProvider(String provider) {
+this.provider = provider;
+}
+}
+

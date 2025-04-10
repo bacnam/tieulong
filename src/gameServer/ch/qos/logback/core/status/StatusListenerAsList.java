@@ -1,42 +1,19 @@
-/*    */ package ch.qos.logback.core.status;
-/*    */ 
-/*    */ import java.util.ArrayList;
-/*    */ import java.util.List;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class StatusListenerAsList
-/*    */   implements StatusListener
-/*    */ {
-/* 27 */   List<Status> statusList = new ArrayList<Status>();
-/*    */   
-/*    */   public void addStatusEvent(Status status) {
-/* 30 */     this.statusList.add(status);
-/*    */   }
-/*    */   
-/*    */   public List<Status> getStatusList() {
-/* 34 */     return this.statusList;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.status;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/status/StatusListenerAsList.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class StatusListenerAsList
+implements StatusListener
+{
+List<Status> statusList = new ArrayList<Status>();
+
+public void addStatusEvent(Status status) {
+this.statusList.add(status);
+}
+
+public List<Status> getStatusList() {
+return this.statusList;
+}
+}
+

@@ -1,195 +1,139 @@
-/*     */ package ch.qos.logback.core.joran.action;
-/*     */ 
-/*     */ import ch.qos.logback.core.joran.spi.ElementPath;
-/*     */ import ch.qos.logback.core.joran.spi.InterpretationContext;
-/*     */ import ch.qos.logback.core.joran.spi.NoAutoStartUtil;
-/*     */ import ch.qos.logback.core.joran.util.PropertySetter;
-/*     */ import ch.qos.logback.core.spi.ContextAware;
-/*     */ import ch.qos.logback.core.spi.LifeCycle;
-/*     */ import ch.qos.logback.core.util.AggregationType;
-/*     */ import ch.qos.logback.core.util.Loader;
-/*     */ import ch.qos.logback.core.util.OptionHelper;
-/*     */ import java.util.Stack;
-/*     */ import org.xml.sax.Attributes;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class NestedComplexPropertyIA
-/*     */   extends ImplicitAction
-/*     */ {
-/*  45 */   Stack<IADataForComplexProperty> actionDataStack = new Stack<IADataForComplexProperty>();
-/*     */ 
-/*     */   
-/*     */   public boolean isApplicable(ElementPath elementPath, Attributes attributes, InterpretationContext ic) {
-/*     */     IADataForComplexProperty ad;
-/*  50 */     String nestedElementTagName = elementPath.peekLast();
-/*     */ 
-/*     */     
-/*  53 */     if (ic.isEmpty()) {
-/*  54 */       return false;
-/*     */     }
-/*     */     
-/*  57 */     Object o = ic.peekObject();
-/*  58 */     PropertySetter parentBean = new PropertySetter(o);
-/*  59 */     parentBean.setContext(this.context);
-/*     */     
-/*  61 */     AggregationType aggregationType = parentBean.computeAggregationType(nestedElementTagName);
-/*     */ 
-/*     */     
-/*  64 */     switch (aggregationType) {
-/*     */       case NOT_FOUND:
-/*     */       case AS_BASIC_PROPERTY:
-/*     */       case AS_BASIC_PROPERTY_COLLECTION:
-/*  68 */         return false;
-/*     */ 
-/*     */       
-/*     */       case AS_COMPLEX_PROPERTY_COLLECTION:
-/*     */       case AS_COMPLEX_PROPERTY:
-/*  73 */         ad = new IADataForComplexProperty(parentBean, aggregationType, nestedElementTagName);
-/*     */         
-/*  75 */         this.actionDataStack.push(ad);
-/*     */         
-/*  77 */         return true;
-/*     */     } 
-/*  79 */     addError("PropertySetter.computeAggregationType returned " + aggregationType);
-/*     */     
-/*  81 */     return false;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void begin(InterpretationContext ec, String localName, Attributes attributes) {
-/*  89 */     IADataForComplexProperty actionData = this.actionDataStack.peek();
-/*     */ 
-/*     */     
-/*  92 */     String className = attributes.getValue("class");
-/*     */     
-/*  94 */     className = ec.subst(className);
-/*     */     
-/*  96 */     Class<?> componentClass = null;
-/*     */     
-/*     */     try {
-/*  99 */       if (!OptionHelper.isEmpty(className)) {
-/* 100 */         componentClass = Loader.loadClass(className, this.context);
-/*     */       } else {
-/*     */         
-/* 103 */         PropertySetter parentBean = actionData.parentBean;
-/* 104 */         componentClass = parentBean.getClassNameViaImplicitRules(actionData.getComplexPropertyName(), actionData.getAggregationType(), ec.getDefaultNestedComponentRegistry());
-/*     */       } 
-/*     */ 
-/*     */ 
-/*     */       
-/* 109 */       if (componentClass == null) {
-/* 110 */         actionData.inError = true;
-/* 111 */         String errMsg = "Could not find an appropriate class for property [" + localName + "]";
-/*     */         
-/* 113 */         addError(errMsg);
-/*     */         
-/*     */         return;
-/*     */       } 
-/* 117 */       if (OptionHelper.isEmpty(className)) {
-/* 118 */         addInfo("Assuming default type [" + componentClass.getName() + "] for [" + localName + "] property");
-/*     */       }
-/*     */ 
-/*     */       
-/* 122 */       actionData.setNestedComplexProperty(componentClass.newInstance());
-/*     */ 
-/*     */       
-/* 125 */       if (actionData.getNestedComplexProperty() instanceof ContextAware) {
-/* 126 */         ((ContextAware)actionData.getNestedComplexProperty()).setContext(this.context);
-/*     */       }
-/*     */ 
-/*     */ 
-/*     */       
-/* 131 */       ec.pushObject(actionData.getNestedComplexProperty());
-/*     */     }
-/* 133 */     catch (Exception oops) {
-/* 134 */       actionData.inError = true;
-/* 135 */       String msg = "Could not create component [" + localName + "] of type [" + className + "]";
-/*     */       
-/* 137 */       addError(msg, oops);
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void end(InterpretationContext ec, String tagName) {
-/* 146 */     IADataForComplexProperty actionData = this.actionDataStack.pop();
-/*     */ 
-/*     */     
-/* 149 */     if (actionData.inError) {
-/*     */       return;
-/*     */     }
-/*     */     
-/* 153 */     PropertySetter nestedBean = new PropertySetter(actionData.getNestedComplexProperty());
-/*     */     
-/* 155 */     nestedBean.setContext(this.context);
-/*     */ 
-/*     */     
-/* 158 */     if (nestedBean.computeAggregationType("parent") == AggregationType.AS_COMPLEX_PROPERTY) {
-/* 159 */       nestedBean.setComplexProperty("parent", actionData.parentBean.getObj());
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/* 164 */     Object nestedComplexProperty = actionData.getNestedComplexProperty();
-/* 165 */     if (nestedComplexProperty instanceof LifeCycle && NoAutoStartUtil.notMarkedWithNoAutoStart(nestedComplexProperty))
-/*     */     {
-/* 167 */       ((LifeCycle)nestedComplexProperty).start();
-/*     */     }
-/*     */     
-/* 170 */     Object o = ec.peekObject();
-/*     */     
-/* 172 */     if (o != actionData.getNestedComplexProperty()) {
-/* 173 */       addError("The object on the top the of the stack is not the component pushed earlier.");
-/*     */     } else {
-/* 175 */       ec.popObject();
-/*     */       
-/* 177 */       switch (actionData.aggregationType) {
-/*     */         case AS_COMPLEX_PROPERTY:
-/* 179 */           actionData.parentBean.setComplexProperty(tagName, actionData.getNestedComplexProperty());
-/*     */           break;
-/*     */ 
-/*     */         
-/*     */         case AS_COMPLEX_PROPERTY_COLLECTION:
-/* 184 */           actionData.parentBean.addComplexProperty(tagName, actionData.getNestedComplexProperty());
-/*     */           break;
-/*     */       } 
-/*     */     } 
-/*     */   }
-/*     */ }
+package ch.qos.logback.core.joran.action;
 
+import ch.qos.logback.core.joran.spi.ElementPath;
+import ch.qos.logback.core.joran.spi.InterpretationContext;
+import ch.qos.logback.core.joran.spi.NoAutoStartUtil;
+import ch.qos.logback.core.joran.util.PropertySetter;
+import ch.qos.logback.core.spi.ContextAware;
+import ch.qos.logback.core.spi.LifeCycle;
+import ch.qos.logback.core.util.AggregationType;
+import ch.qos.logback.core.util.Loader;
+import ch.qos.logback.core.util.OptionHelper;
+import java.util.Stack;
+import org.xml.sax.Attributes;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/joran/action/NestedComplexPropertyIA.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class NestedComplexPropertyIA
+extends ImplicitAction
+{
+Stack<IADataForComplexProperty> actionDataStack = new Stack<IADataForComplexProperty>();
+
+public boolean isApplicable(ElementPath elementPath, Attributes attributes, InterpretationContext ic) {
+IADataForComplexProperty ad;
+String nestedElementTagName = elementPath.peekLast();
+
+if (ic.isEmpty()) {
+return false;
+}
+
+Object o = ic.peekObject();
+PropertySetter parentBean = new PropertySetter(o);
+parentBean.setContext(this.context);
+
+AggregationType aggregationType = parentBean.computeAggregationType(nestedElementTagName);
+
+switch (aggregationType) {
+case NOT_FOUND:
+case AS_BASIC_PROPERTY:
+case AS_BASIC_PROPERTY_COLLECTION:
+return false;
+
+case AS_COMPLEX_PROPERTY_COLLECTION:
+case AS_COMPLEX_PROPERTY:
+ad = new IADataForComplexProperty(parentBean, aggregationType, nestedElementTagName);
+
+this.actionDataStack.push(ad);
+
+return true;
+} 
+addError("PropertySetter.computeAggregationType returned " + aggregationType);
+
+return false;
+}
+
+public void begin(InterpretationContext ec, String localName, Attributes attributes) {
+IADataForComplexProperty actionData = this.actionDataStack.peek();
+
+String className = attributes.getValue("class");
+
+className = ec.subst(className);
+
+Class<?> componentClass = null;
+
+try {
+if (!OptionHelper.isEmpty(className)) {
+componentClass = Loader.loadClass(className, this.context);
+} else {
+
+PropertySetter parentBean = actionData.parentBean;
+componentClass = parentBean.getClassNameViaImplicitRules(actionData.getComplexPropertyName(), actionData.getAggregationType(), ec.getDefaultNestedComponentRegistry());
+} 
+
+if (componentClass == null) {
+actionData.inError = true;
+String errMsg = "Could not find an appropriate class for property [" + localName + "]";
+
+addError(errMsg);
+
+return;
+} 
+if (OptionHelper.isEmpty(className)) {
+addInfo("Assuming default type [" + componentClass.getName() + "] for [" + localName + "] property");
+}
+
+actionData.setNestedComplexProperty(componentClass.newInstance());
+
+if (actionData.getNestedComplexProperty() instanceof ContextAware) {
+((ContextAware)actionData.getNestedComplexProperty()).setContext(this.context);
+}
+
+ec.pushObject(actionData.getNestedComplexProperty());
+}
+catch (Exception oops) {
+actionData.inError = true;
+String msg = "Could not create component [" + localName + "] of type [" + className + "]";
+
+addError(msg, oops);
+} 
+}
+
+public void end(InterpretationContext ec, String tagName) {
+IADataForComplexProperty actionData = this.actionDataStack.pop();
+
+if (actionData.inError) {
+return;
+}
+
+PropertySetter nestedBean = new PropertySetter(actionData.getNestedComplexProperty());
+
+nestedBean.setContext(this.context);
+
+if (nestedBean.computeAggregationType("parent") == AggregationType.AS_COMPLEX_PROPERTY) {
+nestedBean.setComplexProperty("parent", actionData.parentBean.getObj());
+}
+
+Object nestedComplexProperty = actionData.getNestedComplexProperty();
+if (nestedComplexProperty instanceof LifeCycle && NoAutoStartUtil.notMarkedWithNoAutoStart(nestedComplexProperty))
+{
+((LifeCycle)nestedComplexProperty).start();
+}
+
+Object o = ec.peekObject();
+
+if (o != actionData.getNestedComplexProperty()) {
+addError("The object on the top the of the stack is not the component pushed earlier.");
+} else {
+ec.popObject();
+
+switch (actionData.aggregationType) {
+case AS_COMPLEX_PROPERTY:
+actionData.parentBean.setComplexProperty(tagName, actionData.getNestedComplexProperty());
+break;
+
+case AS_COMPLEX_PROPERTY_COLLECTION:
+actionData.parentBean.addComplexProperty(tagName, actionData.getNestedComplexProperty());
+break;
+} 
+} 
+}
+}
+

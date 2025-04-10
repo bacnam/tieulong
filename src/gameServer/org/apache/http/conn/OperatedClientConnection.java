@@ -10,20 +10,15 @@ import org.apache.http.params.HttpParams;
 @Deprecated
 public interface OperatedClientConnection extends HttpClientConnection, HttpInetConnection {
   HttpHost getTargetHost();
-  
+
   boolean isSecure();
-  
+
   Socket getSocket();
-  
+
   void opening(Socket paramSocket, HttpHost paramHttpHost) throws IOException;
-  
+
   void openCompleted(boolean paramBoolean, HttpParams paramHttpParams) throws IOException;
-  
+
   void update(Socket paramSocket, HttpHost paramHttpHost, boolean paramBoolean, HttpParams paramHttpParams) throws IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/OperatedClientConnection.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

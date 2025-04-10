@@ -1,216 +1,181 @@
-/*     */ package com.mysql.jdbc;
-/*     */ 
-/*     */ import com.mysql.jdbc.jmx.LoadBalanceConnectionGroupManager;
-/*     */ import java.sql.SQLException;
-/*     */ import java.util.Collection;
-/*     */ import java.util.HashMap;
-/*     */ import java.util.HashSet;
-/*     */ import java.util.Map;
-/*     */ import java.util.Set;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class ConnectionGroupManager
-/*     */ {
-/*  36 */   private static HashMap<String, ConnectionGroup> GROUP_MAP = new HashMap<String, ConnectionGroup>();
-/*     */   
-/*  38 */   private static LoadBalanceConnectionGroupManager mbean = new LoadBalanceConnectionGroupManager();
-/*     */   
-/*     */   private static boolean hasRegisteredJmx = false;
-/*     */ 
-/*     */   
-/*     */   public static synchronized ConnectionGroup getConnectionGroupInstance(String groupName) {
-/*  44 */     if (GROUP_MAP.containsKey(groupName)) {
-/*  45 */       return GROUP_MAP.get(groupName);
-/*     */     }
-/*  47 */     ConnectionGroup group = new ConnectionGroup(groupName);
-/*  48 */     GROUP_MAP.put(groupName, group);
-/*  49 */     return group;
-/*     */   }
-/*     */   
-/*     */   public static void registerJmx() throws SQLException {
-/*  53 */     if (hasRegisteredJmx) {
-/*     */       return;
-/*     */     }
-/*     */     
-/*  57 */     mbean.registerJmx();
-/*  58 */     hasRegisteredJmx = true;
-/*     */   }
-/*     */   
-/*     */   public static ConnectionGroup getConnectionGroup(String groupName) {
-/*  62 */     return GROUP_MAP.get(groupName);
-/*     */   }
-/*     */   
-/*     */   private static Collection<ConnectionGroup> getGroupsMatching(String group) {
-/*  66 */     if (group == null || group.equals("")) {
-/*  67 */       Set<ConnectionGroup> set = new HashSet<ConnectionGroup>();
-/*     */       
-/*  69 */       set.addAll(GROUP_MAP.values());
-/*  70 */       return set;
-/*     */     } 
-/*  72 */     Set<ConnectionGroup> s = new HashSet<ConnectionGroup>();
-/*  73 */     ConnectionGroup o = GROUP_MAP.get(group);
-/*  74 */     if (o != null) {
-/*  75 */       s.add(o);
-/*     */     }
-/*  77 */     return s;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public static void addHost(String group, String host, boolean forExisting) {
-/*  82 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/*  83 */     for (ConnectionGroup cg : s) {
-/*  84 */       cg.addHost(host, forExisting);
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public static int getActiveHostCount(String group) {
-/*  90 */     Set<String> active = new HashSet<String>();
-/*  91 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/*  92 */     for (ConnectionGroup cg : s) {
-/*  93 */       active.addAll(cg.getInitialHosts());
-/*     */     }
-/*  95 */     return active.size();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static long getActiveLogicalConnectionCount(String group) {
-/* 101 */     int count = 0;
-/* 102 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 103 */     for (ConnectionGroup cg : s) {
-/* 104 */       count = (int)(count + cg.getActiveLogicalConnectionCount());
-/*     */     }
-/* 106 */     return count;
-/*     */   }
-/*     */   
-/*     */   public static long getActivePhysicalConnectionCount(String group) {
-/* 110 */     int count = 0;
-/* 111 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 112 */     for (ConnectionGroup cg : s) {
-/* 113 */       count = (int)(count + cg.getActivePhysicalConnectionCount());
-/*     */     }
-/* 115 */     return count;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public static int getTotalHostCount(String group) {
-/* 120 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 121 */     Set<String> hosts = new HashSet<String>();
-/* 122 */     for (ConnectionGroup cg : s) {
-/* 123 */       hosts.addAll(cg.getInitialHosts());
-/* 124 */       hosts.addAll(cg.getClosedHosts());
-/*     */     } 
-/* 126 */     return hosts.size();
-/*     */   }
-/*     */   
-/*     */   public static long getTotalLogicalConnectionCount(String group) {
-/* 130 */     long count = 0L;
-/* 131 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 132 */     for (ConnectionGroup cg : s) {
-/* 133 */       count += cg.getTotalLogicalConnectionCount();
-/*     */     }
-/* 135 */     return count;
-/*     */   }
-/*     */   
-/*     */   public static long getTotalPhysicalConnectionCount(String group) {
-/* 139 */     long count = 0L;
-/* 140 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 141 */     for (ConnectionGroup cg : s) {
-/* 142 */       count += cg.getTotalPhysicalConnectionCount();
-/*     */     }
-/* 144 */     return count;
-/*     */   }
-/*     */   
-/*     */   public static long getTotalTransactionCount(String group) {
-/* 148 */     long count = 0L;
-/* 149 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 150 */     for (ConnectionGroup cg : s) {
-/* 151 */       count += cg.getTotalTransactionCount();
-/*     */     }
-/* 153 */     return count;
-/*     */   }
-/*     */   
-/*     */   public static void removeHost(String group, String host) throws SQLException {
-/* 157 */     removeHost(group, host, false);
-/*     */   }
-/*     */   
-/*     */   public static void removeHost(String group, String host, boolean removeExisting) throws SQLException {
-/* 161 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 162 */     for (ConnectionGroup cg : s) {
-/* 163 */       cg.removeHost(host, removeExisting);
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   public static String getActiveHostLists(String group) {
-/* 168 */     Collection<ConnectionGroup> s = getGroupsMatching(group);
-/* 169 */     Map<String, Integer> hosts = new HashMap<String, Integer>();
-/* 170 */     for (ConnectionGroup cg : s) {
-/*     */       
-/* 172 */       Collection<String> l = cg.getInitialHosts();
-/* 173 */       for (String host : l) {
-/* 174 */         Integer o = hosts.get(host);
-/* 175 */         if (o == null) {
-/* 176 */           o = Integer.valueOf(1);
-/*     */         } else {
-/* 178 */           o = Integer.valueOf(o.intValue() + 1);
-/*     */         } 
-/* 180 */         hosts.put(host, o);
-/*     */       } 
-/*     */     } 
-/*     */ 
-/*     */     
-/* 185 */     StringBuffer sb = new StringBuffer();
-/* 186 */     String sep = "";
-/* 187 */     for (String host : hosts.keySet()) {
-/* 188 */       sb.append(sep);
-/* 189 */       sb.append(host);
-/* 190 */       sb.append('(');
-/* 191 */       sb.append(hosts.get(host));
-/* 192 */       sb.append(')');
-/* 193 */       sep = ",";
-/*     */     } 
-/* 195 */     return sb.toString();
-/*     */   }
-/*     */   
-/*     */   public static String getRegisteredConnectionGroups() {
-/* 199 */     Collection<ConnectionGroup> s = getGroupsMatching(null);
-/* 200 */     StringBuffer sb = new StringBuffer();
-/* 201 */     String sep = "";
-/* 202 */     for (ConnectionGroup cg : s) {
-/* 203 */       String group = cg.getGroupName();
-/* 204 */       sb.append(sep);
-/* 205 */       sb.append(group);
-/* 206 */       sep = ",";
-/*     */     } 
-/* 208 */     return sb.toString();
-/*     */   }
-/*     */ }
+package com.mysql.jdbc;
 
+import com.mysql.jdbc.jmx.LoadBalanceConnectionGroupManager;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/ConnectionGroupManager.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class ConnectionGroupManager
+{
+private static HashMap<String, ConnectionGroup> GROUP_MAP = new HashMap<String, ConnectionGroup>();
+
+private static LoadBalanceConnectionGroupManager mbean = new LoadBalanceConnectionGroupManager();
+
+private static boolean hasRegisteredJmx = false;
+
+public static synchronized ConnectionGroup getConnectionGroupInstance(String groupName) {
+if (GROUP_MAP.containsKey(groupName)) {
+return GROUP_MAP.get(groupName);
+}
+ConnectionGroup group = new ConnectionGroup(groupName);
+GROUP_MAP.put(groupName, group);
+return group;
+}
+
+public static void registerJmx() throws SQLException {
+if (hasRegisteredJmx) {
+return;
+}
+
+mbean.registerJmx();
+hasRegisteredJmx = true;
+}
+
+public static ConnectionGroup getConnectionGroup(String groupName) {
+return GROUP_MAP.get(groupName);
+}
+
+private static Collection<ConnectionGroup> getGroupsMatching(String group) {
+if (group == null || group.equals("")) {
+Set<ConnectionGroup> set = new HashSet<ConnectionGroup>();
+
+set.addAll(GROUP_MAP.values());
+return set;
+} 
+Set<ConnectionGroup> s = new HashSet<ConnectionGroup>();
+ConnectionGroup o = GROUP_MAP.get(group);
+if (o != null) {
+s.add(o);
+}
+return s;
+}
+
+public static void addHost(String group, String host, boolean forExisting) {
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+cg.addHost(host, forExisting);
+}
+}
+
+public static int getActiveHostCount(String group) {
+Set<String> active = new HashSet<String>();
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+active.addAll(cg.getInitialHosts());
+}
+return active.size();
+}
+
+public static long getActiveLogicalConnectionCount(String group) {
+int count = 0;
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+count = (int)(count + cg.getActiveLogicalConnectionCount());
+}
+return count;
+}
+
+public static long getActivePhysicalConnectionCount(String group) {
+int count = 0;
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+count = (int)(count + cg.getActivePhysicalConnectionCount());
+}
+return count;
+}
+
+public static int getTotalHostCount(String group) {
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+Set<String> hosts = new HashSet<String>();
+for (ConnectionGroup cg : s) {
+hosts.addAll(cg.getInitialHosts());
+hosts.addAll(cg.getClosedHosts());
+} 
+return hosts.size();
+}
+
+public static long getTotalLogicalConnectionCount(String group) {
+long count = 0L;
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+count += cg.getTotalLogicalConnectionCount();
+}
+return count;
+}
+
+public static long getTotalPhysicalConnectionCount(String group) {
+long count = 0L;
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+count += cg.getTotalPhysicalConnectionCount();
+}
+return count;
+}
+
+public static long getTotalTransactionCount(String group) {
+long count = 0L;
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+count += cg.getTotalTransactionCount();
+}
+return count;
+}
+
+public static void removeHost(String group, String host) throws SQLException {
+removeHost(group, host, false);
+}
+
+public static void removeHost(String group, String host, boolean removeExisting) throws SQLException {
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+for (ConnectionGroup cg : s) {
+cg.removeHost(host, removeExisting);
+}
+}
+
+public static String getActiveHostLists(String group) {
+Collection<ConnectionGroup> s = getGroupsMatching(group);
+Map<String, Integer> hosts = new HashMap<String, Integer>();
+for (ConnectionGroup cg : s) {
+
+Collection<String> l = cg.getInitialHosts();
+for (String host : l) {
+Integer o = hosts.get(host);
+if (o == null) {
+o = Integer.valueOf(1);
+} else {
+o = Integer.valueOf(o.intValue() + 1);
+} 
+hosts.put(host, o);
+} 
+} 
+
+StringBuffer sb = new StringBuffer();
+String sep = "";
+for (String host : hosts.keySet()) {
+sb.append(sep);
+sb.append(host);
+sb.append('(');
+sb.append(hosts.get(host));
+sb.append(')');
+sep = ",";
+} 
+return sb.toString();
+}
+
+public static String getRegisteredConnectionGroups() {
+Collection<ConnectionGroup> s = getGroupsMatching(null);
+StringBuffer sb = new StringBuffer();
+String sep = "";
+for (ConnectionGroup cg : s) {
+String group = cg.getGroupName();
+sb.append(sep);
+sb.append(group);
+sep = ",";
+} 
+return sb.toString();
+}
+}
+

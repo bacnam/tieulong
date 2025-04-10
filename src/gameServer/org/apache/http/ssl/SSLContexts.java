@@ -1,95 +1,35 @@
-/*    */ package org.apache.http.ssl;
-/*    */ 
-/*    */ import java.security.KeyManagementException;
-/*    */ import java.security.NoSuchAlgorithmException;
-/*    */ import javax.net.ssl.SSLContext;
-/*    */ import org.apache.http.annotation.Immutable;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ @Immutable
-/*    */ public class SSLContexts
-/*    */ {
-/*    */   public static SSLContext createDefault() throws SSLInitializationException {
-/*    */     try {
-/* 54 */       SSLContext sslcontext = SSLContext.getInstance("TLS");
-/* 55 */       sslcontext.init(null, null, null);
-/* 56 */       return sslcontext;
-/* 57 */     } catch (NoSuchAlgorithmException ex) {
-/* 58 */       throw new SSLInitializationException(ex.getMessage(), ex);
-/* 59 */     } catch (KeyManagementException ex) {
-/* 60 */       throw new SSLInitializationException(ex.getMessage(), ex);
-/*    */     } 
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public static SSLContext createSystemDefault() throws SSLInitializationException {
-/*    */     try {
-/* 75 */       return SSLContext.getDefault();
-/* 76 */     } catch (NoSuchAlgorithmException ex) {
-/* 77 */       return createDefault();
-/*    */     } 
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public static SSLContextBuilder custom() {
-/* 87 */     return SSLContextBuilder.create();
-/*    */   }
-/*    */ }
+package org.apache.http.ssl;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import javax.net.ssl.SSLContext;
+import org.apache.http.annotation.Immutable;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/ssl/SSLContexts.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@Immutable
+public class SSLContexts
+{
+public static SSLContext createDefault() throws SSLInitializationException {
+try {
+SSLContext sslcontext = SSLContext.getInstance("TLS");
+sslcontext.init(null, null, null);
+return sslcontext;
+} catch (NoSuchAlgorithmException ex) {
+throw new SSLInitializationException(ex.getMessage(), ex);
+} catch (KeyManagementException ex) {
+throw new SSLInitializationException(ex.getMessage(), ex);
+} 
+}
+
+public static SSLContext createSystemDefault() throws SSLInitializationException {
+try {
+return SSLContext.getDefault();
+} catch (NoSuchAlgorithmException ex) {
+return createDefault();
+} 
+}
+
+public static SSLContextBuilder custom() {
+return SSLContextBuilder.create();
+}
+}
+

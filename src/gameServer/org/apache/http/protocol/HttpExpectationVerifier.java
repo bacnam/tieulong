@@ -8,8 +8,3 @@ public interface HttpExpectationVerifier {
   void verify(HttpRequest paramHttpRequest, HttpResponse paramHttpResponse, HttpContext paramHttpContext) throws HttpException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/protocol/HttpExpectationVerifier.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

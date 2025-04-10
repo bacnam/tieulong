@@ -7,12 +7,7 @@ import org.apache.http.protocol.HttpContext;
 
 public interface HttpAsyncRequestHandler<T> {
   HttpAsyncRequestConsumer<T> processRequest(HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws HttpException, IOException;
-  
+
   void handle(T paramT, HttpAsyncExchange paramHttpAsyncExchange, HttpContext paramHttpContext) throws HttpException, IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/HttpAsyncRequestHandler.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

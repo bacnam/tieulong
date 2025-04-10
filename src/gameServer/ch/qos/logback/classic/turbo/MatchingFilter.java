@@ -1,54 +1,31 @@
-/*    */ package ch.qos.logback.classic.turbo;
-/*    */ 
-/*    */ import ch.qos.logback.core.spi.FilterReply;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public abstract class MatchingFilter
-/*    */   extends TurboFilter
-/*    */ {
-/* 26 */   protected FilterReply onMatch = FilterReply.NEUTRAL;
-/* 27 */   protected FilterReply onMismatch = FilterReply.NEUTRAL;
-/*    */   
-/*    */   public final void setOnMatch(String action) {
-/* 30 */     if ("NEUTRAL".equals(action)) {
-/* 31 */       this.onMatch = FilterReply.NEUTRAL;
-/* 32 */     } else if ("ACCEPT".equals(action)) {
-/* 33 */       this.onMatch = FilterReply.ACCEPT;
-/* 34 */     } else if ("DENY".equals(action)) {
-/* 35 */       this.onMatch = FilterReply.DENY;
-/*    */     } 
-/*    */   }
-/*    */   
-/*    */   public final void setOnMismatch(String action) {
-/* 40 */     if ("NEUTRAL".equals(action)) {
-/* 41 */       this.onMismatch = FilterReply.NEUTRAL;
-/* 42 */     } else if ("ACCEPT".equals(action)) {
-/* 43 */       this.onMismatch = FilterReply.ACCEPT;
-/* 44 */     } else if ("DENY".equals(action)) {
-/* 45 */       this.onMismatch = FilterReply.DENY;
-/*    */     } 
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.turbo;
 
+import ch.qos.logback.core.spi.FilterReply;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/turbo/MatchingFilter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public abstract class MatchingFilter
+extends TurboFilter
+{
+protected FilterReply onMatch = FilterReply.NEUTRAL;
+protected FilterReply onMismatch = FilterReply.NEUTRAL;
+
+public final void setOnMatch(String action) {
+if ("NEUTRAL".equals(action)) {
+this.onMatch = FilterReply.NEUTRAL;
+} else if ("ACCEPT".equals(action)) {
+this.onMatch = FilterReply.ACCEPT;
+} else if ("DENY".equals(action)) {
+this.onMatch = FilterReply.DENY;
+} 
+}
+
+public final void setOnMismatch(String action) {
+if ("NEUTRAL".equals(action)) {
+this.onMismatch = FilterReply.NEUTRAL;
+} else if ("ACCEPT".equals(action)) {
+this.onMismatch = FilterReply.ACCEPT;
+} else if ("DENY".equals(action)) {
+this.onMismatch = FilterReply.DENY;
+} 
+}
+}
+

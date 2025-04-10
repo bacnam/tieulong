@@ -1,110 +1,51 @@
-/*     */ package com.mysql.jdbc;
-/*     */ 
-/*     */ import java.sql.SQLException;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class CommunicationsException
-/*     */   extends SQLException
-/*     */   implements StreamingNotifiable
-/*     */ {
-/*     */   static final long serialVersionUID = 3193864990663398317L;
-/*  46 */   private String exceptionMessage = null;
-/*     */   
-/*     */   private boolean streamingResultSetInPlay = false;
-/*     */   
-/*     */   private MySQLConnection conn;
-/*     */   
-/*     */   private long lastPacketSentTimeMs;
-/*     */   
-/*     */   private long lastPacketReceivedTimeMs;
-/*     */   
-/*     */   private Exception underlyingException;
-/*     */   
-/*     */   public CommunicationsException(MySQLConnection conn, long lastPacketSentTimeMs, long lastPacketReceivedTimeMs, Exception underlyingException) {
-/*  59 */     this.conn = conn;
-/*  60 */     this.lastPacketReceivedTimeMs = lastPacketReceivedTimeMs;
-/*  61 */     this.lastPacketSentTimeMs = lastPacketSentTimeMs;
-/*  62 */     this.underlyingException = underlyingException;
-/*     */     
-/*  64 */     if (underlyingException != null) {
-/*  65 */       initCause(underlyingException);
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getMessage() {
-/*  79 */     if (this.exceptionMessage == null) {
-/*  80 */       this.exceptionMessage = SQLError.createLinkFailureMessageBasedOnHeuristics(this.conn, this.lastPacketSentTimeMs, this.lastPacketReceivedTimeMs, this.underlyingException, this.streamingResultSetInPlay);
-/*     */ 
-/*     */       
-/*  83 */       this.conn = null;
-/*  84 */       this.underlyingException = null;
-/*     */     } 
-/*  86 */     return this.exceptionMessage;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getSQLState() {
-/*  95 */     return "08S01";
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setWasStreamingResults() {
-/* 102 */     this.streamingResultSetInPlay = true;
-/*     */   }
-/*     */ }
+package com.mysql.jdbc;
 
+import java.sql.SQLException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/CommunicationsException.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class CommunicationsException
+extends SQLException
+implements StreamingNotifiable
+{
+static final long serialVersionUID = 3193864990663398317L;
+private String exceptionMessage = null;
+
+private boolean streamingResultSetInPlay = false;
+
+private MySQLConnection conn;
+
+private long lastPacketSentTimeMs;
+
+private long lastPacketReceivedTimeMs;
+
+private Exception underlyingException;
+
+public CommunicationsException(MySQLConnection conn, long lastPacketSentTimeMs, long lastPacketReceivedTimeMs, Exception underlyingException) {
+this.conn = conn;
+this.lastPacketReceivedTimeMs = lastPacketReceivedTimeMs;
+this.lastPacketSentTimeMs = lastPacketSentTimeMs;
+this.underlyingException = underlyingException;
+
+if (underlyingException != null) {
+initCause(underlyingException);
+}
+}
+
+public String getMessage() {
+if (this.exceptionMessage == null) {
+this.exceptionMessage = SQLError.createLinkFailureMessageBasedOnHeuristics(this.conn, this.lastPacketSentTimeMs, this.lastPacketReceivedTimeMs, this.underlyingException, this.streamingResultSetInPlay);
+
+this.conn = null;
+this.underlyingException = null;
+} 
+return this.exceptionMessage;
+}
+
+public String getSQLState() {
+return "08S01";
+}
+
+public void setWasStreamingResults() {
+this.streamingResultSetInPlay = true;
+}
+}
+

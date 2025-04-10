@@ -1,51 +1,33 @@
-/*    */ package ch.qos.logback.classic.pattern;
-/*    */ 
-/*    */ import ch.qos.logback.classic.spi.ILoggingEvent;
-/*    */ import ch.qos.logback.classic.spi.LoggerContextVO;
-/*    */ import java.util.Map;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public final class PropertyConverter
-/*    */   extends ClassicConverter
-/*    */ {
-/*    */   String key;
-/*    */   
-/*    */   public void start() {
-/* 26 */     String optStr = getFirstOption();
-/* 27 */     if (optStr != null) {
-/* 28 */       this.key = optStr;
-/* 29 */       super.start();
-/*    */     } 
-/*    */   }
-/*    */   
-/*    */   public String convert(ILoggingEvent event) {
-/* 34 */     if (this.key == null) {
-/* 35 */       return "Property_HAS_NO_KEY";
-/*    */     }
-/* 37 */     LoggerContextVO lcvo = event.getLoggerContextVO();
-/* 38 */     Map<String, String> map = lcvo.getPropertyMap();
-/* 39 */     String val = map.get(this.key);
-/* 40 */     if (val != null) {
-/* 41 */       return val;
-/*    */     }
-/* 43 */     return System.getProperty(this.key);
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.pattern;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.LoggerContextVO;
+import java.util.Map;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/pattern/PropertyConverter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public final class PropertyConverter
+extends ClassicConverter
+{
+String key;
+
+public void start() {
+String optStr = getFirstOption();
+if (optStr != null) {
+this.key = optStr;
+super.start();
+} 
+}
+
+public String convert(ILoggingEvent event) {
+if (this.key == null) {
+return "Property_HAS_NO_KEY";
+}
+LoggerContextVO lcvo = event.getLoggerContextVO();
+Map<String, String> map = lcvo.getPropertyMap();
+String val = map.get(this.key);
+if (val != null) {
+return val;
+}
+return System.getProperty(this.key);
+}
+}
+

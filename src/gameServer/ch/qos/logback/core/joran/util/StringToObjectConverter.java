@@ -1,143 +1,109 @@
-/*     */ package ch.qos.logback.core.joran.util;
-/*     */ 
-/*     */ import ch.qos.logback.core.spi.ContextAware;
-/*     */ import java.lang.reflect.Method;
-/*     */ import java.lang.reflect.Modifier;
-/*     */ import java.nio.charset.Charset;
-/*     */ import java.nio.charset.UnsupportedCharsetException;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class StringToObjectConverter
-/*     */ {
-/*  31 */   private static final Class<?>[] STING_CLASS_PARAMETER = new Class[] { String.class };
-/*     */   
-/*     */   public static boolean canBeBuiltFromSimpleString(Class<?> parameterClass) {
-/*  34 */     Package p = parameterClass.getPackage();
-/*  35 */     if (parameterClass.isPrimitive())
-/*  36 */       return true; 
-/*  37 */     if (p != null && "java.lang".equals(p.getName()))
-/*  38 */       return true; 
-/*  39 */     if (followsTheValueOfConvention(parameterClass))
-/*  40 */       return true; 
-/*  41 */     if (parameterClass.isEnum())
-/*  42 */       return true; 
-/*  43 */     if (isOfTypeCharset(parameterClass)) {
-/*  44 */       return true;
-/*     */     }
-/*  46 */     return false;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static Object convertArg(ContextAware ca, String val, Class<?> type) {
-/*  54 */     if (val == null) {
-/*  55 */       return null;
-/*     */     }
-/*  57 */     String v = val.trim();
-/*  58 */     if (String.class.isAssignableFrom(type))
-/*  59 */       return v; 
-/*  60 */     if (int.class.isAssignableFrom(type))
-/*  61 */       return new Integer(v); 
-/*  62 */     if (long.class.isAssignableFrom(type))
-/*  63 */       return new Long(v); 
-/*  64 */     if (float.class.isAssignableFrom(type))
-/*  65 */       return new Float(v); 
-/*  66 */     if (double.class.isAssignableFrom(type))
-/*  67 */       return new Double(v); 
-/*  68 */     if (boolean.class.isAssignableFrom(type)) {
-/*  69 */       if ("true".equalsIgnoreCase(v))
-/*  70 */         return Boolean.TRUE; 
-/*  71 */       if ("false".equalsIgnoreCase(v))
-/*  72 */         return Boolean.FALSE; 
-/*     */     } else {
-/*  74 */       if (type.isEnum())
-/*  75 */         return convertToEnum(ca, v, (Class)type); 
-/*  76 */       if (followsTheValueOfConvention(type))
-/*  77 */         return convertByValueOfMethod(ca, type, v); 
-/*  78 */       if (isOfTypeCharset(type)) {
-/*  79 */         return convertToCharset(ca, val);
-/*     */       }
-/*     */     } 
-/*  82 */     return null;
-/*     */   }
-/*     */   
-/*     */   private static boolean isOfTypeCharset(Class<?> type) {
-/*  86 */     return Charset.class.isAssignableFrom(type);
-/*     */   }
-/*     */   
-/*     */   private static Charset convertToCharset(ContextAware ca, String val) {
-/*     */     try {
-/*  91 */       return Charset.forName(val);
-/*  92 */     } catch (UnsupportedCharsetException e) {
-/*  93 */       ca.addError("Failed to get charset [" + val + "]", e);
-/*  94 */       return null;
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private static boolean followsTheValueOfConvention(Class<?> parameterClass) {
-/*     */     try {
-/* 100 */       Method valueOfMethod = parameterClass.getMethod("valueOf", STING_CLASS_PARAMETER);
-/*     */       
-/* 102 */       int mod = valueOfMethod.getModifiers();
-/* 103 */       if (Modifier.isStatic(mod)) {
-/* 104 */         return true;
-/*     */       }
-/* 106 */     } catch (SecurityException e) {
-/*     */     
-/* 108 */     } catch (NoSuchMethodException e) {}
-/*     */ 
-/*     */     
-/* 111 */     return false;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private static Object convertByValueOfMethod(ContextAware ca, Class<?> type, String val) {
-/*     */     try {
-/* 117 */       Method valueOfMethod = type.getMethod("valueOf", STING_CLASS_PARAMETER);
-/*     */       
-/* 119 */       return valueOfMethod.invoke(null, new Object[] { val });
-/* 120 */     } catch (Exception e) {
-/* 121 */       ca.addError("Failed to invoke valueOf{} method in class [" + type.getName() + "] with value [" + val + "]");
-/*     */ 
-/*     */       
-/* 124 */       return null;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private static Object convertToEnum(ContextAware ca, String val, Class<? extends Enum> enumType) {
-/* 131 */     return Enum.valueOf(enumType, val);
-/*     */   }
-/*     */   
-/*     */   boolean isBuildableFromSimpleString() {
-/* 135 */     return false;
-/*     */   }
-/*     */ }
+package ch.qos.logback.core.joran.util;
 
+import ch.qos.logback.core.spi.ContextAware;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/joran/util/StringToObjectConverter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class StringToObjectConverter
+{
+private static final Class<?>[] STING_CLASS_PARAMETER = new Class[] { String.class };
+
+public static boolean canBeBuiltFromSimpleString(Class<?> parameterClass) {
+Package p = parameterClass.getPackage();
+if (parameterClass.isPrimitive())
+return true; 
+if (p != null && "java.lang".equals(p.getName()))
+return true; 
+if (followsTheValueOfConvention(parameterClass))
+return true; 
+if (parameterClass.isEnum())
+return true; 
+if (isOfTypeCharset(parameterClass)) {
+return true;
+}
+return false;
+}
+
+public static Object convertArg(ContextAware ca, String val, Class<?> type) {
+if (val == null) {
+return null;
+}
+String v = val.trim();
+if (String.class.isAssignableFrom(type))
+return v; 
+if (int.class.isAssignableFrom(type))
+return new Integer(v); 
+if (long.class.isAssignableFrom(type))
+return new Long(v); 
+if (float.class.isAssignableFrom(type))
+return new Float(v); 
+if (double.class.isAssignableFrom(type))
+return new Double(v); 
+if (boolean.class.isAssignableFrom(type)) {
+if ("true".equalsIgnoreCase(v))
+return Boolean.TRUE; 
+if ("false".equalsIgnoreCase(v))
+return Boolean.FALSE; 
+} else {
+if (type.isEnum())
+return convertToEnum(ca, v, (Class)type); 
+if (followsTheValueOfConvention(type))
+return convertByValueOfMethod(ca, type, v); 
+if (isOfTypeCharset(type)) {
+return convertToCharset(ca, val);
+}
+} 
+return null;
+}
+
+private static boolean isOfTypeCharset(Class<?> type) {
+return Charset.class.isAssignableFrom(type);
+}
+
+private static Charset convertToCharset(ContextAware ca, String val) {
+try {
+return Charset.forName(val);
+} catch (UnsupportedCharsetException e) {
+ca.addError("Failed to get charset [" + val + "]", e);
+return null;
+} 
+}
+
+private static boolean followsTheValueOfConvention(Class<?> parameterClass) {
+try {
+Method valueOfMethod = parameterClass.getMethod("valueOf", STING_CLASS_PARAMETER);
+
+int mod = valueOfMethod.getModifiers();
+if (Modifier.isStatic(mod)) {
+return true;
+}
+} catch (SecurityException e) {
+
+} catch (NoSuchMethodException e) {}
+
+return false;
+}
+
+private static Object convertByValueOfMethod(ContextAware ca, Class<?> type, String val) {
+try {
+Method valueOfMethod = type.getMethod("valueOf", STING_CLASS_PARAMETER);
+
+return valueOfMethod.invoke(null, new Object[] { val });
+} catch (Exception e) {
+ca.addError("Failed to invoke valueOf{} method in class [" + type.getName() + "] with value [" + val + "]");
+
+return null;
+} 
+}
+
+private static Object convertToEnum(ContextAware ca, String val, Class<? extends Enum> enumType) {
+return Enum.valueOf(enumType, val);
+}
+
+boolean isBuildableFromSimpleString() {
+return false;
+}
+}
+

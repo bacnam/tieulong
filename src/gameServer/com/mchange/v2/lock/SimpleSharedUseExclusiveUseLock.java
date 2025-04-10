@@ -1,106 +1,56 @@
-/*    */ package com.mchange.v2.lock;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class SimpleSharedUseExclusiveUseLock
-/*    */   implements SharedUseExclusiveUseLock
-/*    */ {
-/* 46 */   private int waiting_readers = 0;
-/* 47 */   private int active_readers = 0;
-/*    */   
-/* 49 */   private int waiting_writers = 0;
-/*    */   
-/*    */   private boolean writer_active = false;
-/*    */ 
-/*    */   
-/*    */   public synchronized void acquireShared() throws InterruptedException {
-/*    */     try {
-/* 56 */       this.waiting_readers++;
-/* 57 */       while (!okayToRead())
-/* 58 */         wait(); 
-/* 59 */       this.active_readers++;
-/*    */     }
-/*    */     finally {
-/*    */       
-/* 63 */       this.waiting_readers--;
-/*    */     } 
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public synchronized void relinquishShared() {
-/* 69 */     this.active_readers--;
-/* 70 */     notifyAll();
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public synchronized void acquireExclusive() throws InterruptedException {
-/*    */     try {
-/* 77 */       this.waiting_writers++;
-/* 78 */       while (!okayToWrite())
-/* 79 */         wait(); 
-/* 80 */       this.writer_active = true;
-/*    */     }
-/*    */     finally {
-/*    */       
-/* 84 */       this.waiting_writers--;
-/*    */     } 
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public synchronized void relinquishExclusive() {
-/* 90 */     this.writer_active = false;
-/* 91 */     notifyAll();
-/*    */   }
-/*    */   
-/*    */   private boolean okayToRead() {
-/* 95 */     return (!this.writer_active && this.waiting_writers == 0);
-/*    */   }
-/*    */   private boolean okayToWrite() {
-/* 98 */     return (this.active_readers == 0 && !this.writer_active);
-/*    */   }
-/*    */ }
+package com.mchange.v2.lock;
 
+public class SimpleSharedUseExclusiveUseLock
+implements SharedUseExclusiveUseLock
+{
+private int waiting_readers = 0;
+private int active_readers = 0;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mchange/v2/lock/SimpleSharedUseExclusiveUseLock.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+private int waiting_writers = 0;
+
+private boolean writer_active = false;
+
+public synchronized void acquireShared() throws InterruptedException {
+try {
+this.waiting_readers++;
+while (!okayToRead())
+wait(); 
+this.active_readers++;
+}
+finally {
+
+this.waiting_readers--;
+} 
+}
+
+public synchronized void relinquishShared() {
+this.active_readers--;
+notifyAll();
+}
+
+public synchronized void acquireExclusive() throws InterruptedException {
+try {
+this.waiting_writers++;
+while (!okayToWrite())
+wait(); 
+this.writer_active = true;
+}
+finally {
+
+this.waiting_writers--;
+} 
+}
+
+public synchronized void relinquishExclusive() {
+this.writer_active = false;
+notifyAll();
+}
+
+private boolean okayToRead() {
+return (!this.writer_active && this.waiting_writers == 0);
+}
+private boolean okayToWrite() {
+return (this.active_readers == 0 && !this.writer_active);
+}
+}
+

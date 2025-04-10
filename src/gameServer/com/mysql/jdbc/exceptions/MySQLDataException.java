@@ -1,52 +1,22 @@
-/*    */ package com.mysql.jdbc.exceptions;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class MySQLDataException
-/*    */   extends MySQLNonTransientException
-/*    */ {
-/*    */   static final long serialVersionUID = 4317904269797988676L;
-/*    */   
-/*    */   public MySQLDataException() {}
-/*    */   
-/*    */   public MySQLDataException(String reason, String SQLState, int vendorCode) {
-/* 36 */     super(reason, SQLState, vendorCode);
-/*    */   }
-/*    */   
-/*    */   public MySQLDataException(String reason, String SQLState) {
-/* 40 */     super(reason, SQLState);
-/*    */   }
-/*    */   
-/*    */   public MySQLDataException(String reason) {
-/* 44 */     super(reason);
-/*    */   }
-/*    */ }
+package com.mysql.jdbc.exceptions;
 
+public class MySQLDataException
+extends MySQLNonTransientException
+{
+static final long serialVersionUID = 4317904269797988676L;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/exceptions/MySQLDataException.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public MySQLDataException() {}
+
+public MySQLDataException(String reason, String SQLState, int vendorCode) {
+super(reason, SQLState, vendorCode);
+}
+
+public MySQLDataException(String reason, String SQLState) {
+super(reason, SQLState);
+}
+
+public MySQLDataException(String reason) {
+super(reason);
+}
+}
+

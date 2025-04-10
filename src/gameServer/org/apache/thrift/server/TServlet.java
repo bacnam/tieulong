@@ -19,9 +19,6 @@ import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TIOStreamTransport;
 import org.apache.thrift.transport.TTransport;
 
-/**
- * Servlet implementation class ThriftServer
- */
 public class TServlet extends HttpServlet {
 
   private final TProcessor processor;
@@ -32,9 +29,6 @@ public class TServlet extends HttpServlet {
 
   private final Collection<Map.Entry<String, String>> customHeaders;
 
-  /**
-   * @see HttpServlet#HttpServlet()
-   */
   public TServlet(TProcessor processor, TProtocolFactory inProtocolFactory,
       TProtocolFactory outProtocolFactory) {
     super();
@@ -44,17 +38,10 @@ public class TServlet extends HttpServlet {
     this.customHeaders = new ArrayList<Map.Entry<String, String>>();
   }
 
-  /**
-   * @see HttpServlet#HttpServlet()
-   */
   public TServlet(TProcessor processor, TProtocolFactory protocolFactory) {
     this(processor, protocolFactory, protocolFactory);
   }
 
-  /**
-   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-   *      response)
-   */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -87,10 +74,6 @@ public class TServlet extends HttpServlet {
     }
   }
 
-  /**
-   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-   *      response)
-   */
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     doPost(request, response);

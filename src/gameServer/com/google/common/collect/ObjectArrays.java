@@ -1,188 +1,78 @@
-/*     */ package com.google.common.collect;
-/*     */ 
-/*     */ import com.google.common.annotations.GwtCompatible;
-/*     */ import com.google.common.annotations.GwtIncompatible;
-/*     */ import java.util.Collection;
-/*     */ import javax.annotation.Nullable;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @GwtCompatible(emulated = true)
-/*     */ public final class ObjectArrays
-/*     */ {
-/*     */   @GwtIncompatible("Array.newInstance(Class, int)")
-/*     */   public static <T> T[] newArray(Class<T> type, int length) {
-/*  44 */     return Platform.newArray(type, length);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <T> T[] newArray(T[] reference, int length) {
-/*  55 */     return Platform.newArray(reference, length);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @GwtIncompatible("Array.newInstance(Class, int)")
-/*     */   public static <T> T[] concat(T[] first, T[] second, Class<T> type) {
-/*  67 */     T[] result = newArray(type, first.length + second.length);
-/*  68 */     Platform.unsafeArrayCopy((Object[])first, 0, (Object[])result, 0, first.length);
-/*  69 */     Platform.unsafeArrayCopy((Object[])second, 0, (Object[])result, first.length, second.length);
-/*  70 */     return result;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <T> T[] concat(@Nullable T element, T[] array) {
-/*  83 */     T[] result = newArray(array, array.length + 1);
-/*  84 */     result[0] = element;
-/*  85 */     Platform.unsafeArrayCopy((Object[])array, 0, (Object[])result, 1, array.length);
-/*  86 */     return result;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static <T> T[] concat(T[] array, @Nullable T element) {
-/*  99 */     T[] result = arraysCopyOf(array, array.length + 1);
-/* 100 */     result[array.length] = element;
-/* 101 */     return result;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   static <T> T[] arraysCopyOf(T[] original, int newLength) {
-/* 106 */     T[] copy = newArray(original, newLength);
-/* 107 */     Platform.unsafeArrayCopy((Object[])original, 0, (Object[])copy, 0, Math.min(original.length, newLength));
-/*     */     
-/* 109 */     return copy;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   static <T> T[] toArrayImpl(Collection<?> c, T[] array) {
-/* 137 */     int size = c.size();
-/* 138 */     if (array.length < size) {
-/* 139 */       array = newArray(array, size);
-/*     */     }
-/* 141 */     fillArray(c, (Object[])array);
-/* 142 */     if (array.length > size) {
-/* 143 */       array[size] = null;
-/*     */     }
-/* 145 */     return array;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   static Object[] toArrayImpl(Collection<?> c) {
-/* 163 */     return fillArray(c, new Object[c.size()]);
-/*     */   }
-/*     */   
-/*     */   private static Object[] fillArray(Iterable<?> elements, Object[] array) {
-/* 167 */     int i = 0;
-/* 168 */     for (Object element : elements) {
-/* 169 */       array[i++] = element;
-/*     */     }
-/* 171 */     return array;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   static void swap(Object[] array, int i, int j) {
-/* 178 */     Object temp = array[i];
-/* 179 */     array[i] = array[j];
-/* 180 */     array[j] = temp;
-/*     */   }
-/*     */ }
+package com.google.common.collect;
 
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
+import java.util.Collection;
+import javax.annotation.Nullable;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/collect/ObjectArrays.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+@GwtCompatible(emulated = true)
+public final class ObjectArrays
+{
+@GwtIncompatible("Array.newInstance(Class, int)")
+public static <T> T[] newArray(Class<T> type, int length) {
+return Platform.newArray(type, length);
+}
+
+public static <T> T[] newArray(T[] reference, int length) {
+return Platform.newArray(reference, length);
+}
+
+@GwtIncompatible("Array.newInstance(Class, int)")
+public static <T> T[] concat(T[] first, T[] second, Class<T> type) {
+T[] result = newArray(type, first.length + second.length);
+Platform.unsafeArrayCopy((Object[])first, 0, (Object[])result, 0, first.length);
+Platform.unsafeArrayCopy((Object[])second, 0, (Object[])result, first.length, second.length);
+return result;
+}
+
+public static <T> T[] concat(@Nullable T element, T[] array) {
+T[] result = newArray(array, array.length + 1);
+result[0] = element;
+Platform.unsafeArrayCopy((Object[])array, 0, (Object[])result, 1, array.length);
+return result;
+}
+
+public static <T> T[] concat(T[] array, @Nullable T element) {
+T[] result = arraysCopyOf(array, array.length + 1);
+result[array.length] = element;
+return result;
+}
+
+static <T> T[] arraysCopyOf(T[] original, int newLength) {
+T[] copy = newArray(original, newLength);
+Platform.unsafeArrayCopy((Object[])original, 0, (Object[])copy, 0, Math.min(original.length, newLength));
+
+return copy;
+}
+
+static <T> T[] toArrayImpl(Collection<?> c, T[] array) {
+int size = c.size();
+if (array.length < size) {
+array = newArray(array, size);
+}
+fillArray(c, (Object[])array);
+if (array.length > size) {
+array[size] = null;
+}
+return array;
+}
+
+static Object[] toArrayImpl(Collection<?> c) {
+return fillArray(c, new Object[c.size()]);
+}
+
+private static Object[] fillArray(Iterable<?> elements, Object[] array) {
+int i = 0;
+for (Object element : elements) {
+array[i++] = element;
+}
+return array;
+}
+
+static void swap(Object[] array, int i, int j) {
+Object temp = array[i];
+array[i] = array[j];
+array[j] = temp;
+}
+}
+

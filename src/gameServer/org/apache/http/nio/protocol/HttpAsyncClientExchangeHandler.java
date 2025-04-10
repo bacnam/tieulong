@@ -12,26 +12,21 @@ import org.apache.http.nio.IOControl;
 
 public interface HttpAsyncClientExchangeHandler extends Closeable, Cancellable {
   HttpRequest generateRequest() throws IOException, HttpException;
-  
+
   void produceContent(ContentEncoder paramContentEncoder, IOControl paramIOControl) throws IOException;
-  
+
   void requestCompleted();
-  
+
   void responseReceived(HttpResponse paramHttpResponse) throws IOException, HttpException;
-  
+
   void consumeContent(ContentDecoder paramContentDecoder, IOControl paramIOControl) throws IOException;
-  
+
   void responseCompleted() throws IOException, HttpException;
-  
+
   void inputTerminated();
-  
+
   void failed(Exception paramException);
-  
+
   boolean isDone();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/HttpAsyncClientExchangeHandler.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

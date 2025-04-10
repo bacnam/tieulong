@@ -6,16 +6,11 @@ import ch.qos.logback.core.spi.LifeCycle;
 
 public interface RollingPolicy extends LifeCycle {
   void rollover() throws RolloverFailure;
-  
+
   String getActiveFileName();
-  
+
   CompressionMode getCompressionMode();
-  
+
   void setParent(FileAppender paramFileAppender);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/rolling/RollingPolicy.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

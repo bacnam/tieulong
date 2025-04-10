@@ -1,62 +1,25 @@
-/*    */ package org.apache.http.client.utils;
-/*    */ 
-/*    */ import org.apache.http.annotation.Immutable;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ @Deprecated
-/*    */ @Immutable
-/*    */ public class Punycode
-/*    */ {
-/*    */   private static final Idn impl;
-/*    */   
-/*    */   static {
-/*    */     Idn idn;
-/*    */     try {
-/* 46 */       idn = new JdkIdn();
-/* 47 */     } catch (Exception e) {
-/* 48 */       idn = new Rfc3492Idn();
-/*    */     } 
-/* 50 */     impl = idn;
-/*    */   }
-/*    */   
-/*    */   public static String toUnicode(String punycode) {
-/* 54 */     return impl.toUnicode(punycode);
-/*    */   }
-/*    */ }
+package org.apache.http.client.utils;
 
+import org.apache.http.annotation.Immutable;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/utils/Punycode.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@Deprecated
+@Immutable
+public class Punycode
+{
+private static final Idn impl;
+
+static {
+Idn idn;
+try {
+idn = new JdkIdn();
+} catch (Exception e) {
+idn = new Rfc3492Idn();
+} 
+impl = idn;
+}
+
+public static String toUnicode(String punycode) {
+return impl.toUnicode(punycode);
+}
+}
+

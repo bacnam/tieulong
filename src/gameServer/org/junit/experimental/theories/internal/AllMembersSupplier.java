@@ -1,209 +1,193 @@
-/*     */ package org.junit.experimental.theories.internal;
-/*     */ 
-/*     */ import java.lang.reflect.Array;
-/*     */ import java.lang.reflect.Field;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.Collection;
-/*     */ import java.util.Iterator;
-/*     */ import java.util.List;
-/*     */ import org.junit.Assume;
-/*     */ import org.junit.experimental.theories.DataPoint;
-/*     */ import org.junit.experimental.theories.DataPoints;
-/*     */ import org.junit.experimental.theories.ParameterSignature;
-/*     */ import org.junit.experimental.theories.ParameterSupplier;
-/*     */ import org.junit.experimental.theories.PotentialAssignment;
-/*     */ import org.junit.runners.model.FrameworkField;
-/*     */ import org.junit.runners.model.FrameworkMethod;
-/*     */ import org.junit.runners.model.TestClass;
-/*     */ 
-/*     */ public class AllMembersSupplier
-/*     */   extends ParameterSupplier {
-/*     */   private final TestClass clazz;
-/*     */   
-/*     */   static class MethodParameterValue
-/*     */     extends PotentialAssignment {
-/*     */     private final FrameworkMethod method;
-/*     */     
-/*     */     private MethodParameterValue(FrameworkMethod dataPointMethod) {
-/*  28 */       this.method = dataPointMethod;
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public Object getValue() throws PotentialAssignment.CouldNotGenerateValueException {
-/*     */       try {
-/*  34 */         return this.method.invokeExplosively(null, new Object[0]);
-/*  35 */       } catch (IllegalArgumentException e) {
-/*  36 */         throw new RuntimeException("unexpected: argument length is checked");
-/*     */       }
-/*  38 */       catch (IllegalAccessException e) {
-/*  39 */         throw new RuntimeException("unexpected: getMethods returned an inaccessible method");
-/*     */       }
-/*  41 */       catch (Throwable throwable) {
-/*  42 */         DataPoint annotation = (DataPoint)this.method.getAnnotation(DataPoint.class);
-/*  43 */         Assume.assumeTrue((annotation == null || !AllMembersSupplier.isAssignableToAnyOf(annotation.ignoredExceptions(), throwable)));
-/*     */         
-/*  45 */         throw new PotentialAssignment.CouldNotGenerateValueException(throwable);
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */     
-/*     */     public String getDescription() throws PotentialAssignment.CouldNotGenerateValueException {
-/*  51 */       return this.method.getName();
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public AllMembersSupplier(TestClass type) {
-/*  61 */     this.clazz = type;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public List<PotentialAssignment> getValueSources(ParameterSignature sig) throws Throwable {
-/*  66 */     List<PotentialAssignment> list = new ArrayList<PotentialAssignment>();
-/*     */     
-/*  68 */     addSinglePointFields(sig, list);
-/*  69 */     addMultiPointFields(sig, list);
-/*  70 */     addSinglePointMethods(sig, list);
-/*  71 */     addMultiPointMethods(sig, list);
-/*     */     
-/*  73 */     return list;
-/*     */   }
-/*     */   
-/*     */   private void addMultiPointMethods(ParameterSignature sig, List<PotentialAssignment> list) throws Throwable {
-/*  77 */     for (FrameworkMethod dataPointsMethod : getDataPointsMethods(sig)) {
-/*  78 */       Class<?> returnType = dataPointsMethod.getReturnType();
-/*     */       
-/*  80 */       if ((returnType.isArray() && sig.canPotentiallyAcceptType(returnType.getComponentType())) || Iterable.class.isAssignableFrom(returnType)) {
-/*     */         
-/*     */         try {
-/*  83 */           addDataPointsValues(returnType, sig, dataPointsMethod.getName(), list, dataPointsMethod.invokeExplosively(null, new Object[0]));
-/*     */         }
-/*  85 */         catch (Throwable throwable) {
-/*  86 */           DataPoints annotation = (DataPoints)dataPointsMethod.getAnnotation(DataPoints.class);
-/*  87 */           if (annotation != null && isAssignableToAnyOf(annotation.ignoredExceptions(), throwable)) {
-/*     */             return;
-/*     */           }
-/*  90 */           throw throwable;
-/*     */         } 
-/*     */       }
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private void addSinglePointMethods(ParameterSignature sig, List<PotentialAssignment> list) {
-/*  98 */     for (FrameworkMethod dataPointMethod : getSingleDataPointMethods(sig)) {
-/*  99 */       if (sig.canAcceptType(dataPointMethod.getType())) {
-/* 100 */         list.add(new MethodParameterValue(dataPointMethod));
-/*     */       }
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private void addMultiPointFields(ParameterSignature sig, List<PotentialAssignment> list) {
-/* 106 */     for (Field field : getDataPointsFields(sig)) {
-/* 107 */       Class<?> type = field.getType();
-/* 108 */       addDataPointsValues(type, sig, field.getName(), list, getStaticFieldValue(field));
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private void addSinglePointFields(ParameterSignature sig, List<PotentialAssignment> list) {
-/* 113 */     for (Field field : getSingleDataPointFields(sig)) {
-/* 114 */       Object value = getStaticFieldValue(field);
-/*     */       
-/* 116 */       if (sig.canAcceptValue(value)) {
-/* 117 */         list.add(PotentialAssignment.forValue(field.getName(), value));
-/*     */       }
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private void addDataPointsValues(Class<?> type, ParameterSignature sig, String name, List<PotentialAssignment> list, Object value) {
-/* 124 */     if (type.isArray()) {
-/* 125 */       addArrayValues(sig, name, list, value);
-/*     */     }
-/* 127 */     else if (Iterable.class.isAssignableFrom(type)) {
-/* 128 */       addIterableValues(sig, name, list, (Iterable)value);
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private void addArrayValues(ParameterSignature sig, String name, List<PotentialAssignment> list, Object array) {
-/* 133 */     for (int i = 0; i < Array.getLength(array); i++) {
-/* 134 */       Object value = Array.get(array, i);
-/* 135 */       if (sig.canAcceptValue(value)) {
-/* 136 */         list.add(PotentialAssignment.forValue(name + "[" + i + "]", value));
-/*     */       }
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private void addIterableValues(ParameterSignature sig, String name, List<PotentialAssignment> list, Iterable<?> iterable) {
-/* 142 */     Iterator<?> iterator = iterable.iterator();
-/* 143 */     int i = 0;
-/* 144 */     while (iterator.hasNext()) {
-/* 145 */       Object value = iterator.next();
-/* 146 */       if (sig.canAcceptValue(value)) {
-/* 147 */         list.add(PotentialAssignment.forValue(name + "[" + i + "]", value));
-/*     */       }
-/* 149 */       i++;
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   private Object getStaticFieldValue(Field field) {
-/*     */     try {
-/* 155 */       return field.get(null);
-/* 156 */     } catch (IllegalArgumentException e) {
-/* 157 */       throw new RuntimeException("unexpected: field from getClass doesn't exist on object");
-/*     */     }
-/* 159 */     catch (IllegalAccessException e) {
-/* 160 */       throw new RuntimeException("unexpected: getFields returned an inaccessible field");
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private static boolean isAssignableToAnyOf(Class<?>[] typeArray, Object target) {
-/* 166 */     for (Class<?> type : typeArray) {
-/* 167 */       if (type.isAssignableFrom(target.getClass())) {
-/* 168 */         return true;
-/*     */       }
-/*     */     } 
-/* 171 */     return false;
-/*     */   }
-/*     */   
-/*     */   protected Collection<FrameworkMethod> getDataPointsMethods(ParameterSignature sig) {
-/* 175 */     return this.clazz.getAnnotatedMethods(DataPoints.class);
-/*     */   }
-/*     */   
-/*     */   protected Collection<Field> getSingleDataPointFields(ParameterSignature sig) {
-/* 179 */     List<FrameworkField> fields = this.clazz.getAnnotatedFields(DataPoint.class);
-/* 180 */     Collection<Field> validFields = new ArrayList<Field>();
-/*     */     
-/* 182 */     for (FrameworkField frameworkField : fields) {
-/* 183 */       validFields.add(frameworkField.getField());
-/*     */     }
-/*     */     
-/* 186 */     return validFields;
-/*     */   }
-/*     */   
-/*     */   protected Collection<Field> getDataPointsFields(ParameterSignature sig) {
-/* 190 */     List<FrameworkField> fields = this.clazz.getAnnotatedFields(DataPoints.class);
-/* 191 */     Collection<Field> validFields = new ArrayList<Field>();
-/*     */     
-/* 193 */     for (FrameworkField frameworkField : fields) {
-/* 194 */       validFields.add(frameworkField.getField());
-/*     */     }
-/*     */     
-/* 197 */     return validFields;
-/*     */   }
-/*     */   
-/*     */   protected Collection<FrameworkMethod> getSingleDataPointMethods(ParameterSignature sig) {
-/* 201 */     return this.clazz.getAnnotatedMethods(DataPoint.class);
-/*     */   }
-/*     */ }
+package org.junit.experimental.theories.internal;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import org.junit.Assume;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.ParameterSignature;
+import org.junit.experimental.theories.ParameterSupplier;
+import org.junit.experimental.theories.PotentialAssignment;
+import org.junit.runners.model.FrameworkField;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.TestClass;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/experimental/theories/internal/AllMembersSupplier.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class AllMembersSupplier
+extends ParameterSupplier {
+private final TestClass clazz;
+
+static class MethodParameterValue
+extends PotentialAssignment {
+private final FrameworkMethod method;
+
+private MethodParameterValue(FrameworkMethod dataPointMethod) {
+this.method = dataPointMethod;
+}
+
+public Object getValue() throws PotentialAssignment.CouldNotGenerateValueException {
+try {
+return this.method.invokeExplosively(null, new Object[0]);
+} catch (IllegalArgumentException e) {
+throw new RuntimeException("unexpected: argument length is checked");
+}
+catch (IllegalAccessException e) {
+throw new RuntimeException("unexpected: getMethods returned an inaccessible method");
+}
+catch (Throwable throwable) {
+DataPoint annotation = (DataPoint)this.method.getAnnotation(DataPoint.class);
+Assume.assumeTrue((annotation == null || !AllMembersSupplier.isAssignableToAnyOf(annotation.ignoredExceptions(), throwable)));
+
+throw new PotentialAssignment.CouldNotGenerateValueException(throwable);
+} 
+}
+
+public String getDescription() throws PotentialAssignment.CouldNotGenerateValueException {
+return this.method.getName();
+}
+}
+
+public AllMembersSupplier(TestClass type) {
+this.clazz = type;
+}
+
+public List<PotentialAssignment> getValueSources(ParameterSignature sig) throws Throwable {
+List<PotentialAssignment> list = new ArrayList<PotentialAssignment>();
+
+addSinglePointFields(sig, list);
+addMultiPointFields(sig, list);
+addSinglePointMethods(sig, list);
+addMultiPointMethods(sig, list);
+
+return list;
+}
+
+private void addMultiPointMethods(ParameterSignature sig, List<PotentialAssignment> list) throws Throwable {
+for (FrameworkMethod dataPointsMethod : getDataPointsMethods(sig)) {
+Class<?> returnType = dataPointsMethod.getReturnType();
+
+if ((returnType.isArray() && sig.canPotentiallyAcceptType(returnType.getComponentType())) || Iterable.class.isAssignableFrom(returnType)) {
+
+try {
+addDataPointsValues(returnType, sig, dataPointsMethod.getName(), list, dataPointsMethod.invokeExplosively(null, new Object[0]));
+}
+catch (Throwable throwable) {
+DataPoints annotation = (DataPoints)dataPointsMethod.getAnnotation(DataPoints.class);
+if (annotation != null && isAssignableToAnyOf(annotation.ignoredExceptions(), throwable)) {
+return;
+}
+throw throwable;
+} 
+}
+} 
+}
+
+private void addSinglePointMethods(ParameterSignature sig, List<PotentialAssignment> list) {
+for (FrameworkMethod dataPointMethod : getSingleDataPointMethods(sig)) {
+if (sig.canAcceptType(dataPointMethod.getType())) {
+list.add(new MethodParameterValue(dataPointMethod));
+}
+} 
+}
+
+private void addMultiPointFields(ParameterSignature sig, List<PotentialAssignment> list) {
+for (Field field : getDataPointsFields(sig)) {
+Class<?> type = field.getType();
+addDataPointsValues(type, sig, field.getName(), list, getStaticFieldValue(field));
+} 
+}
+
+private void addSinglePointFields(ParameterSignature sig, List<PotentialAssignment> list) {
+for (Field field : getSingleDataPointFields(sig)) {
+Object value = getStaticFieldValue(field);
+
+if (sig.canAcceptValue(value)) {
+list.add(PotentialAssignment.forValue(field.getName(), value));
+}
+} 
+}
+
+private void addDataPointsValues(Class<?> type, ParameterSignature sig, String name, List<PotentialAssignment> list, Object value) {
+if (type.isArray()) {
+addArrayValues(sig, name, list, value);
+}
+else if (Iterable.class.isAssignableFrom(type)) {
+addIterableValues(sig, name, list, (Iterable)value);
+} 
+}
+
+private void addArrayValues(ParameterSignature sig, String name, List<PotentialAssignment> list, Object array) {
+for (int i = 0; i < Array.getLength(array); i++) {
+Object value = Array.get(array, i);
+if (sig.canAcceptValue(value)) {
+list.add(PotentialAssignment.forValue(name + "[" + i + "]", value));
+}
+} 
+}
+
+private void addIterableValues(ParameterSignature sig, String name, List<PotentialAssignment> list, Iterable<?> iterable) {
+Iterator<?> iterator = iterable.iterator();
+int i = 0;
+while (iterator.hasNext()) {
+Object value = iterator.next();
+if (sig.canAcceptValue(value)) {
+list.add(PotentialAssignment.forValue(name + "[" + i + "]", value));
+}
+i++;
+} 
+}
+
+private Object getStaticFieldValue(Field field) {
+try {
+return field.get(null);
+} catch (IllegalArgumentException e) {
+throw new RuntimeException("unexpected: field from getClass doesn't exist on object");
+}
+catch (IllegalAccessException e) {
+throw new RuntimeException("unexpected: getFields returned an inaccessible field");
+} 
+}
+
+private static boolean isAssignableToAnyOf(Class<?>[] typeArray, Object target) {
+for (Class<?> type : typeArray) {
+if (type.isAssignableFrom(target.getClass())) {
+return true;
+}
+} 
+return false;
+}
+
+protected Collection<FrameworkMethod> getDataPointsMethods(ParameterSignature sig) {
+return this.clazz.getAnnotatedMethods(DataPoints.class);
+}
+
+protected Collection<Field> getSingleDataPointFields(ParameterSignature sig) {
+List<FrameworkField> fields = this.clazz.getAnnotatedFields(DataPoint.class);
+Collection<Field> validFields = new ArrayList<Field>();
+
+for (FrameworkField frameworkField : fields) {
+validFields.add(frameworkField.getField());
+}
+
+return validFields;
+}
+
+protected Collection<Field> getDataPointsFields(ParameterSignature sig) {
+List<FrameworkField> fields = this.clazz.getAnnotatedFields(DataPoints.class);
+Collection<Field> validFields = new ArrayList<Field>();
+
+for (FrameworkField frameworkField : fields) {
+validFields.add(frameworkField.getField());
+}
+
+return validFields;
+}
+
+protected Collection<FrameworkMethod> getSingleDataPointMethods(ParameterSignature sig) {
+return this.clazz.getAnnotatedMethods(DataPoint.class);
+}
+}
+

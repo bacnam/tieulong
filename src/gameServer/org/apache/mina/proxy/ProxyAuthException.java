@@ -1,53 +1,18 @@
-/*    */ package org.apache.mina.proxy;
-/*    */ 
-/*    */ import javax.security.sasl.SaslException;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ProxyAuthException
-/*    */   extends SaslException
-/*    */ {
-/*    */   private static final long serialVersionUID = -6511596809517532988L;
-/*    */   
-/*    */   public ProxyAuthException(String message) {
-/* 38 */     super(message);
-/*    */   }
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public ProxyAuthException(String message, Throwable ex) {
-/* 45 */     super(message, ex);
-/*    */   }
-/*    */ }
+package org.apache.mina.proxy;
 
+import javax.security.sasl.SaslException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/mina/proxy/ProxyAuthException.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class ProxyAuthException
+extends SaslException
+{
+private static final long serialVersionUID = -6511596809517532988L;
+
+public ProxyAuthException(String message) {
+super(message);
+}
+
+public ProxyAuthException(String message, Throwable ex) {
+super(message, ex);
+}
+}
+

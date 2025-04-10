@@ -1,119 +1,58 @@
-/*     */ package org.apache.http.entity;
-/*     */ 
-/*     */ import java.io.IOException;
-/*     */ import java.io.InputStream;
-/*     */ import java.io.OutputStream;
-/*     */ import org.apache.http.Header;
-/*     */ import org.apache.http.HttpEntity;
-/*     */ import org.apache.http.annotation.NotThreadSafe;
-/*     */ import org.apache.http.util.Args;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @NotThreadSafe
-/*     */ public class HttpEntityWrapper
-/*     */   implements HttpEntity
-/*     */ {
-/*     */   protected HttpEntity wrappedEntity;
-/*     */   
-/*     */   public HttpEntityWrapper(HttpEntity wrappedEntity) {
-/*  59 */     this.wrappedEntity = (HttpEntity)Args.notNull(wrappedEntity, "Wrapped entity");
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public boolean isRepeatable() {
-/*  64 */     return this.wrappedEntity.isRepeatable();
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public boolean isChunked() {
-/*  69 */     return this.wrappedEntity.isChunked();
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public long getContentLength() {
-/*  74 */     return this.wrappedEntity.getContentLength();
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public Header getContentType() {
-/*  79 */     return this.wrappedEntity.getContentType();
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public Header getContentEncoding() {
-/*  84 */     return this.wrappedEntity.getContentEncoding();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public InputStream getContent() throws IOException {
-/*  90 */     return this.wrappedEntity.getContent();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void writeTo(OutputStream outstream) throws IOException {
-/*  96 */     this.wrappedEntity.writeTo(outstream);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public boolean isStreaming() {
-/* 101 */     return this.wrappedEntity.isStreaming();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   @Deprecated
-/*     */   public void consumeContent() throws IOException {
-/* 111 */     this.wrappedEntity.consumeContent();
-/*     */   }
-/*     */ }
+package org.apache.http.entity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/entity/HttpEntityWrapper.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@NotThreadSafe
+public class HttpEntityWrapper
+implements HttpEntity
+{
+protected HttpEntity wrappedEntity;
+
+public HttpEntityWrapper(HttpEntity wrappedEntity) {
+this.wrappedEntity = (HttpEntity)Args.notNull(wrappedEntity, "Wrapped entity");
+}
+
+public boolean isRepeatable() {
+return this.wrappedEntity.isRepeatable();
+}
+
+public boolean isChunked() {
+return this.wrappedEntity.isChunked();
+}
+
+public long getContentLength() {
+return this.wrappedEntity.getContentLength();
+}
+
+public Header getContentType() {
+return this.wrappedEntity.getContentType();
+}
+
+public Header getContentEncoding() {
+return this.wrappedEntity.getContentEncoding();
+}
+
+public InputStream getContent() throws IOException {
+return this.wrappedEntity.getContent();
+}
+
+public void writeTo(OutputStream outstream) throws IOException {
+this.wrappedEntity.writeTo(outstream);
+}
+
+public boolean isStreaming() {
+return this.wrappedEntity.isStreaming();
+}
+
+@Deprecated
+public void consumeContent() throws IOException {
+this.wrappedEntity.consumeContent();
+}
+}
+

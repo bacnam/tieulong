@@ -1,41 +1,14 @@
-/*    */ package ch.qos.logback.core.joran.spi;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ActionException
-/*    */   extends Exception
-/*    */ {
-/*    */   private static final long serialVersionUID = 2743349809995319806L;
-/*    */   
-/*    */   public ActionException() {}
-/*    */   
-/*    */   public ActionException(Throwable rootCause) {
-/* 33 */     super(rootCause);
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.joran.spi;
 
+public class ActionException
+extends Exception
+{
+private static final long serialVersionUID = 2743349809995319806L;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/joran/spi/ActionException.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public ActionException() {}
+
+public ActionException(Throwable rootCause) {
+super(rootCause);
+}
+}
+

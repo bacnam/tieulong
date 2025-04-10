@@ -23,7 +23,7 @@ public class BinaryTransaction extends Queable {
 
     public List<Object> exec() {
         client.exec();
-        client.getAll(1); // Discard all but the last reply
+        client.getAll(1); 
 
         List<Object> unformatted = client.getObjectMultiBulkReply();
         if (unformatted == null) {
@@ -39,10 +39,10 @@ public class BinaryTransaction extends Queable {
         }
         return formatted;
     }
-    
+
     public List<Response<?>> execGetResponse() {
         client.exec();
-        client.getAll(1); // Discard all but the last reply
+        client.getAll(1); 
 
         List<Object> unformatted = client.getObjectMultiBulkReply();
         if (unformatted == null) {
@@ -57,7 +57,7 @@ public class BinaryTransaction extends Queable {
 
     public String discard() {
         client.discard();
-        client.getAll(1); // Discard all but the last reply
+        client.getAll(1); 
         inTransaction = false;
         clean();
         return client.getStatusCodeReply();
@@ -411,8 +411,8 @@ public class BinaryTransaction extends Queable {
         return getResponse(BuilderFactory.LONG);
     }
 
-    public Response<String> substr(byte[] key, int start, int end) { // what's
-        // that?
+    public Response<String> substr(byte[] key, int start, int end) { 
+
         client.substr(key, start, end);
         return getResponse(BuilderFactory.STRING);
     }
@@ -450,7 +450,7 @@ public class BinaryTransaction extends Queable {
     public Response<Long> zcount(byte[] key, double min, double max) {
         return zcount(key, toByteArray(min), toByteArray(max));
     }
-    
+
     public Response<Long> zcount(byte[] key, byte[] min, byte[] max) {
         client.zcount(key, min, max);
         return getResponse(BuilderFactory.LONG);
@@ -481,7 +481,7 @@ public class BinaryTransaction extends Queable {
             double max) {
         return zrangeByScore(key, toByteArray(min), toByteArray(max));
     }
-    
+
     public Response<Set<byte[]>> zrangeByScore(byte[] key, byte[] min,
     		byte[] max) {
         client.zrangeByScore(key, min, max);
@@ -493,7 +493,7 @@ public class BinaryTransaction extends Queable {
         client.zrangeByScore(key, min, max, offset, count);
         return getResponse(BuilderFactory.BYTE_ARRAY_ZSET);
     }
-    
+
     public Response<Set<byte[]>> zrangeByScore(byte[] key, double min,
             double max, int offset, int count) {
         return zrangeByScore(key, toByteArray(min), toByteArray(max), offset, count);
@@ -508,7 +508,7 @@ public class BinaryTransaction extends Queable {
             double max, int offset, int count) {
         return zrangeByScoreWithScores(key, toByteArray(min), toByteArray(max), offset, count);
     }
-    
+
     public Response<Set<Tuple>> zrangeByScoreWithScores(byte[] key, byte[] min,
     		byte[] max) {
         client.zrangeByScoreWithScores(key, min, max);
@@ -544,7 +544,7 @@ public class BinaryTransaction extends Queable {
     public Response<Long> zremrangeByScore(byte[] key, double start, double end) {
         return zremrangeByScore(key, toByteArray(start), toByteArray(end));
     }
-    
+
     public Response<Long> zremrangeByScore(byte[] key, byte[] start, byte[] end) {
         client.zremrangeByScore(key, start, end);
         return getResponse(BuilderFactory.LONG);
@@ -587,87 +587,87 @@ public class BinaryTransaction extends Queable {
         client.brpoplpush(source, destination, timeout);
         return getResponse(BuilderFactory.BYTE_ARRAY);
     }
-    
+
     public Response<String> select(final int index) {
         client.select(index);
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> flushDB() {
         client.flushDB();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> flushAll() {
         client.flushAll();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> save() {
         client.save();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> info() {
         client.info();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<Long> lastsave() {
         client.lastsave();
         return getResponse(BuilderFactory.LONG);
     }
-    
+
     public Response<Long> dbSize() {
         client.dbSize();
         return getResponse(BuilderFactory.LONG);
     }
-    
+
     public Response<List<byte[]>> configGet(final byte[] pattern) {
         client.configGet(pattern);
         return getResponse(BuilderFactory.BYTE_ARRAY_LIST);
     }
-    
+
     public Response<byte[]> configSet(final byte[] parameter, final byte[] value) {
         client.configSet(parameter, value);
         return getResponse(BuilderFactory.BYTE_ARRAY);
     }
-    
+
     public Response<String> configResetStat() {
         client.configResetStat();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<String> shutdown() {
         client.shutdown();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<Boolean> getbit(final byte[] key, final long offset) {
         client.getbit(key, offset);
         return getResponse(BuilderFactory.BOOLEAN);
     }
-    
+
     public Response<Boolean> setbit(final byte[] key, final long offset, final byte[] value) {
         client.setbit(key, offset, value);
         return getResponse(BuilderFactory.BOOLEAN);
     }
-    
+
     public Response<String> ping() {
         client.ping();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<Long> setrange(byte[] key, long offset, byte[] value) {
         client.setrange(key, offset, value);
         return getResponse(BuilderFactory.LONG);
     }
-    
+
     public Response<String> randomKey() {
         client.randomKey();
         return getResponse(BuilderFactory.STRING);
     }
-    
+
     public Response<Long> publish(byte[] channel, byte[] message) {
         client.publish(channel, message);
         return getResponse(BuilderFactory.LONG);

@@ -10,12 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
   String uri();
-  
+
   HttpMethod[] method() default {HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/zhonglian/server/http/annotation/RequestMapping.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

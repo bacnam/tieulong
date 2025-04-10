@@ -1,181 +1,120 @@
-/*     */ package ch.qos.logback.core.helpers;
-/*     */ 
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.List;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class CyclicBuffer<E>
-/*     */ {
-/*     */   E[] ea;
-/*     */   int first;
-/*     */   int last;
-/*     */   int numElems;
-/*     */   int maxSize;
-/*     */   
-/*     */   public CyclicBuffer(int maxSize) throws IllegalArgumentException {
-/*  44 */     if (maxSize < 1) {
-/*  45 */       throw new IllegalArgumentException("The maxSize argument (" + maxSize + ") is not a positive integer.");
-/*     */     }
-/*     */     
-/*  48 */     init(maxSize);
-/*     */   }
-/*     */   
-/*     */   public CyclicBuffer(CyclicBuffer<E> other) {
-/*  52 */     this.maxSize = other.maxSize;
-/*  53 */     this.ea = (E[])new Object[this.maxSize];
-/*  54 */     System.arraycopy(other.ea, 0, this.ea, 0, this.maxSize);
-/*  55 */     this.last = other.last;
-/*  56 */     this.first = other.first;
-/*  57 */     this.numElems = other.numElems;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private void init(int maxSize) {
-/*  62 */     this.maxSize = maxSize;
-/*  63 */     this.ea = (E[])new Object[maxSize];
-/*  64 */     this.first = 0;
-/*  65 */     this.last = 0;
-/*  66 */     this.numElems = 0;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void clear() {
-/*  73 */     init(this.maxSize);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void add(E event) {
-/*  81 */     this.ea[this.last] = event;
-/*  82 */     if (++this.last == this.maxSize) {
-/*  83 */       this.last = 0;
-/*     */     }
-/*  85 */     if (this.numElems < this.maxSize) {
-/*  86 */       this.numElems++;
-/*  87 */     } else if (++this.first == this.maxSize) {
-/*  88 */       this.first = 0;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public E get(int i) {
-/*  97 */     if (i < 0 || i >= this.numElems) {
-/*  98 */       return null;
-/*     */     }
-/* 100 */     return this.ea[(this.first + i) % this.maxSize];
-/*     */   }
-/*     */   
-/*     */   public int getMaxSize() {
-/* 104 */     return this.maxSize;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public E get() {
-/* 112 */     E r = null;
-/*     */     
-/* 114 */     this.numElems--;
-/* 115 */     r = this.ea[this.first];
-/* 116 */     this.ea[this.first] = null;
-/* 117 */     if (this.numElems > 0 && ++this.first == this.maxSize) {
-/* 118 */       this.first = 0;
-/*     */     }
-/* 120 */     return r;
-/*     */   }
-/*     */   
-/*     */   public List<E> asList() {
-/* 124 */     List<E> tList = new ArrayList<E>();
-/* 125 */     for (int i = 0; i < length(); i++) {
-/* 126 */       tList.add(get(i));
-/*     */     }
-/* 128 */     return tList;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int length() {
-/* 136 */     return this.numElems;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void resize(int newSize) {
-/* 147 */     if (newSize < 0) {
-/* 148 */       throw new IllegalArgumentException("Negative array size [" + newSize + "] not allowed.");
-/*     */     }
-/*     */     
-/* 151 */     if (newSize == this.numElems) {
-/*     */       return;
-/*     */     }
-/*     */     
-/* 155 */     E[] temp = (E[])new Object[newSize];
-/*     */     
-/* 157 */     int loopLen = (newSize < this.numElems) ? newSize : this.numElems;
-/*     */     
-/* 159 */     for (int i = 0; i < loopLen; i++) {
-/* 160 */       temp[i] = this.ea[this.first];
-/* 161 */       this.ea[this.first] = null;
-/* 162 */       if (++this.first == this.numElems)
-/* 163 */         this.first = 0; 
-/*     */     } 
-/* 165 */     this.ea = temp;
-/* 166 */     this.first = 0;
-/* 167 */     this.numElems = loopLen;
-/* 168 */     this.maxSize = newSize;
-/* 169 */     if (loopLen == newSize) {
-/* 170 */       this.last = 0;
-/*     */     } else {
-/* 172 */       this.last = loopLen;
-/*     */     } 
-/*     */   }
-/*     */ }
+package ch.qos.logback.core.helpers;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/helpers/CyclicBuffer.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class CyclicBuffer<E>
+{
+E[] ea;
+int first;
+int last;
+int numElems;
+int maxSize;
+
+public CyclicBuffer(int maxSize) throws IllegalArgumentException {
+if (maxSize < 1) {
+throw new IllegalArgumentException("The maxSize argument (" + maxSize + ") is not a positive integer.");
+}
+
+init(maxSize);
+}
+
+public CyclicBuffer(CyclicBuffer<E> other) {
+this.maxSize = other.maxSize;
+this.ea = (E[])new Object[this.maxSize];
+System.arraycopy(other.ea, 0, this.ea, 0, this.maxSize);
+this.last = other.last;
+this.first = other.first;
+this.numElems = other.numElems;
+}
+
+private void init(int maxSize) {
+this.maxSize = maxSize;
+this.ea = (E[])new Object[maxSize];
+this.first = 0;
+this.last = 0;
+this.numElems = 0;
+}
+
+public void clear() {
+init(this.maxSize);
+}
+
+public void add(E event) {
+this.ea[this.last] = event;
+if (++this.last == this.maxSize) {
+this.last = 0;
+}
+if (this.numElems < this.maxSize) {
+this.numElems++;
+} else if (++this.first == this.maxSize) {
+this.first = 0;
+} 
+}
+
+public E get(int i) {
+if (i < 0 || i >= this.numElems) {
+return null;
+}
+return this.ea[(this.first + i) % this.maxSize];
+}
+
+public int getMaxSize() {
+return this.maxSize;
+}
+
+public E get() {
+E r = null;
+
+this.numElems--;
+r = this.ea[this.first];
+this.ea[this.first] = null;
+if (this.numElems > 0 && ++this.first == this.maxSize) {
+this.first = 0;
+}
+return r;
+}
+
+public List<E> asList() {
+List<E> tList = new ArrayList<E>();
+for (int i = 0; i < length(); i++) {
+tList.add(get(i));
+}
+return tList;
+}
+
+public int length() {
+return this.numElems;
+}
+
+public void resize(int newSize) {
+if (newSize < 0) {
+throw new IllegalArgumentException("Negative array size [" + newSize + "] not allowed.");
+}
+
+if (newSize == this.numElems) {
+return;
+}
+
+E[] temp = (E[])new Object[newSize];
+
+int loopLen = (newSize < this.numElems) ? newSize : this.numElems;
+
+for (int i = 0; i < loopLen; i++) {
+temp[i] = this.ea[this.first];
+this.ea[this.first] = null;
+if (++this.first == this.numElems)
+this.first = 0; 
+} 
+this.ea = temp;
+this.first = 0;
+this.numElems = loopLen;
+this.maxSize = newSize;
+if (loopLen == newSize) {
+this.last = 0;
+} else {
+this.last = loopLen;
+} 
+}
+}
+

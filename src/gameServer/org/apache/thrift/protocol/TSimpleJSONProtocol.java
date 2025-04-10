@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 
 package org.apache.thrift.protocol;
 
@@ -26,19 +9,8 @@ import java.util.Stack;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransport;
 
-/**
- * JSON protocol implementation for thrift.
- *
- * This protocol is write-only and produces a simple output format
- * suitable for parsing by scripting languages.  It should not be
- * confused with the full-featured TJSONProtocol.
- *
- */
 public class TSimpleJSONProtocol extends TProtocol {
 
-  /**
-   * Factory
-   */
   public static class Factory implements TProtocolFactory {
     public TProtocol getProtocol(TTransport trans) {
       return new TSimpleJSONProtocol(trans);
@@ -93,34 +65,19 @@ public class TSimpleJSONProtocol extends TProtocol {
 
   protected final Context BASE_CONTEXT = new Context();
 
-  /**
-   * Stack of nested contexts that we may be in.
-   */
   protected Stack<Context> writeContextStack_ = new Stack<Context>();
 
-  /**
-   * Current context that we are in
-   */
   protected Context writeContext_ = BASE_CONTEXT;
 
-  /**
-   * Push a new write context onto the stack.
-   */
   protected void pushWriteContext(Context c) {
     writeContextStack_.push(writeContext_);
     writeContext_ = c;
   }
 
-  /**
-   * Pop the last write context off the stack
-   */
   protected void popWriteContext() {
     writeContext_ = writeContextStack_.pop();
   }
 
-  /**
-   * Constructor
-   */
   public TSimpleJSONProtocol(TTransport trans) {
     super(trans);
   }
@@ -150,7 +107,7 @@ public class TSimpleJSONProtocol extends TProtocol {
   }
 
   public void writeFieldBegin(TField field) throws TException {
-    // Note that extra type information is omitted in JSON!
+
     writeString(field.name);
   }
 
@@ -162,7 +119,7 @@ public class TSimpleJSONProtocol extends TProtocol {
     writeContext_.write();
     trans_.write(LBRACE);
     pushWriteContext(new StructContext());
-    // No metadata!
+
   }
 
   public void writeMapEnd() throws TException {
@@ -174,7 +131,7 @@ public class TSimpleJSONProtocol extends TProtocol {
     writeContext_.write();
     trans_.write(LBRACKET);
     pushWriteContext(new ListContext());
-    // No metadata!
+
   }
 
   public void writeListEnd() throws TException {
@@ -186,7 +143,7 @@ public class TSimpleJSONProtocol extends TProtocol {
     writeContext_.write();
     trans_.write(LBRACKET);
     pushWriteContext(new ListContext());
-    // No metadata!
+
   }
 
   public void writeSetEnd() throws TException {
@@ -264,7 +221,7 @@ public class TSimpleJSONProtocol extends TProtocol {
         escape.append('t');
         break;
       default:
-        // Control characeters! According to JSON RFC u0020 (space)
+
         if (c < ' ') {
           String hex = Integer.toHexString(c);
           escape.append('\\');
@@ -285,54 +242,50 @@ public class TSimpleJSONProtocol extends TProtocol {
 
   public void writeBinary(ByteBuffer bin) throws TException {
     try {
-      // TODO(mcslee): Fix this
+
       writeString(new String(bin.array(), bin.position() + bin.arrayOffset(), bin.limit() - bin.position() - bin.arrayOffset(), "UTF-8"));
     } catch (UnsupportedEncodingException uex) {
       throw new TException("JVM DOES NOT SUPPORT UTF-8");
     }
   }
 
-  /**
-   * Reading methods.
-   */
-
   public TMessage readMessageBegin() throws TException {
-    // TODO(mcslee): implement
+
     return EMPTY_MESSAGE;
   }
 
   public void readMessageEnd() {}
 
   public TStruct readStructBegin() {
-    // TODO(mcslee): implement
+
     return ANONYMOUS_STRUCT;
   }
 
   public void readStructEnd() {}
 
   public TField readFieldBegin() throws TException {
-    // TODO(mcslee): implement
+
     return ANONYMOUS_FIELD;
   }
 
   public void readFieldEnd() {}
 
   public TMap readMapBegin() throws TException {
-    // TODO(mcslee): implement
+
     return EMPTY_MAP;
   }
 
   public void readMapEnd() {}
 
   public TList readListBegin() throws TException {
-    // TODO(mcslee): implement
+
     return EMPTY_LIST;
   }
 
   public void readListEnd() {}
 
   public TSet readSetBegin() throws TException {
-    // TODO(mcslee): implement
+
     return EMPTY_SET;
   }
 
@@ -343,42 +296,42 @@ public class TSimpleJSONProtocol extends TProtocol {
   }
 
   public byte readByte() throws TException {
-    // TODO(mcslee): implement
+
     return 0;
   }
 
   public short readI16() throws TException {
-    // TODO(mcslee): implement
+
     return 0;
   }
 
   public int readI32() throws TException {
-    // TODO(mcslee): implement
+
     return 0;
   }
 
   public long readI64() throws TException {
-    // TODO(mcslee): implement
+
     return 0;
   }
 
   public double readDouble() throws TException {
-    // TODO(mcslee): implement
+
     return 0;
   }
 
   public String readString() throws TException {
-    // TODO(mcslee): implement
+
     return "";
   }
 
   public String readStringBody(int size) throws TException {
-    // TODO(mcslee): implement
+
     return "";
   }
 
   public ByteBuffer readBinary() throws TException {
-    // TODO(mcslee): implement
+
     return ByteBuffer.wrap(new byte[0]);
   }
 

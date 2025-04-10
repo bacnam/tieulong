@@ -1,141 +1,81 @@
-/*     */ package org.apache.http.entity;
-/*     */ 
-/*     */ import java.io.ByteArrayInputStream;
-/*     */ import java.io.IOException;
-/*     */ import java.io.InputStream;
-/*     */ import java.io.OutputStream;
-/*     */ import org.apache.http.annotation.NotThreadSafe;
-/*     */ import org.apache.http.util.Args;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @NotThreadSafe
-/*     */ public class ByteArrayEntity
-/*     */   extends AbstractHttpEntity
-/*     */   implements Cloneable
-/*     */ {
-/*     */   @Deprecated
-/*     */   protected final byte[] content;
-/*     */   private final byte[] b;
-/*     */   private final int off;
-/*     */   private final int len;
-/*     */   
-/*     */   public ByteArrayEntity(byte[] b, ContentType contentType) {
-/*  60 */     Args.notNull(b, "Source byte array");
-/*  61 */     this.content = b;
-/*  62 */     this.b = b;
-/*  63 */     this.off = 0;
-/*  64 */     this.len = this.b.length;
-/*  65 */     if (contentType != null) {
-/*  66 */       setContentType(contentType.toString());
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public ByteArrayEntity(byte[] b, int off, int len, ContentType contentType) {
-/*  76 */     Args.notNull(b, "Source byte array");
-/*  77 */     if (off < 0 || off > b.length || len < 0 || off + len < 0 || off + len > b.length)
-/*     */     {
-/*  79 */       throw new IndexOutOfBoundsException("off: " + off + " len: " + len + " b.length: " + b.length);
-/*     */     }
-/*  81 */     this.content = b;
-/*  82 */     this.b = b;
-/*  83 */     this.off = off;
-/*  84 */     this.len = len;
-/*  85 */     if (contentType != null) {
-/*  86 */       setContentType(contentType.toString());
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   public ByteArrayEntity(byte[] b) {
-/*  91 */     this(b, (ContentType)null);
-/*     */   }
-/*     */   
-/*     */   public ByteArrayEntity(byte[] b, int off, int len) {
-/*  95 */     this(b, off, len, (ContentType)null);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public boolean isRepeatable() {
-/* 100 */     return true;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public long getContentLength() {
-/* 105 */     return this.len;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public InputStream getContent() {
-/* 110 */     return new ByteArrayInputStream(this.b, this.off, this.len);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public void writeTo(OutputStream outstream) throws IOException {
-/* 115 */     Args.notNull(outstream, "Output stream");
-/* 116 */     outstream.write(this.b, this.off, this.len);
-/* 117 */     outstream.flush();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean isStreaming() {
-/* 128 */     return false;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public Object clone() throws CloneNotSupportedException {
-/* 133 */     return super.clone();
-/*     */   }
-/*     */ }
+package org.apache.http.entity;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.util.Args;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/entity/ByteArrayEntity.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@NotThreadSafe
+public class ByteArrayEntity
+extends AbstractHttpEntity
+implements Cloneable
+{
+@Deprecated
+protected final byte[] content;
+private final byte[] b;
+private final int off;
+private final int len;
+
+public ByteArrayEntity(byte[] b, ContentType contentType) {
+Args.notNull(b, "Source byte array");
+this.content = b;
+this.b = b;
+this.off = 0;
+this.len = this.b.length;
+if (contentType != null) {
+setContentType(contentType.toString());
+}
+}
+
+public ByteArrayEntity(byte[] b, int off, int len, ContentType contentType) {
+Args.notNull(b, "Source byte array");
+if (off < 0 || off > b.length || len < 0 || off + len < 0 || off + len > b.length)
+{
+throw new IndexOutOfBoundsException("off: " + off + " len: " + len + " b.length: " + b.length);
+}
+this.content = b;
+this.b = b;
+this.off = off;
+this.len = len;
+if (contentType != null) {
+setContentType(contentType.toString());
+}
+}
+
+public ByteArrayEntity(byte[] b) {
+this(b, (ContentType)null);
+}
+
+public ByteArrayEntity(byte[] b, int off, int len) {
+this(b, off, len, (ContentType)null);
+}
+
+public boolean isRepeatable() {
+return true;
+}
+
+public long getContentLength() {
+return this.len;
+}
+
+public InputStream getContent() {
+return new ByteArrayInputStream(this.b, this.off, this.len);
+}
+
+public void writeTo(OutputStream outstream) throws IOException {
+Args.notNull(outstream, "Output stream");
+outstream.write(this.b, this.off, this.len);
+outstream.flush();
+}
+
+public boolean isStreaming() {
+return false;
+}
+
+public Object clone() throws CloneNotSupportedException {
+return super.clone();
+}
+}
+

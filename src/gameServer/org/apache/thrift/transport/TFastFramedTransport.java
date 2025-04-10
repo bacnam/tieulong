@@ -1,32 +1,6 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 package org.apache.thrift.transport;
 
-/**
- * This transport is wire compatible with {@link TFramedTransport}, but makes 
- * use of reusable, expanding read and write buffers in order to avoid
- * allocating new byte[]s all the time. Since the buffers only expand, you
- * should probably only use this transport if your messages are not too variably
- * large, unless the persistent memory cost is not an issue.
- * 
- * This implementation is NOT threadsafe.
- */
 public class TFastFramedTransport extends TTransport {
 
   public static class Factory extends TTransportFactory {
@@ -54,13 +28,8 @@ public class TFastFramedTransport extends TTransport {
     }
   }
 
-  /**
-   * How big should the default read and write buffers be?
-   */
   public static final int DEFAULT_BUF_CAPACITY = 1024;
-  /**
-   * How big is the largest allowable frame? Defaults to Integer.MAX_VALUE.
-   */
+
   public static final int DEFAULT_MAX_LENGTH = Integer.MAX_VALUE;
 
   private final TTransport underlying;
@@ -69,38 +38,14 @@ public class TFastFramedTransport extends TTransport {
   private final byte[] i32buf = new byte[4];
   private final int maxLength;
 
-  /**
-   * Create a new {@link TFastFramedTransport}. Use the defaults
-   * for initial buffer size and max frame length.
-   * @param underlying Transport that real reads and writes will go through to.
-   */
   public TFastFramedTransport(TTransport underlying) {
     this(underlying, DEFAULT_BUF_CAPACITY, DEFAULT_MAX_LENGTH);
   }
 
-  /**
-   * Create a new {@link TFastFramedTransport}. Use the specified
-   * initial buffer capacity and the default max frame length.
-   * @param underlying Transport that real reads and writes will go through to.
-   * @param initialBufferCapacity The initial size of the read and write buffers.
-   * In practice, it's not critical to set this unless you know in advance that
-   * your messages are going to be very large.
-   */
   public TFastFramedTransport(TTransport underlying, int initialBufferCapacity) {
     this(underlying, initialBufferCapacity, DEFAULT_MAX_LENGTH);
   }
 
-  /**
-   * 
-   * @param underlying Transport that real reads and writes will go through to.
-   * @param initialBufferCapacity The initial size of the read and write buffers.
-   * In practice, it's not critical to set this unless you know in advance that
-   * your messages are going to be very large. (You can pass
-   * TFramedTransportWithReusableBuffer.DEFAULT_BUF_CAPACITY if you're only
-   * using this constructor because you want to set the maxLength.)
-   * @param maxLength The max frame size you are willing to read. You can use
-   * this parameter to limit how much memory can be allocated.
-   */
   public TFastFramedTransport(TTransport underlying, int initialBufferCapacity, int maxLength) {
     this.underlying = underlying;
     this.maxLength = maxLength;
@@ -130,7 +75,6 @@ public class TFastFramedTransport extends TTransport {
       return got;
     }
 
-    // Read another frame of data
     readFrame();
 
     return readBuffer.read(buf, off, len);

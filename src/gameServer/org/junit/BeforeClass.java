@@ -9,8 +9,3 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface BeforeClass {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/BeforeClass.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

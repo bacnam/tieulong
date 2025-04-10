@@ -14,8 +14,3 @@ public @interface GwtIncompatible {
   String value();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/annotations/GwtIncompatible.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

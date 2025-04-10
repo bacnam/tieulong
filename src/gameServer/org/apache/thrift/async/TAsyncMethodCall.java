@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 package org.apache.thrift.async;
 
 import java.io.IOException;
@@ -31,13 +14,6 @@ import org.apache.thrift.transport.TMemoryBuffer;
 import org.apache.thrift.transport.TNonblockingTransport;
 import org.apache.thrift.transport.TTransportException;
 
-/**
- * Encapsulates an async method call
- * Need to generate:
- *   - private void write_args(TProtocol protocol)
- *   - public T getResult() throws <Exception_1>, <Exception_2>, ...
- * @param <T>
- */
 public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
 
   private static final int INITIAL_MEMORY_BUFFER_SIZE = 128;
@@ -52,9 +28,6 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
     ERROR;
   }
 
-  /**
-   * Next step in the call, initialized by start()
-   */
   private State state = null;
 
   protected final TNonblockingTransport transport;
@@ -96,10 +69,6 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
 
   protected abstract void write_args(TProtocol protocol) throws TException;
 
-  /**
-   * Initialize buffers.
-   * @throws TException if buffer initialization fails
-   */
   protected void prepareMethodCall() throws TException {
     TMemoryBuffer memoryBuffer = new TMemoryBuffer(INITIAL_MEMORY_BUFFER_SIZE);
     TProtocol protocol = protocolFactory.getProtocol(memoryBuffer);
@@ -112,10 +81,6 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
     sizeBuffer = ByteBuffer.wrap(sizeBufferArray);
   }
 
-  /**
-   * Register with selector and start first state, which could be either connecting or writing.
-   * @throws IOException if register or starting fails
-   */
   void start(Selector sel) throws IOException {
     SelectionKey key;
     if (transport.isOpen()) {
@@ -125,8 +90,6 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
       state = State.CONNECTING;
       key = transport.registerSelector(sel, SelectionKey.OP_CONNECT);
 
-      // non-blocking connect can complete immediately,
-      // in which case we should not expect the OP_CONNECT
       if (transport.startConnect()) {
         registerForFirstWrite(key);
       }
@@ -144,14 +107,8 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
     return frameBuffer;
   }
 
-  /**
-   * Transition to next state, doing whatever work is required. Since this
-   * method is only called by the selector thread, we can make changes to our
-   * select interests without worrying about concurrency.
-   * @param key
-   */
   protected void transition(SelectionKey key) {
-    // Ensure key is valid
+
     if (!key.isValid()) {
       key.cancel();
       Exception e = new TTransportException("Selection key not valid!");
@@ -159,7 +116,6 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
       return;
     }
 
-    // Transition function
     try {
       switch (state) {
         case CONNECTING:
@@ -177,7 +133,7 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
         case READING_RESPONSE_BODY:
           doReadingResponseBody(key);
           break;
-        default: // RESPONSE_READ, ERROR, or bug
+        default: 
           throw new IllegalStateException("Method call in state " + state
               + " but selector called transition method. Seems like a bug...");
       }
@@ -207,7 +163,7 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
   private void cleanUpAndFireCallback(SelectionKey key) {
     state = State.RESPONSE_READ;
     key.interestOps(0);
-    // this ensures that the TAsyncMethod instance doesn't hang around
+
     key.attach(null);
     client.onComplete();
     callback.onComplete((T)this);
@@ -232,7 +188,7 @@ public abstract class TAsyncMethodCall<T extends TAsyncMethodCall> {
         cleanUpAndFireCallback(key);
       } else {
         state = State.READING_RESPONSE_SIZE;
-        sizeBuffer.rewind();  // Prepare to read incoming frame size
+        sizeBuffer.rewind();  
         key.interestOps(SelectionKey.OP_READ);
       }
     }

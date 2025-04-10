@@ -37,18 +37,14 @@ public class JedisPool extends Pool<Jedis> {
         super(poolConfig, new JedisFactory(host, port, timeout, password, database));
     }
 
-
     public void returnBrokenResource(final BinaryJedis resource) {
     	returnBrokenResourceObject(resource);
     }
-    
+
     public void returnResource(final BinaryJedis resource) {
     	returnResourceObject(resource);
     }
-    
-    /**
-     * PoolableObjectFactory custom impl.
-     */
+
     private static class JedisFactory extends BasePoolableObjectFactory {
         private final String host;
         private final int port;
@@ -76,7 +72,7 @@ public class JedisPool extends Pool<Jedis> {
             if( database != 0 ) {
                 jedis.select(database);
             }
-            
+
             return jedis;
         }
 

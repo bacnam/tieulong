@@ -8,10 +8,6 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
-/**
- * The only reason to have this is to be able to compatible with java 1.5 :(
- * 
- */
 public class SafeEncoder {
 	public static byte[][] encodeMany(final String... strs){
 		byte[][] many = new byte[strs.length][];
@@ -20,7 +16,7 @@ public class SafeEncoder {
 		}
 		return many;
 	}
-	
+
     public static byte[] encode(final String str) {
         try {
             if (str == null) {

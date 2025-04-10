@@ -7,8 +7,3 @@ class DefaultVmPipeSessionConfig extends AbstractIoSessionConfig implements VmPi
   protected void doSetAll(IoSessionConfig config) {}
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/mina/transport/vmpipe/DefaultVmPipeSessionConfig.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

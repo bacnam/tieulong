@@ -11,14 +11,9 @@ import org.apache.http.protocol.HttpContext;
 @Deprecated
 public interface AuthenticationHandler {
   boolean isAuthenticationRequested(HttpResponse paramHttpResponse, HttpContext paramHttpContext);
-  
+
   Map<String, Header> getChallenges(HttpResponse paramHttpResponse, HttpContext paramHttpContext) throws MalformedChallengeException;
-  
+
   AuthScheme selectScheme(Map<String, Header> paramMap, HttpResponse paramHttpResponse, HttpContext paramHttpContext) throws AuthenticationException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/AuthenticationHandler.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

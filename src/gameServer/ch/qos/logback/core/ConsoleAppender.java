@@ -1,125 +1,72 @@
-/*     */ package ch.qos.logback.core;
-/*     */ 
-/*     */ import ch.qos.logback.core.joran.spi.ConsoleTarget;
-/*     */ import ch.qos.logback.core.status.Status;
-/*     */ import ch.qos.logback.core.status.WarnStatus;
-/*     */ import ch.qos.logback.core.util.EnvUtil;
-/*     */ import ch.qos.logback.core.util.OptionHelper;
-/*     */ import java.io.OutputStream;
-/*     */ import java.util.Arrays;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class ConsoleAppender<E>
-/*     */   extends OutputStreamAppender<E>
-/*     */ {
-/*  44 */   protected ConsoleTarget target = ConsoleTarget.SystemOut;
-/*     */ 
-/*     */   
-/*     */   protected boolean withJansi = false;
-/*     */ 
-/*     */   
-/*     */   private static final String WindowsAnsiOutputStream_CLASS_NAME = "org.fusesource.jansi.WindowsAnsiOutputStream";
-/*     */ 
-/*     */   
-/*     */   public void setTarget(String value) {
-/*  54 */     ConsoleTarget t = ConsoleTarget.findByName(value.trim());
-/*  55 */     if (t == null) {
-/*  56 */       targetWarn(value);
-/*     */     } else {
-/*  58 */       this.target = t;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getTarget() {
-/*  69 */     return this.target.getName();
-/*     */   }
-/*     */   
-/*     */   private void targetWarn(String val) {
-/*  73 */     WarnStatus warnStatus = new WarnStatus("[" + val + "] should be one of " + Arrays.toString((Object[])ConsoleTarget.values()), this);
-/*     */     
-/*  75 */     warnStatus.add((Status)new WarnStatus("Using previously set target, System.out by default.", this));
-/*     */     
-/*  77 */     addStatus((Status)warnStatus);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public void start() {
-/*  82 */     OutputStream targetStream = this.target.getStream();
-/*     */     
-/*  84 */     if (EnvUtil.isWindows() && this.withJansi) {
-/*  85 */       targetStream = getTargetStreamForWindows(targetStream);
-/*     */     }
-/*  87 */     setOutputStream(targetStream);
-/*  88 */     super.start();
-/*     */   }
-/*     */   
-/*     */   private OutputStream getTargetStreamForWindows(OutputStream targetStream) {
-/*     */     try {
-/*  93 */       addInfo("Enabling JANSI WindowsAnsiOutputStream for the console.");
-/*  94 */       Object windowsAnsiOutputStream = OptionHelper.instantiateByClassNameAndParameter("org.fusesource.jansi.WindowsAnsiOutputStream", Object.class, this.context, OutputStream.class, targetStream);
-/*     */       
-/*  96 */       return (OutputStream)windowsAnsiOutputStream;
-/*  97 */     } catch (Exception e) {
-/*  98 */       addWarn("Failed to create WindowsAnsiOutputStream. Falling back on the default stream.", e);
-/*     */       
-/* 100 */       return targetStream;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean isWithJansi() {
-/* 107 */     return this.withJansi;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setWithJansi(boolean withJansi) {
-/* 117 */     this.withJansi = withJansi;
-/*     */   }
-/*     */ }
+package ch.qos.logback.core;
 
+import ch.qos.logback.core.joran.spi.ConsoleTarget;
+import ch.qos.logback.core.status.Status;
+import ch.qos.logback.core.status.WarnStatus;
+import ch.qos.logback.core.util.EnvUtil;
+import ch.qos.logback.core.util.OptionHelper;
+import java.io.OutputStream;
+import java.util.Arrays;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/ConsoleAppender.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class ConsoleAppender<E>
+extends OutputStreamAppender<E>
+{
+protected ConsoleTarget target = ConsoleTarget.SystemOut;
+
+protected boolean withJansi = false;
+
+private static final String WindowsAnsiOutputStream_CLASS_NAME = "org.fusesource.jansi.WindowsAnsiOutputStream";
+
+public void setTarget(String value) {
+ConsoleTarget t = ConsoleTarget.findByName(value.trim());
+if (t == null) {
+targetWarn(value);
+} else {
+this.target = t;
+} 
+}
+
+public String getTarget() {
+return this.target.getName();
+}
+
+private void targetWarn(String val) {
+WarnStatus warnStatus = new WarnStatus("[" + val + "] should be one of " + Arrays.toString((Object[])ConsoleTarget.values()), this);
+
+warnStatus.add((Status)new WarnStatus("Using previously set target, System.out by default.", this));
+
+addStatus((Status)warnStatus);
+}
+
+public void start() {
+OutputStream targetStream = this.target.getStream();
+
+if (EnvUtil.isWindows() && this.withJansi) {
+targetStream = getTargetStreamForWindows(targetStream);
+}
+setOutputStream(targetStream);
+super.start();
+}
+
+private OutputStream getTargetStreamForWindows(OutputStream targetStream) {
+try {
+addInfo("Enabling JANSI WindowsAnsiOutputStream for the console.");
+Object windowsAnsiOutputStream = OptionHelper.instantiateByClassNameAndParameter("org.fusesource.jansi.WindowsAnsiOutputStream", Object.class, this.context, OutputStream.class, targetStream);
+
+return (OutputStream)windowsAnsiOutputStream;
+} catch (Exception e) {
+addWarn("Failed to create WindowsAnsiOutputStream. Falling back on the default stream.", e);
+
+return targetStream;
+} 
+}
+
+public boolean isWithJansi() {
+return this.withJansi;
+}
+
+public void setWithJansi(boolean withJansi) {
+this.withJansi = withJansi;
+}
+}
+

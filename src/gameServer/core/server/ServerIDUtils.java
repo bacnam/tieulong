@@ -1,34 +1,21 @@
-/*    */ package core.server;
-/*    */ 
-/*    */ import BaseCommon.CommLog;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ServerIDUtils
-/*    */ {
-/*    */   public static String getSidsBySid(int sid) {
-/* 16 */     return String.valueOf(sid);
-/*    */   }
-/*    */   
-/*    */   public static int getSidBySids(String sids) {
-/*    */     try {
-/* 21 */       return Integer.valueOf(sids).intValue();
-/* 22 */     } catch (Exception e) {
-/* 23 */       CommLog.error("无法将[{}]转化为相关的数字型id", sids);
-/*    */       
-/* 25 */       return 0;
-/*    */     } 
-/*    */   }
-/*    */ }
+package core.server;
 
+import BaseCommon.CommLog;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/core/server/ServerIDUtils.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+public class ServerIDUtils
+{
+public static String getSidsBySid(int sid) {
+return String.valueOf(sid);
+}
+
+public static int getSidBySids(String sids) {
+try {
+return Integer.valueOf(sids).intValue();
+} catch (Exception e) {
+CommLog.error("无法将[{}]转化为相关的数字型id", sids);
+
+return 0;
+} 
+}
+}
+

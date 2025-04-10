@@ -7,8 +7,3 @@ public interface HttpResponseInterceptor {
   void process(HttpResponse paramHttpResponse, HttpContext paramHttpContext) throws HttpException, IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/HttpResponseInterceptor.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

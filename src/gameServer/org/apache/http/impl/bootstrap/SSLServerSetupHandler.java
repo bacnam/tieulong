@@ -7,8 +7,3 @@ public interface SSLServerSetupHandler {
   void initialize(SSLServerSocket paramSSLServerSocket) throws SSLException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/impl/bootstrap/SSLServerSetupHandler.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

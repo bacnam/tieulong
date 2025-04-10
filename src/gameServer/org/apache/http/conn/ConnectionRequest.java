@@ -9,8 +9,3 @@ public interface ConnectionRequest extends Cancellable {
   HttpClientConnection get(long paramLong, TimeUnit paramTimeUnit) throws InterruptedException, ExecutionException, ConnectionPoolTimeoutException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/ConnectionRequest.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

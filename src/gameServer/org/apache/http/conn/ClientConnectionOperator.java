@@ -9,14 +9,9 @@ import org.apache.http.protocol.HttpContext;
 @Deprecated
 public interface ClientConnectionOperator {
   OperatedClientConnection createConnection();
-  
+
   void openConnection(OperatedClientConnection paramOperatedClientConnection, HttpHost paramHttpHost, InetAddress paramInetAddress, HttpContext paramHttpContext, HttpParams paramHttpParams) throws IOException;
-  
+
   void updateSecureConnection(OperatedClientConnection paramOperatedClientConnection, HttpHost paramHttpHost, HttpContext paramHttpContext, HttpParams paramHttpParams) throws IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/conn/ClientConnectionOperator.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

@@ -25,7 +25,7 @@ public final class Protocol {
     public static final byte COLON_BYTE = ':';
 
     private Protocol() {
-	// this prevent the class from instantiation
+
     }
 
     public static void sendCommand(final RedisOutputStream os,
@@ -96,7 +96,7 @@ public final class Protocol {
 	    while (offset < len) {
 		offset += is.read(read, offset, (len - offset));
 	    }
-	    // read 2 more bytes for the command delimiter
+
 	    is.readByte();
 	    is.readByte();
 	} catch (IOException e) {

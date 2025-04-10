@@ -17,20 +17,14 @@ public class Sharded<R, S extends ShardInfo<R>> {
     private final Hashing algo;
     private final Map<ShardInfo<R>, R> resources = new LinkedHashMap<ShardInfo<R>, R>();
 
-    /**
-     * The default pattern used for extracting a key tag. The pattern must have
-     * a group (between parenthesis), which delimits the tag to be hashed. A
-     * null pattern avoids applying the regular expression for each lookup,
-     * improving performance a little bit is key tags aren't being used.
-     */
     private Pattern tagPattern = null;
-    // the tag is anything between {}
+
     public static final Pattern DEFAULT_KEY_TAG_PATTERN = Pattern
             .compile("\\{(.+?)\\}");
 
     public Sharded(List<S> shards) {
-        this(shards, Hashing.MURMUR_HASH); // MD5 is really not good as we works
-        // with 64-bits not 128
+        this(shards, Hashing.MURMUR_HASH); 
+
     }
 
     public Sharded(List<S> shards, Hashing algo) {
@@ -39,9 +33,8 @@ public class Sharded<R, S extends ShardInfo<R>> {
     }
 
     public Sharded(List<S> shards, Pattern tagPattern) {
-        this(shards, Hashing.MURMUR_HASH, tagPattern); // MD5 is really not good
-        // as we works with
-        // 64-bits not 128
+        this(shards, Hashing.MURMUR_HASH, tagPattern); 
+
     }
 
     public Sharded(List<S> shards, Hashing algo, Pattern tagPattern) {
@@ -87,15 +80,6 @@ public class Sharded<R, S extends ShardInfo<R>> {
         return getShardInfo(SafeEncoder.encode(getKeyTag(key)));
     }
 
-    /**
-     * A key tag is a special pattern inside a key that, if preset, is the only
-     * part of the key hashed in order to select the server for this key.
-     *
-     * @see http://code.google.com/p/redis/wiki/FAQ#I
-     *      'm_using_some_form_of_key_hashing_for_partitioning,_but_wh
-     * @param key
-     * @return The tag if it exists, or the original key
-     */
     public String getKeyTag(String key) {
         if (tagPattern != null) {
             Matcher m = tagPattern.matcher(key);

@@ -1,39 +1,14 @@
-/*    */ package ch.qos.logback.classic.db.names;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class DefaultDBNameResolver
-/*    */   implements DBNameResolver
-/*    */ {
-/*    */   public <N extends Enum<?>> String getTableName(N tableName) {
-/* 27 */     return tableName.toString().toLowerCase();
-/*    */   }
-/*    */   
-/*    */   public <N extends Enum<?>> String getColumnName(N columnName) {
-/* 31 */     return columnName.toString().toLowerCase();
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.db.names;
 
+public class DefaultDBNameResolver
+implements DBNameResolver
+{
+public <N extends Enum<?>> String getTableName(N tableName) {
+return tableName.toString().toLowerCase();
+}
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/db/names/DefaultDBNameResolver.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public <N extends Enum<?>> String getColumnName(N columnName) {
+return columnName.toString().toLowerCase();
+}
+}
+

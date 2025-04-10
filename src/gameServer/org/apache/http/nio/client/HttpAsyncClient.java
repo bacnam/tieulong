@@ -12,20 +12,15 @@ import org.apache.http.protocol.HttpContext;
 
 public interface HttpAsyncClient {
   <T> Future<T> execute(HttpAsyncRequestProducer paramHttpAsyncRequestProducer, HttpAsyncResponseConsumer<T> paramHttpAsyncResponseConsumer, HttpContext paramHttpContext, FutureCallback<T> paramFutureCallback);
-  
+
   <T> Future<T> execute(HttpAsyncRequestProducer paramHttpAsyncRequestProducer, HttpAsyncResponseConsumer<T> paramHttpAsyncResponseConsumer, FutureCallback<T> paramFutureCallback);
-  
+
   Future<HttpResponse> execute(HttpHost paramHttpHost, HttpRequest paramHttpRequest, HttpContext paramHttpContext, FutureCallback<HttpResponse> paramFutureCallback);
-  
+
   Future<HttpResponse> execute(HttpHost paramHttpHost, HttpRequest paramHttpRequest, FutureCallback<HttpResponse> paramFutureCallback);
-  
+
   Future<HttpResponse> execute(HttpUriRequest paramHttpUriRequest, HttpContext paramHttpContext, FutureCallback<HttpResponse> paramFutureCallback);
-  
+
   Future<HttpResponse> execute(HttpUriRequest paramHttpUriRequest, FutureCallback<HttpResponse> paramFutureCallback);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/client/HttpAsyncClient.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

@@ -1,17 +1,10 @@
 package org.apache.commons.codec.language.bm;
 
 class ResourceConstants {
-  static final String CMT = "//";
-  
+  static final String CMT = "
+
   static final String ENCODING = "UTF-8";
-  
+
   static final String EXT_CMT_END = "*/";
-  
-  static final String EXT_CMT_START = "/*";
-}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/commons/codec/language/bm/ResourceConstants.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+  static final String EXT_CMT_START = "

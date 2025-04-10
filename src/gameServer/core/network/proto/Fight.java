@@ -1,137 +1,129 @@
-/*     */ package core.network.proto;
-/*     */ 
-/*     */ import business.global.battle.Creature;
-/*     */ import com.zhonglian.server.common.enums.Attribute;
-/*     */ import com.zhonglian.server.common.enums.FightResult;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.List;
-/*     */ import java.util.stream.Collectors;
-/*     */ 
-/*     */ 
-/*     */ public class Fight
-/*     */ {
-/*     */   public static class Begin
-/*     */   {
-/*     */     public int fightId;
-/*     */     
-/*     */     public Begin(int id) {
-/*  18 */       this.fightId = id;
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   public static class End
-/*     */   {
-/*     */     public int fightId;
-/*     */     public FightResult result;
-/*     */     public List<Fight.CheckData> checks;
-/*     */   }
-/*     */   
-/*     */   public static class Settle
-/*     */   {
-/*     */     public int victim;
-/*     */     public int vgroup;
-/*     */     public double value;
-/*     */     
-/*     */     public Settle(int victim, int vgroup, double value) {
-/*  36 */       this.victim = victim;
-/*  37 */       this.vgroup = vgroup;
-/*  38 */       this.value = value;
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public static class CheckData
-/*     */   {
-/*     */     public int time;
-/*     */     public int attacker;
-/*     */     public int agroup;
-/*     */     public int skill;
-/*     */     public Fight.Settle[] settles;
-/*     */     
-/*     */     public CheckData(int time, int attacker, int agroup, int skill, Fight.Settle[] settles) {
-/*  52 */       this.time = time;
-/*  53 */       this.attacker = attacker;
-/*  54 */       this.agroup = agroup;
-/*  55 */       this.skill = skill;
-/*  56 */       this.settles = settles;
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   static class Skill
-/*     */   {
-/*     */     int id;
-/*     */     
-/*     */     int level;
-/*     */   }
-/*     */   
-/*     */   public static class Fighter
-/*     */   {
-/*     */     int type;
-/*     */     int id;
-/*     */     int level;
-/*     */     int Model;
-/*     */     int Wing;
-/*     */     double inithp;
-/*     */     double MaxHP;
-/*     */     double ATK;
-/*     */     double DEF;
-/*     */     double RGS;
-/*     */     double Hit;
-/*     */     double Dodge;
-/*     */     double Critical;
-/*     */     double Tenacity;
-/*     */     double RNG;
-/*     */     double SPD;
-/*     */     List<Fight.Skill> skills;
-/*     */     
-/*     */     public Fighter(Creature c) {
-/*  89 */       this.type = c.getType();
-/*  90 */       this.id = c.getId();
-/*  91 */       this.level = c.getLevel();
-/*  92 */       this.Model = c.getModel();
-/*  93 */       this.Wing = c.getWing();
-/*     */       
-/*  95 */       this.inithp = c.initHp;
-/*  96 */       this.MaxHP = c.baseAttr(Attribute.MaxHP);
-/*  97 */       this.ATK = c.baseAttr(Attribute.ATK);
-/*  98 */       this.DEF = c.baseAttr(Attribute.DEF);
-/*  99 */       this.RGS = c.baseAttr(Attribute.RGS);
-/* 100 */       this.Hit = c.baseAttr(Attribute.Hit);
-/* 101 */       this.Dodge = c.baseAttr(Attribute.Dodge);
-/* 102 */       this.Critical = c.baseAttr(Attribute.Critical);
-/* 103 */       this.Tenacity = c.baseAttr(Attribute.Tenacity);
-/*     */       
-/* 105 */       this.RNG = c.getRange();
-/* 106 */       this.SPD = c.getSpeed();
-/*     */       
-/* 108 */       this.skills = new ArrayList<>();
-/* 109 */       for (business.global.battle.Skill s : c.getSkills()) {
-/* 110 */         Fight.Skill s0 = new Fight.Skill();
-/* 111 */         s0.id = s.getId();
-/* 112 */         s0.level = s.getLevel();
-/* 113 */         this.skills.add(s0);
-/*     */       } 
-/*     */     } }
-/*     */   
-/*     */   public static class Battle {
-/*     */     int id;
-/*     */     
-/*     */     public Battle(int id, String map, List<Creature> team, List<Creature> opponents) {
-/* 121 */       this.id = id;
-/* 122 */       this.map = map;
-/* 123 */       this.team = (List<Fight.Fighter>)team.stream().map(c -> new Fight.Fighter(c)).collect(Collectors.toList());
-/* 124 */       this.oppos = (List<Fight.Fighter>)opponents.stream().map(c -> new Fight.Fighter(c)).collect(Collectors.toList());
-/*     */     }
-/*     */     
-/*     */     String map;
-/*     */     List<Fight.Fighter> team;
-/*     */     List<Fight.Fighter> oppos;
-/*     */   }
-/*     */ }
+package core.network.proto;
 
+import business.global.battle.Creature;
+import com.zhonglian.server.common.enums.Attribute;
+import com.zhonglian.server.common.enums.FightResult;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/core/network/proto/Fight.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+public class Fight
+{
+public static class Begin
+{
+public int fightId;
+
+public Begin(int id) {
+this.fightId = id;
+}
+}
+
+public static class End
+{
+public int fightId;
+public FightResult result;
+public List<Fight.CheckData> checks;
+}
+
+public static class Settle
+{
+public int victim;
+public int vgroup;
+public double value;
+
+public Settle(int victim, int vgroup, double value) {
+this.victim = victim;
+this.vgroup = vgroup;
+this.value = value;
+}
+}
+
+public static class CheckData
+{
+public int time;
+public int attacker;
+public int agroup;
+public int skill;
+public Fight.Settle[] settles;
+
+public CheckData(int time, int attacker, int agroup, int skill, Fight.Settle[] settles) {
+this.time = time;
+this.attacker = attacker;
+this.agroup = agroup;
+this.skill = skill;
+this.settles = settles;
+}
+}
+
+static class Skill
+{
+int id;
+
+int level;
+}
+
+public static class Fighter
+{
+int type;
+int id;
+int level;
+int Model;
+int Wing;
+double inithp;
+double MaxHP;
+double ATK;
+double DEF;
+double RGS;
+double Hit;
+double Dodge;
+double Critical;
+double Tenacity;
+double RNG;
+double SPD;
+List<Fight.Skill> skills;
+
+public Fighter(Creature c) {
+this.type = c.getType();
+this.id = c.getId();
+this.level = c.getLevel();
+this.Model = c.getModel();
+this.Wing = c.getWing();
+
+this.inithp = c.initHp;
+this.MaxHP = c.baseAttr(Attribute.MaxHP);
+this.ATK = c.baseAttr(Attribute.ATK);
+this.DEF = c.baseAttr(Attribute.DEF);
+this.RGS = c.baseAttr(Attribute.RGS);
+this.Hit = c.baseAttr(Attribute.Hit);
+this.Dodge = c.baseAttr(Attribute.Dodge);
+this.Critical = c.baseAttr(Attribute.Critical);
+this.Tenacity = c.baseAttr(Attribute.Tenacity);
+
+this.RNG = c.getRange();
+this.SPD = c.getSpeed();
+
+this.skills = new ArrayList<>();
+for (business.global.battle.Skill s : c.getSkills()) {
+Fight.Skill s0 = new Fight.Skill();
+s0.id = s.getId();
+s0.level = s.getLevel();
+this.skills.add(s0);
+} 
+} }
+
+public static class Battle {
+int id;
+
+public Battle(int id, String map, List<Creature> team, List<Creature> opponents) {
+this.id = id;
+this.map = map;
+this.team = (List<Fight.Fighter>)team.stream().map(c -> new Fight.Fighter(c)).collect(Collectors.toList());
+this.oppos = (List<Fight.Fighter>)opponents.stream().map(c -> new Fight.Fighter(c)).collect(Collectors.toList());
+}
+
+String map;
+List<Fight.Fighter> team;
+List<Fight.Fighter> oppos;
+}
+}
+

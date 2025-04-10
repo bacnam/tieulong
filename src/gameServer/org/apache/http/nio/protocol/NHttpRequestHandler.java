@@ -11,12 +11,7 @@ import org.apache.http.protocol.HttpContext;
 @Deprecated
 public interface NHttpRequestHandler {
   ConsumingNHttpEntity entityRequest(HttpEntityEnclosingRequest paramHttpEntityEnclosingRequest, HttpContext paramHttpContext) throws HttpException, IOException;
-  
+
   void handle(HttpRequest paramHttpRequest, HttpResponse paramHttpResponse, NHttpResponseTrigger paramNHttpResponseTrigger, HttpContext paramHttpContext) throws HttpException, IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/NHttpRequestHandler.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

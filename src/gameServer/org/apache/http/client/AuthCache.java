@@ -5,16 +5,11 @@ import org.apache.http.auth.AuthScheme;
 
 public interface AuthCache {
   void put(HttpHost paramHttpHost, AuthScheme paramAuthScheme);
-  
+
   AuthScheme get(HttpHost paramHttpHost);
-  
+
   void remove(HttpHost paramHttpHost);
-  
+
   void clear();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/AuthCache.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

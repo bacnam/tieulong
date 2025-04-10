@@ -7,8 +7,3 @@ public interface NHttpConnectionFactory<T extends org.apache.http.nio.NHttpConne
   T create(IOSession paramIOSession, ConnectionConfig paramConnectionConfig);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/conn/NHttpConnectionFactory.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

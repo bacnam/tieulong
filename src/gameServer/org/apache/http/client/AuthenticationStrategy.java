@@ -12,18 +12,13 @@ import org.apache.http.protocol.HttpContext;
 
 public interface AuthenticationStrategy {
   boolean isAuthenticationRequested(HttpHost paramHttpHost, HttpResponse paramHttpResponse, HttpContext paramHttpContext);
-  
+
   Map<String, Header> getChallenges(HttpHost paramHttpHost, HttpResponse paramHttpResponse, HttpContext paramHttpContext) throws MalformedChallengeException;
-  
+
   Queue<AuthOption> select(Map<String, Header> paramMap, HttpHost paramHttpHost, HttpResponse paramHttpResponse, HttpContext paramHttpContext) throws MalformedChallengeException;
-  
+
   void authSucceeded(HttpHost paramHttpHost, AuthScheme paramAuthScheme, HttpContext paramHttpContext);
-  
+
   void authFailed(HttpHost paramHttpHost, AuthScheme paramAuthScheme, HttpContext paramHttpContext);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/AuthenticationStrategy.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

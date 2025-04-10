@@ -1,51 +1,27 @@
-/*    */ package ch.qos.logback.core.util;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class ContentTypeUtil
-/*    */ {
-/*    */   public static boolean isTextual(String contextType) {
-/* 25 */     if (contextType == null) {
-/* 26 */       return false;
-/*    */     }
-/* 28 */     return contextType.startsWith("text");
-/*    */   }
-/*    */   
-/*    */   public static String getSubType(String contextType) {
-/* 32 */     if (contextType == null) {
-/* 33 */       return null;
-/*    */     }
-/* 35 */     int index = contextType.indexOf('/');
-/* 36 */     if (index == -1) {
-/* 37 */       return null;
-/*    */     }
-/* 39 */     int subTypeStartIndex = index + 1;
-/* 40 */     if (subTypeStartIndex < contextType.length()) {
-/* 41 */       return contextType.substring(subTypeStartIndex);
-/*    */     }
-/* 43 */     return null;
-/*    */   }
-/*    */ }
+package ch.qos.logback.core.util;
 
+public class ContentTypeUtil
+{
+public static boolean isTextual(String contextType) {
+if (contextType == null) {
+return false;
+}
+return contextType.startsWith("text");
+}
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/util/ContentTypeUtil.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public static String getSubType(String contextType) {
+if (contextType == null) {
+return null;
+}
+int index = contextType.indexOf('/');
+if (index == -1) {
+return null;
+}
+int subTypeStartIndex = index + 1;
+if (subTypeStartIndex < contextType.length()) {
+return contextType.substring(subTypeStartIndex);
+}
+return null;
+}
+}
+

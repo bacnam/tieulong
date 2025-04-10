@@ -1,134 +1,100 @@
-/*     */ package ch.qos.logback.classic.pattern;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class TargetLengthBasedClassNameAbbreviator
-/*     */   implements Abbreviator
-/*     */ {
-/*     */   final int targetLength;
-/*     */   
-/*     */   public TargetLengthBasedClassNameAbbreviator(int targetLength) {
-/*  24 */     this.targetLength = targetLength;
-/*     */   }
-/*     */   
-/*     */   public String abbreviate(String fqClassName) {
-/*  28 */     StringBuilder buf = new StringBuilder(this.targetLength);
-/*  29 */     if (fqClassName == null) {
-/*  30 */       throw new IllegalArgumentException("Class name may not be null");
-/*     */     }
-/*     */     
-/*  33 */     int inLen = fqClassName.length();
-/*  34 */     if (inLen < this.targetLength) {
-/*  35 */       return fqClassName;
-/*     */     }
-/*     */     
-/*  38 */     int[] dotIndexesArray = new int[16];
-/*     */ 
-/*     */     
-/*  41 */     int[] lengthArray = new int[17];
-/*     */     
-/*  43 */     int dotCount = computeDotIndexes(fqClassName, dotIndexesArray);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*  48 */     if (dotCount == 0) {
-/*  49 */       return fqClassName;
-/*     */     }
-/*     */     
-/*  52 */     computeLengthArray(fqClassName, dotIndexesArray, lengthArray, dotCount);
-/*     */     
-/*  54 */     for (int i = 0; i <= dotCount; i++) {
-/*  55 */       if (i == 0) {
-/*  56 */         buf.append(fqClassName.substring(0, lengthArray[i] - 1));
-/*     */       } else {
-/*  58 */         buf.append(fqClassName.substring(dotIndexesArray[i - 1], dotIndexesArray[i - 1] + lengthArray[i]));
-/*     */       } 
-/*     */     } 
-/*     */ 
-/*     */ 
-/*     */     
-/*  64 */     return buf.toString();
-/*     */   }
-/*     */   
-/*     */   static int computeDotIndexes(String className, int[] dotArray) {
-/*  68 */     int dotCount = 0;
-/*  69 */     int k = 0;
-/*     */ 
-/*     */     
-/*     */     while (true) {
-/*  73 */       k = className.indexOf('.', k);
-/*  74 */       if (k != -1 && dotCount < 16) {
-/*  75 */         dotArray[dotCount] = k;
-/*  76 */         dotCount++;
-/*  77 */         k++;
-/*     */         continue;
-/*     */       } 
-/*     */       break;
-/*     */     } 
-/*  82 */     return dotCount;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   void computeLengthArray(String className, int[] dotArray, int[] lengthArray, int dotCount) {
-/*  87 */     int toTrim = className.length() - this.targetLength;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/*  93 */     for (int i = 0; i < dotCount; i++) {
-/*  94 */       int previousDotPosition = -1;
-/*  95 */       if (i > 0) {
-/*  96 */         previousDotPosition = dotArray[i - 1];
-/*     */       }
-/*  98 */       int available = dotArray[i] - previousDotPosition - 1;
-/*     */ 
-/*     */       
-/* 101 */       int len = (available < 1) ? available : 1;
-/*     */ 
-/*     */       
-/* 104 */       if (toTrim > 0) {
-/* 105 */         len = (available < 1) ? available : 1;
-/*     */       } else {
-/* 107 */         len = available;
-/*     */       } 
-/* 109 */       toTrim -= available - len;
-/* 110 */       lengthArray[i] = len + 1;
-/*     */     } 
-/*     */     
-/* 113 */     int lastDotIndex = dotCount - 1;
-/* 114 */     lengthArray[dotCount] = className.length() - dotArray[lastDotIndex];
-/*     */   }
-/*     */   
-/*     */   static void printArray(String msg, int[] ia) {
-/* 118 */     System.out.print(msg);
-/* 119 */     for (int i = 0; i < ia.length; i++) {
-/* 120 */       if (i == 0) {
-/* 121 */         System.out.print(ia[i]);
-/*     */       } else {
-/* 123 */         System.out.print(", " + ia[i]);
-/*     */       } 
-/*     */     } 
-/* 126 */     System.out.println();
-/*     */   }
-/*     */ }
+package ch.qos.logback.classic.pattern;
 
+public class TargetLengthBasedClassNameAbbreviator
+implements Abbreviator
+{
+final int targetLength;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/pattern/TargetLengthBasedClassNameAbbreviator.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public TargetLengthBasedClassNameAbbreviator(int targetLength) {
+this.targetLength = targetLength;
+}
+
+public String abbreviate(String fqClassName) {
+StringBuilder buf = new StringBuilder(this.targetLength);
+if (fqClassName == null) {
+throw new IllegalArgumentException("Class name may not be null");
+}
+
+int inLen = fqClassName.length();
+if (inLen < this.targetLength) {
+return fqClassName;
+}
+
+int[] dotIndexesArray = new int[16];
+
+int[] lengthArray = new int[17];
+
+int dotCount = computeDotIndexes(fqClassName, dotIndexesArray);
+
+if (dotCount == 0) {
+return fqClassName;
+}
+
+computeLengthArray(fqClassName, dotIndexesArray, lengthArray, dotCount);
+
+for (int i = 0; i <= dotCount; i++) {
+if (i == 0) {
+buf.append(fqClassName.substring(0, lengthArray[i] - 1));
+} else {
+buf.append(fqClassName.substring(dotIndexesArray[i - 1], dotIndexesArray[i - 1] + lengthArray[i]));
+} 
+} 
+
+return buf.toString();
+}
+
+static int computeDotIndexes(String className, int[] dotArray) {
+int dotCount = 0;
+int k = 0;
+
+while (true) {
+k = className.indexOf('.', k);
+if (k != -1 && dotCount < 16) {
+dotArray[dotCount] = k;
+dotCount++;
+k++;
+continue;
+} 
+break;
+} 
+return dotCount;
+}
+
+void computeLengthArray(String className, int[] dotArray, int[] lengthArray, int dotCount) {
+int toTrim = className.length() - this.targetLength;
+
+for (int i = 0; i < dotCount; i++) {
+int previousDotPosition = -1;
+if (i > 0) {
+previousDotPosition = dotArray[i - 1];
+}
+int available = dotArray[i] - previousDotPosition - 1;
+
+int len = (available < 1) ? available : 1;
+
+if (toTrim > 0) {
+len = (available < 1) ? available : 1;
+} else {
+len = available;
+} 
+toTrim -= available - len;
+lengthArray[i] = len + 1;
+} 
+
+int lastDotIndex = dotCount - 1;
+lengthArray[dotCount] = className.length() - dotArray[lastDotIndex];
+}
+
+static void printArray(String msg, int[] ia) {
+System.out.print(msg);
+for (int i = 0; i < ia.length; i++) {
+if (i == 0) {
+System.out.print(ia[i]);
+} else {
+System.out.print(", " + ia[i]);
+} 
+} 
+System.out.println();
+}
+}
+

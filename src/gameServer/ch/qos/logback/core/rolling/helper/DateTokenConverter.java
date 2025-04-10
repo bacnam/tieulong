@@ -1,112 +1,81 @@
-/*     */ package ch.qos.logback.core.rolling.helper;
-/*     */ 
-/*     */ import ch.qos.logback.core.pattern.DynamicConverter;
-/*     */ import ch.qos.logback.core.util.CachingDateFormatter;
-/*     */ import ch.qos.logback.core.util.DatePatternToRegexUtil;
-/*     */ import java.util.Date;
-/*     */ import java.util.List;
-/*     */ import java.util.TimeZone;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class DateTokenConverter<E>
-/*     */   extends DynamicConverter<E>
-/*     */   implements MonoTypedConverter
-/*     */ {
-/*     */   public static final String CONVERTER_KEY = "d";
-/*     */   public static final String AUXILIARY_TOKEN = "AUX";
-/*     */   public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
-/*     */   private String datePattern;
-/*     */   private TimeZone timeZone;
-/*     */   private CachingDateFormatter cdf;
-/*     */   private boolean primary = true;
-/*     */   
-/*     */   public void start() {
-/*  46 */     this.datePattern = getFirstOption();
-/*  47 */     if (this.datePattern == null) {
-/*  48 */       this.datePattern = "yyyy-MM-dd";
-/*     */     }
-/*     */     
-/*  51 */     List<String> optionList = getOptionList();
-/*  52 */     if (optionList != null) {
-/*  53 */       for (int optionIndex = 1; optionIndex < optionList.size(); optionIndex++) {
-/*  54 */         String option = optionList.get(optionIndex);
-/*  55 */         if ("AUX".equalsIgnoreCase(option)) {
-/*  56 */           this.primary = false;
-/*     */         } else {
-/*  58 */           this.timeZone = TimeZone.getTimeZone(option);
-/*     */         } 
-/*     */       } 
-/*     */     }
-/*     */     
-/*  63 */     this.cdf = new CachingDateFormatter(this.datePattern);
-/*  64 */     if (this.timeZone != null) {
-/*  65 */       this.cdf.setTimeZone(this.timeZone);
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   public String convert(Date date) {
-/*  70 */     return this.cdf.format(date.getTime());
-/*     */   }
-/*     */   
-/*     */   public String convert(Object o) {
-/*  74 */     if (o == null) {
-/*  75 */       throw new IllegalArgumentException("Null argument forbidden");
-/*     */     }
-/*  77 */     if (o instanceof Date) {
-/*  78 */       return convert((Date)o);
-/*     */     }
-/*  80 */     throw new IllegalArgumentException("Cannot convert " + o + " of type" + o.getClass().getName());
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String getDatePattern() {
-/*  87 */     return this.datePattern;
-/*     */   }
-/*     */   
-/*     */   public TimeZone getTimeZone() {
-/*  91 */     return this.timeZone;
-/*     */   }
-/*     */   
-/*     */   public boolean isApplicable(Object o) {
-/*  95 */     return o instanceof Date;
-/*     */   }
-/*     */   
-/*     */   public String toRegex() {
-/*  99 */     DatePatternToRegexUtil datePatternToRegexUtil = new DatePatternToRegexUtil(this.datePattern);
-/* 100 */     return datePatternToRegexUtil.toRegex();
-/*     */   }
-/*     */   
-/*     */   public boolean isPrimary() {
-/* 104 */     return this.primary;
-/*     */   }
-/*     */ }
+package ch.qos.logback.core.rolling.helper;
 
+import ch.qos.logback.core.pattern.DynamicConverter;
+import ch.qos.logback.core.util.CachingDateFormatter;
+import ch.qos.logback.core.util.DatePatternToRegexUtil;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/rolling/helper/DateTokenConverter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class DateTokenConverter<E>
+extends DynamicConverter<E>
+implements MonoTypedConverter
+{
+public static final String CONVERTER_KEY = "d";
+public static final String AUXILIARY_TOKEN = "AUX";
+public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
+private String datePattern;
+private TimeZone timeZone;
+private CachingDateFormatter cdf;
+private boolean primary = true;
+
+public void start() {
+this.datePattern = getFirstOption();
+if (this.datePattern == null) {
+this.datePattern = "yyyy-MM-dd";
+}
+
+List<String> optionList = getOptionList();
+if (optionList != null) {
+for (int optionIndex = 1; optionIndex < optionList.size(); optionIndex++) {
+String option = optionList.get(optionIndex);
+if ("AUX".equalsIgnoreCase(option)) {
+this.primary = false;
+} else {
+this.timeZone = TimeZone.getTimeZone(option);
+} 
+} 
+}
+
+this.cdf = new CachingDateFormatter(this.datePattern);
+if (this.timeZone != null) {
+this.cdf.setTimeZone(this.timeZone);
+}
+}
+
+public String convert(Date date) {
+return this.cdf.format(date.getTime());
+}
+
+public String convert(Object o) {
+if (o == null) {
+throw new IllegalArgumentException("Null argument forbidden");
+}
+if (o instanceof Date) {
+return convert((Date)o);
+}
+throw new IllegalArgumentException("Cannot convert " + o + " of type" + o.getClass().getName());
+}
+
+public String getDatePattern() {
+return this.datePattern;
+}
+
+public TimeZone getTimeZone() {
+return this.timeZone;
+}
+
+public boolean isApplicable(Object o) {
+return o instanceof Date;
+}
+
+public String toRegex() {
+DatePatternToRegexUtil datePatternToRegexUtil = new DatePatternToRegexUtil(this.datePattern);
+return datePatternToRegexUtil.toRegex();
+}
+
+public boolean isPrimary() {
+return this.primary;
+}
+}
+

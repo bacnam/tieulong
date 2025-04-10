@@ -9,16 +9,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface Test {
   Class<? extends Throwable> expected() default None.class;
-  
+
   long timeout() default 0L;
-  
+
   public static class None extends Throwable {
     private static final long serialVersionUID = 1L;
   }
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/Test.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

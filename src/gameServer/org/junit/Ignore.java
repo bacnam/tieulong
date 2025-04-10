@@ -11,8 +11,3 @@ public @interface Ignore {
   String value() default "";
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/Ignore.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

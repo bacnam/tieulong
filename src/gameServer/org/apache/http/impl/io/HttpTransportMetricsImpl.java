@@ -1,70 +1,28 @@
-/*    */ package org.apache.http.impl.io;
-/*    */ 
-/*    */ import org.apache.http.annotation.NotThreadSafe;
-/*    */ import org.apache.http.io.HttpTransportMetrics;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ @NotThreadSafe
-/*    */ public class HttpTransportMetricsImpl
-/*    */   implements HttpTransportMetrics
-/*    */ {
-/* 41 */   private long bytesTransferred = 0L;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */   
-/*    */   public long getBytesTransferred() {
-/* 49 */     return this.bytesTransferred;
-/*    */   }
-/*    */   
-/*    */   public void setBytesTransferred(long count) {
-/* 53 */     this.bytesTransferred = count;
-/*    */   }
-/*    */   
-/*    */   public void incrementBytesTransferred(long count) {
-/* 57 */     this.bytesTransferred += count;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public void reset() {
-/* 62 */     this.bytesTransferred = 0L;
-/*    */   }
-/*    */ }
+package org.apache.http.impl.io;
 
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.io.HttpTransportMetrics;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/impl/io/HttpTransportMetricsImpl.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+@NotThreadSafe
+public class HttpTransportMetricsImpl
+implements HttpTransportMetrics
+{
+private long bytesTransferred = 0L;
+
+public long getBytesTransferred() {
+return this.bytesTransferred;
+}
+
+public void setBytesTransferred(long count) {
+this.bytesTransferred = count;
+}
+
+public void incrementBytesTransferred(long count) {
+this.bytesTransferred += count;
+}
+
+public void reset() {
+this.bytesTransferred = 0L;
+}
+}
+

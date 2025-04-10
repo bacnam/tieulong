@@ -1,57 +1,28 @@
-/*    */ package com.mysql.jdbc.exceptions.jdbc4;
-/*    */ 
-/*    */ import java.sql.SQLTimeoutException;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class MySQLTimeoutException
-/*    */   extends SQLTimeoutException
-/*    */ {
-/*    */   public MySQLTimeoutException(String reason, String SQLState, int vendorCode) {
-/* 32 */     super(reason, SQLState, vendorCode);
-/*    */   }
-/*    */   
-/*    */   public MySQLTimeoutException(String reason, String SQLState) {
-/* 36 */     super(reason, SQLState);
-/*    */   }
-/*    */   
-/*    */   public MySQLTimeoutException(String reason) {
-/* 40 */     super(reason);
-/*    */   }
-/*    */   
-/*    */   public MySQLTimeoutException() {
-/* 44 */     super("Statement cancelled due to timeout or client request");
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public int getErrorCode() {
-/* 49 */     return super.getErrorCode();
-/*    */   }
-/*    */ }
+package com.mysql.jdbc.exceptions.jdbc4;
 
+import java.sql.SQLTimeoutException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/exceptions/jdbc4/MySQLTimeoutException.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class MySQLTimeoutException
+extends SQLTimeoutException
+{
+public MySQLTimeoutException(String reason, String SQLState, int vendorCode) {
+super(reason, SQLState, vendorCode);
+}
+
+public MySQLTimeoutException(String reason, String SQLState) {
+super(reason, SQLState);
+}
+
+public MySQLTimeoutException(String reason) {
+super(reason);
+}
+
+public MySQLTimeoutException() {
+super("Statement cancelled due to timeout or client request");
+}
+
+public int getErrorCode() {
+return super.getErrorCode();
+}
+}
+

@@ -11,8 +11,3 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface ThreadSafe {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/annotation/ThreadSafe.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

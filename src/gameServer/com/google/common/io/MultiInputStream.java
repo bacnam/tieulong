@@ -1,121 +1,84 @@
-/*     */ package com.google.common.io;
-/*     */ 
-/*     */ import java.io.IOException;
-/*     */ import java.io.InputStream;
-/*     */ import java.util.Iterator;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ final class MultiInputStream
-/*     */   extends InputStream
-/*     */ {
-/*     */   private Iterator<? extends InputSupplier<? extends InputStream>> it;
-/*     */   private InputStream in;
-/*     */   
-/*     */   public MultiInputStream(Iterator<? extends InputSupplier<? extends InputStream>> it) throws IOException {
-/*  43 */     this.it = it;
-/*  44 */     advance();
-/*     */   }
-/*     */   
-/*     */   public void close() throws IOException {
-/*  48 */     if (this.in != null) {
-/*     */       try {
-/*  50 */         this.in.close();
-/*     */       } finally {
-/*  52 */         this.in = null;
-/*     */       } 
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private void advance() throws IOException {
-/*  61 */     close();
-/*  62 */     if (this.it.hasNext()) {
-/*  63 */       this.in = ((InputSupplier<InputStream>)this.it.next()).getInput();
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   public int available() throws IOException {
-/*  68 */     if (this.in == null) {
-/*  69 */       return 0;
-/*     */     }
-/*  71 */     return this.in.available();
-/*     */   }
-/*     */   
-/*     */   public boolean markSupported() {
-/*  75 */     return false;
-/*     */   }
-/*     */   
-/*     */   public int read() throws IOException {
-/*  79 */     if (this.in == null) {
-/*  80 */       return -1;
-/*     */     }
-/*  82 */     int result = this.in.read();
-/*  83 */     if (result == -1) {
-/*  84 */       advance();
-/*  85 */       return read();
-/*     */     } 
-/*  87 */     return result;
-/*     */   }
-/*     */   
-/*     */   public int read(byte[] b, int off, int len) throws IOException {
-/*  91 */     if (this.in == null) {
-/*  92 */       return -1;
-/*     */     }
-/*  94 */     int result = this.in.read(b, off, len);
-/*  95 */     if (result == -1) {
-/*  96 */       advance();
-/*  97 */       return read(b, off, len);
-/*     */     } 
-/*  99 */     return result;
-/*     */   }
-/*     */   
-/*     */   public long skip(long n) throws IOException {
-/* 103 */     if (this.in == null || n <= 0L) {
-/* 104 */       return 0L;
-/*     */     }
-/* 106 */     long result = this.in.skip(n);
-/* 107 */     if (result != 0L) {
-/* 108 */       return result;
-/*     */     }
-/* 110 */     if (read() == -1) {
-/* 111 */       return 0L;
-/*     */     }
-/* 113 */     return 1L + this.in.skip(n - 1L);
-/*     */   }
-/*     */ }
+package com.google.common.io;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/io/MultiInputStream.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+final class MultiInputStream
+extends InputStream
+{
+private Iterator<? extends InputSupplier<? extends InputStream>> it;
+private InputStream in;
+
+public MultiInputStream(Iterator<? extends InputSupplier<? extends InputStream>> it) throws IOException {
+this.it = it;
+advance();
+}
+
+public void close() throws IOException {
+if (this.in != null) {
+try {
+this.in.close();
+} finally {
+this.in = null;
+} 
+}
+}
+
+private void advance() throws IOException {
+close();
+if (this.it.hasNext()) {
+this.in = ((InputSupplier<InputStream>)this.it.next()).getInput();
+}
+}
+
+public int available() throws IOException {
+if (this.in == null) {
+return 0;
+}
+return this.in.available();
+}
+
+public boolean markSupported() {
+return false;
+}
+
+public int read() throws IOException {
+if (this.in == null) {
+return -1;
+}
+int result = this.in.read();
+if (result == -1) {
+advance();
+return read();
+} 
+return result;
+}
+
+public int read(byte[] b, int off, int len) throws IOException {
+if (this.in == null) {
+return -1;
+}
+int result = this.in.read(b, off, len);
+if (result == -1) {
+advance();
+return read(b, off, len);
+} 
+return result;
+}
+
+public long skip(long n) throws IOException {
+if (this.in == null || n <= 0L) {
+return 0L;
+}
+long result = this.in.skip(n);
+if (result != 0L) {
+return result;
+}
+if (read() == -1) {
+return 0L;
+}
+return 1L + this.in.skip(n - 1L);
+}
+}
+

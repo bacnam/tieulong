@@ -1,282 +1,124 @@
-/*     */ package jsc.distributions;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public abstract class AbstractDiscreteDistribution
-/*     */   extends AbstractDistribution
-/*     */ {
-/*     */   protected long minValue;
-/*     */   protected long maxValue;
-/*     */   
-/*     */   public AbstractDiscreteDistribution(long paramLong1, long paramLong2) {
-/*  40 */     if (paramLong1 >= paramLong2)
-/*  41 */       throw new IllegalArgumentException("Invalid variate range: " + paramLong1 + " to " + paramLong2 + "."); 
-/*  42 */     this.minValue = paramLong1;
-/*  43 */     this.maxValue = paramLong2;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double cdf(double paramDouble) {
-/*  58 */     if (paramDouble < this.minValue || paramDouble > this.maxValue)
-/*  59 */       throw new IllegalArgumentException("Invalid variate-value."); 
-/*  60 */     double d = 0.0D;
-/*  61 */     long l = this.minValue;
-/*  62 */     while (l <= paramDouble) {
-/*     */       
-/*  64 */       d += pdf(l);
-/*  65 */       l++;
-/*     */     } 
-/*     */     
-/*  68 */     return d;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double getMaximumPdf() {
-/*  82 */     long l1 = this.minValue;
-/*  83 */     double d = 0.0D;
-/*  84 */     for (long l2 = 0L; l2 < this.maxValue - this.minValue + 1L; l2++) {
-/*     */       
-/*  86 */       double d1 = pdf(l1);
-/*  87 */       if (d1 > d) d = d1;
-/*     */       
-/*  89 */       l1++;
-/*     */     } 
-/*  91 */     return d;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public long getMaxValue() {
-/*  99 */     return this.maxValue;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public long getMinValue() {
-/* 106 */     return this.minValue;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double moment(int paramInt) {
-/* 115 */     return moment(paramInt, 0.0D);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double moment(int paramInt, double paramDouble) {
-/* 127 */     if (paramInt < 0)
-/* 128 */       throw new IllegalArgumentException("Invalid moment order."); 
-/* 129 */     if (paramInt == 0) return 1.0D; 
-/* 130 */     long l1 = this.minValue;
-/* 131 */     double d = 0.0D;
-/* 132 */     for (long l2 = 0L; l2 < this.maxValue - this.minValue + 1L; l2++) {
-/*     */       
-/* 134 */       d += Math.pow(l1 - paramDouble, paramInt) * pdf(l1);
-/*     */       
-/* 136 */       l1++;
-/*     */     } 
-/* 138 */     return d;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double inverseCdf(double paramDouble) {
-/* 188 */     if (paramDouble < 0.0D || paramDouble > 1.0D) {
-/* 189 */       throw new IllegalArgumentException("Invalid probability " + paramDouble);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 199 */     double d1 = cdf(this.minValue);
-/* 200 */     if (d1 >= paramDouble) return this.minValue;
-/*     */     
-/* 202 */     double d2 = cdf(this.maxValue);
-/* 203 */     if (d2 < paramDouble) return this.maxValue;
-/*     */     
-/* 205 */     long l1 = this.minValue;
-/* 206 */     long l2 = this.maxValue;
-/*     */     
-/*     */     while (true) {
-/* 209 */       long l4 = l2 - l1;
-/* 210 */       if (l4 <= 1L) {
-/*     */         
-/* 212 */         if (cdf(l1) >= paramDouble) {
-/* 213 */           return l1;
-/*     */         }
-/* 215 */         return l2;
-/*     */       } 
-/* 217 */       l4 /= 2L;
-/* 218 */       long l3 = l1 + l4;
-/* 219 */       double d = cdf(l3);
-/* 220 */       if (d < paramDouble) {
-/* 221 */         l1 = l3; continue;
-/*     */       } 
-/* 223 */       l2 = l3;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean isDiscrete() {
-/* 235 */     return true;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double mean() {
-/* 246 */     long l1 = this.minValue;
-/* 247 */     double d = 0.0D;
-/* 248 */     for (long l2 = 0L; l2 < this.maxValue - this.minValue + 1L; l2++) {
-/*     */       
-/* 250 */       d += l1 * pdf(l1);
-/* 251 */       l1++;
-/*     */     } 
-/* 253 */     return d;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public abstract double pdf(double paramDouble);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public double variance() {
-/* 274 */     return moment(2, mean());
-/*     */   }
-/*     */ }
+package jsc.distributions;
 
+public abstract class AbstractDiscreteDistribution
+extends AbstractDistribution
+{
+protected long minValue;
+protected long maxValue;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/jsc/distributions/AbstractDiscreteDistribution.class
- * Java compiler version: 2 (46.0)
- * JD-Core Version:       1.1.3
- */
+public AbstractDiscreteDistribution(long paramLong1, long paramLong2) {
+if (paramLong1 >= paramLong2)
+throw new IllegalArgumentException("Invalid variate range: " + paramLong1 + " to " + paramLong2 + "."); 
+this.minValue = paramLong1;
+this.maxValue = paramLong2;
+}
+
+public double cdf(double paramDouble) {
+if (paramDouble < this.minValue || paramDouble > this.maxValue)
+throw new IllegalArgumentException("Invalid variate-value."); 
+double d = 0.0D;
+long l = this.minValue;
+while (l <= paramDouble) {
+
+d += pdf(l);
+l++;
+} 
+
+return d;
+}
+
+public double getMaximumPdf() {
+long l1 = this.minValue;
+double d = 0.0D;
+for (long l2 = 0L; l2 < this.maxValue - this.minValue + 1L; l2++) {
+
+double d1 = pdf(l1);
+if (d1 > d) d = d1;
+
+l1++;
+} 
+return d;
+}
+
+public long getMaxValue() {
+return this.maxValue;
+}
+
+public long getMinValue() {
+return this.minValue;
+}
+
+public double moment(int paramInt) {
+return moment(paramInt, 0.0D);
+}
+
+public double moment(int paramInt, double paramDouble) {
+if (paramInt < 0)
+throw new IllegalArgumentException("Invalid moment order."); 
+if (paramInt == 0) return 1.0D; 
+long l1 = this.minValue;
+double d = 0.0D;
+for (long l2 = 0L; l2 < this.maxValue - this.minValue + 1L; l2++) {
+
+d += Math.pow(l1 - paramDouble, paramInt) * pdf(l1);
+
+l1++;
+} 
+return d;
+}
+
+public double inverseCdf(double paramDouble) {
+if (paramDouble < 0.0D || paramDouble > 1.0D) {
+throw new IllegalArgumentException("Invalid probability " + paramDouble);
+}
+
+double d1 = cdf(this.minValue);
+if (d1 >= paramDouble) return this.minValue;
+
+double d2 = cdf(this.maxValue);
+if (d2 < paramDouble) return this.maxValue;
+
+long l1 = this.minValue;
+long l2 = this.maxValue;
+
+while (true) {
+long l4 = l2 - l1;
+if (l4 <= 1L) {
+
+if (cdf(l1) >= paramDouble) {
+return l1;
+}
+return l2;
+} 
+l4 /= 2L;
+long l3 = l1 + l4;
+double d = cdf(l3);
+if (d < paramDouble) {
+l1 = l3; continue;
+} 
+l2 = l3;
+} 
+}
+
+public boolean isDiscrete() {
+return true;
+}
+
+public double mean() {
+long l1 = this.minValue;
+double d = 0.0D;
+for (long l2 = 0L; l2 < this.maxValue - this.minValue + 1L; l2++) {
+
+d += l1 * pdf(l1);
+l1++;
+} 
+return d;
+}
+
+public abstract double pdf(double paramDouble);
+
+public double variance() {
+return moment(2, mean());
+}
+}
+

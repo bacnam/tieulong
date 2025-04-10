@@ -9,8 +9,3 @@ public interface MapEvictionListener<K, V> {
   void onEviction(@Nullable K paramK, @Nullable V paramV);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/collect/MapEvictionListener.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

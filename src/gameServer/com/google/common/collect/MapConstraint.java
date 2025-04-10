@@ -8,12 +8,7 @@ import javax.annotation.Nullable;
 @Beta
 public interface MapConstraint<K, V> {
   void checkKeyValue(@Nullable K paramK, @Nullable V paramV);
-  
+
   String toString();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/collect/MapConstraint.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

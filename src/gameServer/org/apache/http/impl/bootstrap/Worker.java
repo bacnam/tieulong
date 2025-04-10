@@ -1,86 +1,48 @@
-/*    */ package org.apache.http.impl.bootstrap;
-/*    */ 
-/*    */ import java.io.IOException;
-/*    */ import org.apache.http.ExceptionLogger;
-/*    */ import org.apache.http.HttpServerConnection;
-/*    */ import org.apache.http.protocol.BasicHttpContext;
-/*    */ import org.apache.http.protocol.HttpContext;
-/*    */ import org.apache.http.protocol.HttpCoreContext;
-/*    */ import org.apache.http.protocol.HttpService;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ class Worker
-/*    */   implements Runnable
-/*    */ {
-/*    */   private final HttpService httpservice;
-/*    */   private final HttpServerConnection conn;
-/*    */   private final ExceptionLogger exceptionLogger;
-/*    */   
-/*    */   Worker(HttpService httpservice, HttpServerConnection conn, ExceptionLogger exceptionLogger) {
-/* 51 */     this.httpservice = httpservice;
-/* 52 */     this.conn = conn;
-/* 53 */     this.exceptionLogger = exceptionLogger;
-/*    */   }
-/*    */   
-/*    */   public HttpServerConnection getConnection() {
-/* 57 */     return this.conn;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public void run() {
-/*    */     try {
-/* 63 */       BasicHttpContext localContext = new BasicHttpContext();
-/* 64 */       HttpCoreContext context = HttpCoreContext.adapt((HttpContext)localContext);
-/* 65 */       while (!Thread.interrupted() && this.conn.isOpen()) {
-/* 66 */         this.httpservice.handleRequest(this.conn, (HttpContext)context);
-/* 67 */         localContext.clear();
-/*    */       } 
-/* 69 */       this.conn.close();
-/* 70 */     } catch (Exception ex) {
-/* 71 */       this.exceptionLogger.log(ex);
-/*    */     } finally {
-/*    */       try {
-/* 74 */         this.conn.shutdown();
-/* 75 */       } catch (IOException ex) {
-/* 76 */         this.exceptionLogger.log(ex);
-/*    */       } 
-/*    */     } 
-/*    */   }
-/*    */ }
+package org.apache.http.impl.bootstrap;
 
+import java.io.IOException;
+import org.apache.http.ExceptionLogger;
+import org.apache.http.HttpServerConnection;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.HttpCoreContext;
+import org.apache.http.protocol.HttpService;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/impl/bootstrap/Worker.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+class Worker
+implements Runnable
+{
+private final HttpService httpservice;
+private final HttpServerConnection conn;
+private final ExceptionLogger exceptionLogger;
+
+Worker(HttpService httpservice, HttpServerConnection conn, ExceptionLogger exceptionLogger) {
+this.httpservice = httpservice;
+this.conn = conn;
+this.exceptionLogger = exceptionLogger;
+}
+
+public HttpServerConnection getConnection() {
+return this.conn;
+}
+
+public void run() {
+try {
+BasicHttpContext localContext = new BasicHttpContext();
+HttpCoreContext context = HttpCoreContext.adapt((HttpContext)localContext);
+while (!Thread.interrupted() && this.conn.isOpen()) {
+this.httpservice.handleRequest(this.conn, (HttpContext)context);
+localContext.clear();
+} 
+this.conn.close();
+} catch (Exception ex) {
+this.exceptionLogger.log(ex);
+} finally {
+try {
+this.conn.shutdown();
+} catch (IOException ex) {
+this.exceptionLogger.log(ex);
+} 
+} 
+}
+}
+

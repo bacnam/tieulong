@@ -1,53 +1,48 @@
-/*    */ package business.global.rank;
-/*    */ 
-/*    */ import com.zhonglian.server.common.utils.CommTime;
-/*    */ import core.database.game.bo.RankRecordBO;
-/*    */ 
-/*    */ public class Record
-/*    */ {
-/*    */   int rank;
-/*    */   RankRecordBO recordBO;
-/*    */   
-/*    */   public Record(RankRecordBO recordBO) {
-/* 12 */     this.recordBO = recordBO;
-/* 13 */     this.rank = 0;
-/*    */   }
-/*    */   
-/*    */   public long saveValue(long value) {
-/* 17 */     this.recordBO.saveValue(value);
-/* 18 */     this.recordBO.saveUpdateTime(CommTime.nowSecond());
-/* 19 */     return this.recordBO.getValue();
-/*    */   }
-/*    */   
-/*    */   public RankRecordBO copy() {
-/* 23 */     RankRecordBO recordBO = new RankRecordBO();
-/* 24 */     recordBO.setType(recordBO.getType());
-/* 25 */     recordBO.setOwner(recordBO.getOwner());
-/* 26 */     recordBO.setValue(recordBO.getValue());
-/* 27 */     recordBO.setExt1(recordBO.getExt1());
-/* 28 */     recordBO.setExt2(recordBO.getExt2());
-/* 29 */     recordBO.setExt3(recordBO.getExt3());
-/* 30 */     recordBO.setExt4(recordBO.getExt4());
-/* 31 */     recordBO.setExt5(recordBO.getExt5());
-/* 32 */     recordBO.setUpdateTime(CommTime.nowSecond());
-/* 33 */     return recordBO;
-/*    */   }
-/*    */   
-/*    */   public long getPid() {
-/* 37 */     return this.recordBO.getOwner();
-/*    */   }
-/*    */   
-/*    */   public int getRank() {
-/* 41 */     return this.rank;
-/*    */   }
-/*    */   
-/*    */   public long getValue() {
-/* 45 */     return this.recordBO.getValue();
-/*    */   }
-/*    */ }
+package business.global.rank;
 
+import com.zhonglian.server.common.utils.CommTime;
+import core.database.game.bo.RankRecordBO;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/business/global/rank/Record.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */
+public class Record
+{
+int rank;
+RankRecordBO recordBO;
+
+public Record(RankRecordBO recordBO) {
+this.recordBO = recordBO;
+this.rank = 0;
+}
+
+public long saveValue(long value) {
+this.recordBO.saveValue(value);
+this.recordBO.saveUpdateTime(CommTime.nowSecond());
+return this.recordBO.getValue();
+}
+
+public RankRecordBO copy() {
+RankRecordBO recordBO = new RankRecordBO();
+recordBO.setType(recordBO.getType());
+recordBO.setOwner(recordBO.getOwner());
+recordBO.setValue(recordBO.getValue());
+recordBO.setExt1(recordBO.getExt1());
+recordBO.setExt2(recordBO.getExt2());
+recordBO.setExt3(recordBO.getExt3());
+recordBO.setExt4(recordBO.getExt4());
+recordBO.setExt5(recordBO.getExt5());
+recordBO.setUpdateTime(CommTime.nowSecond());
+return recordBO;
+}
+
+public long getPid() {
+return this.recordBO.getOwner();
+}
+
+public int getRank() {
+return this.rank;
+}
+
+public long getValue() {
+return this.recordBO.getValue();
+}
+}
+

@@ -10,14 +10,9 @@ import org.apache.http.nio.reactor.IOReactor;
 @Deprecated
 public interface ClientAsyncConnectionManager extends IOReactor {
   AsyncSchemeRegistry getSchemeRegistry();
-  
+
   Future<ManagedClientAsyncConnection> leaseConnection(HttpRoute paramHttpRoute, Object paramObject, long paramLong, TimeUnit paramTimeUnit, FutureCallback<ManagedClientAsyncConnection> paramFutureCallback);
-  
+
   void releaseConnection(ManagedClientAsyncConnection paramManagedClientAsyncConnection, long paramLong, TimeUnit paramTimeUnit);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/conn/ClientAsyncConnectionManager.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

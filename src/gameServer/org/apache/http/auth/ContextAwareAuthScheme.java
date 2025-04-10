@@ -8,8 +8,3 @@ public interface ContextAwareAuthScheme extends AuthScheme {
   Header authenticate(Credentials paramCredentials, HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws AuthenticationException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/auth/ContextAwareAuthScheme.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

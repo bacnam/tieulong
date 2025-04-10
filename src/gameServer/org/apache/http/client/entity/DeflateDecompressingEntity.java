@@ -1,74 +1,20 @@
-/*    */ package org.apache.http.client.entity;
-/*    */ 
-/*    */ import java.io.IOException;
-/*    */ import java.io.InputStream;
-/*    */ import org.apache.http.HttpEntity;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class DeflateDecompressingEntity
-/*    */   extends DecompressingEntity
-/*    */ {
-/*    */   public DeflateDecompressingEntity(HttpEntity entity) {
-/* 60 */     super(entity, new InputStreamFactory()
-/*    */         {
-/*    */           public InputStream create(InputStream instream) throws IOException
-/*    */           {
-/* 64 */             return new DeflateInputStream(instream);
-/*    */           }
-/*    */         });
-/*    */   }
-/*    */ }
+package org.apache.http.client.entity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import org.apache.http.HttpEntity;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/entity/DeflateDecompressingEntity.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class DeflateDecompressingEntity
+extends DecompressingEntity
+{
+public DeflateDecompressingEntity(HttpEntity entity) {
+super(entity, new InputStreamFactory()
+{
+public InputStream create(InputStream instream) throws IOException
+{
+return new DeflateInputStream(instream);
+}
+});
+}
+}
+

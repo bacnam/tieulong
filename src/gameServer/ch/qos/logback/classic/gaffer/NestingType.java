@@ -14,11 +14,11 @@ import org.codehaus.groovy.transform.ImmutableASTTransformation;
 
 public enum NestingType implements GroovyObject {
   NA, SINGLE, AS_COLLECTION;
-  
+
   public static final NestingType MIN_VALUE;
-  
+
   public static final NestingType MAX_VALUE;
-  
+
   NestingType(LinkedHashMap __namedArgs) {
     MetaClass metaClass = $getStaticMetaClass();
     this.metaClass = metaClass;
@@ -26,7 +26,7 @@ public enum NestingType implements GroovyObject {
       throw (Throwable)arrayOfCallSite[0].callConstructor(IllegalArgumentException.class, "One of the enum constants for enum ch.qos.logback.classic.gaffer.NestingType was initialized with null. Please use a non-null value or define your own constructor."); 
     arrayOfCallSite[1].callStatic(ImmutableASTTransformation.class, this, __namedArgs);
   }
-  
+
   static {
     Object object1 = $getCallSiteArray()[13].callStatic(NestingType.class, "NA", Integer.valueOf(0));
     NA = (NestingType)ShortTypeHandling.castToEnum(object1, NestingType.class);
@@ -43,8 +43,3 @@ public enum NestingType implements GroovyObject {
   }
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/gaffer/NestingType.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

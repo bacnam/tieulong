@@ -1,63 +1,31 @@
-/*    */ package org.apache.http.util;
-/*    */ 
-/*    */ import java.io.UnsupportedEncodingException;
-/*    */ import java.nio.charset.Charset;
-/*    */ import java.nio.charset.UnsupportedCharsetException;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class CharsetUtils
-/*    */ {
-/*    */   public static Charset lookup(String name) {
-/* 37 */     if (name == null) {
-/* 38 */       return null;
-/*    */     }
-/*    */     try {
-/* 41 */       return Charset.forName(name);
-/* 42 */     } catch (UnsupportedCharsetException ex) {
-/* 43 */       return null;
-/*    */     } 
-/*    */   }
-/*    */   
-/*    */   public static Charset get(String name) throws UnsupportedEncodingException {
-/* 48 */     if (name == null) {
-/* 49 */       return null;
-/*    */     }
-/*    */     try {
-/* 52 */       return Charset.forName(name);
-/* 53 */     } catch (UnsupportedCharsetException ex) {
-/* 54 */       throw new UnsupportedEncodingException(name);
-/*    */     } 
-/*    */   }
-/*    */ }
+package org.apache.http.util;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/util/CharsetUtils.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class CharsetUtils
+{
+public static Charset lookup(String name) {
+if (name == null) {
+return null;
+}
+try {
+return Charset.forName(name);
+} catch (UnsupportedCharsetException ex) {
+return null;
+} 
+}
+
+public static Charset get(String name) throws UnsupportedEncodingException {
+if (name == null) {
+return null;
+}
+try {
+return Charset.forName(name);
+} catch (UnsupportedCharsetException ex) {
+throw new UnsupportedEncodingException(name);
+} 
+}
+}
+

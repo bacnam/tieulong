@@ -1,122 +1,75 @@
-/*     */ package com.mchange.v1.util;
-/*     */ 
-/*     */ import java.util.Iterator;
-/*     */ import java.util.NoSuchElementException;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public abstract class WrapperIterator
-/*     */   implements Iterator
-/*     */ {
-/*  47 */   protected static final Object SKIP_TOKEN = new Object();
-/*     */   
-/*     */   static final boolean DEBUG = true;
-/*     */   
-/*     */   Iterator inner;
-/*     */   boolean supports_remove;
-/*  53 */   Object lastOut = null;
-/*  54 */   Object nextOut = SKIP_TOKEN;
-/*     */ 
-/*     */   
-/*     */   public WrapperIterator(Iterator paramIterator, boolean paramBoolean) {
-/*  58 */     this.inner = paramIterator;
-/*  59 */     this.supports_remove = paramBoolean;
-/*     */   }
-/*     */   
-/*     */   public WrapperIterator(Iterator paramIterator) {
-/*  63 */     this(paramIterator, false);
-/*     */   }
-/*     */   
-/*     */   public boolean hasNext() {
-/*  67 */     findNext();
-/*  68 */     return (this.nextOut != SKIP_TOKEN);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private void findNext() {
-/*  73 */     if (this.nextOut == SKIP_TOKEN)
-/*     */     {
-/*  75 */       while (this.inner.hasNext() && this.nextOut == SKIP_TOKEN) {
-/*  76 */         this.nextOut = transformObject(this.inner.next());
-/*     */       }
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   public Object next() {
-/*  82 */     findNext();
-/*  83 */     if (this.nextOut != SKIP_TOKEN) {
-/*     */       
-/*  85 */       this.lastOut = this.nextOut;
-/*  86 */       this.nextOut = SKIP_TOKEN;
-/*     */     } else {
-/*     */       
-/*  89 */       throw new NoSuchElementException();
-/*     */     } 
-/*     */ 
-/*     */     
-/*  93 */     DebugUtils.myAssert((this.nextOut == SKIP_TOKEN && this.lastOut != SKIP_TOKEN));
-/*  94 */     return this.lastOut;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public void remove() {
-/*  99 */     if (this.supports_remove) {
-/*     */       
-/* 101 */       if (this.nextOut != SKIP_TOKEN) {
-/* 102 */         throw new UnsupportedOperationException(getClass().getName() + " cannot support remove after" + " hasNext() has been called!");
-/*     */       }
-/*     */       
-/* 105 */       if (this.lastOut != SKIP_TOKEN) {
-/* 106 */         this.inner.remove();
-/*     */       } else {
-/* 108 */         throw new NoSuchElementException();
-/*     */       } 
-/*     */     } else {
-/* 111 */       throw new UnsupportedOperationException();
-/*     */     } 
-/*     */   }
-/*     */   
-/*     */   protected abstract Object transformObject(Object paramObject);
-/*     */ }
+package com.mchange.v1.util;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mchange/v1/util/WrapperIterator.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public abstract class WrapperIterator
+implements Iterator
+{
+protected static final Object SKIP_TOKEN = new Object();
+
+static final boolean DEBUG = true;
+
+Iterator inner;
+boolean supports_remove;
+Object lastOut = null;
+Object nextOut = SKIP_TOKEN;
+
+public WrapperIterator(Iterator paramIterator, boolean paramBoolean) {
+this.inner = paramIterator;
+this.supports_remove = paramBoolean;
+}
+
+public WrapperIterator(Iterator paramIterator) {
+this(paramIterator, false);
+}
+
+public boolean hasNext() {
+findNext();
+return (this.nextOut != SKIP_TOKEN);
+}
+
+private void findNext() {
+if (this.nextOut == SKIP_TOKEN)
+{
+while (this.inner.hasNext() && this.nextOut == SKIP_TOKEN) {
+this.nextOut = transformObject(this.inner.next());
+}
+}
+}
+
+public Object next() {
+findNext();
+if (this.nextOut != SKIP_TOKEN) {
+
+this.lastOut = this.nextOut;
+this.nextOut = SKIP_TOKEN;
+} else {
+
+throw new NoSuchElementException();
+} 
+
+DebugUtils.myAssert((this.nextOut == SKIP_TOKEN && this.lastOut != SKIP_TOKEN));
+return this.lastOut;
+}
+
+public void remove() {
+if (this.supports_remove) {
+
+if (this.nextOut != SKIP_TOKEN) {
+throw new UnsupportedOperationException(getClass().getName() + " cannot support remove after" + " hasNext() has been called!");
+}
+
+if (this.lastOut != SKIP_TOKEN) {
+this.inner.remove();
+} else {
+throw new NoSuchElementException();
+} 
+} else {
+throw new UnsupportedOperationException();
+} 
+}
+
+protected abstract Object transformObject(Object paramObject);
+}
+

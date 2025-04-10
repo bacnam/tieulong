@@ -1,20 +1,4 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package org.apache.thrift;
 
 import java.nio.ByteBuffer;
@@ -153,7 +137,6 @@ public final class TBaseHelper {
     Iterator iterA = sortedA.iterator();
     Iterator iterB = sortedB.iterator();
 
-    // Compare each item.
     while (iterA.hasNext() && iterB.hasNext()) {
       lastComparison = comparator.compare(iterA.next(), iterB.next());
       if (lastComparison != 0) {
@@ -170,7 +153,6 @@ public final class TBaseHelper {
       return lastComparison;
     }
 
-    // Sort a and b so we can compare them.
     SortedMap sortedA = new TreeMap(comparator);
     sortedA.putAll(a);
     Iterator<Map.Entry> iterA = sortedA.entrySet().iterator();
@@ -178,7 +160,6 @@ public final class TBaseHelper {
     sortedB.putAll(b);
     Iterator<Map.Entry> iterB = sortedB.entrySet().iterator();
 
-    // Compare each item.
     while (iterA.hasNext() && iterB.hasNext()) {
       Map.Entry entryA = iterA.next();
       Map.Entry entryB = iterB.next();
@@ -195,9 +176,6 @@ public final class TBaseHelper {
     return 0;
   }
 
-  /**
-   * Comparator to compare items inside a structure (e.g. a list, set, or map).
-   */
   private static class NestedStructureComparator implements Comparator {
     public int compare(Object oA, Object oB) {
       if (oA == null && oB == null) {

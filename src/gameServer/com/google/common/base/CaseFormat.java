@@ -1,167 +1,119 @@
-/*     */ package com.google.common.base;
-/*     */ 
-/*     */ import com.google.common.annotations.GwtCompatible;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ @GwtCompatible
-/*     */ public enum CaseFormat
-/*     */ {
-/*  32 */   LOWER_HYPHEN(CharMatcher.is('-'), "-"),
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*  37 */   LOWER_UNDERSCORE(CharMatcher.is('_'), "_"),
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*  42 */   LOWER_CAMEL(CharMatcher.inRange('A', 'Z'), ""),
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*  47 */   UPPER_CAMEL(CharMatcher.inRange('A', 'Z'), ""),
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*  52 */   UPPER_UNDERSCORE(CharMatcher.is('_'), "_");
-/*     */   
-/*     */   private final CharMatcher wordBoundary;
-/*     */   private final String wordSeparator;
-/*     */   
-/*     */   CaseFormat(CharMatcher wordBoundary, String wordSeparator) {
-/*  58 */     this.wordBoundary = wordBoundary;
-/*  59 */     this.wordSeparator = wordSeparator;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String to(CaseFormat format, String s) {
-/*  68 */     if (format == null) {
-/*  69 */       throw new NullPointerException();
-/*     */     }
-/*  71 */     if (s == null) {
-/*  72 */       throw new NullPointerException();
-/*     */     }
-/*     */     
-/*  75 */     if (format == this) {
-/*  76 */       return s;
-/*     */     }
-/*     */ 
-/*     */     
-/*  80 */     switch (this) {
-/*     */       case LOWER_HYPHEN:
-/*  82 */         switch (format) {
-/*     */           case LOWER_UNDERSCORE:
-/*  84 */             return s.replace('-', '_');
-/*     */           case UPPER_UNDERSCORE:
-/*  86 */             return Ascii.toUpperCase(s.replace('-', '_'));
-/*     */         } 
-/*     */         break;
-/*     */       case LOWER_UNDERSCORE:
-/*  90 */         switch (format) {
-/*     */           case LOWER_HYPHEN:
-/*  92 */             return s.replace('_', '-');
-/*     */           case UPPER_UNDERSCORE:
-/*  94 */             return Ascii.toUpperCase(s);
-/*     */         } 
-/*     */         break;
-/*     */       case UPPER_UNDERSCORE:
-/*  98 */         switch (format) {
-/*     */           case LOWER_HYPHEN:
-/* 100 */             return Ascii.toLowerCase(s.replace('_', '-'));
-/*     */           case LOWER_UNDERSCORE:
-/* 102 */             return Ascii.toLowerCase(s);
-/*     */         } 
-/*     */         
-/*     */         break;
-/*     */     } 
-/*     */     
-/* 108 */     StringBuilder out = null;
-/* 109 */     int i = 0;
-/* 110 */     int j = -1;
-/* 111 */     while ((j = this.wordBoundary.indexIn(s, ++j)) != -1) {
-/* 112 */       if (i == 0) {
-/*     */         
-/* 114 */         out = new StringBuilder(s.length() + 4 * this.wordSeparator.length());
-/* 115 */         out.append(format.normalizeFirstWord(s.substring(i, j)));
-/*     */       } else {
-/* 117 */         out.append(format.normalizeWord(s.substring(i, j)));
-/*     */       } 
-/* 119 */       out.append(format.wordSeparator);
-/* 120 */       i = j + this.wordSeparator.length();
-/*     */     } 
-/* 122 */     if (i == 0) {
-/* 123 */       return format.normalizeFirstWord(s);
-/*     */     }
-/* 125 */     out.append(format.normalizeWord(s.substring(i)));
-/* 126 */     return out.toString();
-/*     */   }
-/*     */   
-/*     */   private String normalizeFirstWord(String word) {
-/* 130 */     switch (this) {
-/*     */       case LOWER_CAMEL:
-/* 132 */         return Ascii.toLowerCase(word);
-/*     */     } 
-/* 134 */     return normalizeWord(word);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private String normalizeWord(String word) {
-/* 139 */     switch (this) {
-/*     */       case LOWER_HYPHEN:
-/* 141 */         return Ascii.toLowerCase(word);
-/*     */       case LOWER_UNDERSCORE:
-/* 143 */         return Ascii.toLowerCase(word);
-/*     */       case LOWER_CAMEL:
-/* 145 */         return firstCharOnlyToUpper(word);
-/*     */       case UPPER_CAMEL:
-/* 147 */         return firstCharOnlyToUpper(word);
-/*     */       case UPPER_UNDERSCORE:
-/* 149 */         return Ascii.toUpperCase(word);
-/*     */     } 
-/* 151 */     throw new RuntimeException("unknown case: " + this);
-/*     */   }
-/*     */   
-/*     */   private static String firstCharOnlyToUpper(String word) {
-/* 155 */     int length = word.length();
-/* 156 */     if (length == 0) {
-/* 157 */       return word;
-/*     */     }
-/* 159 */     return (new StringBuilder(length)).append(Ascii.toUpperCase(word.charAt(0))).append(Ascii.toLowerCase(word.substring(1))).toString();
-/*     */   }
-/*     */ }
+package com.google.common.base;
 
+import com.google.common.annotations.GwtCompatible;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/base/CaseFormat.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+@GwtCompatible
+public enum CaseFormat
+{
+LOWER_HYPHEN(CharMatcher.is('-'), "-"),
+
+LOWER_UNDERSCORE(CharMatcher.is('_'), "_"),
+
+LOWER_CAMEL(CharMatcher.inRange('A', 'Z'), ""),
+
+UPPER_CAMEL(CharMatcher.inRange('A', 'Z'), ""),
+
+UPPER_UNDERSCORE(CharMatcher.is('_'), "_");
+
+private final CharMatcher wordBoundary;
+private final String wordSeparator;
+
+CaseFormat(CharMatcher wordBoundary, String wordSeparator) {
+this.wordBoundary = wordBoundary;
+this.wordSeparator = wordSeparator;
+}
+
+public String to(CaseFormat format, String s) {
+if (format == null) {
+throw new NullPointerException();
+}
+if (s == null) {
+throw new NullPointerException();
+}
+
+if (format == this) {
+return s;
+}
+
+switch (this) {
+case LOWER_HYPHEN:
+switch (format) {
+case LOWER_UNDERSCORE:
+return s.replace('-', '_');
+case UPPER_UNDERSCORE:
+return Ascii.toUpperCase(s.replace('-', '_'));
+} 
+break;
+case LOWER_UNDERSCORE:
+switch (format) {
+case LOWER_HYPHEN:
+return s.replace('_', '-');
+case UPPER_UNDERSCORE:
+return Ascii.toUpperCase(s);
+} 
+break;
+case UPPER_UNDERSCORE:
+switch (format) {
+case LOWER_HYPHEN:
+return Ascii.toLowerCase(s.replace('_', '-'));
+case LOWER_UNDERSCORE:
+return Ascii.toLowerCase(s);
+} 
+
+break;
+} 
+
+StringBuilder out = null;
+int i = 0;
+int j = -1;
+while ((j = this.wordBoundary.indexIn(s, ++j)) != -1) {
+if (i == 0) {
+
+out = new StringBuilder(s.length() + 4 * this.wordSeparator.length());
+out.append(format.normalizeFirstWord(s.substring(i, j)));
+} else {
+out.append(format.normalizeWord(s.substring(i, j)));
+} 
+out.append(format.wordSeparator);
+i = j + this.wordSeparator.length();
+} 
+if (i == 0) {
+return format.normalizeFirstWord(s);
+}
+out.append(format.normalizeWord(s.substring(i)));
+return out.toString();
+}
+
+private String normalizeFirstWord(String word) {
+switch (this) {
+case LOWER_CAMEL:
+return Ascii.toLowerCase(word);
+} 
+return normalizeWord(word);
+}
+
+private String normalizeWord(String word) {
+switch (this) {
+case LOWER_HYPHEN:
+return Ascii.toLowerCase(word);
+case LOWER_UNDERSCORE:
+return Ascii.toLowerCase(word);
+case LOWER_CAMEL:
+return firstCharOnlyToUpper(word);
+case UPPER_CAMEL:
+return firstCharOnlyToUpper(word);
+case UPPER_UNDERSCORE:
+return Ascii.toUpperCase(word);
+} 
+throw new RuntimeException("unknown case: " + this);
+}
+
+private static String firstCharOnlyToUpper(String word) {
+int length = word.length();
+if (length == 0) {
+return word;
+}
+return (new StringBuilder(length)).append(Ascii.toUpperCase(word.charAt(0))).append(Ascii.toLowerCase(word.substring(1))).toString();
+}
+}
+

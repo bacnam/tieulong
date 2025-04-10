@@ -11,22 +11,17 @@ import org.apache.http.protocol.HttpContext;
 
 public interface HttpAsyncRequestProducer extends Closeable {
   HttpHost getTarget();
-  
+
   HttpRequest generateRequest() throws IOException, HttpException;
-  
+
   void produceContent(ContentEncoder paramContentEncoder, IOControl paramIOControl) throws IOException;
-  
+
   void requestCompleted(HttpContext paramHttpContext);
-  
+
   void failed(Exception paramException);
-  
+
   boolean isRepeatable();
-  
+
   void resetRequest() throws IOException;
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/protocol/HttpAsyncRequestProducer.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

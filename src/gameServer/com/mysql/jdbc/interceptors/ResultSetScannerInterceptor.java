@@ -1,116 +1,73 @@
-/*     */ package com.mysql.jdbc.interceptors;
-/*     */ 
-/*     */ import com.mysql.jdbc.Connection;
-/*     */ import com.mysql.jdbc.ResultSetInternalMethods;
-/*     */ import com.mysql.jdbc.Statement;
-/*     */ import com.mysql.jdbc.StatementInterceptor;
-/*     */ import java.lang.reflect.InvocationHandler;
-/*     */ import java.lang.reflect.Method;
-/*     */ import java.lang.reflect.Proxy;
-/*     */ import java.sql.SQLException;
-/*     */ import java.util.Properties;
-/*     */ import java.util.regex.Matcher;
-/*     */ import java.util.regex.Pattern;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class ResultSetScannerInterceptor
-/*     */   implements StatementInterceptor
-/*     */ {
-/*     */   protected Pattern regexP;
-/*     */   
-/*     */   public void init(Connection conn, Properties props) throws SQLException {
-/*  45 */     String regexFromUser = props.getProperty("resultSetScannerRegex");
-/*     */     
-/*  47 */     if (regexFromUser == null || regexFromUser.length() == 0) {
-/*  48 */       throw new SQLException("resultSetScannerRegex must be configured, and must be > 0 characters");
-/*     */     }
-/*     */     
-/*     */     try {
-/*  52 */       this.regexP = Pattern.compile(regexFromUser);
-/*  53 */     } catch (Throwable t) {
-/*  54 */       SQLException sqlEx = new SQLException("Can't use configured regex due to underlying exception.");
-/*  55 */       sqlEx.initCause(t);
-/*     */       
-/*  57 */       throw sqlEx;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public ResultSetInternalMethods postProcess(String sql, Statement interceptedStatement, ResultSetInternalMethods originalResultSet, Connection connection) throws SQLException {
-/*  67 */     final ResultSetInternalMethods finalResultSet = originalResultSet;
-/*     */     
-/*  69 */     return (ResultSetInternalMethods)Proxy.newProxyInstance(originalResultSet.getClass().getClassLoader(), new Class[] { ResultSetInternalMethods.class }, new InvocationHandler()
-/*     */         {
-/*     */ 
-/*     */ 
-/*     */           
-/*     */           public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-/*     */           {
-/*  76 */             Object invocationResult = method.invoke(finalResultSet, args);
-/*     */             
-/*  78 */             String methodName = method.getName();
-/*     */             
-/*  80 */             if ((invocationResult != null && invocationResult instanceof String) || "getString".equals(methodName) || "getObject".equals(methodName) || "getObjectStoredProc".equals(methodName)) {
-/*     */ 
-/*     */ 
-/*     */               
-/*  84 */               Matcher matcher = ResultSetScannerInterceptor.this.regexP.matcher(invocationResult.toString());
-/*     */               
-/*  86 */               if (matcher.matches()) {
-/*  87 */                 throw new SQLException("value disallowed by filter");
-/*     */               }
-/*     */             } 
-/*     */             
-/*  91 */             return invocationResult;
-/*     */           }
-/*     */         });
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public ResultSetInternalMethods preProcess(String sql, Statement interceptedStatement, Connection connection) throws SQLException {
-/* 100 */     return null;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean executeTopLevelOnly() {
-/* 106 */     return false;
-/*     */   }
-/*     */   
-/*     */   public void destroy() {}
-/*     */ }
+package com.mysql.jdbc.interceptors;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.ResultSetInternalMethods;
+import com.mysql.jdbc.Statement;
+import com.mysql.jdbc.StatementInterceptor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/interceptors/ResultSetScannerInterceptor.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class ResultSetScannerInterceptor
+implements StatementInterceptor
+{
+protected Pattern regexP;
+
+public void init(Connection conn, Properties props) throws SQLException {
+String regexFromUser = props.getProperty("resultSetScannerRegex");
+
+if (regexFromUser == null || regexFromUser.length() == 0) {
+throw new SQLException("resultSetScannerRegex must be configured, and must be > 0 characters");
+}
+
+try {
+this.regexP = Pattern.compile(regexFromUser);
+} catch (Throwable t) {
+SQLException sqlEx = new SQLException("Can't use configured regex due to underlying exception.");
+sqlEx.initCause(t);
+
+throw sqlEx;
+} 
+}
+
+public ResultSetInternalMethods postProcess(String sql, Statement interceptedStatement, ResultSetInternalMethods originalResultSet, Connection connection) throws SQLException {
+final ResultSetInternalMethods finalResultSet = originalResultSet;
+
+return (ResultSetInternalMethods)Proxy.newProxyInstance(originalResultSet.getClass().getClassLoader(), new Class[] { ResultSetInternalMethods.class }, new InvocationHandler()
+{
+
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+{
+Object invocationResult = method.invoke(finalResultSet, args);
+
+String methodName = method.getName();
+
+if ((invocationResult != null && invocationResult instanceof String) || "getString".equals(methodName) || "getObject".equals(methodName) || "getObjectStoredProc".equals(methodName)) {
+
+Matcher matcher = ResultSetScannerInterceptor.this.regexP.matcher(invocationResult.toString());
+
+if (matcher.matches()) {
+throw new SQLException("value disallowed by filter");
+}
+} 
+
+return invocationResult;
+}
+});
+}
+
+public ResultSetInternalMethods preProcess(String sql, Statement interceptedStatement, Connection connection) throws SQLException {
+return null;
+}
+
+public boolean executeTopLevelOnly() {
+return false;
+}
+
+public void destroy() {}
+}
+

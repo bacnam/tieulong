@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 
 package org.apache.thrift.transport;
 
@@ -28,11 +11,6 @@ import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * HTTP implementation of the TTransport interface. Used for working with a
- * Thrift web services implementation.
- *
- */
 public class THttpClient extends TTransport {
 
   private URL url_ = null;
@@ -112,15 +90,14 @@ public class THttpClient extends TTransport {
   }
 
   public void flush() throws TTransportException {
-    // Extract request and reset buffer
+
     byte[] data = requestBuffer_.toByteArray();
     requestBuffer_.reset();
 
     try {
-      // Create connection object
+
       HttpURLConnection connection = (HttpURLConnection)url_.openConnection();
 
-      // Timeouts, only if explicitly set
       if (connectTimeout_ > 0) {
         connection.setConnectTimeout(connectTimeout_);
       }
@@ -128,7 +105,6 @@ public class THttpClient extends TTransport {
         connection.setReadTimeout(readTimeout_);
       }
 
-      // Make the request
       connection.setRequestMethod("POST");
       connection.setRequestProperty("Content-Type", "application/x-thrift");
       connection.setRequestProperty("Accept", "application/x-thrift");
@@ -147,7 +123,6 @@ public class THttpClient extends TTransport {
         throw new TTransportException("HTTP Response code: " + responseCode);
       }
 
-      // Read the responses
       inputStream_ = connection.getInputStream();
 
     } catch (IOException iox) {

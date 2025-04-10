@@ -1,158 +1,64 @@
-/*     */ package org.apache.mina.filter.codec.prefixedstring;
-/*     */ 
-/*     */ import java.nio.charset.Charset;
-/*     */ import org.apache.mina.core.session.IoSession;
-/*     */ import org.apache.mina.filter.codec.ProtocolCodecFactory;
-/*     */ import org.apache.mina.filter.codec.ProtocolDecoder;
-/*     */ import org.apache.mina.filter.codec.ProtocolEncoder;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class PrefixedStringCodecFactory
-/*     */   implements ProtocolCodecFactory
-/*     */ {
-/*     */   private final PrefixedStringEncoder encoder;
-/*     */   private final PrefixedStringDecoder decoder;
-/*     */   
-/*     */   public PrefixedStringCodecFactory(Charset charset) {
-/*  43 */     this.encoder = new PrefixedStringEncoder(charset);
-/*  44 */     this.decoder = new PrefixedStringDecoder(charset);
-/*     */   }
-/*     */   
-/*     */   public PrefixedStringCodecFactory() {
-/*  48 */     this(Charset.defaultCharset());
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getEncoderMaxDataLength() {
-/*  62 */     return this.encoder.getMaxDataLength();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setEncoderMaxDataLength(int maxDataLength) {
-/*  76 */     this.encoder.setMaxDataLength(maxDataLength);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getDecoderMaxDataLength() {
-/*  89 */     return this.decoder.getMaxDataLength();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setDecoderMaxDataLength(int maxDataLength) {
-/* 106 */     this.decoder.setMaxDataLength(maxDataLength);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setDecoderPrefixLength(int prefixLength) {
-/* 115 */     this.decoder.setPrefixLength(prefixLength);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getDecoderPrefixLength() {
-/* 124 */     return this.decoder.getPrefixLength();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public void setEncoderPrefixLength(int prefixLength) {
-/* 133 */     this.encoder.setPrefixLength(prefixLength);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getEncoderPrefixLength() {
-/* 142 */     return this.encoder.getPrefixLength();
-/*     */   }
-/*     */   
-/*     */   public ProtocolEncoder getEncoder(IoSession session) throws Exception {
-/* 146 */     return (ProtocolEncoder)this.encoder;
-/*     */   }
-/*     */   
-/*     */   public ProtocolDecoder getDecoder(IoSession session) throws Exception {
-/* 150 */     return (ProtocolDecoder)this.decoder;
-/*     */   }
-/*     */ }
+package org.apache.mina.filter.codec.prefixedstring;
 
+import java.nio.charset.Charset;
+import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecFactory;
+import org.apache.mina.filter.codec.ProtocolDecoder;
+import org.apache.mina.filter.codec.ProtocolEncoder;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/mina/filter/codec/prefixedstring/PrefixedStringCodecFactory.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class PrefixedStringCodecFactory
+implements ProtocolCodecFactory
+{
+private final PrefixedStringEncoder encoder;
+private final PrefixedStringDecoder decoder;
+
+public PrefixedStringCodecFactory(Charset charset) {
+this.encoder = new PrefixedStringEncoder(charset);
+this.decoder = new PrefixedStringDecoder(charset);
+}
+
+public PrefixedStringCodecFactory() {
+this(Charset.defaultCharset());
+}
+
+public int getEncoderMaxDataLength() {
+return this.encoder.getMaxDataLength();
+}
+
+public void setEncoderMaxDataLength(int maxDataLength) {
+this.encoder.setMaxDataLength(maxDataLength);
+}
+
+public int getDecoderMaxDataLength() {
+return this.decoder.getMaxDataLength();
+}
+
+public void setDecoderMaxDataLength(int maxDataLength) {
+this.decoder.setMaxDataLength(maxDataLength);
+}
+
+public void setDecoderPrefixLength(int prefixLength) {
+this.decoder.setPrefixLength(prefixLength);
+}
+
+public int getDecoderPrefixLength() {
+return this.decoder.getPrefixLength();
+}
+
+public void setEncoderPrefixLength(int prefixLength) {
+this.encoder.setPrefixLength(prefixLength);
+}
+
+public int getEncoderPrefixLength() {
+return this.encoder.getPrefixLength();
+}
+
+public ProtocolEncoder getEncoder(IoSession session) throws Exception {
+return (ProtocolEncoder)this.encoder;
+}
+
+public ProtocolDecoder getDecoder(IoSession session) throws Exception {
+return (ProtocolDecoder)this.decoder;
+}
+}
+

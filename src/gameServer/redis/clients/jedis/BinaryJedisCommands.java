@@ -7,9 +7,6 @@ import java.util.Set;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
-/**
- * Common interface for sharded and non-sharded BinaryJedis
- */
 public interface BinaryJedisCommands {
     String set(byte[] key, byte[] value);
 

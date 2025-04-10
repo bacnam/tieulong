@@ -5,14 +5,9 @@ import java.io.IOException;
 
 public interface ServerRunner<T extends Client> extends ContextAware, Runnable {
   boolean isRunning();
-  
+
   void stop() throws IOException;
-  
+
   void accept(ClientVisitor<T> paramClientVisitor);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/net/server/ServerRunner.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

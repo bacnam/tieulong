@@ -1,61 +1,38 @@
-/*    */ package ch.qos.logback.classic.db.names;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class SimpleDBNameResolver
-/*    */   implements DBNameResolver
-/*    */ {
-/* 24 */   private String tableNamePrefix = "";
-/*    */   
-/* 26 */   private String tableNameSuffix = "";
-/*    */   
-/* 28 */   private String columnNamePrefix = "";
-/*    */   
-/* 30 */   private String columnNameSuffix = "";
-/*    */   
-/*    */   public <N extends Enum<?>> String getTableName(N tableName) {
-/* 33 */     return this.tableNamePrefix + tableName.name().toLowerCase() + this.tableNameSuffix;
-/*    */   }
-/*    */   
-/*    */   public <N extends Enum<?>> String getColumnName(N columnName) {
-/* 37 */     return this.columnNamePrefix + columnName.name().toLowerCase() + this.columnNameSuffix;
-/*    */   }
-/*    */   
-/*    */   public void setTableNamePrefix(String tableNamePrefix) {
-/* 41 */     this.tableNamePrefix = (tableNamePrefix != null) ? tableNamePrefix : "";
-/*    */   }
-/*    */   
-/*    */   public void setTableNameSuffix(String tableNameSuffix) {
-/* 45 */     this.tableNameSuffix = (tableNameSuffix != null) ? tableNameSuffix : "";
-/*    */   }
-/*    */   
-/*    */   public void setColumnNamePrefix(String columnNamePrefix) {
-/* 49 */     this.columnNamePrefix = (columnNamePrefix != null) ? columnNamePrefix : "";
-/*    */   }
-/*    */   
-/*    */   public void setColumnNameSuffix(String columnNameSuffix) {
-/* 53 */     this.columnNameSuffix = (columnNameSuffix != null) ? columnNameSuffix : "";
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.db.names;
 
+public class SimpleDBNameResolver
+implements DBNameResolver
+{
+private String tableNamePrefix = "";
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/db/names/SimpleDBNameResolver.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+private String tableNameSuffix = "";
+
+private String columnNamePrefix = "";
+
+private String columnNameSuffix = "";
+
+public <N extends Enum<?>> String getTableName(N tableName) {
+return this.tableNamePrefix + tableName.name().toLowerCase() + this.tableNameSuffix;
+}
+
+public <N extends Enum<?>> String getColumnName(N columnName) {
+return this.columnNamePrefix + columnName.name().toLowerCase() + this.columnNameSuffix;
+}
+
+public void setTableNamePrefix(String tableNamePrefix) {
+this.tableNamePrefix = (tableNamePrefix != null) ? tableNamePrefix : "";
+}
+
+public void setTableNameSuffix(String tableNameSuffix) {
+this.tableNameSuffix = (tableNameSuffix != null) ? tableNameSuffix : "";
+}
+
+public void setColumnNamePrefix(String columnNamePrefix) {
+this.columnNamePrefix = (columnNamePrefix != null) ? columnNamePrefix : "";
+}
+
+public void setColumnNameSuffix(String columnNameSuffix) {
+this.columnNameSuffix = (columnNameSuffix != null) ? columnNameSuffix : "";
+}
+}
+

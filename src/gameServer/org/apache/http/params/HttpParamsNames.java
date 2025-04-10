@@ -7,8 +7,3 @@ public interface HttpParamsNames {
   Set<String> getNames();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/params/HttpParamsNames.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

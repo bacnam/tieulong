@@ -1,49 +1,14 @@
-/*    */ package com.google.common.collect;
-/*    */ 
-/*    */ import com.google.common.annotations.GwtCompatible;
-/*    */ import java.util.Iterator;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ @GwtCompatible
-/*    */ public abstract class UnmodifiableIterator<E>
-/*    */   implements Iterator<E>
-/*    */ {
-/*    */   public final void remove() {
-/* 41 */     throw new UnsupportedOperationException();
-/*    */   }
-/*    */ }
+package com.google.common.collect;
 
+import com.google.common.annotations.GwtCompatible;
+import java.util.Iterator;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/google/common/collect/UnmodifiableIterator.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+@GwtCompatible
+public abstract class UnmodifiableIterator<E>
+implements Iterator<E>
+{
+public final void remove() {
+throw new UnsupportedOperationException();
+}
+}
+

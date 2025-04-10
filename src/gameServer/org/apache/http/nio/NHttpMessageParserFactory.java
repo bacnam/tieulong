@@ -7,8 +7,3 @@ public interface NHttpMessageParserFactory<T extends org.apache.http.HttpMessage
   NHttpMessageParser<T> create(SessionInputBuffer paramSessionInputBuffer, MessageConstraints paramMessageConstraints);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/nio/NHttpMessageParserFactory.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

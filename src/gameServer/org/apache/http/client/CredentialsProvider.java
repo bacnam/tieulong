@@ -5,14 +5,9 @@ import org.apache.http.auth.Credentials;
 
 public interface CredentialsProvider {
   void setCredentials(AuthScope paramAuthScope, Credentials paramCredentials);
-  
+
   Credentials getCredentials(AuthScope paramAuthScope);
-  
+
   void clear();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/client/CredentialsProvider.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

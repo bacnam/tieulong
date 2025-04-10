@@ -1,52 +1,12 @@
-/*    */ package com.mchange.rmi;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class NotAuthorizedException
-/*    */   extends Exception
-/*    */ {
-/*    */   public NotAuthorizedException() {}
-/*    */   
-/*    */   public NotAuthorizedException(String paramString) {
-/* 44 */     super(paramString);
-/*    */   }
-/*    */ }
+package com.mchange.rmi;
 
+public class NotAuthorizedException
+extends Exception
+{
+public NotAuthorizedException() {}
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mchange/rmi/NotAuthorizedException.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public NotAuthorizedException(String paramString) {
+super(paramString);
+}
+}
+

@@ -5,16 +5,11 @@ import java.util.List;
 
 public interface FilterAttachable<E> {
   void addFilter(Filter<E> paramFilter);
-  
+
   void clearAllFilters();
-  
+
   List<Filter<E>> getCopyOfAttachedFiltersList();
-  
+
   FilterReply getFilterChainDecision(E paramE);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/core/spi/FilterAttachable.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

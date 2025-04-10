@@ -1,45 +1,36 @@
-/*    */ package junit.extensions;
-/*    */ 
-/*    */ import junit.framework.Test;
-/*    */ import junit.framework.TestResult;
-/*    */ 
-/*    */ 
-/*    */ public class RepeatedTest
-/*    */   extends TestDecorator
-/*    */ {
-/*    */   private int fTimesRepeat;
-/*    */   
-/*    */   public RepeatedTest(Test test, int repeat) {
-/* 13 */     super(test);
-/* 14 */     if (repeat < 0) {
-/* 15 */       throw new IllegalArgumentException("Repetition count must be >= 0");
-/*    */     }
-/* 17 */     this.fTimesRepeat = repeat;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public int countTestCases() {
-/* 22 */     return super.countTestCases() * this.fTimesRepeat;
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public void run(TestResult result) {
-/* 27 */     for (int i = 0; i < this.fTimesRepeat && 
-/* 28 */       !result.shouldStop(); i++)
-/*    */     {
-/*    */       
-/* 31 */       super.run(result);
-/*    */     }
-/*    */   }
-/*    */ 
-/*    */   
-/*    */   public String toString() {
-/* 37 */     return super.toString() + "(repeated)";
-/*    */   }
-/*    */ }
+package junit.extensions;
 
+import junit.framework.Test;
+import junit.framework.TestResult;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/junit/extensions/RepeatedTest.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class RepeatedTest
+extends TestDecorator
+{
+private int fTimesRepeat;
+
+public RepeatedTest(Test test, int repeat) {
+super(test);
+if (repeat < 0) {
+throw new IllegalArgumentException("Repetition count must be >= 0");
+}
+this.fTimesRepeat = repeat;
+}
+
+public int countTestCases() {
+return super.countTestCases() * this.fTimesRepeat;
+}
+
+public void run(TestResult result) {
+for (int i = 0; i < this.fTimesRepeat && 
+!result.shouldStop(); i++)
+{
+
+super.run(result);
+}
+}
+
+public String toString() {
+return super.toString() + "(repeated)";
+}
+}
+

@@ -5,8 +5,3 @@ import ch.qos.logback.core.pattern.DynamicConverter;
 
 public abstract class ClassicConverter extends DynamicConverter<ILoggingEvent> {}
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/pattern/ClassicConverter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

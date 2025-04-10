@@ -12,8 +12,3 @@ public @interface Category {
   Class<?>[] value();
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/junit/experimental/categories/Category.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */

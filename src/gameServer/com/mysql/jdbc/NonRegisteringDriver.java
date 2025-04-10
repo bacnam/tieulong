@@ -1,945 +1,595 @@
-/*     */ package com.mysql.jdbc;
-/*     */ 
-/*     */ import java.io.IOException;
-/*     */ import java.io.InputStream;
-/*     */ import java.io.UnsupportedEncodingException;
-/*     */ import java.lang.ref.PhantomReference;
-/*     */ import java.lang.ref.ReferenceQueue;
-/*     */ import java.lang.reflect.Proxy;
-/*     */ import java.net.URLDecoder;
-/*     */ import java.sql.Connection;
-/*     */ import java.sql.Driver;
-/*     */ import java.sql.DriverPropertyInfo;
-/*     */ import java.sql.SQLException;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.Iterator;
-/*     */ import java.util.List;
-/*     */ import java.util.Locale;
-/*     */ import java.util.Properties;
-/*     */ import java.util.StringTokenizer;
-/*     */ import java.util.concurrent.ConcurrentHashMap;
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ public class NonRegisteringDriver
-/*     */   implements Driver
-/*     */ {
-/*     */   private static final String ALLOWED_QUOTES = "\"'";
-/*     */   private static final String REPLICATION_URL_PREFIX = "jdbc:mysql:replication://";
-/*     */   private static final String URL_PREFIX = "jdbc:mysql://";
-/*     */   private static final String MXJ_URL_PREFIX = "jdbc:mysql:mxj://";
-/*     */   private static final String LOADBALANCE_URL_PREFIX = "jdbc:mysql:loadbalance://";
-/*  83 */   protected static final ConcurrentHashMap<ConnectionPhantomReference, ConnectionPhantomReference> connectionPhantomRefs = new ConcurrentHashMap<ConnectionPhantomReference, ConnectionPhantomReference>();
-/*     */   
-/*  85 */   protected static final ReferenceQueue<ConnectionImpl> refQueue = new ReferenceQueue<ConnectionImpl>();
-/*     */   
-/*     */   static {
-/*  88 */     AbandonedConnectionCleanupThread referenceThread = new AbandonedConnectionCleanupThread();
-/*  89 */     referenceThread.setDaemon(true);
-/*  90 */     referenceThread.start();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String DBNAME_PROPERTY_KEY = "DBNAME";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final boolean DEBUG = false;
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final int HOST_NAME_INDEX = 0;
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String HOST_PROPERTY_KEY = "HOST";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String NUM_HOSTS_PROPERTY_KEY = "NUM_HOSTS";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String PASSWORD_PROPERTY_KEY = "password";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final int PORT_NUMBER_INDEX = 1;
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String PORT_PROPERTY_KEY = "PORT";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String PROPERTIES_TRANSFORM_KEY = "propertiesTransform";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final boolean TRACE = false;
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static final String USE_CONFIG_PROPERTY_KEY = "useConfigs";
-/*     */ 
-/*     */   
-/*     */   public static final String USER_PROPERTY_KEY = "user";
-/*     */ 
-/*     */   
-/*     */   public static final String PROTOCOL_PROPERTY_KEY = "PROTOCOL";
-/*     */ 
-/*     */   
-/*     */   public static final String PATH_PROPERTY_KEY = "PATH";
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   static int getMajorVersionInternal() {
-/* 150 */     return safeIntParse("5");
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   static int getMinorVersionInternal() {
-/* 159 */     return safeIntParse("1");
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected static String[] parseHostPortPair(String hostPortPair) throws SQLException {
-/* 180 */     String[] splitValues = new String[2];
-/*     */     
-/* 182 */     if (StringUtils.startsWithIgnoreCaseAndWs(hostPortPair, "address")) {
-/* 183 */       splitValues[0] = hostPortPair.trim();
-/* 184 */       splitValues[1] = null;
-/*     */       
-/* 186 */       return splitValues;
-/*     */     } 
-/*     */     
-/* 189 */     int portIndex = hostPortPair.indexOf(":");
-/*     */     
-/* 191 */     String hostname = null;
-/*     */     
-/* 193 */     if (portIndex != -1) {
-/* 194 */       if (portIndex + 1 < hostPortPair.length()) {
-/* 195 */         String portAsString = hostPortPair.substring(portIndex + 1);
-/* 196 */         hostname = hostPortPair.substring(0, portIndex);
-/*     */         
-/* 198 */         splitValues[0] = hostname;
-/*     */         
-/* 200 */         splitValues[1] = portAsString;
-/*     */       } else {
-/* 202 */         throw SQLError.createSQLException(Messages.getString("NonRegisteringDriver.37"), "01S00", null);
-/*     */       }
-/*     */     
-/*     */     } else {
-/*     */       
-/* 207 */       splitValues[0] = hostPortPair;
-/* 208 */       splitValues[1] = null;
-/*     */     } 
-/*     */     
-/* 211 */     return splitValues;
-/*     */   }
-/*     */   
-/*     */   private static int safeIntParse(String intAsString) {
-/*     */     try {
-/* 216 */       return Integer.parseInt(intAsString);
-/* 217 */     } catch (NumberFormatException nfe) {
-/* 218 */       return 0;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean acceptsURL(String url) throws SQLException {
-/* 248 */     return (parseURL(url, null) != null);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public Connection connect(String url, Properties info) throws SQLException {
-/* 297 */     if (url != null) {
-/* 298 */       if (StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:loadbalance://"))
-/* 299 */         return connectLoadBalanced(url, info); 
-/* 300 */       if (StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:replication://"))
-/*     */       {
-/* 302 */         return connectReplicationConnection(url, info);
-/*     */       }
-/*     */     } 
-/*     */     
-/* 306 */     Properties props = null;
-/*     */     
-/* 308 */     if ((props = parseURL(url, info)) == null) {
-/* 309 */       return null;
-/*     */     }
-/*     */     
-/* 312 */     if (!"1".equals(props.getProperty("NUM_HOSTS"))) {
-/* 313 */       return connectFailover(url, info);
-/*     */     }
-/*     */     
-/*     */     try {
-/* 317 */       Connection newConn = ConnectionImpl.getInstance(host(props), port(props), props, database(props), url);
-/*     */ 
-/*     */       
-/* 320 */       return newConn;
-/* 321 */     } catch (SQLException sqlEx) {
-/*     */ 
-/*     */       
-/* 324 */       throw sqlEx;
-/* 325 */     } catch (Exception ex) {
-/* 326 */       SQLException sqlEx = SQLError.createSQLException(Messages.getString("NonRegisteringDriver.17") + ex.toString() + Messages.getString("NonRegisteringDriver.18"), "08001", (ExceptionInterceptor)null);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */       
-/* 332 */       sqlEx.initCause(ex);
-/*     */       
-/* 334 */       throw sqlEx;
-/*     */     } 
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   protected static void trackConnection(Connection newConn) {
-/* 340 */     ConnectionPhantomReference phantomRef = new ConnectionPhantomReference((ConnectionImpl)newConn, refQueue);
-/* 341 */     connectionPhantomRefs.put(phantomRef, phantomRef);
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   private Connection connectLoadBalanced(String url, Properties info) throws SQLException {
-/* 346 */     Properties parsedProps = parseURL(url, info);
-/*     */     
-/* 348 */     if (parsedProps == null) {
-/* 349 */       return null;
-/*     */     }
-/*     */ 
-/*     */     
-/* 353 */     parsedProps.remove("roundRobinLoadBalance");
-/*     */     
-/* 355 */     int numHosts = Integer.parseInt(parsedProps.getProperty("NUM_HOSTS"));
-/*     */     
-/* 357 */     List<String> hostList = new ArrayList<String>();
-/*     */     
-/* 359 */     for (int i = 0; i < numHosts; i++) {
-/* 360 */       int index = i + 1;
-/*     */       
-/* 362 */       hostList.add(parsedProps.getProperty("HOST." + index) + ":" + parsedProps.getProperty("PORT." + index));
-/*     */     } 
-/*     */ 
-/*     */     
-/* 366 */     LoadBalancingConnectionProxy proxyBal = new LoadBalancingConnectionProxy(hostList, parsedProps);
-/*     */ 
-/*     */     
-/* 369 */     return (Connection)Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { Connection.class }, proxyBal);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   private Connection connectFailover(String url, Properties info) throws SQLException {
-/* 376 */     Properties parsedProps = parseURL(url, info);
-/*     */     
-/* 378 */     if (parsedProps == null) {
-/* 379 */       return null;
-/*     */     }
-/*     */ 
-/*     */     
-/* 383 */     parsedProps.remove("roundRobinLoadBalance");
-/* 384 */     parsedProps.setProperty("autoReconnect", "false");
-/*     */     
-/* 386 */     int numHosts = Integer.parseInt(parsedProps.getProperty("NUM_HOSTS"));
-/*     */ 
-/*     */     
-/* 389 */     List<String> hostList = new ArrayList<String>();
-/*     */     
-/* 391 */     for (int i = 0; i < numHosts; i++) {
-/* 392 */       int index = i + 1;
-/*     */       
-/* 394 */       hostList.add(parsedProps.getProperty("HOST." + index) + ":" + parsedProps.getProperty("PORT." + index));
-/*     */     } 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 400 */     FailoverConnectionProxy connProxy = new FailoverConnectionProxy(hostList, parsedProps);
-/*     */ 
-/*     */     
-/* 403 */     return (Connection)Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { Connection.class }, connProxy);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   protected Connection connectReplicationConnection(String url, Properties info) throws SQLException {
-/* 410 */     Properties parsedProps = parseURL(url, info);
-/*     */     
-/* 412 */     if (parsedProps == null) {
-/* 413 */       return null;
-/*     */     }
-/*     */     
-/* 416 */     Properties masterProps = (Properties)parsedProps.clone();
-/* 417 */     Properties slavesProps = (Properties)parsedProps.clone();
-/*     */ 
-/*     */ 
-/*     */     
-/* 421 */     slavesProps.setProperty("com.mysql.jdbc.ReplicationConnection.isSlave", "true");
-/*     */ 
-/*     */     
-/* 424 */     int numHosts = Integer.parseInt(parsedProps.getProperty("NUM_HOSTS"));
-/*     */     
-/* 426 */     if (numHosts < 2) {
-/* 427 */       throw SQLError.createSQLException("Must specify at least one slave host to connect to for master/slave replication load-balancing functionality", "01S00", null);
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 433 */     for (int i = 1; i < numHosts; i++) {
-/* 434 */       int index = i + 1;
-/*     */       
-/* 436 */       masterProps.remove("HOST." + index);
-/* 437 */       masterProps.remove("PORT." + index);
-/*     */       
-/* 439 */       slavesProps.setProperty("HOST." + i, parsedProps.getProperty("HOST." + index));
-/* 440 */       slavesProps.setProperty("PORT." + i, parsedProps.getProperty("PORT." + index));
-/*     */     } 
-/*     */     
-/* 443 */     masterProps.setProperty("NUM_HOSTS", "1");
-/* 444 */     slavesProps.remove("HOST." + numHosts);
-/* 445 */     slavesProps.remove("PORT." + numHosts);
-/* 446 */     slavesProps.setProperty("NUM_HOSTS", String.valueOf(numHosts - 1));
-/* 447 */     slavesProps.setProperty("HOST", slavesProps.getProperty("HOST.1"));
-/* 448 */     slavesProps.setProperty("PORT", slavesProps.getProperty("PORT.1"));
-/*     */     
-/* 450 */     return new ReplicationConnection(masterProps, slavesProps);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String database(Properties props) {
-/* 462 */     return props.getProperty("DBNAME");
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getMajorVersion() {
-/* 471 */     return getMajorVersionInternal();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int getMinorVersion() {
-/* 480 */     return getMinorVersionInternal();
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-/* 511 */     if (info == null) {
-/* 512 */       info = new Properties();
-/*     */     }
-/*     */     
-/* 515 */     if (url != null && url.startsWith("jdbc:mysql://")) {
-/* 516 */       info = parseURL(url, info);
-/*     */     }
-/*     */     
-/* 519 */     DriverPropertyInfo hostProp = new DriverPropertyInfo("HOST", info.getProperty("HOST"));
-/*     */     
-/* 521 */     hostProp.required = true;
-/* 522 */     hostProp.description = Messages.getString("NonRegisteringDriver.3");
-/*     */     
-/* 524 */     DriverPropertyInfo portProp = new DriverPropertyInfo("PORT", info.getProperty("PORT", "3306"));
-/*     */     
-/* 526 */     portProp.required = false;
-/* 527 */     portProp.description = Messages.getString("NonRegisteringDriver.7");
-/*     */     
-/* 529 */     DriverPropertyInfo dbProp = new DriverPropertyInfo("DBNAME", info.getProperty("DBNAME"));
-/*     */     
-/* 531 */     dbProp.required = false;
-/* 532 */     dbProp.description = "Database name";
-/*     */     
-/* 534 */     DriverPropertyInfo userProp = new DriverPropertyInfo("user", info.getProperty("user"));
-/*     */     
-/* 536 */     userProp.required = true;
-/* 537 */     userProp.description = Messages.getString("NonRegisteringDriver.13");
-/*     */     
-/* 539 */     DriverPropertyInfo passwordProp = new DriverPropertyInfo("password", info.getProperty("password"));
-/*     */ 
-/*     */     
-/* 542 */     passwordProp.required = true;
-/* 543 */     passwordProp.description = Messages.getString("NonRegisteringDriver.16");
-/*     */ 
-/*     */     
-/* 546 */     DriverPropertyInfo[] dpi = ConnectionPropertiesImpl.exposeAsDriverPropertyInfo(info, 5);
-/*     */ 
-/*     */     
-/* 549 */     dpi[0] = hostProp;
-/* 550 */     dpi[1] = portProp;
-/* 551 */     dpi[2] = dbProp;
-/* 552 */     dpi[3] = userProp;
-/* 553 */     dpi[4] = passwordProp;
-/*     */     
-/* 555 */     return dpi;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String host(Properties props) {
-/* 572 */     return props.getProperty("HOST", "localhost");
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public boolean jdbcCompliant() {
-/* 588 */     return false;
-/*     */   }
-/*     */ 
-/*     */   
-/*     */   public Properties parseURL(String url, Properties defaults) throws SQLException {
-/* 593 */     Properties urlProps = (defaults != null) ? new Properties(defaults) : new Properties();
-/*     */ 
-/*     */     
-/* 596 */     if (url == null) {
-/* 597 */       return null;
-/*     */     }
-/*     */     
-/* 600 */     if (!StringUtils.startsWithIgnoreCase(url, "jdbc:mysql://") && !StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:mxj://") && !StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:loadbalance://") && !StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:replication://"))
-/*     */     {
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */       
-/* 607 */       return null;
-/*     */     }
-/*     */     
-/* 610 */     int beginningOfSlashes = url.indexOf("//");
-/*     */     
-/* 612 */     if (StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:mxj://"))
-/*     */     {
-/* 614 */       urlProps.setProperty("socketFactory", "com.mysql.management.driverlaunched.ServerLauncherSocketFactory");
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 623 */     int index = url.indexOf("?");
-/*     */     
-/* 625 */     if (index != -1) {
-/* 626 */       String paramString = url.substring(index + 1, url.length());
-/* 627 */       url = url.substring(0, index);
-/*     */       
-/* 629 */       StringTokenizer queryParams = new StringTokenizer(paramString, "&");
-/*     */       
-/* 631 */       while (queryParams.hasMoreTokens()) {
-/* 632 */         String parameterValuePair = queryParams.nextToken();
-/*     */         
-/* 634 */         int indexOfEquals = StringUtils.indexOfIgnoreCase(0, parameterValuePair, "=");
-/*     */ 
-/*     */         
-/* 637 */         String parameter = null;
-/* 638 */         String value = null;
-/*     */         
-/* 640 */         if (indexOfEquals != -1) {
-/* 641 */           parameter = parameterValuePair.substring(0, indexOfEquals);
-/*     */           
-/* 643 */           if (indexOfEquals + 1 < parameterValuePair.length()) {
-/* 644 */             value = parameterValuePair.substring(indexOfEquals + 1);
-/*     */           }
-/*     */         } 
-/*     */         
-/* 648 */         if (value != null && value.length() > 0 && parameter != null && parameter.length() > 0) {
-/*     */           
-/*     */           try {
-/* 651 */             urlProps.put(parameter, URLDecoder.decode(value, "UTF-8"));
-/*     */           }
-/* 653 */           catch (UnsupportedEncodingException badEncoding) {
-/*     */             
-/* 655 */             urlProps.put(parameter, URLDecoder.decode(value));
-/* 656 */           } catch (NoSuchMethodError nsme) {
-/*     */             
-/* 658 */             urlProps.put(parameter, URLDecoder.decode(value));
-/*     */           } 
-/*     */         }
-/*     */       } 
-/*     */     } 
-/*     */     
-/* 664 */     url = url.substring(beginningOfSlashes + 2);
-/*     */     
-/* 666 */     String hostStuff = null;
-/*     */     
-/* 668 */     int slashIndex = StringUtils.indexOfIgnoreCaseRespectMarker(0, url, "/", "\"'", "\"'", true);
-/*     */     
-/* 670 */     if (slashIndex != -1) {
-/* 671 */       hostStuff = url.substring(0, slashIndex);
-/*     */       
-/* 673 */       if (slashIndex + 1 < url.length()) {
-/* 674 */         urlProps.put("DBNAME", url.substring(slashIndex + 1, url.length()));
-/*     */       }
-/*     */     } else {
-/*     */       
-/* 678 */       hostStuff = url;
-/*     */     } 
-/*     */     
-/* 681 */     int numHosts = 0;
-/*     */     
-/* 683 */     if (hostStuff != null && hostStuff.trim().length() > 0) {
-/* 684 */       List<String> hosts = StringUtils.split(hostStuff, ",", "\"'", "\"'", false);
-/*     */ 
-/*     */       
-/* 687 */       for (String hostAndPort : hosts) {
-/* 688 */         numHosts++;
-/*     */         
-/* 690 */         String[] hostPortPair = parseHostPortPair(hostAndPort);
-/*     */         
-/* 692 */         if (hostPortPair[0] != null && hostPortPair[0].trim().length() > 0) {
-/* 693 */           urlProps.setProperty("HOST." + numHosts, hostPortPair[0]);
-/*     */         } else {
-/* 695 */           urlProps.setProperty("HOST." + numHosts, "localhost");
-/*     */         } 
-/*     */         
-/* 698 */         if (hostPortPair[1] != null) {
-/* 699 */           urlProps.setProperty("PORT." + numHosts, hostPortPair[1]); continue;
-/*     */         } 
-/* 701 */         urlProps.setProperty("PORT." + numHosts, "3306");
-/*     */       } 
-/*     */     } else {
-/*     */       
-/* 705 */       numHosts = 1;
-/* 706 */       urlProps.setProperty("HOST.1", "localhost");
-/* 707 */       urlProps.setProperty("PORT.1", "3306");
-/*     */     } 
-/*     */     
-/* 710 */     urlProps.setProperty("NUM_HOSTS", String.valueOf(numHosts));
-/* 711 */     urlProps.setProperty("HOST", urlProps.getProperty("HOST.1"));
-/* 712 */     urlProps.setProperty("PORT", urlProps.getProperty("PORT.1"));
-/*     */     
-/* 714 */     String propertiesTransformClassName = urlProps.getProperty("propertiesTransform");
-/*     */ 
-/*     */     
-/* 717 */     if (propertiesTransformClassName != null) {
-/*     */       try {
-/* 719 */         ConnectionPropertiesTransform propTransformer = (ConnectionPropertiesTransform)Class.forName(propertiesTransformClassName).newInstance();
-/*     */ 
-/*     */         
-/* 722 */         urlProps = propTransformer.transformProperties(urlProps);
-/* 723 */       } catch (InstantiationException e) {
-/* 724 */         throw SQLError.createSQLException("Unable to create properties transform instance '" + propertiesTransformClassName + "' due to underlying exception: " + e.toString(), "01S00", null);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */       
-/*     */       }
-/* 730 */       catch (IllegalAccessException e) {
-/* 731 */         throw SQLError.createSQLException("Unable to create properties transform instance '" + propertiesTransformClassName + "' due to underlying exception: " + e.toString(), "01S00", null);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */       
-/*     */       }
-/* 737 */       catch (ClassNotFoundException e) {
-/* 738 */         throw SQLError.createSQLException("Unable to create properties transform instance '" + propertiesTransformClassName + "' due to underlying exception: " + e.toString(), "01S00", null);
-/*     */       } 
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 747 */     if (Util.isColdFusion() && urlProps.getProperty("autoConfigureForColdFusion", "true").equalsIgnoreCase("true")) {
-/*     */       
-/* 749 */       String configs = urlProps.getProperty("useConfigs");
-/*     */       
-/* 751 */       StringBuffer newConfigs = new StringBuffer();
-/*     */       
-/* 753 */       if (configs != null) {
-/* 754 */         newConfigs.append(configs);
-/* 755 */         newConfigs.append(",");
-/*     */       } 
-/*     */       
-/* 758 */       newConfigs.append("coldFusion");
-/*     */       
-/* 760 */       urlProps.setProperty("useConfigs", newConfigs.toString());
-/*     */     } 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */     
-/* 766 */     String configNames = null;
-/*     */     
-/* 768 */     if (defaults != null) {
-/* 769 */       configNames = defaults.getProperty("useConfigs");
-/*     */     }
-/*     */     
-/* 772 */     if (configNames == null) {
-/* 773 */       configNames = urlProps.getProperty("useConfigs");
-/*     */     }
-/*     */     
-/* 776 */     if (configNames != null) {
-/* 777 */       List<String> splitNames = StringUtils.split(configNames, ",", true);
-/*     */       
-/* 779 */       Properties configProps = new Properties();
-/*     */       
-/* 781 */       Iterator<String> namesIter = splitNames.iterator();
-/*     */       
-/* 783 */       while (namesIter.hasNext()) {
-/* 784 */         String configName = namesIter.next();
-/*     */         
-/*     */         try {
-/* 787 */           InputStream configAsStream = getClass().getResourceAsStream("configs/" + configName + ".properties");
-/*     */ 
-/*     */ 
-/*     */           
-/* 791 */           if (configAsStream == null) {
-/* 792 */             throw SQLError.createSQLException("Can't find configuration template named '" + configName + "'", "01S00", null);
-/*     */           }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */           
-/* 798 */           configProps.load(configAsStream);
-/* 799 */         } catch (IOException ioEx) {
-/* 800 */           SQLException sqlEx = SQLError.createSQLException("Unable to load configuration template '" + configName + "' due to underlying IOException: " + ioEx, "01S00", (ExceptionInterceptor)null);
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */           
-/* 806 */           sqlEx.initCause(ioEx);
-/*     */           
-/* 808 */           throw sqlEx;
-/*     */         } 
-/*     */       } 
-/*     */       
-/* 812 */       Iterator<Object> propsIter = urlProps.keySet().iterator();
-/*     */       
-/* 814 */       while (propsIter.hasNext()) {
-/* 815 */         String key = propsIter.next().toString();
-/* 816 */         String property = urlProps.getProperty(key);
-/* 817 */         configProps.setProperty(key, property);
-/*     */       } 
-/*     */       
-/* 820 */       urlProps = configProps;
-/*     */     } 
-/*     */ 
-/*     */ 
-/*     */     
-/* 825 */     if (defaults != null) {
-/* 826 */       Iterator<Object> propsIter = defaults.keySet().iterator();
-/*     */       
-/* 828 */       while (propsIter.hasNext()) {
-/* 829 */         String key = propsIter.next().toString();
-/* 830 */         if (!key.equals("NUM_HOSTS")) {
-/* 831 */           String property = defaults.getProperty(key);
-/* 832 */           urlProps.setProperty(key, property);
-/*     */         } 
-/*     */       } 
-/*     */     } 
-/*     */     
-/* 837 */     return urlProps;
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public int port(Properties props) {
-/* 849 */     return Integer.parseInt(props.getProperty("PORT", "3306"));
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public String property(String name, Properties props) {
-/* 863 */     return props.getProperty(name);
-/*     */   }
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */   
-/*     */   public static Properties expandHostKeyValues(String host) {
-/* 873 */     Properties hostProps = new Properties();
-/*     */     
-/* 875 */     if (isHostPropertiesList(host)) {
-/* 876 */       host = host.substring("address=".length() + 1);
-/* 877 */       List<String> hostPropsList = StringUtils.split(host, ")", "'\"", "'\"", true);
-/*     */       
-/* 879 */       for (String propDef : hostPropsList) {
-/* 880 */         if (propDef.startsWith("(")) {
-/* 881 */           propDef = propDef.substring(1);
-/*     */         }
-/*     */         
-/* 884 */         List<String> kvp = StringUtils.split(propDef, "=", "'\"", "'\"", true);
-/*     */         
-/* 886 */         String key = kvp.get(0);
-/* 887 */         String value = (kvp.size() > 1) ? kvp.get(1) : null;
-/*     */         
-/* 889 */         if (value != null && ((value.startsWith("\"") && value.endsWith("\"")) || (value.startsWith("'") && value.endsWith("'")))) {
-/* 890 */           value = value.substring(1, value.length() - 1);
-/*     */         }
-/*     */         
-/* 893 */         if (value != null) {
-/* 894 */           if ("HOST".equalsIgnoreCase(key) || "DBNAME".equalsIgnoreCase(key) || "PORT".equalsIgnoreCase(key) || "PROTOCOL".equalsIgnoreCase(key) || "PATH".equalsIgnoreCase(key)) {
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */             
-/* 899 */             key = key.toUpperCase(Locale.ENGLISH);
-/* 900 */           } else if ("user".equalsIgnoreCase(key) || "password".equalsIgnoreCase(key)) {
-/*     */             
-/* 902 */             key = key.toLowerCase(Locale.ENGLISH);
-/*     */           } 
-/*     */           
-/* 905 */           hostProps.setProperty(key, value);
-/*     */         } 
-/*     */       } 
-/*     */     } 
-/*     */     
-/* 910 */     return hostProps;
-/*     */   }
-/*     */   
-/*     */   public static boolean isHostPropertiesList(String host) {
-/* 914 */     return (host != null && StringUtils.startsWithIgnoreCase(host, "address="));
-/*     */   }
-/*     */   
-/*     */   static class ConnectionPhantomReference extends PhantomReference<ConnectionImpl> {
-/*     */     private NetworkResources io;
-/*     */     
-/*     */     ConnectionPhantomReference(ConnectionImpl connectionImpl, ReferenceQueue<ConnectionImpl> q) {
-/* 921 */       super(connectionImpl, q);
-/*     */       
-/*     */       try {
-/* 924 */         this.io = connectionImpl.getIO().getNetworkResources();
-/* 925 */       } catch (SQLException e) {}
-/*     */     }
-/*     */ 
-/*     */ 
-/*     */     
-/*     */     void cleanup() {
-/* 931 */       if (this.io != null)
-/*     */         try {
-/* 933 */           this.io.forceClose();
-/*     */         } finally {
-/* 935 */           this.io = null;
-/*     */         }  
-/*     */     }
-/*     */   }
-/*     */ }
+package com.mysql.jdbc;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.reflect.Proxy;
+import java.net.URLDecoder;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverPropertyInfo;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentHashMap;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/com/mysql/jdbc/NonRegisteringDriver.class
- * Java compiler version: 5 (49.0)
- * JD-Core Version:       1.1.3
- */
+public class NonRegisteringDriver
+implements Driver
+{
+private static final String ALLOWED_QUOTES = "\"'";
+private static final String REPLICATION_URL_PREFIX = "jdbc:mysql:replication:
+private static final String URL_PREFIX = "jdbc:mysql:
+private static final String MXJ_URL_PREFIX = "jdbc:mysql:mxj:
+private static final String LOADBALANCE_URL_PREFIX = "jdbc:mysql:loadbalance:
+protected static final ConcurrentHashMap<ConnectionPhantomReference, ConnectionPhantomReference> connectionPhantomRefs = new ConcurrentHashMap<ConnectionPhantomReference, ConnectionPhantomReference>();
+
+protected static final ReferenceQueue<ConnectionImpl> refQueue = new ReferenceQueue<ConnectionImpl>();
+
+static {
+AbandonedConnectionCleanupThread referenceThread = new AbandonedConnectionCleanupThread();
+referenceThread.setDaemon(true);
+referenceThread.start();
+}
+
+public static final String DBNAME_PROPERTY_KEY = "DBNAME";
+
+public static final boolean DEBUG = false;
+
+public static final int HOST_NAME_INDEX = 0;
+
+public static final String HOST_PROPERTY_KEY = "HOST";
+
+public static final String NUM_HOSTS_PROPERTY_KEY = "NUM_HOSTS";
+
+public static final String PASSWORD_PROPERTY_KEY = "password";
+
+public static final int PORT_NUMBER_INDEX = 1;
+
+public static final String PORT_PROPERTY_KEY = "PORT";
+
+public static final String PROPERTIES_TRANSFORM_KEY = "propertiesTransform";
+
+public static final boolean TRACE = false;
+
+public static final String USE_CONFIG_PROPERTY_KEY = "useConfigs";
+
+public static final String USER_PROPERTY_KEY = "user";
+
+public static final String PROTOCOL_PROPERTY_KEY = "PROTOCOL";
+
+public static final String PATH_PROPERTY_KEY = "PATH";
+
+static int getMajorVersionInternal() {
+return safeIntParse("5");
+}
+
+static int getMinorVersionInternal() {
+return safeIntParse("1");
+}
+
+protected static String[] parseHostPortPair(String hostPortPair) throws SQLException {
+String[] splitValues = new String[2];
+
+if (StringUtils.startsWithIgnoreCaseAndWs(hostPortPair, "address")) {
+splitValues[0] = hostPortPair.trim();
+splitValues[1] = null;
+
+return splitValues;
+} 
+
+int portIndex = hostPortPair.indexOf(":");
+
+String hostname = null;
+
+if (portIndex != -1) {
+if (portIndex + 1 < hostPortPair.length()) {
+String portAsString = hostPortPair.substring(portIndex + 1);
+hostname = hostPortPair.substring(0, portIndex);
+
+splitValues[0] = hostname;
+
+splitValues[1] = portAsString;
+} else {
+throw SQLError.createSQLException(Messages.getString("NonRegisteringDriver.37"), "01S00", null);
+}
+
+} else {
+
+splitValues[0] = hostPortPair;
+splitValues[1] = null;
+} 
+
+return splitValues;
+}
+
+private static int safeIntParse(String intAsString) {
+try {
+return Integer.parseInt(intAsString);
+} catch (NumberFormatException nfe) {
+return 0;
+} 
+}
+
+public boolean acceptsURL(String url) throws SQLException {
+return (parseURL(url, null) != null);
+}
+
+public Connection connect(String url, Properties info) throws SQLException {
+if (url != null) {
+if (StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:loadbalance:
+return connectLoadBalanced(url, info); 
+if (StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:replication:
+{
+return connectReplicationConnection(url, info);
+}
+} 
+
+Properties props = null;
+
+if ((props = parseURL(url, info)) == null) {
+return null;
+}
+
+if (!"1".equals(props.getProperty("NUM_HOSTS"))) {
+return connectFailover(url, info);
+}
+
+try {
+Connection newConn = ConnectionImpl.getInstance(host(props), port(props), props, database(props), url);
+
+return newConn;
+} catch (SQLException sqlEx) {
+
+throw sqlEx;
+} catch (Exception ex) {
+SQLException sqlEx = SQLError.createSQLException(Messages.getString("NonRegisteringDriver.17") + ex.toString() + Messages.getString("NonRegisteringDriver.18"), "08001", (ExceptionInterceptor)null);
+
+sqlEx.initCause(ex);
+
+throw sqlEx;
+} 
+}
+
+protected static void trackConnection(Connection newConn) {
+ConnectionPhantomReference phantomRef = new ConnectionPhantomReference((ConnectionImpl)newConn, refQueue);
+connectionPhantomRefs.put(phantomRef, phantomRef);
+}
+
+private Connection connectLoadBalanced(String url, Properties info) throws SQLException {
+Properties parsedProps = parseURL(url, info);
+
+if (parsedProps == null) {
+return null;
+}
+
+parsedProps.remove("roundRobinLoadBalance");
+
+int numHosts = Integer.parseInt(parsedProps.getProperty("NUM_HOSTS"));
+
+List<String> hostList = new ArrayList<String>();
+
+for (int i = 0; i < numHosts; i++) {
+int index = i + 1;
+
+hostList.add(parsedProps.getProperty("HOST." + index) + ":" + parsedProps.getProperty("PORT." + index));
+} 
+
+LoadBalancingConnectionProxy proxyBal = new LoadBalancingConnectionProxy(hostList, parsedProps);
+
+return (Connection)Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { Connection.class }, proxyBal);
+}
+
+private Connection connectFailover(String url, Properties info) throws SQLException {
+Properties parsedProps = parseURL(url, info);
+
+if (parsedProps == null) {
+return null;
+}
+
+parsedProps.remove("roundRobinLoadBalance");
+parsedProps.setProperty("autoReconnect", "false");
+
+int numHosts = Integer.parseInt(parsedProps.getProperty("NUM_HOSTS"));
+
+List<String> hostList = new ArrayList<String>();
+
+for (int i = 0; i < numHosts; i++) {
+int index = i + 1;
+
+hostList.add(parsedProps.getProperty("HOST." + index) + ":" + parsedProps.getProperty("PORT." + index));
+} 
+
+FailoverConnectionProxy connProxy = new FailoverConnectionProxy(hostList, parsedProps);
+
+return (Connection)Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { Connection.class }, connProxy);
+}
+
+protected Connection connectReplicationConnection(String url, Properties info) throws SQLException {
+Properties parsedProps = parseURL(url, info);
+
+if (parsedProps == null) {
+return null;
+}
+
+Properties masterProps = (Properties)parsedProps.clone();
+Properties slavesProps = (Properties)parsedProps.clone();
+
+slavesProps.setProperty("com.mysql.jdbc.ReplicationConnection.isSlave", "true");
+
+int numHosts = Integer.parseInt(parsedProps.getProperty("NUM_HOSTS"));
+
+if (numHosts < 2) {
+throw SQLError.createSQLException("Must specify at least one slave host to connect to for master/slave replication load-balancing functionality", "01S00", null);
+}
+
+for (int i = 1; i < numHosts; i++) {
+int index = i + 1;
+
+masterProps.remove("HOST." + index);
+masterProps.remove("PORT." + index);
+
+slavesProps.setProperty("HOST." + i, parsedProps.getProperty("HOST." + index));
+slavesProps.setProperty("PORT." + i, parsedProps.getProperty("PORT." + index));
+} 
+
+masterProps.setProperty("NUM_HOSTS", "1");
+slavesProps.remove("HOST." + numHosts);
+slavesProps.remove("PORT." + numHosts);
+slavesProps.setProperty("NUM_HOSTS", String.valueOf(numHosts - 1));
+slavesProps.setProperty("HOST", slavesProps.getProperty("HOST.1"));
+slavesProps.setProperty("PORT", slavesProps.getProperty("PORT.1"));
+
+return new ReplicationConnection(masterProps, slavesProps);
+}
+
+public String database(Properties props) {
+return props.getProperty("DBNAME");
+}
+
+public int getMajorVersion() {
+return getMajorVersionInternal();
+}
+
+public int getMinorVersion() {
+return getMinorVersionInternal();
+}
+
+public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
+if (info == null) {
+info = new Properties();
+}
+
+if (url != null && url.startsWith("jdbc:mysql:
+info = parseURL(url, info);
+}
+
+DriverPropertyInfo hostProp = new DriverPropertyInfo("HOST", info.getProperty("HOST"));
+
+hostProp.required = true;
+hostProp.description = Messages.getString("NonRegisteringDriver.3");
+
+DriverPropertyInfo portProp = new DriverPropertyInfo("PORT", info.getProperty("PORT", "3306"));
+
+portProp.required = false;
+portProp.description = Messages.getString("NonRegisteringDriver.7");
+
+DriverPropertyInfo dbProp = new DriverPropertyInfo("DBNAME", info.getProperty("DBNAME"));
+
+dbProp.required = false;
+dbProp.description = "Database name";
+
+DriverPropertyInfo userProp = new DriverPropertyInfo("user", info.getProperty("user"));
+
+userProp.required = true;
+userProp.description = Messages.getString("NonRegisteringDriver.13");
+
+DriverPropertyInfo passwordProp = new DriverPropertyInfo("password", info.getProperty("password"));
+
+passwordProp.required = true;
+passwordProp.description = Messages.getString("NonRegisteringDriver.16");
+
+DriverPropertyInfo[] dpi = ConnectionPropertiesImpl.exposeAsDriverPropertyInfo(info, 5);
+
+dpi[0] = hostProp;
+dpi[1] = portProp;
+dpi[2] = dbProp;
+dpi[3] = userProp;
+dpi[4] = passwordProp;
+
+return dpi;
+}
+
+public String host(Properties props) {
+return props.getProperty("HOST", "localhost");
+}
+
+public boolean jdbcCompliant() {
+return false;
+}
+
+public Properties parseURL(String url, Properties defaults) throws SQLException {
+Properties urlProps = (defaults != null) ? new Properties(defaults) : new Properties();
+
+if (url == null) {
+return null;
+}
+
+if (!StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:
+{
+
+return null;
+}
+
+int beginningOfSlashes = url.indexOf("
+
+if (StringUtils.startsWithIgnoreCase(url, "jdbc:mysql:mxj:
+{
+urlProps.setProperty("socketFactory", "com.mysql.management.driverlaunched.ServerLauncherSocketFactory");
+}
+
+int index = url.indexOf("?");
+
+if (index != -1) {
+String paramString = url.substring(index + 1, url.length());
+url = url.substring(0, index);
+
+StringTokenizer queryParams = new StringTokenizer(paramString, "&");
+
+while (queryParams.hasMoreTokens()) {
+String parameterValuePair = queryParams.nextToken();
+
+int indexOfEquals = StringUtils.indexOfIgnoreCase(0, parameterValuePair, "=");
+
+String parameter = null;
+String value = null;
+
+if (indexOfEquals != -1) {
+parameter = parameterValuePair.substring(0, indexOfEquals);
+
+if (indexOfEquals + 1 < parameterValuePair.length()) {
+value = parameterValuePair.substring(indexOfEquals + 1);
+}
+} 
+
+if (value != null && value.length() > 0 && parameter != null && parameter.length() > 0) {
+
+try {
+urlProps.put(parameter, URLDecoder.decode(value, "UTF-8"));
+}
+catch (UnsupportedEncodingException badEncoding) {
+
+urlProps.put(parameter, URLDecoder.decode(value));
+} catch (NoSuchMethodError nsme) {
+
+urlProps.put(parameter, URLDecoder.decode(value));
+} 
+}
+} 
+} 
+
+url = url.substring(beginningOfSlashes + 2);
+
+String hostStuff = null;
+
+int slashIndex = StringUtils.indexOfIgnoreCaseRespectMarker(0, url, "/", "\"'", "\"'", true);
+
+if (slashIndex != -1) {
+hostStuff = url.substring(0, slashIndex);
+
+if (slashIndex + 1 < url.length()) {
+urlProps.put("DBNAME", url.substring(slashIndex + 1, url.length()));
+}
+} else {
+
+hostStuff = url;
+} 
+
+int numHosts = 0;
+
+if (hostStuff != null && hostStuff.trim().length() > 0) {
+List<String> hosts = StringUtils.split(hostStuff, ",", "\"'", "\"'", false);
+
+for (String hostAndPort : hosts) {
+numHosts++;
+
+String[] hostPortPair = parseHostPortPair(hostAndPort);
+
+if (hostPortPair[0] != null && hostPortPair[0].trim().length() > 0) {
+urlProps.setProperty("HOST." + numHosts, hostPortPair[0]);
+} else {
+urlProps.setProperty("HOST." + numHosts, "localhost");
+} 
+
+if (hostPortPair[1] != null) {
+urlProps.setProperty("PORT." + numHosts, hostPortPair[1]); continue;
+} 
+urlProps.setProperty("PORT." + numHosts, "3306");
+} 
+} else {
+
+numHosts = 1;
+urlProps.setProperty("HOST.1", "localhost");
+urlProps.setProperty("PORT.1", "3306");
+} 
+
+urlProps.setProperty("NUM_HOSTS", String.valueOf(numHosts));
+urlProps.setProperty("HOST", urlProps.getProperty("HOST.1"));
+urlProps.setProperty("PORT", urlProps.getProperty("PORT.1"));
+
+String propertiesTransformClassName = urlProps.getProperty("propertiesTransform");
+
+if (propertiesTransformClassName != null) {
+try {
+ConnectionPropertiesTransform propTransformer = (ConnectionPropertiesTransform)Class.forName(propertiesTransformClassName).newInstance();
+
+urlProps = propTransformer.transformProperties(urlProps);
+} catch (InstantiationException e) {
+throw SQLError.createSQLException("Unable to create properties transform instance '" + propertiesTransformClassName + "' due to underlying exception: " + e.toString(), "01S00", null);
+
+}
+catch (IllegalAccessException e) {
+throw SQLError.createSQLException("Unable to create properties transform instance '" + propertiesTransformClassName + "' due to underlying exception: " + e.toString(), "01S00", null);
+
+}
+catch (ClassNotFoundException e) {
+throw SQLError.createSQLException("Unable to create properties transform instance '" + propertiesTransformClassName + "' due to underlying exception: " + e.toString(), "01S00", null);
+} 
+}
+
+if (Util.isColdFusion() && urlProps.getProperty("autoConfigureForColdFusion", "true").equalsIgnoreCase("true")) {
+
+String configs = urlProps.getProperty("useConfigs");
+
+StringBuffer newConfigs = new StringBuffer();
+
+if (configs != null) {
+newConfigs.append(configs);
+newConfigs.append(",");
+} 
+
+newConfigs.append("coldFusion");
+
+urlProps.setProperty("useConfigs", newConfigs.toString());
+} 
+
+String configNames = null;
+
+if (defaults != null) {
+configNames = defaults.getProperty("useConfigs");
+}
+
+if (configNames == null) {
+configNames = urlProps.getProperty("useConfigs");
+}
+
+if (configNames != null) {
+List<String> splitNames = StringUtils.split(configNames, ",", true);
+
+Properties configProps = new Properties();
+
+Iterator<String> namesIter = splitNames.iterator();
+
+while (namesIter.hasNext()) {
+String configName = namesIter.next();
+
+try {
+InputStream configAsStream = getClass().getResourceAsStream("configs/" + configName + ".properties");
+
+if (configAsStream == null) {
+throw SQLError.createSQLException("Can't find configuration template named '" + configName + "'", "01S00", null);
+}
+
+configProps.load(configAsStream);
+} catch (IOException ioEx) {
+SQLException sqlEx = SQLError.createSQLException("Unable to load configuration template '" + configName + "' due to underlying IOException: " + ioEx, "01S00", (ExceptionInterceptor)null);
+
+sqlEx.initCause(ioEx);
+
+throw sqlEx;
+} 
+} 
+
+Iterator<Object> propsIter = urlProps.keySet().iterator();
+
+while (propsIter.hasNext()) {
+String key = propsIter.next().toString();
+String property = urlProps.getProperty(key);
+configProps.setProperty(key, property);
+} 
+
+urlProps = configProps;
+} 
+
+if (defaults != null) {
+Iterator<Object> propsIter = defaults.keySet().iterator();
+
+while (propsIter.hasNext()) {
+String key = propsIter.next().toString();
+if (!key.equals("NUM_HOSTS")) {
+String property = defaults.getProperty(key);
+urlProps.setProperty(key, property);
+} 
+} 
+} 
+
+return urlProps;
+}
+
+public int port(Properties props) {
+return Integer.parseInt(props.getProperty("PORT", "3306"));
+}
+
+public String property(String name, Properties props) {
+return props.getProperty(name);
+}
+
+public static Properties expandHostKeyValues(String host) {
+Properties hostProps = new Properties();
+
+if (isHostPropertiesList(host)) {
+host = host.substring("address=".length() + 1);
+List<String> hostPropsList = StringUtils.split(host, ")", "'\"", "'\"", true);
+
+for (String propDef : hostPropsList) {
+if (propDef.startsWith("(")) {
+propDef = propDef.substring(1);
+}
+
+List<String> kvp = StringUtils.split(propDef, "=", "'\"", "'\"", true);
+
+String key = kvp.get(0);
+String value = (kvp.size() > 1) ? kvp.get(1) : null;
+
+if (value != null && ((value.startsWith("\"") && value.endsWith("\"")) || (value.startsWith("'") && value.endsWith("'")))) {
+value = value.substring(1, value.length() - 1);
+}
+
+if (value != null) {
+if ("HOST".equalsIgnoreCase(key) || "DBNAME".equalsIgnoreCase(key) || "PORT".equalsIgnoreCase(key) || "PROTOCOL".equalsIgnoreCase(key) || "PATH".equalsIgnoreCase(key)) {
+
+key = key.toUpperCase(Locale.ENGLISH);
+} else if ("user".equalsIgnoreCase(key) || "password".equalsIgnoreCase(key)) {
+
+key = key.toLowerCase(Locale.ENGLISH);
+} 
+
+hostProps.setProperty(key, value);
+} 
+} 
+} 
+
+return hostProps;
+}
+
+public static boolean isHostPropertiesList(String host) {
+return (host != null && StringUtils.startsWithIgnoreCase(host, "address="));
+}
+
+static class ConnectionPhantomReference extends PhantomReference<ConnectionImpl> {
+private NetworkResources io;
+
+ConnectionPhantomReference(ConnectionImpl connectionImpl, ReferenceQueue<ConnectionImpl> q) {
+super(connectionImpl, q);
+
+try {
+this.io = connectionImpl.getIO().getNetworkResources();
+} catch (SQLException e) {}
+}
+
+void cleanup() {
+if (this.io != null)
+try {
+this.io.forceClose();
+} finally {
+this.io = null;
+}  
+}
+}
+}
+

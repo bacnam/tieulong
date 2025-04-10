@@ -8,16 +8,11 @@ import org.apache.http.util.CharArrayBuffer;
 
 public interface LineFormatter {
   CharArrayBuffer appendProtocolVersion(CharArrayBuffer paramCharArrayBuffer, ProtocolVersion paramProtocolVersion);
-  
+
   CharArrayBuffer formatRequestLine(CharArrayBuffer paramCharArrayBuffer, RequestLine paramRequestLine);
-  
+
   CharArrayBuffer formatStatusLine(CharArrayBuffer paramCharArrayBuffer, StatusLine paramStatusLine);
-  
+
   CharArrayBuffer formatHeader(CharArrayBuffer paramCharArrayBuffer, Header paramHeader);
 }
 
-
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/org/apache/http/message/LineFormatter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */

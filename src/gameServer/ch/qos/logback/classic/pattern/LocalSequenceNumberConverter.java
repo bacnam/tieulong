@@ -1,42 +1,15 @@
-/*    */ package ch.qos.logback.classic.pattern;
-/*    */ 
-/*    */ import ch.qos.logback.classic.spi.ILoggingEvent;
-/*    */ import java.util.concurrent.atomic.AtomicLong;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class LocalSequenceNumberConverter
-/*    */   extends ClassicConverter
-/*    */ {
-/* 30 */   AtomicLong sequenceNumber = new AtomicLong(System.currentTimeMillis());
-/*    */ 
-/*    */   
-/*    */   public String convert(ILoggingEvent event) {
-/* 34 */     return Long.toString(this.sequenceNumber.getAndIncrement());
-/*    */   }
-/*    */ }
+package ch.qos.logback.classic.pattern;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import java.util.concurrent.atomic.AtomicLong;
 
-/* Location:              /Users/bacnam/Projects/TieuLongProject/gameserver/gameServer.jar!/ch/qos/logback/classic/pattern/LocalSequenceNumberConverter.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       1.1.3
- */
+public class LocalSequenceNumberConverter
+extends ClassicConverter
+{
+AtomicLong sequenceNumber = new AtomicLong(System.currentTimeMillis());
+
+public String convert(ILoggingEvent event) {
+return Long.toString(this.sequenceNumber.getAndIncrement());
+}
+}
+
