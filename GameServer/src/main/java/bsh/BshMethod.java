@@ -5,107 +5,115 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class BshMethod
-implements Serializable
-{
-NameSpace declaringNameSpace;
-Modifiers modifiers;
-private String name;
-private Class creturnType;
-private String[] paramNames;
-private int numArgs;
-private Class[] cparamTypes;
-BSHBlock methodBody;
-private Method javaMethod;
-private Object javaObject;
+        implements Serializable {
+    NameSpace declaringNameSpace;
+    Modifiers modifiers;
+    private String name;
+    private Class creturnType;
+    private String[] paramNames;
+    private int numArgs;
+    private Class[] cparamTypes;
+    BSHBlock methodBody;
+    private Method javaMethod;
+    private Object javaObject;
 
-BshMethod(BSHMethodDeclaration method, NameSpace declaringNameSpace, Modifiers modifiers) {
-this(method.name, method.returnType, method.paramsNode.getParamNames(), method.paramsNode.paramTypes, method.blockNode, declaringNameSpace, modifiers);
-}
+    BshMethod(BSHMethodDeclaration method, NameSpace declaringNameSpace, Modifiers modifiers) {
+        this(method.name, method.returnType, method.paramsNode.getParamNames(), method.paramsNode.paramTypes,
+                method.blockNode, declaringNameSpace, modifiers);
+    }
 
-BshMethod(String name, Class returnType, String[] paramNames, Class[] paramTypes, BSHBlock methodBody, NameSpace declaringNameSpace, Modifiers modifiers) {
-this.name = name;
-this.creturnType = returnType;
-this.paramNames = paramNames;
-if (paramNames != null)
-this.numArgs = paramNames.length; 
-this.cparamTypes = paramTypes;
-this.methodBody = methodBody;
-this.declaringNameSpace = declaringNameSpace;
-this.modifiers = modifiers;
-}
+    BshMethod(String name, Class returnType, String[] paramNames, Class[] paramTypes, BSHBlock methodBody,
+            NameSpace declaringNameSpace, Modifiers modifiers) {
+        this.name = name;
+        this.creturnType = returnType;
+        this.paramNames = paramNames;
+        if (paramNames != null)
+            this.numArgs = paramNames.length;
+        this.cparamTypes = paramTypes;
+        this.methodBody = methodBody;
+        this.declaringNameSpace = declaringNameSpace;
+        this.modifiers = modifiers;
+    }
 
-BshMethod(Method method, Object object) {
-this(method.getName(), method.getReturnType(), null, method.getParameterTypes(), null, null, null);
+    BshMethod(Method method, Object object) {
+        this(method.getName(), method.getReturnType(), null, method.getParameterTypes(), null, null, null);
 
-this.javaMethod = method;
-this.javaObject = object;
-}
+        this.javaMethod = method;
+        this.javaObject = object;
+    }
 
-public Class[] getParameterTypes() {
-return this.cparamTypes; } public String[] getParameterNames() {
-return this.paramNames;
-}
+    public Class[] getParameterTypes() {
+        return this.cparamTypes;
+    }
 
-public Class getReturnType() {
-return this.creturnType;
-} public Modifiers getModifiers() {
-return this.modifiers;
-} public String getName() {
-return this.name;
-}
+    public String[] getParameterNames() {
+        return this.paramNames;
+    }
 
-public Object invoke(Object[] argValues, Interpreter interpreter) throws EvalError {
-return invoke(argValues, interpreter, null, null, false);
-}
+    public Class getReturnType() {
+        return this.creturnType;
+    }
 
-public Object invoke(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo) throws EvalError {
-return invoke(argValues, interpreter, callstack, callerInfo, false);
-}
+    public Modifiers getModifiers() {
+        return this.modifiers;
+    }
 
-Object invoke(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo, boolean overrideNameSpace) throws EvalError {
-if (argValues != null)
-for (int i = 0; i < argValues.length; i++) {
-if (argValues[i] == null)
-throw new Error("HERE!"); 
-}  
-if (this.javaMethod != null) {
-try {
-return Reflect.invokeMethod(this.javaMethod, this.javaObject, argValues);
-}
-catch (ReflectError e) {
-throw new EvalError("Error invoking Java method: " + e, callerInfo, callstack);
-}
-catch (InvocationTargetException e2) {
-throw new TargetError("Exception invoking imported object method.", e2, callerInfo, callstack, true);
-} 
-}
+    public String getName() {
+        return this.name;
+    }
 
-if (this.modifiers != null && this.modifiers.hasModifier("synchronized")) {
-Object object;
+    public Object invoke(Object[] argValues, Interpreter interpreter) throws EvalError {
+        return invoke(argValues, interpreter, null, null, false);
+    }
 
-if (this.declaringNameSpace.isClass) {
+    public Object invoke(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo)
+            throws EvalError {
+        return invoke(argValues, interpreter, callstack, callerInfo, false);
+    }
 
-try {
-object = this.declaringNameSpace.getClassInstance();
-} catch (UtilEvalError e) {
-throw new InterpreterError("Can't get class instance for synchronized method.");
-} 
-} else {
+    Object invoke(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo,
+            boolean overrideNameSpace) throws EvalError {
+        if (argValues != null)
+            for (int i = 0; i < argValues.length; i++) {
+                if (argValues[i] == null)
+                    throw new Error("HERE!");
+            }
+        if (this.javaMethod != null) {
+            try {
+                return Reflect.invokeMethod(this.javaMethod, this.javaObject, argValues);
+            } catch (ReflectError e) {
+                throw new EvalError("Error invoking Java method: " + e, callerInfo, callstack);
+            } catch (InvocationTargetException e2) {
+                throw new TargetError("Exception invoking imported object method.", e2, callerInfo, callstack, true);
+            }
+        }
 
-object = this.declaringNameSpace.getThis(interpreter);
-} 
-synchronized (object) {
+        if (this.modifiers != null && this.modifiers.hasModifier("synchronized")) {
+            Object object;
 
-return invokeImpl(argValues, interpreter, callstack, callerInfo, overrideNameSpace);
-} 
-} 
+            if (this.declaringNameSpace.isClass) {
 
-return invokeImpl(argValues, interpreter, callstack, callerInfo, overrideNameSpace);
-}
+                try {
+                    object = this.declaringNameSpace.getClassInstance();
+                } catch (UtilEvalError e) {
+                    throw new InterpreterError("Can't get class instance for synchronized method.");
+                }
+            } else {
+
+                object = this.declaringNameSpace.getThis(interpreter);
+            }
+            synchronized (object) {
+
+                return invokeImpl(argValues, interpreter, callstack, callerInfo, overrideNameSpace);
+            }
+        }
+
+        return invokeImpl(argValues, interpreter, callstack, callerInfo, overrideNameSpace);
+    }
 
 private Object invokeImpl(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo, boolean overrideNameSpace) throws EvalError {
 NameSpace localNameSpace;
-Class<void> returnType = getReturnType();
+Class<?> returnType = getReturnType();
 Class[] paramTypes = getParameterTypes();
 
 if (callstack == null) {
@@ -218,12 +226,11 @@ throw e.toEvalError("Incorrect type returned from method: " + this.name + e.getM
 return ret;
 }
 
-public boolean hasModifier(String name) {
-return (this.modifiers != null && this.modifiers.hasModifier(name));
-}
+    public boolean hasModifier(String name) {
+        return (this.modifiers != null && this.modifiers.hasModifier(name));
+    }
 
-public String toString() {
-return "Scripted Method: " + StringUtil.methodString(this.name, getParameterTypes());
+    public String toString() {
+        return "Scripted Method: " + StringUtil.methodString(this.name, getParameterTypes());
+    }
 }
-}
-
