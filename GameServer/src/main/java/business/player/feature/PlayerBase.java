@@ -400,21 +400,21 @@ public class PlayerBase
         params.put("server_id", Integer.valueOf(this.player.getSid()));
 
         String baseurl = System.getProperty("downConfUrl");
-        HttpUtils.RequestGM("http:
-        {
-            public void compeleted (String response){
-            try {
-                JsonObject json = (new JsonParser()).parse(response).getAsJsonObject();
-                if (json.get("state").getAsInt() != 1000) {
-                    CommLog.error("发送GM用户信息失败" + json.get("state").getAsInt());
+        HttpUtils.RequestGM(baseurl, new IResponseHandler() {
+            public void compeleted(String response) {
+                try {
+                    JsonObject json = new JsonParser().parse(response).getAsJsonObject();
+                    if (json.get("state").getAsInt() != 1000) {
+                        CommLog.error("发送GM用户信息失败" + json.get("state").getAsInt());
+                    }
+                } catch (Exception exception) {
+                    // Log nếu cần
                 }
-            } catch (Exception exception) {
             }
-        }
 
-            public void failed (Exception exception){
-            CommLog.error("发送GM用户信息失败");
-        }
+            public void failed(Exception exception) {
+                CommLog.error("发送GM用户信息失败");
+            }
         });
     }
 

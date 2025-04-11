@@ -237,7 +237,10 @@ public class LongnvWar {
             if (road.getAtkplayers().size() == 0 || road.getDefplayers().size() == 0) {
                 road.setOverTime(CommTime.nowSecond());
             }
-            SyncTaskManager.task(() -> SyncTaskManager.schedule(LongnvWarConfig.oneFightTime(), ()));
+            SyncTaskManager.task(() -> SyncTaskManager.schedule(LongnvWarConfig.oneFightTime(), () -> {
+                System.out.println("Chiến đấu kết thúc sau thời gian quy định.");
+                return false;
+            }));
         }
     }
 

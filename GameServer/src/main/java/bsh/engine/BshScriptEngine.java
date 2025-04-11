@@ -1,5 +1,14 @@
 package bsh.engine;
 
+import javax.script.AbstractScriptEngine;
+import javax.script.Bindings;
+import javax.script.Compilable;
+import javax.script.Invocable;
+import javax.script.ScriptEngineFactory;
+import javax.script.SimpleBindings;
+import java.io.OutputStream;
+import java.io.StringReader;
+
 import bsh.EvalError;
 import bsh.ExternalNameSpace;
 import bsh.Interpreter;
@@ -19,6 +28,18 @@ import javax.script.ScriptContext;
 import javax.script.ScriptException;
 
 public class BshScriptEngine extends AbstractScriptEngine implements Compilable, Invocable {
+    @Override
+    public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
+        // TODO: Implement logic to invoke method on script object
+        throw new UnsupportedOperationException("invokeMethod is not implemented yet.");
+    }
+
+    @Override
+    public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
+        // TODO: Implement logic to invoke global function from script
+        throw new UnsupportedOperationException("invokeFunction is not implemented yet.");
+    }
+
     static final String engineNameSpaceKey = "org_beanshell_engine_namespace";
 
     public BshScriptEngine() {
@@ -83,19 +104,17 @@ public class BshScriptEngine extends AbstractScriptEngine implements Compilable,
     }
 
     private static NameSpace getEngineNameSpace(ScriptContext scriptContext) {
-        ExternalNameSpace externalNameSpace;
         NameSpace ns = (NameSpace) scriptContext.getAttribute("org_beanshell_engine_namespace", 100);
-
+    
         if (ns == null) {
-
             Map engineView = new ScriptContextEngineView(scriptContext);
-            externalNameSpace = new ExternalNameSpace(null, "javax_script_context", engineView);
-
-            scriptContext.setAttribute("org_beanshell_engine_namespace", externalNameSpace, 100);
+            ns = new ExternalNameSpace(null, "javax_script_context", engineView);
+    
+            scriptContext.setAttribute("org_beanshell_engine_namespace", ns, 100);
         }
-
-        return (NameSpace) externalNameSpace;
-    }
+    
+        return ns;
+    }    
 
     public Bindings createBindings() {
         return new SimpleBindings();

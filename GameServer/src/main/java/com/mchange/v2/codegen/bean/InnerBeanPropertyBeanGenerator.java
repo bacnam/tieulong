@@ -113,7 +113,6 @@ this.iw.print(" throws PropertyVetoException");
 if (bool) {
 this.iw.println(';');
 } else {
-this.iw.println(" {} 
 }  this.iw.println();
 
 this.iw.print("protected ");
@@ -123,7 +122,6 @@ this.iw.print("void afterReplaceInnerBean()");
 if (bool) {
 this.iw.println(';');
 } else {
-this.iw.println(" {} 
 }  this.iw.println();
 
 BeangenUtils.writeExplicitDefaultConstructor(1, this.info, this.iw);

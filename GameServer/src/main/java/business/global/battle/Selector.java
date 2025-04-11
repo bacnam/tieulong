@@ -121,7 +121,7 @@ public class Selector {
                     break;
                 return (target, all, param) -> {
                     double d = param.radius * param.radius;
-                    return (List) all.stream().filter(()).collect(Collectors.toList());
+                    return (List) all.stream().collect(Collectors.toList());
                 };
         }
 

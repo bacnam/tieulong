@@ -94,10 +94,7 @@ public class TitleFeature
                 bo.saveValue(count + addCount);
                 taskActive(bo, ref);
             }
-        } new Integer[]{
-
-                value
-        });
+        }, new Integer[]{ value });
     }
 
     public void updateInc(Title type) {
@@ -112,10 +109,7 @@ public class TitleFeature
                 bo.saveValue(Math.max(count, newvalue));
                 taskActive(bo, ref);
             }
-        } new Integer[]{
-
-                value
-        });
+        }, new Integer[]{ value });
     }
 
     public void updateMin(Title type, Integer value) {
@@ -127,9 +121,7 @@ public class TitleFeature
                 bo.saveValue(Math.min(count, newvalue));
                 taskActive(bo, ref);
             }
-        } new Integer[]{
-
-                value});
+        }, new Integer[]{ value });
     }
 
     private void taskActive(TitleBO bo, RefTitle ref) {

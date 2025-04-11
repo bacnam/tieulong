@@ -325,11 +325,6 @@ iw.println();
 
 iw.println("boolean is_cached;");
 iw.println("NewProxyConnection creatorProxy;");
-iw.println();
-iw.println("
-iw.println("
-iw.println("
-iw.println("
 iw.println("HashSet myProxyResultSets = new HashSet();");
 iw.println();
 iw.println("public void detachProxyResultSet( ResultSet prs )");
@@ -638,7 +633,6 @@ iw.downIndent();
 
 iw.println("Object out = m.invoke( target, args );");
 iw.println();
-iw.println("
 iw.println("if (out instanceof CallableStatement)");
 iw.println("{");
 iw.upIndent();

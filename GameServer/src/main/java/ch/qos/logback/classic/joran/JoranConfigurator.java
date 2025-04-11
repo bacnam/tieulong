@@ -27,50 +27,38 @@ import ch.qos.logback.core.joran.spi.ElementSelector;
 import ch.qos.logback.core.joran.spi.RuleStore;
 
 public class JoranConfigurator
-extends JoranConfiguratorBase
-{
-public void addInstanceRules(RuleStore rs) {
-super.addInstanceRules(rs);
+        extends JoranConfiguratorBase {
+    public void addInstanceRules(RuleStore rs) {
+        super.addInstanceRules(rs);
 
-rs.addRule(new ElementSelector("configuration"), (Action)new ConfigurationAction());
+        rs.addRule(new ElementSelector("configuration"), new ConfigurationAction());
+        rs.addRule(new ElementSelector("configuration/contextName"), new ContextNameAction());
+        rs.addRule(new ElementSelector("configuration/contextListener"), new LoggerContextListenerAction());
+        rs.addRule(new ElementSelector("configuration/insertFromJNDI"), new InsertFromJNDIAction());
+        rs.addRule(new ElementSelector("configuration/evaluator"), new EvaluatorAction());
+        rs.addRule(new ElementSelector("configuration/appender/sift"), new SiftAction());
+        rs.addRule(new ElementSelector("configuration/logger"), new LoggerAction());
+        rs.addRule(new ElementSelector("configuration/logger/level"), new LevelAction());
+        rs.addRule(new ElementSelector("configuration/root"), new RootLoggerAction());
+        rs.addRule(new ElementSelector("configuration/root/level"), new LevelAction());
+        rs.addRule(new ElementSelector("configuration/logger/appender-ref"), new AppenderRefAction());
+        rs.addRule(new ElementSelector("configuration/root/appender-ref"), new AppenderRefAction());
 
-rs.addRule(new ElementSelector("configuration/contextName"), (Action)new ContextNameAction());
+        rs.addRule(new ElementSelector("*/if"), new IfAction());
+        rs.addRule(new ElementSelector("*/if/then"), new ThenAction());
+        rs.addRule(new ElementSelector("*/if/else"), new ElseAction());
 
-rs.addRule(new ElementSelector("configuration/contextListener"), (Action)new LoggerContextListenerAction());
+        if (PlatformInfo.hasJMXObjectName()) {
+            rs.addRule(new ElementSelector("configuration/jmxConfigurator"), new JMXConfiguratorAction());
+        }
 
-rs.addRule(new ElementSelector("configuration/insertFromJNDI"), (Action)new InsertFromJNDIAction());
+        rs.addRule(new ElementSelector("configuration/include"), new IncludeAction());
+        rs.addRule(new ElementSelector("configuration/consolePlugin"), new ConsolePluginAction());
+        rs.addRule(new ElementSelector("configuration/receiver"), new ReceiverAction());
+    }
 
-rs.addRule(new ElementSelector("configuration/evaluator"), (Action)new EvaluatorAction());
-
-rs.addRule(new ElementSelector("configuration/appender/sift"), (Action)new SiftAction());
-rs.addRule(new ElementSelector("configuration/appender/sift
-rs.addRule(new ElementSelector("configuration/logger"), (Action)new LoggerAction());
-rs.addRule(new ElementSelector("configuration/logger/level"), (Action)new LevelAction());
-
-rs.addRule(new ElementSelector("configuration/root"), (Action)new RootLoggerAction());
-rs.addRule(new ElementSelector("configuration/root/level"), (Action)new LevelAction());
-rs.addRule(new ElementSelector("configuration/logger/appender-ref"), (Action)new AppenderRefAction());
-
-rs.addRule(new ElementSelector("configuration/root/appender-ref"), (Action)new AppenderRefAction());
-
-rs.addRule(new ElementSelector("*/if"), (Action)new IfAction());
-rs.addRule(new ElementSelector("*/if/then"), (Action)new ThenAction());
-rs.addRule(new ElementSelector("*/if/thenrs.addRule(new ElementSelector("*/if/else"), (Action)new ElseAction());
-rs.addRule(new ElementSelector("*/if/else
-
-if (PlatformInfo.hasJMXObjectName()) {
-rs.addRule(new ElementSelector("configuration/jmxConfigurator"), (Action)new JMXConfiguratorAction());
-}
-
-rs.addRule(new ElementSelector("configuration/include"), (Action)new IncludeAction());
-
-rs.addRule(new ElementSelector("configuration/consolePlugin"), (Action)new ConsolePluginAction());
-
-rs.addRule(new ElementSelector("configuration/receiver"), (Action)new ReceiverAction());
-}
-
-protected void addDefaultNestedComponentRegistryRules(DefaultNestedComponentRegistry registry) {
-DefaultNestedComponentRules.addDefaultNestedComponentRegistryRules(registry);
-}
+    protected void addDefaultNestedComponentRegistryRules(DefaultNestedComponentRegistry registry) {
+        DefaultNestedComponentRules.addDefaultNestedComponentRegistryRules(registry);
+    }
 }
 

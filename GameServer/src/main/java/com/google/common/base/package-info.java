@@ -1,7 +1,7 @@
 package com.google.common.base;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+//import javax.annotation.ParametersAreNonnullByDefault;
 
-@ParametersAreNonnullByDefault
-interface package-info {}
+//@ParametersAreNonnullByDefault
+//interface package-info {}
 

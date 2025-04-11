@@ -11,7 +11,7 @@ public static final int MAX_POOL_SIZE = 32;
 public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 public static final int LINE_SEPARATOR_LEN = LINE_SEPARATOR.length();
 
-public static final String CODES_URL = "http:
+public static final String CODES_URL = "http:";
 
 public static final String DEFAULT_CONTEXT_NAME = "default";
 
@@ -78,7 +78,7 @@ public static final char TAB = '\t';
 
 public static final char DOLLAR = '$';
 
-public static final String SEE_FNP_NOT_SET = "See also http:
+public static final String SEE_FNP_NOT_SET = "See also http:";
 
 public static final String CONFIGURATION_WATCH_LIST = "CONFIGURATION_WATCH_LIST";
 

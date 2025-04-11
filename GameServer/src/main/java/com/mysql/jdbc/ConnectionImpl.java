@@ -7,6 +7,7 @@ import com.mysql.jdbc.log.NullLogger;
 import com.mysql.jdbc.profiler.ProfilerEvent;
 import com.mysql.jdbc.profiler.ProfilerEventHandler;
 import com.mysql.jdbc.util.LRUCache;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
@@ -46,3910 +47,4119 @@ import java.util.TreeMap;
 import java.util.concurrent.Executor;
 
 public class ConnectionImpl
-extends ConnectionPropertiesImpl
-implements MySQLConnection
-{
-private static final long serialVersionUID = 2877471301981509474L;
-private static final SQLPermission SET_NETWORK_TIMEOUT_PERM = new SQLPermission("setNetworkTimeout");
+        extends ConnectionPropertiesImpl
+        implements MySQLConnection {
+    private static final long serialVersionUID = 2877471301981509474L;
+    private static final SQLPermission SET_NETWORK_TIMEOUT_PERM = new SQLPermission("setNetworkTimeout");
 
-private static final SQLPermission ABORT_PERM = new SQLPermission("abort");
+    private static final SQLPermission ABORT_PERM = new SQLPermission("abort");
 
-private static final String JDBC_LOCAL_CHARACTER_SET_RESULTS = "jdbc.local.character_set_results";
+    private static final String JDBC_LOCAL_CHARACTER_SET_RESULTS = "jdbc.local.character_set_results";
 
-public String getHost() {
-return this.host;
-}
+    public String getHost() {
+        return this.host;
+    }
 
-private MySQLConnection proxy = null;
+    private MySQLConnection proxy = null;
 
-public boolean isProxySet() {
-return (this.proxy != null);
-}
+    public boolean isProxySet() {
+        return (this.proxy != null);
+    }
 
-public void setProxy(MySQLConnection proxy) {
-this.proxy = proxy;
-}
+    public void setProxy(MySQLConnection proxy) {
+        this.proxy = proxy;
+    }
 
-private MySQLConnection getProxy() {
-return (this.proxy != null) ? this.proxy : this;
-}
+    private MySQLConnection getProxy() {
+        return (this.proxy != null) ? this.proxy : this;
+    }
 
-public MySQLConnection getLoadBalanceSafeProxy() {
-return getProxy();
-}
+    public MySQLConnection getLoadBalanceSafeProxy() {
+        return getProxy();
+    }
 
-class ExceptionInterceptorChain
-implements ExceptionInterceptor {
-List<Extension> interceptors;
+    class ExceptionInterceptorChain
+            implements ExceptionInterceptor {
+        List<Extension> interceptors;
 
-ExceptionInterceptorChain(String interceptorClasses) throws SQLException {
-this.interceptors = Util.loadExtensions(ConnectionImpl.this, ConnectionImpl.this.props, interceptorClasses, "Connection.BadExceptionInterceptor", this);
-}
+        ExceptionInterceptorChain(String interceptorClasses) throws SQLException {
+            this.interceptors = Util.loadExtensions(ConnectionImpl.this, ConnectionImpl.this.props, interceptorClasses, "Connection.BadExceptionInterceptor", this);
+        }
 
-void addRingZero(ExceptionInterceptor interceptor) throws SQLException {
-this.interceptors.add(0, interceptor);
-}
+        void addRingZero(ExceptionInterceptor interceptor) throws SQLException {
+            this.interceptors.add(0, interceptor);
+        }
 
-public SQLException interceptException(SQLException sqlEx, Connection conn) {
-if (this.interceptors != null) {
-Iterator<Extension> iter = this.interceptors.iterator();
+        public SQLException interceptException(SQLException sqlEx, Connection conn) {
+            if (this.interceptors != null) {
+                Iterator<Extension> iter = this.interceptors.iterator();
 
-while (iter.hasNext()) {
-sqlEx = ((ExceptionInterceptor)iter.next()).interceptException(sqlEx, ConnectionImpl.this);
-}
-} 
+                while (iter.hasNext()) {
+                    sqlEx = ((ExceptionInterceptor) iter.next()).interceptException(sqlEx, ConnectionImpl.this);
+                }
+            }
 
-return sqlEx;
-}
+            return sqlEx;
+        }
 
-public void destroy() {
-if (this.interceptors != null) {
-Iterator<Extension> iter = this.interceptors.iterator();
+        public void destroy() {
+            if (this.interceptors != null) {
+                Iterator<Extension> iter = this.interceptors.iterator();
 
-while (iter.hasNext()) {
-((ExceptionInterceptor)iter.next()).destroy();
-}
-} 
-}
+                while (iter.hasNext()) {
+                    ((ExceptionInterceptor) iter.next()).destroy();
+                }
+            }
+        }
 
-public void init(Connection conn, Properties properties) throws SQLException {
-if (this.interceptors != null) {
-Iterator<Extension> iter = this.interceptors.iterator();
+        public void init(Connection conn, Properties properties) throws SQLException {
+            if (this.interceptors != null) {
+                Iterator<Extension> iter = this.interceptors.iterator();
 
-while (iter.hasNext()) {
-((ExceptionInterceptor)iter.next()).init(conn, properties);
-}
-} 
-}
-}
+                while (iter.hasNext()) {
+                    ((ExceptionInterceptor) iter.next()).init(conn, properties);
+                }
+            }
+        }
+    }
 
-static class CompoundCacheKey
-{
-String componentOne;
+    static class CompoundCacheKey {
+        String componentOne;
 
-String componentTwo;
+        String componentTwo;
 
-int hashCode;
+        int hashCode;
 
-CompoundCacheKey(String partOne, String partTwo) {
-this.componentOne = partOne;
-this.componentTwo = partTwo;
+        CompoundCacheKey(String partOne, String partTwo) {
+            this.componentOne = partOne;
+            this.componentTwo = partTwo;
 
-this.hashCode = (((this.componentOne != null) ? this.componentOne : "") + this.componentTwo).hashCode();
-}
+            this.hashCode = (((this.componentOne != null) ? this.componentOne : "") + this.componentTwo).hashCode();
+        }
 
-public boolean equals(Object obj) {
-if (obj instanceof CompoundCacheKey) {
-CompoundCacheKey another = (CompoundCacheKey)obj;
+        public boolean equals(Object obj) {
+            if (obj instanceof CompoundCacheKey) {
+                CompoundCacheKey another = (CompoundCacheKey) obj;
 
-boolean firstPartEqual = false;
+                boolean firstPartEqual = false;
 
-if (this.componentOne == null) {
-firstPartEqual = (another.componentOne == null);
-} else {
-firstPartEqual = this.componentOne.equals(another.componentOne);
-} 
+                if (this.componentOne == null) {
+                    firstPartEqual = (another.componentOne == null);
+                } else {
+                    firstPartEqual = this.componentOne.equals(another.componentOne);
+                }
 
-return (firstPartEqual && this.componentTwo.equals(another.componentTwo));
-} 
+                return (firstPartEqual && this.componentTwo.equals(another.componentTwo));
+            }
 
-return false;
-}
+            return false;
+        }
 
-public int hashCode() {
-return this.hashCode;
-}
-}
+        public int hashCode() {
+            return this.hashCode;
+        }
+    }
+
+    private static final Object CHARSET_CONVERTER_NOT_AVAILABLE_MARKER = new Object();
+
+    public static Map<?, ?> charsetMap;
+
+    protected static final String DEFAULT_LOGGER_CLASS = "com.mysql.jdbc.log.StandardLogger";
+
+    private static final int HISTOGRAM_BUCKETS = 20;
+
+    private static final String LOGGER_INSTANCE_NAME = "MySQL";
+
+    private static Map<String, Integer> mapTransIsolationNameToValue = null;
+
+    private static final Log NULL_LOGGER = (Log) new NullLogger("MySQL");
+
+    protected static Map<?, ?> roundRobinStatsMap;
+
+    private static final Map<String, Map<Long, String>> serverCollationByUrl = new HashMap<String, Map<Long, String>>();
+
+    private static final Map<String, Map<Integer, String>> serverJavaCharsetByUrl = new HashMap<String, Map<Integer, String>>();
+
+    private static final Map<String, Map<Integer, String>> serverCustomCharsetByUrl = new HashMap<String, Map<Integer, String>>();
+
+    private static final Map<String, Map<String, Integer>> serverCustomMblenByUrl = new HashMap<String, Map<String, Integer>>();
+
+    private CacheAdapter<String, Map<String, String>> serverConfigCache;
+
+    private long queryTimeCount;
+
+    private double queryTimeSum;
+
+    private double queryTimeSumSquares;
+
+    private double queryTimeMean;
+
+    private transient Timer cancelTimer;
+    private List<Extension> connectionLifecycleInterceptors;
+    private static final Constructor<?> JDBC_4_CONNECTION_CTOR;
+    private static final int DEFAULT_RESULT_SET_TYPE = 1003;
+    private static final int DEFAULT_RESULT_SET_CONCURRENCY = 1007;
+    private static final Random random;
+
+    static {
+        mapTransIsolationNameToValue = new HashMap<String, Integer>(8);
+        mapTransIsolationNameToValue.put("READ-UNCOMMITED", Integer.valueOf(1));
+        mapTransIsolationNameToValue.put("READ-UNCOMMITTED", Integer.valueOf(1));
+        mapTransIsolationNameToValue.put("READ-COMMITTED", Integer.valueOf(2));
+        mapTransIsolationNameToValue.put("REPEATABLE-READ", Integer.valueOf(4));
+        mapTransIsolationNameToValue.put("SERIALIZABLE", Integer.valueOf(8));
 
-private static final Object CHARSET_CONVERTER_NOT_AVAILABLE_MARKER = new Object();
+        if (Util.isJdbc4()) {
+            try {
+                JDBC_4_CONNECTION_CTOR = Class.forName("com.mysql.jdbc.JDBC4Connection").getConstructor(new Class[]{String.class, int.class, Properties.class, String.class, String.class});
 
-public static Map<?, ?> charsetMap;
+            } catch (SecurityException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            JDBC_4_CONNECTION_CTOR = null;
+        }
 
-protected static final String DEFAULT_LOGGER_CLASS = "com.mysql.jdbc.log.StandardLogger";
+        random = new Random();
+    }
 
-private static final int HISTOGRAM_BUCKETS = 20;
+    protected static SQLException appendMessageToException(SQLException sqlEx, String messageToAppend, ExceptionInterceptor interceptor) {
+        String origMessage = sqlEx.getMessage();
+        String sqlState = sqlEx.getSQLState();
+        int vendorErrorCode = sqlEx.getErrorCode();
+        StringBuffer messageBuf = new StringBuffer(origMessage.length() + messageToAppend.length());
+        messageBuf.append(origMessage);
+        messageBuf.append(messageToAppend);
+        SQLException sqlExceptionWithNewMessage = SQLError.createSQLException(messageBuf.toString(), sqlState, vendorErrorCode, interceptor);
+        try {
+            Method getStackTraceMethod = null;
+            Method setStackTraceMethod = null;
+            Object theStackTraceAsObject = null;
+            Class<?> stackTraceElementClass = Class.forName("java.lang.StackTraceElement");
+            Class<?> stackTraceElementArrayClass = Array.newInstance(stackTraceElementClass, new int[]{0}).getClass();
+            getStackTraceMethod = Throwable.class.getMethod("getStackTrace", new Class[0]);
+            setStackTraceMethod = Throwable.class.getMethod("setStackTrace", new Class[]{stackTraceElementArrayClass});
+            if (getStackTraceMethod != null && setStackTraceMethod != null) {
+                theStackTraceAsObject = getStackTraceMethod.invoke(sqlEx, new Object[0]);
+                setStackTraceMethod.invoke(sqlExceptionWithNewMessage, new Object[]{theStackTraceAsObject});
+            }
+        } catch (NoClassDefFoundError noClassDefFound) {
+        } catch (NoSuchMethodException noSuchMethodEx) {
+        } catch (Throwable catchAll) {
+        }
+        return sqlExceptionWithNewMessage;
+    }
 
-private static final String LOGGER_INSTANCE_NAME = "MySQL";
+    public synchronized Timer getCancelTimer() {
+        if (this.cancelTimer == null) {
+            boolean createdNamedTimer = false;
+            try {
+                Constructor<Timer> ctr = Timer.class.getConstructor(new Class[]{String.class, boolean.class});
+                this.cancelTimer = ctr.newInstance(new Object[]{"MySQL Statement Cancellation Timer", Boolean.TRUE});
+                createdNamedTimer = true;
+            } catch (Throwable t) {
+                createdNamedTimer = false;
+            }
+            if (!createdNamedTimer)
+                this.cancelTimer = new Timer(true);
+        }
+        return this.cancelTimer;
+    }
 
-private static Map<String, Integer> mapTransIsolationNameToValue = null;
+    protected static Connection getInstance(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException {
+        if (!Util.isJdbc4())
+            return new ConnectionImpl(hostToConnectTo, portToConnectTo, info, databaseToConnectTo, url);
+        return (Connection) Util.handleNewInstance(JDBC_4_CONNECTION_CTOR, new Object[]{hostToConnectTo, Integer.valueOf(portToConnectTo), info, databaseToConnectTo, url}, null);
+    }
 
-private static final Log NULL_LOGGER = (Log)new NullLogger("MySQL");
+    protected static synchronized int getNextRoundRobinHostIndex(String url, List<?> hostList) {
+        int indexRange = hostList.size();
 
-protected static Map<?, ?> roundRobinStatsMap;
+        int index = random.nextInt(indexRange);
 
-private static final Map<String, Map<Long, String>> serverCollationByUrl = new HashMap<String, Map<Long, String>>();
+        return index;
+    }
 
-private static final Map<String, Map<Integer, String>> serverJavaCharsetByUrl = new HashMap<String, Map<Integer, String>>();
+    private static boolean nullSafeCompare(String s1, String s2) {
+        if (s1 == null && s2 == null) {
+            return true;
+        }
 
-private static final Map<String, Map<Integer, String>> serverCustomCharsetByUrl = new HashMap<String, Map<Integer, String>>();
+        if (s1 == null && s2 != null) {
+            return false;
+        }
 
-private static final Map<String, Map<String, Integer>> serverCustomMblenByUrl = new HashMap<String, Map<String, Integer>>();
+        return (s1 != null && s1.equals(s2));
+    }
 
-private CacheAdapter<String, Map<String, String>> serverConfigCache;
+    private boolean autoCommit = true;
 
-private long queryTimeCount;
+    private CacheAdapter<String, PreparedStatement.ParseInfo> cachedPreparedStatementParams;
 
-private double queryTimeSum;
+    private String characterSetMetadata = null;
 
-private double queryTimeSumSquares;
+    private String characterSetResultsOnServer = null;
 
-private double queryTimeMean;
+    private Map<String, Object> charsetConverterMap = new HashMap<String, Object>(CharsetMapping.getNumberOfCharsetsConfigured());
 
-private transient Timer cancelTimer;
-private List<Extension> connectionLifecycleInterceptors;
-private static final Constructor<?> JDBC_4_CONNECTION_CTOR;
-private static final int DEFAULT_RESULT_SET_TYPE = 1003;
-private static final int DEFAULT_RESULT_SET_CONCURRENCY = 1007;
-private static final Random random;
+    private long connectionCreationTimeMillis = 0L;
 
-static {
-mapTransIsolationNameToValue = new HashMap<String, Integer>(8);
-mapTransIsolationNameToValue.put("READ-UNCOMMITED", Integer.valueOf(1));
-mapTransIsolationNameToValue.put("READ-UNCOMMITTED", Integer.valueOf(1));
-mapTransIsolationNameToValue.put("READ-COMMITTED", Integer.valueOf(2));
-mapTransIsolationNameToValue.put("REPEATABLE-READ", Integer.valueOf(4));
-mapTransIsolationNameToValue.put("SERIALIZABLE", Integer.valueOf(8));
+    private long connectionId;
 
-if (Util.isJdbc4()) {
-try {
-JDBC_4_CONNECTION_CTOR = Class.forName("com.mysql.jdbc.JDBC4Connection").getConstructor(new Class[] { String.class, int.class, Properties.class, String.class, String.class });
+    private String database = null;
 
-}
-catch (SecurityException e) {
-throw new RuntimeException(e);
-} catch (NoSuchMethodException e) {
-throw new RuntimeException(e);
-} catch (ClassNotFoundException e) {
-throw new RuntimeException(e);
-} 
-} else {
-JDBC_4_CONNECTION_CTOR = null;
-} 
+    private DatabaseMetaData dbmd = null;
 
-random = new Random();
-} protected static SQLException appendMessageToException(SQLException sqlEx, String messageToAppend, ExceptionInterceptor interceptor) { String origMessage = sqlEx.getMessage(); String sqlState = sqlEx.getSQLState(); int vendorErrorCode = sqlEx.getErrorCode(); StringBuffer messageBuf = new StringBuffer(origMessage.length() + messageToAppend.length()); messageBuf.append(origMessage); messageBuf.append(messageToAppend); SQLException sqlExceptionWithNewMessage = SQLError.createSQLException(messageBuf.toString(), sqlState, vendorErrorCode, interceptor); try { Method getStackTraceMethod = null; Method setStackTraceMethod = null; Object theStackTraceAsObject = null; Class<?> stackTraceElementClass = Class.forName("java.lang.StackTraceElement"); Class<?> stackTraceElementArrayClass = Array.newInstance(stackTraceElementClass, new int[] { 0 }).getClass(); getStackTraceMethod = Throwable.class.getMethod("getStackTrace", new Class[0]); setStackTraceMethod = Throwable.class.getMethod("setStackTrace", new Class[] { stackTraceElementArrayClass }); if (getStackTraceMethod != null && setStackTraceMethod != null) { theStackTraceAsObject = getStackTraceMethod.invoke(sqlEx, new Object[0]); setStackTraceMethod.invoke(sqlExceptionWithNewMessage, new Object[] { theStackTraceAsObject }); }
-}
-catch (NoClassDefFoundError noClassDefFound) {  }
-catch (NoSuchMethodException noSuchMethodEx) {  }
-catch (Throwable catchAll) {} return sqlExceptionWithNewMessage; } public synchronized Timer getCancelTimer() { if (this.cancelTimer == null) { boolean createdNamedTimer = false; try { Constructor<Timer> ctr = Timer.class.getConstructor(new Class[] { String.class, boolean.class }); this.cancelTimer = ctr.newInstance(new Object[] { "MySQL Statement Cancellation Timer", Boolean.TRUE }); createdNamedTimer = true; }
-catch (Throwable t)
-{ createdNamedTimer = false; }
-if (!createdNamedTimer)
-this.cancelTimer = new Timer(true);  }
-return this.cancelTimer; }
-protected static Connection getInstance(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException { if (!Util.isJdbc4())
-return new ConnectionImpl(hostToConnectTo, portToConnectTo, info, databaseToConnectTo, url);  return (Connection)Util.handleNewInstance(JDBC_4_CONNECTION_CTOR, new Object[] { hostToConnectTo, Integer.valueOf(portToConnectTo), info, databaseToConnectTo, url }, null); }
-protected static synchronized int getNextRoundRobinHostIndex(String url, List<?> hostList) { int indexRange = hostList.size();
+    private TimeZone defaultTimeZone;
 
-int index = random.nextInt(indexRange);
+    private ProfilerEventHandler eventSink;
 
-return index; }
+    private Throwable forceClosedReason;
 
-private static boolean nullSafeCompare(String s1, String s2) {
-if (s1 == null && s2 == null) {
-return true;
-}
+    private boolean hasIsolationLevels = false;
 
-if (s1 == null && s2 != null) {
-return false;
-}
+    private boolean hasQuotedIdentifiers = false;
 
-return (s1 != null && s1.equals(s2));
-}
+    private String host = null;
 
-private boolean autoCommit = true;
+    public Map<Integer, String> indexToJavaCharset = new HashMap<Integer, String>();
 
-private CacheAdapter<String, PreparedStatement.ParseInfo> cachedPreparedStatementParams;
+    public Map<Integer, String> indexToCustomMysqlCharset = new HashMap<Integer, String>();
 
-private String characterSetMetadata = null;
+    private Map<String, Integer> mysqlCharsetToCustomMblen = new HashMap<String, Integer>();
 
-private String characterSetResultsOnServer = null;
+    private transient MysqlIO io = null;
 
-private Map<String, Object> charsetConverterMap = new HashMap<String, Object>(CharsetMapping.getNumberOfCharsetsConfigured());
+    private boolean isClientTzUTC = false;
 
-private long connectionCreationTimeMillis = 0L;
+    private boolean isClosed = true;
 
-private long connectionId;
+    private boolean isInGlobalTx = false;
 
-private String database = null;
+    private boolean isRunningOnJDK13 = false;
 
-private DatabaseMetaData dbmd = null;
+    private int isolationLevel = 2;
 
-private TimeZone defaultTimeZone;
+    private boolean isServerTzUTC = false;
 
-private ProfilerEventHandler eventSink;
+    private long lastQueryFinishedTime = 0L;
 
-private Throwable forceClosedReason;
+    private transient Log log = NULL_LOGGER;
 
-private boolean hasIsolationLevels = false;
+    private long longestQueryTimeMs = 0L;
 
-private boolean hasQuotedIdentifiers = false;
+    private boolean lowerCaseTableNames = false;
 
-private String host = null;
+    private long maximumNumberTablesAccessed = 0L;
 
-public Map<Integer, String> indexToJavaCharset = new HashMap<Integer, String>();
+    private boolean maxRowsChanged = false;
 
-public Map<Integer, String> indexToCustomMysqlCharset = new HashMap<Integer, String>();
+    private long metricsLastReportedMs;
 
-private Map<String, Integer> mysqlCharsetToCustomMblen = new HashMap<String, Integer>();
+    private long minimumNumberTablesAccessed = Long.MAX_VALUE;
 
-private transient MysqlIO io = null;
+    private String myURL = null;
 
-private boolean isClientTzUTC = false;
+    private boolean needsPing = false;
 
-private boolean isClosed = true;
+    private int netBufferLength = 16384;
 
-private boolean isInGlobalTx = false;
+    private boolean noBackslashEscapes = false;
 
-private boolean isRunningOnJDK13 = false;
+    private long numberOfPreparedExecutes = 0L;
 
-private int isolationLevel = 2;
+    private long numberOfPrepares = 0L;
 
-private boolean isServerTzUTC = false;
+    private long numberOfQueriesIssued = 0L;
 
-private long lastQueryFinishedTime = 0L;
+    private long numberOfResultSetsCreated = 0L;
 
-private transient Log log = NULL_LOGGER;
+    private long[] numTablesMetricsHistBreakpoints;
 
-private long longestQueryTimeMs = 0L;
+    private int[] numTablesMetricsHistCounts;
 
-private boolean lowerCaseTableNames = false;
+    private long[] oldHistBreakpoints = null;
 
-private long maximumNumberTablesAccessed = 0L;
+    private int[] oldHistCounts = null;
 
-private boolean maxRowsChanged = false;
+    private Map<Statement, Statement> openStatements;
 
-private long metricsLastReportedMs;
+    private LRUCache parsedCallableStatementCache;
 
-private long minimumNumberTablesAccessed = Long.MAX_VALUE;
+    private boolean parserKnowsUnicode = false;
 
-private String myURL = null;
+    private String password = null;
 
-private boolean needsPing = false;
+    private long[] perfMetricsHistBreakpoints;
 
-private int netBufferLength = 16384;
+    private int[] perfMetricsHistCounts;
 
-private boolean noBackslashEscapes = false;
+    private String pointOfOrigin;
 
-private long numberOfPreparedExecutes = 0L;
+    private int port = 3306;
 
-private long numberOfPrepares = 0L;
+    protected Properties props = null;
 
-private long numberOfQueriesIssued = 0L;
+    private boolean readInfoMsg = false;
 
-private long numberOfResultSetsCreated = 0L;
+    private boolean readOnly = false;
 
-private long[] numTablesMetricsHistBreakpoints;
+    protected LRUCache resultSetMetadataCache;
 
-private int[] numTablesMetricsHistCounts;
+    private TimeZone serverTimezoneTZ = null;
 
-private long[] oldHistBreakpoints = null;
+    private Map<String, String> serverVariables = null;
 
-private int[] oldHistCounts = null;
+    private long shortestQueryTimeMs = Long.MAX_VALUE;
 
-private Map<Statement, Statement> openStatements;
+    private Map<Statement, Statement> statementsUsingMaxRows;
 
-private LRUCache parsedCallableStatementCache;
+    private double totalQueryTimeMs = 0.0D;
 
-private boolean parserKnowsUnicode = false;
+    private boolean transactionsSupported = false;
 
-private String password = null;
+    private Map<String, Class<?>> typeMap;
 
-private long[] perfMetricsHistBreakpoints;
+    private boolean useAnsiQuotes = false;
 
-private int[] perfMetricsHistCounts;
+    private String user = null;
 
-private String pointOfOrigin;
+    private boolean useServerPreparedStmts = false;
 
-private int port = 3306;
+    private LRUCache serverSideStatementCheckCache;
 
-protected Properties props = null;
+    private LRUCache serverSideStatementCache;
 
-private boolean readInfoMsg = false;
+    private Calendar sessionCalendar;
 
-private boolean readOnly = false;
+    private Calendar utcCalendar;
 
-protected LRUCache resultSetMetadataCache;
+    private String origHostToConnectTo;
 
-private TimeZone serverTimezoneTZ = null;
+    private int origPortToConnectTo;
 
-private Map<String, String> serverVariables = null;
+    private String origDatabaseToConnectTo;
 
-private long shortestQueryTimeMs = Long.MAX_VALUE;
+    private String errorMessageEncoding = "Cp1252";
 
-private Map<Statement, Statement> statementsUsingMaxRows;
+    private boolean usePlatformCharsetConverters;
 
-private double totalQueryTimeMs = 0.0D;
+    private boolean hasTriedMasterFlag = false;
 
-private boolean transactionsSupported = false;
+    private String statementComment = null;
 
-private Map<String, Class<?>> typeMap;
+    private boolean storesLowerCaseTableName;
 
-private boolean useAnsiQuotes = false;
+    private List<StatementInterceptorV2> statementInterceptors;
 
-private String user = null;
+    private boolean requiresEscapingEncoder;
 
-private boolean useServerPreparedStmts = false;
+    private String hostPortPair;
 
-private LRUCache serverSideStatementCheckCache;
+    private boolean usingCachedConfig;
 
-private LRUCache serverSideStatementCache;
+    private static final String SERVER_VERSION_STRING_VAR_NAME = "server_version_string";
 
-private Calendar sessionCalendar;
+    private int autoIncrementIncrement;
 
-private Calendar utcCalendar;
+    private ExceptionInterceptor exceptionInterceptor;
 
-private String origHostToConnectTo;
+    public void unSafeStatementInterceptors() throws SQLException {
+        ArrayList<StatementInterceptorV2> unSafedStatementInterceptors = new ArrayList<StatementInterceptorV2>(this.statementInterceptors.size());
 
-private int origPortToConnectTo;
+        for (int i = 0; i < this.statementInterceptors.size(); i++) {
+            NoSubInterceptorWrapper wrappedInterceptor = (NoSubInterceptorWrapper) this.statementInterceptors.get(i);
 
-private String origDatabaseToConnectTo;
+            unSafedStatementInterceptors.add(wrappedInterceptor.getUnderlyingInterceptor());
+        }
 
-private String errorMessageEncoding = "Cp1252";
+        this.statementInterceptors = unSafedStatementInterceptors;
 
-private boolean usePlatformCharsetConverters;
+        if (this.io != null) {
+            this.io.setStatementInterceptors(this.statementInterceptors);
+        }
+    }
 
-private boolean hasTriedMasterFlag = false;
+    public void initializeSafeStatementInterceptors() throws SQLException {
+        this.isClosed = false;
 
-private String statementComment = null;
+        List<Extension> unwrappedInterceptors = Util.loadExtensions(this, this.props, getStatementInterceptors(), "MysqlIo.BadStatementInterceptor", getExceptionInterceptor());
 
-private boolean storesLowerCaseTableName;
+        this.statementInterceptors = new ArrayList<StatementInterceptorV2>(unwrappedInterceptors.size());
 
-private List<StatementInterceptorV2> statementInterceptors;
+        for (int i = 0; i < unwrappedInterceptors.size(); i++) {
+            Extension interceptor = unwrappedInterceptors.get(i);
 
-private boolean requiresEscapingEncoder;
+            if (interceptor instanceof StatementInterceptor) {
+                if (ReflectiveStatementInterceptorAdapter.getV2PostProcessMethod(interceptor.getClass()) != null) {
+                    this.statementInterceptors.add(new NoSubInterceptorWrapper(new ReflectiveStatementInterceptorAdapter((StatementInterceptor) interceptor)));
+                } else {
+                    this.statementInterceptors.add(new NoSubInterceptorWrapper(new V1toV2StatementInterceptorAdapter((StatementInterceptor) interceptor)));
+                }
+            } else {
+                this.statementInterceptors.add(new NoSubInterceptorWrapper((StatementInterceptorV2) interceptor));
+            }
+        }
+    }
 
-private String hostPortPair;
+    public List<StatementInterceptorV2> getStatementInterceptorsInstances() {
+        return this.statementInterceptors;
+    }
 
-private boolean usingCachedConfig;
+    private void addToHistogram(int[] histogramCounts, long[] histogramBreakpoints, long value, int numberOfTimes, long currentLowerBound, long currentUpperBound) {
+        if (histogramCounts == null) {
+            createInitialHistogram(histogramBreakpoints, currentLowerBound, currentUpperBound);
+        } else {
 
-private static final String SERVER_VERSION_STRING_VAR_NAME = "server_version_string";
+            for (int i = 0; i < 20; i++) {
+                if (histogramBreakpoints[i] >= value) {
+                    histogramCounts[i] = histogramCounts[i] + numberOfTimes;
+                    break;
+                }
+            }
+        }
+    }
 
-private int autoIncrementIncrement;
+    private void addToPerformanceHistogram(long value, int numberOfTimes) {
+        checkAndCreatePerformanceHistogram();
 
-private ExceptionInterceptor exceptionInterceptor;
+        addToHistogram(this.perfMetricsHistCounts, this.perfMetricsHistBreakpoints, value, numberOfTimes, (this.shortestQueryTimeMs == Long.MAX_VALUE) ? 0L : this.shortestQueryTimeMs, this.longestQueryTimeMs);
+    }
 
-public void unSafeStatementInterceptors() throws SQLException {
-ArrayList<StatementInterceptorV2> unSafedStatementInterceptors = new ArrayList<StatementInterceptorV2>(this.statementInterceptors.size());
+    private void addToTablesAccessedHistogram(long value, int numberOfTimes) {
+        checkAndCreateTablesAccessedHistogram();
 
-for (int i = 0; i < this.statementInterceptors.size(); i++) {
-NoSubInterceptorWrapper wrappedInterceptor = (NoSubInterceptorWrapper)this.statementInterceptors.get(i);
+        addToHistogram(this.numTablesMetricsHistCounts, this.numTablesMetricsHistBreakpoints, value, numberOfTimes, (this.minimumNumberTablesAccessed == Long.MAX_VALUE) ? 0L : this.minimumNumberTablesAccessed, this.maximumNumberTablesAccessed);
+    }
 
-unSafedStatementInterceptors.add(wrappedInterceptor.getUnderlyingInterceptor());
-} 
+    private void buildCollationMapping() throws SQLException {
+        HashMap<Integer, String> javaCharset = null;
 
-this.statementInterceptors = unSafedStatementInterceptors;
+        if (versionMeetsMinimum(4, 1, 0)) {
 
-if (this.io != null) {
-this.io.setStatementInterceptors(this.statementInterceptors);
-}
-}
+            TreeMap<Long, String> sortedCollationMap = null;
+            HashMap<Integer, String> customCharset = null;
+            HashMap<String, Integer> customMblen = null;
 
-public void initializeSafeStatementInterceptors() throws SQLException {
-this.isClosed = false;
+            if (getCacheServerConfiguration()) {
+                synchronized (serverCollationByUrl) {
+                    sortedCollationMap = (TreeMap<Long, String>) serverCollationByUrl.get(getURL());
+                    javaCharset = (HashMap<Integer, String>) serverJavaCharsetByUrl.get(getURL());
+                    customCharset = (HashMap<Integer, String>) serverCustomCharsetByUrl.get(getURL());
+                    customMblen = (HashMap<String, Integer>) serverCustomMblenByUrl.get(getURL());
+                }
+            }
 
-List<Extension> unwrappedInterceptors = Util.loadExtensions(this, this.props, getStatementInterceptors(), "MysqlIo.BadStatementInterceptor", getExceptionInterceptor());
+            Statement stmt = null;
+            ResultSet results = null;
 
-this.statementInterceptors = new ArrayList<StatementInterceptorV2>(unwrappedInterceptors.size());
+            try {
+                if (sortedCollationMap == null) {
+                    sortedCollationMap = new TreeMap<Long, String>();
+                    javaCharset = new HashMap<Integer, String>();
+                    customCharset = new HashMap<Integer, String>();
+                    customMblen = new HashMap<String, Integer>();
 
-for (int i = 0; i < unwrappedInterceptors.size(); i++) {
-Extension interceptor = unwrappedInterceptors.get(i);
+                    stmt = getMetadataSafeStatement();
 
-if (interceptor instanceof StatementInterceptor) {
-if (ReflectiveStatementInterceptorAdapter.getV2PostProcessMethod(interceptor.getClass()) != null) {
-this.statementInterceptors.add(new NoSubInterceptorWrapper(new ReflectiveStatementInterceptorAdapter((StatementInterceptor)interceptor)));
-} else {
-this.statementInterceptors.add(new NoSubInterceptorWrapper(new V1toV2StatementInterceptorAdapter((StatementInterceptor)interceptor)));
-} 
-} else {
-this.statementInterceptors.add(new NoSubInterceptorWrapper((StatementInterceptorV2)interceptor));
-} 
-} 
-}
+                    try {
+                        results = stmt.executeQuery("SHOW COLLATION");
+                        if (versionMeetsMinimum(5, 0, 0)) {
+                            Util.resultSetToMap(sortedCollationMap, results, 3, 2);
+                        } else {
+                            while (results.next()) {
+                                sortedCollationMap.put(Long.valueOf(results.getLong(3)), results.getString(2));
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                            throw ex;
+                        }
+                    }
 
-public List<StatementInterceptorV2> getStatementInterceptorsInstances() {
-return this.statementInterceptors;
-}
+                    for (Iterator<Map.Entry<Long, String>> indexIter = sortedCollationMap.entrySet().iterator(); indexIter.hasNext(); ) {
+                        Map.Entry<Long, String> indexEntry = indexIter.next();
 
-private void addToHistogram(int[] histogramCounts, long[] histogramBreakpoints, long value, int numberOfTimes, long currentLowerBound, long currentUpperBound) {
-if (histogramCounts == null) {
-createInitialHistogram(histogramBreakpoints, currentLowerBound, currentUpperBound);
-} else {
+                        int collationIndex = ((Long) indexEntry.getKey()).intValue();
+                        String charsetName = indexEntry.getValue();
 
-for (int i = 0; i < 20; i++) {
-if (histogramBreakpoints[i] >= value) {
-histogramCounts[i] = histogramCounts[i] + numberOfTimes;
-break;
-} 
-} 
-} 
-}
+                        javaCharset.put(Integer.valueOf(collationIndex), getJavaEncodingForMysqlEncoding(charsetName));
 
-private void addToPerformanceHistogram(long value, int numberOfTimes) {
-checkAndCreatePerformanceHistogram();
+                        if (collationIndex >= 255 || !charsetName.equals(CharsetMapping.STATIC_INDEX_TO_MYSQL_CHARSET_MAP.get(Integer.valueOf(collationIndex)))) {
+                            customCharset.put(Integer.valueOf(collationIndex), charsetName);
+                        }
 
-addToHistogram(this.perfMetricsHistCounts, this.perfMetricsHistBreakpoints, value, numberOfTimes, (this.shortestQueryTimeMs == Long.MAX_VALUE) ? 0L : this.shortestQueryTimeMs, this.longestQueryTimeMs);
-}
+                        if (!CharsetMapping.STATIC_CHARSET_TO_NUM_BYTES_MAP.containsKey(charsetName) && !CharsetMapping.STATIC_4_0_CHARSET_TO_NUM_BYTES_MAP.containsKey(charsetName)) {
+                            customMblen.put(charsetName, null);
+                        }
+                    }
 
-private void addToTablesAccessedHistogram(long value, int numberOfTimes) {
-checkAndCreateTablesAccessedHistogram();
+                    if (customMblen.size() > 0) {
+                        try {
+                            results = stmt.executeQuery("SHOW CHARACTER SET");
+                            while (results.next()) {
+                                String charsetName = results.getString("Charset");
+                                if (customMblen.containsKey(charsetName)) {
+                                    customMblen.put(charsetName, Integer.valueOf(results.getInt("Maxlen")));
+                                }
+                            }
+                        } catch (SQLException ex) {
+                            if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                                throw ex;
+                            }
+                        }
+                    }
 
-addToHistogram(this.numTablesMetricsHistCounts, this.numTablesMetricsHistBreakpoints, value, numberOfTimes, (this.minimumNumberTablesAccessed == Long.MAX_VALUE) ? 0L : this.minimumNumberTablesAccessed, this.maximumNumberTablesAccessed);
-}
+                    if (getCacheServerConfiguration()) {
+                        synchronized (serverCollationByUrl) {
+                            serverCollationByUrl.put(getURL(), sortedCollationMap);
+                            serverJavaCharsetByUrl.put(getURL(), javaCharset);
+                            serverCustomCharsetByUrl.put(getURL(), customCharset);
+                            serverCustomMblenByUrl.put(getURL(), customMblen);
+                        }
+                    }
+                }
 
-private void buildCollationMapping() throws SQLException {
-HashMap<Integer, String> javaCharset = null;
+                this.indexToJavaCharset = Collections.unmodifiableMap(javaCharset);
+                this.indexToCustomMysqlCharset = Collections.unmodifiableMap(customCharset);
+                this.mysqlCharsetToCustomMblen = Collections.unmodifiableMap(customMblen);
+            } catch (SQLException ex) {
+                throw ex;
+            } catch (RuntimeException ex) {
+                SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+                sqlEx.initCause(ex);
+                throw sqlEx;
+            } finally {
+                if (results != null) {
+                    try {
+                        results.close();
+                    } catch (SQLException sqlE) {
+                    }
+                }
 
-if (versionMeetsMinimum(4, 1, 0)) {
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException sqlE) {
+                    }
+                }
+            }
 
-TreeMap<Long, String> sortedCollationMap = null;
-HashMap<Integer, String> customCharset = null;
-HashMap<String, Integer> customMblen = null;
+        } else {
 
-if (getCacheServerConfiguration()) {
-synchronized (serverCollationByUrl) {
-sortedCollationMap = (TreeMap<Long, String>)serverCollationByUrl.get(getURL());
-javaCharset = (HashMap<Integer, String>)serverJavaCharsetByUrl.get(getURL());
-customCharset = (HashMap<Integer, String>)serverCustomCharsetByUrl.get(getURL());
-customMblen = (HashMap<String, Integer>)serverCustomMblenByUrl.get(getURL());
-} 
-}
+            javaCharset = new HashMap<Integer, String>();
+            for (int i = 0; i < CharsetMapping.INDEX_TO_CHARSET.length; i++) {
+                javaCharset.put(Integer.valueOf(i), CharsetMapping.INDEX_TO_CHARSET[i]);
+            }
+            this.indexToJavaCharset = Collections.unmodifiableMap(javaCharset);
+        }
+    }
 
-Statement stmt = null;
-ResultSet results = null;
+    public String getJavaEncodingForMysqlEncoding(String mysqlEncoding) throws SQLException {
+        if (versionMeetsMinimum(4, 1, 0) && "latin1".equalsIgnoreCase(mysqlEncoding)) {
+            return "Cp1252";
+        }
 
-try {
-if (sortedCollationMap == null) {
-sortedCollationMap = new TreeMap<Long, String>();
-javaCharset = new HashMap<Integer, String>();
-customCharset = new HashMap<Integer, String>();
-customMblen = new HashMap<String, Integer>();
+        return CharsetMapping.MYSQL_TO_JAVA_CHARSET_MAP.get(mysqlEncoding);
+    }
 
-stmt = getMetadataSafeStatement();
+    private boolean canHandleAsServerPreparedStatement(String sql) throws SQLException {
+        if (sql == null || sql.length() == 0) {
+            return true;
+        }
 
-try {
-results = stmt.executeQuery("SHOW COLLATION");
-if (versionMeetsMinimum(5, 0, 0)) {
-Util.resultSetToMap(sortedCollationMap, results, 3, 2);
-} else {
-while (results.next()) {
-sortedCollationMap.put(Long.valueOf(results.getLong(3)), results.getString(2));
-}
-} 
-} catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
+        if (!this.useServerPreparedStmts) {
+            return false;
+        }
 
-for (Iterator<Map.Entry<Long, String>> indexIter = sortedCollationMap.entrySet().iterator(); indexIter.hasNext(); ) {
-Map.Entry<Long, String> indexEntry = indexIter.next();
+        if (getCachePreparedStatements()) {
+            synchronized (this.serverSideStatementCheckCache) {
+                Boolean flag = (Boolean) this.serverSideStatementCheckCache.get(sql);
 
-int collationIndex = ((Long)indexEntry.getKey()).intValue();
-String charsetName = indexEntry.getValue();
+                if (flag != null) {
+                    return flag.booleanValue();
+                }
 
-javaCharset.put(Integer.valueOf(collationIndex), getJavaEncodingForMysqlEncoding(charsetName));
+                boolean canHandle = canHandleAsServerPreparedStatementNoCache(sql);
 
-if (collationIndex >= 255 || !charsetName.equals(CharsetMapping.STATIC_INDEX_TO_MYSQL_CHARSET_MAP.get(Integer.valueOf(collationIndex))))
-{
-customCharset.put(Integer.valueOf(collationIndex), charsetName);
-}
+                if (sql.length() < getPreparedStatementCacheSqlLimit()) {
+                    this.serverSideStatementCheckCache.put(sql, canHandle ? Boolean.TRUE : Boolean.FALSE);
+                }
 
-if (!CharsetMapping.STATIC_CHARSET_TO_NUM_BYTES_MAP.containsKey(charsetName) && !CharsetMapping.STATIC_4_0_CHARSET_TO_NUM_BYTES_MAP.containsKey(charsetName))
-{
-customMblen.put(charsetName, null);
-}
-} 
+                return canHandle;
+            }
+        }
 
-if (customMblen.size() > 0) {
-try {
-results = stmt.executeQuery("SHOW CHARACTER SET");
-while (results.next()) {
-String charsetName = results.getString("Charset");
-if (customMblen.containsKey(charsetName)) {
-customMblen.put(charsetName, Integer.valueOf(results.getInt("Maxlen")));
-}
-} 
-} catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
-}
+        return canHandleAsServerPreparedStatementNoCache(sql);
+    }
 
-if (getCacheServerConfiguration()) {
-synchronized (serverCollationByUrl) {
-serverCollationByUrl.put(getURL(), sortedCollationMap);
-serverJavaCharsetByUrl.put(getURL(), javaCharset);
-serverCustomCharsetByUrl.put(getURL(), customCharset);
-serverCustomMblenByUrl.put(getURL(), customMblen);
-} 
-}
-} 
+    private boolean canHandleAsServerPreparedStatementNoCache(String sql) throws SQLException {
+        if (StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "CALL")) {
+            return false;
+        }
 
-this.indexToJavaCharset = Collections.unmodifiableMap(javaCharset);
-this.indexToCustomMysqlCharset = Collections.unmodifiableMap(customCharset);
-this.mysqlCharsetToCustomMblen = Collections.unmodifiableMap(customMblen);
-}
-catch (SQLException ex) {
-throw ex;
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} finally {
-if (results != null) {
-try {
-results.close();
-} catch (SQLException sqlE) {}
-}
+        boolean canHandleAsStatement = true;
 
-if (stmt != null) {
-try {
-stmt.close();
-} catch (SQLException sqlE) {}
-}
-}
+        if (!versionMeetsMinimum(5, 0, 7) && (StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "SELECT") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "DELETE") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "INSERT") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "UPDATE") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "REPLACE"))) {
 
-} else {
+            int currentPos = 0;
+            int statementLength = sql.length();
+            int lastPosToLook = statementLength - 7;
+            boolean allowBackslashEscapes = !this.noBackslashEscapes;
+            char quoteChar = this.useAnsiQuotes ? '"' : '\'';
+            boolean foundLimitWithPlaceholder = false;
 
-javaCharset = new HashMap<Integer, String>();
-for (int i = 0; i < CharsetMapping.INDEX_TO_CHARSET.length; i++) {
-javaCharset.put(Integer.valueOf(i), CharsetMapping.INDEX_TO_CHARSET[i]);
-}
-this.indexToJavaCharset = Collections.unmodifiableMap(javaCharset);
-} 
-}
+            while (currentPos < lastPosToLook) {
+                int limitStart = StringUtils.indexOfIgnoreCaseRespectQuotes(currentPos, sql, "LIMIT ", quoteChar, allowBackslashEscapes);
 
-public String getJavaEncodingForMysqlEncoding(String mysqlEncoding) throws SQLException {
-if (versionMeetsMinimum(4, 1, 0) && "latin1".equalsIgnoreCase(mysqlEncoding)) {
-return "Cp1252";
-}
+                if (limitStart == -1) {
+                    break;
+                }
 
-return CharsetMapping.MYSQL_TO_JAVA_CHARSET_MAP.get(mysqlEncoding);
-}
+                currentPos = limitStart + 7;
 
-private boolean canHandleAsServerPreparedStatement(String sql) throws SQLException {
-if (sql == null || sql.length() == 0) {
-return true;
-}
+                while (currentPos < statementLength) {
+                    char c = sql.charAt(currentPos);
 
-if (!this.useServerPreparedStmts) {
-return false;
-}
+                    if (!Character.isDigit(c) && !Character.isWhitespace(c) && c != ',' && c != '?') {
+                        break;
+                    }
 
-if (getCachePreparedStatements()) {
-synchronized (this.serverSideStatementCheckCache) {
-Boolean flag = (Boolean)this.serverSideStatementCheckCache.get(sql);
+                    if (c == '?') {
+                        foundLimitWithPlaceholder = true;
 
-if (flag != null) {
-return flag.booleanValue();
-}
+                        break;
+                    }
+                    currentPos++;
+                }
+            }
 
-boolean canHandle = canHandleAsServerPreparedStatementNoCache(sql);
+            canHandleAsStatement = !foundLimitWithPlaceholder;
+        } else if (StringUtils.startsWithIgnoreCaseAndWs(sql, "CREATE TABLE")) {
+            canHandleAsStatement = false;
+        } else if (StringUtils.startsWithIgnoreCaseAndWs(sql, "DO")) {
+            canHandleAsStatement = false;
+        } else if (StringUtils.startsWithIgnoreCaseAndWs(sql, "SET")) {
+            canHandleAsStatement = false;
+        }
 
-if (sql.length() < getPreparedStatementCacheSqlLimit()) {
-this.serverSideStatementCheckCache.put(sql, canHandle ? Boolean.TRUE : Boolean.FALSE);
-}
+        return canHandleAsStatement;
+    }
 
-return canHandle;
-} 
-}
+    public synchronized void changeUser(String userName, String newPassword) throws SQLException {
+        checkClosed();
 
-return canHandleAsServerPreparedStatementNoCache(sql);
-}
+        if (userName == null || userName.equals("")) {
+            userName = "";
+        }
 
-private boolean canHandleAsServerPreparedStatementNoCache(String sql) throws SQLException {
-if (StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "CALL")) {
-return false;
-}
+        if (newPassword == null) {
+            newPassword = "";
+        }
 
-boolean canHandleAsStatement = true;
+        this.io.changeUser(userName, newPassword, this.database);
+        this.user = userName;
+        this.password = newPassword;
 
-if (!versionMeetsMinimum(5, 0, 7) && (StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "SELECT") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "DELETE") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "INSERT") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "UPDATE") || StringUtils.startsWithIgnoreCaseAndNonAlphaNumeric(sql, "REPLACE"))) {
+        if (versionMeetsMinimum(4, 1, 0)) {
+            configureClientCharacterSet(true);
+        }
 
-int currentPos = 0;
-int statementLength = sql.length();
-int lastPosToLook = statementLength - 7;
-boolean allowBackslashEscapes = !this.noBackslashEscapes;
-char quoteChar = this.useAnsiQuotes ? '"' : '\'';
-boolean foundLimitWithPlaceholder = false;
+        setSessionVariables();
 
-while (currentPos < lastPosToLook) {
-int limitStart = StringUtils.indexOfIgnoreCaseRespectQuotes(currentPos, sql, "LIMIT ", quoteChar, allowBackslashEscapes);
+        setupServerForTruncationChecks();
+    }
 
-if (limitStart == -1) {
-break;
-}
+    private boolean characterSetNamesMatches(String mysqlEncodingName) {
+        return (mysqlEncodingName != null && mysqlEncodingName.equalsIgnoreCase(this.serverVariables.get("character_set_client")) && mysqlEncodingName.equalsIgnoreCase(this.serverVariables.get("character_set_connection")));
+    }
 
-currentPos = limitStart + 7;
+    private void checkAndCreatePerformanceHistogram() {
+        if (this.perfMetricsHistCounts == null) {
+            this.perfMetricsHistCounts = new int[20];
+        }
 
-while (currentPos < statementLength) {
-char c = sql.charAt(currentPos);
+        if (this.perfMetricsHistBreakpoints == null) {
+            this.perfMetricsHistBreakpoints = new long[20];
+        }
+    }
 
-if (!Character.isDigit(c) && !Character.isWhitespace(c) && c != ',' && c != '?') {
-break;
-}
+    private void checkAndCreateTablesAccessedHistogram() {
+        if (this.numTablesMetricsHistCounts == null) {
+            this.numTablesMetricsHistCounts = new int[20];
+        }
 
-if (c == '?') {
-foundLimitWithPlaceholder = true;
+        if (this.numTablesMetricsHistBreakpoints == null) {
+            this.numTablesMetricsHistBreakpoints = new long[20];
+        }
+    }
 
-break;
-} 
-currentPos++;
-} 
-} 
+    public void checkClosed() throws SQLException {
+        if (this.isClosed) {
+            throwConnectionClosedException();
+        }
+    }
 
-canHandleAsStatement = !foundLimitWithPlaceholder;
-} else if (StringUtils.startsWithIgnoreCaseAndWs(sql, "CREATE TABLE")) {
-canHandleAsStatement = false;
-} else if (StringUtils.startsWithIgnoreCaseAndWs(sql, "DO")) {
-canHandleAsStatement = false;
-} else if (StringUtils.startsWithIgnoreCaseAndWs(sql, "SET")) {
-canHandleAsStatement = false;
-} 
+    public void throwConnectionClosedException() throws SQLException {
+        StringBuffer messageBuf = new StringBuffer("No operations allowed after connection closed.");
 
-return canHandleAsStatement;
-}
+        SQLException ex = SQLError.createSQLException(messageBuf.toString(), "08003", getExceptionInterceptor());
 
-public synchronized void changeUser(String userName, String newPassword) throws SQLException {
-checkClosed();
+        if (this.forceClosedReason != null) {
+            ex.initCause(this.forceClosedReason);
+        }
 
-if (userName == null || userName.equals("")) {
-userName = "";
-}
+        throw ex;
+    }
 
-if (newPassword == null) {
-newPassword = "";
-}
+    private void checkServerEncoding() throws SQLException {
+        if (getUseUnicode() && getEncoding() != null) {
+            return;
+        }
 
-this.io.changeUser(userName, newPassword, this.database);
-this.user = userName;
-this.password = newPassword;
+        String serverEncoding = this.serverVariables.get("character_set");
 
-if (versionMeetsMinimum(4, 1, 0)) {
-configureClientCharacterSet(true);
-}
+        if (serverEncoding == null) {
+            serverEncoding = this.serverVariables.get("character_set_server");
+        }
 
-setSessionVariables();
+        String mappedServerEncoding = null;
 
-setupServerForTruncationChecks();
-}
+        if (serverEncoding != null) {
+            try {
+                mappedServerEncoding = getJavaEncodingForMysqlEncoding(serverEncoding.toUpperCase(Locale.ENGLISH));
+            } catch (SQLException ex) {
+                throw ex;
+            } catch (RuntimeException ex) {
+                SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+                sqlEx.initCause(ex);
+                throw sqlEx;
+            }
+        }
 
-private boolean characterSetNamesMatches(String mysqlEncodingName) {
-return (mysqlEncodingName != null && mysqlEncodingName.equalsIgnoreCase(this.serverVariables.get("character_set_client")) && mysqlEncodingName.equalsIgnoreCase(this.serverVariables.get("character_set_connection")));
-}
+        if (!getUseUnicode() && mappedServerEncoding != null) {
+            SingleByteCharsetConverter converter = getCharsetConverter(mappedServerEncoding);
 
-private void checkAndCreatePerformanceHistogram() {
-if (this.perfMetricsHistCounts == null) {
-this.perfMetricsHistCounts = new int[20];
-}
+            if (converter != null) {
+                setUseUnicode(true);
+                setEncoding(mappedServerEncoding);
 
-if (this.perfMetricsHistBreakpoints == null) {
-this.perfMetricsHistBreakpoints = new long[20];
-}
-}
+                return;
+            }
+        }
 
-private void checkAndCreateTablesAccessedHistogram() {
-if (this.numTablesMetricsHistCounts == null) {
-this.numTablesMetricsHistCounts = new int[20];
-}
+        if (serverEncoding != null) {
+            if (mappedServerEncoding == null) {
 
-if (this.numTablesMetricsHistBreakpoints == null) {
-this.numTablesMetricsHistBreakpoints = new long[20];
-}
-}
+                if (Character.isLowerCase(serverEncoding.charAt(0))) {
+                    char[] ach = serverEncoding.toCharArray();
+                    ach[0] = Character.toUpperCase(serverEncoding.charAt(0));
+                    setEncoding(new String(ach));
+                }
+            }
 
-public void checkClosed() throws SQLException {
-if (this.isClosed) {
-throwConnectionClosedException();
-}
-}
+            if (mappedServerEncoding == null) {
+                throw SQLError.createSQLException("Unknown character encoding on server '" + serverEncoding + "', use 'characterEncoding=' property " + " to provide correct mapping", "01S00", getExceptionInterceptor());
+            }
 
-public void throwConnectionClosedException() throws SQLException {
-StringBuffer messageBuf = new StringBuffer("No operations allowed after connection closed.");
+            try {
+                StringUtils.getBytes("abc", mappedServerEncoding);
+                setEncoding(mappedServerEncoding);
+                setUseUnicode(true);
+            } catch (UnsupportedEncodingException UE) {
+                throw SQLError.createSQLException("The driver can not map the character encoding '" + getEncoding() + "' that your server is using " + "to a character encoding your JVM understands. You " + "can specify this mapping manually by adding \"useUnicode=true\" " + "as well as \"characterEncoding=[an_encoding_your_jvm_understands]\" " + "to your JDBC URL.", "0S100", getExceptionInterceptor());
+            }
+        }
+    }
 
-SQLException ex = SQLError.createSQLException(messageBuf.toString(), "08003", getExceptionInterceptor());
+    private void checkTransactionIsolationLevel() throws SQLException {
+        String txIsolationName = null;
 
-if (this.forceClosedReason != null) {
-ex.initCause(this.forceClosedReason);
-}
+        if (versionMeetsMinimum(4, 0, 3)) {
+            txIsolationName = "tx_isolation";
+        } else {
+            txIsolationName = "transaction_isolation";
+        }
 
-throw ex;
-}
+        String s = this.serverVariables.get(txIsolationName);
 
-private void checkServerEncoding() throws SQLException {
-if (getUseUnicode() && getEncoding() != null) {
-return;
-}
+        if (s != null) {
+            Integer intTI = mapTransIsolationNameToValue.get(s);
 
-String serverEncoding = this.serverVariables.get("character_set");
+            if (intTI != null) {
+                this.isolationLevel = intTI.intValue();
+            }
+        }
+    }
 
-if (serverEncoding == null)
-{
-serverEncoding = this.serverVariables.get("character_set_server");
-}
+    public void abortInternal() throws SQLException {
+        if (this.io != null) {
+            try {
+                this.io.forceClose();
+            } catch (Throwable t) {
+            }
 
-String mappedServerEncoding = null;
+            this.io = null;
+        }
 
-if (serverEncoding != null) {
-try {
-mappedServerEncoding = getJavaEncodingForMysqlEncoding(serverEncoding.toUpperCase(Locale.ENGLISH));
-}
-catch (SQLException ex) {
-throw ex;
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
-}
+        this.isClosed = true;
+    }
 
-if (!getUseUnicode() && mappedServerEncoding != null) {
-SingleByteCharsetConverter converter = getCharsetConverter(mappedServerEncoding);
+    private void cleanup(Throwable whyCleanedUp) {
+        try {
+            if (this.io != null && !isClosed()) {
+                realClose(false, false, false, whyCleanedUp);
+            } else if (this.io != null) {
+                this.io.forceClose();
+            }
+        } catch (SQLException sqlEx) {
+        }
 
-if (converter != null) {
-setUseUnicode(true);
-setEncoding(mappedServerEncoding);
+        this.isClosed = true;
+    }
 
-return;
-} 
-} 
+    public void clearHasTriedMaster() {
+        this.hasTriedMasterFlag = false;
+    }
 
-if (serverEncoding != null) {
-if (mappedServerEncoding == null)
-{
+    public void clearWarnings() throws SQLException {
+    }
 
-if (Character.isLowerCase(serverEncoding.charAt(0))) {
-char[] ach = serverEncoding.toCharArray();
-ach[0] = Character.toUpperCase(serverEncoding.charAt(0));
-setEncoding(new String(ach));
-} 
-}
+    public PreparedStatement clientPrepareStatement(String sql) throws SQLException {
+        return clientPrepareStatement(sql, 1003, 1007);
+    }
 
-if (mappedServerEncoding == null) {
-throw SQLError.createSQLException("Unknown character encoding on server '" + serverEncoding + "', use 'characterEncoding=' property " + " to provide correct mapping", "01S00", getExceptionInterceptor());
-}
+    public PreparedStatement clientPrepareStatement(String sql, int autoGenKeyIndex) throws SQLException {
+        PreparedStatement pStmt = clientPrepareStatement(sql);
 
-try {
-StringUtils.getBytes("abc", mappedServerEncoding);
-setEncoding(mappedServerEncoding);
-setUseUnicode(true);
-} catch (UnsupportedEncodingException UE) {
-throw SQLError.createSQLException("The driver can not map the character encoding '" + getEncoding() + "' that your server is using " + "to a character encoding your JVM understands. You " + "can specify this mapping manually by adding \"useUnicode=true\" " + "as well as \"characterEncoding=[an_encoding_your_jvm_understands]\" " + "to your JDBC URL.", "0S100", getExceptionInterceptor());
-} 
-} 
-}
+        ((PreparedStatement) pStmt).setRetrieveGeneratedKeys((autoGenKeyIndex == 1));
 
-private void checkTransactionIsolationLevel() throws SQLException {
-String txIsolationName = null;
+        return pStmt;
+    }
 
-if (versionMeetsMinimum(4, 0, 3)) {
-txIsolationName = "tx_isolation";
-} else {
-txIsolationName = "transaction_isolation";
-} 
+    public PreparedStatement clientPrepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        return clientPrepareStatement(sql, resultSetType, resultSetConcurrency, true);
+    }
 
-String s = this.serverVariables.get(txIsolationName);
+    public PreparedStatement clientPrepareStatement(String sql, int resultSetType, int resultSetConcurrency, boolean processEscapeCodesIfNeeded) throws SQLException {
+        checkClosed();
 
-if (s != null) {
-Integer intTI = mapTransIsolationNameToValue.get(s);
+        String nativeSql = (processEscapeCodesIfNeeded && getProcessEscapeCodesForPrepStmts()) ? nativeSQL(sql) : sql;
 
-if (intTI != null) {
-this.isolationLevel = intTI.intValue();
-}
-} 
-}
+        PreparedStatement pStmt = null;
 
-public void abortInternal() throws SQLException {
-if (this.io != null) {
-try {
-this.io.forceClose();
-} catch (Throwable t) {}
+        if (getCachePreparedStatements()) {
+            PreparedStatement.ParseInfo pStmtInfo = this.cachedPreparedStatementParams.get(nativeSql);
 
-this.io = null;
-} 
+            if (pStmtInfo == null) {
+                pStmt = PreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database);
 
-this.isClosed = true;
-}
+                this.cachedPreparedStatementParams.put(nativeSql, pStmt.getParseInfo());
+            } else {
 
-private void cleanup(Throwable whyCleanedUp) {
-try {
-if (this.io != null && !isClosed()) {
-realClose(false, false, false, whyCleanedUp);
-} else if (this.io != null) {
-this.io.forceClose();
-} 
-} catch (SQLException sqlEx) {}
+                pStmt = new PreparedStatement(getLoadBalanceSafeProxy(), nativeSql, this.database, pStmtInfo);
+            }
+        } else {
 
-this.isClosed = true;
-}
+            pStmt = PreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database);
+        }
 
-public void clearHasTriedMaster() {
-this.hasTriedMasterFlag = false;
-}
+        pStmt.setResultSetType(resultSetType);
+        pStmt.setResultSetConcurrency(resultSetConcurrency);
 
-public void clearWarnings() throws SQLException {}
+        return pStmt;
+    }
 
-public PreparedStatement clientPrepareStatement(String sql) throws SQLException {
-return clientPrepareStatement(sql, 1003, 1007);
-}
+    public PreparedStatement clientPrepareStatement(String sql, int[] autoGenKeyIndexes) throws SQLException {
+        PreparedStatement pStmt = (PreparedStatement) clientPrepareStatement(sql);
 
-public PreparedStatement clientPrepareStatement(String sql, int autoGenKeyIndex) throws SQLException {
-PreparedStatement pStmt = clientPrepareStatement(sql);
+        pStmt.setRetrieveGeneratedKeys((autoGenKeyIndexes != null && autoGenKeyIndexes.length > 0));
 
-((PreparedStatement)pStmt).setRetrieveGeneratedKeys((autoGenKeyIndex == 1));
+        return pStmt;
+    }
 
-return pStmt;
-}
+    public PreparedStatement clientPrepareStatement(String sql, String[] autoGenKeyColNames) throws SQLException {
+        PreparedStatement pStmt = (PreparedStatement) clientPrepareStatement(sql);
 
-public PreparedStatement clientPrepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-return clientPrepareStatement(sql, resultSetType, resultSetConcurrency, true);
-}
+        pStmt.setRetrieveGeneratedKeys((autoGenKeyColNames != null && autoGenKeyColNames.length > 0));
 
-public PreparedStatement clientPrepareStatement(String sql, int resultSetType, int resultSetConcurrency, boolean processEscapeCodesIfNeeded) throws SQLException {
-checkClosed();
+        return pStmt;
+    }
 
-String nativeSql = (processEscapeCodesIfNeeded && getProcessEscapeCodesForPrepStmts()) ? nativeSQL(sql) : sql;
+    public PreparedStatement clientPrepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        return clientPrepareStatement(sql, resultSetType, resultSetConcurrency, true);
+    }
 
-PreparedStatement pStmt = null;
+    public synchronized void close() throws SQLException {
+        if (this.connectionLifecycleInterceptors != null) {
+            (new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    ((ConnectionLifecycleInterceptor) each).close();
+                }
+            }).doForAll();
+        }
 
-if (getCachePreparedStatements()) {
-PreparedStatement.ParseInfo pStmtInfo = this.cachedPreparedStatementParams.get(nativeSql);
+        realClose(true, true, false, (Throwable) null);
+    }
 
-if (pStmtInfo == null) {
-pStmt = PreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database);
+    private void closeAllOpenStatements() throws SQLException {
+        SQLException postponedException = null;
 
-this.cachedPreparedStatementParams.put(nativeSql, pStmt.getParseInfo());
-} else {
+        if (this.openStatements != null) {
+            List<Statement> currentlyOpenStatements = new ArrayList<Statement>();
 
-pStmt = new PreparedStatement(getLoadBalanceSafeProxy(), nativeSql, this.database, pStmtInfo);
-} 
-} else {
+            for (Iterator<Statement> iter = this.openStatements.keySet().iterator(); iter.hasNext(); ) {
+                currentlyOpenStatements.add(iter.next());
+            }
 
-pStmt = PreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database);
-} 
+            int numStmts = currentlyOpenStatements.size();
 
-pStmt.setResultSetType(resultSetType);
-pStmt.setResultSetConcurrency(resultSetConcurrency);
+            for (int i = 0; i < numStmts; i++) {
+                StatementImpl stmt = (StatementImpl) currentlyOpenStatements.get(i);
 
-return pStmt;
-}
+                try {
+                    stmt.realClose(false, true);
+                } catch (SQLException sqlEx) {
+                    postponedException = sqlEx;
+                }
+            }
 
-public PreparedStatement clientPrepareStatement(String sql, int[] autoGenKeyIndexes) throws SQLException {
-PreparedStatement pStmt = (PreparedStatement)clientPrepareStatement(sql);
+            if (postponedException != null) {
+                throw postponedException;
+            }
+        }
+    }
 
-pStmt.setRetrieveGeneratedKeys((autoGenKeyIndexes != null && autoGenKeyIndexes.length > 0));
+    private void closeStatement(Statement stmt) {
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException sqlEx) {
+            }
 
-return pStmt;
-}
+            stmt = null;
+        }
+    }
 
-public PreparedStatement clientPrepareStatement(String sql, String[] autoGenKeyColNames) throws SQLException {
-PreparedStatement pStmt = (PreparedStatement)clientPrepareStatement(sql);
+    public synchronized void commit() throws SQLException {
+        checkClosed();
 
-pStmt.setRetrieveGeneratedKeys((autoGenKeyColNames != null && autoGenKeyColNames.length > 0));
+        try {
+            if (this.connectionLifecycleInterceptors != null) {
+                IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                    void forEach(Extension each) throws SQLException {
+                        if (!((ConnectionLifecycleInterceptor) each).commit()) {
+                            this.stopIterating = true;
+                        }
+                    }
+                };
 
-return pStmt;
-}
+                iter.doForAll();
 
-public PreparedStatement clientPrepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-return clientPrepareStatement(sql, resultSetType, resultSetConcurrency, true);
-}
+                if (!iter.fullIteration()) {
+                    return;
+                }
+            }
 
-public synchronized void close() throws SQLException {
-if (this.connectionLifecycleInterceptors != null) {
-(new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
-void forEach(Extension each) throws SQLException {
-((ConnectionLifecycleInterceptor)each).close();
-}
-}).doForAll();
-}
+            if (this.autoCommit && !getRelaxAutoCommit())
+                throw SQLError.createSQLException("Can't call commit when autocommit=true", getExceptionInterceptor());
+            if (this.transactionsSupported) {
+                if (getUseLocalTransactionState() && versionMeetsMinimum(5, 0, 0) &&
+                        !this.io.inTransactionOnServer()) {
+                    return;
+                }
 
-realClose(true, true, false, (Throwable)null);
-}
+                execSQL((StatementImpl) null, "commit", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-private void closeAllOpenStatements() throws SQLException {
-SQLException postponedException = null;
+            }
 
-if (this.openStatements != null) {
-List<Statement> currentlyOpenStatements = new ArrayList<Statement>();
+        } catch (SQLException sqlException) {
+            if ("08S01".equals(sqlException.getSQLState())) {
+                throw SQLError.createSQLException("Communications link failure during commit(). Transaction resolution unknown.", "08007", getExceptionInterceptor());
+            }
 
-for (Iterator<Statement> iter = this.openStatements.keySet().iterator(); iter.hasNext();) {
-currentlyOpenStatements.add(iter.next());
-}
+            throw sqlException;
+        } finally {
+            this.needsPing = getReconnectAtTxEnd();
+        }
+    }
 
-int numStmts = currentlyOpenStatements.size();
+    private void configureCharsetProperties() throws SQLException {
+        if (getEncoding() != null) {
 
-for (int i = 0; i < numStmts; i++) {
-StatementImpl stmt = (StatementImpl)currentlyOpenStatements.get(i);
+            try {
 
-try {
-stmt.realClose(false, true);
-} catch (SQLException sqlEx) {
-postponedException = sqlEx;
-} 
-} 
+                String testString = "abc";
+                StringUtils.getBytes(testString, getEncoding());
+            } catch (UnsupportedEncodingException UE) {
 
-if (postponedException != null) {
-throw postponedException;
-}
-} 
-}
+                String oldEncoding = getEncoding();
 
-private void closeStatement(Statement stmt) {
-if (stmt != null) {
-try {
-stmt.close();
-} catch (SQLException sqlEx) {}
+                try {
+                    setEncoding(getJavaEncodingForMysqlEncoding(oldEncoding));
+                } catch (SQLException ex) {
+                    throw ex;
+                } catch (RuntimeException ex) {
+                    SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+                    sqlEx.initCause(ex);
+                    throw sqlEx;
+                }
 
-stmt = null;
-} 
-}
+                if (getEncoding() == null) {
+                    throw SQLError.createSQLException("Java does not support the MySQL character encoding  encoding '" + oldEncoding + "'.", "01S00", getExceptionInterceptor());
+                }
 
-public synchronized void commit() throws SQLException {
-checkClosed();
+                try {
+                    String testString = "abc";
+                    StringUtils.getBytes(testString, getEncoding());
+                } catch (UnsupportedEncodingException encodingEx) {
+                    throw SQLError.createSQLException("Unsupported character encoding '" + getEncoding() + "'.", "01S00", getExceptionInterceptor());
+                }
+            }
+        }
+    }
 
-try {
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-if (!((ConnectionLifecycleInterceptor)each).commit()) {
-this.stopIterating = true;
-}
-}
-};
+    private boolean configureClientCharacterSet(boolean dontCheckServerMatch) throws SQLException {
+        String realJavaEncoding = getEncoding();
+        boolean characterSetAlreadyConfigured = false;
 
-iter.doForAll();
+        try {
+            if (versionMeetsMinimum(4, 1, 0)) {
+                characterSetAlreadyConfigured = true;
 
-if (!iter.fullIteration()) {
-return;
-}
-} 
+                setUseUnicode(true);
 
-if (this.autoCommit && !getRelaxAutoCommit())
-throw SQLError.createSQLException("Can't call commit when autocommit=true", getExceptionInterceptor()); 
-if (this.transactionsSupported) {
-if (getUseLocalTransactionState() && versionMeetsMinimum(5, 0, 0) && 
-!this.io.inTransactionOnServer()) {
-return;
-}
+                configureCharsetProperties();
+                realJavaEncoding = getEncoding();
 
-execSQL((StatementImpl)null, "commit", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                try {
+                    if (this.props != null && this.props.getProperty("com.mysql.jdbc.faultInjection.serverCharsetIndex") != null) {
+                        this.io.serverCharsetIndex = Integer.parseInt(this.props.getProperty("com.mysql.jdbc.faultInjection.serverCharsetIndex"));
+                    }
 
-}
+                    String serverEncodingToSet = CharsetMapping.INDEX_TO_CHARSET[this.io.serverCharsetIndex];
 
-}
-catch (SQLException sqlException) {
-if ("08S01".equals(sqlException.getSQLState()))
-{
-throw SQLError.createSQLException("Communications link failure during commit(). Transaction resolution unknown.", "08007", getExceptionInterceptor());
-}
+                    if (serverEncodingToSet == null || serverEncodingToSet.length() == 0) {
+                        if (realJavaEncoding != null) {
 
-throw sqlException;
-} finally {
-this.needsPing = getReconnectAtTxEnd();
-} 
-}
+                            setEncoding(realJavaEncoding);
+                        } else {
+                            throw SQLError.createSQLException("Unknown initial character set index '" + this.io.serverCharsetIndex + "' received from server. Initial client character set can be forced via the 'characterEncoding' property.", "S1000", getExceptionInterceptor());
+                        }
+                    }
 
-private void configureCharsetProperties() throws SQLException {
-if (getEncoding() != null) {
+                    if (versionMeetsMinimum(4, 1, 0) && "ISO8859_1".equalsIgnoreCase(serverEncodingToSet)) {
+                        serverEncodingToSet = "Cp1252";
+                    }
+                    if ("UnicodeBig".equalsIgnoreCase(serverEncodingToSet) || "UTF-16".equalsIgnoreCase(serverEncodingToSet) || "UTF-16LE".equalsIgnoreCase(serverEncodingToSet) || "UTF-32".equalsIgnoreCase(serverEncodingToSet)) {
 
-try {
+                        serverEncodingToSet = "UTF-8";
+                    }
 
-String testString = "abc";
-StringUtils.getBytes(testString, getEncoding());
-} catch (UnsupportedEncodingException UE) {
+                    setEncoding(serverEncodingToSet);
+                } catch (ArrayIndexOutOfBoundsException outOfBoundsEx) {
+                    if (realJavaEncoding != null) {
 
-String oldEncoding = getEncoding();
+                        setEncoding(realJavaEncoding);
+                    } else {
+                        throw SQLError.createSQLException("Unknown initial character set index '" + this.io.serverCharsetIndex + "' received from server. Initial client character set can be forced via the 'characterEncoding' property.", "S1000", getExceptionInterceptor());
 
-try {
-setEncoding(getJavaEncodingForMysqlEncoding(oldEncoding));
-} catch (SQLException ex) {
-throw ex;
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
+                    }
 
-if (getEncoding() == null) {
-throw SQLError.createSQLException("Java does not support the MySQL character encoding  encoding '" + oldEncoding + "'.", "01S00", getExceptionInterceptor());
-}
+                } catch (SQLException ex) {
+                    throw ex;
+                } catch (RuntimeException ex) {
+                    SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+                    sqlEx.initCause(ex);
+                    throw sqlEx;
+                }
 
-try {
-String testString = "abc";
-StringUtils.getBytes(testString, getEncoding());
-} catch (UnsupportedEncodingException encodingEx) {
-throw SQLError.createSQLException("Unsupported character encoding '" + getEncoding() + "'.", "01S00", getExceptionInterceptor());
-} 
-} 
-}
-}
+                if (getEncoding() == null) {
+                    setEncoding("ISO8859_1");
+                }
 
-private boolean configureClientCharacterSet(boolean dontCheckServerMatch) throws SQLException {
-String realJavaEncoding = getEncoding();
-boolean characterSetAlreadyConfigured = false;
+                if (getUseUnicode()) {
+                    if (realJavaEncoding != null) {
 
-try {
-if (versionMeetsMinimum(4, 1, 0)) {
-characterSetAlreadyConfigured = true;
+                        if (realJavaEncoding.equalsIgnoreCase("UTF-8") || realJavaEncoding.equalsIgnoreCase("UTF8")) {
 
-setUseUnicode(true);
+                            boolean utf8mb4Supported = versionMeetsMinimum(5, 5, 2);
+                            boolean useutf8mb4 = false;
 
-configureCharsetProperties();
-realJavaEncoding = getEncoding();
+                            if (utf8mb4Supported) {
+                                useutf8mb4 = (this.io.serverCharsetIndex == 45);
+                            }
 
-try {
-if (this.props != null && this.props.getProperty("com.mysql.jdbc.faultInjection.serverCharsetIndex") != null) {
-this.io.serverCharsetIndex = Integer.parseInt(this.props.getProperty("com.mysql.jdbc.faultInjection.serverCharsetIndex"));
-}
+                            if (!getUseOldUTF8Behavior()) {
+                                if (dontCheckServerMatch || !characterSetNamesMatches("utf8") || (utf8mb4Supported && !characterSetNamesMatches("utf8mb4"))) {
+                                    execSQL((StatementImpl) null, "SET NAMES " + (useutf8mb4 ? "utf8mb4" : "utf8"), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-String serverEncodingToSet = CharsetMapping.INDEX_TO_CHARSET[this.io.serverCharsetIndex];
+                                }
+                            } else {
 
-if (serverEncodingToSet == null || serverEncodingToSet.length() == 0) {
-if (realJavaEncoding != null) {
+                                execSQL((StatementImpl) null, "SET NAMES latin1", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+                            }
 
-setEncoding(realJavaEncoding);
-} else {
-throw SQLError.createSQLException("Unknown initial character set index '" + this.io.serverCharsetIndex + "' received from server. Initial client character set can be forced via the 'characterEncoding' property.", "S1000", getExceptionInterceptor());
-} 
-}
+                            setEncoding(realJavaEncoding);
+                        } else {
+                            String mysqlEncodingName = CharsetMapping.getMysqlEncodingForJavaEncoding(realJavaEncoding.toUpperCase(Locale.ENGLISH), this);
 
-if (versionMeetsMinimum(4, 1, 0) && "ISO8859_1".equalsIgnoreCase(serverEncodingToSet))
-{
-serverEncodingToSet = "Cp1252";
-}
-if ("UnicodeBig".equalsIgnoreCase(serverEncodingToSet) || "UTF-16".equalsIgnoreCase(serverEncodingToSet) || "UTF-16LE".equalsIgnoreCase(serverEncodingToSet) || "UTF-32".equalsIgnoreCase(serverEncodingToSet))
-{
+                            if (mysqlEncodingName != null) {
+                                if (dontCheckServerMatch || !characterSetNamesMatches(mysqlEncodingName)) {
+                                    execSQL((StatementImpl) null, "SET NAMES " + mysqlEncodingName, -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+                                }
+                            }
 
-serverEncodingToSet = "UTF-8";
-}
+                            setEncoding(realJavaEncoding);
+                        }
+                    } else if (getEncoding() != null) {
 
-setEncoding(serverEncodingToSet);
-}
-catch (ArrayIndexOutOfBoundsException outOfBoundsEx) {
-if (realJavaEncoding != null) {
+                        String mysqlEncodingName = getServerCharacterEncoding();
 
-setEncoding(realJavaEncoding);
-} else {
-throw SQLError.createSQLException("Unknown initial character set index '" + this.io.serverCharsetIndex + "' received from server. Initial client character set can be forced via the 'characterEncoding' property.", "S1000", getExceptionInterceptor());
+                        if (getUseOldUTF8Behavior()) {
+                            mysqlEncodingName = "latin1";
+                        }
 
-}
+                        boolean ucs2 = false;
+                        if ("ucs2".equalsIgnoreCase(mysqlEncodingName) || "utf16".equalsIgnoreCase(mysqlEncodingName) || "utf16le".equalsIgnoreCase(mysqlEncodingName) || "utf32".equalsIgnoreCase(mysqlEncodingName)) {
 
-}
-catch (SQLException ex) {
-throw ex;
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
+                            mysqlEncodingName = "utf8";
+                            ucs2 = true;
+                            if (getCharacterSetResults() == null) {
+                                setCharacterSetResults("UTF-8");
+                            }
+                        }
 
-if (getEncoding() == null)
-{
-setEncoding("ISO8859_1");
-}
+                        if (dontCheckServerMatch || !characterSetNamesMatches(mysqlEncodingName) || ucs2) {
+                            try {
+                                execSQL((StatementImpl) null, "SET NAMES " + mysqlEncodingName, -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-if (getUseUnicode()) {
-if (realJavaEncoding != null) {
+                            } catch (SQLException ex) {
+                                if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                                    throw ex;
+                                }
+                            }
+                        }
 
-if (realJavaEncoding.equalsIgnoreCase("UTF-8") || realJavaEncoding.equalsIgnoreCase("UTF8")) {
+                        realJavaEncoding = getEncoding();
+                    }
+                }
 
-boolean utf8mb4Supported = versionMeetsMinimum(5, 5, 2);
-boolean useutf8mb4 = false;
+                String onServer = null;
+                boolean isNullOnServer = false;
 
-if (utf8mb4Supported) {
-useutf8mb4 = (this.io.serverCharsetIndex == 45);
-}
+                if (this.serverVariables != null) {
+                    onServer = this.serverVariables.get("character_set_results");
 
-if (!getUseOldUTF8Behavior()) {
-if (dontCheckServerMatch || !characterSetNamesMatches("utf8") || (utf8mb4Supported && !characterSetNamesMatches("utf8mb4")))
-{
-execSQL((StatementImpl)null, "SET NAMES " + (useutf8mb4 ? "utf8mb4" : "utf8"), -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                    isNullOnServer = (onServer == null || "NULL".equalsIgnoreCase(onServer) || onServer.length() == 0);
+                }
 
-}
-}
-else {
+                if (getCharacterSetResults() == null) {
 
-execSQL((StatementImpl)null, "SET NAMES latin1", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
-} 
+                    if (!isNullOnServer) {
+                        try {
+                            execSQL((StatementImpl) null, "SET character_set_results = NULL", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-setEncoding(realJavaEncoding);
-} else {
-String mysqlEncodingName = CharsetMapping.getMysqlEncodingForJavaEncoding(realJavaEncoding.toUpperCase(Locale.ENGLISH), this);
+                        } catch (SQLException ex) {
+                            if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                                throw ex;
+                            }
+                        }
+                        if (!this.usingCachedConfig) {
+                            this.serverVariables.put("jdbc.local.character_set_results", null);
+                        }
+                    } else if (!this.usingCachedConfig) {
+                        this.serverVariables.put("jdbc.local.character_set_results", onServer);
+                    }
 
-if (mysqlEncodingName != null)
-{
-if (dontCheckServerMatch || !characterSetNamesMatches(mysqlEncodingName)) {
-execSQL((StatementImpl)null, "SET NAMES " + mysqlEncodingName, -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
-}
-}
+                } else {
 
-setEncoding(realJavaEncoding);
-} 
-} else if (getEncoding() != null) {
+                    if (getUseOldUTF8Behavior()) {
+                        try {
+                            execSQL((StatementImpl) null, "SET NAMES latin1", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-String mysqlEncodingName = getServerCharacterEncoding();
+                        } catch (SQLException ex) {
+                            if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                                throw ex;
+                            }
+                        }
+                    }
+                    String charsetResults = getCharacterSetResults();
+                    String mysqlEncodingName = null;
 
-if (getUseOldUTF8Behavior()) {
-mysqlEncodingName = "latin1";
-}
+                    if ("UTF-8".equalsIgnoreCase(charsetResults) || "UTF8".equalsIgnoreCase(charsetResults)) {
 
-boolean ucs2 = false;
-if ("ucs2".equalsIgnoreCase(mysqlEncodingName) || "utf16".equalsIgnoreCase(mysqlEncodingName) || "utf16le".equalsIgnoreCase(mysqlEncodingName) || "utf32".equalsIgnoreCase(mysqlEncodingName)) {
+                        mysqlEncodingName = "utf8";
+                    } else if ("null".equalsIgnoreCase(charsetResults)) {
+                        mysqlEncodingName = "NULL";
+                    } else {
+                        mysqlEncodingName = CharsetMapping.getMysqlEncodingForJavaEncoding(charsetResults.toUpperCase(Locale.ENGLISH), this);
+                    }
 
-mysqlEncodingName = "utf8";
-ucs2 = true;
-if (getCharacterSetResults() == null) {
-setCharacterSetResults("UTF-8");
-}
-} 
+                    if (mysqlEncodingName == null) {
+                        throw SQLError.createSQLException("Can't map " + charsetResults + " given for characterSetResults to a supported MySQL encoding.", "S1009", getExceptionInterceptor());
+                    }
 
-if (dontCheckServerMatch || !characterSetNamesMatches(mysqlEncodingName) || ucs2) {
-try {
-execSQL((StatementImpl)null, "SET NAMES " + mysqlEncodingName, -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                    if (!mysqlEncodingName.equalsIgnoreCase(this.serverVariables.get("character_set_results"))) {
 
-}
-catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
-}
+                        StringBuffer setBuf = new StringBuffer("SET character_set_results = ".length() + mysqlEncodingName.length());
 
-realJavaEncoding = getEncoding();
-} 
-}
+                        setBuf.append("SET character_set_results = ").append(mysqlEncodingName);
 
-String onServer = null;
-boolean isNullOnServer = false;
+                        try {
+                            execSQL((StatementImpl) null, setBuf.toString(), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-if (this.serverVariables != null) {
-onServer = this.serverVariables.get("character_set_results");
+                        } catch (SQLException ex) {
+                            if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                                throw ex;
+                            }
+                        }
 
-isNullOnServer = (onServer == null || "NULL".equalsIgnoreCase(onServer) || onServer.length() == 0);
-} 
+                        if (!this.usingCachedConfig) {
+                            this.serverVariables.put("jdbc.local.character_set_results", mysqlEncodingName);
+                        }
 
-if (getCharacterSetResults() == null) {
+                        if (versionMeetsMinimum(5, 5, 0)) {
+                            this.errorMessageEncoding = charsetResults;
 
-if (!isNullOnServer) {
-try {
-execSQL((StatementImpl)null, "SET character_set_results = NULL", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                        }
+                    } else if (!this.usingCachedConfig) {
+                        this.serverVariables.put("jdbc.local.character_set_results", onServer);
+                    }
+                }
 
-}
-catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
-if (!this.usingCachedConfig) {
-this.serverVariables.put("jdbc.local.character_set_results", null);
-}
-}
-else if (!this.usingCachedConfig) {
-this.serverVariables.put("jdbc.local.character_set_results", onServer);
-}
+                if (getConnectionCollation() != null) {
+                    StringBuffer setBuf = new StringBuffer("SET collation_connection = ".length() + getConnectionCollation().length());
 
-} else {
+                    setBuf.append("SET collation_connection = ").append(getConnectionCollation());
 
-if (getUseOldUTF8Behavior()) {
-try {
-execSQL((StatementImpl)null, "SET NAMES latin1", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                    try {
+                        execSQL((StatementImpl) null, setBuf.toString(), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-}
-catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
-}
-String charsetResults = getCharacterSetResults();
-String mysqlEncodingName = null;
+                    } catch (SQLException ex) {
+                        if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                            throw ex;
+                        }
+                    }
+                }
+            } else {
 
-if ("UTF-8".equalsIgnoreCase(charsetResults) || "UTF8".equalsIgnoreCase(charsetResults)) {
+                realJavaEncoding = getEncoding();
 
-mysqlEncodingName = "utf8";
-} else if ("null".equalsIgnoreCase(charsetResults)) {
-mysqlEncodingName = "NULL";
-} else {
-mysqlEncodingName = CharsetMapping.getMysqlEncodingForJavaEncoding(charsetResults.toUpperCase(Locale.ENGLISH), this);
-} 
+            }
 
-if (mysqlEncodingName == null) {
-throw SQLError.createSQLException("Can't map " + charsetResults + " given for characterSetResults to a supported MySQL encoding.", "S1009", getExceptionInterceptor());
-}
+        } finally {
 
-if (!mysqlEncodingName.equalsIgnoreCase(this.serverVariables.get("character_set_results"))) {
+            setEncoding(realJavaEncoding);
+        }
 
-StringBuffer setBuf = new StringBuffer("SET character_set_results = ".length() + mysqlEncodingName.length());
+        try {
+            CharsetEncoder enc = Charset.forName(getEncoding()).newEncoder();
+            CharBuffer cbuf = CharBuffer.allocate(1);
+            ByteBuffer bbuf = ByteBuffer.allocate(1);
 
-setBuf.append("SET character_set_results = ").append(mysqlEncodingName);
+            cbuf.put("¥");
+            cbuf.position(0);
+            enc.encode(cbuf, bbuf, true);
+            if (bbuf.get(0) == 92) {
+                this.requiresEscapingEncoder = true;
+            } else {
+                cbuf.clear();
+                bbuf.clear();
 
-try {
-execSQL((StatementImpl)null, setBuf.toString(), -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                cbuf.put("₩");
+                cbuf.position(0);
+                enc.encode(cbuf, bbuf, true);
+                if (bbuf.get(0) == 92) {
+                    this.requiresEscapingEncoder = true;
+                }
+            }
+        } catch (UnsupportedCharsetException ucex) {
 
-}
-catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
+            try {
+                byte[] bbuf = StringUtils.getBytes("¥", getEncoding());
+                if (bbuf[0] == 92) {
+                    this.requiresEscapingEncoder = true;
+                } else {
+                    bbuf = StringUtils.getBytes("₩", getEncoding());
+                    if (bbuf[0] == 92) {
+                        this.requiresEscapingEncoder = true;
+                    }
+                }
+            } catch (UnsupportedEncodingException ueex) {
+                throw SQLError.createSQLException("Unable to use encoding: " + getEncoding(), "S1000", ueex, getExceptionInterceptor());
+            }
+        }
 
-if (!this.usingCachedConfig) {
-this.serverVariables.put("jdbc.local.character_set_results", mysqlEncodingName);
-}
+        return characterSetAlreadyConfigured;
+    }
 
-if (versionMeetsMinimum(5, 5, 0)) {
-this.errorMessageEncoding = charsetResults;
+    private void configureTimezone() throws SQLException {
+        String configuredTimeZoneOnServer = this.serverVariables.get("timezone");
 
-}
-}
-else if (!this.usingCachedConfig) {
-this.serverVariables.put("jdbc.local.character_set_results", onServer);
-} 
-} 
+        if (configuredTimeZoneOnServer == null) {
+            configuredTimeZoneOnServer = this.serverVariables.get("time_zone");
 
-if (getConnectionCollation() != null) {
-StringBuffer setBuf = new StringBuffer("SET collation_connection = ".length() + getConnectionCollation().length());
+            if ("SYSTEM".equalsIgnoreCase(configuredTimeZoneOnServer)) {
+                configuredTimeZoneOnServer = this.serverVariables.get("system_time_zone");
+            }
+        }
 
-setBuf.append("SET collation_connection = ").append(getConnectionCollation());
+        String canoncicalTimezone = getServerTimezone();
 
-try {
-execSQL((StatementImpl)null, setBuf.toString(), -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+        if ((getUseTimezone() || !getUseLegacyDatetimeCode()) && configuredTimeZoneOnServer != null) {
 
-}
-catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
-} 
-} else {
+            if (canoncicalTimezone == null || StringUtils.isEmptyOrWhitespaceOnly(canoncicalTimezone)) {
+                try {
+                    canoncicalTimezone = TimeUtil.getCanoncialTimezone(configuredTimeZoneOnServer, getExceptionInterceptor());
 
-realJavaEncoding = getEncoding();
+                    if (canoncicalTimezone == null) {
+                        throw SQLError.createSQLException("Can't map timezone '" + configuredTimeZoneOnServer + "' to " + " canonical timezone.", "S1009", getExceptionInterceptor());
 
-}
+                    }
 
-}
-finally {
+                } catch (IllegalArgumentException iae) {
+                    throw SQLError.createSQLException(iae.getMessage(), "S1000", getExceptionInterceptor());
+                }
+            }
+        } else {
 
-setEncoding(realJavaEncoding);
-} 
+            canoncicalTimezone = getServerTimezone();
+        }
 
-try {
-CharsetEncoder enc = Charset.forName(getEncoding()).newEncoder();
-CharBuffer cbuf = CharBuffer.allocate(1);
-ByteBuffer bbuf = ByteBuffer.allocate(1);
+        if (canoncicalTimezone != null && canoncicalTimezone.length() > 0) {
+            this.serverTimezoneTZ = TimeZone.getTimeZone(canoncicalTimezone);
 
-cbuf.put("¥");
-cbuf.position(0);
-enc.encode(cbuf, bbuf, true);
-if (bbuf.get(0) == 92) {
-this.requiresEscapingEncoder = true;
-} else {
-cbuf.clear();
-bbuf.clear();
+            if (!canoncicalTimezone.equalsIgnoreCase("GMT") && this.serverTimezoneTZ.getID().equals("GMT")) {
+                throw SQLError.createSQLException("No timezone mapping entry for '" + canoncicalTimezone + "'", "S1009", getExceptionInterceptor());
+            }
 
-cbuf.put("₩");
-cbuf.position(0);
-enc.encode(cbuf, bbuf, true);
-if (bbuf.get(0) == 92) {
-this.requiresEscapingEncoder = true;
-}
-} 
-} catch (UnsupportedCharsetException ucex) {
+            if ("GMT".equalsIgnoreCase(this.serverTimezoneTZ.getID())) {
+                this.isServerTzUTC = true;
+            } else {
+                this.isServerTzUTC = false;
+            }
+        }
+    }
 
-try {
-byte[] bbuf = StringUtils.getBytes("¥", getEncoding());
-if (bbuf[0] == 92) {
-this.requiresEscapingEncoder = true;
-} else {
-bbuf = StringUtils.getBytes("₩", getEncoding());
-if (bbuf[0] == 92) {
-this.requiresEscapingEncoder = true;
-}
-} 
-} catch (UnsupportedEncodingException ueex) {
-throw SQLError.createSQLException("Unable to use encoding: " + getEncoding(), "S1000", ueex, getExceptionInterceptor());
-} 
-} 
+    private void createInitialHistogram(long[] breakpoints, long lowerBound, long upperBound) {
+        double bucketSize = (upperBound - lowerBound) / 20.0D * 1.25D;
 
-return characterSetAlreadyConfigured;
-}
+        if (bucketSize < 1.0D) {
+            bucketSize = 1.0D;
+        }
 
-private void configureTimezone() throws SQLException {
-String configuredTimeZoneOnServer = this.serverVariables.get("timezone");
+        for (int i = 0; i < 20; i++) {
+            breakpoints[i] = lowerBound;
+            lowerBound = (long) (lowerBound + bucketSize);
+        }
+    }
 
-if (configuredTimeZoneOnServer == null) {
-configuredTimeZoneOnServer = this.serverVariables.get("time_zone");
+    public synchronized void createNewIO(boolean isForReconnect) throws SQLException {
+        Properties mergedProps = exposeAsProperties(this.props);
 
-if ("SYSTEM".equalsIgnoreCase(configuredTimeZoneOnServer)) {
-configuredTimeZoneOnServer = this.serverVariables.get("system_time_zone");
-}
-} 
+        if (!getHighAvailability()) {
+            connectOneTryOnly(isForReconnect, mergedProps);
 
-String canoncicalTimezone = getServerTimezone();
+            return;
+        }
 
-if ((getUseTimezone() || !getUseLegacyDatetimeCode()) && configuredTimeZoneOnServer != null) {
+        connectWithRetries(isForReconnect, mergedProps);
+    }
 
-if (canoncicalTimezone == null || StringUtils.isEmptyOrWhitespaceOnly(canoncicalTimezone)) {
-try {
-canoncicalTimezone = TimeUtil.getCanoncialTimezone(configuredTimeZoneOnServer, getExceptionInterceptor());
+    private void connectWithRetries(boolean isForReconnect, Properties mergedProps) throws SQLException {
+        double timeout = getInitialTimeout();
+        boolean connectionGood = false;
 
-if (canoncicalTimezone == null) {
-throw SQLError.createSQLException("Can't map timezone '" + configuredTimeZoneOnServer + "' to " + " canonical timezone.", "S1009", getExceptionInterceptor());
+        Exception connectionException = null;
 
-}
+        int attemptCount = 0;
+        for (; attemptCount < getMaxReconnects() && !connectionGood; attemptCount++) {
+            try {
+                boolean oldAutoCommit;
+                int oldIsolationLevel;
+                boolean oldReadOnly;
+                String oldCatalog;
+                if (this.io != null) {
+                    this.io.forceClose();
+                }
 
-}
-catch (IllegalArgumentException iae) {
-throw SQLError.createSQLException(iae.getMessage(), "S1000", getExceptionInterceptor());
-} 
-}
-} else {
+                coreConnect(mergedProps);
+                pingInternal(false, 0);
 
-canoncicalTimezone = getServerTimezone();
-} 
+                synchronized (this) {
+                    this.connectionId = this.io.getThreadId();
+                    this.isClosed = false;
 
-if (canoncicalTimezone != null && canoncicalTimezone.length() > 0) {
-this.serverTimezoneTZ = TimeZone.getTimeZone(canoncicalTimezone);
+                    oldAutoCommit = getAutoCommit();
+                    oldIsolationLevel = this.isolationLevel;
+                    oldReadOnly = isReadOnly(false);
+                    oldCatalog = getCatalog();
 
-if (!canoncicalTimezone.equalsIgnoreCase("GMT") && this.serverTimezoneTZ.getID().equals("GMT"))
-{
-throw SQLError.createSQLException("No timezone mapping entry for '" + canoncicalTimezone + "'", "S1009", getExceptionInterceptor());
-}
+                    this.io.setStatementInterceptors(this.statementInterceptors);
+                }
 
-if ("GMT".equalsIgnoreCase(this.serverTimezoneTZ.getID())) {
-this.isServerTzUTC = true;
-} else {
-this.isServerTzUTC = false;
-} 
-} 
-}
+                initializePropsFromServer();
 
-private void createInitialHistogram(long[] breakpoints, long lowerBound, long upperBound) {
-double bucketSize = (upperBound - lowerBound) / 20.0D * 1.25D;
+                if (isForReconnect) {
 
-if (bucketSize < 1.0D) {
-bucketSize = 1.0D;
-}
+                    setAutoCommit(oldAutoCommit);
 
-for (int i = 0; i < 20; i++) {
-breakpoints[i] = lowerBound;
-lowerBound = (long)(lowerBound + bucketSize);
-} 
-}
+                    if (this.hasIsolationLevels) {
+                        setTransactionIsolation(oldIsolationLevel);
+                    }
 
-public synchronized void createNewIO(boolean isForReconnect) throws SQLException {
-Properties mergedProps = exposeAsProperties(this.props);
+                    setCatalog(oldCatalog);
+                    setReadOnly(oldReadOnly);
+                }
 
-if (!getHighAvailability()) {
-connectOneTryOnly(isForReconnect, mergedProps);
+                connectionGood = true;
 
-return;
-} 
+                break;
+            } catch (Exception EEE) {
+                connectionException = EEE;
+                connectionGood = false;
 
-connectWithRetries(isForReconnect, mergedProps);
-}
+                if (connectionGood) {
+                    break;
+                }
 
-private void connectWithRetries(boolean isForReconnect, Properties mergedProps) throws SQLException {
-double timeout = getInitialTimeout();
-boolean connectionGood = false;
+                if (attemptCount > 0) {
+                    try {
+                        Thread.sleep((long) timeout * 1000L);
+                    } catch (InterruptedException IE) {
+                    }
+                }
+            }
+        }
 
-Exception connectionException = null;
+        if (!connectionGood) {
 
-int attemptCount = 0;
-for (; attemptCount < getMaxReconnects() && !connectionGood; attemptCount++) {
-try {
-boolean oldAutoCommit; int oldIsolationLevel; boolean oldReadOnly; String oldCatalog; if (this.io != null) {
-this.io.forceClose();
-}
+            SQLException chainedEx = SQLError.createSQLException(Messages.getString("Connection.UnableToConnectWithRetries", new Object[]{Integer.valueOf(getMaxReconnects())}), "08001", getExceptionInterceptor());
 
-coreConnect(mergedProps);
-pingInternal(false, 0);
+            chainedEx.initCause(connectionException);
 
-synchronized (this) {
-this.connectionId = this.io.getThreadId();
-this.isClosed = false;
+            throw chainedEx;
+        }
 
-oldAutoCommit = getAutoCommit();
-oldIsolationLevel = this.isolationLevel;
-oldReadOnly = isReadOnly(false);
-oldCatalog = getCatalog();
+        if (getParanoid() && !getHighAvailability()) {
+            this.password = null;
+            this.user = null;
+        }
 
-this.io.setStatementInterceptors(this.statementInterceptors);
-} 
+        if (isForReconnect) {
 
-initializePropsFromServer();
+            Iterator<Statement> statementIter = this.openStatements.values().iterator();
 
-if (isForReconnect) {
+            Stack<Statement> serverPreparedStatements = null;
 
-setAutoCommit(oldAutoCommit);
+            while (statementIter.hasNext()) {
+                Statement statementObj = statementIter.next();
 
-if (this.hasIsolationLevels) {
-setTransactionIsolation(oldIsolationLevel);
-}
+                if (statementObj instanceof ServerPreparedStatement) {
+                    if (serverPreparedStatements == null) {
+                        serverPreparedStatements = new Stack<Statement>();
+                    }
 
-setCatalog(oldCatalog);
-setReadOnly(oldReadOnly);
-} 
+                    serverPreparedStatements.add(statementObj);
+                }
+            }
 
-connectionGood = true;
+            if (serverPreparedStatements != null) {
+                while (!serverPreparedStatements.isEmpty()) {
+                    ((ServerPreparedStatement) serverPreparedStatements.pop()).rePrepare();
+                }
+            }
+        }
+    }
 
-break;
-} catch (Exception EEE) {
-connectionException = EEE;
-connectionGood = false;
+    private void coreConnect(Properties mergedProps) throws SQLException, IOException {
+        int newPort = 3306;
+        String newHost = "localhost";
 
-if (connectionGood) {
-break;
-}
+        String protocol = mergedProps.getProperty("PROTOCOL");
 
-if (attemptCount > 0) {
-try {
-Thread.sleep((long)timeout * 1000L);
-} catch (InterruptedException IE) {}
-}
-} 
-} 
+        if (protocol != null) {
 
-if (!connectionGood) {
+            if ("tcp".equalsIgnoreCase(protocol)) {
+                newHost = normalizeHost(mergedProps.getProperty("HOST"));
+                newPort = parsePortNumber(mergedProps.getProperty("PORT", "3306"));
+            } else if ("pipe".equalsIgnoreCase(protocol)) {
+                setSocketFactoryClassName(NamedPipeSocketFactory.class.getName());
 
-SQLException chainedEx = SQLError.createSQLException(Messages.getString("Connection.UnableToConnectWithRetries", new Object[] { Integer.valueOf(getMaxReconnects()) }), "08001", getExceptionInterceptor());
+                String path = mergedProps.getProperty("PATH");
 
-chainedEx.initCause(connectionException);
+                if (path != null) {
+                    mergedProps.setProperty("namedPipePath", path);
+                }
+            } else {
 
-throw chainedEx;
-} 
+                newHost = normalizeHost(mergedProps.getProperty("HOST"));
+                newPort = parsePortNumber(mergedProps.getProperty("PORT", "3306"));
+            }
+        } else {
 
-if (getParanoid() && !getHighAvailability()) {
-this.password = null;
-this.user = null;
-} 
+            String[] parsedHostPortPair = NonRegisteringDriver.parseHostPortPair(this.hostPortPair);
 
-if (isForReconnect) {
+            newHost = parsedHostPortPair[0];
 
-Iterator<Statement> statementIter = this.openStatements.values().iterator();
+            newHost = normalizeHost(newHost);
 
-Stack<Statement> serverPreparedStatements = null;
+            if (parsedHostPortPair[1] != null) {
+                newPort = parsePortNumber(parsedHostPortPair[1]);
+            }
+        }
 
-while (statementIter.hasNext()) {
-Statement statementObj = statementIter.next();
+        this.port = newPort;
+        this.host = newHost;
 
-if (statementObj instanceof ServerPreparedStatement) {
-if (serverPreparedStatements == null) {
-serverPreparedStatements = new Stack<Statement>();
-}
+        this.io = new MysqlIO(newHost, newPort, mergedProps, getSocketFactoryClassName(), getProxy(), getSocketTimeout(), this.largeRowSizeThreshold.getValueAsInt());
 
-serverPreparedStatements.add(statementObj);
-} 
-} 
+        this.io.doHandshake(this.user, this.password, this.database);
+    }
 
-if (serverPreparedStatements != null) {
-while (!serverPreparedStatements.isEmpty()) {
-((ServerPreparedStatement)serverPreparedStatements.pop()).rePrepare();
-}
-}
-} 
-}
+    private String normalizeHost(String hostname) {
+        if (hostname == null || StringUtils.isEmptyOrWhitespaceOnly(hostname)) {
+            return "localhost";
+        }
 
-private void coreConnect(Properties mergedProps) throws SQLException, IOException {
-int newPort = 3306;
-String newHost = "localhost";
+        return hostname;
+    }
 
-String protocol = mergedProps.getProperty("PROTOCOL");
+    private int parsePortNumber(String portAsString) throws SQLException {
+        int portNumber = 3306;
+        try {
+            portNumber = Integer.parseInt(portAsString);
+        } catch (NumberFormatException nfe) {
+            throw SQLError.createSQLException("Illegal connection port value '" + portAsString + "'", "01S00", getExceptionInterceptor());
+        }
 
-if (protocol != null) {
+        return portNumber;
+    }
 
-if ("tcp".equalsIgnoreCase(protocol)) {
-newHost = normalizeHost(mergedProps.getProperty("HOST"));
-newPort = parsePortNumber(mergedProps.getProperty("PORT", "3306"));
-} else if ("pipe".equalsIgnoreCase(protocol)) {
-setSocketFactoryClassName(NamedPipeSocketFactory.class.getName());
+    private void connectOneTryOnly(boolean isForReconnect, Properties mergedProps) throws SQLException {
+        Exception connectionNotEstablishedBecause = null;
 
-String path = mergedProps.getProperty("PATH");
+        try {
+            coreConnect(mergedProps);
+            this.connectionId = this.io.getThreadId();
+            this.isClosed = false;
 
-if (path != null) {
-mergedProps.setProperty("namedPipePath", path);
-}
-} else {
+            boolean oldAutoCommit = getAutoCommit();
+            int oldIsolationLevel = this.isolationLevel;
+            boolean oldReadOnly = isReadOnly(false);
+            String oldCatalog = getCatalog();
 
-newHost = normalizeHost(mergedProps.getProperty("HOST"));
-newPort = parsePortNumber(mergedProps.getProperty("PORT", "3306"));
-} 
-} else {
+            this.io.setStatementInterceptors(this.statementInterceptors);
 
-String[] parsedHostPortPair = NonRegisteringDriver.parseHostPortPair(this.hostPortPair);
+            initializePropsFromServer();
 
-newHost = parsedHostPortPair[0];
+            if (isForReconnect) {
 
-newHost = normalizeHost(newHost);
+                setAutoCommit(oldAutoCommit);
 
-if (parsedHostPortPair[1] != null) {
-newPort = parsePortNumber(parsedHostPortPair[1]);
-}
-} 
+                if (this.hasIsolationLevels) {
+                    setTransactionIsolation(oldIsolationLevel);
+                }
 
-this.port = newPort;
-this.host = newHost;
+                setCatalog(oldCatalog);
 
-this.io = new MysqlIO(newHost, newPort, mergedProps, getSocketFactoryClassName(), getProxy(), getSocketTimeout(), this.largeRowSizeThreshold.getValueAsInt());
+                setReadOnly(oldReadOnly);
+            }
 
-this.io.doHandshake(this.user, this.password, this.database);
-}
+            return;
+        } catch (Exception EEE) {
 
-private String normalizeHost(String hostname) {
-if (hostname == null || StringUtils.isEmptyOrWhitespaceOnly(hostname)) {
-return "localhost";
-}
+            if (EEE instanceof SQLException && ((SQLException) EEE).getErrorCode() == 1820 && !getDisconnectOnExpiredPasswords()) {
+                return;
+            }
 
-return hostname;
-}
+            if (this.io != null) {
+                this.io.forceClose();
+            }
 
-private int parsePortNumber(String portAsString) throws SQLException {
-int portNumber = 3306;
-try {
-portNumber = Integer.parseInt(portAsString);
-}
-catch (NumberFormatException nfe) {
-throw SQLError.createSQLException("Illegal connection port value '" + portAsString + "'", "01S00", getExceptionInterceptor());
-} 
+            connectionNotEstablishedBecause = EEE;
 
-return portNumber;
-}
+            if (EEE instanceof SQLException) {
+                throw (SQLException) EEE;
+            }
 
-private void connectOneTryOnly(boolean isForReconnect, Properties mergedProps) throws SQLException {
-Exception connectionNotEstablishedBecause = null;
+            SQLException chainedEx = SQLError.createSQLException(Messages.getString("Connection.UnableToConnect"), "08001", getExceptionInterceptor());
 
-try {
-coreConnect(mergedProps);
-this.connectionId = this.io.getThreadId();
-this.isClosed = false;
+            chainedEx.initCause(connectionNotEstablishedBecause);
 
-boolean oldAutoCommit = getAutoCommit();
-int oldIsolationLevel = this.isolationLevel;
-boolean oldReadOnly = isReadOnly(false);
-String oldCatalog = getCatalog();
+            throw chainedEx;
+        }
+    }
 
-this.io.setStatementInterceptors(this.statementInterceptors);
+    private synchronized void createPreparedStatementCaches() throws SQLException {
+        int cacheSize = getPreparedStatementCacheSize();
 
-initializePropsFromServer();
+        try {
+            Class<?> factoryClass = Class.forName(getParseInfoCacheFactory());
 
-if (isForReconnect) {
+            CacheAdapterFactory<String, PreparedStatement.ParseInfo> cacheFactory = (CacheAdapterFactory<String, PreparedStatement.ParseInfo>) factoryClass.newInstance();
 
-setAutoCommit(oldAutoCommit);
+            this.cachedPreparedStatementParams = cacheFactory.getInstance(this, this.myURL, getPreparedStatementCacheSize(), getPreparedStatementCacheSqlLimit(), this.props);
+        } catch (ClassNotFoundException e) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantFindCacheFactory", new Object[]{getParseInfoCacheFactory(), "parseInfoCacheFactory"}), getExceptionInterceptor());
 
-if (this.hasIsolationLevels) {
-setTransactionIsolation(oldIsolationLevel);
-}
+            sqlEx.initCause(e);
 
-setCatalog(oldCatalog);
+            throw sqlEx;
+        } catch (InstantiationException e) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[]{getParseInfoCacheFactory(), "parseInfoCacheFactory"}), getExceptionInterceptor());
 
-setReadOnly(oldReadOnly);
-} 
+            sqlEx.initCause(e);
 
-return;
-} catch (Exception EEE) {
+            throw sqlEx;
+        } catch (IllegalAccessException e) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[]{getParseInfoCacheFactory(), "parseInfoCacheFactory"}), getExceptionInterceptor());
 
-if (EEE instanceof SQLException && ((SQLException)EEE).getErrorCode() == 1820 && !getDisconnectOnExpiredPasswords()) {
-return;
-}
+            sqlEx.initCause(e);
 
-if (this.io != null) {
-this.io.forceClose();
-}
+            throw sqlEx;
+        }
 
-connectionNotEstablishedBecause = EEE;
+        if (getUseServerPreparedStmts()) {
+            this.serverSideStatementCheckCache = new LRUCache(cacheSize);
 
-if (EEE instanceof SQLException) {
-throw (SQLException)EEE;
-}
+            this.serverSideStatementCache = new LRUCache(cacheSize) {
+                private static final long serialVersionUID = 7692318650375988114L;
 
-SQLException chainedEx = SQLError.createSQLException(Messages.getString("Connection.UnableToConnect"), "08001", getExceptionInterceptor());
+                protected boolean removeEldestEntry(Map.Entry<Object, Object> eldest) {
+                    if (this.maxElements <= 1) {
+                        return false;
+                    }
 
-chainedEx.initCause(connectionNotEstablishedBecause);
+                    boolean removeIt = super.removeEldestEntry(eldest);
 
-throw chainedEx;
-} 
-}
+                    if (removeIt) {
+                        ServerPreparedStatement ps = (ServerPreparedStatement) eldest.getValue();
 
-private synchronized void createPreparedStatementCaches() throws SQLException {
-int cacheSize = getPreparedStatementCacheSize();
+                        ps.isCached = false;
+                        ps.setClosed(false);
 
-try {
-Class<?> factoryClass = Class.forName(getParseInfoCacheFactory());
+                        try {
+                            ps.close();
+                        } catch (SQLException sqlEx) {
+                        }
+                    }
 
-CacheAdapterFactory<String, PreparedStatement.ParseInfo> cacheFactory = (CacheAdapterFactory<String, PreparedStatement.ParseInfo>)factoryClass.newInstance();
+                    return removeIt;
+                }
+            };
+        }
+    }
 
-this.cachedPreparedStatementParams = cacheFactory.getInstance(this, this.myURL, getPreparedStatementCacheSize(), getPreparedStatementCacheSqlLimit(), this.props);
-}
-catch (ClassNotFoundException e) {
-SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantFindCacheFactory", new Object[] { getParseInfoCacheFactory(), "parseInfoCacheFactory" }), getExceptionInterceptor());
+    public Statement createStatement() throws SQLException {
+        return createStatement(1003, 1007);
+    }
 
-sqlEx.initCause(e);
+    public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+        checkClosed();
 
-throw sqlEx;
-} catch (InstantiationException e) {
-SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[] { getParseInfoCacheFactory(), "parseInfoCacheFactory" }), getExceptionInterceptor());
+        StatementImpl stmt = new StatementImpl(getLoadBalanceSafeProxy(), this.database);
+        stmt.setResultSetType(resultSetType);
+        stmt.setResultSetConcurrency(resultSetConcurrency);
 
-sqlEx.initCause(e);
+        return stmt;
+    }
 
-throw sqlEx;
-} catch (IllegalAccessException e) {
-SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[] { getParseInfoCacheFactory(), "parseInfoCacheFactory" }), getExceptionInterceptor());
+    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        if (getPedantic() &&
+                resultSetHoldability != 1) {
+            throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
+        }
 
-sqlEx.initCause(e);
+        return createStatement(resultSetType, resultSetConcurrency);
+    }
 
-throw sqlEx;
-} 
+    public void dumpTestcaseQuery(String query) {
+        System.err.println(query);
+    }
 
-if (getUseServerPreparedStmts()) {
-this.serverSideStatementCheckCache = new LRUCache(cacheSize);
+    public Connection duplicate() throws SQLException {
+        return new ConnectionImpl(this.origHostToConnectTo, this.origPortToConnectTo, this.props, this.origDatabaseToConnectTo, this.myURL);
+    }
 
-this.serverSideStatementCache = new LRUCache(cacheSize)
-{
-private static final long serialVersionUID = 7692318650375988114L;
+    public ResultSetInternalMethods execSQL(StatementImpl callingStatement, String sql, int maxRows, Buffer packet, int resultSetType, int resultSetConcurrency, boolean streamResults, String catalog, Field[] cachedMetadata) throws SQLException {
+        return execSQL(callingStatement, sql, maxRows, packet, resultSetType, resultSetConcurrency, streamResults, catalog, cachedMetadata, false);
+    }
 
-protected boolean removeEldestEntry(Map.Entry<Object, Object> eldest) {
-if (this.maxElements <= 1) {
-return false;
-}
+    public synchronized ResultSetInternalMethods execSQL(StatementImpl callingStatement, String sql, int maxRows, Buffer packet, int resultSetType, int resultSetConcurrency, boolean streamResults, String catalog, Field[] cachedMetadata, boolean isBatch) throws SQLException {
+        long queryStartTime = 0L;
 
-boolean removeIt = super.removeEldestEntry(eldest);
+        int endOfQueryPacketPosition = 0;
 
-if (removeIt) {
-ServerPreparedStatement ps = (ServerPreparedStatement)eldest.getValue();
+        if (packet != null) {
+            endOfQueryPacketPosition = packet.getPosition();
+        }
 
-ps.isCached = false;
-ps.setClosed(false);
+        if (getGatherPerformanceMetrics()) {
+            queryStartTime = System.currentTimeMillis();
+        }
 
-try {
-ps.close();
-} catch (SQLException sqlEx) {}
-} 
+        this.lastQueryFinishedTime = 0L;
 
-return removeIt;
-}
-};
-} 
-}
+        if (getHighAvailability() && (this.autoCommit || getAutoReconnectForPools()) && this.needsPing && !isBatch) {
 
-public Statement createStatement() throws SQLException {
-return createStatement(1003, 1007);
-}
+            try {
 
-public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-checkClosed();
+                pingInternal(false, 0);
 
-StatementImpl stmt = new StatementImpl(getLoadBalanceSafeProxy(), this.database);
-stmt.setResultSetType(resultSetType);
-stmt.setResultSetConcurrency(resultSetConcurrency);
+                this.needsPing = false;
+            } catch (Exception Ex) {
+                createNewIO(true);
+            }
+        }
 
-return stmt;
-}
+        try {
+            if (packet == null) {
+                String encoding = null;
 
-public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-if (getPedantic() && 
-resultSetHoldability != 1) {
-throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
-}
+                if (getUseUnicode()) {
+                    encoding = getEncoding();
+                }
 
-return createStatement(resultSetType, resultSetConcurrency);
-}
+                return this.io.sqlQueryDirect(callingStatement, sql, encoding, null, maxRows, resultSetType, resultSetConcurrency, streamResults, catalog, cachedMetadata);
+            }
 
-public void dumpTestcaseQuery(String query) {
-System.err.println(query);
-}
+            return this.io.sqlQueryDirect(callingStatement, null, null, packet, maxRows, resultSetType, resultSetConcurrency, streamResults, catalog, cachedMetadata);
 
-public Connection duplicate() throws SQLException {
-return new ConnectionImpl(this.origHostToConnectTo, this.origPortToConnectTo, this.props, this.origDatabaseToConnectTo, this.myURL);
-}
+        } catch (SQLException sqlE) {
 
-public ResultSetInternalMethods execSQL(StatementImpl callingStatement, String sql, int maxRows, Buffer packet, int resultSetType, int resultSetConcurrency, boolean streamResults, String catalog, Field[] cachedMetadata) throws SQLException {
-return execSQL(callingStatement, sql, maxRows, packet, resultSetType, resultSetConcurrency, streamResults, catalog, cachedMetadata, false);
-}
+            if (getDumpQueriesOnException()) {
+                String extractedSql = extractSqlFromPacket(sql, packet, endOfQueryPacketPosition);
 
-public synchronized ResultSetInternalMethods execSQL(StatementImpl callingStatement, String sql, int maxRows, Buffer packet, int resultSetType, int resultSetConcurrency, boolean streamResults, String catalog, Field[] cachedMetadata, boolean isBatch) throws SQLException {
-long queryStartTime = 0L;
+                StringBuffer messageBuf = new StringBuffer(extractedSql.length() + 32);
 
-int endOfQueryPacketPosition = 0;
+                messageBuf.append("\n\nQuery being executed when exception was thrown:\n");
 
-if (packet != null) {
-endOfQueryPacketPosition = packet.getPosition();
-}
+                messageBuf.append(extractedSql);
+                messageBuf.append("\n\n");
 
-if (getGatherPerformanceMetrics()) {
-queryStartTime = System.currentTimeMillis();
-}
+                sqlE = appendMessageToException(sqlE, messageBuf.toString(), getExceptionInterceptor());
+            }
 
-this.lastQueryFinishedTime = 0L;
+            if (getHighAvailability()) {
+                this.needsPing = true;
+            } else {
+                String sqlState = sqlE.getSQLState();
 
-if (getHighAvailability() && (this.autoCommit || getAutoReconnectForPools()) && this.needsPing && !isBatch) {
+                if (sqlState != null && sqlState.equals("08S01")) {
 
-try {
+                    cleanup(sqlE);
+                }
+            }
 
-pingInternal(false, 0);
+            throw sqlE;
+        } catch (Exception ex) {
+            if (getHighAvailability()) {
+                this.needsPing = true;
+            } else if (ex instanceof IOException) {
+                cleanup(ex);
+            }
 
-this.needsPing = false;
-} catch (Exception Ex) {
-createNewIO(true);
-} 
-}
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.UnexpectedException"), "S1000", getExceptionInterceptor());
 
-try {
-if (packet == null) {
-String encoding = null;
+            sqlEx.initCause(ex);
 
-if (getUseUnicode()) {
-encoding = getEncoding();
-}
+            throw sqlEx;
+        } finally {
+            if (getMaintainTimeStats()) {
+                this.lastQueryFinishedTime = System.currentTimeMillis();
+            }
 
-return this.io.sqlQueryDirect(callingStatement, sql, encoding, null, maxRows, resultSetType, resultSetConcurrency, streamResults, catalog, cachedMetadata);
-} 
+            if (getGatherPerformanceMetrics()) {
+                long queryTime = System.currentTimeMillis() - queryStartTime;
 
-return this.io.sqlQueryDirect(callingStatement, null, null, packet, maxRows, resultSetType, resultSetConcurrency, streamResults, catalog, cachedMetadata);
+                registerQueryExecutionTime(queryTime);
+            }
+        }
+    }
 
-}
-catch (SQLException sqlE) {
+    public String extractSqlFromPacket(String possibleSqlQuery, Buffer queryPacket, int endOfQueryPacketPosition) throws SQLException {
+        String extractedSql = null;
 
-if (getDumpQueriesOnException()) {
-String extractedSql = extractSqlFromPacket(sql, packet, endOfQueryPacketPosition);
+        if (possibleSqlQuery != null) {
+            if (possibleSqlQuery.length() > getMaxQuerySizeToLog()) {
+                StringBuffer truncatedQueryBuf = new StringBuffer(possibleSqlQuery.substring(0, getMaxQuerySizeToLog()));
 
-StringBuffer messageBuf = new StringBuffer(extractedSql.length() + 32);
+                truncatedQueryBuf.append(Messages.getString("MysqlIO.25"));
+                extractedSql = truncatedQueryBuf.toString();
+            } else {
+                extractedSql = possibleSqlQuery;
+            }
+        }
 
-messageBuf.append("\n\nQuery being executed when exception was thrown:\n");
+        if (extractedSql == null) {
 
-messageBuf.append(extractedSql);
-messageBuf.append("\n\n");
+            int extractPosition = endOfQueryPacketPosition;
 
-sqlE = appendMessageToException(sqlE, messageBuf.toString(), getExceptionInterceptor());
-} 
+            boolean truncated = false;
 
-if (getHighAvailability()) {
-this.needsPing = true;
-} else {
-String sqlState = sqlE.getSQLState();
+            if (endOfQueryPacketPosition > getMaxQuerySizeToLog()) {
+                extractPosition = getMaxQuerySizeToLog();
+                truncated = true;
+            }
 
-if (sqlState != null && sqlState.equals("08S01"))
-{
+            extractedSql = StringUtils.toString(queryPacket.getByteBuffer(), 5, extractPosition - 5);
 
-cleanup(sqlE);
-}
-} 
+            if (truncated) {
+                extractedSql = extractedSql + Messages.getString("MysqlIO.25");
+            }
+        }
 
-throw sqlE;
-} catch (Exception ex) {
-if (getHighAvailability()) {
-this.needsPing = true;
-} else if (ex instanceof IOException) {
-cleanup(ex);
-} 
+        return extractedSql;
+    }
 
-SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.UnexpectedException"), "S1000", getExceptionInterceptor());
+    public StringBuffer generateConnectionCommentBlock(StringBuffer buf) {
+        buf.append(getId());
+        buf.append(" clock: ");
+        buf.append(System.currentTimeMillis());
+        buf.append(" */ ");
 
-sqlEx.initCause(ex);
+        return buf;
+    }
 
-throw sqlEx;
-} finally {
-if (getMaintainTimeStats()) {
-this.lastQueryFinishedTime = System.currentTimeMillis();
-}
+    public int getActiveStatementCount() {
+        if (this.openStatements != null) {
+            synchronized (this.openStatements) {
+                return this.openStatements.size();
+            }
+        }
 
-if (getGatherPerformanceMetrics()) {
-long queryTime = System.currentTimeMillis() - queryStartTime;
+        return 0;
+    }
 
-registerQueryExecutionTime(queryTime);
-} 
-} 
-}
+    public synchronized boolean getAutoCommit() throws SQLException {
+        return this.autoCommit;
+    }
 
-public String extractSqlFromPacket(String possibleSqlQuery, Buffer queryPacket, int endOfQueryPacketPosition) throws SQLException {
-String extractedSql = null;
+    public Calendar getCalendarInstanceForSessionOrNew() {
+        if (getDynamicCalendars()) {
+            return Calendar.getInstance();
+        }
 
-if (possibleSqlQuery != null) {
-if (possibleSqlQuery.length() > getMaxQuerySizeToLog()) {
-StringBuffer truncatedQueryBuf = new StringBuffer(possibleSqlQuery.substring(0, getMaxQuerySizeToLog()));
+        return getSessionLockedCalendar();
+    }
 
-truncatedQueryBuf.append(Messages.getString("MysqlIO.25"));
-extractedSql = truncatedQueryBuf.toString();
-} else {
-extractedSql = possibleSqlQuery;
-} 
-}
+    public synchronized String getCatalog() throws SQLException {
+        return this.database;
+    }
 
-if (extractedSql == null) {
+    public synchronized String getCharacterSetMetadata() {
+        return this.characterSetMetadata;
+    }
 
-int extractPosition = endOfQueryPacketPosition;
+    public SingleByteCharsetConverter getCharsetConverter(String javaEncodingName) throws SQLException {
+        if (javaEncodingName == null) {
+            return null;
+        }
 
-boolean truncated = false;
+        if (this.usePlatformCharsetConverters) {
+            return null;
+        }
 
-if (endOfQueryPacketPosition > getMaxQuerySizeToLog()) {
-extractPosition = getMaxQuerySizeToLog();
-truncated = true;
-} 
+        SingleByteCharsetConverter converter = null;
 
-extractedSql = StringUtils.toString(queryPacket.getByteBuffer(), 5, extractPosition - 5);
+        synchronized (this.charsetConverterMap) {
+            Object asObject = this.charsetConverterMap.get(javaEncodingName);
 
-if (truncated) {
-extractedSql = extractedSql + Messages.getString("MysqlIO.25");
-}
-} 
+            if (asObject == CHARSET_CONVERTER_NOT_AVAILABLE_MARKER) {
+                return null;
+            }
 
-return extractedSql;
-}
+            converter = (SingleByteCharsetConverter) asObject;
 
-public StringBuffer generateConnectionCommentBlock(StringBuffer buf) {
-buf.append("buf.append(getId());
-buf.append(" clock: ");
-buf.append(System.currentTimeMillis());
-buf.append(" */ ");
+            if (converter == null) {
+                try {
+                    converter = SingleByteCharsetConverter.getInstance(javaEncodingName, this);
 
-return buf;
-}
+                    if (converter == null) {
+                        this.charsetConverterMap.put(javaEncodingName, CHARSET_CONVERTER_NOT_AVAILABLE_MARKER);
+                    } else {
 
-public int getActiveStatementCount() {
-if (this.openStatements != null) {
-synchronized (this.openStatements) {
-return this.openStatements.size();
-} 
-}
+                        this.charsetConverterMap.put(javaEncodingName, converter);
+                    }
+                } catch (UnsupportedEncodingException unsupEncEx) {
+                    this.charsetConverterMap.put(javaEncodingName, CHARSET_CONVERTER_NOT_AVAILABLE_MARKER);
 
-return 0;
-}
+                    converter = null;
+                }
+            }
+        }
 
-public synchronized boolean getAutoCommit() throws SQLException {
-return this.autoCommit;
-}
+        return converter;
+    }
 
-public Calendar getCalendarInstanceForSessionOrNew() {
-if (getDynamicCalendars()) {
-return Calendar.getInstance();
-}
+    public String getCharsetNameForIndex(int charsetIndex) throws SQLException {
+        String charsetName = null;
 
-return getSessionLockedCalendar();
-}
+        if (getUseOldUTF8Behavior()) {
+            return getEncoding();
+        }
 
-public synchronized String getCatalog() throws SQLException {
-return this.database;
-}
+        if (charsetIndex != -1) {
+            try {
+                charsetName = this.indexToJavaCharset.get(Integer.valueOf(charsetIndex));
 
-public synchronized String getCharacterSetMetadata() {
-return this.characterSetMetadata;
-}
+                if (charsetName == null) charsetName = CharsetMapping.INDEX_TO_CHARSET[charsetIndex];
 
-public SingleByteCharsetConverter getCharsetConverter(String javaEncodingName) throws SQLException {
-if (javaEncodingName == null) {
-return null;
-}
+                if (this.characterEncodingIsAliasForSjis && (
+                        "sjis".equalsIgnoreCase(charsetName) || "MS932".equalsIgnoreCase(charsetName))) {
 
-if (this.usePlatformCharsetConverters) {
-return null;
-}
+                    charsetName = getEncoding();
+                }
+            } catch (ArrayIndexOutOfBoundsException outOfBoundsEx) {
+                throw SQLError.createSQLException("Unknown character set index for field '" + charsetIndex + "' received from server.", "S1000", getExceptionInterceptor());
 
-SingleByteCharsetConverter converter = null;
+            } catch (RuntimeException ex) {
+                SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+                sqlEx.initCause(ex);
+                throw sqlEx;
+            }
 
-synchronized (this.charsetConverterMap) {
-Object asObject = this.charsetConverterMap.get(javaEncodingName);
+            if (charsetName == null) {
+                charsetName = getEncoding();
+            }
+        } else {
+            charsetName = getEncoding();
+        }
 
-if (asObject == CHARSET_CONVERTER_NOT_AVAILABLE_MARKER) {
-return null;
-}
+        return charsetName;
+    }
 
-converter = (SingleByteCharsetConverter)asObject;
+    public TimeZone getDefaultTimeZone() {
+        return this.defaultTimeZone;
+    }
 
-if (converter == null) {
-try {
-converter = SingleByteCharsetConverter.getInstance(javaEncodingName, this);
+    public String getErrorMessageEncoding() {
+        return this.errorMessageEncoding;
+    }
 
-if (converter == null) {
-this.charsetConverterMap.put(javaEncodingName, CHARSET_CONVERTER_NOT_AVAILABLE_MARKER);
-} else {
+    public int getHoldability() throws SQLException {
+        return 2;
+    }
 
-this.charsetConverterMap.put(javaEncodingName, converter);
-} 
-} catch (UnsupportedEncodingException unsupEncEx) {
-this.charsetConverterMap.put(javaEncodingName, CHARSET_CONVERTER_NOT_AVAILABLE_MARKER);
+    public long getId() {
+        return this.connectionId;
+    }
 
-converter = null;
-} 
-}
-} 
+    public synchronized long getIdleFor() {
+        if (this.lastQueryFinishedTime == 0L) {
+            return 0L;
+        }
 
-return converter;
-}
+        long now = System.currentTimeMillis();
+        long idleTime = now - this.lastQueryFinishedTime;
 
-public String getCharsetNameForIndex(int charsetIndex) throws SQLException {
-String charsetName = null;
+        return idleTime;
+    }
 
-if (getUseOldUTF8Behavior()) {
-return getEncoding();
-}
+    public MysqlIO getIO() throws SQLException {
+        if (this.io == null || this.isClosed) {
+            throw SQLError.createSQLException("Operation not allowed on closed connection", "08003", getExceptionInterceptor());
+        }
 
-if (charsetIndex != -1) {
-try {
-charsetName = this.indexToJavaCharset.get(Integer.valueOf(charsetIndex));
+        return this.io;
+    }
 
-if (charsetName == null) charsetName = CharsetMapping.INDEX_TO_CHARSET[charsetIndex];
+    public Log getLog() throws SQLException {
+        return this.log;
+    }
 
-if (this.characterEncodingIsAliasForSjis && (
-"sjis".equalsIgnoreCase(charsetName) || "MS932".equalsIgnoreCase(charsetName)))
-{
+    public int getMaxBytesPerChar(String javaCharsetName) throws SQLException {
+        return getMaxBytesPerChar((Integer) null, javaCharsetName);
+    }
 
-charsetName = getEncoding();
-}
-}
-catch (ArrayIndexOutOfBoundsException outOfBoundsEx) {
-throw SQLError.createSQLException("Unknown character set index for field '" + charsetIndex + "' received from server.", "S1000", getExceptionInterceptor());
+    public int getMaxBytesPerChar(Integer charsetIndex, String javaCharsetName) throws SQLException {
+        String charset = null;
 
-}
-catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
+        try {
+            charset = this.indexToCustomMysqlCharset.get(charsetIndex);
 
-if (charsetName == null) {
-charsetName = getEncoding();
-}
-} else {
-charsetName = getEncoding();
-} 
+            if (charset == null) charset = CharsetMapping.STATIC_INDEX_TO_MYSQL_CHARSET_MAP.get(charsetIndex);
 
-return charsetName;
-}
+            if (charset == null) {
+                charset = CharsetMapping.getMysqlEncodingForJavaEncoding(javaCharsetName, this);
+                if (this.io.serverCharsetIndex == 33 && versionMeetsMinimum(5, 5, 3) && javaCharsetName.equalsIgnoreCase("UTF-8")) {
+                    charset = "utf8";
+                }
+            }
 
-public TimeZone getDefaultTimeZone() {
-return this.defaultTimeZone;
-}
+            Integer mblen = this.mysqlCharsetToCustomMblen.get(charset);
 
-public String getErrorMessageEncoding() {
-return this.errorMessageEncoding;
-}
+            if (mblen == null) mblen = CharsetMapping.STATIC_CHARSET_TO_NUM_BYTES_MAP.get(charset);
+            if (mblen == null) mblen = CharsetMapping.STATIC_4_0_CHARSET_TO_NUM_BYTES_MAP.get(charset);
 
-public int getHoldability() throws SQLException {
-return 2;
-}
+            if (mblen != null) return mblen.intValue();
+        } catch (SQLException ex) {
+            throw ex;
+        } catch (RuntimeException ex) {
+            SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+            sqlEx.initCause(ex);
+            throw sqlEx;
+        }
 
-public long getId() {
-return this.connectionId;
-}
+        return 1;
+    }
 
-public synchronized long getIdleFor() {
-if (this.lastQueryFinishedTime == 0L) {
-return 0L;
-}
+    public DatabaseMetaData getMetaData() throws SQLException {
+        return getMetaData(true, true);
+    }
 
-long now = System.currentTimeMillis();
-long idleTime = now - this.lastQueryFinishedTime;
+    private DatabaseMetaData getMetaData(boolean checkClosed, boolean checkForInfoSchema) throws SQLException {
+        if (checkClosed) {
+            checkClosed();
+        }
 
-return idleTime;
-}
+        return DatabaseMetaData.getInstance(getLoadBalanceSafeProxy(), this.database, checkForInfoSchema);
+    }
 
-public MysqlIO getIO() throws SQLException {
-if (this.io == null || this.isClosed) {
-throw SQLError.createSQLException("Operation not allowed on closed connection", "08003", getExceptionInterceptor());
-}
+    public Statement getMetadataSafeStatement() throws SQLException {
+        Statement stmt = createStatement();
 
-return this.io;
-}
+        if (stmt.getMaxRows() != 0) {
+            stmt.setMaxRows(0);
+        }
 
-public Log getLog() throws SQLException {
-return this.log;
-}
+        stmt.setEscapeProcessing(false);
 
-public int getMaxBytesPerChar(String javaCharsetName) throws SQLException {
-return getMaxBytesPerChar((Integer)null, javaCharsetName);
-}
+        if (stmt.getFetchSize() != 0) {
+            stmt.setFetchSize(0);
+        }
 
-public int getMaxBytesPerChar(Integer charsetIndex, String javaCharsetName) throws SQLException {
-String charset = null;
+        return stmt;
+    }
 
-try {
-charset = this.indexToCustomMysqlCharset.get(charsetIndex);
+    public int getNetBufferLength() {
+        return this.netBufferLength;
+    }
 
-if (charset == null) charset = CharsetMapping.STATIC_INDEX_TO_MYSQL_CHARSET_MAP.get(charsetIndex);
+    public String getServerCharacterEncoding() {
+        if (this.io.versionMeetsMinimum(4, 1, 0)) {
+            String charset = this.indexToCustomMysqlCharset.get(Integer.valueOf(this.io.serverCharsetIndex));
+            if (charset == null)
+                charset = CharsetMapping.STATIC_INDEX_TO_MYSQL_CHARSET_MAP.get(Integer.valueOf(this.io.serverCharsetIndex));
+            return (charset != null) ? charset : this.serverVariables.get("character_set_server");
+        }
+        return this.serverVariables.get("character_set");
+    }
 
-if (charset == null) {
-charset = CharsetMapping.getMysqlEncodingForJavaEncoding(javaCharsetName, this);
-if (this.io.serverCharsetIndex == 33 && versionMeetsMinimum(5, 5, 3) && javaCharsetName.equalsIgnoreCase("UTF-8"))
-{
-charset = "utf8";
-}
-} 
+    public int getServerMajorVersion() {
+        return this.io.getServerMajorVersion();
+    }
 
-Integer mblen = this.mysqlCharsetToCustomMblen.get(charset);
+    public int getServerMinorVersion() {
+        return this.io.getServerMinorVersion();
+    }
 
-if (mblen == null) mblen = CharsetMapping.STATIC_CHARSET_TO_NUM_BYTES_MAP.get(charset); 
-if (mblen == null) mblen = CharsetMapping.STATIC_4_0_CHARSET_TO_NUM_BYTES_MAP.get(charset);
+    public int getServerSubMinorVersion() {
+        return this.io.getServerSubMinorVersion();
+    }
 
-if (mblen != null) return mblen.intValue(); 
-} catch (SQLException ex) {
-throw ex;
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
+    public TimeZone getServerTimezoneTZ() {
+        return this.serverTimezoneTZ;
+    }
 
-return 1;
-}
+    public String getServerVariable(String variableName) {
+        if (this.serverVariables != null) {
+            return this.serverVariables.get(variableName);
+        }
 
-public DatabaseMetaData getMetaData() throws SQLException {
-return getMetaData(true, true);
-}
+        return null;
+    }
 
-private DatabaseMetaData getMetaData(boolean checkClosed, boolean checkForInfoSchema) throws SQLException {
-if (checkClosed) {
-checkClosed();
-}
+    public String getServerVersion() {
+        return this.io.getServerVersion();
+    }
 
-return DatabaseMetaData.getInstance(getLoadBalanceSafeProxy(), this.database, checkForInfoSchema);
-}
+    public Calendar getSessionLockedCalendar() {
+        return this.sessionCalendar;
+    }
 
-public Statement getMetadataSafeStatement() throws SQLException {
-Statement stmt = createStatement();
+    public synchronized int getTransactionIsolation() throws SQLException {
+        if (this.hasIsolationLevels && !getUseLocalSessionState()) {
+            Statement stmt = null;
+            ResultSet rs = null;
 
-if (stmt.getMaxRows() != 0) {
-stmt.setMaxRows(0);
-}
+            try {
+                stmt = getMetadataSafeStatement();
 
-stmt.setEscapeProcessing(false);
+                String query = null;
 
-if (stmt.getFetchSize() != 0) {
-stmt.setFetchSize(0);
-}
+                int offset = 0;
 
-return stmt;
-}
+                if (versionMeetsMinimum(4, 0, 3)) {
+                    query = "SELECT @@session.tx_isolation";
+                    offset = 1;
+                } else {
+                    query = "SHOW VARIABLES LIKE 'transaction_isolation'";
+                    offset = 2;
+                }
 
-public int getNetBufferLength() {
-return this.netBufferLength;
-}
+                rs = stmt.executeQuery(query);
 
-public String getServerCharacterEncoding() {
-if (this.io.versionMeetsMinimum(4, 1, 0)) {
-String charset = this.indexToCustomMysqlCharset.get(Integer.valueOf(this.io.serverCharsetIndex));
-if (charset == null) charset = CharsetMapping.STATIC_INDEX_TO_MYSQL_CHARSET_MAP.get(Integer.valueOf(this.io.serverCharsetIndex)); 
-return (charset != null) ? charset : this.serverVariables.get("character_set_server");
-} 
-return this.serverVariables.get("character_set");
-}
+                if (rs.next()) {
+                    String s = rs.getString(offset);
 
-public int getServerMajorVersion() {
-return this.io.getServerMajorVersion();
-}
+                    if (s != null) {
+                        Integer intTI = mapTransIsolationNameToValue.get(s);
 
-public int getServerMinorVersion() {
-return this.io.getServerMinorVersion();
-}
+                        if (intTI != null) {
+                            return intTI.intValue();
+                        }
+                    }
 
-public int getServerSubMinorVersion() {
-return this.io.getServerSubMinorVersion();
-}
+                    throw SQLError.createSQLException("Could not map transaction isolation '" + s + " to a valid JDBC level.", "S1000", getExceptionInterceptor());
+                }
 
-public TimeZone getServerTimezoneTZ() {
-return this.serverTimezoneTZ;
-}
+                throw SQLError.createSQLException("Could not retrieve transaction isolation level from server", "S1000", getExceptionInterceptor());
 
-public String getServerVariable(String variableName) {
-if (this.serverVariables != null) {
-return this.serverVariables.get(variableName);
-}
+            } finally {
 
-return null;
-}
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (Exception ex) {
+                    }
 
-public String getServerVersion() {
-return this.io.getServerVersion();
-}
+                    rs = null;
+                }
 
-public Calendar getSessionLockedCalendar() {
-return this.sessionCalendar;
-}
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (Exception ex) {
+                    }
 
-public synchronized int getTransactionIsolation() throws SQLException {
-if (this.hasIsolationLevels && !getUseLocalSessionState()) {
-Statement stmt = null;
-ResultSet rs = null;
+                    stmt = null;
+                }
+            }
+        }
 
-try {
-stmt = getMetadataSafeStatement();
+        return this.isolationLevel;
+    }
 
-String query = null;
+    public synchronized Map<String, Class<?>> getTypeMap() throws SQLException {
+        if (this.typeMap == null) {
+            this.typeMap = new HashMap<String, Class<?>>();
+        }
 
-int offset = 0;
+        return this.typeMap;
+    }
 
-if (versionMeetsMinimum(4, 0, 3)) {
-query = "SELECT @@session.tx_isolation";
-offset = 1;
-} else {
-query = "SHOW VARIABLES LIKE 'transaction_isolation'";
-offset = 2;
-} 
+    public String getURL() {
+        return this.myURL;
+    }
 
-rs = stmt.executeQuery(query);
+    public String getUser() {
+        return this.user;
+    }
 
-if (rs.next()) {
-String s = rs.getString(offset);
+    public Calendar getUtcCalendar() {
+        return this.utcCalendar;
+    }
 
-if (s != null) {
-Integer intTI = mapTransIsolationNameToValue.get(s);
+    public SQLWarning getWarnings() throws SQLException {
+        return null;
+    }
 
-if (intTI != null) {
-return intTI.intValue();
-}
-} 
+    public boolean hasSameProperties(Connection c) {
+        return this.props.equals(c.getProperties());
+    }
 
-throw SQLError.createSQLException("Could not map transaction isolation '" + s + " to a valid JDBC level.", "S1000", getExceptionInterceptor());
-} 
+    public Properties getProperties() {
+        return this.props;
+    }
 
-throw SQLError.createSQLException("Could not retrieve transaction isolation level from server", "S1000", getExceptionInterceptor());
+    public boolean hasTriedMaster() {
+        return this.hasTriedMasterFlag;
+    }
 
-}
-finally {
+    public void incrementNumberOfPreparedExecutes() {
+        if (getGatherPerformanceMetrics()) {
+            this.numberOfPreparedExecutes++;
 
-if (rs != null) {
-try {
-rs.close();
-} catch (Exception ex) {}
+            this.numberOfQueriesIssued++;
+        }
+    }
 
-rs = null;
-} 
+    public void incrementNumberOfPrepares() {
+        if (getGatherPerformanceMetrics()) {
+            this.numberOfPrepares++;
+        }
+    }
 
-if (stmt != null) {
-try {
-stmt.close();
-} catch (Exception ex) {}
+    public void incrementNumberOfResultSetsCreated() {
+        if (getGatherPerformanceMetrics()) {
+            this.numberOfResultSetsCreated++;
+        }
+    }
 
-stmt = null;
-} 
-} 
-} 
+    private void initializeDriverProperties(Properties info) throws SQLException {
+        initializeProperties(info);
 
-return this.isolationLevel;
-}
+        String exceptionInterceptorClasses = getExceptionInterceptors();
 
-public synchronized Map<String, Class<?>> getTypeMap() throws SQLException {
-if (this.typeMap == null) {
-this.typeMap = new HashMap<String, Class<?>>();
-}
+        if (exceptionInterceptorClasses != null && !"".equals(exceptionInterceptorClasses)) {
+            this.exceptionInterceptor = new ExceptionInterceptorChain(exceptionInterceptorClasses);
+            this.exceptionInterceptor.init(this, info);
+        }
 
-return this.typeMap;
-}
+        this.usePlatformCharsetConverters = getUseJvmCharsetConverters();
 
-public String getURL() {
-return this.myURL;
-}
+        this.log = LogFactory.getLogger(getLogger(), "MySQL", getExceptionInterceptor());
 
-public String getUser() {
-return this.user;
-}
+        if (getProfileSql() || getUseUsageAdvisor()) {
+            this.eventSink = ProfilerEventHandlerFactory.getInstance(getLoadBalanceSafeProxy());
+        }
 
-public Calendar getUtcCalendar() {
-return this.utcCalendar;
-}
+        if (getCachePreparedStatements()) {
+            createPreparedStatementCaches();
+        }
 
-public SQLWarning getWarnings() throws SQLException {
-return null;
-}
+        if (getNoDatetimeStringSync() && getUseTimezone()) {
+            throw SQLError.createSQLException("Can't enable noDatetimeSync and useTimezone configuration properties at the same time", "01S00", getExceptionInterceptor());
+        }
 
-public boolean hasSameProperties(Connection c) {
-return this.props.equals(c.getProperties());
-}
+        if (getCacheCallableStatements()) {
+            this.parsedCallableStatementCache = new LRUCache(getCallableStatementCacheSize());
+        }
 
-public Properties getProperties() {
-return this.props;
-}
+        if (getAllowMultiQueries()) {
+            setCacheResultSetMetadata(false);
+        }
 
-public boolean hasTriedMaster() {
-return this.hasTriedMasterFlag;
-}
+        if (getCacheResultSetMetadata()) {
+            this.resultSetMetadataCache = new LRUCache(getMetadataCacheSize());
+        }
+    }
 
-public void incrementNumberOfPreparedExecutes() {
-if (getGatherPerformanceMetrics()) {
-this.numberOfPreparedExecutes++;
+    private void initializePropsFromServer() throws SQLException {
+        String connectionInterceptorClasses = getConnectionLifecycleInterceptors();
 
-this.numberOfQueriesIssued++;
-} 
-}
+        this.connectionLifecycleInterceptors = null;
 
-public void incrementNumberOfPrepares() {
-if (getGatherPerformanceMetrics()) {
-this.numberOfPrepares++;
-}
-}
+        if (connectionInterceptorClasses != null) {
+            this.connectionLifecycleInterceptors = Util.loadExtensions(this, this.props, connectionInterceptorClasses, "Connection.badLifecycleInterceptor", getExceptionInterceptor());
+        }
 
-public void incrementNumberOfResultSetsCreated() {
-if (getGatherPerformanceMetrics()) {
-this.numberOfResultSetsCreated++;
-}
-}
+        setSessionVariables();
 
-private void initializeDriverProperties(Properties info) throws SQLException {
-initializeProperties(info);
+        if (!versionMeetsMinimum(4, 1, 0)) {
+            setTransformedBitIsBoolean(false);
+        }
 
-String exceptionInterceptorClasses = getExceptionInterceptors();
+        this.parserKnowsUnicode = versionMeetsMinimum(4, 1, 0);
 
-if (exceptionInterceptorClasses != null && !"".equals(exceptionInterceptorClasses)) {
-this.exceptionInterceptor = new ExceptionInterceptorChain(exceptionInterceptorClasses);
-this.exceptionInterceptor.init(this, info);
-} 
+        if (getUseServerPreparedStmts() && versionMeetsMinimum(4, 1, 0)) {
+            this.useServerPreparedStmts = true;
 
-this.usePlatformCharsetConverters = getUseJvmCharsetConverters();
+            if (versionMeetsMinimum(5, 0, 0) && !versionMeetsMinimum(5, 0, 3)) {
+                this.useServerPreparedStmts = false;
+            }
+        }
 
-this.log = LogFactory.getLogger(getLogger(), "MySQL", getExceptionInterceptor());
+        if (versionMeetsMinimum(3, 21, 22)) {
+            loadServerVariables();
 
-if (getProfileSql() || getUseUsageAdvisor()) {
-this.eventSink = ProfilerEventHandlerFactory.getInstance(getLoadBalanceSafeProxy());
-}
+            if (versionMeetsMinimum(5, 0, 2)) {
+                this.autoIncrementIncrement = getServerVariableAsInt("auto_increment_increment", 1);
+            } else {
+                this.autoIncrementIncrement = 1;
+            }
 
-if (getCachePreparedStatements()) {
-createPreparedStatementCaches();
-}
+            buildCollationMapping();
 
-if (getNoDatetimeStringSync() && getUseTimezone()) {
-throw SQLError.createSQLException("Can't enable noDatetimeSync and useTimezone configuration properties at the same time", "01S00", getExceptionInterceptor());
-}
+            LicenseConfiguration.checkLicenseType(this.serverVariables);
 
-if (getCacheCallableStatements()) {
-this.parsedCallableStatementCache = new LRUCache(getCallableStatementCacheSize());
-}
+            String lowerCaseTables = this.serverVariables.get("lower_case_table_names");
 
-if (getAllowMultiQueries()) {
-setCacheResultSetMetadata(false);
-}
+            this.lowerCaseTableNames = ("on".equalsIgnoreCase(lowerCaseTables) || "1".equalsIgnoreCase(lowerCaseTables) || "2".equalsIgnoreCase(lowerCaseTables));
 
-if (getCacheResultSetMetadata()) {
-this.resultSetMetadataCache = new LRUCache(getMetadataCacheSize());
-}
-}
+            this.storesLowerCaseTableName = ("1".equalsIgnoreCase(lowerCaseTables) || "on".equalsIgnoreCase(lowerCaseTables));
 
-private void initializePropsFromServer() throws SQLException {
-String connectionInterceptorClasses = getConnectionLifecycleInterceptors();
+            configureTimezone();
 
-this.connectionLifecycleInterceptors = null;
+            if (this.serverVariables.containsKey("max_allowed_packet")) {
+                int serverMaxAllowedPacket = getServerVariableAsInt("max_allowed_packet", -1);
 
-if (connectionInterceptorClasses != null) {
-this.connectionLifecycleInterceptors = Util.loadExtensions(this, this.props, connectionInterceptorClasses, "Connection.badLifecycleInterceptor", getExceptionInterceptor());
-}
+                if (serverMaxAllowedPacket != -1 && (serverMaxAllowedPacket < getMaxAllowedPacket() || getMaxAllowedPacket() <= 0)) {
 
-setSessionVariables();
+                    setMaxAllowedPacket(serverMaxAllowedPacket);
+                } else if (serverMaxAllowedPacket == -1 && getMaxAllowedPacket() == -1) {
+                    setMaxAllowedPacket(65535);
+                }
+                int preferredBlobSendChunkSize = getBlobSendChunkSize();
 
-if (!versionMeetsMinimum(4, 1, 0)) {
-setTransformedBitIsBoolean(false);
-}
+                int allowedBlobSendChunkSize = Math.min(preferredBlobSendChunkSize, getMaxAllowedPacket()) - 8192 - 11;
 
-this.parserKnowsUnicode = versionMeetsMinimum(4, 1, 0);
+                setBlobSendChunkSize(String.valueOf(allowedBlobSendChunkSize));
+            }
 
-if (getUseServerPreparedStmts() && versionMeetsMinimum(4, 1, 0)) {
-this.useServerPreparedStmts = true;
+            if (this.serverVariables.containsKey("net_buffer_length")) {
+                this.netBufferLength = getServerVariableAsInt("net_buffer_length", 16384);
+            }
 
-if (versionMeetsMinimum(5, 0, 0) && !versionMeetsMinimum(5, 0, 3)) {
-this.useServerPreparedStmts = false;
-}
-} 
+            checkTransactionIsolationLevel();
 
-if (versionMeetsMinimum(3, 21, 22)) {
-loadServerVariables();
+            if (!versionMeetsMinimum(4, 1, 0)) {
+                checkServerEncoding();
+            }
 
-if (versionMeetsMinimum(5, 0, 2)) {
-this.autoIncrementIncrement = getServerVariableAsInt("auto_increment_increment", 1);
-} else {
-this.autoIncrementIncrement = 1;
-} 
+            this.io.checkForCharsetMismatch();
 
-buildCollationMapping();
+            if (this.serverVariables.containsKey("sql_mode")) {
+                int sqlMode = 0;
 
-LicenseConfiguration.checkLicenseType(this.serverVariables);
+                String sqlModeAsString = this.serverVariables.get("sql_mode");
+                try {
+                    sqlMode = Integer.parseInt(sqlModeAsString);
+                } catch (NumberFormatException nfe) {
 
-String lowerCaseTables = this.serverVariables.get("lower_case_table_names");
+                    sqlMode = 0;
 
-this.lowerCaseTableNames = ("on".equalsIgnoreCase(lowerCaseTables) || "1".equalsIgnoreCase(lowerCaseTables) || "2".equalsIgnoreCase(lowerCaseTables));
+                    if (sqlModeAsString != null) {
+                        if (sqlModeAsString.indexOf("ANSI_QUOTES") != -1) {
+                            sqlMode |= 0x4;
+                        }
 
-this.storesLowerCaseTableName = ("1".equalsIgnoreCase(lowerCaseTables) || "on".equalsIgnoreCase(lowerCaseTables));
+                        if (sqlModeAsString.indexOf("NO_BACKSLASH_ESCAPES") != -1) {
+                            this.noBackslashEscapes = true;
+                        }
+                    }
+                }
 
-configureTimezone();
+                if ((sqlMode & 0x4) > 0) {
+                    this.useAnsiQuotes = true;
+                } else {
+                    this.useAnsiQuotes = false;
+                }
+            }
+        }
 
-if (this.serverVariables.containsKey("max_allowed_packet")) {
-int serverMaxAllowedPacket = getServerVariableAsInt("max_allowed_packet", -1);
+        try {
+            this.errorMessageEncoding = CharsetMapping.getCharacterEncodingForErrorMessages(this);
+        } catch (SQLException ex) {
+            throw ex;
+        } catch (RuntimeException ex) {
+            SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+            sqlEx.initCause(ex);
+            throw sqlEx;
+        }
 
-if (serverMaxAllowedPacket != -1 && (serverMaxAllowedPacket < getMaxAllowedPacket() || getMaxAllowedPacket() <= 0)) {
+        boolean overrideDefaultAutocommit = isAutoCommitNonDefaultOnServer();
 
-setMaxAllowedPacket(serverMaxAllowedPacket);
-} else if (serverMaxAllowedPacket == -1 && getMaxAllowedPacket() == -1) {
-setMaxAllowedPacket(65535);
-} 
-int preferredBlobSendChunkSize = getBlobSendChunkSize();
+        configureClientCharacterSet(false);
 
-int allowedBlobSendChunkSize = Math.min(preferredBlobSendChunkSize, getMaxAllowedPacket()) - 8192 - 11;
+        if (versionMeetsMinimum(3, 23, 15)) {
+            this.transactionsSupported = true;
 
-setBlobSendChunkSize(String.valueOf(allowedBlobSendChunkSize));
-} 
+            if (!overrideDefaultAutocommit) {
+                try {
+                    setAutoCommit(true);
 
-if (this.serverVariables.containsKey("net_buffer_length")) {
-this.netBufferLength = getServerVariableAsInt("net_buffer_length", 16384);
-}
+                } catch (SQLException ex) {
+                    if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                        throw ex;
+                    }
+                }
+            }
+        } else {
+            this.transactionsSupported = false;
+        }
 
-checkTransactionIsolationLevel();
+        if (versionMeetsMinimum(3, 23, 36)) {
+            this.hasIsolationLevels = true;
+        } else {
+            this.hasIsolationLevels = false;
+        }
 
-if (!versionMeetsMinimum(4, 1, 0)) {
-checkServerEncoding();
-}
+        this.hasQuotedIdentifiers = versionMeetsMinimum(3, 23, 6);
 
-this.io.checkForCharsetMismatch();
+        this.io.resetMaxBuf();
 
-if (this.serverVariables.containsKey("sql_mode")) {
-int sqlMode = 0;
+        if (this.io.versionMeetsMinimum(4, 1, 0)) {
+            String characterSetResultsOnServerMysql = this.serverVariables.get("jdbc.local.character_set_results");
 
-String sqlModeAsString = this.serverVariables.get("sql_mode");
-try {
-sqlMode = Integer.parseInt(sqlModeAsString);
-} catch (NumberFormatException nfe) {
+            if (characterSetResultsOnServerMysql == null || StringUtils.startsWithIgnoreCaseAndWs(characterSetResultsOnServerMysql, "NULL") || characterSetResultsOnServerMysql.length() == 0) {
 
-sqlMode = 0;
+                String defaultMetadataCharsetMysql = this.serverVariables.get("character_set_system");
+                String defaultMetadataCharset = null;
 
-if (sqlModeAsString != null) {
-if (sqlModeAsString.indexOf("ANSI_QUOTES") != -1) {
-sqlMode |= 0x4;
-}
+                if (defaultMetadataCharsetMysql != null) {
+                    defaultMetadataCharset = getJavaEncodingForMysqlEncoding(defaultMetadataCharsetMysql);
+                } else {
+                    defaultMetadataCharset = "UTF-8";
+                }
 
-if (sqlModeAsString.indexOf("NO_BACKSLASH_ESCAPES") != -1) {
-this.noBackslashEscapes = true;
-}
-} 
-} 
+                this.characterSetMetadata = defaultMetadataCharset;
+            } else {
+                this.characterSetResultsOnServer = getJavaEncodingForMysqlEncoding(characterSetResultsOnServerMysql);
+                this.characterSetMetadata = this.characterSetResultsOnServer;
+            }
+        } else {
+            this.characterSetMetadata = getEncoding();
+        }
 
-if ((sqlMode & 0x4) > 0) {
-this.useAnsiQuotes = true;
-} else {
-this.useAnsiQuotes = false;
-} 
-} 
-} 
+        if (versionMeetsMinimum(4, 1, 0) && !versionMeetsMinimum(4, 1, 10) && getAllowMultiQueries()) {
 
-try {
-this.errorMessageEncoding = CharsetMapping.getCharacterEncodingForErrorMessages(this);
-}
-catch (SQLException ex) {
-throw ex;
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
+            if (isQueryCacheEnabled()) {
+                setAllowMultiQueries(false);
+            }
+        }
 
-boolean overrideDefaultAutocommit = isAutoCommitNonDefaultOnServer();
+        if (versionMeetsMinimum(5, 0, 0) && (getUseLocalTransactionState() || getElideSetAutoCommits()) && isQueryCacheEnabled() && !versionMeetsMinimum(6, 0, 10)) {
 
-configureClientCharacterSet(false);
+            setUseLocalTransactionState(false);
+            setElideSetAutoCommits(false);
+        }
 
-if (versionMeetsMinimum(3, 23, 15)) {
-this.transactionsSupported = true;
+        setupServerForTruncationChecks();
+    }
 
-if (!overrideDefaultAutocommit) {
-try {
-setAutoCommit(true);
+    private boolean isQueryCacheEnabled() {
+        return ("ON".equalsIgnoreCase(this.serverVariables.get("query_cache_type")) && !"0".equalsIgnoreCase(this.serverVariables.get("query_cache_size")));
+    }
 
-}
-catch (SQLException ex) {
-if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw ex;
-}
-} 
-}
-} else {
-this.transactionsSupported = false;
-} 
+    private int getServerVariableAsInt(String variableName, int fallbackValue) throws SQLException {
+        try {
+            return Integer.parseInt(this.serverVariables.get(variableName));
+        } catch (NumberFormatException nfe) {
+            getLog().logWarn(Messages.getString("Connection.BadValueInServerVariables", new Object[]{variableName, this.serverVariables.get(variableName), Integer.valueOf(fallbackValue)}));
 
-if (versionMeetsMinimum(3, 23, 36)) {
-this.hasIsolationLevels = true;
-} else {
-this.hasIsolationLevels = false;
-} 
+            return fallbackValue;
+        }
+    }
 
-this.hasQuotedIdentifiers = versionMeetsMinimum(3, 23, 6);
+    private boolean isAutoCommitNonDefaultOnServer() throws SQLException {
+        boolean overrideDefaultAutocommit = false;
 
-this.io.resetMaxBuf();
+        String initConnectValue = this.serverVariables.get("init_connect");
 
-if (this.io.versionMeetsMinimum(4, 1, 0)) {
-String characterSetResultsOnServerMysql = this.serverVariables.get("jdbc.local.character_set_results");
+        if (versionMeetsMinimum(4, 1, 2) && initConnectValue != null && initConnectValue.length() > 0) {
+            if (!getElideSetAutoCommits()) {
 
-if (characterSetResultsOnServerMysql == null || StringUtils.startsWithIgnoreCaseAndWs(characterSetResultsOnServerMysql, "NULL") || characterSetResultsOnServerMysql.length() == 0) {
+                ResultSet rs = null;
+                Statement stmt = null;
 
-String defaultMetadataCharsetMysql = this.serverVariables.get("character_set_system");
-String defaultMetadataCharset = null;
+                try {
+                    stmt = getMetadataSafeStatement();
 
-if (defaultMetadataCharsetMysql != null) {
-defaultMetadataCharset = getJavaEncodingForMysqlEncoding(defaultMetadataCharsetMysql);
-} else {
-defaultMetadataCharset = "UTF-8";
-} 
+                    rs = stmt.executeQuery("SELECT @@session.autocommit");
 
-this.characterSetMetadata = defaultMetadataCharset;
-} else {
-this.characterSetResultsOnServer = getJavaEncodingForMysqlEncoding(characterSetResultsOnServerMysql);
-this.characterSetMetadata = this.characterSetResultsOnServer;
-} 
-} else {
-this.characterSetMetadata = getEncoding();
-} 
+                    if (rs.next()) {
+                        this.autoCommit = rs.getBoolean(1);
+                        if (this.autoCommit != true) {
+                            overrideDefaultAutocommit = true;
+                        }
+                    }
+                } finally {
 
-if (versionMeetsMinimum(4, 1, 0) && !versionMeetsMinimum(4, 1, 10) && getAllowMultiQueries())
-{
+                    if (rs != null) {
+                        try {
+                            rs.close();
+                        } catch (SQLException sqlEx) {
+                        }
+                    }
 
-if (isQueryCacheEnabled()) {
-setAllowMultiQueries(false);
-}
-}
+                    if (stmt != null) {
+                        try {
+                            stmt.close();
+                        } catch (SQLException sqlEx) {
+                        }
 
-if (versionMeetsMinimum(5, 0, 0) && (getUseLocalTransactionState() || getElideSetAutoCommits()) && isQueryCacheEnabled() && !versionMeetsMinimum(6, 0, 10)) {
+                    }
+                }
 
-setUseLocalTransactionState(false);
-setElideSetAutoCommits(false);
-} 
+            } else if (getIO().isSetNeededForAutoCommitMode(true)) {
 
-setupServerForTruncationChecks();
-}
+                this.autoCommit = false;
+                overrideDefaultAutocommit = true;
+            }
+        }
 
-private boolean isQueryCacheEnabled() {
-return ("ON".equalsIgnoreCase(this.serverVariables.get("query_cache_type")) && !"0".equalsIgnoreCase(this.serverVariables.get("query_cache_size")));
-}
+        return overrideDefaultAutocommit;
+    }
 
-private int getServerVariableAsInt(String variableName, int fallbackValue) throws SQLException {
-try {
-return Integer.parseInt(this.serverVariables.get(variableName));
-} catch (NumberFormatException nfe) {
-getLog().logWarn(Messages.getString("Connection.BadValueInServerVariables", new Object[] { variableName, this.serverVariables.get(variableName), Integer.valueOf(fallbackValue) }));
+    public boolean isClientTzUTC() {
+        return this.isClientTzUTC;
+    }
 
-return fallbackValue;
-} 
-}
+    public boolean isClosed() {
+        return this.isClosed;
+    }
 
-private boolean isAutoCommitNonDefaultOnServer() throws SQLException {
-boolean overrideDefaultAutocommit = false;
+    public boolean isCursorFetchEnabled() throws SQLException {
+        return (versionMeetsMinimum(5, 0, 2) && getUseCursorFetch());
+    }
 
-String initConnectValue = this.serverVariables.get("init_connect");
+    public boolean isInGlobalTx() {
+        return this.isInGlobalTx;
+    }
 
-if (versionMeetsMinimum(4, 1, 2) && initConnectValue != null && initConnectValue.length() > 0)
-{
-if (!getElideSetAutoCommits()) {
+    public synchronized boolean isMasterConnection() {
+        return false;
+    }
 
-ResultSet rs = null;
-Statement stmt = null;
+    public boolean isNoBackslashEscapesSet() {
+        return this.noBackslashEscapes;
+    }
 
-try {
-stmt = getMetadataSafeStatement();
+    public boolean isReadInfoMsgEnabled() {
+        return this.readInfoMsg;
+    }
 
-rs = stmt.executeQuery("SELECT @@session.autocommit");
+    public boolean isReadOnly() throws SQLException {
+        return isReadOnly(true);
+    }
 
-if (rs.next()) {
-this.autoCommit = rs.getBoolean(1);
-if (this.autoCommit != true) {
-overrideDefaultAutocommit = true;
-}
-} 
-} finally {
+    public boolean isReadOnly(boolean useSessionStatus) throws SQLException {
+        if (useSessionStatus && !this.isClosed && versionMeetsMinimum(5, 6, 5) && !getUseLocalSessionState()) {
+            Statement stmt = null;
+            ResultSet rs = null;
 
-if (rs != null) {
-try {
-rs.close();
-} catch (SQLException sqlEx) {}
-}
+            try {
+                stmt = getMetadataSafeStatement();
 
-if (stmt != null) {
-try {
-stmt.close();
-} catch (SQLException sqlEx) {}
+                rs = stmt.executeQuery("select @@session.tx_read_only");
+                if (rs.next()) {
+                    return (rs.getInt(1) != 0);
+                }
+            } catch (SQLException ex1) {
+                if (ex1.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
+                    throw SQLError.createSQLException("Could not retrieve transation read-only status server", "S1000", ex1, getExceptionInterceptor());
 
-}
-}
+                }
 
-}
-else if (getIO().isSetNeededForAutoCommitMode(true)) {
+            } finally {
 
-this.autoCommit = false;
-overrideDefaultAutocommit = true;
-} 
-}
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (Exception ex) {
+                    }
 
-return overrideDefaultAutocommit;
-}
+                    rs = null;
+                }
 
-public boolean isClientTzUTC() {
-return this.isClientTzUTC;
-}
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (Exception ex) {
+                    }
 
-public boolean isClosed() {
-return this.isClosed;
-}
+                    stmt = null;
+                }
+            }
+        }
 
-public boolean isCursorFetchEnabled() throws SQLException {
-return (versionMeetsMinimum(5, 0, 2) && getUseCursorFetch());
-}
+        return this.readOnly;
+    }
 
-public boolean isInGlobalTx() {
-return this.isInGlobalTx;
-}
+    public boolean isRunningOnJDK13() {
+        return this.isRunningOnJDK13;
+    }
 
-public synchronized boolean isMasterConnection() {
-return false;
-}
+    public synchronized boolean isSameResource(Connection otherConnection) {
+        if (otherConnection == null) {
+            return false;
+        }
 
-public boolean isNoBackslashEscapesSet() {
-return this.noBackslashEscapes;
-}
+        boolean directCompare = true;
 
-public boolean isReadInfoMsgEnabled() {
-return this.readInfoMsg;
-}
+        String otherHost = ((ConnectionImpl) otherConnection).origHostToConnectTo;
+        String otherOrigDatabase = ((ConnectionImpl) otherConnection).origDatabaseToConnectTo;
+        String otherCurrentCatalog = ((ConnectionImpl) otherConnection).database;
 
-public boolean isReadOnly() throws SQLException {
-return isReadOnly(true);
-}
+        if (!nullSafeCompare(otherHost, this.origHostToConnectTo)) {
+            directCompare = false;
+        } else if (otherHost != null && otherHost.indexOf(',') == -1 && otherHost.indexOf(':') == -1) {
 
-public boolean isReadOnly(boolean useSessionStatus) throws SQLException {
-if (useSessionStatus && !this.isClosed && versionMeetsMinimum(5, 6, 5) && !getUseLocalSessionState()) {
-Statement stmt = null;
-ResultSet rs = null;
+            directCompare = (((ConnectionImpl) otherConnection).origPortToConnectTo == this.origPortToConnectTo);
+        }
 
-try {
-stmt = getMetadataSafeStatement();
+        if (directCompare) {
+            if (!nullSafeCompare(otherOrigDatabase, this.origDatabaseToConnectTo)) {
+                directCompare = false;
+                directCompare = false;
+            } else if (!nullSafeCompare(otherCurrentCatalog, this.database)) {
+                directCompare = false;
+            }
 
-rs = stmt.executeQuery("select @@session.tx_read_only");
-if (rs.next()) {
-return (rs.getInt(1) != 0);
-}
-} catch (SQLException ex1) {
-if (ex1.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords()) {
-throw SQLError.createSQLException("Could not retrieve transation read-only status server", "S1000", ex1, getExceptionInterceptor());
+        }
 
-}
+        if (directCompare) {
+            return true;
+        }
 
-}
-finally {
+        String otherResourceId = ((ConnectionImpl) otherConnection).getResourceId();
+        String myResourceId = getResourceId();
 
-if (rs != null) {
-try {
-rs.close();
-} catch (Exception ex) {}
+        if (otherResourceId != null || myResourceId != null) {
+            directCompare = nullSafeCompare(otherResourceId, myResourceId);
 
-rs = null;
-} 
+            if (directCompare) {
+                return true;
+            }
+        }
 
-if (stmt != null) {
-try {
-stmt.close();
-} catch (Exception ex) {}
+        return false;
+    }
 
-stmt = null;
-} 
-} 
-} 
+    public boolean isServerTzUTC() {
+        return this.isServerTzUTC;
+    }
 
-return this.readOnly;
-}
+    protected ConnectionImpl() {
+        this.usingCachedConfig = false;
 
-public boolean isRunningOnJDK13() {
-return this.isRunningOnJDK13;
-}
+        this.autoIncrementIncrement = 0;
+    }
 
-public synchronized boolean isSameResource(Connection otherConnection) {
-if (otherConnection == null) {
-return false;
-}
+    private synchronized void createConfigCacheIfNeeded() throws SQLException {
+        if (this.serverConfigCache != null) return;
+        try {
+            Class<?> factoryClass = Class.forName(getServerConfigCacheFactory());
+            CacheAdapterFactory<String, Map<String, String>> cacheFactory = (CacheAdapterFactory<String, Map<String, String>>) factoryClass.newInstance();
+            this.serverConfigCache = cacheFactory.getInstance(this, this.myURL, 2147483647, 2147483647, this.props);
+            ExceptionInterceptor evictOnCommsError = new ExceptionInterceptor() {
+                public void init(Connection conn, Properties config) throws SQLException {
+                }
 
-boolean directCompare = true;
+                public void destroy() {
+                }
 
-String otherHost = ((ConnectionImpl)otherConnection).origHostToConnectTo;
-String otherOrigDatabase = ((ConnectionImpl)otherConnection).origDatabaseToConnectTo;
-String otherCurrentCatalog = ((ConnectionImpl)otherConnection).database;
+                public SQLException interceptException(SQLException sqlEx, Connection conn) {
+                    if (sqlEx.getSQLState() != null && sqlEx.getSQLState().startsWith("08"))
+                        ConnectionImpl.this.serverConfigCache.invalidate(ConnectionImpl.this.getURL());
+                    return null;
+                }
+            };
+            if (this.exceptionInterceptor == null) {
+                this.exceptionInterceptor = evictOnCommsError;
+            } else {
+                ((ExceptionInterceptorChain) this.exceptionInterceptor).addRingZero(evictOnCommsError);
+            }
+        } catch (ClassNotFoundException e) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantFindCacheFactory", new Object[]{getParseInfoCacheFactory(), "parseInfoCacheFactory"}), getExceptionInterceptor());
+            sqlEx.initCause(e);
+            throw sqlEx;
+        } catch (InstantiationException e) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[]{getParseInfoCacheFactory(), "parseInfoCacheFactory"}), getExceptionInterceptor());
+            sqlEx.initCause(e);
+            throw sqlEx;
+        } catch (IllegalAccessException e) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[]{getParseInfoCacheFactory(), "parseInfoCacheFactory"}), getExceptionInterceptor());
+            sqlEx.initCause(e);
+            throw sqlEx;
+        }
+    }
 
-if (!nullSafeCompare(otherHost, this.origHostToConnectTo)) {
-directCompare = false;
-} else if (otherHost != null && otherHost.indexOf(',') == -1 && otherHost.indexOf(':') == -1) {
+    protected ConnectionImpl(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException {
+        this.usingCachedConfig = false;
+        this.autoIncrementIncrement = 0;
+        this.connectionCreationTimeMillis = System.currentTimeMillis();
+        if (databaseToConnectTo == null)
+            databaseToConnectTo = "";
+        this.origHostToConnectTo = hostToConnectTo;
+        this.origPortToConnectTo = portToConnectTo;
+        this.origDatabaseToConnectTo = databaseToConnectTo;
+        try {
+            Blob.class.getMethod("truncate", new Class[]{long.class});
+            this.isRunningOnJDK13 = false;
+        } catch (NoSuchMethodException nsme) {
+            this.isRunningOnJDK13 = true;
+        }
+        this.sessionCalendar = new GregorianCalendar();
+        this.utcCalendar = new GregorianCalendar();
+        this.utcCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+        this.log = LogFactory.getLogger(getLogger(), "MySQL", getExceptionInterceptor());
+        this.defaultTimeZone = Util.getDefaultTimeZone();
+        if ("GMT".equalsIgnoreCase(this.defaultTimeZone.getID())) {
+            this.isClientTzUTC = true;
+        } else {
+            this.isClientTzUTC = false;
+        }
+        this.openStatements = new HashMap<Statement, Statement>();
+        if (NonRegisteringDriver.isHostPropertiesList(hostToConnectTo)) {
+            Properties hostSpecificProps = NonRegisteringDriver.expandHostKeyValues(hostToConnectTo);
+            Enumeration<?> propertyNames = hostSpecificProps.propertyNames();
+            while (propertyNames.hasMoreElements()) {
+                String propertyName = propertyNames.nextElement().toString();
+                String propertyValue = hostSpecificProps.getProperty(propertyName);
+                info.setProperty(propertyName, propertyValue);
+            }
+        } else if (hostToConnectTo == null) {
+            this.host = "localhost";
+            this.hostPortPair = this.host + ":" + portToConnectTo;
+        } else {
+            this.host = hostToConnectTo;
+            if (hostToConnectTo.indexOf(":") == -1) {
+                this.hostPortPair = this.host + ":" + portToConnectTo;
+            } else {
+                this.hostPortPair = this.host;
+            }
+        }
+        this.port = portToConnectTo;
+        this.database = databaseToConnectTo;
+        this.myURL = url;
+        this.user = info.getProperty("user");
+        this.password = info.getProperty("password");
+        if (this.user == null || this.user.equals(""))
+            this.user = "";
+        if (this.password == null)
+            this.password = "";
+        this.props = info;
+        initializeDriverProperties(info);
+        if (getUseUsageAdvisor()) {
+            this.pointOfOrigin = LogUtils.findCallingClassAndMethod(new Throwable());
+        } else {
+            this.pointOfOrigin = "";
+        }
+        try {
+            this.dbmd = getMetaData(false, false);
+            initializeSafeStatementInterceptors();
+            createNewIO(false);
+            unSafeStatementInterceptors();
+        } catch (SQLException ex) {
+            cleanup(ex);
+            throw ex;
+        } catch (Exception ex) {
+            cleanup(ex);
+            StringBuffer mesg = new StringBuffer(128);
+            if (!getParanoid()) {
+                mesg.append("Cannot connect to MySQL server on ");
+                mesg.append(this.host);
+                mesg.append(":");
+                mesg.append(this.port);
+                mesg.append(".\n\n");
+                mesg.append("Make sure that there is a MySQL server ");
+                mesg.append("running on the machine/port you are trying ");
+                mesg.append("to connect to and that the machine this software is running on ");
+                mesg.append("is able to connect to this host/port (i.e. not firewalled). ");
+                mesg.append("Also make sure that the server has not been started with the --skip-networking ");
+                mesg.append("flag.\n\n");
+            } else {
+                mesg.append("Unable to connect to database.");
+            }
+            SQLException sqlEx = SQLError.createSQLException(mesg.toString(), "08S01", getExceptionInterceptor());
+            sqlEx.initCause(ex);
+            throw sqlEx;
+        }
+        NonRegisteringDriver.trackConnection(this);
+    }
+
+    public int getAutoIncrementIncrement() {
+        return this.autoIncrementIncrement;
+    }
+
+    private void loadServerVariables() throws SQLException {
+        if (getCacheServerConfiguration()) {
+            createConfigCacheIfNeeded();
+            Map<String, String> cachedVariableMap = this.serverConfigCache.get(getURL());
+            if (cachedVariableMap != null) {
+                String cachedServerVersion = cachedVariableMap.get("server_version_string");
+                if (cachedServerVersion != null && this.io.getServerVersion() != null && cachedServerVersion.equals(this.io.getServerVersion())) {
+                    this.serverVariables = cachedVariableMap;
+                    this.usingCachedConfig = true;
+                    return;
+                }
+                this.serverConfigCache.invalidate(getURL());
+            }
+        }
+        Statement stmt = null;
+        ResultSet results = null;
+        try {
+            stmt = getMetadataSafeStatement();
+            String version = this.dbmd.getDriverVersion();
+            if (version != null && version.indexOf('*') != -1) {
+                StringBuffer buf = new StringBuffer(version.length() + 10);
+                for (int i = 0; i < version.length(); i++) {
+                    char c = version.charAt(i);
+                    if (c == '*') {
+                        buf.append("[star]");
+                    } else {
+                        buf.append(c);
+                    }
+                }
+                version = buf.toString();
+            }
+            String versionComment = (getParanoid() || version == null) ? "" : ("");
+            String query = versionComment + "SHOW VARIABLES";
+            if (versionMeetsMinimum(5, 0, 3))
+                query = versionComment + "SHOW VARIABLES WHERE Variable_name ='language'" + " OR Variable_name = 'net_write_timeout'" + " OR Variable_name = 'interactive_timeout'" + " OR Variable_name = 'wait_timeout'" + " OR Variable_name = 'character_set_client'" + " OR Variable_name = 'character_set_connection'" + " OR Variable_name = 'character_set'" + " OR Variable_name = 'character_set_server'" + " OR Variable_name = 'tx_isolation'" + " OR Variable_name = 'transaction_isolation'" + " OR Variable_name = 'character_set_results'" + " OR Variable_name = 'timezone'" + " OR Variable_name = 'time_zone'" + " OR Variable_name = 'system_time_zone'" + " OR Variable_name = 'lower_case_table_names'" + " OR Variable_name = 'max_allowed_packet'" + " OR Variable_name = 'net_buffer_length'" + " OR Variable_name = 'sql_mode'" + " OR Variable_name = 'query_cache_type'" + " OR Variable_name = 'query_cache_size'" + " OR Variable_name = 'init_connect'";
+            this.serverVariables = new HashMap<String, String>();
+            try {
+                results = stmt.executeQuery(query);
+                while (results.next())
+                    this.serverVariables.put(results.getString(1), results.getString(2));
+                results.close();
+                results = null;
+            } catch (SQLException ex) {
+                if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords())
+                    throw ex;
+            }
+            if (versionMeetsMinimum(5, 0, 2))
+                try {
+                    results = stmt.executeQuery(versionComment + "SELECT @@session.auto_increment_increment");
+                    if (results.next())
+                        this.serverVariables.put("auto_increment_increment", results.getString(1));
+                } catch (SQLException ex) {
+                    if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords())
+                        throw ex;
+                }
+            if (getCacheServerConfiguration()) {
+                this.serverVariables.put("server_version_string", this.io.getServerVersion());
+                this.serverConfigCache.put(getURL(), this.serverVariables);
+                this.usingCachedConfig = true;
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (results != null)
+                try {
+                    results.close();
+                } catch (SQLException sqlE) {
+                }
+            if (stmt != null)
+                try {
+                    stmt.close();
+                } catch (SQLException sqlE) {
+                }
+        }
+    }
 
-directCompare = (((ConnectionImpl)otherConnection).origPortToConnectTo == this.origPortToConnectTo);
-} 
+    public boolean lowerCaseTableNames() {
+        return this.lowerCaseTableNames;
+    }
 
-if (directCompare) {
-if (!nullSafeCompare(otherOrigDatabase, this.origDatabaseToConnectTo)) { directCompare = false;
-directCompare = false; }
-else if (!nullSafeCompare(otherCurrentCatalog, this.database))
-{ directCompare = false; }
+    public synchronized void maxRowsChanged(Statement stmt) {
+        if (this.statementsUsingMaxRows == null) {
+            this.statementsUsingMaxRows = new HashMap<Statement, Statement>();
+        }
 
-}
+        this.statementsUsingMaxRows.put(stmt, stmt);
 
-if (directCompare) {
-return true;
-}
+        this.maxRowsChanged = true;
+    }
 
-String otherResourceId = ((ConnectionImpl)otherConnection).getResourceId();
-String myResourceId = getResourceId();
+    public String nativeSQL(String sql) throws SQLException {
+        if (sql == null) {
+            return null;
+        }
 
-if (otherResourceId != null || myResourceId != null) {
-directCompare = nullSafeCompare(otherResourceId, myResourceId);
+        Object escapedSqlResult = EscapeProcessor.escapeSQL(sql, serverSupportsConvertFn(), getLoadBalanceSafeProxy());
 
-if (directCompare) {
-return true;
-}
-} 
+        if (escapedSqlResult instanceof String) {
+            return (String) escapedSqlResult;
+        }
 
-return false;
-}
+        return ((EscapeProcessorResult) escapedSqlResult).escapedSql;
+    }
 
-public boolean isServerTzUTC() {
-return this.isServerTzUTC;
-}
+    private CallableStatement parseCallableStatement(String sql) throws SQLException {
+        Object escapedSqlResult = EscapeProcessor.escapeSQL(sql, serverSupportsConvertFn(), getLoadBalanceSafeProxy());
 
-protected ConnectionImpl() {
-this.usingCachedConfig = false;
+        boolean isFunctionCall = false;
+        String parsedSql = null;
 
-this.autoIncrementIncrement = 0; } private synchronized void createConfigCacheIfNeeded() throws SQLException { if (this.serverConfigCache != null) return;  try { Class<?> factoryClass = Class.forName(getServerConfigCacheFactory()); CacheAdapterFactory<String, Map<String, String>> cacheFactory = (CacheAdapterFactory<String, Map<String, String>>)factoryClass.newInstance(); this.serverConfigCache = cacheFactory.getInstance(this, this.myURL, 2147483647, 2147483647, this.props); ExceptionInterceptor evictOnCommsError = new ExceptionInterceptor() { public void init(Connection conn, Properties config) throws SQLException {} public void destroy() {} public SQLException interceptException(SQLException sqlEx, Connection conn) { if (sqlEx.getSQLState() != null && sqlEx.getSQLState().startsWith("08")) ConnectionImpl.this.serverConfigCache.invalidate(ConnectionImpl.this.getURL());  return null; } }; if (this.exceptionInterceptor == null) { this.exceptionInterceptor = evictOnCommsError; } else { ((ExceptionInterceptorChain)this.exceptionInterceptor).addRingZero(evictOnCommsError); }  } catch (ClassNotFoundException e) { SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantFindCacheFactory", new Object[] { getParseInfoCacheFactory(), "parseInfoCacheFactory" }), getExceptionInterceptor()); sqlEx.initCause(e); throw sqlEx; } catch (InstantiationException e) { SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[] { getParseInfoCacheFactory(), "parseInfoCacheFactory" }), getExceptionInterceptor()); sqlEx.initCause(e); throw sqlEx; } catch (IllegalAccessException e) { SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.CantLoadCacheFactory", new Object[] { getParseInfoCacheFactory(), "parseInfoCacheFactory" }), getExceptionInterceptor()); sqlEx.initCause(e); throw sqlEx; }  } protected ConnectionImpl(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException { this.usingCachedConfig = false; this.autoIncrementIncrement = 0; this.connectionCreationTimeMillis = System.currentTimeMillis(); if (databaseToConnectTo == null)
-databaseToConnectTo = "";  this.origHostToConnectTo = hostToConnectTo; this.origPortToConnectTo = portToConnectTo; this.origDatabaseToConnectTo = databaseToConnectTo; try { Blob.class.getMethod("truncate", new Class[] { long.class }); this.isRunningOnJDK13 = false; } catch (NoSuchMethodException nsme) { this.isRunningOnJDK13 = true; }  this.sessionCalendar = new GregorianCalendar(); this.utcCalendar = new GregorianCalendar(); this.utcCalendar.setTimeZone(TimeZone.getTimeZone("GMT")); this.log = LogFactory.getLogger(getLogger(), "MySQL", getExceptionInterceptor()); this.defaultTimeZone = Util.getDefaultTimeZone(); if ("GMT".equalsIgnoreCase(this.defaultTimeZone.getID())) { this.isClientTzUTC = true; } else { this.isClientTzUTC = false; }  this.openStatements = new HashMap<Statement, Statement>(); if (NonRegisteringDriver.isHostPropertiesList(hostToConnectTo)) { Properties hostSpecificProps = NonRegisteringDriver.expandHostKeyValues(hostToConnectTo); Enumeration<?> propertyNames = hostSpecificProps.propertyNames(); while (propertyNames.hasMoreElements()) { String propertyName = propertyNames.nextElement().toString(); String propertyValue = hostSpecificProps.getProperty(propertyName); info.setProperty(propertyName, propertyValue); }  } else if (hostToConnectTo == null) { this.host = "localhost"; this.hostPortPair = this.host + ":" + portToConnectTo; } else { this.host = hostToConnectTo; if (hostToConnectTo.indexOf(":") == -1) { this.hostPortPair = this.host + ":" + portToConnectTo; } else { this.hostPortPair = this.host; }  }  this.port = portToConnectTo; this.database = databaseToConnectTo; this.myURL = url; this.user = info.getProperty("user"); this.password = info.getProperty("password"); if (this.user == null || this.user.equals(""))
-this.user = "";  if (this.password == null)
-this.password = "";  this.props = info; initializeDriverProperties(info); if (getUseUsageAdvisor()) { this.pointOfOrigin = LogUtils.findCallingClassAndMethod(new Throwable()); } else { this.pointOfOrigin = ""; }  try { this.dbmd = getMetaData(false, false); initializeSafeStatementInterceptors(); createNewIO(false); unSafeStatementInterceptors(); } catch (SQLException ex) { cleanup(ex); throw ex; } catch (Exception ex) { cleanup(ex); StringBuffer mesg = new StringBuffer(128); if (!getParanoid()) { mesg.append("Cannot connect to MySQL server on "); mesg.append(this.host); mesg.append(":"); mesg.append(this.port); mesg.append(".\n\n"); mesg.append("Make sure that there is a MySQL server "); mesg.append("running on the machine/port you are trying "); mesg.append("to connect to and that the machine this software is running on "); mesg.append("is able to connect to this host/port (i.e. not firewalled). "); mesg.append("Also make sure that the server has not been started with the --skip-networking "); mesg.append("flag.\n\n"); } else { mesg.append("Unable to connect to database."); }  SQLException sqlEx = SQLError.createSQLException(mesg.toString(), "08S01", getExceptionInterceptor()); sqlEx.initCause(ex); throw sqlEx; }  NonRegisteringDriver.trackConnection(this); } public int getAutoIncrementIncrement() { return this.autoIncrementIncrement; } private void loadServerVariables() throws SQLException { if (getCacheServerConfiguration()) { createConfigCacheIfNeeded(); Map<String, String> cachedVariableMap = this.serverConfigCache.get(getURL()); if (cachedVariableMap != null) { String cachedServerVersion = cachedVariableMap.get("server_version_string"); if (cachedServerVersion != null && this.io.getServerVersion() != null && cachedServerVersion.equals(this.io.getServerVersion())) { this.serverVariables = cachedVariableMap; this.usingCachedConfig = true; return; }  this.serverConfigCache.invalidate(getURL()); }  }  Statement stmt = null; ResultSet results = null; try { stmt = getMetadataSafeStatement(); String version = this.dbmd.getDriverVersion(); if (version != null && version.indexOf('*') != -1) { StringBuffer buf = new StringBuffer(version.length() + 10); for (int i = 0; i < version.length(); i++) { char c = version.charAt(i); if (c == '*') { buf.append("[star]"); } else { buf.append(c); }  }  version = buf.toString(); }  String versionComment = (getParanoid() || version == null) ? "" : (""); String query = versionComment + "SHOW VARIABLES"; if (versionMeetsMinimum(5, 0, 3))
-query = versionComment + "SHOW VARIABLES WHERE Variable_name ='language'" + " OR Variable_name = 'net_write_timeout'" + " OR Variable_name = 'interactive_timeout'" + " OR Variable_name = 'wait_timeout'" + " OR Variable_name = 'character_set_client'" + " OR Variable_name = 'character_set_connection'" + " OR Variable_name = 'character_set'" + " OR Variable_name = 'character_set_server'" + " OR Variable_name = 'tx_isolation'" + " OR Variable_name = 'transaction_isolation'" + " OR Variable_name = 'character_set_results'" + " OR Variable_name = 'timezone'" + " OR Variable_name = 'time_zone'" + " OR Variable_name = 'system_time_zone'" + " OR Variable_name = 'lower_case_table_names'" + " OR Variable_name = 'max_allowed_packet'" + " OR Variable_name = 'net_buffer_length'" + " OR Variable_name = 'sql_mode'" + " OR Variable_name = 'query_cache_type'" + " OR Variable_name = 'query_cache_size'" + " OR Variable_name = 'init_connect'";  this.serverVariables = new HashMap<String, String>(); try { results = stmt.executeQuery(query); while (results.next())
-this.serverVariables.put(results.getString(1), results.getString(2));  results.close(); results = null; } catch (SQLException ex) { if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords())
-throw ex;  }  if (versionMeetsMinimum(5, 0, 2))
-try { results = stmt.executeQuery(versionComment + "SELECT @@session.auto_increment_increment"); if (results.next())
-this.serverVariables.put("auto_increment_increment", results.getString(1));  } catch (SQLException ex) { if (ex.getErrorCode() != 1820 || getDisconnectOnExpiredPasswords())
-throw ex;  }   if (getCacheServerConfiguration()) { this.serverVariables.put("server_version_string", this.io.getServerVersion()); this.serverConfigCache.put(getURL(), this.serverVariables); this.usingCachedConfig = true; }  } catch (SQLException e) { throw e; } finally { if (results != null)
-try { results.close(); } catch (SQLException sqlE) {}  if (stmt != null)
-try { stmt.close(); } catch (SQLException sqlE) {}  }  }
-public boolean lowerCaseTableNames() { return this.lowerCaseTableNames; }
+        if (escapedSqlResult instanceof EscapeProcessorResult) {
+            parsedSql = ((EscapeProcessorResult) escapedSqlResult).escapedSql;
+            isFunctionCall = ((EscapeProcessorResult) escapedSqlResult).callingStoredFunction;
+        } else {
+            parsedSql = (String) escapedSqlResult;
+            isFunctionCall = false;
+        }
 
-public synchronized void maxRowsChanged(Statement stmt) {
-if (this.statementsUsingMaxRows == null) {
-this.statementsUsingMaxRows = new HashMap<Statement, Statement>();
-}
+        return CallableStatement.getInstance(getLoadBalanceSafeProxy(), parsedSql, this.database, isFunctionCall);
+    }
 
-this.statementsUsingMaxRows.put(stmt, stmt);
+    public boolean parserKnowsUnicode() {
+        return this.parserKnowsUnicode;
+    }
 
-this.maxRowsChanged = true;
-}
+    public void ping() throws SQLException {
+        pingInternal(true, 0);
+    }
 
-public String nativeSQL(String sql) throws SQLException {
-if (sql == null) {
-return null;
-}
+    public void pingInternal(boolean checkForClosedConnection, int timeoutMillis) throws SQLException {
+        if (checkForClosedConnection) {
+            checkClosed();
+        }
 
-Object escapedSqlResult = EscapeProcessor.escapeSQL(sql, serverSupportsConvertFn(), getLoadBalanceSafeProxy());
+        long pingMillisLifetime = getSelfDestructOnPingSecondsLifetime();
+        int pingMaxOperations = getSelfDestructOnPingMaxOperations();
 
-if (escapedSqlResult instanceof String) {
-return (String)escapedSqlResult;
-}
+        if ((pingMillisLifetime > 0L && System.currentTimeMillis() - this.connectionCreationTimeMillis > pingMillisLifetime) || (pingMaxOperations > 0 && pingMaxOperations <= this.io.getCommandCount())) {
 
-return ((EscapeProcessorResult)escapedSqlResult).escapedSql;
-}
+            close();
 
-private CallableStatement parseCallableStatement(String sql) throws SQLException {
-Object escapedSqlResult = EscapeProcessor.escapeSQL(sql, serverSupportsConvertFn(), getLoadBalanceSafeProxy());
+            throw SQLError.createSQLException(Messages.getString("Connection.exceededConnectionLifetime"), "08S01", getExceptionInterceptor());
+        }
 
-boolean isFunctionCall = false;
-String parsedSql = null;
+        this.io.sendCommand(14, null, null, false, null, timeoutMillis);
+    }
 
-if (escapedSqlResult instanceof EscapeProcessorResult) {
-parsedSql = ((EscapeProcessorResult)escapedSqlResult).escapedSql;
-isFunctionCall = ((EscapeProcessorResult)escapedSqlResult).callingStoredFunction;
-} else {
-parsedSql = (String)escapedSqlResult;
-isFunctionCall = false;
-} 
+    public CallableStatement prepareCall(String sql) throws SQLException {
+        return prepareCall(sql, 1003, 1007);
+    }
 
-return CallableStatement.getInstance(getLoadBalanceSafeProxy(), parsedSql, this.database, isFunctionCall);
-}
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        if (versionMeetsMinimum(5, 0, 0)) {
+            CallableStatement cStmt = null;
 
-public boolean parserKnowsUnicode() {
-return this.parserKnowsUnicode;
-}
+            if (!getCacheCallableStatements()) {
 
-public void ping() throws SQLException {
-pingInternal(true, 0);
-}
+                cStmt = parseCallableStatement(sql);
+            } else {
+                synchronized (this.parsedCallableStatementCache) {
+                    CompoundCacheKey key = new CompoundCacheKey(getCatalog(), sql);
 
-public void pingInternal(boolean checkForClosedConnection, int timeoutMillis) throws SQLException {
-if (checkForClosedConnection) {
-checkClosed();
-}
+                    CallableStatement.CallableStatementParamInfo cachedParamInfo = (CallableStatement.CallableStatementParamInfo) this.parsedCallableStatementCache.get(key);
 
-long pingMillisLifetime = getSelfDestructOnPingSecondsLifetime();
-int pingMaxOperations = getSelfDestructOnPingMaxOperations();
+                    if (cachedParamInfo != null) {
+                        cStmt = CallableStatement.getInstance(getLoadBalanceSafeProxy(), cachedParamInfo);
+                    } else {
+                        cStmt = parseCallableStatement(sql);
 
-if ((pingMillisLifetime > 0L && System.currentTimeMillis() - this.connectionCreationTimeMillis > pingMillisLifetime) || (pingMaxOperations > 0 && pingMaxOperations <= this.io.getCommandCount())) {
+                        synchronized (cStmt) {
+                            cachedParamInfo = cStmt.paramInfo;
+                        }
 
-close();
+                        this.parsedCallableStatementCache.put(key, cachedParamInfo);
+                    }
+                }
+            }
 
-throw SQLError.createSQLException(Messages.getString("Connection.exceededConnectionLifetime"), "08S01", getExceptionInterceptor());
-} 
+            cStmt.setResultSetType(resultSetType);
+            cStmt.setResultSetConcurrency(resultSetConcurrency);
 
-this.io.sendCommand(14, null, null, false, null, timeoutMillis);
-}
+            return cStmt;
+        }
 
-public CallableStatement prepareCall(String sql) throws SQLException {
-return prepareCall(sql, 1003, 1007);
-}
+        throw SQLError.createSQLException("Callable statements not supported.", "S1C00", getExceptionInterceptor());
+    }
 
-public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-if (versionMeetsMinimum(5, 0, 0)) {
-CallableStatement cStmt = null;
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        if (getPedantic() &&
+                resultSetHoldability != 1) {
+            throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
+        }
 
-if (!getCacheCallableStatements()) {
+        CallableStatement cStmt = (CallableStatement) prepareCall(sql, resultSetType, resultSetConcurrency);
 
-cStmt = parseCallableStatement(sql);
-} else {
-synchronized (this.parsedCallableStatementCache) {
-CompoundCacheKey key = new CompoundCacheKey(getCatalog(), sql);
+        return cStmt;
+    }
 
-CallableStatement.CallableStatementParamInfo cachedParamInfo = (CallableStatement.CallableStatementParamInfo)this.parsedCallableStatementCache.get(key);
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return prepareStatement(sql, 1003, 1007);
+    }
 
-if (cachedParamInfo != null) {
-cStmt = CallableStatement.getInstance(getLoadBalanceSafeProxy(), cachedParamInfo);
-} else {
-cStmt = parseCallableStatement(sql);
+    public PreparedStatement prepareStatement(String sql, int autoGenKeyIndex) throws SQLException {
+        PreparedStatement pStmt = prepareStatement(sql);
 
-synchronized (cStmt) {
-cachedParamInfo = cStmt.paramInfo;
-} 
+        ((PreparedStatement) pStmt).setRetrieveGeneratedKeys((autoGenKeyIndex == 1));
 
-this.parsedCallableStatementCache.put(key, cachedParamInfo);
-} 
-} 
-} 
+        return pStmt;
+    }
 
-cStmt.setResultSetType(resultSetType);
-cStmt.setResultSetConcurrency(resultSetConcurrency);
+    public synchronized PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        checkClosed();
 
-return cStmt;
-} 
+        PreparedStatement pStmt = null;
 
-throw SQLError.createSQLException("Callable statements not supported.", "S1C00", getExceptionInterceptor());
-}
+        boolean canServerPrepare = true;
 
-public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-if (getPedantic() && 
-resultSetHoldability != 1) {
-throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
-}
+        String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
 
-CallableStatement cStmt = (CallableStatement)prepareCall(sql, resultSetType, resultSetConcurrency);
+        if (this.useServerPreparedStmts && getEmulateUnsupportedPstmts()) {
+            canServerPrepare = canHandleAsServerPreparedStatement(nativeSql);
+        }
 
-return cStmt;
-}
+        if (this.useServerPreparedStmts && canServerPrepare) {
+            if (getCachePreparedStatements()) {
+                synchronized (this.serverSideStatementCache) {
+                    pStmt = (ServerPreparedStatement) this.serverSideStatementCache.remove(sql);
 
-public PreparedStatement prepareStatement(String sql) throws SQLException {
-return prepareStatement(sql, 1003, 1007);
-}
+                    if (pStmt != null) {
+                        ((ServerPreparedStatement) pStmt).setClosed(false);
+                        pStmt.clearParameters();
+                    }
 
-public PreparedStatement prepareStatement(String sql, int autoGenKeyIndex) throws SQLException {
-PreparedStatement pStmt = prepareStatement(sql);
+                    if (pStmt == null) {
+                        try {
+                            pStmt = ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database, resultSetType, resultSetConcurrency);
 
-((PreparedStatement)pStmt).setRetrieveGeneratedKeys((autoGenKeyIndex == 1));
+                            if (sql.length() < getPreparedStatementCacheSqlLimit()) {
+                                ((ServerPreparedStatement) pStmt).isCached = true;
+                            }
 
-return pStmt;
-}
+                            pStmt.setResultSetType(resultSetType);
+                            pStmt.setResultSetConcurrency(resultSetConcurrency);
+                        } catch (SQLException sqlEx) {
 
-public synchronized PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-checkClosed();
+                            if (getEmulateUnsupportedPstmts()) {
+                                pStmt = (PreparedStatement) clientPrepareStatement(nativeSql, resultSetType, resultSetConcurrency, false);
 
-PreparedStatement pStmt = null;
+                                if (sql.length() < getPreparedStatementCacheSqlLimit()) {
+                                    this.serverSideStatementCheckCache.put(sql, Boolean.FALSE);
+                                }
+                            } else {
+                                throw sqlEx;
+                            }
+                        }
+                    }
+                }
+            } else {
+                try {
+                    pStmt = ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database, resultSetType, resultSetConcurrency);
 
-boolean canServerPrepare = true;
+                    pStmt.setResultSetType(resultSetType);
+                    pStmt.setResultSetConcurrency(resultSetConcurrency);
+                } catch (SQLException sqlEx) {
 
-String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
+                    if (getEmulateUnsupportedPstmts()) {
+                        pStmt = (PreparedStatement) clientPrepareStatement(nativeSql, resultSetType, resultSetConcurrency, false);
+                    } else {
+                        throw sqlEx;
+                    }
+                }
+            }
+        } else {
+            pStmt = (PreparedStatement) clientPrepareStatement(nativeSql, resultSetType, resultSetConcurrency, false);
+        }
 
-if (this.useServerPreparedStmts && getEmulateUnsupportedPstmts()) {
-canServerPrepare = canHandleAsServerPreparedStatement(nativeSql);
-}
+        return pStmt;
+    }
 
-if (this.useServerPreparedStmts && canServerPrepare) {
-if (getCachePreparedStatements()) {
-synchronized (this.serverSideStatementCache) {
-pStmt = (ServerPreparedStatement)this.serverSideStatementCache.remove(sql);
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        if (getPedantic() &&
+                resultSetHoldability != 1) {
+            throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
+        }
 
-if (pStmt != null) {
-((ServerPreparedStatement)pStmt).setClosed(false);
-pStmt.clearParameters();
-} 
+        return prepareStatement(sql, resultSetType, resultSetConcurrency);
+    }
 
-if (pStmt == null) {
-try {
-pStmt = ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database, resultSetType, resultSetConcurrency);
+    public PreparedStatement prepareStatement(String sql, int[] autoGenKeyIndexes) throws SQLException {
+        PreparedStatement pStmt = prepareStatement(sql);
 
-if (sql.length() < getPreparedStatementCacheSqlLimit()) {
-((ServerPreparedStatement)pStmt).isCached = true;
-}
+        ((PreparedStatement) pStmt).setRetrieveGeneratedKeys((autoGenKeyIndexes != null && autoGenKeyIndexes.length > 0));
 
-pStmt.setResultSetType(resultSetType);
-pStmt.setResultSetConcurrency(resultSetConcurrency);
-} catch (SQLException sqlEx) {
+        return pStmt;
+    }
+
+    public PreparedStatement prepareStatement(String sql, String[] autoGenKeyColNames) throws SQLException {
+        PreparedStatement pStmt = prepareStatement(sql);
 
-if (getEmulateUnsupportedPstmts()) {
-pStmt = (PreparedStatement)clientPrepareStatement(nativeSql, resultSetType, resultSetConcurrency, false);
+        ((PreparedStatement) pStmt).setRetrieveGeneratedKeys((autoGenKeyColNames != null && autoGenKeyColNames.length > 0));
+
+        return pStmt;
+    }
+
+    public void realClose(boolean calledExplicitly, boolean issueRollback, boolean skipLocalTeardown, Throwable reason) throws SQLException {
+        SQLException sqlEx = null;
 
-if (sql.length() < getPreparedStatementCacheSqlLimit()) {
-this.serverSideStatementCheckCache.put(sql, Boolean.FALSE);
-}
-} else {
-throw sqlEx;
-} 
-} 
-}
-} 
-} else {
-try {
-pStmt = ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, this.database, resultSetType, resultSetConcurrency);
+        if (isClosed()) {
+            return;
+        }
 
-pStmt.setResultSetType(resultSetType);
-pStmt.setResultSetConcurrency(resultSetConcurrency);
-} catch (SQLException sqlEx) {
+        this.forceClosedReason = reason;
 
-if (getEmulateUnsupportedPstmts()) {
-pStmt = (PreparedStatement)clientPrepareStatement(nativeSql, resultSetType, resultSetConcurrency, false);
-} else {
-throw sqlEx;
-} 
-} 
-} 
-} else {
-pStmt = (PreparedStatement)clientPrepareStatement(nativeSql, resultSetType, resultSetConcurrency, false);
-} 
+        try {
+            if (!skipLocalTeardown) {
+                if (!getAutoCommit() && issueRollback) {
+                    try {
+                        rollback();
+                    } catch (SQLException ex) {
+                        sqlEx = ex;
+                    }
+                }
 
-return pStmt;
-}
+                reportMetrics();
 
-public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-if (getPedantic() && 
-resultSetHoldability != 1) {
-throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
-}
+                if (getUseUsageAdvisor()) {
+                    if (!calledExplicitly) {
+                        String message = "Connection implicitly closed by Driver. You should call Connection.close() from your code to free resources more efficiently and avoid resource leaks.";
 
-return prepareStatement(sql, resultSetType, resultSetConcurrency);
-}
+                        this.eventSink.consumeEvent(new ProfilerEvent((byte) 0, "", getCatalog(), getId(), -1, -1, System.currentTimeMillis(), 0L, Constants.MILLIS_I18N, null, this.pointOfOrigin, message));
+                    }
 
-public PreparedStatement prepareStatement(String sql, int[] autoGenKeyIndexes) throws SQLException {
-PreparedStatement pStmt = prepareStatement(sql);
+                    long connectionLifeTime = System.currentTimeMillis() - this.connectionCreationTimeMillis;
 
-((PreparedStatement)pStmt).setRetrieveGeneratedKeys((autoGenKeyIndexes != null && autoGenKeyIndexes.length > 0));
+                    if (connectionLifeTime < 500L) {
+                        String message = "Connection lifetime of < .5 seconds. You might be un-necessarily creating short-lived connections and should investigate connection pooling to be more efficient.";
 
-return pStmt;
-}
+                        this.eventSink.consumeEvent(new ProfilerEvent((byte) 0, "", getCatalog(), getId(), -1, -1, System.currentTimeMillis(), 0L, Constants.MILLIS_I18N, null, this.pointOfOrigin, message));
+                    }
+                }
 
-public PreparedStatement prepareStatement(String sql, String[] autoGenKeyColNames) throws SQLException {
-PreparedStatement pStmt = prepareStatement(sql);
+                try {
+                    closeAllOpenStatements();
+                } catch (SQLException ex) {
+                    sqlEx = ex;
+                }
 
-((PreparedStatement)pStmt).setRetrieveGeneratedKeys((autoGenKeyColNames != null && autoGenKeyColNames.length > 0));
+                if (this.io != null) {
+                    try {
+                        this.io.quit();
+                    } catch (Exception e) {
+                    }
 
-return pStmt;
-}
+                }
+            } else {
 
-public void realClose(boolean calledExplicitly, boolean issueRollback, boolean skipLocalTeardown, Throwable reason) throws SQLException {
-SQLException sqlEx = null;
+                this.io.forceClose();
+            }
 
-if (isClosed()) {
-return;
-}
+            if (this.statementInterceptors != null) {
+                for (int i = 0; i < this.statementInterceptors.size(); i++) {
+                    ((StatementInterceptorV2) this.statementInterceptors.get(i)).destroy();
+                }
+            }
 
-this.forceClosedReason = reason;
+            if (this.exceptionInterceptor != null) {
+                this.exceptionInterceptor.destroy();
+            }
+        } finally {
+            this.openStatements = null;
+            this.io = null;
+            this.statementInterceptors = null;
+            this.exceptionInterceptor = null;
+            ProfilerEventHandlerFactory.removeInstance(this);
 
-try {
-if (!skipLocalTeardown) {
-if (!getAutoCommit() && issueRollback) {
-try {
-rollback();
-} catch (SQLException ex) {
-sqlEx = ex;
-} 
-}
+            synchronized (this) {
+                if (this.cancelTimer != null) {
+                    this.cancelTimer.cancel();
+                }
+            }
 
-reportMetrics();
+            this.isClosed = true;
+        }
 
-if (getUseUsageAdvisor()) {
-if (!calledExplicitly) {
-String message = "Connection implicitly closed by Driver. You should call Connection.close() from your code to free resources more efficiently and avoid resource leaks.";
+        if (sqlEx != null) {
+            throw sqlEx;
+        }
+    }
 
-this.eventSink.consumeEvent(new ProfilerEvent((byte)0, "", getCatalog(), getId(), -1, -1, System.currentTimeMillis(), 0L, Constants.MILLIS_I18N, null, this.pointOfOrigin, message));
-} 
+    public synchronized void recachePreparedStatement(ServerPreparedStatement pstmt) throws SQLException {
+        if (pstmt.isPoolable()) {
+            synchronized (this.serverSideStatementCache) {
+                this.serverSideStatementCache.put(pstmt.originalSql, pstmt);
+            }
+        }
+    }
 
-long connectionLifeTime = System.currentTimeMillis() - this.connectionCreationTimeMillis;
+    public void registerQueryExecutionTime(long queryTimeMs) {
+        if (queryTimeMs > this.longestQueryTimeMs) {
+            this.longestQueryTimeMs = queryTimeMs;
 
-if (connectionLifeTime < 500L) {
-String message = "Connection lifetime of < .5 seconds. You might be un-necessarily creating short-lived connections and should investigate connection pooling to be more efficient.";
+            repartitionPerformanceHistogram();
+        }
 
-this.eventSink.consumeEvent(new ProfilerEvent((byte)0, "", getCatalog(), getId(), -1, -1, System.currentTimeMillis(), 0L, Constants.MILLIS_I18N, null, this.pointOfOrigin, message));
-} 
-} 
+        addToPerformanceHistogram(queryTimeMs, 1);
 
-try {
-closeAllOpenStatements();
-} catch (SQLException ex) {
-sqlEx = ex;
-} 
+        if (queryTimeMs < this.shortestQueryTimeMs) {
+            this.shortestQueryTimeMs = (queryTimeMs == 0L) ? 1L : queryTimeMs;
+        }
 
-if (this.io != null) {
-try {
-this.io.quit();
-} catch (Exception e) {}
+        this.numberOfQueriesIssued++;
 
-}
-}
-else {
+        this.totalQueryTimeMs += queryTimeMs;
+    }
 
-this.io.forceClose();
-} 
+    public void registerStatement(Statement stmt) {
+        synchronized (this.openStatements) {
+            this.openStatements.put(stmt, stmt);
+        }
+    }
 
-if (this.statementInterceptors != null) {
-for (int i = 0; i < this.statementInterceptors.size(); i++) {
-((StatementInterceptorV2)this.statementInterceptors.get(i)).destroy();
-}
-}
+    public void releaseSavepoint(Savepoint arg0) throws SQLException {
+    }
 
-if (this.exceptionInterceptor != null) {
-this.exceptionInterceptor.destroy();
-}
-} finally {
-this.openStatements = null;
-this.io = null;
-this.statementInterceptors = null;
-this.exceptionInterceptor = null;
-ProfilerEventHandlerFactory.removeInstance(this);
+    private void repartitionHistogram(int[] histCounts, long[] histBreakpoints, long currentLowerBound, long currentUpperBound) {
+        if (this.oldHistCounts == null) {
+            this.oldHistCounts = new int[histCounts.length];
+            this.oldHistBreakpoints = new long[histBreakpoints.length];
+        }
 
-synchronized (this) {
-if (this.cancelTimer != null) {
-this.cancelTimer.cancel();
-}
-} 
+        System.arraycopy(histCounts, 0, this.oldHistCounts, 0, histCounts.length);
 
-this.isClosed = true;
-} 
+        System.arraycopy(histBreakpoints, 0, this.oldHistBreakpoints, 0, histBreakpoints.length);
 
-if (sqlEx != null) {
-throw sqlEx;
-}
-}
+        createInitialHistogram(histBreakpoints, currentLowerBound, currentUpperBound);
 
-public synchronized void recachePreparedStatement(ServerPreparedStatement pstmt) throws SQLException {
-if (pstmt.isPoolable()) {
-synchronized (this.serverSideStatementCache) {
-this.serverSideStatementCache.put(pstmt.originalSql, pstmt);
-} 
-}
-}
+        for (int i = 0; i < 20; i++) {
+            addToHistogram(histCounts, histBreakpoints, this.oldHistBreakpoints[i], this.oldHistCounts[i], currentLowerBound, currentUpperBound);
+        }
+    }
 
-public void registerQueryExecutionTime(long queryTimeMs) {
-if (queryTimeMs > this.longestQueryTimeMs) {
-this.longestQueryTimeMs = queryTimeMs;
+    private void repartitionPerformanceHistogram() {
+        checkAndCreatePerformanceHistogram();
 
-repartitionPerformanceHistogram();
-} 
+        repartitionHistogram(this.perfMetricsHistCounts, this.perfMetricsHistBreakpoints, (this.shortestQueryTimeMs == Long.MAX_VALUE) ? 0L : this.shortestQueryTimeMs, this.longestQueryTimeMs);
+    }
 
-addToPerformanceHistogram(queryTimeMs, 1);
+    private void repartitionTablesAccessedHistogram() {
+        checkAndCreateTablesAccessedHistogram();
 
-if (queryTimeMs < this.shortestQueryTimeMs) {
-this.shortestQueryTimeMs = (queryTimeMs == 0L) ? 1L : queryTimeMs;
-}
+        repartitionHistogram(this.numTablesMetricsHistCounts, this.numTablesMetricsHistBreakpoints, (this.minimumNumberTablesAccessed == Long.MAX_VALUE) ? 0L : this.minimumNumberTablesAccessed, this.maximumNumberTablesAccessed);
+    }
 
-this.numberOfQueriesIssued++;
+    private void reportMetrics() {
+        if (getGatherPerformanceMetrics()) {
+            StringBuffer logMessage = new StringBuffer(256);
 
-this.totalQueryTimeMs += queryTimeMs;
-}
+            logMessage.append("** Performance Metrics Report **\n");
+            logMessage.append("\nLongest reported query: " + this.longestQueryTimeMs + " ms");
 
-public void registerStatement(Statement stmt) {
-synchronized (this.openStatements) {
-this.openStatements.put(stmt, stmt);
-} 
-}
+            logMessage.append("\nShortest reported query: " + this.shortestQueryTimeMs + " ms");
 
-public void releaseSavepoint(Savepoint arg0) throws SQLException {}
+            logMessage.append("\nAverage query execution time: " + (this.totalQueryTimeMs / this.numberOfQueriesIssued) + " ms");
 
-private void repartitionHistogram(int[] histCounts, long[] histBreakpoints, long currentLowerBound, long currentUpperBound) {
-if (this.oldHistCounts == null) {
-this.oldHistCounts = new int[histCounts.length];
-this.oldHistBreakpoints = new long[histBreakpoints.length];
-} 
+            logMessage.append("\nNumber of statements executed: " + this.numberOfQueriesIssued);
 
-System.arraycopy(histCounts, 0, this.oldHistCounts, 0, histCounts.length);
+            logMessage.append("\nNumber of result sets created: " + this.numberOfResultSetsCreated);
 
-System.arraycopy(histBreakpoints, 0, this.oldHistBreakpoints, 0, histBreakpoints.length);
+            logMessage.append("\nNumber of statements prepared: " + this.numberOfPrepares);
 
-createInitialHistogram(histBreakpoints, currentLowerBound, currentUpperBound);
+            logMessage.append("\nNumber of prepared statement executions: " + this.numberOfPreparedExecutes);
 
-for (int i = 0; i < 20; i++) {
-addToHistogram(histCounts, histBreakpoints, this.oldHistBreakpoints[i], this.oldHistCounts[i], currentLowerBound, currentUpperBound);
-}
-}
+            if (this.perfMetricsHistBreakpoints != null) {
+                logMessage.append("\n\n\tTiming Histogram:\n");
+                int maxNumPoints = 20;
+                int highestCount = Integer.MIN_VALUE;
+                int i;
+                for (i = 0; i < 20; i++) {
+                    if (this.perfMetricsHistCounts[i] > highestCount) {
+                        highestCount = this.perfMetricsHistCounts[i];
+                    }
+                }
 
-private void repartitionPerformanceHistogram() {
-checkAndCreatePerformanceHistogram();
+                if (highestCount == 0) {
+                    highestCount = 1;
+                }
 
-repartitionHistogram(this.perfMetricsHistCounts, this.perfMetricsHistBreakpoints, (this.shortestQueryTimeMs == Long.MAX_VALUE) ? 0L : this.shortestQueryTimeMs, this.longestQueryTimeMs);
-}
+                for (i = 0; i < 19; i++) {
 
-private void repartitionTablesAccessedHistogram() {
-checkAndCreateTablesAccessedHistogram();
+                    if (i == 0) {
+                        logMessage.append("\n\tless than " + this.perfMetricsHistBreakpoints[i + 1] + " ms: \t" + this.perfMetricsHistCounts[i]);
+                    } else {
 
-repartitionHistogram(this.numTablesMetricsHistCounts, this.numTablesMetricsHistBreakpoints, (this.minimumNumberTablesAccessed == Long.MAX_VALUE) ? 0L : this.minimumNumberTablesAccessed, this.maximumNumberTablesAccessed);
-}
+                        logMessage.append("\n\tbetween " + this.perfMetricsHistBreakpoints[i] + " and " + this.perfMetricsHistBreakpoints[i + 1] + " ms: \t" + this.perfMetricsHistCounts[i]);
+                    }
 
-private void reportMetrics() {
-if (getGatherPerformanceMetrics()) {
-StringBuffer logMessage = new StringBuffer(256);
+                    logMessage.append("\t");
 
-logMessage.append("** Performance Metrics Report **\n");
-logMessage.append("\nLongest reported query: " + this.longestQueryTimeMs + " ms");
+                    int numPointsToGraph = (int) (maxNumPoints * this.perfMetricsHistCounts[i] / highestCount);
 
-logMessage.append("\nShortest reported query: " + this.shortestQueryTimeMs + " ms");
+                    for (int j = 0; j < numPointsToGraph; j++) {
+                        logMessage.append("*");
+                    }
 
-logMessage.append("\nAverage query execution time: " + (this.totalQueryTimeMs / this.numberOfQueriesIssued) + " ms");
+                    if (this.longestQueryTimeMs < this.perfMetricsHistCounts[i + 1]) {
+                        break;
+                    }
+                }
 
-logMessage.append("\nNumber of statements executed: " + this.numberOfQueriesIssued);
+                if (this.perfMetricsHistBreakpoints[18] < this.longestQueryTimeMs) {
+                    logMessage.append("\n\tbetween ");
+                    logMessage.append(this.perfMetricsHistBreakpoints[18]);
 
-logMessage.append("\nNumber of result sets created: " + this.numberOfResultSetsCreated);
+                    logMessage.append(" and ");
+                    logMessage.append(this.perfMetricsHistBreakpoints[19]);
 
-logMessage.append("\nNumber of statements prepared: " + this.numberOfPrepares);
+                    logMessage.append(" ms: \t");
+                    logMessage.append(this.perfMetricsHistCounts[19]);
+                }
+            }
 
-logMessage.append("\nNumber of prepared statement executions: " + this.numberOfPreparedExecutes);
+            if (this.numTablesMetricsHistBreakpoints != null) {
+                logMessage.append("\n\n\tTable Join Histogram:\n");
+                int maxNumPoints = 20;
+                int highestCount = Integer.MIN_VALUE;
+                int i;
+                for (i = 0; i < 20; i++) {
+                    if (this.numTablesMetricsHistCounts[i] > highestCount) {
+                        highestCount = this.numTablesMetricsHistCounts[i];
+                    }
+                }
 
-if (this.perfMetricsHistBreakpoints != null) {
-logMessage.append("\n\n\tTiming Histogram:\n");
-int maxNumPoints = 20;
-int highestCount = Integer.MIN_VALUE;
-int i;
-for (i = 0; i < 20; i++) {
-if (this.perfMetricsHistCounts[i] > highestCount) {
-highestCount = this.perfMetricsHistCounts[i];
-}
-} 
+                if (highestCount == 0) {
+                    highestCount = 1;
+                }
 
-if (highestCount == 0) {
-highestCount = 1;
-}
+                for (i = 0; i < 19; i++) {
 
-for (i = 0; i < 19; i++) {
+                    if (i == 0) {
+                        logMessage.append("\n\t" + this.numTablesMetricsHistBreakpoints[i + 1] + " tables or less: \t\t" + this.numTablesMetricsHistCounts[i]);
 
-if (i == 0) {
-logMessage.append("\n\tless than " + this.perfMetricsHistBreakpoints[i + 1] + " ms: \t" + this.perfMetricsHistCounts[i]);
-}
-else {
+                    } else {
 
-logMessage.append("\n\tbetween " + this.perfMetricsHistBreakpoints[i] + " and " + this.perfMetricsHistBreakpoints[i + 1] + " ms: \t" + this.perfMetricsHistCounts[i]);
-} 
+                        logMessage.append("\n\tbetween " + this.numTablesMetricsHistBreakpoints[i] + " and " + this.numTablesMetricsHistBreakpoints[i + 1] + " tables: \t" + this.numTablesMetricsHistCounts[i]);
+                    }
 
-logMessage.append("\t");
+                    logMessage.append("\t");
 
-int numPointsToGraph = (int)(maxNumPoints * this.perfMetricsHistCounts[i] / highestCount);
+                    int numPointsToGraph = (int) (maxNumPoints * this.numTablesMetricsHistCounts[i] / highestCount);
 
-for (int j = 0; j < numPointsToGraph; j++) {
-logMessage.append("*");
-}
+                    for (int j = 0; j < numPointsToGraph; j++) {
+                        logMessage.append("*");
+                    }
 
-if (this.longestQueryTimeMs < this.perfMetricsHistCounts[i + 1]) {
-break;
-}
-} 
+                    if (this.maximumNumberTablesAccessed < this.numTablesMetricsHistBreakpoints[i + 1]) {
+                        break;
+                    }
+                }
 
-if (this.perfMetricsHistBreakpoints[18] < this.longestQueryTimeMs) {
-logMessage.append("\n\tbetween ");
-logMessage.append(this.perfMetricsHistBreakpoints[18]);
+                if (this.numTablesMetricsHistBreakpoints[18] < this.maximumNumberTablesAccessed) {
+                    logMessage.append("\n\tbetween ");
+                    logMessage.append(this.numTablesMetricsHistBreakpoints[18]);
 
-logMessage.append(" and ");
-logMessage.append(this.perfMetricsHistBreakpoints[19]);
+                    logMessage.append(" and ");
+                    logMessage.append(this.numTablesMetricsHistBreakpoints[19]);
 
-logMessage.append(" ms: \t");
-logMessage.append(this.perfMetricsHistCounts[19]);
-} 
-} 
+                    logMessage.append(" tables: ");
+                    logMessage.append(this.numTablesMetricsHistCounts[19]);
+                }
+            }
 
-if (this.numTablesMetricsHistBreakpoints != null) {
-logMessage.append("\n\n\tTable Join Histogram:\n");
-int maxNumPoints = 20;
-int highestCount = Integer.MIN_VALUE;
-int i;
-for (i = 0; i < 20; i++) {
-if (this.numTablesMetricsHistCounts[i] > highestCount) {
-highestCount = this.numTablesMetricsHistCounts[i];
-}
-} 
+            this.log.logInfo(logMessage);
 
-if (highestCount == 0) {
-highestCount = 1;
-}
+            this.metricsLastReportedMs = System.currentTimeMillis();
+        }
+    }
 
-for (i = 0; i < 19; i++) {
+    protected void reportMetricsIfNeeded() {
+        if (getGatherPerformanceMetrics() &&
+                System.currentTimeMillis() - this.metricsLastReportedMs > getReportMetricsIntervalMillis()) {
+            reportMetrics();
+        }
+    }
 
-if (i == 0) {
-logMessage.append("\n\t" + this.numTablesMetricsHistBreakpoints[i + 1] + " tables or less: \t\t" + this.numTablesMetricsHistCounts[i]);
+    public void reportNumberOfTablesAccessed(int numTablesAccessed) {
+        if (numTablesAccessed < this.minimumNumberTablesAccessed) {
+            this.minimumNumberTablesAccessed = numTablesAccessed;
+        }
 
-}
-else {
+        if (numTablesAccessed > this.maximumNumberTablesAccessed) {
+            this.maximumNumberTablesAccessed = numTablesAccessed;
 
-logMessage.append("\n\tbetween " + this.numTablesMetricsHistBreakpoints[i] + " and " + this.numTablesMetricsHistBreakpoints[i + 1] + " tables: \t" + this.numTablesMetricsHistCounts[i]);
-} 
+            repartitionTablesAccessedHistogram();
+        }
 
-logMessage.append("\t");
+        addToTablesAccessedHistogram(numTablesAccessed, 1);
+    }
 
-int numPointsToGraph = (int)(maxNumPoints * this.numTablesMetricsHistCounts[i] / highestCount);
+    public void resetServerState() throws SQLException {
+        if (!getParanoid() && this.io != null && versionMeetsMinimum(4, 0, 6)) {
+            changeUser(this.user, this.password);
+        }
+    }
 
-for (int j = 0; j < numPointsToGraph; j++) {
-logMessage.append("*");
-}
+    public synchronized void rollback() throws SQLException {
+        checkClosed();
 
-if (this.maximumNumberTablesAccessed < this.numTablesMetricsHistBreakpoints[i + 1]) {
-break;
-}
-} 
+        try {
+            if (this.connectionLifecycleInterceptors != null) {
+                IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                    void forEach(Extension each) throws SQLException {
+                        if (!((ConnectionLifecycleInterceptor) each).rollback()) {
+                            this.stopIterating = true;
+                        }
+                    }
+                };
 
-if (this.numTablesMetricsHistBreakpoints[18] < this.maximumNumberTablesAccessed) {
-logMessage.append("\n\tbetween ");
-logMessage.append(this.numTablesMetricsHistBreakpoints[18]);
+                iter.doForAll();
 
-logMessage.append(" and ");
-logMessage.append(this.numTablesMetricsHistBreakpoints[19]);
+                if (!iter.fullIteration()) {
+                    return;
+                }
+            }
 
-logMessage.append(" tables: ");
-logMessage.append(this.numTablesMetricsHistCounts[19]);
-} 
-} 
+            if (this.autoCommit && !getRelaxAutoCommit()) {
+                throw SQLError.createSQLException("Can't call rollback when autocommit=true", "08003", getExceptionInterceptor());
+            }
 
-this.log.logInfo(logMessage);
+            if (this.transactionsSupported) {
+                try {
+                    rollbackNoChecks();
+                } catch (SQLException sqlEx) {
 
-this.metricsLastReportedMs = System.currentTimeMillis();
-} 
-}
+                    if (getIgnoreNonTxTables() && sqlEx.getErrorCode() == 1196) {
+                        return;
+                    }
 
-protected void reportMetricsIfNeeded() {
-if (getGatherPerformanceMetrics() && 
-System.currentTimeMillis() - this.metricsLastReportedMs > getReportMetricsIntervalMillis()) {
-reportMetrics();
-}
-}
+                    throw sqlEx;
+                }
 
-public void reportNumberOfTablesAccessed(int numTablesAccessed) {
-if (numTablesAccessed < this.minimumNumberTablesAccessed) {
-this.minimumNumberTablesAccessed = numTablesAccessed;
-}
+            }
+        } catch (SQLException sqlException) {
+            if ("08S01".equals(sqlException.getSQLState())) {
+                throw SQLError.createSQLException("Communications link failure during rollback(). Transaction resolution unknown.", "08007", getExceptionInterceptor());
+            }
 
-if (numTablesAccessed > this.maximumNumberTablesAccessed) {
-this.maximumNumberTablesAccessed = numTablesAccessed;
+            throw sqlException;
+        } finally {
+            this.needsPing = getReconnectAtTxEnd();
+        }
+    }
 
-repartitionTablesAccessedHistogram();
-} 
+    public synchronized void rollback(final Savepoint savepoint) throws SQLException {
+        if (versionMeetsMinimum(4, 0, 14) || versionMeetsMinimum(4, 1, 1)) {
+            checkClosed();
 
-addToTablesAccessedHistogram(numTablesAccessed, 1);
-}
+            try {
+                if (this.connectionLifecycleInterceptors != null) {
+                    IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                        void forEach(Extension each) throws SQLException {
+                            if (!((ConnectionLifecycleInterceptor) each).rollback(savepoint)) {
+                                this.stopIterating = true;
+                            }
+                        }
+                    };
 
-public void resetServerState() throws SQLException {
-if (!getParanoid() && this.io != null && versionMeetsMinimum(4, 0, 6))
-{
-changeUser(this.user, this.password);
-}
-}
+                    iter.doForAll();
 
-public synchronized void rollback() throws SQLException {
-checkClosed();
+                    if (!iter.fullIteration()) {
+                        return;
+                    }
+                }
 
-try {
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-if (!((ConnectionLifecycleInterceptor)each).rollback()) {
-this.stopIterating = true;
-}
-}
-};
+                StringBuffer rollbackQuery = new StringBuffer("ROLLBACK TO SAVEPOINT ");
 
-iter.doForAll();
+                rollbackQuery.append('`');
+                rollbackQuery.append(savepoint.getSavepointName());
+                rollbackQuery.append('`');
 
-if (!iter.fullIteration()) {
-return;
-}
-} 
+                Statement stmt = null;
 
-if (this.autoCommit && !getRelaxAutoCommit()) {
-throw SQLError.createSQLException("Can't call rollback when autocommit=true", "08003", getExceptionInterceptor());
-}
+                try {
+                    stmt = getMetadataSafeStatement();
 
-if (this.transactionsSupported) {
-try {
-rollbackNoChecks();
-} catch (SQLException sqlEx) {
+                    stmt.executeUpdate(rollbackQuery.toString());
+                } catch (SQLException sqlEx) {
+                    int errno = sqlEx.getErrorCode();
 
-if (getIgnoreNonTxTables() && sqlEx.getErrorCode() == 1196) {
-return;
-}
+                    if (errno == 1181) {
+                        String msg = sqlEx.getMessage();
 
-throw sqlEx;
-}
+                        if (msg != null) {
+                            int indexOfError153 = msg.indexOf("153");
 
-}
-} catch (SQLException sqlException) {
-if ("08S01".equals(sqlException.getSQLState()))
-{
-throw SQLError.createSQLException("Communications link failure during rollback(). Transaction resolution unknown.", "08007", getExceptionInterceptor());
-}
+                            if (indexOfError153 != -1) {
+                                throw SQLError.createSQLException("Savepoint '" + savepoint.getSavepointName() + "' does not exist", "S1009", errno, getExceptionInterceptor());
+                            }
+                        }
+                    }
 
-throw sqlException;
-} finally {
-this.needsPing = getReconnectAtTxEnd();
-} 
-}
+                    if (getIgnoreNonTxTables() && sqlEx.getErrorCode() != 1196) {
+                        throw sqlEx;
+                    }
 
-public synchronized void rollback(final Savepoint savepoint) throws SQLException {
-if (versionMeetsMinimum(4, 0, 14) || versionMeetsMinimum(4, 1, 1)) {
-checkClosed();
+                    if ("08S01".equals(sqlEx.getSQLState())) {
+                        throw SQLError.createSQLException("Communications link failure during rollback(). Transaction resolution unknown.", "08007", getExceptionInterceptor());
+                    }
 
-try {
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-if (!((ConnectionLifecycleInterceptor)each).rollback(savepoint)) {
-this.stopIterating = true;
-}
-}
-};
+                    throw sqlEx;
+                } finally {
+                    closeStatement(stmt);
+                }
+            } finally {
+                this.needsPing = getReconnectAtTxEnd();
+            }
+        } else {
+            throw SQLError.notImplemented();
+        }
+    }
 
-iter.doForAll();
+    private void rollbackNoChecks() throws SQLException {
+        if (getUseLocalTransactionState() && versionMeetsMinimum(5, 0, 0) &&
+                !this.io.inTransactionOnServer()) {
+            return;
+        }
 
-if (!iter.fullIteration()) {
-return;
-}
-} 
+        execSQL((StatementImpl) null, "rollback", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+    }
 
-StringBuffer rollbackQuery = new StringBuffer("ROLLBACK TO SAVEPOINT ");
+    public PreparedStatement serverPrepareStatement(String sql) throws SQLException {
+        String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
 
-rollbackQuery.append('`');
-rollbackQuery.append(savepoint.getSavepointName());
-rollbackQuery.append('`');
+        return ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, getCatalog(), 1003, 1007);
+    }
 
-Statement stmt = null;
+    public PreparedStatement serverPrepareStatement(String sql, int autoGenKeyIndex) throws SQLException {
+        String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
 
-try {
-stmt = getMetadataSafeStatement();
+        PreparedStatement pStmt = ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, getCatalog(), 1003, 1007);
 
-stmt.executeUpdate(rollbackQuery.toString());
-} catch (SQLException sqlEx) {
-int errno = sqlEx.getErrorCode();
+        pStmt.setRetrieveGeneratedKeys((autoGenKeyIndex == 1));
 
-if (errno == 1181) {
-String msg = sqlEx.getMessage();
+        return pStmt;
+    }
 
-if (msg != null) {
-int indexOfError153 = msg.indexOf("153");
+    public PreparedStatement serverPrepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
 
-if (indexOfError153 != -1) {
-throw SQLError.createSQLException("Savepoint '" + savepoint.getSavepointName() + "' does not exist", "S1009", errno, getExceptionInterceptor());
-}
-} 
-} 
+        return ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, getCatalog(), resultSetType, resultSetConcurrency);
+    }
 
-if (getIgnoreNonTxTables() && sqlEx.getErrorCode() != 1196)
-{
-throw sqlEx;
-}
+    public PreparedStatement serverPrepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        if (getPedantic() &&
+                resultSetHoldability != 1) {
+            throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
+        }
 
-if ("08S01".equals(sqlEx.getSQLState()))
-{
-throw SQLError.createSQLException("Communications link failure during rollback(). Transaction resolution unknown.", "08007", getExceptionInterceptor());
-}
+        return serverPrepareStatement(sql, resultSetType, resultSetConcurrency);
+    }
 
-throw sqlEx;
-} finally {
-closeStatement(stmt);
-} 
-} finally {
-this.needsPing = getReconnectAtTxEnd();
-} 
-} else {
-throw SQLError.notImplemented();
-} 
-}
+    public PreparedStatement serverPrepareStatement(String sql, int[] autoGenKeyIndexes) throws SQLException {
+        PreparedStatement pStmt = (PreparedStatement) serverPrepareStatement(sql);
 
-private void rollbackNoChecks() throws SQLException {
-if (getUseLocalTransactionState() && versionMeetsMinimum(5, 0, 0) && 
-!this.io.inTransactionOnServer()) {
-return;
-}
+        pStmt.setRetrieveGeneratedKeys((autoGenKeyIndexes != null && autoGenKeyIndexes.length > 0));
 
-execSQL((StatementImpl)null, "rollback", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
-}
+        return pStmt;
+    }
 
-public PreparedStatement serverPrepareStatement(String sql) throws SQLException {
-String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
+    public PreparedStatement serverPrepareStatement(String sql, String[] autoGenKeyColNames) throws SQLException {
+        PreparedStatement pStmt = (PreparedStatement) serverPrepareStatement(sql);
 
-return ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, getCatalog(), 1003, 1007);
-}
+        pStmt.setRetrieveGeneratedKeys((autoGenKeyColNames != null && autoGenKeyColNames.length > 0));
 
-public PreparedStatement serverPrepareStatement(String sql, int autoGenKeyIndex) throws SQLException {
-String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
+        return pStmt;
+    }
 
-PreparedStatement pStmt = ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, getCatalog(), 1003, 1007);
+    public boolean serverSupportsConvertFn() throws SQLException {
+        return versionMeetsMinimum(4, 0, 2);
+    }
 
-pStmt.setRetrieveGeneratedKeys((autoGenKeyIndex == 1));
+    public synchronized void setAutoCommit(final boolean autoCommitFlag) throws SQLException {
+        checkClosed();
 
-return pStmt;
-}
+        if (this.connectionLifecycleInterceptors != null) {
+            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    if (!((ConnectionLifecycleInterceptor) each).setAutoCommit(autoCommitFlag)) {
+                        this.stopIterating = true;
+                    }
+                }
+            };
 
-public PreparedStatement serverPrepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-String nativeSql = getProcessEscapeCodesForPrepStmts() ? nativeSQL(sql) : sql;
+            iter.doForAll();
 
-return ServerPreparedStatement.getInstance(getLoadBalanceSafeProxy(), nativeSql, getCatalog(), resultSetType, resultSetConcurrency);
-}
+            if (!iter.fullIteration()) {
+                return;
+            }
+        }
 
-public PreparedStatement serverPrepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-if (getPedantic() && 
-resultSetHoldability != 1) {
-throw SQLError.createSQLException("HOLD_CUSRORS_OVER_COMMIT is only supported holdability level", "S1009", getExceptionInterceptor());
-}
+        if (getAutoReconnectForPools()) {
+            setHighAvailability(true);
+        }
 
-return serverPrepareStatement(sql, resultSetType, resultSetConcurrency);
-}
+        try {
+            if (this.transactionsSupported) {
 
-public PreparedStatement serverPrepareStatement(String sql, int[] autoGenKeyIndexes) throws SQLException {
-PreparedStatement pStmt = (PreparedStatement)serverPrepareStatement(sql);
+                boolean needsSetOnServer = true;
 
-pStmt.setRetrieveGeneratedKeys((autoGenKeyIndexes != null && autoGenKeyIndexes.length > 0));
+                if (getUseLocalSessionState() && this.autoCommit == autoCommitFlag) {
 
-return pStmt;
-}
+                    needsSetOnServer = false;
+                } else if (!getHighAvailability()) {
+                    needsSetOnServer = getIO().isSetNeededForAutoCommitMode(autoCommitFlag);
+                }
 
-public PreparedStatement serverPrepareStatement(String sql, String[] autoGenKeyColNames) throws SQLException {
-PreparedStatement pStmt = (PreparedStatement)serverPrepareStatement(sql);
+                this.autoCommit = autoCommitFlag;
 
-pStmt.setRetrieveGeneratedKeys((autoGenKeyColNames != null && autoGenKeyColNames.length > 0));
+                if (needsSetOnServer) {
+                    execSQL((StatementImpl) null, autoCommitFlag ? "SET autocommit=1" : "SET autocommit=0", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-return pStmt;
-}
+                }
 
-public boolean serverSupportsConvertFn() throws SQLException {
-return versionMeetsMinimum(4, 0, 2);
-}
+            } else {
 
-public synchronized void setAutoCommit(final boolean autoCommitFlag) throws SQLException {
-checkClosed();
+                if (!autoCommitFlag && !getRelaxAutoCommit()) {
+                    throw SQLError.createSQLException("MySQL Versions Older than 3.23.15 do not support transactions", "08003", getExceptionInterceptor());
+                }
 
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-if (!((ConnectionLifecycleInterceptor)each).setAutoCommit(autoCommitFlag)) {
-this.stopIterating = true;
-}
-}
-};
+                this.autoCommit = autoCommitFlag;
+            }
+        } finally {
+            if (getAutoReconnectForPools()) {
+                setHighAvailability(false);
+            }
+        }
+    }
 
-iter.doForAll();
+    public synchronized void setCatalog(final String catalog) throws SQLException {
+        checkClosed();
 
-if (!iter.fullIteration()) {
-return;
-}
-} 
+        if (catalog == null) {
+            throw SQLError.createSQLException("Catalog can not be null", "S1009", getExceptionInterceptor());
+        }
 
-if (getAutoReconnectForPools()) {
-setHighAvailability(true);
-}
+        if (this.connectionLifecycleInterceptors != null) {
+            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    if (!((ConnectionLifecycleInterceptor) each).setCatalog(catalog)) {
+                        this.stopIterating = true;
+                    }
+                }
+            };
 
-try {
-if (this.transactionsSupported) {
+            iter.doForAll();
 
-boolean needsSetOnServer = true;
+            if (!iter.fullIteration()) {
+                return;
+            }
+        }
 
-if (getUseLocalSessionState() && this.autoCommit == autoCommitFlag) {
+        if (getUseLocalSessionState()) {
+            if (this.lowerCaseTableNames) {
+                if (this.database.equalsIgnoreCase(catalog)) {
+                    return;
+                }
+            } else if (this.database.equals(catalog)) {
+                return;
+            }
+        }
 
-needsSetOnServer = false;
-} else if (!getHighAvailability()) {
-needsSetOnServer = getIO().isSetNeededForAutoCommitMode(autoCommitFlag);
-} 
+        String quotedId = this.dbmd.getIdentifierQuoteString();
 
-this.autoCommit = autoCommitFlag;
+        if (quotedId == null || quotedId.equals(" ")) {
+            quotedId = "";
+        }
 
-if (needsSetOnServer) {
-execSQL((StatementImpl)null, autoCommitFlag ? "SET autocommit=1" : "SET autocommit=0", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+        StringBuffer query = new StringBuffer("USE ");
+        query.append(quotedId);
+        query.append(catalog);
+        query.append(quotedId);
 
-}
+        execSQL((StatementImpl) null, query.toString(), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-}
-else {
+        this.database = catalog;
+    }
 
-if (!autoCommitFlag && !getRelaxAutoCommit()) {
-throw SQLError.createSQLException("MySQL Versions Older than 3.23.15 do not support transactions", "08003", getExceptionInterceptor());
-}
+    public synchronized void setFailedOver(boolean flag) {
+    }
 
-this.autoCommit = autoCommitFlag;
-} 
-} finally {
-if (getAutoReconnectForPools()) {
-setHighAvailability(false);
-}
-} 
-}
+    public void setHoldability(int arg0) throws SQLException {
+    }
 
-public synchronized void setCatalog(final String catalog) throws SQLException {
-checkClosed();
+    public void setInGlobalTx(boolean flag) {
+        this.isInGlobalTx = flag;
+    }
 
-if (catalog == null) {
-throw SQLError.createSQLException("Catalog can not be null", "S1009", getExceptionInterceptor());
-}
+    public void setPreferSlaveDuringFailover(boolean flag) {
+    }
 
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-if (!((ConnectionLifecycleInterceptor)each).setCatalog(catalog)) {
-this.stopIterating = true;
-}
-}
-};
+    public void setReadInfoMsgEnabled(boolean flag) {
+        this.readInfoMsg = flag;
+    }
 
-iter.doForAll();
+    public void setReadOnly(boolean readOnlyFlag) throws SQLException {
+        checkClosed();
 
-if (!iter.fullIteration()) {
-return;
-}
-} 
+        setReadOnlyInternal(readOnlyFlag);
+    }
 
-if (getUseLocalSessionState()) {
-if (this.lowerCaseTableNames) {
-if (this.database.equalsIgnoreCase(catalog)) {
-return;
-}
-}
-else if (this.database.equals(catalog)) {
-return;
-} 
-}
+    public void setReadOnlyInternal(boolean readOnlyFlag) throws SQLException {
+        if (versionMeetsMinimum(5, 6, 5) && (
+                !getUseLocalSessionState() || readOnlyFlag != this.readOnly)) {
+            execSQL((StatementImpl) null, "set session transaction " + (readOnlyFlag ? "read only" : "read write"), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+        }
 
-String quotedId = this.dbmd.getIdentifierQuoteString();
+        this.readOnly = readOnlyFlag;
+    }
 
-if (quotedId == null || quotedId.equals(" ")) {
-quotedId = "";
-}
+    public Savepoint setSavepoint() throws SQLException {
+        MysqlSavepoint savepoint = new MysqlSavepoint(getExceptionInterceptor());
 
-StringBuffer query = new StringBuffer("USE ");
-query.append(quotedId);
-query.append(catalog);
-query.append(quotedId);
+        setSavepoint(savepoint);
 
-execSQL((StatementImpl)null, query.toString(), -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+        return savepoint;
+    }
 
-this.database = catalog;
-}
+    private synchronized void setSavepoint(MysqlSavepoint savepoint) throws SQLException {
+        if (versionMeetsMinimum(4, 0, 14) || versionMeetsMinimum(4, 1, 1)) {
+            checkClosed();
 
-public synchronized void setFailedOver(boolean flag) {}
+            StringBuffer savePointQuery = new StringBuffer("SAVEPOINT ");
+            savePointQuery.append('`');
+            savePointQuery.append(savepoint.getSavepointName());
+            savePointQuery.append('`');
 
-public void setHoldability(int arg0) throws SQLException {}
+            Statement stmt = null;
 
-public void setInGlobalTx(boolean flag) {
-this.isInGlobalTx = flag;
-}
+            try {
+                stmt = getMetadataSafeStatement();
 
-public void setPreferSlaveDuringFailover(boolean flag) {}
+                stmt.executeUpdate(savePointQuery.toString());
+            } finally {
+                closeStatement(stmt);
+            }
+        } else {
+            throw SQLError.notImplemented();
+        }
+    }
 
-public void setReadInfoMsgEnabled(boolean flag) {
-this.readInfoMsg = flag;
-}
+    public synchronized Savepoint setSavepoint(String name) throws SQLException {
+        MysqlSavepoint savepoint = new MysqlSavepoint(name, getExceptionInterceptor());
 
-public void setReadOnly(boolean readOnlyFlag) throws SQLException {
-checkClosed();
+        setSavepoint(savepoint);
 
-setReadOnlyInternal(readOnlyFlag);
-}
+        return savepoint;
+    }
 
-public void setReadOnlyInternal(boolean readOnlyFlag) throws SQLException {
-if (versionMeetsMinimum(5, 6, 5) && (
-!getUseLocalSessionState() || readOnlyFlag != this.readOnly)) {
-execSQL((StatementImpl)null, "set session transaction " + (readOnlyFlag ? "read only" : "read write"), -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
-}
+    private void setSessionVariables() throws SQLException {
+        if (versionMeetsMinimum(4, 0, 0) && getSessionVariables() != null) {
+            List<String> variablesToSet = StringUtils.split(getSessionVariables(), ",", "\"'", "\"'", false);
 
-this.readOnly = readOnlyFlag;
-}
+            int numVariablesToSet = variablesToSet.size();
 
-public Savepoint setSavepoint() throws SQLException {
-MysqlSavepoint savepoint = new MysqlSavepoint(getExceptionInterceptor());
+            Statement stmt = null;
 
-setSavepoint(savepoint);
+            try {
+                stmt = getMetadataSafeStatement();
 
-return savepoint;
-}
+                for (int i = 0; i < numVariablesToSet; i++) {
+                    String variableValuePair = variablesToSet.get(i);
 
-private synchronized void setSavepoint(MysqlSavepoint savepoint) throws SQLException {
-if (versionMeetsMinimum(4, 0, 14) || versionMeetsMinimum(4, 1, 1)) {
-checkClosed();
+                    if (variableValuePair.startsWith("@")) {
+                        stmt.executeUpdate("SET " + variableValuePair);
+                    } else {
+                        stmt.executeUpdate("SET SESSION " + variableValuePair);
+                    }
+                }
+            } finally {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+        }
+    }
 
-StringBuffer savePointQuery = new StringBuffer("SAVEPOINT ");
-savePointQuery.append('`');
-savePointQuery.append(savepoint.getSavepointName());
-savePointQuery.append('`');
+    public synchronized void setTransactionIsolation(int level) throws SQLException {
+        checkClosed();
 
-Statement stmt = null;
+        if (this.hasIsolationLevels) {
+            String sql = null;
 
-try {
-stmt = getMetadataSafeStatement();
+            boolean shouldSendSet = false;
 
-stmt.executeUpdate(savePointQuery.toString());
-} finally {
-closeStatement(stmt);
-} 
-} else {
-throw SQLError.notImplemented();
-} 
-}
+            if (getAlwaysSendSetIsolation()) {
+                shouldSendSet = true;
+            } else if (level != this.isolationLevel) {
+                shouldSendSet = true;
+            }
 
-public synchronized Savepoint setSavepoint(String name) throws SQLException {
-MysqlSavepoint savepoint = new MysqlSavepoint(name, getExceptionInterceptor());
+            if (getUseLocalSessionState()) {
+                shouldSendSet = (this.isolationLevel != level);
+            }
 
-setSavepoint(savepoint);
+            if (shouldSendSet) {
+                switch (level) {
+                    case 0:
+                        throw SQLError.createSQLException("Transaction isolation level NONE not supported by MySQL", getExceptionInterceptor());
 
-return savepoint;
-}
+                    case 2:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED";
+                        break;
 
-private void setSessionVariables() throws SQLException {
-if (versionMeetsMinimum(4, 0, 0) && getSessionVariables() != null) {
-List<String> variablesToSet = StringUtils.split(getSessionVariables(), ",", "\"'", "\"'", false);
+                    case 1:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED";
+                        break;
 
-int numVariablesToSet = variablesToSet.size();
+                    case 4:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ";
+                        break;
 
-Statement stmt = null;
+                    case 8:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE";
+                        break;
 
-try {
-stmt = getMetadataSafeStatement();
+                    default:
+                        throw SQLError.createSQLException("Unsupported transaction isolation level '" + level + "'", "S1C00", getExceptionInterceptor());
+                }
 
-for (int i = 0; i < numVariablesToSet; i++) {
-String variableValuePair = variablesToSet.get(i);
+                execSQL((StatementImpl) null, sql, -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-if (variableValuePair.startsWith("@")) {
-stmt.executeUpdate("SET " + variableValuePair);
-} else {
-stmt.executeUpdate("SET SESSION " + variableValuePair);
-} 
-} 
-} finally {
-if (stmt != null) {
-stmt.close();
-}
-} 
-} 
-}
+                this.isolationLevel = level;
+            }
+        } else {
+            throw SQLError.createSQLException("Transaction Isolation Levels are not supported on MySQL versions older than 3.23.36.", "S1C00", getExceptionInterceptor());
+        }
+    }
 
-public synchronized void setTransactionIsolation(int level) throws SQLException {
-checkClosed();
+    public synchronized void setTypeMap(Map<String, Class<?>> map) throws SQLException {
+        this.typeMap = map;
+    }
 
-if (this.hasIsolationLevels) {
-String sql = null;
+    private void setupServerForTruncationChecks() throws SQLException {
+        if (getJdbcCompliantTruncation() &&
+                versionMeetsMinimum(5, 0, 2)) {
+            String currentSqlMode = this.serverVariables.get("sql_mode");
 
-boolean shouldSendSet = false;
+            boolean strictTransTablesIsSet = (StringUtils.indexOfIgnoreCase(currentSqlMode, "STRICT_TRANS_TABLES") != -1);
 
-if (getAlwaysSendSetIsolation()) {
-shouldSendSet = true;
-}
-else if (level != this.isolationLevel) {
-shouldSendSet = true;
-} 
+            if (currentSqlMode == null || currentSqlMode.length() == 0 || !strictTransTablesIsSet) {
 
-if (getUseLocalSessionState()) {
-shouldSendSet = (this.isolationLevel != level);
-}
+                StringBuffer commandBuf = new StringBuffer("SET sql_mode='");
 
-if (shouldSendSet) {
-switch (level) {
-case 0:
-throw SQLError.createSQLException("Transaction isolation level NONE not supported by MySQL", getExceptionInterceptor());
+                if (currentSqlMode != null && currentSqlMode.length() > 0) {
+                    commandBuf.append(currentSqlMode);
+                    commandBuf.append(",");
+                }
 
-case 2:
-sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED";
-break;
+                commandBuf.append("STRICT_TRANS_TABLES'");
 
-case 1:
-sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED";
-break;
+                execSQL((StatementImpl) null, commandBuf.toString(), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-case 4:
-sql = "SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ";
-break;
+                setJdbcCompliantTruncation(false);
+            } else if (strictTransTablesIsSet) {
 
-case 8:
-sql = "SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE";
-break;
+                setJdbcCompliantTruncation(false);
+            }
+        }
+    }
 
-default:
-throw SQLError.createSQLException("Unsupported transaction isolation level '" + level + "'", "S1C00", getExceptionInterceptor());
-} 
+    public void shutdownServer() throws SQLException {
+        try {
+            this.io.sendCommand(8, null, null, false, null, 0);
+        } catch (Exception ex) {
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.UnhandledExceptionDuringShutdown"), "S1000", getExceptionInterceptor());
 
-execSQL((StatementImpl)null, sql, -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+            sqlEx.initCause(ex);
 
-this.isolationLevel = level;
-} 
-} else {
-throw SQLError.createSQLException("Transaction Isolation Levels are not supported on MySQL versions older than 3.23.36.", "S1C00", getExceptionInterceptor());
-} 
-}
+            throw sqlEx;
+        }
+    }
 
-public synchronized void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-this.typeMap = map;
-}
+    public boolean supportsIsolationLevel() {
+        return this.hasIsolationLevels;
+    }
 
-private void setupServerForTruncationChecks() throws SQLException {
-if (getJdbcCompliantTruncation() && 
-versionMeetsMinimum(5, 0, 2)) {
-String currentSqlMode = this.serverVariables.get("sql_mode");
+    public boolean supportsQuotedIdentifiers() {
+        return this.hasQuotedIdentifiers;
+    }
 
-boolean strictTransTablesIsSet = (StringUtils.indexOfIgnoreCase(currentSqlMode, "STRICT_TRANS_TABLES") != -1);
+    public boolean supportsTransactions() {
+        return this.transactionsSupported;
+    }
 
-if (currentSqlMode == null || currentSqlMode.length() == 0 || !strictTransTablesIsSet) {
+    public void unregisterStatement(Statement stmt) {
+        if (this.openStatements != null) {
+            synchronized (this.openStatements) {
+                this.openStatements.remove(stmt);
+            }
+        }
+    }
 
-StringBuffer commandBuf = new StringBuffer("SET sql_mode='");
+    public synchronized void unsetMaxRows(Statement stmt) throws SQLException {
+        if (this.statementsUsingMaxRows != null) {
+            Object found = this.statementsUsingMaxRows.remove(stmt);
 
-if (currentSqlMode != null && currentSqlMode.length() > 0) {
-commandBuf.append(currentSqlMode);
-commandBuf.append(",");
-} 
+            if (found != null && this.statementsUsingMaxRows.size() == 0) {
 
-commandBuf.append("STRICT_TRANS_TABLES'");
+                execSQL((StatementImpl) null, "SET SQL_SELECT_LIMIT=DEFAULT", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
 
-execSQL((StatementImpl)null, commandBuf.toString(), -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+                this.maxRowsChanged = false;
+            }
+        }
+    }
 
-setJdbcCompliantTruncation(false);
-} else if (strictTransTablesIsSet) {
+    public synchronized boolean useAnsiQuotedIdentifiers() {
+        return this.useAnsiQuotes;
+    }
 
-setJdbcCompliantTruncation(false);
-} 
-} 
-}
+    public synchronized boolean useMaxRows() {
+        return this.maxRowsChanged;
+    }
 
-public void shutdownServer() throws SQLException {
-try {
-this.io.sendCommand(8, null, null, false, null, 0);
-} catch (Exception ex) {
-SQLException sqlEx = SQLError.createSQLException(Messages.getString("Connection.UnhandledExceptionDuringShutdown"), "S1000", getExceptionInterceptor());
+    public boolean versionMeetsMinimum(int major, int minor, int subminor) throws SQLException {
+        checkClosed();
 
-sqlEx.initCause(ex);
+        return this.io.versionMeetsMinimum(major, minor, subminor);
+    }
 
-throw sqlEx;
-} 
-}
+    public CachedResultSetMetaData getCachedMetaData(String sql) {
+        if (this.resultSetMetadataCache != null) {
+            synchronized (this.resultSetMetadataCache) {
+                return (CachedResultSetMetaData) this.resultSetMetadataCache.get(sql);
+            }
+        }
 
-public boolean supportsIsolationLevel() {
-return this.hasIsolationLevels;
-}
+        return null;
+    }
 
-public boolean supportsQuotedIdentifiers() {
-return this.hasQuotedIdentifiers;
-}
+    public void initializeResultsMetadataFromCache(String sql, CachedResultSetMetaData cachedMetaData, ResultSetInternalMethods resultSet) throws SQLException {
+        if (cachedMetaData == null) {
 
-public boolean supportsTransactions() {
-return this.transactionsSupported;
-}
+            cachedMetaData = new CachedResultSetMetaData();
 
-public void unregisterStatement(Statement stmt) {
-if (this.openStatements != null) {
-synchronized (this.openStatements) {
-this.openStatements.remove(stmt);
-} 
-}
-}
+            resultSet.buildIndexMapping();
+            resultSet.initializeWithMetadata();
 
-public synchronized void unsetMaxRows(Statement stmt) throws SQLException {
-if (this.statementsUsingMaxRows != null) {
-Object found = this.statementsUsingMaxRows.remove(stmt);
+            if (resultSet instanceof UpdatableResultSet) {
+                ((UpdatableResultSet) resultSet).checkUpdatability();
+            }
 
-if (found != null && this.statementsUsingMaxRows.size() == 0) {
+            resultSet.populateCachedMetaData(cachedMetaData);
 
-execSQL((StatementImpl)null, "SET SQL_SELECT_LIMIT=DEFAULT", -1, (Buffer)null, 1003, 1007, false, this.database, (Field[])null, false);
+            this.resultSetMetadataCache.put(sql, cachedMetaData);
+        } else {
+            resultSet.initializeFromCachedMetaData(cachedMetaData);
+            resultSet.initializeWithMetadata();
 
-this.maxRowsChanged = false;
-} 
-} 
-}
+            if (resultSet instanceof UpdatableResultSet) {
+                ((UpdatableResultSet) resultSet).checkUpdatability();
+            }
+        }
+    }
 
-public synchronized boolean useAnsiQuotedIdentifiers() {
-return this.useAnsiQuotes;
-}
+    public String getStatementComment() {
+        return this.statementComment;
+    }
 
-public synchronized boolean useMaxRows() {
-return this.maxRowsChanged;
-}
+    public void setStatementComment(String comment) {
+        this.statementComment = comment;
+    }
 
-public boolean versionMeetsMinimum(int major, int minor, int subminor) throws SQLException {
-checkClosed();
+    public synchronized void reportQueryTime(long millisOrNanos) {
+        this.queryTimeCount++;
+        this.queryTimeSum += millisOrNanos;
+        this.queryTimeSumSquares += (millisOrNanos * millisOrNanos);
+        this.queryTimeMean = (this.queryTimeMean * (this.queryTimeCount - 1L) + millisOrNanos) / this.queryTimeCount;
+    }
 
-return this.io.versionMeetsMinimum(major, minor, subminor);
-}
+    public synchronized boolean isAbonormallyLongQuery(long millisOrNanos) {
+        if (this.queryTimeCount < 15L) {
+            return false;
+        }
 
-public CachedResultSetMetaData getCachedMetaData(String sql) {
-if (this.resultSetMetadataCache != null) {
-synchronized (this.resultSetMetadataCache) {
-return (CachedResultSetMetaData)this.resultSetMetadataCache.get(sql);
-} 
-}
+        double stddev = Math.sqrt((this.queryTimeSumSquares - this.queryTimeSum * this.queryTimeSum / this.queryTimeCount) / (this.queryTimeCount - 1L));
 
-return null;
-}
+        return (millisOrNanos > this.queryTimeMean + 5.0D * stddev);
+    }
 
-public void initializeResultsMetadataFromCache(String sql, CachedResultSetMetaData cachedMetaData, ResultSetInternalMethods resultSet) throws SQLException {
-if (cachedMetaData == null) {
+    public void initializeExtension(Extension ex) throws SQLException {
+        ex.init(this, this.props);
+    }
 
-cachedMetaData = new CachedResultSetMetaData();
+    public synchronized void transactionBegun() throws SQLException {
+        if (this.connectionLifecycleInterceptors != null) {
+            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    ((ConnectionLifecycleInterceptor) each).transactionBegun();
+                }
+            };
 
-resultSet.buildIndexMapping();
-resultSet.initializeWithMetadata();
+            iter.doForAll();
+        }
+    }
 
-if (resultSet instanceof UpdatableResultSet) {
-((UpdatableResultSet)resultSet).checkUpdatability();
-}
+    public synchronized void transactionCompleted() throws SQLException {
+        if (this.connectionLifecycleInterceptors != null) {
+            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    ((ConnectionLifecycleInterceptor) each).transactionCompleted();
+                }
+            };
 
-resultSet.populateCachedMetaData(cachedMetaData);
+            iter.doForAll();
+        }
+    }
 
-this.resultSetMetadataCache.put(sql, cachedMetaData);
-} else {
-resultSet.initializeFromCachedMetaData(cachedMetaData);
-resultSet.initializeWithMetadata();
+    public boolean storesLowerCaseTableName() {
+        return this.storesLowerCaseTableName;
+    }
 
-if (resultSet instanceof UpdatableResultSet) {
-((UpdatableResultSet)resultSet).checkUpdatability();
-}
-} 
-}
+    public ExceptionInterceptor getExceptionInterceptor() {
+        return this.exceptionInterceptor;
+    }
 
-public String getStatementComment() {
-return this.statementComment;
-}
+    public boolean getRequiresEscapingEncoder() {
+        return this.requiresEscapingEncoder;
+    }
 
-public void setStatementComment(String comment) {
-this.statementComment = comment;
-}
+    public synchronized boolean isServerLocal() throws SQLException {
+        SocketFactory factory = (getIO()).socketFactory;
 
-public synchronized void reportQueryTime(long millisOrNanos) {
-this.queryTimeCount++;
-this.queryTimeSum += millisOrNanos;
-this.queryTimeSumSquares += (millisOrNanos * millisOrNanos);
-this.queryTimeMean = (this.queryTimeMean * (this.queryTimeCount - 1L) + millisOrNanos) / this.queryTimeCount;
-}
+        if (factory instanceof SocketMetadata) {
+            return ((SocketMetadata) factory).isLocallyConnected(this);
+        }
+        getLog().logWarn(Messages.getString("Connection.NoMetadataOnSocketFactory"));
+        return false;
+    }
 
-public synchronized boolean isAbonormallyLongQuery(long millisOrNanos) {
-if (this.queryTimeCount < 15L) {
-return false;
-}
+    public synchronized void setSchema(String schema) throws SQLException {
+        checkClosed();
+    }
 
-double stddev = Math.sqrt((this.queryTimeSumSquares - this.queryTimeSum * this.queryTimeSum / this.queryTimeCount) / (this.queryTimeCount - 1L));
+    public synchronized String getSchema() throws SQLException {
+        checkClosed();
 
-return (millisOrNanos > this.queryTimeMean + 5.0D * stddev);
-}
+        return null;
+    }
 
-public void initializeExtension(Extension ex) throws SQLException {
-ex.init(this, this.props);
-}
+    public void abort(Executor executor) throws SQLException {
+        SecurityManager sec = System.getSecurityManager();
 
-public synchronized void transactionBegun() throws SQLException {
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-((ConnectionLifecycleInterceptor)each).transactionBegun();
-}
-};
+        if (sec != null) {
+            sec.checkPermission(ABORT_PERM);
+        }
 
-iter.doForAll();
-} 
-}
+        if (executor == null) {
+            throw SQLError.createSQLException("Executor can not be null", "S1009", getExceptionInterceptor());
+        }
 
-public synchronized void transactionCompleted() throws SQLException {
-if (this.connectionLifecycleInterceptors != null) {
-IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator())
-{
-void forEach(Extension each) throws SQLException {
-((ConnectionLifecycleInterceptor)each).transactionCompleted();
-}
-};
+        executor.execute(new Runnable() {
+            public void run() {
+                try {
+                    ConnectionImpl.this.abortInternal();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
-iter.doForAll();
-} 
-}
+    public synchronized void setNetworkTimeout(Executor executor, final int milliseconds) throws SQLException {
+        SecurityManager sec = System.getSecurityManager();
 
-public boolean storesLowerCaseTableName() {
-return this.storesLowerCaseTableName;
-}
+        if (sec != null) {
+            sec.checkPermission(SET_NETWORK_TIMEOUT_PERM);
+        }
 
-public ExceptionInterceptor getExceptionInterceptor() {
-return this.exceptionInterceptor;
-}
+        if (executor == null) {
+            throw SQLError.createSQLException("Executor can not be null", "S1009", getExceptionInterceptor());
+        }
 
-public boolean getRequiresEscapingEncoder() {
-return this.requiresEscapingEncoder;
-}
+        checkClosed();
+        final MysqlIO mysqlIo = this.io;
 
-public synchronized boolean isServerLocal() throws SQLException {
-SocketFactory factory = (getIO()).socketFactory;
+        executor.execute(new Runnable() {
+            public void run() {
+                ConnectionImpl.this.setSocketTimeout(milliseconds);
+                try {
+                    mysqlIo.setSocketTimeout(milliseconds);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
-if (factory instanceof SocketMetadata) {
-return ((SocketMetadata)factory).isLocallyConnected(this);
-}
-getLog().logWarn(Messages.getString("Connection.NoMetadataOnSocketFactory"));
-return false;
-}
-
-public synchronized void setSchema(String schema) throws SQLException {
-checkClosed();
-}
-
-public synchronized String getSchema() throws SQLException {
-checkClosed();
-
-return null;
-}
-
-public void abort(Executor executor) throws SQLException {
-SecurityManager sec = System.getSecurityManager();
-
-if (sec != null) {
-sec.checkPermission(ABORT_PERM);
-}
-
-if (executor == null) {
-throw SQLError.createSQLException("Executor can not be null", "S1009", getExceptionInterceptor());
-}
-
-executor.execute(new Runnable()
-{
-public void run() {
-try {
-ConnectionImpl.this.abortInternal();
-} catch (SQLException e) {
-throw new RuntimeException(e);
-} 
-}
-});
-}
-
-public synchronized void setNetworkTimeout(Executor executor, final int milliseconds) throws SQLException {
-SecurityManager sec = System.getSecurityManager();
-
-if (sec != null) {
-sec.checkPermission(SET_NETWORK_TIMEOUT_PERM);
-}
-
-if (executor == null) {
-throw SQLError.createSQLException("Executor can not be null", "S1009", getExceptionInterceptor());
-}
-
-checkClosed();
-final MysqlIO mysqlIo = this.io;
-
-executor.execute(new Runnable()
-{
-public void run() {
-ConnectionImpl.this.setSocketTimeout(milliseconds);
-try {
-mysqlIo.setSocketTimeout(milliseconds);
-} catch (SQLException e) {
-throw new RuntimeException(e);
-} 
-}
-});
-}
-
-public synchronized int getNetworkTimeout() throws SQLException {
-checkClosed();
-return getSocketTimeout();
-}
+    public synchronized int getNetworkTimeout() throws SQLException {
+        checkClosed();
+        return getSocketTimeout();
+    }
 }
 

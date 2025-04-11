@@ -391,7 +391,9 @@ public class GuildWarMgr {
             if (road.getAtkplayers().size() == 0 || road.getDefplayers().size() == 0) {
                 road.setOverTime(CommTime.nowSecond());
             }
-            SyncTaskManager.task(() -> SyncTaskManager.schedule(GuildWarConfig.oneFightTime(), ()));
+            SyncTaskManager.task(() -> SyncTaskManager.schedule(GuildWarConfig.oneFightTime(), () -> {
+                return false;
+            }));
         }
     }
 

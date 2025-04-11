@@ -136,24 +136,21 @@ public class AchievementFeature
 
     public void updateInc(Achievement.AchievementType type, Integer value) {
         update0(type, (bo, ref, values) -> {
-            AchievementIns ins = this.achievemap.get(paramAchievementType);
+            AchievementIns ins = this.achievemap.get(type);
             if (ins.refData.ConditionPreTaskId != 0) {
-                RefAchievement pre_ref = (RefAchievement) RefDataMgr.get(RefAchievement.class, Integer.valueOf(ins.refData.ConditionPreTaskId));
+                RefAchievement pre_ref = (RefAchievement) RefDataMgr.get(RefAchievement.class, ins.refData.ConditionPreTaskId);
                 AchievementIns pre_ins = this.achievemap.get(pre_ref.AchieveName);
                 if (pre_ins == null) return;
                 List<Integer> pre_gainList = StringUtils.string2Integer(pre_ins.bo.getGainPrizeList());
                 if (pre_gainList.size() < pre_ref.PrizeIDList.size()) return;
             }
-            int addCount = values[0].intValue();
+            int addCount = values[0];
             synchronized (bo) {
                 int count = bo.getCompleteCount();
                 bo.saveCompleteCount(count + addCount);
                 taskChieveCount(bo, ref);
             }
-        } new Integer[]{
-
-                value
-        });
+        }, new Integer[]{ value });
     }
 
     public void updateInc(Achievement.AchievementType type) {
@@ -162,33 +159,27 @@ public class AchievementFeature
 
     public void updateMax(Achievement.AchievementType type, Integer value) {
         update0(type, (bo, ref, values) -> {
-            int newvalue = values[0].intValue();
+            int newvalue = values[0];
             synchronized (bo) {
                 int count = bo.getCompleteCount();
                 bo.saveCompleteCount(Math.max(count, newvalue));
                 taskChieveCount(bo, ref);
             }
-        } new Integer[]{
-
-                value
-        });
+        }, new Integer[]{ value });
     }
 
     public void updateMin(Achievement.AchievementType type, Integer value) {
         update0(type, (bo, ref, values) -> {
-            int newvalue = values[0].intValue();
+            int newvalue = values[0];
             synchronized (bo) {
                 int count = bo.getCompleteCount();
                 if (count == 0) count = newvalue;
                 bo.saveCompleteCount(Math.min(count, newvalue));
                 int i = bo.getAchieveCount();
-                while (i < ref.FirstArgsList.size() && bo.getCompleteCount() <= ((Integer) ref.FirstArgsList.get(i)).intValue())
+                while (i < ref.FirstArgsList.size() && bo.getCompleteCount() <= (int) ref.FirstArgsList.get(i))
                     bo.saveAchieveCount(++i);
             }
-        } new Integer[]{
-
-                value
-        });
+        }, new Integer[]{ value });
     }
 
     public void clearValue(Achievement.AchievementType type) {
@@ -196,7 +187,7 @@ public class AchievementFeature
             synchronized (bo) {
                 bo.saveCompleteCount(0);
             }
-        } new Integer[0]);
+        }, new Integer[0]);
     }
 
     public void dailyRefresh() {

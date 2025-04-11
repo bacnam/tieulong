@@ -30,7 +30,7 @@ public class RefreshMgr {
                 }
                 SyncTaskManager.task(this, wait);
             }
-        }INTERVAL);
+        }, INTERVAL);
     }
 
     public void gm_reset() {

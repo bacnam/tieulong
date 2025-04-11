@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.zhonglian.server.common.Config;
 import com.zhonglian.server.common.enums.Achievement;
 import com.zhonglian.server.common.enums.ChatType;
 import com.zhonglian.server.common.enums.ConstEnum;
@@ -22,6 +23,7 @@ import com.zhonglian.server.common.mgr.sensitive.SensitiveWordMgr;
 import com.zhonglian.server.common.utils.Lists;
 import com.zhonglian.server.http.client.IResponseHandler;
 import com.zhonglian.server.http.server.GMParam;
+import com.zhonglian.server.http.server.HttpUtils;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.response.ResponseHandler;
 import com.zhonglian.server.websocket.handler.response.WebSocketResponse;
@@ -256,23 +258,27 @@ public class ChatMgr {
                     params.put("serverId", Integer.valueOf(Config.ServerID()));
                     params.put("worldId", Integer.getInteger("world_sid", 0));
 
-                    String baseurl = System.getProperty("downConfUrl");
-                    HttpUtils.RequestGM("http:
-                    {
-                        public void compeleted (String response){
-                        try {
-                            JsonObject json = (new JsonParser()).parse(response).getAsJsonObject();
-                            if (json.get("state").getAsInt() != 1000) {
-                                CommLog.error("发送GM用户信息失败" + json.get("state").getAsInt());
-                            }
-                        } catch (Exception exception) {
-                        }
-                    }
 
-                        public void failed (Exception exception){
-                        CommLog.error("发送GM用户信息失败");
-                    }
+                    String baseurl = System.getProperty("downConfUrl");
+                    HttpUtils.RequestGM(baseurl + "/yourPath", params, new IResponseHandler() {
+                        @Override
+                        public void compeleted(String response) {
+                            try {
+                                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+                                if (json.get("state").getAsInt() != 1000) {
+                                    CommLog.error("发送GM用户信息失败" + json.get("state").getAsInt());
+                                }
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void failed(Exception exception) {
+                            CommLog.error("发送GM用户信息失败", exception);
+                        }
                     });
+
                 }
                 GMChatAdd(bo);
                 break;

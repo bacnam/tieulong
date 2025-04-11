@@ -94,8 +94,8 @@ return "text/html";
 
 public String getFileHeader() {
 StringBuilder sbuf = new StringBuilder();
-sbuf.append("<!DOCTYPE html PUBLIC \"-
-sbuf.append(" \"http:
+//sbuf.append("<!DOCTYPE html PUBLIC \");
+//sbuf.append("http:", "");
 sbuf.append(CoreConstants.LINE_SEPARATOR);
 sbuf.append("<html>");
 sbuf.append(CoreConstants.LINE_SEPARATOR);
