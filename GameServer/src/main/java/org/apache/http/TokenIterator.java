@@ -3,8 +3,8 @@ package org.apache.http;
 import java.util.Iterator;
 
 public interface TokenIterator extends Iterator<Object> {
-  boolean hasNext();
+    boolean hasNext();
 
-  String nextToken();
+    String nextToken();
 }
 

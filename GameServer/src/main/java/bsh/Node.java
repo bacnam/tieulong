@@ -3,18 +3,18 @@ package bsh;
 import java.io.Serializable;
 
 interface Node extends Serializable {
-  void jjtOpen();
+    void jjtOpen();
 
-  void jjtClose();
+    void jjtClose();
 
-  void jjtSetParent(Node paramNode);
+    void jjtSetParent(Node paramNode);
 
-  Node jjtGetParent();
+    Node jjtGetParent();
 
-  void jjtAddChild(Node paramNode, int paramInt);
+    void jjtAddChild(Node paramNode, int paramInt);
 
-  Node jjtGetChild(int paramInt);
+    Node jjtGetChild(int paramInt);
 
-  int jjtGetNumChildren();
+    int jjtGetNumChildren();
 }
 

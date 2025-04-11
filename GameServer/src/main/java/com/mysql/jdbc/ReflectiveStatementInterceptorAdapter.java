@@ -6,65 +6,63 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ReflectiveStatementInterceptorAdapter
-implements StatementInterceptorV2
-{
-private final StatementInterceptor toProxy;
-final Method v2PostProcessMethod;
+        implements StatementInterceptorV2 {
+    final Method v2PostProcessMethod;
+    private final StatementInterceptor toProxy;
 
-public ReflectiveStatementInterceptorAdapter(StatementInterceptor toProxy) {
-this.toProxy = toProxy;
-this.v2PostProcessMethod = getV2PostProcessMethod(toProxy.getClass());
-}
+    public ReflectiveStatementInterceptorAdapter(StatementInterceptor toProxy) {
+        this.toProxy = toProxy;
+        this.v2PostProcessMethod = getV2PostProcessMethod(toProxy.getClass());
+    }
 
-public void destroy() {
-this.toProxy.destroy();
-}
+    public static final Method getV2PostProcessMethod(Class<?> toProxyClass) {
+        try {
+            Method postProcessMethod = toProxyClass.getMethod("postProcess", new Class[]{String.class, Statement.class, ResultSetInternalMethods.class, Connection.class, int.class, boolean.class, boolean.class, SQLException.class});
 
-public boolean executeTopLevelOnly() {
-return this.toProxy.executeTopLevelOnly();
-}
+            return postProcessMethod;
+        } catch (SecurityException e) {
+            return null;
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
 
-public void init(Connection conn, Properties props) throws SQLException {
-this.toProxy.init(conn, props);
-}
+    public void destroy() {
+        this.toProxy.destroy();
+    }
 
-public ResultSetInternalMethods postProcess(String sql, Statement interceptedStatement, ResultSetInternalMethods originalResultSet, Connection connection, int warningCount, boolean noIndexUsed, boolean noGoodIndexUsed, SQLException statementException) throws SQLException {
-try {
-return (ResultSetInternalMethods)this.v2PostProcessMethod.invoke(this.toProxy, new Object[] { sql, interceptedStatement, originalResultSet, connection, Integer.valueOf(warningCount), noIndexUsed ? Boolean.TRUE : Boolean.FALSE, noGoodIndexUsed ? Boolean.TRUE : Boolean.FALSE, statementException });
+    public boolean executeTopLevelOnly() {
+        return this.toProxy.executeTopLevelOnly();
+    }
 
-}
-catch (IllegalArgumentException e) {
-SQLException sqlEx = new SQLException("Unable to reflectively invoke interceptor");
-sqlEx.initCause(e);
+    public void init(Connection conn, Properties props) throws SQLException {
+        this.toProxy.init(conn, props);
+    }
 
-throw sqlEx;
-} catch (IllegalAccessException e) {
-SQLException sqlEx = new SQLException("Unable to reflectively invoke interceptor");
-sqlEx.initCause(e);
+    public ResultSetInternalMethods postProcess(String sql, Statement interceptedStatement, ResultSetInternalMethods originalResultSet, Connection connection, int warningCount, boolean noIndexUsed, boolean noGoodIndexUsed, SQLException statementException) throws SQLException {
+        try {
+            return (ResultSetInternalMethods) this.v2PostProcessMethod.invoke(this.toProxy, new Object[]{sql, interceptedStatement, originalResultSet, connection, Integer.valueOf(warningCount), noIndexUsed ? Boolean.TRUE : Boolean.FALSE, noGoodIndexUsed ? Boolean.TRUE : Boolean.FALSE, statementException});
 
-throw sqlEx;
-} catch (InvocationTargetException e) {
-SQLException sqlEx = new SQLException("Unable to reflectively invoke interceptor");
-sqlEx.initCause(e);
+        } catch (IllegalArgumentException e) {
+            SQLException sqlEx = new SQLException("Unable to reflectively invoke interceptor");
+            sqlEx.initCause(e);
 
-throw sqlEx;
-} 
-}
+            throw sqlEx;
+        } catch (IllegalAccessException e) {
+            SQLException sqlEx = new SQLException("Unable to reflectively invoke interceptor");
+            sqlEx.initCause(e);
 
-public ResultSetInternalMethods preProcess(String sql, Statement interceptedStatement, Connection connection) throws SQLException {
-return this.toProxy.preProcess(sql, interceptedStatement, connection);
-}
+            throw sqlEx;
+        } catch (InvocationTargetException e) {
+            SQLException sqlEx = new SQLException("Unable to reflectively invoke interceptor");
+            sqlEx.initCause(e);
 
-public static final Method getV2PostProcessMethod(Class<?> toProxyClass) {
-try {
-Method postProcessMethod = toProxyClass.getMethod("postProcess", new Class[] { String.class, Statement.class, ResultSetInternalMethods.class, Connection.class, int.class, boolean.class, boolean.class, SQLException.class });
+            throw sqlEx;
+        }
+    }
 
-return postProcessMethod;
-} catch (SecurityException e) {
-return null;
-} catch (NoSuchMethodException e) {
-return null;
-} 
-}
+    public ResultSetInternalMethods preProcess(String sql, Statement interceptedStatement, Connection connection) throws SQLException {
+        return this.toProxy.preProcess(sql, interceptedStatement, connection);
+    }
 }
 

@@ -4,26 +4,26 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public interface C3P0RegistryManagerMBean {
-  String[] getAllIdentityTokens();
+    String[] getAllIdentityTokens();
 
-  Set getAllIdentityTokenized();
+    Set getAllIdentityTokenized();
 
-  Set getAllPooledDataSources();
+    Set getAllPooledDataSources();
 
-  int getAllIdentityTokenCount();
+    int getAllIdentityTokenCount();
 
-  int getAllIdentityTokenizedCount();
+    int getAllIdentityTokenizedCount();
 
-  int getAllPooledDataSourcesCount();
+    int getAllPooledDataSourcesCount();
 
-  String[] getAllIdentityTokenizedStringified();
+    String[] getAllIdentityTokenizedStringified();
 
-  String[] getAllPooledDataSourcesStringified();
+    String[] getAllPooledDataSourcesStringified();
 
-  int getNumPooledDataSources() throws SQLException;
+    int getNumPooledDataSources() throws SQLException;
 
-  int getNumPoolsAllDataSources() throws SQLException;
+    int getNumPoolsAllDataSources() throws SQLException;
 
-  String getC3p0Version();
+    String getC3p0Version();
 }
 

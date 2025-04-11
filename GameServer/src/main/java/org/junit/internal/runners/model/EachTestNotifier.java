@@ -6,44 +6,43 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.MultipleFailureException;
 
-public class EachTestNotifier
-{
-private final RunNotifier notifier;
-private final Description description;
+public class EachTestNotifier {
+    private final RunNotifier notifier;
+    private final Description description;
 
-public EachTestNotifier(RunNotifier notifier, Description description) {
-this.notifier = notifier;
-this.description = description;
-}
+    public EachTestNotifier(RunNotifier notifier, Description description) {
+        this.notifier = notifier;
+        this.description = description;
+    }
 
-public void addFailure(Throwable targetException) {
-if (targetException instanceof MultipleFailureException) {
-addMultipleFailureException((MultipleFailureException)targetException);
-} else {
-this.notifier.fireTestFailure(new Failure(this.description, targetException));
-} 
-}
+    public void addFailure(Throwable targetException) {
+        if (targetException instanceof MultipleFailureException) {
+            addMultipleFailureException((MultipleFailureException) targetException);
+        } else {
+            this.notifier.fireTestFailure(new Failure(this.description, targetException));
+        }
+    }
 
-private void addMultipleFailureException(MultipleFailureException mfe) {
-for (Throwable each : mfe.getFailures()) {
-addFailure(each);
-}
-}
+    private void addMultipleFailureException(MultipleFailureException mfe) {
+        for (Throwable each : mfe.getFailures()) {
+            addFailure(each);
+        }
+    }
 
-public void addFailedAssumption(AssumptionViolatedException e) {
-this.notifier.fireTestAssumptionFailed(new Failure(this.description, (Throwable)e));
-}
+    public void addFailedAssumption(AssumptionViolatedException e) {
+        this.notifier.fireTestAssumptionFailed(new Failure(this.description, (Throwable) e));
+    }
 
-public void fireTestFinished() {
-this.notifier.fireTestFinished(this.description);
-}
+    public void fireTestFinished() {
+        this.notifier.fireTestFinished(this.description);
+    }
 
-public void fireTestStarted() {
-this.notifier.fireTestStarted(this.description);
-}
+    public void fireTestStarted() {
+        this.notifier.fireTestStarted(this.description);
+    }
 
-public void fireTestIgnored() {
-this.notifier.fireTestIgnored(this.description);
-}
+    public void fireTestIgnored() {
+        this.notifier.fireTestIgnored(this.description);
+    }
 }
 

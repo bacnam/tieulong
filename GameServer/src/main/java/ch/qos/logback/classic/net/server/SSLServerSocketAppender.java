@@ -6,28 +6,27 @@ import ch.qos.logback.core.net.server.SSLServerSocketAppenderBase;
 import ch.qos.logback.core.spi.PreSerializationTransformer;
 
 public class SSLServerSocketAppender
-extends SSLServerSocketAppenderBase<ILoggingEvent>
-{
-private static final PreSerializationTransformer<ILoggingEvent> pst = (PreSerializationTransformer<ILoggingEvent>)new LoggingEventPreSerializationTransformer();
+        extends SSLServerSocketAppenderBase<ILoggingEvent> {
+    private static final PreSerializationTransformer<ILoggingEvent> pst = (PreSerializationTransformer<ILoggingEvent>) new LoggingEventPreSerializationTransformer();
 
-private boolean includeCallerData;
+    private boolean includeCallerData;
 
-protected void postProcessEvent(ILoggingEvent event) {
-if (isIncludeCallerData()) {
-event.getCallerData();
-}
-}
+    protected void postProcessEvent(ILoggingEvent event) {
+        if (isIncludeCallerData()) {
+            event.getCallerData();
+        }
+    }
 
-protected PreSerializationTransformer<ILoggingEvent> getPST() {
-return pst;
-}
+    protected PreSerializationTransformer<ILoggingEvent> getPST() {
+        return pst;
+    }
 
-public boolean isIncludeCallerData() {
-return this.includeCallerData;
-}
+    public boolean isIncludeCallerData() {
+        return this.includeCallerData;
+    }
 
-public void setIncludeCallerData(boolean includeCallerData) {
-this.includeCallerData = includeCallerData;
-}
+    public void setIncludeCallerData(boolean includeCallerData) {
+        this.includeCallerData = includeCallerData;
+    }
 }
 

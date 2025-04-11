@@ -4,50 +4,52 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 public class PotentiallySecondaryRuntimeException
-extends RuntimeException
-implements PotentiallySecondary
-{
-static final String NESTED_MSG = ">>>>>>>>>> NESTED EXCEPTION >>>>>>>>";
-Throwable nested;
+        extends RuntimeException
+        implements PotentiallySecondary {
+    static final String NESTED_MSG = ">>>>>>>>>> NESTED EXCEPTION >>>>>>>>";
+    Throwable nested;
 
-public PotentiallySecondaryRuntimeException(String paramString, Throwable paramThrowable) {
-super(paramString);
-this.nested = paramThrowable;
-}
+    public PotentiallySecondaryRuntimeException(String paramString, Throwable paramThrowable) {
+        super(paramString);
+        this.nested = paramThrowable;
+    }
 
-public PotentiallySecondaryRuntimeException(Throwable paramThrowable) {
-this("", paramThrowable);
-}
-public PotentiallySecondaryRuntimeException(String paramString) {
-this(paramString, null);
-}
-public PotentiallySecondaryRuntimeException() {
-this("", null);
-}
-public Throwable getNestedThrowable() {
-return this.nested;
-}
+    public PotentiallySecondaryRuntimeException(Throwable paramThrowable) {
+        this("", paramThrowable);
+    }
 
-public void printStackTrace(PrintWriter paramPrintWriter) {
-super.printStackTrace(paramPrintWriter);
-if (this.nested != null) {
+    public PotentiallySecondaryRuntimeException(String paramString) {
+        this(paramString, null);
+    }
 
-paramPrintWriter.println(">>>>>>>>>> NESTED EXCEPTION >>>>>>>>");
-this.nested.printStackTrace(paramPrintWriter);
-} 
-}
+    public PotentiallySecondaryRuntimeException() {
+        this("", null);
+    }
 
-public void printStackTrace(PrintStream paramPrintStream) {
-super.printStackTrace(paramPrintStream);
-if (this.nested != null) {
+    public Throwable getNestedThrowable() {
+        return this.nested;
+    }
 
-paramPrintStream.println("NESTED_MSG");
-this.nested.printStackTrace(paramPrintStream);
-} 
-}
+    public void printStackTrace(PrintWriter paramPrintWriter) {
+        super.printStackTrace(paramPrintWriter);
+        if (this.nested != null) {
 
-public void printStackTrace() {
-printStackTrace(System.err);
-}
+            paramPrintWriter.println(">>>>>>>>>> NESTED EXCEPTION >>>>>>>>");
+            this.nested.printStackTrace(paramPrintWriter);
+        }
+    }
+
+    public void printStackTrace(PrintStream paramPrintStream) {
+        super.printStackTrace(paramPrintStream);
+        if (this.nested != null) {
+
+            paramPrintStream.println("NESTED_MSG");
+            this.nested.printStackTrace(paramPrintStream);
+        }
+    }
+
+    public void printStackTrace() {
+        printStackTrace(System.err);
+    }
 }
 

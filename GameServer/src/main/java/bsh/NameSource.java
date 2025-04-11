@@ -1,12 +1,12 @@
 package bsh;
 
 public interface NameSource {
-  String[] getAllNames();
+    String[] getAllNames();
 
-  void addNameSourceListener(Listener paramListener);
+    void addNameSourceListener(Listener paramListener);
 
-  public static interface Listener {
-    void nameSourceChanged(NameSource param1NameSource);
-  }
+    public static interface Listener {
+        void nameSourceChanged(NameSource param1NameSource);
+    }
 }
 

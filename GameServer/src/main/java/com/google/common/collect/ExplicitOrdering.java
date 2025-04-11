@@ -1,61 +1,61 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+
+import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.Nullable;
 
 @GwtCompatible(serializable = true)
 final class ExplicitOrdering<T>
-extends Ordering<T>
-implements Serializable
-{
-final ImmutableMap<T, Integer> rankMap;
-private static final long serialVersionUID = 0L;
+        extends Ordering<T>
+        implements Serializable {
+    private static final long serialVersionUID = 0L;
+    final ImmutableMap<T, Integer> rankMap;
 
-ExplicitOrdering(List<T> valuesInOrder) {
-this(buildRankMap(valuesInOrder));
-}
+    ExplicitOrdering(List<T> valuesInOrder) {
+        this(buildRankMap(valuesInOrder));
+    }
 
-ExplicitOrdering(ImmutableMap<T, Integer> rankMap) {
-this.rankMap = rankMap;
-}
+    ExplicitOrdering(ImmutableMap<T, Integer> rankMap) {
+        this.rankMap = rankMap;
+    }
 
-public int compare(T left, T right) {
-return rank(left) - rank(right);
-}
+    private static <T> ImmutableMap<T, Integer> buildRankMap(List<T> valuesInOrder) {
+        ImmutableMap.Builder<T, Integer> builder = ImmutableMap.builder();
+        int rank = 0;
+        for (T value : valuesInOrder) {
+            builder.put(value, Integer.valueOf(rank++));
+        }
+        return builder.build();
+    }
 
-private int rank(T value) {
-Integer rank = this.rankMap.get(value);
-if (rank == null) {
-throw new Ordering.IncomparableValueException(value);
-}
-return rank.intValue();
-}
+    public int compare(T left, T right) {
+        return rank(left) - rank(right);
+    }
 
-private static <T> ImmutableMap<T, Integer> buildRankMap(List<T> valuesInOrder) {
-ImmutableMap.Builder<T, Integer> builder = ImmutableMap.builder();
-int rank = 0;
-for (T value : valuesInOrder) {
-builder.put(value, Integer.valueOf(rank++));
-}
-return builder.build();
-}
+    private int rank(T value) {
+        Integer rank = this.rankMap.get(value);
+        if (rank == null) {
+            throw new Ordering.IncomparableValueException(value);
+        }
+        return rank.intValue();
+    }
 
-public boolean equals(@Nullable Object object) {
-if (object instanceof ExplicitOrdering) {
-ExplicitOrdering<?> that = (ExplicitOrdering)object;
-return this.rankMap.equals(that.rankMap);
-} 
-return false;
-}
+    public boolean equals(@Nullable Object object) {
+        if (object instanceof ExplicitOrdering) {
+            ExplicitOrdering<?> that = (ExplicitOrdering) object;
+            return this.rankMap.equals(that.rankMap);
+        }
+        return false;
+    }
 
-public int hashCode() {
-return this.rankMap.hashCode();
-}
+    public int hashCode() {
+        return this.rankMap.hashCode();
+    }
 
-public String toString() {
-return "Ordering.explicit(" + this.rankMap.keySet() + ")";
-}
+    public String toString() {
+        return "Ordering.explicit(" + this.rankMap.keySet() + ")";
+    }
 }
 

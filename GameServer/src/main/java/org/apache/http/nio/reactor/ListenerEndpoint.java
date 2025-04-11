@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.net.SocketAddress;
 
 public interface ListenerEndpoint {
-  SocketAddress getAddress();
+    SocketAddress getAddress();
 
-  IOException getException();
+    IOException getException();
 
-  void waitFor() throws InterruptedException;
+    void waitFor() throws InterruptedException;
 
-  boolean isClosed();
+    boolean isClosed();
 
-  void close();
+    void close();
 }
 

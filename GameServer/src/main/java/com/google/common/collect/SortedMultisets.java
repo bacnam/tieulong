@@ -1,158 +1,153 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.SortedSet;
+
+import java.util.*;
 
 @GwtCompatible
-final class SortedMultisets
-{
-static abstract class ElementSet<E>
-extends Multisets.ElementSet<E>
-implements SortedSet<E>
-{
-public Comparator<? super E> comparator() {
-return multiset().comparator();
-}
+final class SortedMultisets {
+    private static <E> E getElementOrThrow(Multiset.Entry<E> entry) {
+        if (entry == null) {
+            throw new NoSuchElementException();
+        }
+        return entry.getElement();
+    }
 
-public SortedSet<E> subSet(E fromElement, E toElement) {
-return multiset().subMultiset(fromElement, BoundType.CLOSED, toElement, BoundType.OPEN).elementSet();
-}
+    static abstract class ElementSet<E>
+            extends Multisets.ElementSet<E>
+            implements SortedSet<E> {
+        public Comparator<? super E> comparator() {
+            return multiset().comparator();
+        }
 
-public SortedSet<E> headSet(E toElement) {
-return multiset().headMultiset(toElement, BoundType.OPEN).elementSet();
-}
+        public SortedSet<E> subSet(E fromElement, E toElement) {
+            return multiset().subMultiset(fromElement, BoundType.CLOSED, toElement, BoundType.OPEN).elementSet();
+        }
 
-public SortedSet<E> tailSet(E fromElement) {
-return multiset().tailMultiset(fromElement, BoundType.CLOSED).elementSet();
-}
+        public SortedSet<E> headSet(E toElement) {
+            return multiset().headMultiset(toElement, BoundType.OPEN).elementSet();
+        }
 
-public E first() {
-return SortedMultisets.getElementOrThrow(multiset().firstEntry());
-}
-abstract SortedMultiset<E> multiset();
-public E last() {
-return SortedMultisets.getElementOrThrow(multiset().lastEntry());
-}
-}
+        public SortedSet<E> tailSet(E fromElement) {
+            return multiset().tailMultiset(fromElement, BoundType.CLOSED).elementSet();
+        }
 
-private static <E> E getElementOrThrow(Multiset.Entry<E> entry) {
-if (entry == null) {
-throw new NoSuchElementException();
-}
-return entry.getElement();
-}
+        public E first() {
+            return SortedMultisets.getElementOrThrow(multiset().firstEntry());
+        }
 
-static abstract class DescendingMultiset<E>
-extends ForwardingMultiset<E>
-implements SortedMultiset<E>
-{
-private transient Comparator<? super E> comparator;
+        abstract SortedMultiset<E> multiset();
 
-private transient SortedSet<E> elementSet;
-private transient Set<Multiset.Entry<E>> entrySet;
+        public E last() {
+            return SortedMultisets.getElementOrThrow(multiset().lastEntry());
+        }
+    }
 
-public Comparator<? super E> comparator() {
-Comparator<? super E> result = this.comparator;
-if (result == null) {
-return this.comparator = Ordering.from(forwardMultiset().comparator()).<Object>reverse();
-}
+    static abstract class DescendingMultiset<E>
+            extends ForwardingMultiset<E>
+            implements SortedMultiset<E> {
+        private transient Comparator<? super E> comparator;
 
-return result;
-}
+        private transient SortedSet<E> elementSet;
+        private transient Set<Multiset.Entry<E>> entrySet;
 
-public SortedSet<E> elementSet() {
-SortedSet<E> result = this.elementSet;
-if (result == null) {
-return this.elementSet = new SortedMultisets.ElementSet<E>() {
-SortedMultiset<E> multiset() {
-return SortedMultisets.DescendingMultiset.this;
-}
-};
-}
-return result;
-}
+        public Comparator<? super E> comparator() {
+            Comparator<? super E> result = this.comparator;
+            if (result == null) {
+                return this.comparator = Ordering.from(forwardMultiset().comparator()).<Object>reverse();
+            }
 
-public Multiset.Entry<E> pollFirstEntry() {
-return forwardMultiset().pollLastEntry();
-}
+            return result;
+        }
 
-public Multiset.Entry<E> pollLastEntry() {
-return forwardMultiset().pollFirstEntry();
-}
+        public SortedSet<E> elementSet() {
+            SortedSet<E> result = this.elementSet;
+            if (result == null) {
+                return this.elementSet = new SortedMultisets.ElementSet<E>() {
+                    SortedMultiset<E> multiset() {
+                        return SortedMultisets.DescendingMultiset.this;
+                    }
+                };
+            }
+            return result;
+        }
 
-public SortedMultiset<E> headMultiset(E toElement, BoundType boundType) {
-return forwardMultiset().tailMultiset(toElement, boundType).descendingMultiset();
-}
+        public Multiset.Entry<E> pollFirstEntry() {
+            return forwardMultiset().pollLastEntry();
+        }
 
-public SortedMultiset<E> subMultiset(E fromElement, BoundType fromBoundType, E toElement, BoundType toBoundType) {
-return forwardMultiset().subMultiset(toElement, toBoundType, fromElement, fromBoundType).descendingMultiset();
-}
+        public Multiset.Entry<E> pollLastEntry() {
+            return forwardMultiset().pollFirstEntry();
+        }
 
-public SortedMultiset<E> tailMultiset(E fromElement, BoundType boundType) {
-return forwardMultiset().headMultiset(fromElement, boundType).descendingMultiset();
-}
+        public SortedMultiset<E> headMultiset(E toElement, BoundType boundType) {
+            return forwardMultiset().tailMultiset(toElement, boundType).descendingMultiset();
+        }
 
-protected Multiset<E> delegate() {
-return forwardMultiset();
-}
+        public SortedMultiset<E> subMultiset(E fromElement, BoundType fromBoundType, E toElement, BoundType toBoundType) {
+            return forwardMultiset().subMultiset(toElement, toBoundType, fromElement, fromBoundType).descendingMultiset();
+        }
 
-public SortedMultiset<E> descendingMultiset() {
-return forwardMultiset();
-}
+        public SortedMultiset<E> tailMultiset(E fromElement, BoundType boundType) {
+            return forwardMultiset().headMultiset(fromElement, boundType).descendingMultiset();
+        }
 
-public Multiset.Entry<E> firstEntry() {
-return forwardMultiset().lastEntry();
-}
+        protected Multiset<E> delegate() {
+            return forwardMultiset();
+        }
 
-public Multiset.Entry<E> lastEntry() {
-return forwardMultiset().firstEntry();
-}
+        public SortedMultiset<E> descendingMultiset() {
+            return forwardMultiset();
+        }
 
-public Set<Multiset.Entry<E>> entrySet() {
-Set<Multiset.Entry<E>> result = this.entrySet;
-return (result == null) ? (this.entrySet = createEntrySet()) : result;
-}
+        public Multiset.Entry<E> firstEntry() {
+            return forwardMultiset().lastEntry();
+        }
 
-Set<Multiset.Entry<E>> createEntrySet() {
-return new Multisets.EntrySet<E>() {
-Multiset<E> multiset() {
-return SortedMultisets.DescendingMultiset.this;
-}
+        public Multiset.Entry<E> lastEntry() {
+            return forwardMultiset().firstEntry();
+        }
 
-public Iterator<Multiset.Entry<E>> iterator() {
-return SortedMultisets.DescendingMultiset.this.entryIterator();
-}
+        public Set<Multiset.Entry<E>> entrySet() {
+            Set<Multiset.Entry<E>> result = this.entrySet;
+            return (result == null) ? (this.entrySet = createEntrySet()) : result;
+        }
 
-public int size() {
-return SortedMultisets.DescendingMultiset.this.forwardMultiset().entrySet().size();
-}
-};
-}
+        Set<Multiset.Entry<E>> createEntrySet() {
+            return new Multisets.EntrySet<E>() {
+                Multiset<E> multiset() {
+                    return SortedMultisets.DescendingMultiset.this;
+                }
 
-public Iterator<E> iterator() {
-return Multisets.iteratorImpl(this);
-}
+                public Iterator<Multiset.Entry<E>> iterator() {
+                    return SortedMultisets.DescendingMultiset.this.entryIterator();
+                }
 
-public Object[] toArray() {
-return standardToArray();
-}
+                public int size() {
+                    return SortedMultisets.DescendingMultiset.this.forwardMultiset().entrySet().size();
+                }
+            };
+        }
 
-public <T> T[] toArray(T[] array) {
-return (T[])standardToArray((Object[])array);
-}
+        public Iterator<E> iterator() {
+            return Multisets.iteratorImpl(this);
+        }
 
-public String toString() {
-return entrySet().toString();
-}
+        public Object[] toArray() {
+            return standardToArray();
+        }
 
-abstract SortedMultiset<E> forwardMultiset();
+        public <T> T[] toArray(T[] array) {
+            return (T[]) standardToArray((Object[]) array);
+        }
 
-abstract Iterator<Multiset.Entry<E>> entryIterator();
-}
+        public String toString() {
+            return entrySet().toString();
+        }
+
+        abstract SortedMultiset<E> forwardMultiset();
+
+        abstract Iterator<Multiset.Entry<E>> entryIterator();
+    }
 }
 

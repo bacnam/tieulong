@@ -2,27 +2,19 @@ package com.mysql.jdbc;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
+import java.sql.*;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
+import java.util.*;
 
 public class DatabaseMetaData
         implements DatabaseMetaData {
-    private static String mysqlKeywordsThatArentSQL92;
     protected static final int MAX_IDENTIFIER_LENGTH = 64;
+    protected static final byte[] TABLE_AS_BYTES = "TABLE".getBytes();
+    protected static final byte[] SYSTEM_TABLE_AS_BYTES = "SYSTEM TABLE".getBytes();
+    protected static final byte[] VIEW_AS_BYTES = "VIEW".getBytes();
     private static final int DEFERRABILITY = 13;
     private static final int DELETE_RULE = 10;
     private static final int FK_NAME = 11;
@@ -37,337 +29,10 @@ public class DatabaseMetaData
     private static final int PKTABLE_NAME = 2;
     private static final int PKTABLE_SCHEM = 1;
     private static final String SUPPORTS_FK = "SUPPORTS_FK";
-
-    protected abstract class IteratorWithCleanup<T> {
-        abstract void close() throws SQLException;
-
-        abstract boolean hasNext() throws SQLException;
-
-        abstract T next() throws SQLException;
-    }
-
-    class LocalAndReferencedColumns {
-        String constraintName;
-        List<String> localColumnsList;
-        String referencedCatalog;
-        List<String> referencedColumnsList;
-        String referencedTable;
-
-        LocalAndReferencedColumns(List<String> localColumns, List<String> refColumns, String constName, String refCatalog, String refTable) {
-            this.localColumnsList = localColumns;
-            this.referencedColumnsList = refColumns;
-            this.constraintName = constName;
-            this.referencedTable = refTable;
-            this.referencedCatalog = refCatalog;
-        }
-    }
-
-    protected class ResultSetIterator
-            extends IteratorWithCleanup<String> {
-        int colIndex;
-        ResultSet resultSet;
-
-        ResultSetIterator(ResultSet rs, int index) {
-            this.resultSet = rs;
-            this.colIndex = index;
-        }
-
-        void close() throws SQLException {
-            this.resultSet.close();
-        }
-
-        boolean hasNext() throws SQLException {
-            return this.resultSet.next();
-        }
-
-        String next() throws SQLException {
-            return this.resultSet.getObject(this.colIndex).toString();
-        }
-    }
-
-    protected class SingleStringIterator
-            extends IteratorWithCleanup<String> {
-        boolean onFirst = true;
-        String value;
-
-        SingleStringIterator(String s) {
-            this.value = s;
-        }
-
-        void close() throws SQLException {
-        }
-
-        boolean hasNext() throws SQLException {
-            return this.onFirst;
-        }
-
-        String next() throws SQLException {
-            this.onFirst = false;
-            return this.value;
-        }
-    }
-
-    class TypeDescriptor {
-        int bufferLength;
-
-        int charOctetLength;
-
-        Integer columnSize;
-
-        short dataType;
-
-        Integer decimalDigits;
-
-        String isNullable;
-
-        int nullability;
-
-        int numPrecRadix = 10;
-
-        String typeName;
-
-        TypeDescriptor(String typeInfo, String nullabilityInfo) throws SQLException {
-            if (typeInfo == null) {
-                throw SQLError.createSQLException("NULL typeinfo not supported.", "S1009", DatabaseMetaData.this.getExceptionInterceptor());
-            }
-
-            String mysqlType = "";
-            String fullMysqlType = null;
-
-            if (typeInfo.indexOf("(") != -1) {
-                mysqlType = typeInfo.substring(0, typeInfo.indexOf("("));
-            } else {
-                mysqlType = typeInfo;
-            }
-
-            int indexOfUnsignedInMysqlType = StringUtils.indexOfIgnoreCase(mysqlType, "unsigned");
-
-            if (indexOfUnsignedInMysqlType != -1) {
-                mysqlType = mysqlType.substring(0, indexOfUnsignedInMysqlType - 1);
-            }
-
-            boolean isUnsigned = false;
-
-            if (StringUtils.indexOfIgnoreCase(typeInfo, "unsigned") != -1 && StringUtils.indexOfIgnoreCase(typeInfo, "set") != 0 && StringUtils.indexOfIgnoreCase(typeInfo, "enum") != 0) {
-
-                fullMysqlType = mysqlType + " unsigned";
-                isUnsigned = true;
-            } else {
-                fullMysqlType = mysqlType;
-            }
-
-            if (DatabaseMetaData.this.conn.getCapitalizeTypeNames()) {
-                fullMysqlType = fullMysqlType.toUpperCase(Locale.ENGLISH);
-            }
-
-            this.dataType = (short) MysqlDefs.mysqlToJavaType(mysqlType);
-
-            this.typeName = fullMysqlType;
-
-            if (StringUtils.startsWithIgnoreCase(typeInfo, "enum")) {
-                String temp = typeInfo.substring(typeInfo.indexOf("("), typeInfo.lastIndexOf(")"));
-
-                StringTokenizer tokenizer = new StringTokenizer(temp, ",");
-
-                int maxLength = 0;
-
-                while (tokenizer.hasMoreTokens()) {
-                    maxLength = Math.max(maxLength, tokenizer.nextToken().length() - 2);
-                }
-
-                this.columnSize = Integer.valueOf(maxLength);
-                this.decimalDigits = null;
-            } else if (StringUtils.startsWithIgnoreCase(typeInfo, "set")) {
-                String temp = typeInfo.substring(typeInfo.indexOf("(") + 1, typeInfo.lastIndexOf(")"));
-
-                StringTokenizer tokenizer = new StringTokenizer(temp, ",");
-
-                int maxLength = 0;
-
-                int numElements = tokenizer.countTokens();
-
-                if (numElements > 0) {
-                    maxLength += numElements - 1;
-                }
-
-                while (tokenizer.hasMoreTokens()) {
-                    String setMember = tokenizer.nextToken().trim();
-
-                    if (setMember.startsWith("'") && setMember.endsWith("'")) {
-
-                        maxLength += setMember.length() - 2;
-                        continue;
-                    }
-                    maxLength += setMember.length();
-                }
-
-                this.columnSize = Integer.valueOf(maxLength);
-                this.decimalDigits = null;
-            } else if (typeInfo.indexOf(",") != -1) {
-
-                this.columnSize = Integer.valueOf(typeInfo.substring(typeInfo.indexOf("(") + 1, typeInfo.indexOf(",")).trim());
-
-                this.decimalDigits = Integer.valueOf(typeInfo.substring(typeInfo.indexOf(",") + 1, typeInfo.indexOf(")")).trim());
-            } else {
-
-                this.columnSize = null;
-                this.decimalDigits = null;
-
-                if ((StringUtils.indexOfIgnoreCase(typeInfo, "char") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "text") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "blob") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "binary") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "bit") != -1) && typeInfo.indexOf("(") != -1) {
-
-                    int endParenIndex = typeInfo.indexOf(")");
-
-                    if (endParenIndex == -1) {
-                        endParenIndex = typeInfo.length();
-                    }
-
-                    this.columnSize = Integer.valueOf(typeInfo.substring(typeInfo.indexOf("(") + 1, endParenIndex).trim());
-
-                    if (DatabaseMetaData.this.conn.getTinyInt1isBit() && this.columnSize.intValue() == 1 && StringUtils.startsWithIgnoreCase(typeInfo, 0, "tinyint")) {
-
-                        if (DatabaseMetaData.this.conn.getTransformedBitIsBoolean()) {
-                            this.dataType = 16;
-                            this.typeName = "BOOLEAN";
-                        } else {
-                            this.dataType = -7;
-                            this.typeName = "BIT";
-                        }
-                    }
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "tinyint")) {
-
-                    if (DatabaseMetaData.this.conn.getTinyInt1isBit() && typeInfo.indexOf("(1)") != -1) {
-                        if (DatabaseMetaData.this.conn.getTransformedBitIsBoolean()) {
-                            this.dataType = 16;
-                            this.typeName = "BOOLEAN";
-                        } else {
-                            this.dataType = -7;
-                            this.typeName = "BIT";
-                        }
-                    } else {
-                        this.columnSize = Integer.valueOf(3);
-                        this.decimalDigits = Integer.valueOf(0);
-                    }
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "smallint")) {
-
-                    this.columnSize = Integer.valueOf(5);
-                    this.decimalDigits = Integer.valueOf(0);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "mediumint")) {
-
-                    this.columnSize = Integer.valueOf(isUnsigned ? 8 : 7);
-                    this.decimalDigits = Integer.valueOf(0);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "int")) {
-
-                    this.columnSize = Integer.valueOf(10);
-                    this.decimalDigits = Integer.valueOf(0);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "integer")) {
-
-                    this.columnSize = Integer.valueOf(10);
-                    this.decimalDigits = Integer.valueOf(0);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "bigint")) {
-
-                    this.columnSize = Integer.valueOf(isUnsigned ? 20 : 19);
-                    this.decimalDigits = Integer.valueOf(0);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "int24")) {
-
-                    this.columnSize = Integer.valueOf(19);
-                    this.decimalDigits = Integer.valueOf(0);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "real")) {
-
-                    this.columnSize = Integer.valueOf(12);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "float")) {
-
-                    this.columnSize = Integer.valueOf(12);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "decimal")) {
-
-                    this.columnSize = Integer.valueOf(12);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "numeric")) {
-
-                    this.columnSize = Integer.valueOf(12);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "double")) {
-
-                    this.columnSize = Integer.valueOf(22);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "char")) {
-
-                    this.columnSize = Integer.valueOf(1);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "varchar")) {
-
-                    this.columnSize = Integer.valueOf(255);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "timestamp")) {
-
-                    this.columnSize = Integer.valueOf(19);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "datetime")) {
-
-                    this.columnSize = Integer.valueOf(19);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "date")) {
-
-                    this.columnSize = Integer.valueOf(10);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "time")) {
-
-                    this.columnSize = Integer.valueOf(8);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "tinyblob")) {
-
-                    this.columnSize = Integer.valueOf(255);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "blob")) {
-
-                    this.columnSize = Integer.valueOf(65535);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "mediumblob")) {
-
-                    this.columnSize = Integer.valueOf(16777215);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "longblob")) {
-
-                    this.columnSize = Integer.valueOf(2147483647);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "tinytext")) {
-
-                    this.columnSize = Integer.valueOf(255);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "text")) {
-
-                    this.columnSize = Integer.valueOf(65535);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "mediumtext")) {
-
-                    this.columnSize = Integer.valueOf(16777215);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "longtext")) {
-
-                    this.columnSize = Integer.valueOf(2147483647);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "enum")) {
-
-                    this.columnSize = Integer.valueOf(255);
-                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "set")) {
-
-                    this.columnSize = Integer.valueOf(255);
-                }
-            }
-
-            this.bufferLength = MysqlIO.getMaxBuf();
-
-            this.numPrecRadix = 10;
-
-            if (nullabilityInfo != null) {
-                if (nullabilityInfo.equals("YES")) {
-                    this.nullability = 1;
-                    this.isNullable = "YES";
-                } else {
-
-                    this.nullability = 0;
-                    this.isNullable = "NO";
-                }
-            } else {
-                this.nullability = 0;
-                this.isNullable = "NO";
-            }
-        }
-    }
-
-    protected static final byte[] TABLE_AS_BYTES = "TABLE".getBytes();
-
-    protected static final byte[] SYSTEM_TABLE_AS_BYTES = "SYSTEM TABLE".getBytes();
-
     private static final int UPDATE_RULE = 9;
-
-    protected static final byte[] VIEW_AS_BYTES = "VIEW".getBytes();
-
     private static final Constructor<?> JDBC_4_DBMD_SHOW_CTOR;
     private static final Constructor<?> JDBC_4_DBMD_IS_CTOR;
-    protected MySQLConnection conn;
+    private static String mysqlKeywordsThatArentSQL92;
 
     static {
         if (Util.isJdbc4()) {
@@ -426,11 +91,22 @@ public class DatabaseMetaData
         mysqlKeywordsThatArentSQL92 = keywordBuf.toString();
     }
 
+    protected MySQLConnection conn;
     protected String database = null;
-
     protected String quotedId = null;
-
     private ExceptionInterceptor exceptionInterceptor;
+    protected DatabaseMetaData(MySQLConnection connToSet, String databaseToSet) {
+        this.conn = connToSet;
+        this.database = databaseToSet;
+        this.exceptionInterceptor = this.conn.getExceptionInterceptor();
+
+        try {
+            this.quotedId = this.conn.supportsQuotedIdentifiers() ? getIdentifierQuoteString() : "";
+        } catch (SQLException sqlEx) {
+
+            AssertionFailedException.shouldNotHappen(sqlEx);
+        }
+    }
 
     protected static DatabaseMetaData getInstance(MySQLConnection connToSet, String databaseToSet, boolean checkForInfoSchema) throws SQLException {
         if (!Util.isJdbc4()) {
@@ -448,31 +124,6 @@ public class DatabaseMetaData
         }
 
         return (DatabaseMetaData) Util.handleNewInstance(JDBC_4_DBMD_SHOW_CTOR, new Object[]{connToSet, databaseToSet}, connToSet.getExceptionInterceptor());
-    }
-
-    protected DatabaseMetaData(MySQLConnection connToSet, String databaseToSet) {
-        this.conn = connToSet;
-        this.database = databaseToSet;
-        this.exceptionInterceptor = this.conn.getExceptionInterceptor();
-
-        try {
-            this.quotedId = this.conn.supportsQuotedIdentifiers() ? getIdentifierQuoteString() : "";
-        } catch (SQLException sqlEx) {
-
-            AssertionFailedException.shouldNotHappen(sqlEx);
-        }
-    }
-
-    public boolean allProceduresAreCallable() throws SQLException {
-        return false;
-    }
-
-    public boolean allTablesAreSelectable() throws SQLException {
-        return false;
-    }
-
-    private ResultSet buildResultSet(Field[] fields, ArrayList<ResultSetRow> rows) throws SQLException {
-        return buildResultSet(fields, rows, this.conn);
     }
 
     static ResultSet buildResultSet(Field[] fields, ArrayList<ResultSetRow> rows, MySQLConnection c) throws SQLException {
@@ -494,6 +145,18 @@ public class DatabaseMetaData
         }
 
         return ResultSetImpl.getInstance(c.getCatalog(), fields, new RowDataStatic(rows), c, null, false);
+    }
+
+    public boolean allProceduresAreCallable() throws SQLException {
+        return false;
+    }
+
+    public boolean allTablesAreSelectable() throws SQLException {
+        return false;
+    }
+
+    private ResultSet buildResultSet(Field[] fields, ArrayList<ResultSetRow> rows) throws SQLException {
+        return buildResultSet(fields, rows, this.conn);
     }
 
     protected void convertToJdbcFunctionList(String catalog, ResultSet proceduresRs, boolean needsClientFiltering, String db, Map<String, ResultSetRow> procedureRowsOrderedByName, int nameIndex, Field[] fields) throws SQLException {
@@ -1658,9 +1321,7 @@ public class DatabaseMetaData
 
         try {
             (new IterateBlock<String>(getCatalogIterator(catalog)) {
-                void forEach(String catalogStr) throws SQLException {
-
-                }
+                ResultSet results = buildResultSet(fields, rows);
 finally
 
                 {
@@ -1670,7 +1331,9 @@ finally
                     }
                 }
 
-                ResultSet results = buildResultSet(fields, rows);
+                void forEach(String catalogStr) throws SQLException {
+
+                }
 
 return results;
             }
@@ -4968,3 +4631,323 @@ return results;
             }
         }
 
+
+
+    protected abstract class IteratorWithCleanup<T> {
+        abstract void close() throws SQLException;
+
+        abstract boolean hasNext() throws SQLException;
+
+        abstract T next() throws SQLException;
+    }
+
+    class LocalAndReferencedColumns {
+        String constraintName;
+        List<String> localColumnsList;
+        String referencedCatalog;
+        List<String> referencedColumnsList;
+        String referencedTable;
+
+        LocalAndReferencedColumns(List<String> localColumns, List<String> refColumns, String constName, String refCatalog, String refTable) {
+            this.localColumnsList = localColumns;
+            this.referencedColumnsList = refColumns;
+            this.constraintName = constName;
+            this.referencedTable = refTable;
+            this.referencedCatalog = refCatalog;
+        }
+    }
+
+    protected class ResultSetIterator
+            extends IteratorWithCleanup<String> {
+        int colIndex;
+        ResultSet resultSet;
+
+        ResultSetIterator(ResultSet rs, int index) {
+            this.resultSet = rs;
+            this.colIndex = index;
+        }
+
+        void close() throws SQLException {
+            this.resultSet.close();
+        }
+
+        boolean hasNext() throws SQLException {
+            return this.resultSet.next();
+        }
+
+        String next() throws SQLException {
+            return this.resultSet.getObject(this.colIndex).toString();
+        }
+    }
+
+    protected class SingleStringIterator
+            extends IteratorWithCleanup<String> {
+        boolean onFirst = true;
+        String value;
+
+        SingleStringIterator(String s) {
+            this.value = s;
+        }
+
+        void close() throws SQLException {
+        }
+
+        boolean hasNext() throws SQLException {
+            return this.onFirst;
+        }
+
+        String next() throws SQLException {
+            this.onFirst = false;
+            return this.value;
+        }
+    }
+
+    class TypeDescriptor {
+        int bufferLength;
+
+        int charOctetLength;
+
+        Integer columnSize;
+
+        short dataType;
+
+        Integer decimalDigits;
+
+        String isNullable;
+
+        int nullability;
+
+        int numPrecRadix = 10;
+
+        String typeName;
+
+        TypeDescriptor(String typeInfo, String nullabilityInfo) throws SQLException {
+            if (typeInfo == null) {
+                throw SQLError.createSQLException("NULL typeinfo not supported.", "S1009", DatabaseMetaData.this.getExceptionInterceptor());
+            }
+
+            String mysqlType = "";
+            String fullMysqlType = null;
+
+            if (typeInfo.indexOf("(") != -1) {
+                mysqlType = typeInfo.substring(0, typeInfo.indexOf("("));
+            } else {
+                mysqlType = typeInfo;
+            }
+
+            int indexOfUnsignedInMysqlType = StringUtils.indexOfIgnoreCase(mysqlType, "unsigned");
+
+            if (indexOfUnsignedInMysqlType != -1) {
+                mysqlType = mysqlType.substring(0, indexOfUnsignedInMysqlType - 1);
+            }
+
+            boolean isUnsigned = false;
+
+            if (StringUtils.indexOfIgnoreCase(typeInfo, "unsigned") != -1 && StringUtils.indexOfIgnoreCase(typeInfo, "set") != 0 && StringUtils.indexOfIgnoreCase(typeInfo, "enum") != 0) {
+
+                fullMysqlType = mysqlType + " unsigned";
+                isUnsigned = true;
+            } else {
+                fullMysqlType = mysqlType;
+            }
+
+            if (DatabaseMetaData.this.conn.getCapitalizeTypeNames()) {
+                fullMysqlType = fullMysqlType.toUpperCase(Locale.ENGLISH);
+            }
+
+            this.dataType = (short) MysqlDefs.mysqlToJavaType(mysqlType);
+
+            this.typeName = fullMysqlType;
+
+            if (StringUtils.startsWithIgnoreCase(typeInfo, "enum")) {
+                String temp = typeInfo.substring(typeInfo.indexOf("("), typeInfo.lastIndexOf(")"));
+
+                StringTokenizer tokenizer = new StringTokenizer(temp, ",");
+
+                int maxLength = 0;
+
+                while (tokenizer.hasMoreTokens()) {
+                    maxLength = Math.max(maxLength, tokenizer.nextToken().length() - 2);
+                }
+
+                this.columnSize = Integer.valueOf(maxLength);
+                this.decimalDigits = null;
+            } else if (StringUtils.startsWithIgnoreCase(typeInfo, "set")) {
+                String temp = typeInfo.substring(typeInfo.indexOf("(") + 1, typeInfo.lastIndexOf(")"));
+
+                StringTokenizer tokenizer = new StringTokenizer(temp, ",");
+
+                int maxLength = 0;
+
+                int numElements = tokenizer.countTokens();
+
+                if (numElements > 0) {
+                    maxLength += numElements - 1;
+                }
+
+                while (tokenizer.hasMoreTokens()) {
+                    String setMember = tokenizer.nextToken().trim();
+
+                    if (setMember.startsWith("'") && setMember.endsWith("'")) {
+
+                        maxLength += setMember.length() - 2;
+                        continue;
+                    }
+                    maxLength += setMember.length();
+                }
+
+                this.columnSize = Integer.valueOf(maxLength);
+                this.decimalDigits = null;
+            } else if (typeInfo.indexOf(",") != -1) {
+
+                this.columnSize = Integer.valueOf(typeInfo.substring(typeInfo.indexOf("(") + 1, typeInfo.indexOf(",")).trim());
+
+                this.decimalDigits = Integer.valueOf(typeInfo.substring(typeInfo.indexOf(",") + 1, typeInfo.indexOf(")")).trim());
+            } else {
+
+                this.columnSize = null;
+                this.decimalDigits = null;
+
+                if ((StringUtils.indexOfIgnoreCase(typeInfo, "char") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "text") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "blob") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "binary") != -1 || StringUtils.indexOfIgnoreCase(typeInfo, "bit") != -1) && typeInfo.indexOf("(") != -1) {
+
+                    int endParenIndex = typeInfo.indexOf(")");
+
+                    if (endParenIndex == -1) {
+                        endParenIndex = typeInfo.length();
+                    }
+
+                    this.columnSize = Integer.valueOf(typeInfo.substring(typeInfo.indexOf("(") + 1, endParenIndex).trim());
+
+                    if (DatabaseMetaData.this.conn.getTinyInt1isBit() && this.columnSize.intValue() == 1 && StringUtils.startsWithIgnoreCase(typeInfo, 0, "tinyint")) {
+
+                        if (DatabaseMetaData.this.conn.getTransformedBitIsBoolean()) {
+                            this.dataType = 16;
+                            this.typeName = "BOOLEAN";
+                        } else {
+                            this.dataType = -7;
+                            this.typeName = "BIT";
+                        }
+                    }
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "tinyint")) {
+
+                    if (DatabaseMetaData.this.conn.getTinyInt1isBit() && typeInfo.indexOf("(1)") != -1) {
+                        if (DatabaseMetaData.this.conn.getTransformedBitIsBoolean()) {
+                            this.dataType = 16;
+                            this.typeName = "BOOLEAN";
+                        } else {
+                            this.dataType = -7;
+                            this.typeName = "BIT";
+                        }
+                    } else {
+                        this.columnSize = Integer.valueOf(3);
+                        this.decimalDigits = Integer.valueOf(0);
+                    }
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "smallint")) {
+
+                    this.columnSize = Integer.valueOf(5);
+                    this.decimalDigits = Integer.valueOf(0);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "mediumint")) {
+
+                    this.columnSize = Integer.valueOf(isUnsigned ? 8 : 7);
+                    this.decimalDigits = Integer.valueOf(0);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "int")) {
+
+                    this.columnSize = Integer.valueOf(10);
+                    this.decimalDigits = Integer.valueOf(0);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "integer")) {
+
+                    this.columnSize = Integer.valueOf(10);
+                    this.decimalDigits = Integer.valueOf(0);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "bigint")) {
+
+                    this.columnSize = Integer.valueOf(isUnsigned ? 20 : 19);
+                    this.decimalDigits = Integer.valueOf(0);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "int24")) {
+
+                    this.columnSize = Integer.valueOf(19);
+                    this.decimalDigits = Integer.valueOf(0);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "real")) {
+
+                    this.columnSize = Integer.valueOf(12);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "float")) {
+
+                    this.columnSize = Integer.valueOf(12);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "decimal")) {
+
+                    this.columnSize = Integer.valueOf(12);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "numeric")) {
+
+                    this.columnSize = Integer.valueOf(12);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "double")) {
+
+                    this.columnSize = Integer.valueOf(22);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "char")) {
+
+                    this.columnSize = Integer.valueOf(1);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "varchar")) {
+
+                    this.columnSize = Integer.valueOf(255);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "timestamp")) {
+
+                    this.columnSize = Integer.valueOf(19);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "datetime")) {
+
+                    this.columnSize = Integer.valueOf(19);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "date")) {
+
+                    this.columnSize = Integer.valueOf(10);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "time")) {
+
+                    this.columnSize = Integer.valueOf(8);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "tinyblob")) {
+
+                    this.columnSize = Integer.valueOf(255);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "blob")) {
+
+                    this.columnSize = Integer.valueOf(65535);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "mediumblob")) {
+
+                    this.columnSize = Integer.valueOf(16777215);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "longblob")) {
+
+                    this.columnSize = Integer.valueOf(2147483647);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "tinytext")) {
+
+                    this.columnSize = Integer.valueOf(255);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "text")) {
+
+                    this.columnSize = Integer.valueOf(65535);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "mediumtext")) {
+
+                    this.columnSize = Integer.valueOf(16777215);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "longtext")) {
+
+                    this.columnSize = Integer.valueOf(2147483647);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "enum")) {
+
+                    this.columnSize = Integer.valueOf(255);
+                } else if (StringUtils.startsWithIgnoreCaseAndWs(typeInfo, "set")) {
+
+                    this.columnSize = Integer.valueOf(255);
+                }
+            }
+
+            this.bufferLength = MysqlIO.getMaxBuf();
+
+            this.numPrecRadix = 10;
+
+            if (nullabilityInfo != null) {
+                if (nullabilityInfo.equals("YES")) {
+                    this.nullability = 1;
+                    this.isNullable = "YES";
+                } else {
+
+                    this.nullability = 0;
+                    this.isNullable = "NO";
+                }
+            } else {
+                this.nullability = 0;
+                this.isNullable = "NO";
+            }
+        }
+    }

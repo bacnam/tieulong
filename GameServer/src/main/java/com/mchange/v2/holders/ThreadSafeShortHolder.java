@@ -1,8 +1,8 @@
 package com.mchange.v2.holders;
 
 public interface ThreadSafeShortHolder {
-  short getValue();
+    short getValue();
 
-  void setValue(short paramShort);
+    void setValue(short paramShort);
 }
 

@@ -6,36 +6,8 @@ import bsh.StringUtil;
 import bsh.classpath.BshClassPath;
 import bsh.classpath.ClassManagerImpl;
 import bsh.classpath.ClassPathListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTree;
+
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -44,16 +16,19 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.SplitPaneUI;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.List;
 
 public class ClassBrowser
         extends JSplitPane
         implements ListSelectionListener, ClassPathListener {
+    private static final Color LIGHT_BLUE = new Color(245, 245, 255);
     BshClassPath classPath;
     BshClassManager classManager;
     JFrame frame;
@@ -72,7 +47,6 @@ public class ClassBrowser
     Field[] fieldList;
     String selectedPackage;
     Class selectedClass;
-    private static final Color LIGHT_BLUE = new Color(245, 245, 255);
 
     public ClassBrowser() {
         this(BshClassManager.createClassManager(null));
@@ -87,6 +61,17 @@ public class ClassBrowser
         if (ui instanceof BasicSplitPaneUI) {
             ((BasicSplitPaneUI) ui).getDivider().setBorder(null);
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        ClassBrowser cb = new ClassBrowser();
+        cb.init();
+
+        JFrame f = new JFrame("BeanShell Class Browser v1.0");
+        f.getContentPane().add("Center", cb);
+        cb.setFrame(f);
+        f.pack();
+        f.setVisible(true);
     }
 
     String[] toSortedStrings(Collection<?> c) {
@@ -358,17 +343,6 @@ public class ClassBrowser
         return sp;
     }
 
-    public static void main(String[] args) throws Exception {
-        ClassBrowser cb = new ClassBrowser();
-        cb.init();
-
-        JFrame f = new JFrame("BeanShell Class Browser v1.0");
-        f.getContentPane().add("Center", cb);
-        cb.setFrame(f);
-        f.pack();
-        f.setVisible(true);
-    }
-
     public void setFrame(JFrame frame) {
         this.frame = frame;
     }
@@ -449,6 +423,12 @@ public class ClassBrowser
         } else if (this.iframe != null) {
             this.iframe.toFront();
         }
+    }
+
+    public void classPathChanged() {
+        Set pset = this.classPath.getPackagesSet();
+        this.ptree.setPackages(pset);
+        setClist((String) null);
     }
 
     class PackageTree extends JTree {
@@ -550,11 +530,5 @@ public class ClassBrowser
 
             scrollPathToVisible(tp);
         }
-    }
-
-    public void classPathChanged() {
-        Set pset = this.classPath.getPackagesSet();
-        this.ptree.setPackages(pset);
-        setClist((String) null);
     }
 }

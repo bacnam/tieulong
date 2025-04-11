@@ -8,15 +8,14 @@ import com.zhonglian.server.http.server.HttpRequest;
 import com.zhonglian.server.http.server.HttpResponse;
 import com.zhonglian.server.http.server.HttpUtils;
 
-public class ChatRequest
-{
-@RequestMapping(uri = "/game/chat/answer")
-public void answer(HttpRequest request, HttpResponse response) throws Exception {
-JsonObject chat = HttpUtils.abstractGMParams(request.getRequestBody());
-String content = HttpUtils.getString(chat, "content");
-long toCId = HttpUtils.getLong(chat, "receiveId");
-ChatMgr.getInstance().addChat(null, content, ChatType.CHATTYPE_GM, toCId);
-response.response("ok");
-}
+public class ChatRequest {
+    @RequestMapping(uri = "/game/chat/answer")
+    public void answer(HttpRequest request, HttpResponse response) throws Exception {
+        JsonObject chat = HttpUtils.abstractGMParams(request.getRequestBody());
+        String content = HttpUtils.getString(chat, "content");
+        long toCId = HttpUtils.getLong(chat, "receiveId");
+        ChatMgr.getInstance().addChat(null, content, ChatType.CHATTYPE_GM, toCId);
+        response.response("ok");
+    }
 }
 

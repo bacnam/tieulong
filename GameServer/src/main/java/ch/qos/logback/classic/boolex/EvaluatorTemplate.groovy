@@ -15,12 +15,6 @@ package ch.qos.logback.classic.boolex
 
 import ch.qos.logback.classic.spi.ILoggingEvent
 
-import static ch.qos.logback.classic.Level.TRACE;
-import static ch.qos.logback.classic.Level.DEBUG;
-import static ch.qos.logback.classic.Level.INFO;
-import static ch.qos.logback.classic.Level.WARN;
-import static ch.qos.logback.classic.Level.ERROR;
-
 // WARNING
 // If this file is renamed, this should be reflected in
 // logback-classic/pom.xml  resources section.
@@ -30,10 +24,10 @@ import static ch.qos.logback.classic.Level.ERROR;
  */
 public class EvaluatorTemplate implements IEvaluator {
 
-  boolean doEvaluate(ILoggingEvent event) {
-    ILoggingEvent e = event;
-    //EXPRESSION
-  }
+    boolean doEvaluate(ILoggingEvent event) {
+        ILoggingEvent e = event;
+        //EXPRESSION
+    }
 
 
 }

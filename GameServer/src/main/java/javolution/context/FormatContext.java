@@ -1,4 +1,5 @@
 package javolution.context;
 
-public abstract class FormatContext extends AbstractContext {}
+public abstract class FormatContext extends AbstractContext {
+}
 

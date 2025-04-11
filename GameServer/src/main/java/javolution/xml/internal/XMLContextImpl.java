@@ -1,98 +1,90 @@
 package javolution.xml.internal;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import javolution.context.AbstractContext;
 import javolution.util.FastMap;
 import javolution.xml.DefaultXMLFormat;
 import javolution.xml.XMLContext;
 import javolution.xml.XMLFormat;
 import javolution.xml.stream.XMLStreamException;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+
 public final class XMLContextImpl
-extends XMLContext
-{
-private final FastMap<Class<?>, XMLFormat<?>> formats = new FastMap();
+        extends XMLContext {
+    private static final XMLFormat OBJECT_XML = (XMLFormat) new XMLFormat.Default();
+    private static final XMLFormat COLLECTION_XML = new XMLFormat() {
 
-protected XMLContext inner() {
-XMLContextImpl ctx = new XMLContextImpl();
-ctx.formats.putAll(this.formats);
-return ctx;
-}
+        public void read(XMLFormat.InputElement xml, Object obj) throws XMLStreamException {
+            Collection<Object> collection = (Collection) obj;
+            while (xml.hasNext()) {
+                collection.add(xml.getNext());
+            }
+        }
 
-protected <T> XMLFormat<T> searchFormat(Class<? extends T> type) {
-XMLFormat<T> xml = (XMLFormat)this.formats.get(type);
-if (xml != null)
-return xml; 
-DefaultXMLFormat format = type.<DefaultXMLFormat>getAnnotation(DefaultXMLFormat.class);
-if (format != null) {
-Class<? extends XMLFormat> formatClass = format.value();
-try {
-xml = formatClass.newInstance();
-synchronized (this.formats) {
+        public void write(Object obj, XMLFormat.OutputElement xml) throws XMLStreamException {
+            Collection collection = (Collection) obj;
+            for (Iterator i = collection.iterator(); i.hasNext(); ) {
+                xml.add(i.next());
+            }
+        }
+    };
+    private static final XMLFormat MAP_XML = new XMLFormat() {
 
-this.formats.put(type, xml);
-} 
-return xml;
-} catch (Throwable ex) {
-throw new RuntimeException(ex);
-} 
-} 
+        public void read(XMLFormat.InputElement xml, Object obj) throws XMLStreamException {
+            Map<Object, Object> map = (Map) obj;
+            while (xml.hasNext()) {
+                Object key = xml.get("Key");
+                Object value = xml.get("Value");
+                map.put(key, value);
+            }
+        }
 
-if (Map.class.isAssignableFrom(type))
-return MAP_XML; 
-if (Collection.class.isAssignableFrom(type))
-return COLLECTION_XML; 
-return OBJECT_XML;
-}
+        public void write(Object obj, XMLFormat.OutputElement xml) throws XMLStreamException {
+            Map map = (Map) obj;
+            for (Iterator<Map.Entry> it = map.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry entry = it.next();
+                xml.add(entry.getKey(), "Key");
+                xml.add(entry.getValue(), "Value");
+            }
+        }
+    };
+    private final FastMap<Class<?>, XMLFormat<?>> formats = new FastMap();
 
-public <T> void setFormat(Class<? extends T> type, XMLFormat<T> format) {
-this.formats.put(type, format);
-}
+    protected XMLContext inner() {
+        XMLContextImpl ctx = new XMLContextImpl();
+        ctx.formats.putAll(this.formats);
+        return ctx;
+    }
 
-private static final XMLFormat OBJECT_XML = (XMLFormat)new XMLFormat.Default();
+    protected <T> XMLFormat<T> searchFormat(Class<? extends T> type) {
+        XMLFormat<T> xml = (XMLFormat) this.formats.get(type);
+        if (xml != null)
+            return xml;
+        DefaultXMLFormat format = type.<DefaultXMLFormat>getAnnotation(DefaultXMLFormat.class);
+        if (format != null) {
+            Class<? extends XMLFormat> formatClass = format.value();
+            try {
+                xml = formatClass.newInstance();
+                synchronized (this.formats) {
 
-private static final XMLFormat COLLECTION_XML = new XMLFormat()
-{
+                    this.formats.put(type, xml);
+                }
+                return xml;
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
+            }
+        }
 
-public void read(XMLFormat.InputElement xml, Object obj) throws XMLStreamException
-{
-Collection<Object> collection = (Collection)obj;
-while (xml.hasNext()) {
-collection.add(xml.getNext());
-}
-}
+        if (Map.class.isAssignableFrom(type))
+            return MAP_XML;
+        if (Collection.class.isAssignableFrom(type))
+            return COLLECTION_XML;
+        return OBJECT_XML;
+    }
 
-public void write(Object obj, XMLFormat.OutputElement xml) throws XMLStreamException {
-Collection collection = (Collection)obj;
-for (Iterator i = collection.iterator(); i.hasNext();) {
-xml.add(i.next());
-}
-}
-};
-
-private static final XMLFormat MAP_XML = new XMLFormat()
-{
-
-public void read(XMLFormat.InputElement xml, Object obj) throws XMLStreamException
-{
-Map<Object, Object> map = (Map)obj;
-while (xml.hasNext()) {
-Object key = xml.get("Key");
-Object value = xml.get("Value");
-map.put(key, value);
-} 
-}
-
-public void write(Object obj, XMLFormat.OutputElement xml) throws XMLStreamException {
-Map map = (Map)obj;
-for (Iterator<Map.Entry> it = map.entrySet().iterator(); it.hasNext(); ) {
-Map.Entry entry = it.next();
-xml.add(entry.getKey(), "Key");
-xml.add(entry.getValue(), "Value");
-} 
-}
-};
+    public <T> void setFormat(Class<? extends T> type, XMLFormat<T> format) {
+        this.formats.put(type, format);
+    }
 }
 

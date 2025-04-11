@@ -1,33 +1,34 @@
 package org.apache.mina.core.future;
 
-import java.util.concurrent.TimeUnit;
 import org.apache.mina.core.session.IoSession;
 
+import java.util.concurrent.TimeUnit;
+
 public interface IoFuture {
-  IoSession getSession();
+    IoSession getSession();
 
-  IoFuture await() throws InterruptedException;
+    IoFuture await() throws InterruptedException;
 
-  boolean await(long paramLong, TimeUnit paramTimeUnit) throws InterruptedException;
+    boolean await(long paramLong, TimeUnit paramTimeUnit) throws InterruptedException;
 
-  boolean await(long paramLong) throws InterruptedException;
+    boolean await(long paramLong) throws InterruptedException;
 
-  IoFuture awaitUninterruptibly();
+    IoFuture awaitUninterruptibly();
 
-  boolean awaitUninterruptibly(long paramLong, TimeUnit paramTimeUnit);
+    boolean awaitUninterruptibly(long paramLong, TimeUnit paramTimeUnit);
 
-  boolean awaitUninterruptibly(long paramLong);
+    boolean awaitUninterruptibly(long paramLong);
 
-  @Deprecated
-  void join();
+    @Deprecated
+    void join();
 
-  @Deprecated
-  boolean join(long paramLong);
+    @Deprecated
+    boolean join(long paramLong);
 
-  boolean isDone();
+    boolean isDone();
 
-  IoFuture addListener(IoFutureListener<?> paramIoFutureListener);
+    IoFuture addListener(IoFutureListener<?> paramIoFutureListener);
 
-  IoFuture removeListener(IoFutureListener<?> paramIoFutureListener);
+    IoFuture removeListener(IoFutureListener<?> paramIoFutureListener);
 }
 

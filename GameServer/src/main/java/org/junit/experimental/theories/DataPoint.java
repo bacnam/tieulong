@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface DataPoint {
-  String[] value() default {};
+    String[] value() default {};
 
-  Class<? extends Throwable>[] ignoredExceptions() default {};
+    Class<? extends Throwable>[] ignoredExceptions() default {};
 }
 

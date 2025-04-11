@@ -1,27 +1,27 @@
 package org.junit.internal.runners.statements;
 
-import java.util.List;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
+import java.util.List;
+
 public class RunBefores
-extends Statement
-{
-private final Statement next;
-private final Object target;
-private final List<FrameworkMethod> befores;
+        extends Statement {
+    private final Statement next;
+    private final Object target;
+    private final List<FrameworkMethod> befores;
 
-public RunBefores(Statement next, List<FrameworkMethod> befores, Object target) {
-this.next = next;
-this.befores = befores;
-this.target = target;
-}
+    public RunBefores(Statement next, List<FrameworkMethod> befores, Object target) {
+        this.next = next;
+        this.befores = befores;
+        this.target = target;
+    }
 
-public void evaluate() throws Throwable {
-for (FrameworkMethod before : this.befores) {
-before.invokeExplosively(this.target, new Object[0]);
-}
-this.next.evaluate();
-}
+    public void evaluate() throws Throwable {
+        for (FrameworkMethod before : this.befores) {
+            before.invokeExplosively(this.target, new Object[0]);
+        }
+        this.next.evaluate();
+    }
 }
 

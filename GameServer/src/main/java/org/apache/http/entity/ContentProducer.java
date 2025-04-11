@@ -4,6 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public interface ContentProducer {
-  void writeTo(OutputStream paramOutputStream) throws IOException;
+    void writeTo(OutputStream paramOutputStream) throws IOException;
 }
 

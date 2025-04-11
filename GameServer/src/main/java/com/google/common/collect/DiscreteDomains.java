@@ -2,118 +2,120 @@ package com.google.common.collect;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 
 @GwtCompatible
 @Beta
-public final class DiscreteDomains
-{
-public static DiscreteDomain<Integer> integers() {
-return IntegerDomain.INSTANCE;
-}
+public final class DiscreteDomains {
+    public static DiscreteDomain<Integer> integers() {
+        return IntegerDomain.INSTANCE;
+    }
 
-private static final class IntegerDomain
-extends DiscreteDomain<Integer> implements Serializable {
-private static final IntegerDomain INSTANCE = new IntegerDomain();
+    public static DiscreteDomain<Long> longs() {
+        return LongDomain.INSTANCE;
+    }
 
-public Integer next(Integer value) {
-int i = value.intValue();
-return (i == Integer.MAX_VALUE) ? null : Integer.valueOf(i + 1);
-}
-private static final long serialVersionUID = 0L;
-public Integer previous(Integer value) {
-int i = value.intValue();
-return (i == Integer.MIN_VALUE) ? null : Integer.valueOf(i - 1);
-}
+    static DiscreteDomain<BigInteger> bigIntegers() {
+        return BigIntegerDomain.INSTANCE;
+    }
 
-public long distance(Integer start, Integer end) {
-return end.intValue() - start.intValue();
-}
+    private static final class IntegerDomain
+            extends DiscreteDomain<Integer> implements Serializable {
+        private static final IntegerDomain INSTANCE = new IntegerDomain();
+        private static final long serialVersionUID = 0L;
 
-public Integer minValue() {
-return Integer.valueOf(-2147483648);
-}
+        public Integer next(Integer value) {
+            int i = value.intValue();
+            return (i == Integer.MAX_VALUE) ? null : Integer.valueOf(i + 1);
+        }
 
-public Integer maxValue() {
-return Integer.valueOf(2147483647);
-}
+        public Integer previous(Integer value) {
+            int i = value.intValue();
+            return (i == Integer.MIN_VALUE) ? null : Integer.valueOf(i - 1);
+        }
 
-private Object readResolve() {
-return INSTANCE;
-}
-}
+        public long distance(Integer start, Integer end) {
+            return end.intValue() - start.intValue();
+        }
 
-public static DiscreteDomain<Long> longs() {
-return LongDomain.INSTANCE;
-}
+        public Integer minValue() {
+            return Integer.valueOf(-2147483648);
+        }
 
-private static final class LongDomain
-extends DiscreteDomain<Long> implements Serializable {
-private static final LongDomain INSTANCE = new LongDomain(); private static final long serialVersionUID = 0L;
+        public Integer maxValue() {
+            return Integer.valueOf(2147483647);
+        }
 
-public Long next(Long value) {
-long l = value.longValue();
-return (l == Long.MAX_VALUE) ? null : Long.valueOf(l + 1L);
-}
+        private Object readResolve() {
+            return INSTANCE;
+        }
+    }
 
-public Long previous(Long value) {
-long l = value.longValue();
-return (l == Long.MIN_VALUE) ? null : Long.valueOf(l - 1L);
-}
+    private static final class LongDomain
+            extends DiscreteDomain<Long> implements Serializable {
+        private static final LongDomain INSTANCE = new LongDomain();
+        private static final long serialVersionUID = 0L;
 
-public long distance(Long start, Long end) {
-long result = end.longValue() - start.longValue();
-if (end.longValue() > start.longValue() && result < 0L) {
-return Long.MAX_VALUE;
-}
-if (end.longValue() < start.longValue() && result > 0L) {
-return Long.MIN_VALUE;
-}
-return result;
-}
+        public Long next(Long value) {
+            long l = value.longValue();
+            return (l == Long.MAX_VALUE) ? null : Long.valueOf(l + 1L);
+        }
 
-public Long minValue() {
-return Long.valueOf(Long.MIN_VALUE);
-}
+        public Long previous(Long value) {
+            long l = value.longValue();
+            return (l == Long.MIN_VALUE) ? null : Long.valueOf(l - 1L);
+        }
 
-public Long maxValue() {
-return Long.valueOf(Long.MAX_VALUE);
-}
+        public long distance(Long start, Long end) {
+            long result = end.longValue() - start.longValue();
+            if (end.longValue() > start.longValue() && result < 0L) {
+                return Long.MAX_VALUE;
+            }
+            if (end.longValue() < start.longValue() && result > 0L) {
+                return Long.MIN_VALUE;
+            }
+            return result;
+        }
 
-private Object readResolve() {
-return INSTANCE;
-}
-}
+        public Long minValue() {
+            return Long.valueOf(Long.MIN_VALUE);
+        }
 
-static DiscreteDomain<BigInteger> bigIntegers() {
-return BigIntegerDomain.INSTANCE;
-}
+        public Long maxValue() {
+            return Long.valueOf(Long.MAX_VALUE);
+        }
 
-private static final class BigIntegerDomain
-extends DiscreteDomain<BigInteger> implements Serializable {
-private static final BigIntegerDomain INSTANCE = new BigIntegerDomain();
+        private Object readResolve() {
+            return INSTANCE;
+        }
+    }
 
-private static final BigInteger MIN_LONG = BigInteger.valueOf(Long.MIN_VALUE);
+    private static final class BigIntegerDomain
+            extends DiscreteDomain<BigInteger> implements Serializable {
+        private static final BigIntegerDomain INSTANCE = new BigIntegerDomain();
 
-private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
-private static final long serialVersionUID = 0L;
+        private static final BigInteger MIN_LONG = BigInteger.valueOf(Long.MIN_VALUE);
 
-public BigInteger next(BigInteger value) {
-return value.add(BigInteger.ONE);
-}
+        private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+        private static final long serialVersionUID = 0L;
 
-public BigInteger previous(BigInteger value) {
-return value.subtract(BigInteger.ONE);
-}
+        public BigInteger next(BigInteger value) {
+            return value.add(BigInteger.ONE);
+        }
 
-public long distance(BigInteger start, BigInteger end) {
-return start.subtract(end).max(MIN_LONG).min(MAX_LONG).longValue();
-}
+        public BigInteger previous(BigInteger value) {
+            return value.subtract(BigInteger.ONE);
+        }
 
-private Object readResolve() {
-return INSTANCE;
-}
-}
+        public long distance(BigInteger start, BigInteger end) {
+            return start.subtract(end).max(MIN_LONG).min(MAX_LONG).longValue();
+        }
+
+        private Object readResolve() {
+            return INSTANCE;
+        }
+    }
 }
 

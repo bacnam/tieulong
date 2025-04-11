@@ -6,1947 +6,1951 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.sql.Array;
+import java.sql.*;
 import java.sql.Blob;
-import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.DatabaseMetaData;
 import java.sql.Date;
-import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
-import java.sql.Ref;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CallableStatement
-extends PreparedStatement
-implements CallableStatement
-{
-protected static final Constructor<?> JDBC_4_CSTMT_2_ARGS_CTOR;
-protected static final Constructor<?> JDBC_4_CSTMT_4_ARGS_CTOR;
-private static final int NOT_OUTPUT_PARAMETER_INDICATOR = -2147483648;
-private static final String PARAMETER_NAMESPACE_PREFIX = "@com_mysql_jdbc_outparam_";
+        extends PreparedStatement
+        implements CallableStatement {
+    protected static final Constructor<?> JDBC_4_CSTMT_2_ARGS_CTOR;
+    protected static final Constructor<?> JDBC_4_CSTMT_4_ARGS_CTOR;
+    private static final int NOT_OUTPUT_PARAMETER_INDICATOR = -2147483648;
+    private static final String PARAMETER_NAMESPACE_PREFIX = "@com_mysql_jdbc_outparam_";
+
+    static {
+        if (Util.isJdbc4()) {
+            try {
+                JDBC_4_CSTMT_2_ARGS_CTOR = Class.forName("com.mysql.jdbc.JDBC4CallableStatement").getConstructor(new Class[]{MySQLConnection.class, CallableStatementParamInfo.class});
+
+                JDBC_4_CSTMT_4_ARGS_CTOR = Class.forName("com.mysql.jdbc.JDBC4CallableStatement").getConstructor(new Class[]{MySQLConnection.class, String.class, String.class, boolean.class});
+
+            } catch (SecurityException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            JDBC_4_CSTMT_4_ARGS_CTOR = null;
+            JDBC_4_CSTMT_2_ARGS_CTOR = null;
+        }
+    }
+
+    protected boolean outputParamWasNull = false;
+    protected CallableStatementParamInfo paramInfo;
+    private boolean callingStoredFunction = false;
+    private ResultSetInternalMethods functionReturnValueResults;
+    private boolean hasOutputParams = false;
+    private ResultSetInternalMethods outputParameterResults;
+    private int[] parameterIndexToRsIndex;
+    private CallableStatementParam returnValueParam;
+    private int[] placeholderToParameterIndexMap;
 
-static {
-if (Util.isJdbc4()) {
-try {
-JDBC_4_CSTMT_2_ARGS_CTOR = Class.forName("com.mysql.jdbc.JDBC4CallableStatement").getConstructor(new Class[] { MySQLConnection.class, CallableStatementParamInfo.class });
+    public CallableStatement(MySQLConnection conn, CallableStatementParamInfo paramInfo) throws SQLException {
+        super(conn, paramInfo.nativeSql, paramInfo.catalogInUse);
 
-JDBC_4_CSTMT_4_ARGS_CTOR = Class.forName("com.mysql.jdbc.JDBC4CallableStatement").getConstructor(new Class[] { MySQLConnection.class, String.class, String.class, boolean.class });
+        this.paramInfo = paramInfo;
+        this.callingStoredFunction = this.paramInfo.isFunctionCall;
 
-}
-catch (SecurityException e) {
-throw new RuntimeException(e);
-} catch (NoSuchMethodException e) {
-throw new RuntimeException(e);
-} catch (ClassNotFoundException e) {
-throw new RuntimeException(e);
-} 
-} else {
-JDBC_4_CSTMT_4_ARGS_CTOR = null;
-JDBC_4_CSTMT_2_ARGS_CTOR = null;
-} 
-}
+        if (this.callingStoredFunction) {
+            this.parameterCount++;
+        }
 
-protected static class CallableStatementParam
-{
-int desiredJdbcType;
+        this.retrieveGeneratedKeys = true;
+    }
 
-int index;
+    public CallableStatement(MySQLConnection conn, String sql, String catalog, boolean isFunctionCall) throws SQLException {
+        super(conn, sql, catalog);
 
-int inOutModifier;
+        this.callingStoredFunction = isFunctionCall;
 
-boolean isIn;
+        if (!this.callingStoredFunction) {
+            if (!StringUtils.startsWithIgnoreCaseAndWs(sql, "CALL")) {
 
-boolean isOut;
+                fakeParameterTypes(false);
+            } else {
+                determineParameterTypes();
+            }
 
-int jdbcType;
+            generateParameterMap();
+        } else {
+            determineParameterTypes();
+            generateParameterMap();
 
-short nullability;
+            this.parameterCount++;
+        }
 
-String paramName;
+        this.retrieveGeneratedKeys = true;
+    }
 
-int precision;
+    private static String mangleParameterName(String origParameterName) {
+        if (origParameterName == null) {
+            return null;
+        }
 
-int scale;
+        int offset = 0;
 
-String typeName;
+        if (origParameterName.length() > 0 && origParameterName.charAt(0) == '@') {
+            offset = 1;
+        }
 
-CallableStatementParam(String name, int idx, boolean in, boolean out, int jdbcType, String typeName, int precision, int scale, short nullability, int inOutModifier) {
-this.paramName = name;
-this.isIn = in;
-this.isOut = out;
-this.index = idx;
+        StringBuffer paramNameBuf = new StringBuffer("@com_mysql_jdbc_outparam_".length() + origParameterName.length());
 
-this.jdbcType = jdbcType;
-this.typeName = typeName;
-this.precision = precision;
-this.scale = scale;
-this.nullability = nullability;
-this.inOutModifier = inOutModifier;
-}
+        paramNameBuf.append("@com_mysql_jdbc_outparam_");
+        paramNameBuf.append(origParameterName.substring(offset));
 
-protected Object clone() throws CloneNotSupportedException {
-return super.clone();
-}
-}
+        return paramNameBuf.toString();
+    }
 
-protected class CallableStatementParamInfo
-{
-String catalogInUse;
+    protected static CallableStatement getInstance(MySQLConnection conn, String sql, String catalog, boolean isFunctionCall) throws SQLException {
+        if (!Util.isJdbc4()) {
+            return new CallableStatement(conn, sql, catalog, isFunctionCall);
+        }
 
-boolean isFunctionCall;
+        return (CallableStatement) Util.handleNewInstance(JDBC_4_CSTMT_4_ARGS_CTOR, new Object[]{conn, sql, catalog, Boolean.valueOf(isFunctionCall)}, conn.getExceptionInterceptor());
+    }
 
-String nativeSql;
+    protected static CallableStatement getInstance(MySQLConnection conn, CallableStatementParamInfo paramInfo) throws SQLException {
+        if (!Util.isJdbc4()) {
+            return new CallableStatement(conn, paramInfo);
+        }
 
-int numParameters;
+        return (CallableStatement) Util.handleNewInstance(JDBC_4_CSTMT_2_ARGS_CTOR, new Object[]{conn, paramInfo}, conn.getExceptionInterceptor());
+    }
 
-List<CallableStatement.CallableStatementParam> parameterList;
+    private void generateParameterMap() throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.paramInfo == null) {
+                return;
+            }
 
-Map<String, CallableStatement.CallableStatementParam> parameterMap;
+            int parameterCountFromMetaData = this.paramInfo.getParameterCount();
 
-boolean isReadOnlySafeProcedure = false;
+            if (this.callingStoredFunction) {
+                parameterCountFromMetaData--;
+            }
 
-boolean isReadOnlySafeChecked = false;
+            if (this.paramInfo != null && this.parameterCount != parameterCountFromMetaData) {
 
-CallableStatementParamInfo(CallableStatementParamInfo fullParamInfo) {
-this.nativeSql = CallableStatement.this.originalSql;
-this.catalogInUse = CallableStatement.this.currentCatalog;
-this.isFunctionCall = fullParamInfo.isFunctionCall;
+                this.placeholderToParameterIndexMap = new int[this.parameterCount];
 
-int[] localParameterMap = CallableStatement.this.placeholderToParameterIndexMap;
-int parameterMapLength = localParameterMap.length;
+                int startPos = this.callingStoredFunction ? StringUtils.indexOfIgnoreCase(this.originalSql, "SELECT") : StringUtils.indexOfIgnoreCase(this.originalSql, "CALL");
 
-this.isReadOnlySafeProcedure = fullParamInfo.isReadOnlySafeProcedure;
-this.isReadOnlySafeChecked = fullParamInfo.isReadOnlySafeChecked;
-this.parameterList = new ArrayList<CallableStatement.CallableStatementParam>(fullParamInfo.numParameters);
-this.parameterMap = new HashMap<String, CallableStatement.CallableStatementParam>(fullParamInfo.numParameters);
-
-if (this.isFunctionCall)
-{
-this.parameterList.add(fullParamInfo.parameterList.get(0));
-}
-
-int offset = this.isFunctionCall ? 1 : 0;
-
-for (int i = 0; i < parameterMapLength; i++) {
-if (localParameterMap[i] != 0) {
-CallableStatement.CallableStatementParam param = fullParamInfo.parameterList.get(localParameterMap[i] + offset);
+                if (startPos != -1) {
+                    int parenOpenPos = this.originalSql.indexOf('(', startPos + 4);
 
-this.parameterList.add(param);
-this.parameterMap.put(param.paramName, param);
-} 
-} 
+                    if (parenOpenPos != -1) {
+                        int parenClosePos = StringUtils.indexOfIgnoreCaseRespectQuotes(parenOpenPos, this.originalSql, ")", '\'', true);
 
-this.numParameters = this.parameterList.size();
-}
+                        if (parenClosePos != -1) {
+                            List<?> parsedParameters = StringUtils.split(this.originalSql.substring(parenOpenPos + 1, parenClosePos), ",", "'\"", "'\"", true);
 
-CallableStatementParamInfo(ResultSet paramTypesRs) throws SQLException {
-boolean hadRows = paramTypesRs.last();
+                            int numParsedParameters = parsedParameters.size();
+
+                            if (numParsedParameters != this.parameterCount) ;
+
+                            int placeholderCount = 0;
+
+                            for (int i = 0; i < numParsedParameters; i++) {
+                                if (((String) parsedParameters.get(i)).equals("?")) {
+                                    this.placeholderToParameterIndexMap[placeholderCount++] = i;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void addBatch() throws SQLException {
+        setOutParams();
 
-this.nativeSql = CallableStatement.this.originalSql;
-this.catalogInUse = CallableStatement.this.currentCatalog;
-this.isFunctionCall = CallableStatement.this.callingStoredFunction;
+        super.addBatch();
+    }
+
+    private CallableStatementParam checkIsOutputParam(int paramIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.callingStoredFunction) {
+                if (paramIndex == 1) {
 
-if (hadRows) {
-this.numParameters = paramTypesRs.getRow();
+                    if (this.returnValueParam == null) {
+                        this.returnValueParam = new CallableStatementParam("", 0, false, true, 12, "VARCHAR", 0, 0, (short) 2, 5);
+                    }
 
-this.parameterList = new ArrayList<CallableStatement.CallableStatementParam>(this.numParameters);
-this.parameterMap = new HashMap<String, CallableStatement.CallableStatementParam>(this.numParameters);
+                    return this.returnValueParam;
+                }
+
+                paramIndex--;
+            }
 
-paramTypesRs.beforeFirst();
+            checkParameterIndexBounds(paramIndex);
 
-addParametersFromDBMD(paramTypesRs);
-} else {
-this.numParameters = 0;
-} 
+            int localParamIndex = paramIndex - 1;
 
-if (this.isFunctionCall) {
-this.numParameters++;
-}
-}
+            if (this.placeholderToParameterIndexMap != null) {
+                localParamIndex = this.placeholderToParameterIndexMap[localParamIndex];
+            }
 
-private void addParametersFromDBMD(ResultSet paramTypesRs) throws SQLException {
-int i = 0;
+            CallableStatementParam paramDescriptor = this.paramInfo.getParameter(localParamIndex);
 
-while (paramTypesRs.next()) {
-String paramName = paramTypesRs.getString(4);
-int inOutModifier = paramTypesRs.getInt(5);
+            if (this.connection.getNoAccessToProcedureBodies()) {
+                paramDescriptor.isOut = true;
+                paramDescriptor.isIn = true;
+                paramDescriptor.inOutModifier = 2;
+            } else if (!paramDescriptor.isOut) {
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.9") + paramIndex + Messages.getString("CallableStatement.10"), "S1009", getExceptionInterceptor());
+            }
 
-boolean isOutParameter = false;
-boolean isInParameter = false;
+            this.hasOutputParams = true;
 
-if (i == 0 && this.isFunctionCall) {
-isOutParameter = true;
-isInParameter = false;
-} else if (inOutModifier == 2) {
-isOutParameter = true;
-isInParameter = true;
-} else if (inOutModifier == 1) {
-isOutParameter = false;
-isInParameter = true;
-} else if (inOutModifier == 4) {
-isOutParameter = true;
-isInParameter = false;
-} 
+            return paramDescriptor;
+        }
+    }
 
-int jdbcType = paramTypesRs.getInt(6);
-String typeName = paramTypesRs.getString(7);
-int precision = paramTypesRs.getInt(8);
-int scale = paramTypesRs.getInt(10);
-short nullability = paramTypesRs.getShort(12);
+    private void checkParameterIndexBounds(int paramIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            this.paramInfo.checkBounds(paramIndex);
+        }
+    }
 
-CallableStatement.CallableStatementParam paramInfoToAdd = new CallableStatement.CallableStatementParam(paramName, i++, isInParameter, isOutParameter, jdbcType, typeName, precision, scale, nullability, inOutModifier);
+    private void checkStreamability() throws SQLException {
+        if (this.hasOutputParams && createStreamingResultSet()) {
+            throw SQLError.createSQLException(Messages.getString("CallableStatement.14"), "S1C00", getExceptionInterceptor());
+        }
+    }
 
-this.parameterList.add(paramInfoToAdd);
-this.parameterMap.put(paramName, paramInfoToAdd);
-} 
-}
+    public void clearParameters() throws SQLException {
+        synchronized (checkClosed()) {
+            super.clearParameters();
 
-protected void checkBounds(int paramIndex) throws SQLException {
-int localParamIndex = paramIndex - 1;
+            try {
+                if (this.outputParameterResults != null) {
+                    this.outputParameterResults.close();
+                }
+            } finally {
+                this.outputParameterResults = null;
+            }
+        }
+    }
 
-if (paramIndex < 0 || localParamIndex >= this.numParameters) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.11") + paramIndex + Messages.getString("CallableStatement.12") + this.numParameters + Messages.getString("CallableStatement.13"), "S1009", CallableStatement.this.getExceptionInterceptor());
-}
-}
+    private void fakeParameterTypes(boolean isReallyProcedure) throws SQLException {
+        synchronized (checkClosed()) {
+            Field[] fields = new Field[13];
 
-protected Object clone() throws CloneNotSupportedException {
-return super.clone();
-}
+            fields[0] = new Field("", "PROCEDURE_CAT", 1, 0);
+            fields[1] = new Field("", "PROCEDURE_SCHEM", 1, 0);
+            fields[2] = new Field("", "PROCEDURE_NAME", 1, 0);
+            fields[3] = new Field("", "COLUMN_NAME", 1, 0);
+            fields[4] = new Field("", "COLUMN_TYPE", 1, 0);
+            fields[5] = new Field("", "DATA_TYPE", 5, 0);
+            fields[6] = new Field("", "TYPE_NAME", 1, 0);
+            fields[7] = new Field("", "PRECISION", 4, 0);
+            fields[8] = new Field("", "LENGTH", 4, 0);
+            fields[9] = new Field("", "SCALE", 5, 0);
+            fields[10] = new Field("", "RADIX", 5, 0);
+            fields[11] = new Field("", "NULLABLE", 5, 0);
+            fields[12] = new Field("", "REMARKS", 1, 0);
 
-CallableStatement.CallableStatementParam getParameter(int index) {
-return this.parameterList.get(index);
-}
+            String procName = isReallyProcedure ? extractProcedureName() : null;
 
-CallableStatement.CallableStatementParam getParameter(String name) {
-return this.parameterMap.get(name);
-}
+            byte[] procNameAsBytes = null;
 
-public String getParameterClassName(int arg0) throws SQLException {
-String mysqlTypeName = getParameterTypeName(arg0);
+            try {
+                procNameAsBytes = (procName == null) ? null : StringUtils.getBytes(procName, "UTF-8");
+            } catch (UnsupportedEncodingException ueEx) {
+                procNameAsBytes = StringUtils.s2b(procName, this.connection);
+            }
 
-boolean isBinaryOrBlob = (StringUtils.indexOfIgnoreCase(mysqlTypeName, "BLOB") != -1 || StringUtils.indexOfIgnoreCase(mysqlTypeName, "BINARY") != -1);
+            ArrayList<ResultSetRow> resultRows = new ArrayList<ResultSetRow>();
+
+            for (int i = 0; i < this.parameterCount; i++) {
+                byte[][] row = new byte[13][];
+                row[0] = null;
+                row[1] = null;
+                row[2] = procNameAsBytes;
+                row[3] = StringUtils.s2b(String.valueOf(i), this.connection);
+
+                row[4] = StringUtils.s2b(String.valueOf(1), this.connection);
+
+                row[5] = StringUtils.s2b(String.valueOf(12), this.connection);
+
+                row[6] = StringUtils.s2b("VARCHAR", this.connection);
+                row[7] = StringUtils.s2b(Integer.toString(65535), this.connection);
+                row[8] = StringUtils.s2b(Integer.toString(65535), this.connection);
+                row[9] = StringUtils.s2b(Integer.toString(0), this.connection);
+                row[10] = StringUtils.s2b(Integer.toString(10), this.connection);
+
+                row[11] = StringUtils.s2b(Integer.toString(2), this.connection);
+
+                row[12] = null;
 
-boolean isUnsigned = (StringUtils.indexOfIgnoreCase(mysqlTypeName, "UNSIGNED") != -1);
+                resultRows.add(new ByteArrayRow(row, getExceptionInterceptor()));
+            }
+
+            ResultSet paramTypesRs = DatabaseMetaData.buildResultSet(fields, resultRows, this.connection);
 
-int mysqlTypeIfKnown = 0;
+            convertGetProcedureColumnsToInternalDescriptors(paramTypesRs);
+        }
+    }
 
-if (StringUtils.startsWithIgnoreCase(mysqlTypeName, "MEDIUMINT")) {
-mysqlTypeIfKnown = 9;
-}
+    private void determineParameterTypes() throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSet paramTypesRs = null;
 
-return ResultSetMetaData.getClassNameForJavaType(getParameterType(arg0), isUnsigned, mysqlTypeIfKnown, isBinaryOrBlob, false);
-}
+            try {
+                String procName = extractProcedureName();
+                String quotedId = "";
+                try {
+                    quotedId = this.connection.supportsQuotedIdentifiers() ? this.connection.getMetaData().getIdentifierQuoteString() : "";
+                } catch (SQLException sqlEx) {
 
-public int getParameterCount() throws SQLException {
-if (this.parameterList == null) {
-return 0;
-}
+                    AssertionFailedException.shouldNotHappen(sqlEx);
+                }
 
-return this.parameterList.size();
-}
+                List<?> parseList = StringUtils.splitDBdotName(procName, "", quotedId, this.connection.isNoBackslashEscapesSet());
 
-public int getParameterMode(int arg0) throws SQLException {
-checkBounds(arg0);
+                String tmpCatalog = "";
 
-return (getParameter(arg0 - 1)).inOutModifier;
-}
+                if (parseList.size() == 2) {
+                    tmpCatalog = (String) parseList.get(0);
+                    procName = (String) parseList.get(1);
+                }
 
-public int getParameterType(int arg0) throws SQLException {
-checkBounds(arg0);
+                DatabaseMetaData dbmd = this.connection.getMetaData();
 
-return (getParameter(arg0 - 1)).jdbcType;
-}
+                boolean useCatalog = false;
 
-public String getParameterTypeName(int arg0) throws SQLException {
-checkBounds(arg0);
+                if (tmpCatalog.length() <= 0) {
+                    useCatalog = true;
+                }
 
-return (getParameter(arg0 - 1)).typeName;
-}
+                paramTypesRs = dbmd.getProcedureColumns((this.connection.versionMeetsMinimum(5, 0, 2) && useCatalog) ? this.currentCatalog : tmpCatalog, null, procName, "%");
 
-public int getPrecision(int arg0) throws SQLException {
-checkBounds(arg0);
+                boolean hasResults = false;
+                try {
+                    if (paramTypesRs.next()) {
+                        paramTypesRs.previous();
+                        hasResults = true;
+                    }
+                } catch (Exception e) {
+                }
 
-return (getParameter(arg0 - 1)).precision;
-}
+                if (hasResults) {
+                    convertGetProcedureColumnsToInternalDescriptors(paramTypesRs);
+                } else {
+                    fakeParameterTypes(true);
+                }
+            } finally {
+                SQLException sqlExRethrow = null;
 
-public int getScale(int arg0) throws SQLException {
-checkBounds(arg0);
+                if (paramTypesRs != null) {
+                    try {
+                        paramTypesRs.close();
+                    } catch (SQLException sqlEx) {
+                        sqlExRethrow = sqlEx;
+                    }
 
-return (getParameter(arg0 - 1)).scale;
-}
+                    paramTypesRs = null;
+                }
 
-public int isNullable(int arg0) throws SQLException {
-checkBounds(arg0);
+                if (sqlExRethrow != null) {
+                    throw sqlExRethrow;
+                }
+            }
+        }
+    }
 
-return (getParameter(arg0 - 1)).nullability;
-}
+    private void convertGetProcedureColumnsToInternalDescriptors(ResultSet paramTypesRs) throws SQLException {
+        synchronized (checkClosed()) {
+            if (!this.connection.isRunningOnJDK13()) {
+                this.paramInfo = new CallableStatementParamInfoJDBC3(paramTypesRs);
+            } else {
 
-public boolean isSigned(int arg0) throws SQLException {
-checkBounds(arg0);
+                this.paramInfo = new CallableStatementParamInfo(paramTypesRs);
+            }
+        }
+    }
 
-return false;
-}
+    public boolean execute() throws SQLException {
+        synchronized (checkClosed()) {
+            boolean returnVal = false;
 
-Iterator<CallableStatement.CallableStatementParam> iterator() {
-return this.parameterList.iterator();
-}
+            checkStreamability();
 
-int numberOfParameters() {
-return this.numParameters;
-}
-}
+            setInOutParamsOnServer();
+            setOutParams();
 
-protected class CallableStatementParamInfoJDBC3
-extends CallableStatementParamInfo
-implements ParameterMetaData
-{
-CallableStatementParamInfoJDBC3(ResultSet paramTypesRs) throws SQLException {
-super(paramTypesRs);
-}
+            returnVal = super.execute();
 
-public CallableStatementParamInfoJDBC3(CallableStatement.CallableStatementParamInfo paramInfo) {
-super(paramInfo);
-}
+            if (this.callingStoredFunction) {
+                this.functionReturnValueResults = this.results;
+                this.functionReturnValueResults.next();
+                this.results = null;
+            }
 
-public boolean isWrapperFor(Class<?> iface) throws SQLException {
-CallableStatement.this.checkClosed();
+            retrieveOutParams();
 
-return iface.isInstance(this);
-}
+            if (!this.callingStoredFunction) {
+                return returnVal;
+            }
 
-public Object unwrap(Class<?> iface) throws SQLException {
-try {
-return Util.cast(iface, this);
-} catch (ClassCastException cce) {
-throw SQLError.createSQLException("Unable to unwrap to " + iface.toString(), "S1009", CallableStatement.this.getExceptionInterceptor());
-} 
-}
-}
+            return false;
+        }
+    }
 
-private static String mangleParameterName(String origParameterName) {
-if (origParameterName == null) {
-return null;
-}
+    public ResultSet executeQuery() throws SQLException {
+        synchronized (checkClosed()) {
 
-int offset = 0;
+            checkStreamability();
 
-if (origParameterName.length() > 0 && origParameterName.charAt(0) == '@')
-{
-offset = 1;
-}
+            ResultSet execResults = null;
 
-StringBuffer paramNameBuf = new StringBuffer("@com_mysql_jdbc_outparam_".length() + origParameterName.length());
+            setInOutParamsOnServer();
+            setOutParams();
 
-paramNameBuf.append("@com_mysql_jdbc_outparam_");
-paramNameBuf.append(origParameterName.substring(offset));
+            execResults = super.executeQuery();
 
-return paramNameBuf.toString();
-}
+            retrieveOutParams();
 
-private boolean callingStoredFunction = false;
+            return execResults;
+        }
+    }
 
-private ResultSetInternalMethods functionReturnValueResults;
+    public int executeUpdate() throws SQLException {
+        synchronized (checkClosed()) {
+            int returnVal = -1;
 
-private boolean hasOutputParams = false;
+            checkStreamability();
 
-private ResultSetInternalMethods outputParameterResults;
+            if (this.callingStoredFunction) {
+                execute();
 
-protected boolean outputParamWasNull = false;
+                return -1;
+            }
 
-private int[] parameterIndexToRsIndex;
+            setInOutParamsOnServer();
+            setOutParams();
 
-protected CallableStatementParamInfo paramInfo;
+            returnVal = super.executeUpdate();
 
-private CallableStatementParam returnValueParam;
+            retrieveOutParams();
 
-private int[] placeholderToParameterIndexMap;
+            return returnVal;
+        }
+    }
 
-public CallableStatement(MySQLConnection conn, CallableStatementParamInfo paramInfo) throws SQLException {
-super(conn, paramInfo.nativeSql, paramInfo.catalogInUse);
+    private String extractProcedureName() throws SQLException {
+        String sanitizedSql = StringUtils.stripComments(this.originalSql, "`\"'", "`\"'", true, false, true, true);
 
-this.paramInfo = paramInfo;
-this.callingStoredFunction = this.paramInfo.isFunctionCall;
+        int endCallIndex = StringUtils.indexOfIgnoreCase(sanitizedSql, "CALL ");
 
-if (this.callingStoredFunction) {
-this.parameterCount++;
-}
+        int offset = 5;
 
-this.retrieveGeneratedKeys = true;
-}
+        if (endCallIndex == -1) {
+            endCallIndex = StringUtils.indexOfIgnoreCase(sanitizedSql, "SELECT ");
 
-protected static CallableStatement getInstance(MySQLConnection conn, String sql, String catalog, boolean isFunctionCall) throws SQLException {
-if (!Util.isJdbc4()) {
-return new CallableStatement(conn, sql, catalog, isFunctionCall);
-}
+            offset = 7;
+        }
 
-return (CallableStatement)Util.handleNewInstance(JDBC_4_CSTMT_4_ARGS_CTOR, new Object[] { conn, sql, catalog, Boolean.valueOf(isFunctionCall) }, conn.getExceptionInterceptor());
-}
+        if (endCallIndex != -1) {
+            StringBuffer nameBuf = new StringBuffer();
 
-protected static CallableStatement getInstance(MySQLConnection conn, CallableStatementParamInfo paramInfo) throws SQLException {
-if (!Util.isJdbc4()) {
-return new CallableStatement(conn, paramInfo);
-}
+            String trimmedStatement = sanitizedSql.substring(endCallIndex + offset).trim();
 
-return (CallableStatement)Util.handleNewInstance(JDBC_4_CSTMT_2_ARGS_CTOR, new Object[] { conn, paramInfo }, conn.getExceptionInterceptor());
-}
+            int statementLength = trimmedStatement.length();
 
-private void generateParameterMap() throws SQLException {
-synchronized (checkClosed()) {
-if (this.paramInfo == null) {
-return;
-}
+            for (int i = 0; i < statementLength; i++) {
+                char c = trimmedStatement.charAt(i);
 
-int parameterCountFromMetaData = this.paramInfo.getParameterCount();
+                if (Character.isWhitespace(c) || c == '(' || c == '?') {
+                    break;
+                }
+                nameBuf.append(c);
+            }
 
-if (this.callingStoredFunction) {
-parameterCountFromMetaData--;
-}
+            return nameBuf.toString();
+        }
 
-if (this.paramInfo != null && this.parameterCount != parameterCountFromMetaData) {
+        throw SQLError.createSQLException(Messages.getString("CallableStatement.1"), "S1000", getExceptionInterceptor());
+    }
 
-this.placeholderToParameterIndexMap = new int[this.parameterCount];
+    protected String fixParameterName(String paramNameIn) throws SQLException {
+        synchronized (checkClosed()) {
 
-int startPos = this.callingStoredFunction ? StringUtils.indexOfIgnoreCase(this.originalSql, "SELECT") : StringUtils.indexOfIgnoreCase(this.originalSql, "CALL");
+            if ((paramNameIn == null || paramNameIn.length() == 0) && !hasParametersView()) {
+                throw SQLError.createSQLException((Messages.getString("CallableStatement.0") + paramNameIn == null) ? Messages.getString("CallableStatement.15") : Messages.getString("CallableStatement.16"), "S1009", getExceptionInterceptor());
+            }
 
-if (startPos != -1) {
-int parenOpenPos = this.originalSql.indexOf('(', startPos + 4);
+            if (paramNameIn == null && hasParametersView()) {
+                paramNameIn = "nullpn";
+            }
 
-if (parenOpenPos != -1) {
-int parenClosePos = StringUtils.indexOfIgnoreCaseRespectQuotes(parenOpenPos, this.originalSql, ")", '\'', true);
+            if (this.connection.getNoAccessToProcedureBodies()) {
+                throw SQLError.createSQLException("No access to parameters by name when connection has been configured not to access procedure bodies", "S1009", getExceptionInterceptor());
+            }
 
-if (parenClosePos != -1) {
-List<?> parsedParameters = StringUtils.split(this.originalSql.substring(parenOpenPos + 1, parenClosePos), ",", "'\"", "'\"", true);
+            return mangleParameterName(paramNameIn);
+        }
+    }
 
-int numParsedParameters = parsedParameters.size();
+    public Array getArray(int i) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(i);
 
-if (numParsedParameters != this.parameterCount);
+            Array retValue = rs.getArray(mapOutputParameterIndexToRsIndex(i));
 
-int placeholderCount = 0;
+            this.outputParamWasNull = rs.wasNull();
 
-for (int i = 0; i < numParsedParameters; i++) {
-if (((String)parsedParameters.get(i)).equals("?")) {
-this.placeholderToParameterIndexMap[placeholderCount++] = i;
-}
-} 
-} 
-} 
-} 
-} 
-} 
-}
+            return retValue;
+        }
+    }
 
-public CallableStatement(MySQLConnection conn, String sql, String catalog, boolean isFunctionCall) throws SQLException {
-super(conn, sql, catalog);
+    public Array getArray(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-this.callingStoredFunction = isFunctionCall;
+            Array retValue = rs.getArray(fixParameterName(parameterName));
 
-if (!this.callingStoredFunction) {
-if (!StringUtils.startsWithIgnoreCaseAndWs(sql, "CALL")) {
+            this.outputParamWasNull = rs.wasNull();
 
-fakeParameterTypes(false);
-} else {
-determineParameterTypes();
-} 
+            return retValue;
+        }
+    }
 
-generateParameterMap();
-} else {
-determineParameterTypes();
-generateParameterMap();
+    public BigDecimal getBigDecimal(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-this.parameterCount++;
-} 
+            BigDecimal retValue = rs.getBigDecimal(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.retrieveGeneratedKeys = true;
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public void addBatch() throws SQLException {
-setOutParams();
+            return retValue;
+        }
+    }
 
-super.addBatch();
-}
+    public BigDecimal getBigDecimal(int parameterIndex, int scale) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-private CallableStatementParam checkIsOutputParam(int paramIndex) throws SQLException {
-synchronized (checkClosed()) {
-if (this.callingStoredFunction) {
-if (paramIndex == 1) {
+            BigDecimal retValue = rs.getBigDecimal(mapOutputParameterIndexToRsIndex(parameterIndex), scale);
 
-if (this.returnValueParam == null) {
-this.returnValueParam = new CallableStatementParam("", 0, false, true, 12, "VARCHAR", 0, 0, (short)2, 5);
-}
+            this.outputParamWasNull = rs.wasNull();
 
-return this.returnValueParam;
-} 
+            return retValue;
+        }
+    }
 
-paramIndex--;
-} 
+    public BigDecimal getBigDecimal(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-checkParameterIndexBounds(paramIndex);
+            BigDecimal retValue = rs.getBigDecimal(fixParameterName(parameterName));
 
-int localParamIndex = paramIndex - 1;
+            this.outputParamWasNull = rs.wasNull();
 
-if (this.placeholderToParameterIndexMap != null) {
-localParamIndex = this.placeholderToParameterIndexMap[localParamIndex];
-}
+            return retValue;
+        }
+    }
 
-CallableStatementParam paramDescriptor = this.paramInfo.getParameter(localParamIndex);
+    public Blob getBlob(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-if (this.connection.getNoAccessToProcedureBodies()) {
-paramDescriptor.isOut = true;
-paramDescriptor.isIn = true;
-paramDescriptor.inOutModifier = 2;
-} else if (!paramDescriptor.isOut) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.9") + paramIndex + Messages.getString("CallableStatement.10"), "S1009", getExceptionInterceptor());
-} 
+            Blob retValue = rs.getBlob(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.hasOutputParams = true;
+            this.outputParamWasNull = rs.wasNull();
 
-return paramDescriptor;
-} 
-}
+            return retValue;
+        }
+    }
 
-private void checkParameterIndexBounds(int paramIndex) throws SQLException {
-synchronized (checkClosed()) {
-this.paramInfo.checkBounds(paramIndex);
-} 
-}
+    public Blob getBlob(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-private void checkStreamability() throws SQLException {
-if (this.hasOutputParams && createStreamingResultSet()) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.14"), "S1C00", getExceptionInterceptor());
-}
-}
+            Blob retValue = rs.getBlob(fixParameterName(parameterName));
 
-public void clearParameters() throws SQLException {
-synchronized (checkClosed()) {
-super.clearParameters();
+            this.outputParamWasNull = rs.wasNull();
 
-try {
-if (this.outputParameterResults != null) {
-this.outputParameterResults.close();
-}
-} finally {
-this.outputParameterResults = null;
-} 
-} 
-}
+            return retValue;
+        }
+    }
 
-private void fakeParameterTypes(boolean isReallyProcedure) throws SQLException {
-synchronized (checkClosed()) {
-Field[] fields = new Field[13];
+    public boolean getBoolean(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-fields[0] = new Field("", "PROCEDURE_CAT", 1, 0);
-fields[1] = new Field("", "PROCEDURE_SCHEM", 1, 0);
-fields[2] = new Field("", "PROCEDURE_NAME", 1, 0);
-fields[3] = new Field("", "COLUMN_NAME", 1, 0);
-fields[4] = new Field("", "COLUMN_TYPE", 1, 0);
-fields[5] = new Field("", "DATA_TYPE", 5, 0);
-fields[6] = new Field("", "TYPE_NAME", 1, 0);
-fields[7] = new Field("", "PRECISION", 4, 0);
-fields[8] = new Field("", "LENGTH", 4, 0);
-fields[9] = new Field("", "SCALE", 5, 0);
-fields[10] = new Field("", "RADIX", 5, 0);
-fields[11] = new Field("", "NULLABLE", 5, 0);
-fields[12] = new Field("", "REMARKS", 1, 0);
+            boolean retValue = rs.getBoolean(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-String procName = isReallyProcedure ? extractProcedureName() : null;
+            this.outputParamWasNull = rs.wasNull();
 
-byte[] procNameAsBytes = null;
+            return retValue;
+        }
+    }
 
-try {
-procNameAsBytes = (procName == null) ? null : StringUtils.getBytes(procName, "UTF-8");
-} catch (UnsupportedEncodingException ueEx) {
-procNameAsBytes = StringUtils.s2b(procName, this.connection);
-} 
+    public boolean getBoolean(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-ArrayList<ResultSetRow> resultRows = new ArrayList<ResultSetRow>();
+            boolean retValue = rs.getBoolean(fixParameterName(parameterName));
 
-for (int i = 0; i < this.parameterCount; i++) {
-byte[][] row = new byte[13][];
-row[0] = null;
-row[1] = null;
-row[2] = procNameAsBytes;
-row[3] = StringUtils.s2b(String.valueOf(i), this.connection);
+            this.outputParamWasNull = rs.wasNull();
 
-row[4] = StringUtils.s2b(String.valueOf(1), this.connection);
+            return retValue;
+        }
+    }
 
-row[5] = StringUtils.s2b(String.valueOf(12), this.connection);
+    public byte getByte(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-row[6] = StringUtils.s2b("VARCHAR", this.connection);
-row[7] = StringUtils.s2b(Integer.toString(65535), this.connection);
-row[8] = StringUtils.s2b(Integer.toString(65535), this.connection);
-row[9] = StringUtils.s2b(Integer.toString(0), this.connection);
-row[10] = StringUtils.s2b(Integer.toString(10), this.connection);
+            byte retValue = rs.getByte(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-row[11] = StringUtils.s2b(Integer.toString(2), this.connection);
+            this.outputParamWasNull = rs.wasNull();
 
-row[12] = null;
+            return retValue;
+        }
+    }
 
-resultRows.add(new ByteArrayRow(row, getExceptionInterceptor()));
-} 
+    public byte getByte(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-ResultSet paramTypesRs = DatabaseMetaData.buildResultSet(fields, resultRows, this.connection);
+            byte retValue = rs.getByte(fixParameterName(parameterName));
 
-convertGetProcedureColumnsToInternalDescriptors(paramTypesRs);
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-private void determineParameterTypes() throws SQLException {
-synchronized (checkClosed()) {
-ResultSet paramTypesRs = null;
+            return retValue;
+        }
+    }
 
-try {
-String procName = extractProcedureName();
-String quotedId = "";
-try {
-quotedId = this.connection.supportsQuotedIdentifiers() ? this.connection.getMetaData().getIdentifierQuoteString() : "";
-}
-catch (SQLException sqlEx) {
+    public byte[] getBytes(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-AssertionFailedException.shouldNotHappen(sqlEx);
-} 
+            byte[] retValue = rs.getBytes(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-List<?> parseList = StringUtils.splitDBdotName(procName, "", quotedId, this.connection.isNoBackslashEscapesSet());
+            this.outputParamWasNull = rs.wasNull();
 
-String tmpCatalog = "";
+            return retValue;
+        }
+    }
 
-if (parseList.size() == 2) {
-tmpCatalog = (String)parseList.get(0);
-procName = (String)parseList.get(1);
-} 
+    public byte[] getBytes(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-DatabaseMetaData dbmd = this.connection.getMetaData();
+            byte[] retValue = rs.getBytes(fixParameterName(parameterName));
 
-boolean useCatalog = false;
+            this.outputParamWasNull = rs.wasNull();
 
-if (tmpCatalog.length() <= 0) {
-useCatalog = true;
-}
+            return retValue;
+        }
+    }
 
-paramTypesRs = dbmd.getProcedureColumns((this.connection.versionMeetsMinimum(5, 0, 2) && useCatalog) ? this.currentCatalog : tmpCatalog, null, procName, "%");
+    public Clob getClob(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-boolean hasResults = false;
-try {
-if (paramTypesRs.next()) {
-paramTypesRs.previous();
-hasResults = true;
-} 
-} catch (Exception e) {}
+            Clob retValue = rs.getClob(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-if (hasResults) {
-convertGetProcedureColumnsToInternalDescriptors(paramTypesRs);
-} else {
-fakeParameterTypes(true);
-} 
-} finally {
-SQLException sqlExRethrow = null;
+            this.outputParamWasNull = rs.wasNull();
 
-if (paramTypesRs != null) {
-try {
-paramTypesRs.close();
-} catch (SQLException sqlEx) {
-sqlExRethrow = sqlEx;
-} 
+            return retValue;
+        }
+    }
 
-paramTypesRs = null;
-} 
+    public Clob getClob(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-if (sqlExRethrow != null) {
-throw sqlExRethrow;
-}
-} 
-} 
-}
+            Clob retValue = rs.getClob(fixParameterName(parameterName));
 
-private void convertGetProcedureColumnsToInternalDescriptors(ResultSet paramTypesRs) throws SQLException {
-synchronized (checkClosed()) {
-if (!this.connection.isRunningOnJDK13()) {
-this.paramInfo = new CallableStatementParamInfoJDBC3(paramTypesRs);
-} else {
+            this.outputParamWasNull = rs.wasNull();
 
-this.paramInfo = new CallableStatementParamInfo(paramTypesRs);
-} 
-} 
-}
+            return retValue;
+        }
+    }
 
-public boolean execute() throws SQLException {
-synchronized (checkClosed()) {
-boolean returnVal = false;
+    public Date getDate(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-checkStreamability();
+            Date retValue = rs.getDate(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-setInOutParamsOnServer();
-setOutParams();
+            this.outputParamWasNull = rs.wasNull();
 
-returnVal = super.execute();
+            return retValue;
+        }
+    }
 
-if (this.callingStoredFunction) {
-this.functionReturnValueResults = this.results;
-this.functionReturnValueResults.next();
-this.results = null;
-} 
+    public Date getDate(int parameterIndex, Calendar cal) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-retrieveOutParams();
+            Date retValue = rs.getDate(mapOutputParameterIndexToRsIndex(parameterIndex), cal);
 
-if (!this.callingStoredFunction) {
-return returnVal;
-}
+            this.outputParamWasNull = rs.wasNull();
 
-return false;
-} 
-}
+            return retValue;
+        }
+    }
 
-public ResultSet executeQuery() throws SQLException {
-synchronized (checkClosed()) {
+    public Date getDate(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-checkStreamability();
+            Date retValue = rs.getDate(fixParameterName(parameterName));
 
-ResultSet execResults = null;
+            this.outputParamWasNull = rs.wasNull();
 
-setInOutParamsOnServer();
-setOutParams();
+            return retValue;
+        }
+    }
 
-execResults = super.executeQuery();
+    public Date getDate(String parameterName, Calendar cal) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-retrieveOutParams();
+            Date retValue = rs.getDate(fixParameterName(parameterName), cal);
 
-return execResults;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public int executeUpdate() throws SQLException {
-synchronized (checkClosed()) {
-int returnVal = -1;
+            return retValue;
+        }
+    }
 
-checkStreamability();
+    public double getDouble(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-if (this.callingStoredFunction) {
-execute();
+            double retValue = rs.getDouble(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-return -1;
-} 
+            this.outputParamWasNull = rs.wasNull();
 
-setInOutParamsOnServer();
-setOutParams();
+            return retValue;
+        }
+    }
 
-returnVal = super.executeUpdate();
+    public double getDouble(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-retrieveOutParams();
+            double retValue = rs.getDouble(fixParameterName(parameterName));
 
-return returnVal;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-private String extractProcedureName() throws SQLException {
-String sanitizedSql = StringUtils.stripComments(this.originalSql, "`\"'", "`\"'", true, false, true, true);
+            return retValue;
+        }
+    }
 
-int endCallIndex = StringUtils.indexOfIgnoreCase(sanitizedSql, "CALL ");
+    public float getFloat(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-int offset = 5;
+            float retValue = rs.getFloat(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-if (endCallIndex == -1) {
-endCallIndex = StringUtils.indexOfIgnoreCase(sanitizedSql, "SELECT ");
+            this.outputParamWasNull = rs.wasNull();
 
-offset = 7;
-} 
+            return retValue;
+        }
+    }
 
-if (endCallIndex != -1) {
-StringBuffer nameBuf = new StringBuffer();
+    public float getFloat(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-String trimmedStatement = sanitizedSql.substring(endCallIndex + offset).trim();
+            float retValue = rs.getFloat(fixParameterName(parameterName));
 
-int statementLength = trimmedStatement.length();
+            this.outputParamWasNull = rs.wasNull();
 
-for (int i = 0; i < statementLength; i++) {
-char c = trimmedStatement.charAt(i);
+            return retValue;
+        }
+    }
 
-if (Character.isWhitespace(c) || c == '(' || c == '?') {
-break;
-}
-nameBuf.append(c);
-} 
+    public int getInt(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-return nameBuf.toString();
-} 
+            int retValue = rs.getInt(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-throw SQLError.createSQLException(Messages.getString("CallableStatement.1"), "S1000", getExceptionInterceptor());
-}
+            this.outputParamWasNull = rs.wasNull();
 
-protected String fixParameterName(String paramNameIn) throws SQLException {
-synchronized (checkClosed()) {
+            return retValue;
+        }
+    }
 
-if ((paramNameIn == null || paramNameIn.length() == 0) && !hasParametersView()) {
-throw SQLError.createSQLException((Messages.getString("CallableStatement.0") + paramNameIn == null) ? Messages.getString("CallableStatement.15") : Messages.getString("CallableStatement.16"), "S1009", getExceptionInterceptor());
-}
+    public int getInt(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-if (paramNameIn == null && hasParametersView()) {
-paramNameIn = "nullpn";
-}
+            int retValue = rs.getInt(fixParameterName(parameterName));
 
-if (this.connection.getNoAccessToProcedureBodies()) {
-throw SQLError.createSQLException("No access to parameters by name when connection has been configured not to access procedure bodies", "S1009", getExceptionInterceptor());
-}
+            this.outputParamWasNull = rs.wasNull();
 
-return mangleParameterName(paramNameIn);
-} 
-}
+            return retValue;
+        }
+    }
 
-public Array getArray(int i) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(i);
+    public long getLong(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-Array retValue = rs.getArray(mapOutputParameterIndexToRsIndex(i));
+            long retValue = rs.getLong(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Array getArray(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public long getLong(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-Array retValue = rs.getArray(fixParameterName(parameterName));
+            long retValue = rs.getLong(fixParameterName(parameterName));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public BigDecimal getBigDecimal(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    protected int getNamedParamIndex(String paramName, boolean forOut) throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.connection.getNoAccessToProcedureBodies()) {
+                throw SQLError.createSQLException("No access to parameters by name when connection has been configured not to access procedure bodies", "S1009", getExceptionInterceptor());
+            }
 
-BigDecimal retValue = rs.getBigDecimal(mapOutputParameterIndexToRsIndex(parameterIndex));
+            if (paramName == null || paramName.length() == 0) {
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.2"), "S1009", getExceptionInterceptor());
+            }
 
-this.outputParamWasNull = rs.wasNull();
+            if (this.paramInfo == null) {
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.3") + paramName + Messages.getString("CallableStatement.4"), "S1009", getExceptionInterceptor());
+            }
 
-return retValue;
-} 
-}
+            CallableStatementParam namedParamInfo = this.paramInfo.getParameter(paramName);
 
-public BigDecimal getBigDecimal(int parameterIndex, int scale) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+            if (forOut && !namedParamInfo.isOut) {
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.5") + paramName + Messages.getString("CallableStatement.6"), "S1009", getExceptionInterceptor());
+            }
 
-BigDecimal retValue = rs.getBigDecimal(mapOutputParameterIndexToRsIndex(parameterIndex), scale);
+            if (this.placeholderToParameterIndexMap == null) {
+                return namedParamInfo.index + 1;
+            }
 
-this.outputParamWasNull = rs.wasNull();
+            for (int i = 0; i < this.placeholderToParameterIndexMap.length; i++) {
+                if (this.placeholderToParameterIndexMap[i] == namedParamInfo.index) {
+                    return i + 1;
+                }
+            }
 
-return retValue;
-} 
-}
+            throw SQLError.createSQLException("Can't find local placeholder mapping for parameter named \"" + paramName + "\".", "S1009", getExceptionInterceptor());
+        }
+    }
 
-public BigDecimal getBigDecimal(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public Object getObject(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            CallableStatementParam paramDescriptor = checkIsOutputParam(parameterIndex);
 
-BigDecimal retValue = rs.getBigDecimal(fixParameterName(parameterName));
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-this.outputParamWasNull = rs.wasNull();
+            Object retVal = rs.getObjectStoredProc(mapOutputParameterIndexToRsIndex(parameterIndex), paramDescriptor.desiredJdbcType);
 
-return retValue;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public Blob getBlob(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+            return retVal;
+        }
+    }
 
-Blob retValue = rs.getBlob(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public Object getObject(int parameterIndex, Map<String, Class<?>> map) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-this.outputParamWasNull = rs.wasNull();
+            Object retVal = rs.getObject(mapOutputParameterIndexToRsIndex(parameterIndex), map);
 
-return retValue;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public Blob getBlob(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+            return retVal;
+        }
+    }
 
-Blob retValue = rs.getBlob(fixParameterName(parameterName));
+    public Object getObject(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-this.outputParamWasNull = rs.wasNull();
+            Object retValue = rs.getObject(fixParameterName(parameterName));
 
-return retValue;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public boolean getBoolean(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+            return retValue;
+        }
+    }
 
-boolean retValue = rs.getBoolean(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public Object getObject(String parameterName, Map<String, Class<?>> map) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-this.outputParamWasNull = rs.wasNull();
+            Object retValue = rs.getObject(fixParameterName(parameterName), map);
 
-return retValue;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public boolean getBoolean(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+            return retValue;
+        }
+    }
 
-boolean retValue = rs.getBoolean(fixParameterName(parameterName));
+    public <T> T getObject(int parameterIndex, Class<T> type) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-this.outputParamWasNull = rs.wasNull();
+            T retVal = ((ResultSetImpl) rs).getObject(mapOutputParameterIndexToRsIndex(parameterIndex), type);
 
-return retValue;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public byte getByte(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+            return retVal;
+        }
+    }
 
-byte retValue = rs.getByte(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public <T> T getObject(String parameterName, Class<T> type) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-this.outputParamWasNull = rs.wasNull();
+            T retValue = ((ResultSetImpl) rs).getObject(fixParameterName(parameterName), type);
 
-return retValue;
-} 
-}
+            this.outputParamWasNull = rs.wasNull();
 
-public byte getByte(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+            return retValue;
+        }
+    }
 
-byte retValue = rs.getByte(fixParameterName(parameterName));
+    protected ResultSetInternalMethods getOutputParameters(int paramIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            this.outputParamWasNull = false;
 
-this.outputParamWasNull = rs.wasNull();
+            if (paramIndex == 1 && this.callingStoredFunction && this.returnValueParam != null) {
+                return this.functionReturnValueResults;
+            }
 
-return retValue;
-} 
-}
+            if (this.outputParameterResults == null) {
+                if (this.paramInfo.numberOfParameters() == 0) {
+                    throw SQLError.createSQLException(Messages.getString("CallableStatement.7"), "S1009", getExceptionInterceptor());
+                }
 
-public byte[] getBytes(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.8"), "S1000", getExceptionInterceptor());
+            }
 
-byte[] retValue = rs.getBytes(mapOutputParameterIndexToRsIndex(parameterIndex));
+            return this.outputParameterResults;
+        }
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public ParameterMetaData getParameterMetaData() throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.placeholderToParameterIndexMap == null) {
+                return (CallableStatementParamInfoJDBC3) this.paramInfo;
+            }
 
-return retValue;
-} 
-}
+            return new CallableStatementParamInfoJDBC3(this.paramInfo);
+        }
+    }
 
-public byte[] getBytes(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public Ref getRef(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-byte[] retValue = rs.getBytes(fixParameterName(parameterName));
+            Ref retValue = rs.getRef(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Clob getClob(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public Ref getRef(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-Clob retValue = rs.getClob(mapOutputParameterIndexToRsIndex(parameterIndex));
+            Ref retValue = rs.getRef(fixParameterName(parameterName));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Clob getClob(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public short getShort(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-Clob retValue = rs.getClob(fixParameterName(parameterName));
+            short retValue = rs.getShort(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Date getDate(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public short getShort(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-Date retValue = rs.getDate(mapOutputParameterIndexToRsIndex(parameterIndex));
+            short retValue = rs.getShort(fixParameterName(parameterName));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Date getDate(int parameterIndex, Calendar cal) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public String getString(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-Date retValue = rs.getDate(mapOutputParameterIndexToRsIndex(parameterIndex), cal);
+            String retValue = rs.getString(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Date getDate(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public String getString(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-Date retValue = rs.getDate(fixParameterName(parameterName));
+            String retValue = rs.getString(fixParameterName(parameterName));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public Date getDate(String parameterName, Calendar cal) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public Time getTime(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-Date retValue = rs.getDate(fixParameterName(parameterName), cal);
+            Time retValue = rs.getTime(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public double getDouble(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public Time getTime(int parameterIndex, Calendar cal) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-double retValue = rs.getDouble(mapOutputParameterIndexToRsIndex(parameterIndex));
+            Time retValue = rs.getTime(mapOutputParameterIndexToRsIndex(parameterIndex), cal);
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public double getDouble(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public Time getTime(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-double retValue = rs.getDouble(fixParameterName(parameterName));
+            Time retValue = rs.getTime(fixParameterName(parameterName));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public float getFloat(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public Time getTime(String parameterName, Calendar cal) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-float retValue = rs.getFloat(mapOutputParameterIndexToRsIndex(parameterIndex));
+            Time retValue = rs.getTime(fixParameterName(parameterName), cal);
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public float getFloat(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public Timestamp getTimestamp(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-float retValue = rs.getFloat(fixParameterName(parameterName));
+            Timestamp retValue = rs.getTimestamp(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public int getInt(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public Timestamp getTimestamp(int parameterIndex, Calendar cal) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-int retValue = rs.getInt(mapOutputParameterIndexToRsIndex(parameterIndex));
+            Timestamp retValue = rs.getTimestamp(mapOutputParameterIndexToRsIndex(parameterIndex), cal);
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public int getInt(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public Timestamp getTimestamp(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-int retValue = rs.getInt(fixParameterName(parameterName));
+            Timestamp retValue = rs.getTimestamp(fixParameterName(parameterName));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public long getLong(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public Timestamp getTimestamp(String parameterName, Calendar cal) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-long retValue = rs.getLong(mapOutputParameterIndexToRsIndex(parameterIndex));
+            Timestamp retValue = rs.getTimestamp(fixParameterName(parameterName), cal);
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-public long getLong(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public URL getURL(int parameterIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
 
-long retValue = rs.getLong(fixParameterName(parameterName));
+            URL retValue = rs.getURL(mapOutputParameterIndexToRsIndex(parameterIndex));
 
-this.outputParamWasNull = rs.wasNull();
+            this.outputParamWasNull = rs.wasNull();
 
-return retValue;
-} 
-}
+            return retValue;
+        }
+    }
 
-protected int getNamedParamIndex(String paramName, boolean forOut) throws SQLException {
-synchronized (checkClosed()) {
-if (this.connection.getNoAccessToProcedureBodies()) {
-throw SQLError.createSQLException("No access to parameters by name when connection has been configured not to access procedure bodies", "S1009", getExceptionInterceptor());
-}
+    public URL getURL(String parameterName) throws SQLException {
+        synchronized (checkClosed()) {
+            ResultSetInternalMethods rs = getOutputParameters(0);
 
-if (paramName == null || paramName.length() == 0) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.2"), "S1009", getExceptionInterceptor());
-}
+            URL retValue = rs.getURL(fixParameterName(parameterName));
 
-if (this.paramInfo == null) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.3") + paramName + Messages.getString("CallableStatement.4"), "S1009", getExceptionInterceptor());
-}
+            this.outputParamWasNull = rs.wasNull();
 
-CallableStatementParam namedParamInfo = this.paramInfo.getParameter(paramName);
+            return retValue;
+        }
+    }
 
-if (forOut && !namedParamInfo.isOut) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.5") + paramName + Messages.getString("CallableStatement.6"), "S1009", getExceptionInterceptor());
-}
+    protected int mapOutputParameterIndexToRsIndex(int paramIndex) throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.returnValueParam != null && paramIndex == 1) {
+                return 1;
+            }
 
-if (this.placeholderToParameterIndexMap == null) {
-return namedParamInfo.index + 1;
-}
+            checkParameterIndexBounds(paramIndex);
 
-for (int i = 0; i < this.placeholderToParameterIndexMap.length; i++) {
-if (this.placeholderToParameterIndexMap[i] == namedParamInfo.index) {
-return i + 1;
-}
-} 
+            int localParamIndex = paramIndex - 1;
 
-throw SQLError.createSQLException("Can't find local placeholder mapping for parameter named \"" + paramName + "\".", "S1009", getExceptionInterceptor());
-} 
-}
+            if (this.placeholderToParameterIndexMap != null) {
+                localParamIndex = this.placeholderToParameterIndexMap[localParamIndex];
+            }
 
-public Object getObject(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-CallableStatementParam paramDescriptor = checkIsOutputParam(parameterIndex);
+            int rsIndex = this.parameterIndexToRsIndex[localParamIndex];
 
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+            if (rsIndex == Integer.MIN_VALUE) {
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.21") + paramIndex + Messages.getString("CallableStatement.22"), "S1009", getExceptionInterceptor());
+            }
 
-Object retVal = rs.getObjectStoredProc(mapOutputParameterIndexToRsIndex(parameterIndex), paramDescriptor.desiredJdbcType);
+            return rsIndex + 1;
+        }
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void registerOutParameter(int parameterIndex, int sqlType) throws SQLException {
+        CallableStatementParam paramDescriptor = checkIsOutputParam(parameterIndex);
+        paramDescriptor.desiredJdbcType = sqlType;
+    }
 
-return retVal;
-} 
-}
+    public void registerOutParameter(int parameterIndex, int sqlType, int scale) throws SQLException {
+        registerOutParameter(parameterIndex, sqlType);
+    }
 
-public Object getObject(int parameterIndex, Map<String, Class<?>> map) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public void registerOutParameter(int parameterIndex, int sqlType, String typeName) throws SQLException {
+        checkIsOutputParam(parameterIndex);
+    }
 
-Object retVal = rs.getObject(mapOutputParameterIndexToRsIndex(parameterIndex), map);
+    public void registerOutParameter(String parameterName, int sqlType) throws SQLException {
+        synchronized (checkClosed()) {
+            registerOutParameter(getNamedParamIndex(parameterName, true), sqlType);
+        }
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void registerOutParameter(String parameterName, int sqlType, int scale) throws SQLException {
+        registerOutParameter(getNamedParamIndex(parameterName, true), sqlType);
+    }
 
-return retVal;
-} 
-}
+    public void registerOutParameter(String parameterName, int sqlType, String typeName) throws SQLException {
+        registerOutParameter(getNamedParamIndex(parameterName, true), sqlType, typeName);
+    }
 
-public Object getObject(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    private void retrieveOutParams() throws SQLException {
+        synchronized (checkClosed()) {
+            int numParameters = this.paramInfo.numberOfParameters();
 
-Object retValue = rs.getObject(fixParameterName(parameterName));
+            this.parameterIndexToRsIndex = new int[numParameters];
 
-this.outputParamWasNull = rs.wasNull();
+            for (int i = 0; i < numParameters; i++) {
+                this.parameterIndexToRsIndex[i] = Integer.MIN_VALUE;
+            }
 
-return retValue;
-} 
-}
+            int localParamIndex = 0;
 
-public Object getObject(String parameterName, Map<String, Class<?>> map) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+            if (numParameters > 0) {
+                StringBuffer outParameterQuery = new StringBuffer("SELECT ");
 
-Object retValue = rs.getObject(fixParameterName(parameterName), map);
+                boolean firstParam = true;
+                boolean hadOutputParams = false;
 
-this.outputParamWasNull = rs.wasNull();
+                Iterator<CallableStatementParam> paramIter = this.paramInfo.iterator();
+                while (paramIter.hasNext()) {
+                    CallableStatementParam retrParamInfo = paramIter.next();
 
-return retValue;
-} 
-}
+                    if (retrParamInfo.isOut) {
+                        hadOutputParams = true;
 
-public <T> T getObject(int parameterIndex, Class<T> type) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+                        this.parameterIndexToRsIndex[retrParamInfo.index] = localParamIndex++;
 
-T retVal = ((ResultSetImpl)rs).getObject(mapOutputParameterIndexToRsIndex(parameterIndex), type);
+                        if (retrParamInfo.paramName == null && hasParametersView()) {
+                            retrParamInfo.paramName = "nullnp" + retrParamInfo.index;
+                        }
 
-this.outputParamWasNull = rs.wasNull();
+                        String outParameterName = mangleParameterName(retrParamInfo.paramName);
 
-return retVal;
-} 
-}
+                        if (!firstParam) {
+                            outParameterQuery.append(",");
+                        } else {
+                            firstParam = false;
+                        }
 
-public <T> T getObject(String parameterName, Class<T> type) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+                        if (!outParameterName.startsWith("@")) {
+                            outParameterQuery.append('@');
+                        }
 
-T retValue = ((ResultSetImpl)rs).getObject(fixParameterName(parameterName), type);
+                        outParameterQuery.append(outParameterName);
+                    }
+                }
 
-this.outputParamWasNull = rs.wasNull();
+                if (hadOutputParams) {
 
-return retValue;
-} 
-}
+                    Statement outParameterStmt = null;
+                    ResultSet outParamRs = null;
 
-protected ResultSetInternalMethods getOutputParameters(int paramIndex) throws SQLException {
-synchronized (checkClosed()) {
-this.outputParamWasNull = false;
+                    try {
+                        outParameterStmt = this.connection.createStatement();
+                        outParamRs = outParameterStmt.executeQuery(outParameterQuery.toString());
 
-if (paramIndex == 1 && this.callingStoredFunction && this.returnValueParam != null)
-{
-return this.functionReturnValueResults;
-}
+                        this.outputParameterResults = ((ResultSetInternalMethods) outParamRs).copy();
 
-if (this.outputParameterResults == null) {
-if (this.paramInfo.numberOfParameters() == 0) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.7"), "S1009", getExceptionInterceptor());
-}
+                        if (!this.outputParameterResults.next()) {
+                            this.outputParameterResults.close();
+                            this.outputParameterResults = null;
+                        }
+                    } finally {
+                        if (outParameterStmt != null) {
+                            outParameterStmt.close();
+                        }
+                    }
+                } else {
+                    this.outputParameterResults = null;
+                }
+            } else {
+                this.outputParameterResults = null;
+            }
+        }
+    }
 
-throw SQLError.createSQLException(Messages.getString("CallableStatement.8"), "S1000", getExceptionInterceptor());
-} 
+    public void setAsciiStream(String parameterName, InputStream x, int length) throws SQLException {
+        setAsciiStream(getNamedParamIndex(parameterName, false), x, length);
+    }
 
-return this.outputParameterResults;
-} 
-}
+    public void setBigDecimal(String parameterName, BigDecimal x) throws SQLException {
+        setBigDecimal(getNamedParamIndex(parameterName, false), x);
+    }
 
-public ParameterMetaData getParameterMetaData() throws SQLException {
-synchronized (checkClosed()) {
-if (this.placeholderToParameterIndexMap == null) {
-return (CallableStatementParamInfoJDBC3)this.paramInfo;
-}
+    public void setBinaryStream(String parameterName, InputStream x, int length) throws SQLException {
+        setBinaryStream(getNamedParamIndex(parameterName, false), x, length);
+    }
 
-return new CallableStatementParamInfoJDBC3(this.paramInfo);
-} 
-}
+    public void setBoolean(String parameterName, boolean x) throws SQLException {
+        setBoolean(getNamedParamIndex(parameterName, false), x);
+    }
 
-public Ref getRef(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public void setByte(String parameterName, byte x) throws SQLException {
+        setByte(getNamedParamIndex(parameterName, false), x);
+    }
 
-Ref retValue = rs.getRef(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public void setBytes(String parameterName, byte[] x) throws SQLException {
+        setBytes(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setCharacterStream(String parameterName, Reader reader, int length) throws SQLException {
+        setCharacterStream(getNamedParamIndex(parameterName, false), reader, length);
+    }
 
-return retValue;
-} 
-}
+    public void setDate(String parameterName, Date x) throws SQLException {
+        setDate(getNamedParamIndex(parameterName, false), x);
+    }
 
-public Ref getRef(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public void setDate(String parameterName, Date x, Calendar cal) throws SQLException {
+        setDate(getNamedParamIndex(parameterName, false), x, cal);
+    }
 
-Ref retValue = rs.getRef(fixParameterName(parameterName));
+    public void setDouble(String parameterName, double x) throws SQLException {
+        setDouble(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setFloat(String parameterName, float x) throws SQLException {
+        setFloat(getNamedParamIndex(parameterName, false), x);
+    }
 
-return retValue;
-} 
-}
+    private void setInOutParamsOnServer() throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.paramInfo.numParameters > 0) {
+                Iterator<CallableStatementParam> paramIter = this.paramInfo.iterator();
+                while (paramIter.hasNext()) {
 
-public short getShort(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+                    CallableStatementParam inParamInfo = paramIter.next();
 
-short retValue = rs.getShort(mapOutputParameterIndexToRsIndex(parameterIndex));
+                    if (inParamInfo.isOut && inParamInfo.isIn) {
+                        if (inParamInfo.paramName == null && hasParametersView()) {
+                            inParamInfo.paramName = "nullnp" + inParamInfo.index;
+                        }
 
-this.outputParamWasNull = rs.wasNull();
+                        String inOutParameterName = mangleParameterName(inParamInfo.paramName);
+                        StringBuffer queryBuf = new StringBuffer(4 + inOutParameterName.length() + 1 + 1);
 
-return retValue;
-} 
-}
+                        queryBuf.append("SET ");
+                        queryBuf.append(inOutParameterName);
+                        queryBuf.append("=?");
 
-public short getShort(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+                        PreparedStatement setPstmt = null;
 
-short retValue = rs.getShort(fixParameterName(parameterName));
+                        try {
+                            setPstmt = (PreparedStatement) this.connection.clientPrepareStatement(queryBuf.toString());
 
-this.outputParamWasNull = rs.wasNull();
+                            byte[] parameterAsBytes = getBytesRepresentation(inParamInfo.index);
 
-return retValue;
-} 
-}
+                            if (parameterAsBytes != null) {
+                                if (parameterAsBytes.length > 8) {
+                                    if (parameterAsBytes[0] == 95) {
+                                        if (parameterAsBytes[1] == 98) {
+                                            if (parameterAsBytes[2] == 105) {
+                                                if (parameterAsBytes[3] == 110) {
+                                                    if (parameterAsBytes[4] == 97) {
+                                                        if (parameterAsBytes[5] == 114) {
+                                                            if (parameterAsBytes[6] == 121) {
+                                                                if (parameterAsBytes[7] == 39) {
 
-public String getString(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+                                                                    setPstmt.setBytesNoEscapeNoQuotes(1, parameterAsBytes);
+                                                                } else {
+                                                                    continue;
+                                                                }
+                                                            } else {
+                                                                continue;
+                                                            }
+                                                        } else {
+                                                            int sqlType = inParamInfo.desiredJdbcType;
 
-String retValue = rs.getString(mapOutputParameterIndexToRsIndex(parameterIndex));
+                                                            switch (sqlType) {
+                                                                case -7:
+                                                                case -4:
+                                                                case -3:
+                                                                case -2:
+                                                                case 2000:
+                                                                case 2004:
+                                                                    setPstmt.setBytes(1, parameterAsBytes);
+                                                                    break;
 
-this.outputParamWasNull = rs.wasNull();
+                                                                default:
+                                                                    setPstmt.setBytesNoEscape(1, parameterAsBytes);
+                                                                    break;
+                                                            }
+                                                        }
+                                                    } else {
+                                                        continue;
+                                                    }
+                                                } else {
+                                                    continue;
+                                                }
+                                            } else {
+                                                continue;
+                                            }
+                                        } else {
+                                            continue;
+                                        }
+                                    } else {
+                                        continue;
+                                    }
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                setPstmt.setNull(1, 0);
+                            }
 
-return retValue;
-} 
-}
+                            setPstmt.executeUpdate();
+                        } finally {
+                            if (setPstmt != null) {
+                                setPstmt.close();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-public String getString(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public void setInt(String parameterName, int x) throws SQLException {
+        setInt(getNamedParamIndex(parameterName, false), x);
+    }
 
-String retValue = rs.getString(fixParameterName(parameterName));
+    public void setLong(String parameterName, long x) throws SQLException {
+        setLong(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setNull(String parameterName, int sqlType) throws SQLException {
+        setNull(getNamedParamIndex(parameterName, false), sqlType);
+    }
 
-return retValue;
-} 
-}
+    public void setNull(String parameterName, int sqlType, String typeName) throws SQLException {
+        setNull(getNamedParamIndex(parameterName, false), sqlType, typeName);
+    }
 
-public Time getTime(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public void setObject(String parameterName, Object x) throws SQLException {
+        setObject(getNamedParamIndex(parameterName, false), x);
+    }
 
-Time retValue = rs.getTime(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public void setObject(String parameterName, Object x, int targetSqlType) throws SQLException {
+        setObject(getNamedParamIndex(parameterName, false), x, targetSqlType);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setObject(String parameterName, Object x, int targetSqlType, int scale) throws SQLException {
+    }
 
-return retValue;
-} 
-}
+    private void setOutParams() throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.paramInfo.numParameters > 0) {
+                Iterator<CallableStatementParam> paramIter = this.paramInfo.iterator();
+                while (paramIter.hasNext()) {
+                    CallableStatementParam outParamInfo = paramIter.next();
 
-public Time getTime(int parameterIndex, Calendar cal) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+                    if (!this.callingStoredFunction && outParamInfo.isOut) {
 
-Time retValue = rs.getTime(mapOutputParameterIndexToRsIndex(parameterIndex), cal);
+                        if (outParamInfo.paramName == null && hasParametersView()) {
+                            outParamInfo.paramName = "nullnp" + outParamInfo.index;
+                        }
 
-this.outputParamWasNull = rs.wasNull();
+                        String outParameterName = mangleParameterName(outParamInfo.paramName);
 
-return retValue;
-} 
-}
+                        int outParamIndex = 0;
 
-public Time getTime(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+                        if (this.placeholderToParameterIndexMap == null) {
+                            outParamIndex = outParamInfo.index + 1;
+                        } else {
 
-Time retValue = rs.getTime(fixParameterName(parameterName));
+                            boolean found = false;
 
-this.outputParamWasNull = rs.wasNull();
+                            for (int i = 0; i < this.placeholderToParameterIndexMap.length; i++) {
+                                if (this.placeholderToParameterIndexMap[i] == outParamInfo.index) {
+                                    outParamIndex = i + 1;
+                                    found = true;
 
-return retValue;
-} 
-}
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                throw SQLError.createSQLException("boo!", "S1000", this.connection.getExceptionInterceptor());
+                            }
+                        }
 
-public Time getTime(String parameterName, Calendar cal) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+                        setBytesNoEscapeNoQuotes(outParamIndex, StringUtils.getBytes(outParameterName, this.charConverter, this.charEncoding, this.connection.getServerCharacterEncoding(), this.connection.parserKnowsUnicode(), getExceptionInterceptor()));
+                    }
+                }
+            }
+        }
+    }
 
-Time retValue = rs.getTime(fixParameterName(parameterName), cal);
+    public void setShort(String parameterName, short x) throws SQLException {
+        setShort(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setString(String parameterName, String x) throws SQLException {
+        setString(getNamedParamIndex(parameterName, false), x);
+    }
 
-return retValue;
-} 
-}
+    public void setTime(String parameterName, Time x) throws SQLException {
+        setTime(getNamedParamIndex(parameterName, false), x);
+    }
 
-public Timestamp getTimestamp(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public void setTime(String parameterName, Time x, Calendar cal) throws SQLException {
+        setTime(getNamedParamIndex(parameterName, false), x, cal);
+    }
 
-Timestamp retValue = rs.getTimestamp(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public void setTimestamp(String parameterName, Timestamp x) throws SQLException {
+        setTimestamp(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setTimestamp(String parameterName, Timestamp x, Calendar cal) throws SQLException {
+        setTimestamp(getNamedParamIndex(parameterName, false), x, cal);
+    }
 
-return retValue;
-} 
-}
+    public void setURL(String parameterName, URL val) throws SQLException {
+        setURL(getNamedParamIndex(parameterName, false), val);
+    }
 
-public Timestamp getTimestamp(int parameterIndex, Calendar cal) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public boolean wasNull() throws SQLException {
+        synchronized (checkClosed()) {
+            return this.outputParamWasNull;
+        }
+    }
 
-Timestamp retValue = rs.getTimestamp(mapOutputParameterIndexToRsIndex(parameterIndex), cal);
+    public int[] executeBatch() throws SQLException {
+        if (this.hasOutputParams) {
+            throw SQLError.createSQLException("Can't call executeBatch() on CallableStatement with OUTPUT parameters", "S1009", getExceptionInterceptor());
+        }
 
-this.outputParamWasNull = rs.wasNull();
+        return super.executeBatch();
+    }
 
-return retValue;
-} 
-}
+    protected int getParameterIndexOffset() {
+        if (this.callingStoredFunction) {
+            return -1;
+        }
 
-public Timestamp getTimestamp(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+        return super.getParameterIndexOffset();
+    }
 
-Timestamp retValue = rs.getTimestamp(fixParameterName(parameterName));
+    public void setAsciiStream(String parameterName, InputStream x) throws SQLException {
+        setAsciiStream(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setAsciiStream(String parameterName, InputStream x, long length) throws SQLException {
+        setAsciiStream(getNamedParamIndex(parameterName, false), x, length);
+    }
 
-return retValue;
-} 
-}
+    public void setBinaryStream(String parameterName, InputStream x) throws SQLException {
+        setBinaryStream(getNamedParamIndex(parameterName, false), x);
+    }
 
-public Timestamp getTimestamp(String parameterName, Calendar cal) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public void setBinaryStream(String parameterName, InputStream x, long length) throws SQLException {
+        setBinaryStream(getNamedParamIndex(parameterName, false), x, length);
+    }
 
-Timestamp retValue = rs.getTimestamp(fixParameterName(parameterName), cal);
+    public void setBlob(String parameterName, Blob x) throws SQLException {
+        setBlob(getNamedParamIndex(parameterName, false), x);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setBlob(String parameterName, InputStream inputStream) throws SQLException {
+        setBlob(getNamedParamIndex(parameterName, false), inputStream);
+    }
 
-return retValue;
-} 
-}
+    public void setBlob(String parameterName, InputStream inputStream, long length) throws SQLException {
+        setBlob(getNamedParamIndex(parameterName, false), inputStream, length);
+    }
 
-public URL getURL(int parameterIndex) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(parameterIndex);
+    public void setCharacterStream(String parameterName, Reader reader) throws SQLException {
+        setCharacterStream(getNamedParamIndex(parameterName, false), reader);
+    }
 
-URL retValue = rs.getURL(mapOutputParameterIndexToRsIndex(parameterIndex));
+    public void setCharacterStream(String parameterName, Reader reader, long length) throws SQLException {
+        setCharacterStream(getNamedParamIndex(parameterName, false), reader, length);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setClob(String parameterName, Clob x) throws SQLException {
+        setClob(getNamedParamIndex(parameterName, false), x);
+    }
 
-return retValue;
-} 
-}
+    public void setClob(String parameterName, Reader reader) throws SQLException {
+        setClob(getNamedParamIndex(parameterName, false), reader);
+    }
 
-public URL getURL(String parameterName) throws SQLException {
-synchronized (checkClosed()) {
-ResultSetInternalMethods rs = getOutputParameters(0);
+    public void setClob(String parameterName, Reader reader, long length) throws SQLException {
+        setClob(getNamedParamIndex(parameterName, false), reader, length);
+    }
 
-URL retValue = rs.getURL(fixParameterName(parameterName));
+    public void setNCharacterStream(String parameterName, Reader value) throws SQLException {
+        setNCharacterStream(getNamedParamIndex(parameterName, false), value);
+    }
 
-this.outputParamWasNull = rs.wasNull();
+    public void setNCharacterStream(String parameterName, Reader value, long length) throws SQLException {
+        setNCharacterStream(getNamedParamIndex(parameterName, false), value, length);
+    }
 
-return retValue;
-} 
-}
+    private boolean checkReadOnlyProcedure() throws SQLException {
+        synchronized (checkClosed()) {
+            if (this.connection.getNoAccessToProcedureBodies()) {
+                return false;
+            }
 
-protected int mapOutputParameterIndexToRsIndex(int paramIndex) throws SQLException {
-synchronized (checkClosed()) {
-if (this.returnValueParam != null && paramIndex == 1) {
-return 1;
-}
+            if (this.paramInfo.isReadOnlySafeChecked) {
+                return this.paramInfo.isReadOnlySafeProcedure;
+            }
 
-checkParameterIndexBounds(paramIndex);
+            ResultSet rs = null;
+            PreparedStatement ps = null;
 
-int localParamIndex = paramIndex - 1;
+            try {
+                String procName = extractProcedureName();
 
-if (this.placeholderToParameterIndexMap != null) {
-localParamIndex = this.placeholderToParameterIndexMap[localParamIndex];
-}
+                String catalog = this.currentCatalog;
 
-int rsIndex = this.parameterIndexToRsIndex[localParamIndex];
+                if (procName.indexOf(".") != -1) {
+                    catalog = procName.substring(0, procName.indexOf("."));
 
-if (rsIndex == Integer.MIN_VALUE) {
-throw SQLError.createSQLException(Messages.getString("CallableStatement.21") + paramIndex + Messages.getString("CallableStatement.22"), "S1009", getExceptionInterceptor());
-}
+                    if (StringUtils.startsWithIgnoreCaseAndWs(catalog, "`") && catalog.trim().endsWith("`")) {
+                        catalog = catalog.substring(1, catalog.length() - 1);
+                    }
 
-return rsIndex + 1;
-} 
-}
+                    procName = procName.substring(procName.indexOf(".") + 1);
+                    procName = StringUtils.toString(StringUtils.stripEnclosure(StringUtils.getBytes(procName), "`", "`"));
+                }
 
-public void registerOutParameter(int parameterIndex, int sqlType) throws SQLException {
-CallableStatementParam paramDescriptor = checkIsOutputParam(parameterIndex);
-paramDescriptor.desiredJdbcType = sqlType;
-}
+                ps = this.connection.prepareStatement("SELECT SQL_DATA_ACCESS FROM  information_schema.routines  WHERE routine_schema = ?  AND routine_name = ?");
 
-public void registerOutParameter(int parameterIndex, int sqlType, int scale) throws SQLException {
-registerOutParameter(parameterIndex, sqlType);
-}
+                ps.setMaxRows(0);
+                ps.setFetchSize(0);
 
-public void registerOutParameter(int parameterIndex, int sqlType, String typeName) throws SQLException {
-checkIsOutputParam(parameterIndex);
-}
+                ps.setString(1, catalog);
+                ps.setString(2, procName);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    String sqlDataAccess = rs.getString(1);
+                    if ("READS SQL DATA".equalsIgnoreCase(sqlDataAccess) || "NO SQL".equalsIgnoreCase(sqlDataAccess)) {
 
-public void registerOutParameter(String parameterName, int sqlType) throws SQLException {
-synchronized (checkClosed()) {
-registerOutParameter(getNamedParamIndex(parameterName, true), sqlType);
-} 
-}
+                        synchronized (this.paramInfo) {
+                            this.paramInfo.isReadOnlySafeChecked = true;
+                            this.paramInfo.isReadOnlySafeProcedure = true;
+                        }
+                        return true;
+                    }
+                }
+            } catch (SQLException e) {
 
-public void registerOutParameter(String parameterName, int sqlType, int scale) throws SQLException {
-registerOutParameter(getNamedParamIndex(parameterName, true), sqlType);
-}
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
 
-public void registerOutParameter(String parameterName, int sqlType, String typeName) throws SQLException {
-registerOutParameter(getNamedParamIndex(parameterName, true), sqlType, typeName);
-}
+            this.paramInfo.isReadOnlySafeChecked = false;
+            this.paramInfo.isReadOnlySafeProcedure = false;
+        }
+        return false;
+    }
 
-private void retrieveOutParams() throws SQLException {
-synchronized (checkClosed()) {
-int numParameters = this.paramInfo.numberOfParameters();
+    protected boolean checkReadOnlySafeStatement() throws SQLException {
+        return (super.checkReadOnlySafeStatement() || checkReadOnlyProcedure());
+    }
 
-this.parameterIndexToRsIndex = new int[numParameters];
+    private boolean hasParametersView() throws SQLException {
+        synchronized (checkClosed()) {
 
-for (int i = 0; i < numParameters; i++) {
-this.parameterIndexToRsIndex[i] = Integer.MIN_VALUE;
-}
+            if (this.connection.versionMeetsMinimum(5, 5, 0)) {
+                DatabaseMetaData dbmd1 = new DatabaseMetaDataUsingInfoSchema(this.connection, this.connection.getCatalog());
+                return ((DatabaseMetaDataUsingInfoSchema) dbmd1).gethasParametersView();
+            }
 
-int localParamIndex = 0;
+            return false;
+        }
+    }
 
-if (numParameters > 0) {
-StringBuffer outParameterQuery = new StringBuffer("SELECT ");
+    protected static class CallableStatementParam {
+        int desiredJdbcType;
 
-boolean firstParam = true;
-boolean hadOutputParams = false;
+        int index;
 
-Iterator<CallableStatementParam> paramIter = this.paramInfo.iterator();
-while (paramIter.hasNext()) {
-CallableStatementParam retrParamInfo = paramIter.next();
+        int inOutModifier;
 
-if (retrParamInfo.isOut) {
-hadOutputParams = true;
+        boolean isIn;
 
-this.parameterIndexToRsIndex[retrParamInfo.index] = localParamIndex++;
+        boolean isOut;
 
-if (retrParamInfo.paramName == null && hasParametersView()) {
-retrParamInfo.paramName = "nullnp" + retrParamInfo.index;
-}
+        int jdbcType;
 
-String outParameterName = mangleParameterName(retrParamInfo.paramName);
+        short nullability;
 
-if (!firstParam) {
-outParameterQuery.append(",");
-} else {
-firstParam = false;
-} 
+        String paramName;
 
-if (!outParameterName.startsWith("@")) {
-outParameterQuery.append('@');
-}
+        int precision;
 
-outParameterQuery.append(outParameterName);
-} 
-} 
+        int scale;
 
-if (hadOutputParams) {
+        String typeName;
 
-Statement outParameterStmt = null;
-ResultSet outParamRs = null;
+        CallableStatementParam(String name, int idx, boolean in, boolean out, int jdbcType, String typeName, int precision, int scale, short nullability, int inOutModifier) {
+            this.paramName = name;
+            this.isIn = in;
+            this.isOut = out;
+            this.index = idx;
 
-try {
-outParameterStmt = this.connection.createStatement();
-outParamRs = outParameterStmt.executeQuery(outParameterQuery.toString());
+            this.jdbcType = jdbcType;
+            this.typeName = typeName;
+            this.precision = precision;
+            this.scale = scale;
+            this.nullability = nullability;
+            this.inOutModifier = inOutModifier;
+        }
 
-this.outputParameterResults = ((ResultSetInternalMethods)outParamRs).copy();
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+    }
 
-if (!this.outputParameterResults.next()) {
-this.outputParameterResults.close();
-this.outputParameterResults = null;
-} 
-} finally {
-if (outParameterStmt != null) {
-outParameterStmt.close();
-}
-} 
-} else {
-this.outputParameterResults = null;
-} 
-} else {
-this.outputParameterResults = null;
-} 
-} 
-}
+    protected class CallableStatementParamInfo {
+        String catalogInUse;
 
-public void setAsciiStream(String parameterName, InputStream x, int length) throws SQLException {
-setAsciiStream(getNamedParamIndex(parameterName, false), x, length);
-}
+        boolean isFunctionCall;
 
-public void setBigDecimal(String parameterName, BigDecimal x) throws SQLException {
-setBigDecimal(getNamedParamIndex(parameterName, false), x);
-}
+        String nativeSql;
 
-public void setBinaryStream(String parameterName, InputStream x, int length) throws SQLException {
-setBinaryStream(getNamedParamIndex(parameterName, false), x, length);
-}
+        int numParameters;
 
-public void setBoolean(String parameterName, boolean x) throws SQLException {
-setBoolean(getNamedParamIndex(parameterName, false), x);
-}
+        List<CallableStatement.CallableStatementParam> parameterList;
 
-public void setByte(String parameterName, byte x) throws SQLException {
-setByte(getNamedParamIndex(parameterName, false), x);
-}
+        Map<String, CallableStatement.CallableStatementParam> parameterMap;
 
-public void setBytes(String parameterName, byte[] x) throws SQLException {
-setBytes(getNamedParamIndex(parameterName, false), x);
-}
+        boolean isReadOnlySafeProcedure = false;
 
-public void setCharacterStream(String parameterName, Reader reader, int length) throws SQLException {
-setCharacterStream(getNamedParamIndex(parameterName, false), reader, length);
-}
+        boolean isReadOnlySafeChecked = false;
 
-public void setDate(String parameterName, Date x) throws SQLException {
-setDate(getNamedParamIndex(parameterName, false), x);
-}
+        CallableStatementParamInfo(CallableStatementParamInfo fullParamInfo) {
+            this.nativeSql = CallableStatement.this.originalSql;
+            this.catalogInUse = CallableStatement.this.currentCatalog;
+            this.isFunctionCall = fullParamInfo.isFunctionCall;
 
-public void setDate(String parameterName, Date x, Calendar cal) throws SQLException {
-setDate(getNamedParamIndex(parameterName, false), x, cal);
-}
+            int[] localParameterMap = CallableStatement.this.placeholderToParameterIndexMap;
+            int parameterMapLength = localParameterMap.length;
 
-public void setDouble(String parameterName, double x) throws SQLException {
-setDouble(getNamedParamIndex(parameterName, false), x);
-}
+            this.isReadOnlySafeProcedure = fullParamInfo.isReadOnlySafeProcedure;
+            this.isReadOnlySafeChecked = fullParamInfo.isReadOnlySafeChecked;
+            this.parameterList = new ArrayList<CallableStatement.CallableStatementParam>(fullParamInfo.numParameters);
+            this.parameterMap = new HashMap<String, CallableStatement.CallableStatementParam>(fullParamInfo.numParameters);
 
-public void setFloat(String parameterName, float x) throws SQLException {
-setFloat(getNamedParamIndex(parameterName, false), x);
-}
+            if (this.isFunctionCall) {
+                this.parameterList.add(fullParamInfo.parameterList.get(0));
+            }
 
-private void setInOutParamsOnServer() throws SQLException {
-synchronized (checkClosed()) {
-if (this.paramInfo.numParameters > 0) {
-Iterator<CallableStatementParam> paramIter = this.paramInfo.iterator();
-while (paramIter.hasNext()) {
+            int offset = this.isFunctionCall ? 1 : 0;
 
-CallableStatementParam inParamInfo = paramIter.next();
+            for (int i = 0; i < parameterMapLength; i++) {
+                if (localParameterMap[i] != 0) {
+                    CallableStatement.CallableStatementParam param = fullParamInfo.parameterList.get(localParameterMap[i] + offset);
 
-if (inParamInfo.isOut && inParamInfo.isIn) {
-if (inParamInfo.paramName == null && hasParametersView()) {
-inParamInfo.paramName = "nullnp" + inParamInfo.index;
-}
+                    this.parameterList.add(param);
+                    this.parameterMap.put(param.paramName, param);
+                }
+            }
 
-String inOutParameterName = mangleParameterName(inParamInfo.paramName);
-StringBuffer queryBuf = new StringBuffer(4 + inOutParameterName.length() + 1 + 1);
+            this.numParameters = this.parameterList.size();
+        }
 
-queryBuf.append("SET ");
-queryBuf.append(inOutParameterName);
-queryBuf.append("=?");
+        CallableStatementParamInfo(ResultSet paramTypesRs) throws SQLException {
+            boolean hadRows = paramTypesRs.last();
 
-PreparedStatement setPstmt = null;
+            this.nativeSql = CallableStatement.this.originalSql;
+            this.catalogInUse = CallableStatement.this.currentCatalog;
+            this.isFunctionCall = CallableStatement.this.callingStoredFunction;
 
-try {
-setPstmt = (PreparedStatement)this.connection.clientPrepareStatement(queryBuf.toString());
+            if (hadRows) {
+                this.numParameters = paramTypesRs.getRow();
 
-byte[] parameterAsBytes = getBytesRepresentation(inParamInfo.index);
+                this.parameterList = new ArrayList<CallableStatement.CallableStatementParam>(this.numParameters);
+                this.parameterMap = new HashMap<String, CallableStatement.CallableStatementParam>(this.numParameters);
 
-if (parameterAsBytes != null)
-{ if (parameterAsBytes.length > 8) { if (parameterAsBytes[0] == 95) { if (parameterAsBytes[1] == 98) { if (parameterAsBytes[2] == 105) { if (parameterAsBytes[3] == 110) { if (parameterAsBytes[4] == 97) { if (parameterAsBytes[5] == 114) { if (parameterAsBytes[6] == 121) { if (parameterAsBytes[7] == 39)
+                paramTypesRs.beforeFirst();
 
-{ 
+                addParametersFromDBMD(paramTypesRs);
+            } else {
+                this.numParameters = 0;
+            }
 
-setPstmt.setBytesNoEscapeNoQuotes(1, parameterAsBytes); } else { continue; }  }
-else { continue; }
-}
-else { int sqlType = inParamInfo.desiredJdbcType;
+            if (this.isFunctionCall) {
+                this.numParameters++;
+            }
+        }
 
-switch (sqlType)
-{ case -7:
-case -4:
-case -3:
-case -2:
-case 2000:
-case 2004:
-setPstmt.setBytes(1, parameterAsBytes);
-break;
+        private void addParametersFromDBMD(ResultSet paramTypesRs) throws SQLException {
+            int i = 0;
 
-default:
-setPstmt.setBytesNoEscape(1, parameterAsBytes); break; }  }  } else { continue; }  } else { continue; }  } else { continue; }  } else { continue; }  } else { continue; }
-}
-else { continue; }
-}
-else { setPstmt.setNull(1, 0); }
+            while (paramTypesRs.next()) {
+                String paramName = paramTypesRs.getString(4);
+                int inOutModifier = paramTypesRs.getInt(5);
 
-setPstmt.executeUpdate();
-} finally {
-if (setPstmt != null) {
-setPstmt.close();
-}
-} 
-} 
-} 
-} 
-} 
-}
+                boolean isOutParameter = false;
+                boolean isInParameter = false;
 
-public void setInt(String parameterName, int x) throws SQLException {
-setInt(getNamedParamIndex(parameterName, false), x);
-}
+                if (i == 0 && this.isFunctionCall) {
+                    isOutParameter = true;
+                    isInParameter = false;
+                } else if (inOutModifier == 2) {
+                    isOutParameter = true;
+                    isInParameter = true;
+                } else if (inOutModifier == 1) {
+                    isOutParameter = false;
+                    isInParameter = true;
+                } else if (inOutModifier == 4) {
+                    isOutParameter = true;
+                    isInParameter = false;
+                }
 
-public void setLong(String parameterName, long x) throws SQLException {
-setLong(getNamedParamIndex(parameterName, false), x);
-}
+                int jdbcType = paramTypesRs.getInt(6);
+                String typeName = paramTypesRs.getString(7);
+                int precision = paramTypesRs.getInt(8);
+                int scale = paramTypesRs.getInt(10);
+                short nullability = paramTypesRs.getShort(12);
 
-public void setNull(String parameterName, int sqlType) throws SQLException {
-setNull(getNamedParamIndex(parameterName, false), sqlType);
-}
+                CallableStatement.CallableStatementParam paramInfoToAdd = new CallableStatement.CallableStatementParam(paramName, i++, isInParameter, isOutParameter, jdbcType, typeName, precision, scale, nullability, inOutModifier);
 
-public void setNull(String parameterName, int sqlType, String typeName) throws SQLException {
-setNull(getNamedParamIndex(parameterName, false), sqlType, typeName);
-}
+                this.parameterList.add(paramInfoToAdd);
+                this.parameterMap.put(paramName, paramInfoToAdd);
+            }
+        }
 
-public void setObject(String parameterName, Object x) throws SQLException {
-setObject(getNamedParamIndex(parameterName, false), x);
-}
+        protected void checkBounds(int paramIndex) throws SQLException {
+            int localParamIndex = paramIndex - 1;
 
-public void setObject(String parameterName, Object x, int targetSqlType) throws SQLException {
-setObject(getNamedParamIndex(parameterName, false), x, targetSqlType);
-}
+            if (paramIndex < 0 || localParamIndex >= this.numParameters) {
+                throw SQLError.createSQLException(Messages.getString("CallableStatement.11") + paramIndex + Messages.getString("CallableStatement.12") + this.numParameters + Messages.getString("CallableStatement.13"), "S1009", CallableStatement.this.getExceptionInterceptor());
+            }
+        }
 
-public void setObject(String parameterName, Object x, int targetSqlType, int scale) throws SQLException {}
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
 
-private void setOutParams() throws SQLException {
-synchronized (checkClosed()) {
-if (this.paramInfo.numParameters > 0) {
-Iterator<CallableStatementParam> paramIter = this.paramInfo.iterator();
-while (paramIter.hasNext()) {
-CallableStatementParam outParamInfo = paramIter.next();
+        CallableStatement.CallableStatementParam getParameter(int index) {
+            return this.parameterList.get(index);
+        }
 
-if (!this.callingStoredFunction && outParamInfo.isOut) {
+        CallableStatement.CallableStatementParam getParameter(String name) {
+            return this.parameterMap.get(name);
+        }
 
-if (outParamInfo.paramName == null && hasParametersView()) {
-outParamInfo.paramName = "nullnp" + outParamInfo.index;
-}
+        public String getParameterClassName(int arg0) throws SQLException {
+            String mysqlTypeName = getParameterTypeName(arg0);
 
-String outParameterName = mangleParameterName(outParamInfo.paramName);
+            boolean isBinaryOrBlob = (StringUtils.indexOfIgnoreCase(mysqlTypeName, "BLOB") != -1 || StringUtils.indexOfIgnoreCase(mysqlTypeName, "BINARY") != -1);
 
-int outParamIndex = 0;
+            boolean isUnsigned = (StringUtils.indexOfIgnoreCase(mysqlTypeName, "UNSIGNED") != -1);
 
-if (this.placeholderToParameterIndexMap == null) {
-outParamIndex = outParamInfo.index + 1;
-} else {
+            int mysqlTypeIfKnown = 0;
 
-boolean found = false;
+            if (StringUtils.startsWithIgnoreCase(mysqlTypeName, "MEDIUMINT")) {
+                mysqlTypeIfKnown = 9;
+            }
 
-for (int i = 0; i < this.placeholderToParameterIndexMap.length; i++) {
-if (this.placeholderToParameterIndexMap[i] == outParamInfo.index) {
-outParamIndex = i + 1;
-found = true;
+            return ResultSetMetaData.getClassNameForJavaType(getParameterType(arg0), isUnsigned, mysqlTypeIfKnown, isBinaryOrBlob, false);
+        }
 
-break;
-} 
-} 
-if (!found) {
-throw SQLError.createSQLException("boo!", "S1000", this.connection.getExceptionInterceptor());
-}
-} 
+        public int getParameterCount() throws SQLException {
+            if (this.parameterList == null) {
+                return 0;
+            }
 
-setBytesNoEscapeNoQuotes(outParamIndex, StringUtils.getBytes(outParameterName, this.charConverter, this.charEncoding, this.connection.getServerCharacterEncoding(), this.connection.parserKnowsUnicode(), getExceptionInterceptor()));
-} 
-} 
-} 
-} 
-}
+            return this.parameterList.size();
+        }
 
-public void setShort(String parameterName, short x) throws SQLException {
-setShort(getNamedParamIndex(parameterName, false), x);
-}
+        public int getParameterMode(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-public void setString(String parameterName, String x) throws SQLException {
-setString(getNamedParamIndex(parameterName, false), x);
-}
+            return (getParameter(arg0 - 1)).inOutModifier;
+        }
 
-public void setTime(String parameterName, Time x) throws SQLException {
-setTime(getNamedParamIndex(parameterName, false), x);
-}
+        public int getParameterType(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-public void setTime(String parameterName, Time x, Calendar cal) throws SQLException {
-setTime(getNamedParamIndex(parameterName, false), x, cal);
-}
+            return (getParameter(arg0 - 1)).jdbcType;
+        }
 
-public void setTimestamp(String parameterName, Timestamp x) throws SQLException {
-setTimestamp(getNamedParamIndex(parameterName, false), x);
-}
+        public String getParameterTypeName(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-public void setTimestamp(String parameterName, Timestamp x, Calendar cal) throws SQLException {
-setTimestamp(getNamedParamIndex(parameterName, false), x, cal);
-}
+            return (getParameter(arg0 - 1)).typeName;
+        }
 
-public void setURL(String parameterName, URL val) throws SQLException {
-setURL(getNamedParamIndex(parameterName, false), val);
-}
+        public int getPrecision(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-public boolean wasNull() throws SQLException {
-synchronized (checkClosed()) {
-return this.outputParamWasNull;
-} 
-}
+            return (getParameter(arg0 - 1)).precision;
+        }
 
-public int[] executeBatch() throws SQLException {
-if (this.hasOutputParams) {
-throw SQLError.createSQLException("Can't call executeBatch() on CallableStatement with OUTPUT parameters", "S1009", getExceptionInterceptor());
-}
+        public int getScale(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-return super.executeBatch();
-}
+            return (getParameter(arg0 - 1)).scale;
+        }
 
-protected int getParameterIndexOffset() {
-if (this.callingStoredFunction) {
-return -1;
-}
+        public int isNullable(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-return super.getParameterIndexOffset();
-}
+            return (getParameter(arg0 - 1)).nullability;
+        }
 
-public void setAsciiStream(String parameterName, InputStream x) throws SQLException {
-setAsciiStream(getNamedParamIndex(parameterName, false), x);
-}
+        public boolean isSigned(int arg0) throws SQLException {
+            checkBounds(arg0);
 
-public void setAsciiStream(String parameterName, InputStream x, long length) throws SQLException {
-setAsciiStream(getNamedParamIndex(parameterName, false), x, length);
-}
+            return false;
+        }
 
-public void setBinaryStream(String parameterName, InputStream x) throws SQLException {
-setBinaryStream(getNamedParamIndex(parameterName, false), x);
-}
+        Iterator<CallableStatement.CallableStatementParam> iterator() {
+            return this.parameterList.iterator();
+        }
 
-public void setBinaryStream(String parameterName, InputStream x, long length) throws SQLException {
-setBinaryStream(getNamedParamIndex(parameterName, false), x, length);
-}
+        int numberOfParameters() {
+            return this.numParameters;
+        }
+    }
 
-public void setBlob(String parameterName, Blob x) throws SQLException {
-setBlob(getNamedParamIndex(parameterName, false), x);
-}
+    protected class CallableStatementParamInfoJDBC3
+            extends CallableStatementParamInfo
+            implements ParameterMetaData {
+        CallableStatementParamInfoJDBC3(ResultSet paramTypesRs) throws SQLException {
+            super(paramTypesRs);
+        }
 
-public void setBlob(String parameterName, InputStream inputStream) throws SQLException {
-setBlob(getNamedParamIndex(parameterName, false), inputStream);
-}
+        public CallableStatementParamInfoJDBC3(CallableStatement.CallableStatementParamInfo paramInfo) {
+            super(paramInfo);
+        }
 
-public void setBlob(String parameterName, InputStream inputStream, long length) throws SQLException {
-setBlob(getNamedParamIndex(parameterName, false), inputStream, length);
-}
+        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+            CallableStatement.this.checkClosed();
 
-public void setCharacterStream(String parameterName, Reader reader) throws SQLException {
-setCharacterStream(getNamedParamIndex(parameterName, false), reader);
-}
+            return iface.isInstance(this);
+        }
 
-public void setCharacterStream(String parameterName, Reader reader, long length) throws SQLException {
-setCharacterStream(getNamedParamIndex(parameterName, false), reader, length);
-}
-
-public void setClob(String parameterName, Clob x) throws SQLException {
-setClob(getNamedParamIndex(parameterName, false), x);
-}
-
-public void setClob(String parameterName, Reader reader) throws SQLException {
-setClob(getNamedParamIndex(parameterName, false), reader);
-}
-
-public void setClob(String parameterName, Reader reader, long length) throws SQLException {
-setClob(getNamedParamIndex(parameterName, false), reader, length);
-}
-
-public void setNCharacterStream(String parameterName, Reader value) throws SQLException {
-setNCharacterStream(getNamedParamIndex(parameterName, false), value);
-}
-
-public void setNCharacterStream(String parameterName, Reader value, long length) throws SQLException {
-setNCharacterStream(getNamedParamIndex(parameterName, false), value, length);
-}
-
-private boolean checkReadOnlyProcedure() throws SQLException {
-synchronized (checkClosed()) {
-if (this.connection.getNoAccessToProcedureBodies()) {
-return false;
-}
-
-if (this.paramInfo.isReadOnlySafeChecked) {
-return this.paramInfo.isReadOnlySafeProcedure;
-}
-
-ResultSet rs = null;
-PreparedStatement ps = null;
-
-try {
-String procName = extractProcedureName();
-
-String catalog = this.currentCatalog;
-
-if (procName.indexOf(".") != -1) {
-catalog = procName.substring(0, procName.indexOf("."));
-
-if (StringUtils.startsWithIgnoreCaseAndWs(catalog, "`") && catalog.trim().endsWith("`")) {
-catalog = catalog.substring(1, catalog.length() - 1);
-}
-
-procName = procName.substring(procName.indexOf(".") + 1);
-procName = StringUtils.toString(StringUtils.stripEnclosure(StringUtils.getBytes(procName), "`", "`"));
-} 
-
-ps = this.connection.prepareStatement("SELECT SQL_DATA_ACCESS FROM  information_schema.routines  WHERE routine_schema = ?  AND routine_name = ?");
-
-ps.setMaxRows(0);
-ps.setFetchSize(0);
-
-ps.setString(1, catalog);
-ps.setString(2, procName);
-rs = ps.executeQuery();
-if (rs.next()) {
-String sqlDataAccess = rs.getString(1);
-if ("READS SQL DATA".equalsIgnoreCase(sqlDataAccess) || "NO SQL".equalsIgnoreCase(sqlDataAccess)) {
-
-synchronized (this.paramInfo) {
-this.paramInfo.isReadOnlySafeChecked = true;
-this.paramInfo.isReadOnlySafeProcedure = true;
-} 
-return true;
-} 
-} 
-} catch (SQLException e) {
-
-} finally {
-if (rs != null) {
-rs.close();
-}
-if (ps != null) {
-ps.close();
-}
-} 
-
-this.paramInfo.isReadOnlySafeChecked = false;
-this.paramInfo.isReadOnlySafeProcedure = false;
-} 
-return false;
-}
-
-protected boolean checkReadOnlySafeStatement() throws SQLException {
-return (super.checkReadOnlySafeStatement() || checkReadOnlyProcedure());
-}
-
-private boolean hasParametersView() throws SQLException {
-synchronized (checkClosed()) {
-
-if (this.connection.versionMeetsMinimum(5, 5, 0)) {
-DatabaseMetaData dbmd1 = new DatabaseMetaDataUsingInfoSchema(this.connection, this.connection.getCatalog());
-return ((DatabaseMetaDataUsingInfoSchema)dbmd1).gethasParametersView();
-} 
-
-return false;
-} 
-}
+        public Object unwrap(Class<?> iface) throws SQLException {
+            try {
+                return Util.cast(iface, this);
+            } catch (ClassCastException cce) {
+                throw SQLError.createSQLException("Unable to unwrap to " + iface.toString(), "S1009", CallableStatement.this.getExceptionInterceptor());
+            }
+        }
+    }
 }
 

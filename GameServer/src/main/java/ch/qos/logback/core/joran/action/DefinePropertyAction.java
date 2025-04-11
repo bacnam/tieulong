@@ -8,79 +8,78 @@ import ch.qos.logback.core.util.OptionHelper;
 import org.xml.sax.Attributes;
 
 public class DefinePropertyAction
-extends Action
-{
-String scopeStr;
-ActionUtil.Scope scope;
-String propertyName;
-PropertyDefiner definer;
-boolean inError;
+        extends Action {
+    String scopeStr;
+    ActionUtil.Scope scope;
+    String propertyName;
+    PropertyDefiner definer;
+    boolean inError;
 
-public void begin(InterpretationContext ec, String localName, Attributes attributes) throws ActionException {
-this.scopeStr = null;
-this.scope = null;
-this.propertyName = null;
-this.definer = null;
-this.inError = false;
+    public void begin(InterpretationContext ec, String localName, Attributes attributes) throws ActionException {
+        this.scopeStr = null;
+        this.scope = null;
+        this.propertyName = null;
+        this.definer = null;
+        this.inError = false;
 
-this.propertyName = attributes.getValue("name");
-this.scopeStr = attributes.getValue("scope");
+        this.propertyName = attributes.getValue("name");
+        this.scopeStr = attributes.getValue("scope");
 
-this.scope = ActionUtil.stringToScope(this.scopeStr);
-if (OptionHelper.isEmpty(this.propertyName)) {
-addError("Missing property name for property definer. Near [" + localName + "] line " + getLineNumber(ec));
+        this.scope = ActionUtil.stringToScope(this.scopeStr);
+        if (OptionHelper.isEmpty(this.propertyName)) {
+            addError("Missing property name for property definer. Near [" + localName + "] line " + getLineNumber(ec));
 
-this.inError = true;
+            this.inError = true;
 
-return;
-} 
+            return;
+        }
 
-String className = attributes.getValue("class");
-if (OptionHelper.isEmpty(className)) {
-addError("Missing class name for property definer. Near [" + localName + "] line " + getLineNumber(ec));
+        String className = attributes.getValue("class");
+        if (OptionHelper.isEmpty(className)) {
+            addError("Missing class name for property definer. Near [" + localName + "] line " + getLineNumber(ec));
 
-this.inError = true;
+            this.inError = true;
 
-return;
-} 
+            return;
+        }
 
-try {
-addInfo("About to instantiate property definer of type [" + className + "]");
+        try {
+            addInfo("About to instantiate property definer of type [" + className + "]");
 
-this.definer = (PropertyDefiner)OptionHelper.instantiateByClassName(className, PropertyDefiner.class, this.context);
+            this.definer = (PropertyDefiner) OptionHelper.instantiateByClassName(className, PropertyDefiner.class, this.context);
 
-this.definer.setContext(this.context);
-if (this.definer instanceof LifeCycle) {
-((LifeCycle)this.definer).start();
-}
-ec.pushObject(this.definer);
-} catch (Exception oops) {
-this.inError = true;
-addError("Could not create an PropertyDefiner of type [" + className + "].", oops);
+            this.definer.setContext(this.context);
+            if (this.definer instanceof LifeCycle) {
+                ((LifeCycle) this.definer).start();
+            }
+            ec.pushObject(this.definer);
+        } catch (Exception oops) {
+            this.inError = true;
+            addError("Could not create an PropertyDefiner of type [" + className + "].", oops);
 
-throw new ActionException(oops);
-} 
-}
+            throw new ActionException(oops);
+        }
+    }
 
-public void end(InterpretationContext ec, String name) {
-if (this.inError) {
-return;
-}
+    public void end(InterpretationContext ec, String name) {
+        if (this.inError) {
+            return;
+        }
 
-Object o = ec.peekObject();
+        Object o = ec.peekObject();
 
-if (o != this.definer) {
-addWarn("The object at the of the stack is not the property definer for property named [" + this.propertyName + "] pushed earlier.");
-} else {
+        if (o != this.definer) {
+            addWarn("The object at the of the stack is not the property definer for property named [" + this.propertyName + "] pushed earlier.");
+        } else {
 
-addInfo("Popping property definer for property named [" + this.propertyName + "] from the object stack");
+            addInfo("Popping property definer for property named [" + this.propertyName + "] from the object stack");
 
-ec.popObject();
+            ec.popObject();
 
-String propertyValue = this.definer.getPropertyValue();
-if (propertyValue != null)
-ActionUtil.setProperty(ec, this.propertyName, propertyValue, this.scope); 
-} 
-}
+            String propertyValue = this.definer.getPropertyValue();
+            if (propertyValue != null)
+                ActionUtil.setProperty(ec, this.propertyName, propertyValue, this.scope);
+        }
+    }
 }
 

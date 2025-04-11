@@ -13,25 +13,24 @@ import org.apache.http.nio.reactor.SessionInputBuffer;
 
 @Immutable
 public class DefaultHttpRequestParserFactory
-implements NHttpMessageParserFactory<HttpRequest>
-{
-public static final DefaultHttpRequestParserFactory INSTANCE = new DefaultHttpRequestParserFactory();
+        implements NHttpMessageParserFactory<HttpRequest> {
+    public static final DefaultHttpRequestParserFactory INSTANCE = new DefaultHttpRequestParserFactory();
 
-private final LineParser lineParser;
+    private final LineParser lineParser;
 
-private final HttpRequestFactory requestFactory;
+    private final HttpRequestFactory requestFactory;
 
-public DefaultHttpRequestParserFactory(LineParser lineParser, HttpRequestFactory requestFactory) {
-this.lineParser = (lineParser != null) ? lineParser : (LineParser)BasicLineParser.INSTANCE;
-this.requestFactory = (requestFactory != null) ? requestFactory : (HttpRequestFactory)DefaultHttpRequestFactory.INSTANCE;
-}
+    public DefaultHttpRequestParserFactory(LineParser lineParser, HttpRequestFactory requestFactory) {
+        this.lineParser = (lineParser != null) ? lineParser : (LineParser) BasicLineParser.INSTANCE;
+        this.requestFactory = (requestFactory != null) ? requestFactory : (HttpRequestFactory) DefaultHttpRequestFactory.INSTANCE;
+    }
 
-public DefaultHttpRequestParserFactory() {
-this(null, null);
-}
+    public DefaultHttpRequestParserFactory() {
+        this(null, null);
+    }
 
-public NHttpMessageParser<HttpRequest> create(SessionInputBuffer buffer, MessageConstraints constraints) {
-return new DefaultHttpRequestParser(buffer, this.lineParser, this.requestFactory, constraints);
-}
+    public NHttpMessageParser<HttpRequest> create(SessionInputBuffer buffer, MessageConstraints constraints) {
+        return new DefaultHttpRequestParser(buffer, this.lineParser, this.requestFactory, constraints);
+    }
 }
 

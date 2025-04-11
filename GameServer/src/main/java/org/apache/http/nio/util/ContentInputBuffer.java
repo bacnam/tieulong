@@ -1,16 +1,17 @@
 package org.apache.http.nio.util;
 
-import java.io.IOException;
 import org.apache.http.nio.ContentDecoder;
 
+import java.io.IOException;
+
 public interface ContentInputBuffer {
-  @Deprecated
-  int consumeContent(ContentDecoder paramContentDecoder) throws IOException;
+    @Deprecated
+    int consumeContent(ContentDecoder paramContentDecoder) throws IOException;
 
-  void reset();
+    void reset();
 
-  int read(byte[] paramArrayOfbyte, int paramInt1, int paramInt2) throws IOException;
+    int read(byte[] paramArrayOfbyte, int paramInt1, int paramInt2) throws IOException;
 
-  int read() throws IOException;
+    int read() throws IOException;
 }
 

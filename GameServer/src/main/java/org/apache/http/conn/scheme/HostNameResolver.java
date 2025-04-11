@@ -5,6 +5,6 @@ import java.net.InetAddress;
 
 @Deprecated
 public interface HostNameResolver {
-  InetAddress resolve(String paramString) throws IOException;
+    InetAddress resolve(String paramString) throws IOException;
 }
 

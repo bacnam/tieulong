@@ -1,8 +1,8 @@
 package com.mchange.v1.lang.holders;
 
 public interface ThreadSafeLongHolder {
-  long getValue();
+    long getValue();
 
-  void setValue(long paramLong);
+    void setValue(long paramLong);
 }
 

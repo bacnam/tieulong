@@ -1,39 +1,39 @@
 package bsh.collection;
 
 import bsh.BshIterator;
+
 import java.util.Collection;
 import java.util.Iterator;
 
 public class CollectionIterator
-implements BshIterator
-{
-private Iterator iterator;
+        implements BshIterator {
+    private Iterator iterator;
 
-public CollectionIterator(Object iterateOverMe) {
-this.iterator = createIterator(iterateOverMe);
-}
+    public CollectionIterator(Object iterateOverMe) {
+        this.iterator = createIterator(iterateOverMe);
+    }
 
-protected Iterator createIterator(Object iterateOverMe) {
-if (iterateOverMe == null) {
-throw new NullPointerException("Object arguments passed to the CollectionIterator constructor cannot be null.");
-}
+    protected Iterator createIterator(Object iterateOverMe) {
+        if (iterateOverMe == null) {
+            throw new NullPointerException("Object arguments passed to the CollectionIterator constructor cannot be null.");
+        }
 
-if (iterateOverMe instanceof Iterator) {
-return (Iterator)iterateOverMe;
-}
-if (iterateOverMe instanceof Collection) {
-return ((Collection)iterateOverMe).iterator();
-}
+        if (iterateOverMe instanceof Iterator) {
+            return (Iterator) iterateOverMe;
+        }
+        if (iterateOverMe instanceof Collection) {
+            return ((Collection) iterateOverMe).iterator();
+        }
 
-throw new IllegalArgumentException("Cannot enumerate object of type " + iterateOverMe.getClass());
-}
+        throw new IllegalArgumentException("Cannot enumerate object of type " + iterateOverMe.getClass());
+    }
 
-public Object next() {
-return this.iterator.next();
-}
+    public Object next() {
+        return this.iterator.next();
+    }
 
-public boolean hasNext() {
-return this.iterator.hasNext();
-}
+    public boolean hasNext() {
+        return this.iterator.hasNext();
+    }
 }
 

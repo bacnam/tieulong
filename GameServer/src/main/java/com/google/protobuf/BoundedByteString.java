@@ -1,95 +1,93 @@
-
-
 package com.google.protobuf;
 
 import java.util.NoSuchElementException;
 
 class BoundedByteString extends LiteralByteString {
 
-  private final int bytesOffset;
-  private final int bytesLength;
+    private final int bytesOffset;
+    private final int bytesLength;
 
-  BoundedByteString(byte[] bytes, int offset, int length) {
-    super(bytes);
-    if (offset < 0) {
-      throw new IllegalArgumentException("Offset too small: " + offset);
-    }
-    if (length < 0) {
-      throw new IllegalArgumentException("Length too small: " + offset);
-    }
-    if ((long) offset + length > bytes.length) {
-      throw new IllegalArgumentException(
-          "Offset+Length too large: " + offset + "+" + length);
-    }
+    BoundedByteString(byte[] bytes, int offset, int length) {
+        super(bytes);
+        if (offset < 0) {
+            throw new IllegalArgumentException("Offset too small: " + offset);
+        }
+        if (length < 0) {
+            throw new IllegalArgumentException("Length too small: " + offset);
+        }
+        if ((long) offset + length > bytes.length) {
+            throw new IllegalArgumentException(
+                    "Offset+Length too large: " + offset + "+" + length);
+        }
 
-    this.bytesOffset = offset;
-    this.bytesLength = length;
-  }
-
-  @Override
-  public byte byteAt(int index) {
-
-    if (index < 0) {
-      throw new ArrayIndexOutOfBoundsException("Index too small: " + index);
-    }
-    if (index >= size()) {
-      throw new ArrayIndexOutOfBoundsException(
-          "Index too large: " + index + ", " + size());
+        this.bytesOffset = offset;
+        this.bytesLength = length;
     }
 
-    return bytes[bytesOffset + index];
-  }
+    @Override
+    public byte byteAt(int index) {
 
-  @Override
-  public int size() {
-    return bytesLength;
-  }
+        if (index < 0) {
+            throw new ArrayIndexOutOfBoundsException("Index too small: " + index);
+        }
+        if (index >= size()) {
+            throw new ArrayIndexOutOfBoundsException(
+                    "Index too large: " + index + ", " + size());
+        }
 
-  @Override
-  protected int getOffsetIntoBytes() {
-    return bytesOffset;
-  }
-
-  @Override
-  protected void copyToInternal(byte[] target, int sourceOffset, 
-      int targetOffset, int numberToCopy) {
-    System.arraycopy(bytes, getOffsetIntoBytes() + sourceOffset, target,
-        targetOffset, numberToCopy);
-  }
-
-  @Override
-  public ByteIterator iterator() {
-    return new BoundedByteIterator();
-  }
-
-  private class BoundedByteIterator implements ByteIterator {
-
-    private int position;
-    private final int limit;
-
-    private BoundedByteIterator() {
-      position = getOffsetIntoBytes();
-      limit = position + size();
+        return bytes[bytesOffset + index];
     }
 
-    public boolean hasNext() {
-      return (position < limit);
+    @Override
+    public int size() {
+        return bytesLength;
     }
 
-    public Byte next() {
-
-      return nextByte();
+    @Override
+    protected int getOffsetIntoBytes() {
+        return bytesOffset;
     }
 
-    public byte nextByte() {
-      if (position >= limit) {
-        throw new NoSuchElementException();
-      }
-      return bytes[position++];
+    @Override
+    protected void copyToInternal(byte[] target, int sourceOffset,
+                                  int targetOffset, int numberToCopy) {
+        System.arraycopy(bytes, getOffsetIntoBytes() + sourceOffset, target,
+                targetOffset, numberToCopy);
     }
 
-    public void remove() {
-      throw new UnsupportedOperationException();
+    @Override
+    public ByteIterator iterator() {
+        return new BoundedByteIterator();
     }
-  }
+
+    private class BoundedByteIterator implements ByteIterator {
+
+        private final int limit;
+        private int position;
+
+        private BoundedByteIterator() {
+            position = getOffsetIntoBytes();
+            limit = position + size();
+        }
+
+        public boolean hasNext() {
+            return (position < limit);
+        }
+
+        public Byte next() {
+
+            return nextByte();
+        }
+
+        public byte nextByte() {
+            if (position >= limit) {
+                throw new NoSuchElementException();
+            }
+            return bytes[position++];
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
 }

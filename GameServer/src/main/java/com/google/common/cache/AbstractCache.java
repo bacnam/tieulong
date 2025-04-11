@@ -2,111 +2,111 @@ package com.google.common.cache;
 
 import com.google.common.annotations.Beta;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Beta
 public abstract class AbstractCache<K, V>
-implements Cache<K, V>
-{
-public V getUnchecked(K key) {
-try {
-return get(key);
-} catch (ExecutionException e) {
-throw new UncheckedExecutionException(e.getCause());
-} 
-}
+        implements Cache<K, V> {
+    public V getUnchecked(K key) {
+        try {
+            return get(key);
+        } catch (ExecutionException e) {
+            throw new UncheckedExecutionException(e.getCause());
+        }
+    }
 
-public final V apply(K key) {
-return getUnchecked(key);
-}
+    public final V apply(K key) {
+        return getUnchecked(key);
+    }
 
-public void cleanUp() {}
+    public void cleanUp() {
+    }
 
-public long size() {
-throw new UnsupportedOperationException();
-}
+    public long size() {
+        throw new UnsupportedOperationException();
+    }
 
-public void invalidate(Object key) {
-throw new UnsupportedOperationException();
-}
+    public void invalidate(Object key) {
+        throw new UnsupportedOperationException();
+    }
 
-public void invalidateAll() {
-throw new UnsupportedOperationException();
-}
+    public void invalidateAll() {
+        throw new UnsupportedOperationException();
+    }
 
-public CacheStats stats() {
-throw new UnsupportedOperationException();
-}
+    public CacheStats stats() {
+        throw new UnsupportedOperationException();
+    }
 
-public ConcurrentMap<K, V> asMap() {
-throw new UnsupportedOperationException();
-}
+    public ConcurrentMap<K, V> asMap() {
+        throw new UnsupportedOperationException();
+    }
 
-@Beta
-public static class SimpleStatsCounter
-implements StatsCounter
-{
-private final AtomicLong hitCount = new AtomicLong();
-private final AtomicLong missCount = new AtomicLong();
-private final AtomicLong loadSuccessCount = new AtomicLong();
-private final AtomicLong loadExceptionCount = new AtomicLong();
-private final AtomicLong totalLoadTime = new AtomicLong();
-private final AtomicLong evictionCount = new AtomicLong();
+    @Beta
+    public static interface StatsCounter {
+        void recordHit();
 
-public void recordHit() {
-this.hitCount.incrementAndGet();
-}
+        void recordLoadSuccess(long param1Long);
 
-public void recordLoadSuccess(long loadTime) {
-this.missCount.incrementAndGet();
-this.loadSuccessCount.incrementAndGet();
-this.totalLoadTime.addAndGet(loadTime);
-}
+        void recordLoadException(long param1Long);
 
-public void recordLoadException(long loadTime) {
-this.missCount.incrementAndGet();
-this.loadExceptionCount.incrementAndGet();
-this.totalLoadTime.addAndGet(loadTime);
-}
+        void recordConcurrentMiss();
 
-public void recordConcurrentMiss() {
-this.missCount.incrementAndGet();
-}
+        void recordEviction();
 
-public void recordEviction() {
-this.evictionCount.incrementAndGet();
-}
+        CacheStats snapshot();
+    }
 
-public CacheStats snapshot() {
-return new CacheStats(this.hitCount.get(), this.missCount.get(), this.loadSuccessCount.get(), this.loadExceptionCount.get(), this.totalLoadTime.get(), this.evictionCount.get());
-}
+    @Beta
+    public static class SimpleStatsCounter
+            implements StatsCounter {
+        private final AtomicLong hitCount = new AtomicLong();
+        private final AtomicLong missCount = new AtomicLong();
+        private final AtomicLong loadSuccessCount = new AtomicLong();
+        private final AtomicLong loadExceptionCount = new AtomicLong();
+        private final AtomicLong totalLoadTime = new AtomicLong();
+        private final AtomicLong evictionCount = new AtomicLong();
 
-public void incrementBy(AbstractCache.StatsCounter other) {
-CacheStats otherStats = other.snapshot();
-this.hitCount.addAndGet(otherStats.hitCount());
-this.missCount.addAndGet(otherStats.missCount());
-this.loadSuccessCount.addAndGet(otherStats.loadSuccessCount());
-this.loadExceptionCount.addAndGet(otherStats.loadExceptionCount());
-this.totalLoadTime.addAndGet(otherStats.totalLoadTime());
-this.evictionCount.addAndGet(otherStats.evictionCount());
-}
-}
+        public void recordHit() {
+            this.hitCount.incrementAndGet();
+        }
 
-@Beta
-public static interface StatsCounter {
-void recordHit();
+        public void recordLoadSuccess(long loadTime) {
+            this.missCount.incrementAndGet();
+            this.loadSuccessCount.incrementAndGet();
+            this.totalLoadTime.addAndGet(loadTime);
+        }
 
-void recordLoadSuccess(long param1Long);
+        public void recordLoadException(long loadTime) {
+            this.missCount.incrementAndGet();
+            this.loadExceptionCount.incrementAndGet();
+            this.totalLoadTime.addAndGet(loadTime);
+        }
 
-void recordLoadException(long param1Long);
+        public void recordConcurrentMiss() {
+            this.missCount.incrementAndGet();
+        }
 
-void recordConcurrentMiss();
+        public void recordEviction() {
+            this.evictionCount.incrementAndGet();
+        }
 
-void recordEviction();
+        public CacheStats snapshot() {
+            return new CacheStats(this.hitCount.get(), this.missCount.get(), this.loadSuccessCount.get(), this.loadExceptionCount.get(), this.totalLoadTime.get(), this.evictionCount.get());
+        }
 
-CacheStats snapshot();
-}
+        public void incrementBy(AbstractCache.StatsCounter other) {
+            CacheStats otherStats = other.snapshot();
+            this.hitCount.addAndGet(otherStats.hitCount());
+            this.missCount.addAndGet(otherStats.missCount());
+            this.loadSuccessCount.addAndGet(otherStats.loadSuccessCount());
+            this.loadExceptionCount.addAndGet(otherStats.loadExceptionCount());
+            this.totalLoadTime.addAndGet(otherStats.totalLoadTime());
+            this.evictionCount.addAndGet(otherStats.evictionCount());
+        }
+    }
 }
 

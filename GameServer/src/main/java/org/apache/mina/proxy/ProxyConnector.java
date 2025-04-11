@@ -1,8 +1,5 @@
 package org.apache.mina.proxy;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.concurrent.Executor;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.file.FileRegion;
 import org.apache.mina.core.filterchain.IoFilter;
@@ -22,111 +19,111 @@ import org.apache.mina.transport.socket.DefaultSocketSessionConfig;
 import org.apache.mina.transport.socket.SocketConnector;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.util.concurrent.Executor;
+
 public class ProxyConnector
-extends AbstractIoConnector
-{
-private static final TransportMetadata METADATA = (TransportMetadata)new DefaultTransportMetadata("proxy", "proxyconnector", false, true, InetSocketAddress.class, SocketSessionConfig.class, new Class[] { IoBuffer.class, FileRegion.class });
+        extends AbstractIoConnector {
+    private static final TransportMetadata METADATA = (TransportMetadata) new DefaultTransportMetadata("proxy", "proxyconnector", false, true, InetSocketAddress.class, SocketSessionConfig.class, new Class[]{IoBuffer.class, FileRegion.class});
+    private final ProxyFilter proxyFilter = new ProxyFilter();
+    private SocketConnector connector = null;
+    private ProxyIoSession proxyIoSession;
 
-private SocketConnector connector = null;
+    private DefaultConnectFuture future;
 
-private final ProxyFilter proxyFilter = new ProxyFilter();
+    public ProxyConnector() {
+        super((IoSessionConfig) new DefaultSocketSessionConfig(), null);
+    }
 
-private ProxyIoSession proxyIoSession;
+    public ProxyConnector(SocketConnector connector) {
+        this(connector, (IoSessionConfig) new DefaultSocketSessionConfig(), (Executor) null);
+    }
 
-private DefaultConnectFuture future;
+    public ProxyConnector(SocketConnector connector, IoSessionConfig config, Executor executor) {
+        super(config, executor);
+        setConnector(connector);
+    }
 
-public ProxyConnector() {
-super((IoSessionConfig)new DefaultSocketSessionConfig(), null);
-}
+    public IoSessionConfig getSessionConfig() {
+        return (IoSessionConfig) this.connector.getSessionConfig();
+    }
 
-public ProxyConnector(SocketConnector connector) {
-this(connector, (IoSessionConfig)new DefaultSocketSessionConfig(), (Executor)null);
-}
+    public ProxyIoSession getProxyIoSession() {
+        return this.proxyIoSession;
+    }
 
-public ProxyConnector(SocketConnector connector, IoSessionConfig config, Executor executor) {
-super(config, executor);
-setConnector(connector);
-}
+    public void setProxyIoSession(ProxyIoSession proxyIoSession) {
+        if (proxyIoSession == null) {
+            throw new IllegalArgumentException("proxySession object cannot be null");
+        }
 
-public IoSessionConfig getSessionConfig() {
-return (IoSessionConfig)this.connector.getSessionConfig();
-}
+        if (proxyIoSession.getProxyAddress() == null) {
+            throw new IllegalArgumentException("proxySession.proxyAddress cannot be null");
+        }
 
-public ProxyIoSession getProxyIoSession() {
-return this.proxyIoSession;
-}
+        proxyIoSession.setConnector(this);
+        setDefaultRemoteAddress(proxyIoSession.getProxyAddress());
+        this.proxyIoSession = proxyIoSession;
+    }
 
-public void setProxyIoSession(ProxyIoSession proxyIoSession) {
-if (proxyIoSession == null) {
-throw new IllegalArgumentException("proxySession object cannot be null");
-}
+    protected ConnectFuture connect0(SocketAddress remoteAddress, SocketAddress localAddress, IoSessionInitializer<? extends ConnectFuture> sessionInitializer) {
+        if (!this.proxyIoSession.isReconnectionNeeded()) {
 
-if (proxyIoSession.getProxyAddress() == null) {
-throw new IllegalArgumentException("proxySession.proxyAddress cannot be null");
-}
+            IoHandler handler = getHandler();
+            if (!(handler instanceof AbstractProxyIoHandler)) {
+                throw new IllegalArgumentException("IoHandler must be an instance of AbstractProxyIoHandler");
+            }
 
-proxyIoSession.setConnector(this);
-setDefaultRemoteAddress(proxyIoSession.getProxyAddress());
-this.proxyIoSession = proxyIoSession;
-}
+            this.connector.setHandler(handler);
+            this.future = new DefaultConnectFuture();
+        }
 
-protected ConnectFuture connect0(SocketAddress remoteAddress, SocketAddress localAddress, IoSessionInitializer<? extends ConnectFuture> sessionInitializer) {
-if (!this.proxyIoSession.isReconnectionNeeded()) {
+        ConnectFuture conFuture = this.connector.connect(this.proxyIoSession.getProxyAddress(), (IoSessionInitializer) new ProxyIoSessionInitializer(sessionInitializer, this.proxyIoSession));
 
-IoHandler handler = getHandler();
-if (!(handler instanceof AbstractProxyIoHandler)) {
-throw new IllegalArgumentException("IoHandler must be an instance of AbstractProxyIoHandler");
-}
+        if (this.proxyIoSession.getRequest() instanceof org.apache.mina.proxy.handlers.socks.SocksProxyRequest || this.proxyIoSession.isReconnectionNeeded()) {
+            return conFuture;
+        }
 
-this.connector.setHandler(handler);
-this.future = new DefaultConnectFuture();
-} 
+        return (ConnectFuture) this.future;
+    }
 
-ConnectFuture conFuture = this.connector.connect(this.proxyIoSession.getProxyAddress(), (IoSessionInitializer)new ProxyIoSessionInitializer(sessionInitializer, this.proxyIoSession));
+    public void cancelConnectFuture() {
+        this.future.cancel();
+    }
 
-if (this.proxyIoSession.getRequest() instanceof org.apache.mina.proxy.handlers.socks.SocksProxyRequest || this.proxyIoSession.isReconnectionNeeded()) {
-return conFuture;
-}
+    protected ConnectFuture fireConnected(IoSession session) {
+        this.future.setSession(session);
+        return (ConnectFuture) this.future;
+    }
 
-return (ConnectFuture)this.future;
-}
+    public final SocketConnector getConnector() {
+        return this.connector;
+    }
 
-public void cancelConnectFuture() {
-this.future.cancel();
-}
+    private final void setConnector(SocketConnector connector) {
+        if (connector == null) {
+            throw new IllegalArgumentException("connector cannot be null");
+        }
 
-protected ConnectFuture fireConnected(IoSession session) {
-this.future.setSession(session);
-return (ConnectFuture)this.future;
-}
+        this.connector = connector;
+        String className = ProxyFilter.class.getName();
 
-public final SocketConnector getConnector() {
-return this.connector;
-}
+        if (connector.getFilterChain().contains(className)) {
+            connector.getFilterChain().remove(className);
+        }
 
-private final void setConnector(SocketConnector connector) {
-if (connector == null) {
-throw new IllegalArgumentException("connector cannot be null");
-}
+        connector.getFilterChain().addFirst(className, (IoFilter) this.proxyFilter);
+    }
 
-this.connector = connector;
-String className = ProxyFilter.class.getName();
+    protected void dispose0() throws Exception {
+        if (this.connector != null) {
+            this.connector.dispose();
+        }
+    }
 
-if (connector.getFilterChain().contains(className)) {
-connector.getFilterChain().remove(className);
-}
-
-connector.getFilterChain().addFirst(className, (IoFilter)this.proxyFilter);
-}
-
-protected void dispose0() throws Exception {
-if (this.connector != null) {
-this.connector.dispose();
-}
-}
-
-public TransportMetadata getTransportMetadata() {
-return METADATA;
-}
+    public TransportMetadata getTransportMetadata() {
+        return METADATA;
+    }
 }
 

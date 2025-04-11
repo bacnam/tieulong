@@ -7,19 +7,18 @@ import org.apache.http.protocol.HttpContext;
 
 @Immutable
 public class IgnoreSpecProvider
-implements CookieSpecProvider
-{
-private volatile CookieSpec cookieSpec;
+        implements CookieSpecProvider {
+    private volatile CookieSpec cookieSpec;
 
-public CookieSpec create(HttpContext context) {
-if (this.cookieSpec == null) {
-synchronized (this) {
-if (this.cookieSpec == null) {
-this.cookieSpec = new IgnoreSpec();
-}
-} 
-}
-return this.cookieSpec;
-}
+    public CookieSpec create(HttpContext context) {
+        if (this.cookieSpec == null) {
+            synchronized (this) {
+                if (this.cookieSpec == null) {
+                    this.cookieSpec = new IgnoreSpec();
+                }
+            }
+        }
+        return this.cookieSpec;
+    }
 }
 

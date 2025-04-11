@@ -12,44 +12,43 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.database.game.bo.GuildBossBO;
 import core.database.game.bo.GuildBossChallengeBO;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.List;
 
 public class GuildBossCheck
-extends PlayerHandler
-{
-private static class GuildBoss
-{
-List<GuildBossBO> bosslist;
-GuildBossChallengeBO challengBO;
-NumberRange openTime;
-int nextTime;
-int maxLevel;
-int openTimes;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guild = guildMember.getGuild();
+        if (guild == null) {
+            throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[]{Long.valueOf(player.getPid())});
+        }
+        List<GuildBossBO> bosslist = guild.getbosslist();
+        GuildBossChallengeBO challengBO = guildMember.getOrCreateChalleng();
+        NumberRange openTime = GuildConfig.getGuildBossOpenTime();
+        int nexttime = Math.max(guildMember.nextRefreshTime() - CommTime.nowSecond(), 0);
+        int maxLevel = guild.getBo().getGuildbossLevel();
 
-private GuildBoss(List<GuildBossBO> bosslist, GuildBossChallengeBO challengBO, NumberRange openTime, int nextTime, int maxLevel, int openTimes) {
-this.bosslist = bosslist;
-this.challengBO = challengBO;
-this.openTime = openTime;
-this.nextTime = nextTime;
-this.maxLevel = maxLevel;
-this.openTimes = openTimes;
-}
-}
+        request.response(new GuildBoss(bosslist, challengBO, openTime, nexttime, maxLevel, guild.getBo().getGuildbossOpenNum(), null));
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guild = guildMember.getGuild();
-if (guild == null) {
-throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[] { Long.valueOf(player.getPid()) });
-}
-List<GuildBossBO> bosslist = guild.getbosslist();
-GuildBossChallengeBO challengBO = guildMember.getOrCreateChalleng();
-NumberRange openTime = GuildConfig.getGuildBossOpenTime();
-int nexttime = Math.max(guildMember.nextRefreshTime() - CommTime.nowSecond(), 0);
-int maxLevel = guild.getBo().getGuildbossLevel();
+    private static class GuildBoss {
+        List<GuildBossBO> bosslist;
+        GuildBossChallengeBO challengBO;
+        NumberRange openTime;
+        int nextTime;
+        int maxLevel;
+        int openTimes;
 
-request.response(new GuildBoss(bosslist, challengBO, openTime, nexttime, maxLevel, guild.getBo().getGuildbossOpenNum(), null));
-}
+        private GuildBoss(List<GuildBossBO> bosslist, GuildBossChallengeBO challengBO, NumberRange openTime, int nextTime, int maxLevel, int openTimes) {
+            this.bosslist = bosslist;
+            this.challengBO = challengBO;
+            this.openTime = openTime;
+            this.nextTime = nextTime;
+            this.maxLevel = maxLevel;
+            this.openTimes = openTimes;
+        }
+    }
 }
 

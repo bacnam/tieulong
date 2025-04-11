@@ -2,10 +2,10 @@ package org.apache.http.nio.util;
 
 @Deprecated
 public interface BufferInfo {
-  int length();
+    int length();
 
-  int capacity();
+    int capacity();
 
-  int available();
+    int available();
 }
 

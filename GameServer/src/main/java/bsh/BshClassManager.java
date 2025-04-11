@@ -9,324 +9,317 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.Hashtable;
 
-public class BshClassManager
-{
-private static Object NOVALUE = new Object();
+public class BshClassManager {
+    private static Object NOVALUE = new Object();
+    protected ClassLoader externalClassLoader;
+    protected transient Hashtable absoluteClassCache = new Hashtable<Object, Object>();
+    protected transient Hashtable absoluteNonClasses = new Hashtable<Object, Object>();
+    protected transient Hashtable resolvedObjectMethods = new Hashtable<Object, Object>();
+    protected transient Hashtable resolvedStaticMethods = new Hashtable<Object, Object>();
+    protected transient Hashtable definingClasses = new Hashtable<Object, Object>();
+    protected transient Hashtable definingClassesBaseNames = new Hashtable<Object, Object>();
+    private Interpreter declaringInterpreter;
 
-private Interpreter declaringInterpreter;
+    public static BshClassManager createClassManager(Interpreter interpreter) {
+        BshClassManager bshClassManager;
+        if (Capabilities.classExists("java.lang.ref.WeakReference") && Capabilities.classExists("java.util.HashMap") && Capabilities.classExists("bsh.classpath.ClassManagerImpl")) {
 
-protected ClassLoader externalClassLoader;
+            try {
 
-protected transient Hashtable absoluteClassCache = new Hashtable<Object, Object>();
+                Class<?> clas = Class.forName("bsh.classpath.ClassManagerImpl");
+                bshClassManager = (BshClassManager) clas.newInstance();
+            } catch (Exception e) {
+                throw new InterpreterError("Error loading classmanager: " + e);
+            }
+        } else {
+            bshClassManager = new BshClassManager();
+        }
+        if (interpreter == null)
+            interpreter = new Interpreter();
+        bshClassManager.declaringInterpreter = interpreter;
+        return bshClassManager;
+    }
 
-protected transient Hashtable absoluteNonClasses = new Hashtable<Object, Object>();
+    protected static Error noClassDefFound(String className, Error e) {
+        return new NoClassDefFoundError("A class required by class: " + className + " could not be loaded:\n" + e.toString());
+    }
 
-protected transient Hashtable resolvedObjectMethods = new Hashtable<Object, Object>();
-protected transient Hashtable resolvedStaticMethods = new Hashtable<Object, Object>();
+    protected static UtilEvalError cmUnavailable() {
+        return new Capabilities.Unavailable("ClassLoading features unavailable.");
+    }
 
-protected transient Hashtable definingClasses = new Hashtable<Object, Object>();
-protected transient Hashtable definingClassesBaseNames = new Hashtable<Object, Object>();
+    public boolean classExists(String name) {
+        return (classForName(name) != null);
+    }
 
-public static BshClassManager createClassManager(Interpreter interpreter) {
-BshClassManager bshClassManager;
-if (Capabilities.classExists("java.lang.ref.WeakReference") && Capabilities.classExists("java.util.HashMap") && Capabilities.classExists("bsh.classpath.ClassManagerImpl")) {
+    public Class classForName(String name) {
+        if (isClassBeingDefined(name)) {
+            throw new InterpreterError("Attempting to load class in the process of being defined: " + name);
+        }
 
-try {
+        Class clas = null;
+        try {
+            clas = plainClassForName(name);
+        } catch (ClassNotFoundException e) {
+        }
 
-Class<?> clas = Class.forName("bsh.classpath.ClassManagerImpl");
-bshClassManager = (BshClassManager)clas.newInstance();
-} catch (Exception e) {
-throw new InterpreterError("Error loading classmanager: " + e);
-} 
-} else {
-bshClassManager = new BshClassManager();
-} 
-if (interpreter == null)
-interpreter = new Interpreter(); 
-bshClassManager.declaringInterpreter = interpreter;
-return bshClassManager;
-}
+        if (clas == null) {
+            clas = loadSourceClass(name);
+        }
+        return clas;
+    }
 
-public boolean classExists(String name) {
-return (classForName(name) != null);
-}
+    protected Class loadSourceClass(String name) {
+        String fileName = "/" + name.replace('.', '/') + ".java";
+        InputStream in = getResourceAsStream(fileName);
+        if (in == null) {
+            return null;
+        }
+        try {
+            System.out.println("Loading class from source file: " + fileName);
+            this.declaringInterpreter.eval(new InputStreamReader(in));
+        } catch (EvalError e) {
 
-public Class classForName(String name) {
-if (isClassBeingDefined(name)) {
-throw new InterpreterError("Attempting to load class in the process of being defined: " + name);
-}
+            System.err.println(e);
+        }
+        try {
+            return plainClassForName(name);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Class not found in source file: " + name);
+            return null;
+        }
+    }
 
-Class clas = null;
-try {
-clas = plainClassForName(name);
-} catch (ClassNotFoundException e) {}
+    public Class plainClassForName(String name) throws ClassNotFoundException {
+        Class<?> c = null;
 
-if (clas == null) {
-clas = loadSourceClass(name);
-}
-return clas;
-}
+        try {
+            if (this.externalClassLoader != null) {
+                c = this.externalClassLoader.loadClass(name);
+            } else {
+                c = Class.forName(name);
+            }
+            cacheClassInfo(name, c);
 
-protected Class loadSourceClass(String name) {
-String fileName = "/" + name.replace('.', '/') + ".java";
-InputStream in = getResourceAsStream(fileName);
-if (in == null) {
-return null;
-}
-try {
-System.out.println("Loading class from source file: " + fileName);
-this.declaringInterpreter.eval(new InputStreamReader(in));
-} catch (EvalError e) {
+        } catch (NoClassDefFoundError e) {
+            throw noClassDefFound(name, e);
+        }
 
-System.err.println(e);
-} 
-try {
-return plainClassForName(name);
-} catch (ClassNotFoundException e) {
-System.err.println("Class not found in source file: " + name);
-return null;
-} 
-}
+        return c;
+    }
 
-public Class plainClassForName(String name) throws ClassNotFoundException {
-Class<?> c = null;
+    public URL getResource(String path) {
+        URL url = null;
+        if (this.externalClassLoader != null) {
 
-try {
-if (this.externalClassLoader != null) {
-c = this.externalClassLoader.loadClass(name);
-} else {
-c = Class.forName(name);
-} 
-cacheClassInfo(name, c);
+            url = this.externalClassLoader.getResource(path.substring(1));
+        }
+        if (url == null) {
+            url = Interpreter.class.getResource(path);
+        }
+        return url;
+    }
 
-}
-catch (NoClassDefFoundError e) {
-throw noClassDefFound(name, e);
-} 
+    public InputStream getResourceAsStream(String path) {
+        InputStream in = null;
+        if (this.externalClassLoader != null) {
 
-return c;
-}
+            in = this.externalClassLoader.getResourceAsStream(path.substring(1));
+        }
+        if (in == null) {
+            in = Interpreter.class.getResourceAsStream(path);
+        }
+        return in;
+    }
 
-public URL getResource(String path) {
-URL url = null;
-if (this.externalClassLoader != null)
-{
+    public void cacheClassInfo(String name, Class<?> value) {
+        if (value != null) {
+            this.absoluteClassCache.put(name, value);
+        } else {
+            this.absoluteNonClasses.put(name, NOVALUE);
+        }
+    }
 
-url = this.externalClassLoader.getResource(path.substring(1));
-}
-if (url == null) {
-url = Interpreter.class.getResource(path);
-}
-return url;
-}
+    public void cacheResolvedMethod(Class clas, Class[] types, Method method) {
+        if (Interpreter.DEBUG) {
+            Interpreter.debug("cacheResolvedMethod putting: " + clas + " " + method);
+        }
 
-public InputStream getResourceAsStream(String path) {
-InputStream in = null;
-if (this.externalClassLoader != null)
-{
+        SignatureKey sk = new SignatureKey(clas, method.getName(), types);
+        if (Modifier.isStatic(method.getModifiers())) {
+            this.resolvedStaticMethods.put(sk, method);
+        } else {
+            this.resolvedObjectMethods.put(sk, method);
+        }
+    }
 
-in = this.externalClassLoader.getResourceAsStream(path.substring(1));
-}
-if (in == null) {
-in = Interpreter.class.getResourceAsStream(path);
-}
-return in;
-}
+    protected Method getResolvedMethod(Class clas, String methodName, Class[] types, boolean onlyStatic) {
+        SignatureKey sk = new SignatureKey(clas, methodName, types);
 
-public void cacheClassInfo(String name, Class<?> value) {
-if (value != null) {
-this.absoluteClassCache.put(name, value);
-} else {
-this.absoluteNonClasses.put(name, NOVALUE);
-} 
-}
+        Method method = (Method) this.resolvedStaticMethods.get(sk);
+        if (method == null && !onlyStatic) {
+            method = (Method) this.resolvedObjectMethods.get(sk);
+        }
+        if (Interpreter.DEBUG) {
+            if (method == null) {
+                Interpreter.debug("getResolvedMethod cache MISS: " + clas + " - " + methodName);
+            } else {
 
-public void cacheResolvedMethod(Class clas, Class[] types, Method method) {
-if (Interpreter.DEBUG) {
-Interpreter.debug("cacheResolvedMethod putting: " + clas + " " + method);
-}
+                Interpreter.debug("getResolvedMethod cache HIT: " + clas + " - " + method);
+            }
+        }
+        return method;
+    }
 
-SignatureKey sk = new SignatureKey(clas, method.getName(), types);
-if (Modifier.isStatic(method.getModifiers())) {
-this.resolvedStaticMethods.put(sk, method);
-} else {
-this.resolvedObjectMethods.put(sk, method);
-} 
-}
+    protected void clearCaches() {
+        this.absoluteNonClasses = new Hashtable<Object, Object>();
+        this.absoluteClassCache = new Hashtable<Object, Object>();
+        this.resolvedObjectMethods = new Hashtable<Object, Object>();
+        this.resolvedStaticMethods = new Hashtable<Object, Object>();
+    }
 
-protected Method getResolvedMethod(Class clas, String methodName, Class[] types, boolean onlyStatic) {
-SignatureKey sk = new SignatureKey(clas, methodName, types);
+    public void setClassLoader(ClassLoader externalCL) {
+        this.externalClassLoader = externalCL;
+        classLoaderChanged();
+    }
 
-Method method = (Method)this.resolvedStaticMethods.get(sk);
-if (method == null && !onlyStatic) {
-method = (Method)this.resolvedObjectMethods.get(sk);
-}
-if (Interpreter.DEBUG)
-{
-if (method == null) {
-Interpreter.debug("getResolvedMethod cache MISS: " + clas + " - " + methodName);
-} else {
+    public void addClassPath(URL path) throws IOException {
+    }
 
-Interpreter.debug("getResolvedMethod cache HIT: " + clas + " - " + method);
-} 
-}
-return method;
-}
+    public void reset() {
+        clearCaches();
+    }
 
-protected void clearCaches() {
-this.absoluteNonClasses = new Hashtable<Object, Object>();
-this.absoluteClassCache = new Hashtable<Object, Object>();
-this.resolvedObjectMethods = new Hashtable<Object, Object>();
-this.resolvedStaticMethods = new Hashtable<Object, Object>();
-}
+    public void setClassPath(URL[] cp) throws UtilEvalError {
+        throw cmUnavailable();
+    }
 
-public void setClassLoader(ClassLoader externalCL) {
-this.externalClassLoader = externalCL;
-classLoaderChanged();
-}
+    public void reloadAllClasses() throws UtilEvalError {
+        throw cmUnavailable();
+    }
 
-public void addClassPath(URL path) throws IOException {}
+    public void reloadClasses(String[] classNames) throws UtilEvalError {
+        throw cmUnavailable();
+    }
 
-public void reset() {
-clearCaches();
-}
+    public void reloadPackage(String pack) throws UtilEvalError {
+        throw cmUnavailable();
+    }
 
-public void setClassPath(URL[] cp) throws UtilEvalError {
-throw cmUnavailable();
-}
+    protected void doSuperImport() throws UtilEvalError {
+        throw cmUnavailable();
+    }
 
-public void reloadAllClasses() throws UtilEvalError {
-throw cmUnavailable();
-}
+    protected boolean hasSuperImport() {
+        return false;
+    }
 
-public void reloadClasses(String[] classNames) throws UtilEvalError {
-throw cmUnavailable();
-}
+    protected String getClassNameByUnqName(String name) throws UtilEvalError {
+        throw cmUnavailable();
+    }
 
-public void reloadPackage(String pack) throws UtilEvalError {
-throw cmUnavailable();
-}
+    public void addListener(Listener l) {
+    }
 
-protected void doSuperImport() throws UtilEvalError {
-throw cmUnavailable();
-}
+    public void removeListener(Listener l) {
+    }
 
-protected boolean hasSuperImport() {
-return false;
-}
+    public void dump(PrintWriter pw) {
+        pw.println("BshClassManager: no class manager.");
+    }
 
-protected String getClassNameByUnqName(String name) throws UtilEvalError {
-throw cmUnavailable();
-}
+    protected void definingClass(String className) {
+        String baseName = Name.suffix(className, 1);
+        int i = baseName.indexOf("$");
+        if (i != -1)
+            baseName = baseName.substring(i + 1);
+        String cur = (String) this.definingClassesBaseNames.get(baseName);
+        if (cur != null) {
+            throw new InterpreterError("Defining class problem: " + className + ": BeanShell cannot yet simultaneously define two or more " + "dependant classes of the same name.  Attempt to define: " + className + " while defining: " + cur);
+        }
 
-public void addListener(Listener l) {}
+        this.definingClasses.put(className, NOVALUE);
+        this.definingClassesBaseNames.put(baseName, className);
+    }
 
-public void removeListener(Listener l) {}
+    protected boolean isClassBeingDefined(String className) {
+        return (this.definingClasses.get(className) != null);
+    }
 
-public void dump(PrintWriter pw) {
-pw.println("BshClassManager: no class manager.");
-}
+    protected String getClassBeingDefined(String className) {
+        String baseName = Name.suffix(className, 1);
+        return (String) this.definingClassesBaseNames.get(baseName);
+    }
 
-protected void definingClass(String className) {
-String baseName = Name.suffix(className, 1);
-int i = baseName.indexOf("$");
-if (i != -1)
-baseName = baseName.substring(i + 1); 
-String cur = (String)this.definingClassesBaseNames.get(baseName);
-if (cur != null) {
-throw new InterpreterError("Defining class problem: " + className + ": BeanShell cannot yet simultaneously define two or more " + "dependant classes of the same name.  Attempt to define: " + className + " while defining: " + cur);
-}
+    protected void doneDefiningClass(String className) {
+        String baseName = Name.suffix(className, 1);
+        this.definingClasses.remove(className);
+        this.definingClassesBaseNames.remove(baseName);
+    }
 
-this.definingClasses.put(className, NOVALUE);
-this.definingClassesBaseNames.put(baseName, className);
-}
+    public Class defineClass(String name, byte[] code) {
+        throw new InterpreterError("Can't create class (" + name + ") without class manager package.");
+    }
 
-protected boolean isClassBeingDefined(String className) {
-return (this.definingClasses.get(className) != null);
-}
+    protected void classLoaderChanged() {
+    }
 
-protected String getClassBeingDefined(String className) {
-String baseName = Name.suffix(className, 1);
-return (String)this.definingClassesBaseNames.get(baseName);
-}
+    public static interface Listener {
+        void classLoaderChanged();
+    }
 
-protected void doneDefiningClass(String className) {
-String baseName = Name.suffix(className, 1);
-this.definingClasses.remove(className);
-this.definingClassesBaseNames.remove(baseName);
-}
+    static class SignatureKey {
+        Class clas;
 
-public Class defineClass(String name, byte[] code) {
-throw new InterpreterError("Can't create class (" + name + ") without class manager package.");
-}
+        Class[] types;
 
-protected void classLoaderChanged() {}
+        String methodName;
 
-protected static Error noClassDefFound(String className, Error e) {
-return new NoClassDefFoundError("A class required by class: " + className + " could not be loaded:\n" + e.toString());
-}
+        int hashCode = 0;
 
-protected static UtilEvalError cmUnavailable() {
-return new Capabilities.Unavailable("ClassLoading features unavailable.");
-}
+        SignatureKey(Class clas, String methodName, Class[] types) {
+            this.clas = clas;
+            this.methodName = methodName;
+            this.types = types;
+        }
 
-static class SignatureKey
-{
-Class clas;
+        public int hashCode() {
+            if (this.hashCode == 0) {
 
-Class[] types;
+                this.hashCode = this.clas.hashCode() * this.methodName.hashCode();
+                if (this.types == null)
+                    return this.hashCode;
+                for (int i = 0; i < this.types.length; i++) {
+                    int hc = (this.types[i] == null) ? 21 : this.types[i].hashCode();
+                    this.hashCode = this.hashCode * (i + 1) + hc;
+                }
+            }
+            return this.hashCode;
+        }
 
-String methodName;
+        public boolean equals(Object o) {
+            SignatureKey target = (SignatureKey) o;
+            if (this.types == null)
+                return (target.types == null);
+            if (this.clas != target.clas)
+                return false;
+            if (!this.methodName.equals(target.methodName))
+                return false;
+            if (this.types.length != target.types.length)
+                return false;
+            for (int i = 0; i < this.types.length; i++) {
 
-int hashCode = 0;
+                if (this.types[i] == null) {
 
-SignatureKey(Class clas, String methodName, Class[] types) {
-this.clas = clas;
-this.methodName = methodName;
-this.types = types;
-}
-
-public int hashCode() {
-if (this.hashCode == 0) {
-
-this.hashCode = this.clas.hashCode() * this.methodName.hashCode();
-if (this.types == null)
-return this.hashCode; 
-for (int i = 0; i < this.types.length; i++) {
-int hc = (this.types[i] == null) ? 21 : this.types[i].hashCode();
-this.hashCode = this.hashCode * (i + 1) + hc;
-} 
-} 
-return this.hashCode;
-}
-
-public boolean equals(Object o) {
-SignatureKey target = (SignatureKey)o;
-if (this.types == null)
-return (target.types == null); 
-if (this.clas != target.clas)
-return false; 
-if (!this.methodName.equals(target.methodName))
-return false; 
-if (this.types.length != target.types.length)
-return false; 
-for (int i = 0; i < this.types.length; i++) {
-
-if (this.types[i] == null) {
-
-if (target.types[i] != null) {
-return false;
-}
-} else if (!this.types[i].equals(target.types[i])) {
-return false;
-} 
-} 
-return true;
-}
-}
-
-public static interface Listener {
-void classLoaderChanged();
-}
+                    if (target.types[i] != null) {
+                        return false;
+                    }
+                } else if (!this.types[i].equals(target.types[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }
 

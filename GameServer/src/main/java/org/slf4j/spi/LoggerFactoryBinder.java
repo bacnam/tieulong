@@ -3,8 +3,8 @@ package org.slf4j.spi;
 import org.slf4j.ILoggerFactory;
 
 public interface LoggerFactoryBinder {
-  ILoggerFactory getLoggerFactory();
+    ILoggerFactory getLoggerFactory();
 
-  String getLoggerFactoryClassStr();
+    String getLoggerFactoryClassStr();
 }
 

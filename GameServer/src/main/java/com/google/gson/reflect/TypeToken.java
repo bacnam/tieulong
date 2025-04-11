@@ -1,6 +1,7 @@
 package com.google.gson.reflect;
+
 import com.google.Gson;
-import com.google.gson.internal;
+
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -32,47 +33,6 @@ public class TypeToken<T> {
         }
         ParameterizedType parameterized = (ParameterizedType) superclass;
         return Gson.Types.canonicalize(parameterized.getActualTypeArguments()[0]);
-    }
-
-    public final Class<? super T> getRawType() {
-        return this.rawType;
-    }
-
-    public final Type getType() {
-        return this.type;
-    }
-
-    @Deprecated
-    public boolean isAssignableFrom(Class<?> cls) {
-        return isAssignableFrom(cls);
-    }
-
-    @Deprecated
-    public boolean isAssignableFrom(Type from) {
-        if (from == null) {
-            return false;
-        }
-
-        if (this.type.equals(from)) {
-            return true;
-        }
-
-        if (this.type instanceof Class)
-            return this.rawType.isAssignableFrom(Gson.Types.getRawType(from));
-        if (this.type instanceof ParameterizedType) {
-            return isAssignableFrom(from, (ParameterizedType) this.type, new HashMap<String, Type>());
-        }
-        if (this.type instanceof GenericArrayType) {
-            return (this.rawType.isAssignableFrom(Gson.Types.getRawType(from)) && isAssignableFrom(from, (GenericArrayType) this.type))
-            ;
-        }
-
-        throw buildUnexpectedTypeError(this.type, new Class[]{Class.class, ParameterizedType.class, GenericArrayType.class});
-    }
-
-    @Deprecated
-    public boolean isAssignableFrom(TypeToken<?> token) {
-        return isAssignableFrom(token.getType());
     }
 
     private static boolean isAssignableFrom(Type from, GenericArrayType to) {
@@ -166,6 +126,55 @@ public class TypeToken<T> {
         return (to.equals(from) || (from instanceof TypeVariable && to.equals(typeMap.get(((TypeVariable) from).getName()))));
     }
 
+    public static TypeToken<?> get(Type type) {
+        return new TypeToken(type);
+    }
+
+    public static <T> TypeToken<T> get(Class<T> type) {
+        return new TypeToken<T>(type);
+    }
+
+    public final Class<? super T> getRawType() {
+        return this.rawType;
+    }
+
+    public final Type getType() {
+        return this.type;
+    }
+
+    @Deprecated
+    public boolean isAssignableFrom(Class<?> cls) {
+        return isAssignableFrom(cls);
+    }
+
+    @Deprecated
+    public boolean isAssignableFrom(Type from) {
+        if (from == null) {
+            return false;
+        }
+
+        if (this.type.equals(from)) {
+            return true;
+        }
+
+        if (this.type instanceof Class)
+            return this.rawType.isAssignableFrom(Gson.Types.getRawType(from));
+        if (this.type instanceof ParameterizedType) {
+            return isAssignableFrom(from, (ParameterizedType) this.type, new HashMap<String, Type>());
+        }
+        if (this.type instanceof GenericArrayType) {
+            return (this.rawType.isAssignableFrom(Gson.Types.getRawType(from)) && isAssignableFrom(from, (GenericArrayType) this.type))
+                    ;
+        }
+
+        throw buildUnexpectedTypeError(this.type, new Class[]{Class.class, ParameterizedType.class, GenericArrayType.class});
+    }
+
+    @Deprecated
+    public boolean isAssignableFrom(TypeToken<?> token) {
+        return isAssignableFrom(token.getType());
+    }
+
     public final int hashCode() {
         return this.hashCode;
     }
@@ -176,14 +185,6 @@ public class TypeToken<T> {
 
     public final String toString() {
         return Gson.Types.typeToString(this.type);
-    }
-
-    public static TypeToken<?> get(Type type) {
-        return new TypeToken(type);
-    }
-
-    public static <T> TypeToken<T> get(Class<T> type) {
-        return new TypeToken<T>(type);
     }
 }
 

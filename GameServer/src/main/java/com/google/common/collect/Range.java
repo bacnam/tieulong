@@ -4,169 +4,168 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+
+import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
-import javax.annotation.Nullable;
 
 @GwtCompatible
 @Beta
 public final class Range<C extends Comparable>
-implements Predicate<C>, Serializable
-{
-final Cut<C> lowerBound;
-final Cut<C> upperBound;
-private static final long serialVersionUID = 0L;
+        implements Predicate<C>, Serializable {
+    private static final long serialVersionUID = 0L;
+    final Cut<C> lowerBound;
+    final Cut<C> upperBound;
 
-Range(Cut<C> lowerBound, Cut<C> upperBound) {
-if (lowerBound.compareTo(upperBound) > 0) {
-throw new IllegalArgumentException("Invalid range: " + toString(lowerBound, upperBound));
-}
+    Range(Cut<C> lowerBound, Cut<C> upperBound) {
+        if (lowerBound.compareTo(upperBound) > 0) {
+            throw new IllegalArgumentException("Invalid range: " + toString(lowerBound, upperBound));
+        }
 
-this.lowerBound = lowerBound;
-this.upperBound = upperBound;
-}
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
 
-public boolean hasLowerBound() {
-return (this.lowerBound != Cut.belowAll());
-}
+    private static String toString(Cut<?> lowerBound, Cut<?> upperBound) {
+        StringBuilder sb = new StringBuilder(16);
+        lowerBound.describeAsLowerBound(sb);
+        sb.append('‥');
+        upperBound.describeAsUpperBound(sb);
+        return sb.toString();
+    }
 
-public C lowerEndpoint() {
-return this.lowerBound.endpoint();
-}
+    private static <T> SortedSet<T> cast(Iterable<T> iterable) {
+        return (SortedSet<T>) iterable;
+    }
 
-public BoundType lowerBoundType() {
-return this.lowerBound.typeAsLowerBound();
-}
+    static int compareOrThrow(Comparable<Comparable> left, Comparable right) {
+        return left.compareTo(right);
+    }
 
-public boolean hasUpperBound() {
-return (this.upperBound != Cut.aboveAll());
-}
+    public boolean hasLowerBound() {
+        return (this.lowerBound != Cut.belowAll());
+    }
 
-public C upperEndpoint() {
-return this.upperBound.endpoint();
-}
+    public C lowerEndpoint() {
+        return this.lowerBound.endpoint();
+    }
 
-public BoundType upperBoundType() {
-return this.upperBound.typeAsUpperBound();
-}
+    public BoundType lowerBoundType() {
+        return this.lowerBound.typeAsLowerBound();
+    }
 
-public boolean isEmpty() {
-return this.lowerBound.equals(this.upperBound);
-}
+    public boolean hasUpperBound() {
+        return (this.upperBound != Cut.aboveAll());
+    }
 
-public boolean contains(C value) {
-Preconditions.checkNotNull(value);
+    public C upperEndpoint() {
+        return this.upperBound.endpoint();
+    }
 
-return (this.lowerBound.isLessThan(value) && !this.upperBound.isLessThan(value));
-}
+    public BoundType upperBoundType() {
+        return this.upperBound.typeAsUpperBound();
+    }
 
-public boolean apply(C input) {
-return contains(input);
-}
+    public boolean isEmpty() {
+        return this.lowerBound.equals(this.upperBound);
+    }
 
-public boolean containsAll(Iterable<? extends C> values) {
-if (Iterables.isEmpty(values)) {
-return true;
-}
+    public boolean contains(C value) {
+        Preconditions.checkNotNull(value);
 
-if (values instanceof SortedSet) {
-SortedSet<? extends C> set = cast(values);
-Comparator<?> comparator = set.comparator();
-if (Ordering.<Comparable>natural().equals(comparator) || comparator == null) {
-return (contains(set.first()) && contains(set.last()));
-}
-} 
+        return (this.lowerBound.isLessThan(value) && !this.upperBound.isLessThan(value));
+    }
 
-for (Comparable comparable : values) {
-if (!contains((C)comparable)) {
-return false;
-}
-} 
-return true;
-}
+    public boolean apply(C input) {
+        return contains(input);
+    }
 
-public boolean encloses(Range<C> other) {
-return (this.lowerBound.compareTo(other.lowerBound) <= 0 && this.upperBound.compareTo(other.upperBound) >= 0);
-}
+    public boolean containsAll(Iterable<? extends C> values) {
+        if (Iterables.isEmpty(values)) {
+            return true;
+        }
 
-public Range<C> intersection(Range<C> other) {
-Cut<C> newLower = (Cut<C>)Ordering.<Comparable>natural().max(this.lowerBound, other.lowerBound);
-Cut<C> newUpper = (Cut<C>)Ordering.<Comparable>natural().min(this.upperBound, other.upperBound);
-return (Range)Ranges.create(newLower, newUpper);
-}
+        if (values instanceof SortedSet) {
+            SortedSet<? extends C> set = cast(values);
+            Comparator<?> comparator = set.comparator();
+            if (Ordering.<Comparable>natural().equals(comparator) || comparator == null) {
+                return (contains(set.first()) && contains(set.last()));
+            }
+        }
 
-public boolean isConnected(Range<C> other) {
-return (this.lowerBound.compareTo(other.upperBound) <= 0 && other.lowerBound.compareTo(this.upperBound) <= 0);
-}
+        for (Comparable comparable : values) {
+            if (!contains((C) comparable)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-public Range<C> span(Range<C> other) {
-Cut<C> newLower = (Cut<C>)Ordering.<Comparable>natural().min(this.lowerBound, other.lowerBound);
-Cut<C> newUpper = (Cut<C>)Ordering.<Comparable>natural().max(this.upperBound, other.upperBound);
-return (Range)Ranges.create(newLower, newUpper);
-}
+    public boolean encloses(Range<C> other) {
+        return (this.lowerBound.compareTo(other.lowerBound) <= 0 && this.upperBound.compareTo(other.upperBound) >= 0);
+    }
 
-@GwtCompatible(serializable = false)
-public ContiguousSet<C> asSet(DiscreteDomain<C> domain) {
-Preconditions.checkNotNull(domain);
-Range<C> effectiveRange = this;
-try {
-if (!hasLowerBound()) {
-effectiveRange = effectiveRange.intersection((Range)Ranges.atLeast((Comparable<?>)domain.minValue()));
-}
+    public Range<C> intersection(Range<C> other) {
+        Cut<C> newLower = (Cut<C>) Ordering.<Comparable>natural().max(this.lowerBound, other.lowerBound);
+        Cut<C> newUpper = (Cut<C>) Ordering.<Comparable>natural().min(this.upperBound, other.upperBound);
+        return (Range) Ranges.create(newLower, newUpper);
+    }
 
-if (!hasUpperBound()) {
-effectiveRange = effectiveRange.intersection((Range)Ranges.atMost((Comparable<?>)domain.maxValue()));
-}
-}
-catch (NoSuchElementException e) {
-throw new IllegalArgumentException(e);
-} 
+    public boolean isConnected(Range<C> other) {
+        return (this.lowerBound.compareTo(other.upperBound) <= 0 && other.lowerBound.compareTo(this.upperBound) <= 0);
+    }
 
-boolean empty = (effectiveRange.isEmpty() || compareOrThrow((Comparable)this.lowerBound.leastValueAbove(domain), (Comparable)this.upperBound.greatestValueBelow(domain)) > 0);
+    public Range<C> span(Range<C> other) {
+        Cut<C> newLower = (Cut<C>) Ordering.<Comparable>natural().min(this.lowerBound, other.lowerBound);
+        Cut<C> newUpper = (Cut<C>) Ordering.<Comparable>natural().max(this.upperBound, other.upperBound);
+        return (Range) Ranges.create(newLower, newUpper);
+    }
 
-return empty ? new EmptyContiguousSet<C>(domain) : new RegularContiguousSet<C>(effectiveRange, domain);
-}
+    @GwtCompatible(serializable = false)
+    public ContiguousSet<C> asSet(DiscreteDomain<C> domain) {
+        Preconditions.checkNotNull(domain);
+        Range<C> effectiveRange = this;
+        try {
+            if (!hasLowerBound()) {
+                effectiveRange = effectiveRange.intersection((Range) Ranges.atLeast((Comparable<?>) domain.minValue()));
+            }
 
-public Range<C> canonical(DiscreteDomain<C> domain) {
-Preconditions.checkNotNull(domain);
-Cut<C> lower = this.lowerBound.canonical(domain);
-Cut<C> upper = this.upperBound.canonical(domain);
-return (lower == this.lowerBound && upper == this.upperBound) ? this : (Range)Ranges.<Comparable<?>>create(lower, upper);
-}
+            if (!hasUpperBound()) {
+                effectiveRange = effectiveRange.intersection((Range) Ranges.atMost((Comparable<?>) domain.maxValue()));
+            }
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException(e);
+        }
 
-public boolean equals(@Nullable Object object) {
-if (object instanceof Range) {
-Range<?> other = (Range)object;
-return (this.lowerBound.equals(other.lowerBound) && this.upperBound.equals(other.upperBound));
-} 
+        boolean empty = (effectiveRange.isEmpty() || compareOrThrow((Comparable) this.lowerBound.leastValueAbove(domain), (Comparable) this.upperBound.greatestValueBelow(domain)) > 0);
 
-return false;
-}
+        return empty ? new EmptyContiguousSet<C>(domain) : new RegularContiguousSet<C>(effectiveRange, domain);
+    }
 
-public int hashCode() {
-return this.lowerBound.hashCode() * 31 + this.upperBound.hashCode();
-}
+    public Range<C> canonical(DiscreteDomain<C> domain) {
+        Preconditions.checkNotNull(domain);
+        Cut<C> lower = this.lowerBound.canonical(domain);
+        Cut<C> upper = this.upperBound.canonical(domain);
+        return (lower == this.lowerBound && upper == this.upperBound) ? this : (Range) Ranges.<Comparable<?>>create(lower, upper);
+    }
 
-public String toString() {
-return toString(this.lowerBound, this.upperBound);
-}
+    public boolean equals(@Nullable Object object) {
+        if (object instanceof Range) {
+            Range<?> other = (Range) object;
+            return (this.lowerBound.equals(other.lowerBound) && this.upperBound.equals(other.upperBound));
+        }
 
-private static String toString(Cut<?> lowerBound, Cut<?> upperBound) {
-StringBuilder sb = new StringBuilder(16);
-lowerBound.describeAsLowerBound(sb);
-sb.append('‥');
-upperBound.describeAsUpperBound(sb);
-return sb.toString();
-}
+        return false;
+    }
 
-private static <T> SortedSet<T> cast(Iterable<T> iterable) {
-return (SortedSet<T>)iterable;
-}
+    public int hashCode() {
+        return this.lowerBound.hashCode() * 31 + this.upperBound.hashCode();
+    }
 
-static int compareOrThrow(Comparable<Comparable> left, Comparable right) {
-return left.compareTo(right);
-}
+    public String toString() {
+        return toString(this.lowerBound, this.upperBound);
+    }
 }
 

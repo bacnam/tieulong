@@ -1,93 +1,90 @@
 package bsh;
 
 class BSHEnhancedForStatement
-extends SimpleNode
-implements ParserConstants
-{
-String varName;
+        extends SimpleNode
+        implements ParserConstants {
+    String varName;
 
-BSHEnhancedForStatement(int id) {
-super(id);
-}
+    BSHEnhancedForStatement(int id) {
+        super(id);
+    }
 
-public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
-SimpleNode expression;
-Class elementType = null;
-SimpleNode statement = null;
+    public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
+        SimpleNode expression;
+        Class elementType = null;
+        SimpleNode statement = null;
 
-NameSpace enclosingNameSpace = callstack.top();
-SimpleNode firstNode = (SimpleNode)jjtGetChild(0);
-int nodeCount = jjtGetNumChildren();
+        NameSpace enclosingNameSpace = callstack.top();
+        SimpleNode firstNode = (SimpleNode) jjtGetChild(0);
+        int nodeCount = jjtGetNumChildren();
 
-if (firstNode instanceof BSHType) {
+        if (firstNode instanceof BSHType) {
 
-elementType = ((BSHType)firstNode).getType(callstack, interpreter);
-expression = (SimpleNode)jjtGetChild(1);
-if (nodeCount > 2) {
-statement = (SimpleNode)jjtGetChild(2);
-}
-} else {
-expression = firstNode;
-if (nodeCount > 1) {
-statement = (SimpleNode)jjtGetChild(1);
-}
-} 
-BlockNameSpace eachNameSpace = new BlockNameSpace(enclosingNameSpace);
-callstack.swap(eachNameSpace);
+            elementType = ((BSHType) firstNode).getType(callstack, interpreter);
+            expression = (SimpleNode) jjtGetChild(1);
+            if (nodeCount > 2) {
+                statement = (SimpleNode) jjtGetChild(2);
+            }
+        } else {
+            expression = firstNode;
+            if (nodeCount > 1) {
+                statement = (SimpleNode) jjtGetChild(1);
+            }
+        }
+        BlockNameSpace eachNameSpace = new BlockNameSpace(enclosingNameSpace);
+        callstack.swap(eachNameSpace);
 
-Object iteratee = expression.eval(callstack, interpreter);
+        Object iteratee = expression.eval(callstack, interpreter);
 
-if (iteratee == Primitive.NULL) {
-throw new EvalError("The collection, array, map, iterator, or enumeration portion of a for statement cannot be null.", this, callstack);
-}
+        if (iteratee == Primitive.NULL) {
+            throw new EvalError("The collection, array, map, iterator, or enumeration portion of a for statement cannot be null.", this, callstack);
+        }
 
-CollectionManager cm = CollectionManager.getCollectionManager();
-if (!cm.isBshIterable(iteratee)) {
-throw new EvalError("Can't iterate over type: " + iteratee.getClass(), this, callstack);
-}
-BshIterator iterator = cm.getBshIterator(iteratee);
+        CollectionManager cm = CollectionManager.getCollectionManager();
+        if (!cm.isBshIterable(iteratee)) {
+            throw new EvalError("Can't iterate over type: " + iteratee.getClass(), this, callstack);
+        }
+        BshIterator iterator = cm.getBshIterator(iteratee);
 
-Object returnControl = Primitive.VOID;
-while (iterator.hasNext()) {
+        Object returnControl = Primitive.VOID;
+        while (iterator.hasNext()) {
 
-try {
-if (elementType != null)
-{ eachNameSpace.setTypedVariable(this.varName, elementType, iterator.next(), new Modifiers()); }
+            try {
+                if (elementType != null) {
+                    eachNameSpace.setTypedVariable(this.varName, elementType, iterator.next(), new Modifiers());
+                } else {
+                    eachNameSpace.setVariable(this.varName, iterator.next(), false);
+                }
+            } catch (UtilEvalError e) {
+                throw e.toEvalError("for loop iterator variable:" + this.varName, this, callstack);
+            }
 
-else
+            boolean breakout = false;
+            if (statement != null) {
 
-{ eachNameSpace.setVariable(this.varName, iterator.next(), false); } 
-} catch (UtilEvalError e) {
-throw e.toEvalError("for loop iterator variable:" + this.varName, this, callstack);
-} 
+                Object ret = statement.eval(callstack, interpreter);
 
-boolean breakout = false;
-if (statement != null) {
+                if (ret instanceof ReturnControl) {
+                    switch (((ReturnControl) ret).kind) {
 
-Object ret = statement.eval(callstack, interpreter);
+                        case 46:
+                            returnControl = ret;
+                            breakout = true;
+                            break;
 
-if (ret instanceof ReturnControl)
-{
-switch (((ReturnControl)ret).kind) {
+                        case 12:
+                            breakout = true;
+                            break;
+                    }
 
-case 46:
-returnControl = ret;
-breakout = true;
-break;
-
-case 12:
-breakout = true;
-break;
-} 
-
-}
-} 
-if (breakout) {
-break;
-}
-} 
-callstack.swap(enclosingNameSpace);
-return returnControl;
-}
+                }
+            }
+            if (breakout) {
+                break;
+            }
+        }
+        callstack.swap(enclosingNameSpace);
+        return returnControl;
+    }
 }
 

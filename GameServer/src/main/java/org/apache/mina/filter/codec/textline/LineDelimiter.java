@@ -3,74 +3,67 @@ package org.apache.mina.filter.codec.textline;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
-public class LineDelimiter
-{
-public static final LineDelimiter DEFAULT;
+public class LineDelimiter {
+    public static final LineDelimiter DEFAULT;
+    public static final LineDelimiter AUTO = new LineDelimiter("");
+    public static final LineDelimiter CRLF = new LineDelimiter("\r\n");
+    public static final LineDelimiter UNIX = new LineDelimiter("\n");
+    public static final LineDelimiter WINDOWS = CRLF;
+    public static final LineDelimiter MAC = new LineDelimiter("\r");
+    public static final LineDelimiter NUL = new LineDelimiter("\000");
 
-static {
-ByteArrayOutputStream bout = new ByteArrayOutputStream();
-PrintWriter out = new PrintWriter(bout, true);
-out.println();
-DEFAULT = new LineDelimiter(new String(bout.toByteArray()));
-}
+    static {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        PrintWriter out = new PrintWriter(bout, true);
+        out.println();
+        DEFAULT = new LineDelimiter(new String(bout.toByteArray()));
+    }
 
-public static final LineDelimiter AUTO = new LineDelimiter("");
+    private final String value;
 
-public static final LineDelimiter CRLF = new LineDelimiter("\r\n");
+    public LineDelimiter(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("delimiter");
+        }
 
-public static final LineDelimiter UNIX = new LineDelimiter("\n");
+        this.value = value;
+    }
 
-public static final LineDelimiter WINDOWS = CRLF;
+    public String getValue() {
+        return this.value;
+    }
 
-public static final LineDelimiter MAC = new LineDelimiter("\r");
+    public int hashCode() {
+        return this.value.hashCode();
+    }
 
-public static final LineDelimiter NUL = new LineDelimiter("\000");
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
-private final String value;
+        if (!(o instanceof LineDelimiter)) {
+            return false;
+        }
 
-public LineDelimiter(String value) {
-if (value == null) {
-throw new IllegalArgumentException("delimiter");
-}
+        LineDelimiter that = (LineDelimiter) o;
 
-this.value = value;
-}
+        return this.value.equals(that.value);
+    }
 
-public String getValue() {
-return this.value;
-}
+    public String toString() {
+        if (this.value.length() == 0) {
+            return "delimiter: auto";
+        }
+        StringBuilder buf = new StringBuilder();
+        buf.append("delimiter:");
 
-public int hashCode() {
-return this.value.hashCode();
-}
+        for (int i = 0; i < this.value.length(); i++) {
+            buf.append(" 0x");
+            buf.append(Integer.toHexString(this.value.charAt(i)));
+        }
 
-public boolean equals(Object o) {
-if (this == o) {
-return true;
-}
-
-if (!(o instanceof LineDelimiter)) {
-return false;
-}
-
-LineDelimiter that = (LineDelimiter)o;
-
-return this.value.equals(that.value);
-}
-
-public String toString() {
-if (this.value.length() == 0) {
-return "delimiter: auto";
-}
-StringBuilder buf = new StringBuilder();
-buf.append("delimiter:");
-
-for (int i = 0; i < this.value.length(); i++) {
-buf.append(" 0x");
-buf.append(Integer.toHexString(this.value.charAt(i)));
-} 
-
-return buf.toString();
-}
+        return buf.toString();
+    }
 }
 

@@ -1,31 +1,32 @@
 package org.apache.mina.util.byteaccess;
 
-import java.nio.ByteOrder;
 import org.apache.mina.core.buffer.IoBuffer;
 
+import java.nio.ByteOrder;
+
 public interface IoRelativeWriter {
-  int getRemaining();
+    int getRemaining();
 
-  boolean hasRemaining();
+    boolean hasRemaining();
 
-  void skip(int paramInt);
+    void skip(int paramInt);
 
-  ByteOrder order();
+    ByteOrder order();
 
-  void put(byte paramByte);
+    void put(byte paramByte);
 
-  void put(IoBuffer paramIoBuffer);
+    void put(IoBuffer paramIoBuffer);
 
-  void putShort(short paramShort);
+    void putShort(short paramShort);
 
-  void putInt(int paramInt);
+    void putInt(int paramInt);
 
-  void putLong(long paramLong);
+    void putLong(long paramLong);
 
-  void putFloat(float paramFloat);
+    void putFloat(float paramFloat);
 
-  void putDouble(double paramDouble);
+    void putDouble(double paramDouble);
 
-  void putChar(char paramChar);
+    void putChar(char paramChar);
 }
 

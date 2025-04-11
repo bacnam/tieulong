@@ -3,53 +3,51 @@ package bsh;
 import java.lang.reflect.InvocationTargetException;
 
 class BSHMethodInvocation
-extends SimpleNode
-{
-BSHMethodInvocation(int id) {
-super(id);
-}
-BSHAmbiguousName getNameNode() {
-return (BSHAmbiguousName)jjtGetChild(0);
-}
+        extends SimpleNode {
+    BSHMethodInvocation(int id) {
+        super(id);
+    }
 
-BSHArguments getArgsNode() {
-return (BSHArguments)jjtGetChild(1);
-}
+    BSHAmbiguousName getNameNode() {
+        return (BSHAmbiguousName) jjtGetChild(0);
+    }
 
-public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
-NameSpace namespace = callstack.top();
-BSHAmbiguousName nameNode = getNameNode();
+    BSHArguments getArgsNode() {
+        return (BSHArguments) jjtGetChild(1);
+    }
 
-if (namespace.getParent() != null && (namespace.getParent()).isClass && (nameNode.text.equals("super") || nameNode.text.equals("this")))
-{
+    public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
+        NameSpace namespace = callstack.top();
+        BSHAmbiguousName nameNode = getNameNode();
 
-return Primitive.VOID;
-}
-Name name = nameNode.getName(namespace);
-Object[] args = getArgsNode().getArguments(callstack, interpreter);
+        if (namespace.getParent() != null && (namespace.getParent()).isClass && (nameNode.text.equals("super") || nameNode.text.equals("this"))) {
 
-try {
-return name.invokeMethod(interpreter, args, callstack, this);
-} catch (ReflectError e) {
-throw new EvalError("Error in method invocation: " + e.getMessage(), this, callstack);
+            return Primitive.VOID;
+        }
+        Name name = nameNode.getName(namespace);
+        Object[] args = getArgsNode().getArguments(callstack, interpreter);
 
-}
-catch (InvocationTargetException e) {
+        try {
+            return name.invokeMethod(interpreter, args, callstack, this);
+        } catch (ReflectError e) {
+            throw new EvalError("Error in method invocation: " + e.getMessage(), this, callstack);
 
-String msg = "Method Invocation " + name;
-Throwable te = e.getTargetException();
+        } catch (InvocationTargetException e) {
 
-boolean isNative = true;
-if (te instanceof EvalError)
-if (te instanceof TargetError) {
-isNative = ((TargetError)te).inNativeCode();
-} else {
-isNative = false;
-}  
-throw new TargetError(msg, te, this, callstack, isNative);
-} catch (UtilEvalError e) {
-throw e.toEvalError(this, callstack);
-} 
-}
+            String msg = "Method Invocation " + name;
+            Throwable te = e.getTargetException();
+
+            boolean isNative = true;
+            if (te instanceof EvalError)
+                if (te instanceof TargetError) {
+                    isNative = ((TargetError) te).inNativeCode();
+                } else {
+                    isNative = false;
+                }
+            throw new TargetError(msg, te, this, callstack, isNative);
+        } catch (UtilEvalError e) {
+            throw e.toEvalError(this, callstack);
+        }
+    }
 }
 

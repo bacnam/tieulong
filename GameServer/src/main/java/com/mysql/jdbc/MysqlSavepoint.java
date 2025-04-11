@@ -5,52 +5,51 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 
 public class MysqlSavepoint
-implements Savepoint
-{
-private String savepointName;
-private ExceptionInterceptor exceptionInterceptor;
+        implements Savepoint {
+    private String savepointName;
+    private ExceptionInterceptor exceptionInterceptor;
 
-private static String getUniqueId() {
-String uidStr = (new UID()).toString();
+    MysqlSavepoint(ExceptionInterceptor exceptionInterceptor) throws SQLException {
+        this(getUniqueId(), exceptionInterceptor);
+    }
 
-int uidLength = uidStr.length();
+    MysqlSavepoint(String name, ExceptionInterceptor exceptionInterceptor) throws SQLException {
+        if (name == null || name.length() == 0) {
+            throw SQLError.createSQLException("Savepoint name can not be NULL or empty", "S1009", exceptionInterceptor);
+        }
 
-StringBuffer safeString = new StringBuffer(uidLength + 1);
-safeString.append('_');
+        this.savepointName = name;
 
-for (int i = 0; i < uidLength; i++) {
-char c = uidStr.charAt(i);
+        this.exceptionInterceptor = exceptionInterceptor;
+    }
 
-if (Character.isLetter(c) || Character.isDigit(c)) {
-safeString.append(c);
-} else {
-safeString.append('_');
-} 
-} 
+    private static String getUniqueId() {
+        String uidStr = (new UID()).toString();
 
-return safeString.toString();
-}
+        int uidLength = uidStr.length();
 
-MysqlSavepoint(ExceptionInterceptor exceptionInterceptor) throws SQLException {
-this(getUniqueId(), exceptionInterceptor);
-}
+        StringBuffer safeString = new StringBuffer(uidLength + 1);
+        safeString.append('_');
 
-MysqlSavepoint(String name, ExceptionInterceptor exceptionInterceptor) throws SQLException {
-if (name == null || name.length() == 0) {
-throw SQLError.createSQLException("Savepoint name can not be NULL or empty", "S1009", exceptionInterceptor);
-}
+        for (int i = 0; i < uidLength; i++) {
+            char c = uidStr.charAt(i);
 
-this.savepointName = name;
+            if (Character.isLetter(c) || Character.isDigit(c)) {
+                safeString.append(c);
+            } else {
+                safeString.append('_');
+            }
+        }
 
-this.exceptionInterceptor = exceptionInterceptor;
-}
+        return safeString.toString();
+    }
 
-public int getSavepointId() throws SQLException {
-throw SQLError.createSQLException("Only named savepoints are supported.", "S1C00", this.exceptionInterceptor);
-}
+    public int getSavepointId() throws SQLException {
+        throw SQLError.createSQLException("Only named savepoints are supported.", "S1C00", this.exceptionInterceptor);
+    }
 
-public String getSavepointName() throws SQLException {
-return this.savepointName;
-}
+    public String getSavepointName() throws SQLException {
+        return this.savepointName;
+    }
 }
 

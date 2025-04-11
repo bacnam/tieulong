@@ -1,18 +1,18 @@
 package com.mchange.v2.codegen.bean;
 
 public interface ClassInfo {
-  String getPackageName();
+    String getPackageName();
 
-  int getModifiers();
+    int getModifiers();
 
-  String getClassName();
+    String getClassName();
 
-  String getSuperclassName();
+    String getSuperclassName();
 
-  String[] getInterfaceNames();
+    String[] getInterfaceNames();
 
-  String[] getGeneralImports();
+    String[] getGeneralImports();
 
-  String[] getSpecificImports();
+    String[] getSpecificImports();
 }
 

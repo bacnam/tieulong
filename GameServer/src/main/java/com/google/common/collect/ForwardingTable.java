@@ -2,6 +2,7 @@ package com.google.common.collect;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -9,93 +10,92 @@ import java.util.Set;
 @Beta
 @GwtCompatible
 public abstract class ForwardingTable<R, C, V>
-extends ForwardingObject
-implements Table<R, C, V>
-{
-public Set<Table.Cell<R, C, V>> cellSet() {
-return delegate().cellSet();
-}
+        extends ForwardingObject
+        implements Table<R, C, V> {
+    public Set<Table.Cell<R, C, V>> cellSet() {
+        return delegate().cellSet();
+    }
 
-public void clear() {
-delegate().clear();
-}
+    public void clear() {
+        delegate().clear();
+    }
 
-public Map<R, V> column(C columnKey) {
-return delegate().column(columnKey);
-}
+    public Map<R, V> column(C columnKey) {
+        return delegate().column(columnKey);
+    }
 
-public Set<C> columnKeySet() {
-return delegate().columnKeySet();
-}
+    public Set<C> columnKeySet() {
+        return delegate().columnKeySet();
+    }
 
-public Map<C, Map<R, V>> columnMap() {
-return delegate().columnMap();
-}
+    public Map<C, Map<R, V>> columnMap() {
+        return delegate().columnMap();
+    }
 
-public boolean contains(Object rowKey, Object columnKey) {
-return delegate().contains(rowKey, columnKey);
-}
+    public boolean contains(Object rowKey, Object columnKey) {
+        return delegate().contains(rowKey, columnKey);
+    }
 
-public boolean containsColumn(Object columnKey) {
-return delegate().containsColumn(columnKey);
-}
+    public boolean containsColumn(Object columnKey) {
+        return delegate().containsColumn(columnKey);
+    }
 
-public boolean containsRow(Object rowKey) {
-return delegate().containsRow(rowKey);
-}
+    public boolean containsRow(Object rowKey) {
+        return delegate().containsRow(rowKey);
+    }
 
-public boolean containsValue(Object value) {
-return delegate().containsValue(value);
-}
+    public boolean containsValue(Object value) {
+        return delegate().containsValue(value);
+    }
 
-public V get(Object rowKey, Object columnKey) {
-return delegate().get(rowKey, columnKey);
-}
+    public V get(Object rowKey, Object columnKey) {
+        return delegate().get(rowKey, columnKey);
+    }
 
-public boolean isEmpty() {
-return delegate().isEmpty();
-}
+    public boolean isEmpty() {
+        return delegate().isEmpty();
+    }
 
-public V put(R rowKey, C columnKey, V value) {
-return delegate().put(rowKey, columnKey, value);
-}
+    public V put(R rowKey, C columnKey, V value) {
+        return delegate().put(rowKey, columnKey, value);
+    }
 
-public void putAll(Table<? extends R, ? extends C, ? extends V> table) {
-delegate().putAll(table);
-}
+    public void putAll(Table<? extends R, ? extends C, ? extends V> table) {
+        delegate().putAll(table);
+    }
 
-public V remove(Object rowKey, Object columnKey) {
-return delegate().remove(rowKey, columnKey);
-}
+    public V remove(Object rowKey, Object columnKey) {
+        return delegate().remove(rowKey, columnKey);
+    }
 
-public Map<C, V> row(R rowKey) {
-return delegate().row(rowKey);
-}
+    public Map<C, V> row(R rowKey) {
+        return delegate().row(rowKey);
+    }
 
-public Set<R> rowKeySet() {
-return delegate().rowKeySet();
-}
+    public Set<R> rowKeySet() {
+        return delegate().rowKeySet();
+    }
 
-public Map<R, Map<C, V>> rowMap() {
-return delegate().rowMap();
-}
+    public Map<R, Map<C, V>> rowMap() {
+        return delegate().rowMap();
+    }
 
-public int size() {
-return delegate().size();
-}
+    public int size() {
+        return delegate().size();
+    }
 
-public Collection<V> values() {
-return delegate().values();
-}
+    public Collection<V> values() {
+        return delegate().values();
+    }
 
-public boolean equals(Object obj) {
-return (obj == this || delegate().equals(obj));
-}
+    public boolean equals(Object obj) {
+        return (obj == this || delegate().equals(obj));
+    }
 
-public int hashCode() {
-return delegate().hashCode();
-}
+    public int hashCode() {
+        return delegate().hashCode();
+    }
 
-protected abstract Table<R, C, V> delegate();
+    protected abstract Table<R, C, V> delegate();
 }
 

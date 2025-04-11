@@ -1,57 +1,58 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import javax.annotation.Nullable;
 
 @GwtCompatible
 public interface Multiset<E> extends Collection<E> {
-  int count(@Nullable Object paramObject);
+    int count(@Nullable Object paramObject);
 
-  int add(@Nullable E paramE, int paramInt);
+    int add(@Nullable E paramE, int paramInt);
 
-  int remove(@Nullable Object paramObject, int paramInt);
+    int remove(@Nullable Object paramObject, int paramInt);
 
-  int setCount(E paramE, int paramInt);
+    int setCount(E paramE, int paramInt);
 
-  boolean setCount(E paramE, int paramInt1, int paramInt2);
+    boolean setCount(E paramE, int paramInt1, int paramInt2);
 
-  Set<E> elementSet();
+    Set<E> elementSet();
 
-  Set<Entry<E>> entrySet();
+    Set<Entry<E>> entrySet();
 
-  boolean equals(@Nullable Object paramObject);
-
-  int hashCode();
-
-  String toString();
-
-  Iterator<E> iterator();
-
-  boolean contains(@Nullable Object paramObject);
-
-  boolean containsAll(Collection<?> paramCollection);
-
-  boolean add(E paramE);
-
-  boolean remove(@Nullable Object paramObject);
-
-  boolean removeAll(Collection<?> paramCollection);
-
-  boolean retainAll(Collection<?> paramCollection);
-
-  public static interface Entry<E> {
-    E getElement();
-
-    int getCount();
-
-    boolean equals(Object param1Object);
+    boolean equals(@Nullable Object paramObject);
 
     int hashCode();
 
     String toString();
-  }
+
+    Iterator<E> iterator();
+
+    boolean contains(@Nullable Object paramObject);
+
+    boolean containsAll(Collection<?> paramCollection);
+
+    boolean add(E paramE);
+
+    boolean remove(@Nullable Object paramObject);
+
+    boolean removeAll(Collection<?> paramCollection);
+
+    boolean retainAll(Collection<?> paramCollection);
+
+    public static interface Entry<E> {
+        E getElement();
+
+        int getCount();
+
+        boolean equals(Object param1Object);
+
+        int hashCode();
+
+        String toString();
+    }
 }
 

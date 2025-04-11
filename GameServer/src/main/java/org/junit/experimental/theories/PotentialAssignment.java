@@ -1,49 +1,47 @@
 package org.junit.experimental.theories;
 
-public abstract class PotentialAssignment
-{
-public static class CouldNotGenerateValueException
-extends Exception
-{
-private static final long serialVersionUID = 1L;
+public abstract class PotentialAssignment {
+    public static PotentialAssignment forValue(final String name, final Object value) {
+        return new PotentialAssignment() {
+            public Object getValue() {
+                return value;
+            }
 
-public CouldNotGenerateValueException() {}
+            public String toString() {
+                return String.format("[%s]", new Object[]{this.val$value});
+            }
 
-public CouldNotGenerateValueException(Throwable e) {
-super(e);
-}
-}
+            public String getDescription() {
+                String str;
+                if (value == null) {
+                    str = "null";
+                } else {
+                    try {
+                        str = String.format("\"%s\"", new Object[]{this.val$value});
+                    } catch (Throwable e) {
+                        str = String.format("[toString() threw %s: %s]", new Object[]{e.getClass().getSimpleName(), e.getMessage()});
+                    }
+                }
 
-public static PotentialAssignment forValue(final String name, final Object value) {
-return new PotentialAssignment()
-{
-public Object getValue() {
-return value;
-}
+                return String.format("%s <from %s>", new Object[]{str, this.val$name});
+            }
+        };
+    }
 
-public String toString() {
-return String.format("[%s]", new Object[] { this.val$value });
-}
+    public abstract Object getValue() throws CouldNotGenerateValueException;
 
-public String getDescription() {
-String str;
-if (value == null) {
-str = "null";
-} else {
-try {
-str = String.format("\"%s\"", new Object[] { this.val$value });
-} catch (Throwable e) {
-str = String.format("[toString() threw %s: %s]", new Object[] { e.getClass().getSimpleName(), e.getMessage() });
-} 
-} 
+    public abstract String getDescription() throws CouldNotGenerateValueException;
 
-return String.format("%s <from %s>", new Object[] { str, this.val$name });
-}
-};
-}
+    public static class CouldNotGenerateValueException
+            extends Exception {
+        private static final long serialVersionUID = 1L;
 
-public abstract Object getValue() throws CouldNotGenerateValueException;
+        public CouldNotGenerateValueException() {
+        }
 
-public abstract String getDescription() throws CouldNotGenerateValueException;
+        public CouldNotGenerateValueException(Throwable e) {
+            super(e);
+        }
+    }
 }
 

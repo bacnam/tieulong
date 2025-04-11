@@ -5,234 +5,223 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RowDataCursor
-implements RowData
-{
-private static final int BEFORE_START_OF_ROWS = -1;
-private List<ResultSetRow> fetchedRows;
-private int currentPositionInEntireResult = -1;
+        implements RowData {
+    private static final int BEFORE_START_OF_ROWS = -1;
+    private static final int SERVER_STATUS_LAST_ROW_SENT = 128;
+    private List<ResultSetRow> fetchedRows;
+    private int currentPositionInEntireResult = -1;
+    private int currentPositionInFetchedRows = -1;
+    private ResultSetImpl owner;
+    private boolean lastRowFetched = false;
+    private Field[] metadata;
+    private MysqlIO mysql;
+    private long statementIdOnServer;
+    private ServerPreparedStatement prepStmt;
+    private boolean firstFetchCompleted = false;
+
+    private boolean wasEmpty = false;
+
+    private boolean useBufferRowExplicit = false;
+
+    public RowDataCursor(MysqlIO ioChannel, ServerPreparedStatement creatingStatement, Field[] metadata) {
+        this.currentPositionInEntireResult = -1;
+        this.metadata = metadata;
+        this.mysql = ioChannel;
+        this.statementIdOnServer = creatingStatement.getServerStatementId();
+        this.prepStmt = creatingStatement;
+        this.useBufferRowExplicit = MysqlIO.useBufferRowExplicit(this.metadata);
+    }
+
+    public boolean isAfterLast() {
+        return (this.lastRowFetched && this.currentPositionInFetchedRows > this.fetchedRows.size());
+    }
+
+    public ResultSetRow getAt(int ind) throws SQLException {
+        notSupported();
+
+        return null;
+    }
+
+    public boolean isBeforeFirst() throws SQLException {
+        return (this.currentPositionInEntireResult < 0);
+    }
+
+    public void setCurrentRow(int rowNumber) throws SQLException {
+        notSupported();
+    }
+
+    public int getCurrentRowNumber() throws SQLException {
+        return this.currentPositionInEntireResult + 1;
+    }
 
-private int currentPositionInFetchedRows = -1;
+    public boolean isDynamic() {
+        return true;
+    }
 
-private ResultSetImpl owner;
+    public boolean isEmpty() throws SQLException {
+        return (isBeforeFirst() && isAfterLast());
+    }
 
-private boolean lastRowFetched = false;
+    public boolean isFirst() throws SQLException {
+        return (this.currentPositionInEntireResult == 0);
+    }
 
-private Field[] metadata;
+    public boolean isLast() throws SQLException {
+        return (this.lastRowFetched && this.currentPositionInFetchedRows == this.fetchedRows.size() - 1);
+    }
 
-private MysqlIO mysql;
+    public void addRow(ResultSetRow row) throws SQLException {
+        notSupported();
+    }
 
-private long statementIdOnServer;
+    public void afterLast() throws SQLException {
+        notSupported();
+    }
 
-private ServerPreparedStatement prepStmt;
+    public void beforeFirst() throws SQLException {
+        notSupported();
+    }
 
-private static final int SERVER_STATUS_LAST_ROW_SENT = 128;
+    public void beforeLast() throws SQLException {
+        notSupported();
+    }
 
-private boolean firstFetchCompleted = false;
+    public void close() throws SQLException {
+        this.metadata = null;
+        this.owner = null;
+    }
 
-private boolean wasEmpty = false;
+    public boolean hasNext() throws SQLException {
+        if (this.fetchedRows != null && this.fetchedRows.size() == 0) {
+            return false;
+        }
 
-private boolean useBufferRowExplicit = false;
+        if (this.owner != null && this.owner.owningStatement != null) {
+            int maxRows = this.owner.owningStatement.maxRows;
 
-public RowDataCursor(MysqlIO ioChannel, ServerPreparedStatement creatingStatement, Field[] metadata) {
-this.currentPositionInEntireResult = -1;
-this.metadata = metadata;
-this.mysql = ioChannel;
-this.statementIdOnServer = creatingStatement.getServerStatementId();
-this.prepStmt = creatingStatement;
-this.useBufferRowExplicit = MysqlIO.useBufferRowExplicit(this.metadata);
-}
+            if (maxRows != -1 && this.currentPositionInEntireResult + 1 > maxRows) {
+                return false;
+            }
+        }
 
-public boolean isAfterLast() {
-return (this.lastRowFetched && this.currentPositionInFetchedRows > this.fetchedRows.size());
-}
+        if (this.currentPositionInEntireResult != -1) {
 
-public ResultSetRow getAt(int ind) throws SQLException {
-notSupported();
+            if (this.currentPositionInFetchedRows < this.fetchedRows.size() - 1)
+                return true;
+            if (this.currentPositionInFetchedRows == this.fetchedRows.size() && this.lastRowFetched) {
 
-return null;
-}
+                return false;
+            }
 
-public boolean isBeforeFirst() throws SQLException {
-return (this.currentPositionInEntireResult < 0);
-}
+            fetchMoreRows();
 
-public void setCurrentRow(int rowNumber) throws SQLException {
-notSupported();
-}
+            return (this.fetchedRows.size() > 0);
+        }
 
-public int getCurrentRowNumber() throws SQLException {
-return this.currentPositionInEntireResult + 1;
-}
+        fetchMoreRows();
 
-public boolean isDynamic() {
-return true;
-}
+        return (this.fetchedRows.size() > 0);
+    }
 
-public boolean isEmpty() throws SQLException {
-return (isBeforeFirst() && isAfterLast());
-}
+    public void moveRowRelative(int rows) throws SQLException {
+        notSupported();
+    }
 
-public boolean isFirst() throws SQLException {
-return (this.currentPositionInEntireResult == 0);
-}
+    public ResultSetRow next() throws SQLException {
+        if (this.fetchedRows == null && this.currentPositionInEntireResult != -1) {
+            throw SQLError.createSQLException(Messages.getString("ResultSet.Operation_not_allowed_after_ResultSet_closed_144"), "S1000", this.mysql.getExceptionInterceptor());
+        }
 
-public boolean isLast() throws SQLException {
-return (this.lastRowFetched && this.currentPositionInFetchedRows == this.fetchedRows.size() - 1);
-}
+        if (!hasNext()) {
+            return null;
+        }
 
-public void addRow(ResultSetRow row) throws SQLException {
-notSupported();
-}
+        this.currentPositionInEntireResult++;
+        this.currentPositionInFetchedRows++;
 
-public void afterLast() throws SQLException {
-notSupported();
-}
+        if (this.fetchedRows != null && this.fetchedRows.size() == 0) {
+            return null;
+        }
 
-public void beforeFirst() throws SQLException {
-notSupported();
-}
+        if (this.currentPositionInFetchedRows > this.fetchedRows.size() - 1) {
+            fetchMoreRows();
+            this.currentPositionInFetchedRows = 0;
+        }
 
-public void beforeLast() throws SQLException {
-notSupported();
-}
+        ResultSetRow row = this.fetchedRows.get(this.currentPositionInFetchedRows);
 
-public void close() throws SQLException {
-this.metadata = null;
-this.owner = null;
-}
+        row.setMetadata(this.metadata);
 
-public boolean hasNext() throws SQLException {
-if (this.fetchedRows != null && this.fetchedRows.size() == 0) {
-return false;
-}
+        return row;
+    }
 
-if (this.owner != null && this.owner.owningStatement != null) {
-int maxRows = this.owner.owningStatement.maxRows;
+    private void fetchMoreRows() throws SQLException {
+        if (this.lastRowFetched) {
+            this.fetchedRows = new ArrayList<ResultSetRow>(0);
 
-if (maxRows != -1 && this.currentPositionInEntireResult + 1 > maxRows) {
-return false;
-}
-} 
+            return;
+        }
+        synchronized (this.owner.connection) {
+            boolean oldFirstFetchCompleted = this.firstFetchCompleted;
 
-if (this.currentPositionInEntireResult != -1) {
+            if (!this.firstFetchCompleted) {
+                this.firstFetchCompleted = true;
+            }
 
-if (this.currentPositionInFetchedRows < this.fetchedRows.size() - 1)
-return true; 
-if (this.currentPositionInFetchedRows == this.fetchedRows.size() && this.lastRowFetched)
-{
+            int numRowsToFetch = this.owner.getFetchSize();
 
-return false;
-}
+            if (numRowsToFetch == 0) {
+                numRowsToFetch = this.prepStmt.getFetchSize();
+            }
 
-fetchMoreRows();
+            if (numRowsToFetch == Integer.MIN_VALUE) {
 
-return (this.fetchedRows.size() > 0);
-} 
+                numRowsToFetch = 1;
+            }
 
-fetchMoreRows();
+            this.fetchedRows = this.mysql.fetchRowsViaCursor(this.fetchedRows, this.statementIdOnServer, this.metadata, numRowsToFetch, this.useBufferRowExplicit);
 
-return (this.fetchedRows.size() > 0);
-}
+            this.currentPositionInFetchedRows = -1;
 
-public void moveRowRelative(int rows) throws SQLException {
-notSupported();
-}
+            if ((this.mysql.getServerStatus() & 0x80) != 0) {
+                this.lastRowFetched = true;
 
-public ResultSetRow next() throws SQLException {
-if (this.fetchedRows == null && this.currentPositionInEntireResult != -1) {
-throw SQLError.createSQLException(Messages.getString("ResultSet.Operation_not_allowed_after_ResultSet_closed_144"), "S1000", this.mysql.getExceptionInterceptor());
-}
+                if (!oldFirstFetchCompleted && this.fetchedRows.size() == 0) {
+                    this.wasEmpty = true;
+                }
+            }
+        }
+    }
 
-if (!hasNext()) {
-return null;
-}
+    public void removeRow(int ind) throws SQLException {
+        notSupported();
+    }
 
-this.currentPositionInEntireResult++;
-this.currentPositionInFetchedRows++;
+    public int size() {
+        return -1;
+    }
 
-if (this.fetchedRows != null && this.fetchedRows.size() == 0) {
-return null;
-}
+    protected void nextRecord() throws SQLException {
+    }
 
-if (this.currentPositionInFetchedRows > this.fetchedRows.size() - 1) {
-fetchMoreRows();
-this.currentPositionInFetchedRows = 0;
-} 
+    private void notSupported() throws SQLException {
+        throw new OperationNotSupportedException();
+    }
 
-ResultSetRow row = this.fetchedRows.get(this.currentPositionInFetchedRows);
+    public ResultSetInternalMethods getOwner() {
+        return this.owner;
+    }
 
-row.setMetadata(this.metadata);
+    public void setOwner(ResultSetImpl rs) {
+        this.owner = rs;
+    }
 
-return row;
-}
+    public boolean wasEmpty() {
+        return this.wasEmpty;
+    }
 
-private void fetchMoreRows() throws SQLException {
-if (this.lastRowFetched) {
-this.fetchedRows = new ArrayList<ResultSetRow>(0);
-
-return;
-} 
-synchronized (this.owner.connection) {
-boolean oldFirstFetchCompleted = this.firstFetchCompleted;
-
-if (!this.firstFetchCompleted) {
-this.firstFetchCompleted = true;
-}
-
-int numRowsToFetch = this.owner.getFetchSize();
-
-if (numRowsToFetch == 0) {
-numRowsToFetch = this.prepStmt.getFetchSize();
-}
-
-if (numRowsToFetch == Integer.MIN_VALUE)
-{
-
-numRowsToFetch = 1;
-}
-
-this.fetchedRows = this.mysql.fetchRowsViaCursor(this.fetchedRows, this.statementIdOnServer, this.metadata, numRowsToFetch, this.useBufferRowExplicit);
-
-this.currentPositionInFetchedRows = -1;
-
-if ((this.mysql.getServerStatus() & 0x80) != 0) {
-this.lastRowFetched = true;
-
-if (!oldFirstFetchCompleted && this.fetchedRows.size() == 0) {
-this.wasEmpty = true;
-}
-} 
-} 
-}
-
-public void removeRow(int ind) throws SQLException {
-notSupported();
-}
-
-public int size() {
-return -1;
-}
-
-protected void nextRecord() throws SQLException {}
-
-private void notSupported() throws SQLException {
-throw new OperationNotSupportedException();
-}
-
-public void setOwner(ResultSetImpl rs) {
-this.owner = rs;
-}
-
-public ResultSetInternalMethods getOwner() {
-return this.owner;
-}
-
-public boolean wasEmpty() {
-return this.wasEmpty;
-}
-
-public void setMetadata(Field[] metadata) {
-this.metadata = metadata;
-}
+    public void setMetadata(Field[] metadata) {
+        this.metadata = metadata;
+    }
 }
 

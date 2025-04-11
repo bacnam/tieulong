@@ -1,18 +1,18 @@
 package com.mchange.util;
 
 public interface IntChecklist {
-  void check(int paramInt);
+    void check(int paramInt);
 
-  void uncheck(int paramInt);
+    void uncheck(int paramInt);
 
-  boolean isChecked(int paramInt);
+    boolean isChecked(int paramInt);
 
-  void clear();
+    void clear();
 
-  int countChecked();
+    int countChecked();
 
-  int[] getChecked();
+    int[] getChecked();
 
-  IntEnumeration checked();
+    IntEnumeration checked();
 }
 

@@ -1,10 +1,5 @@
 package javolution.util.internal.map;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import javolution.util.function.Consumer;
 import javolution.util.function.Equality;
 import javolution.util.function.Function;
@@ -15,292 +10,292 @@ import javolution.util.service.CollectionService;
 import javolution.util.service.MapService;
 import javolution.util.service.SetService;
 
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.Map;
+
 public abstract class MapView<K, V>
-implements MapService<K, V>
-{
-private static final long serialVersionUID = 1536L;
-private MapService<K, V> target;
+        implements MapService<K, V> {
+    private static final long serialVersionUID = 1536L;
+    private MapService<K, V> target;
 
-protected class EntryComparator
-implements Equality<Map.Entry<K, V>>, Serializable
-{
-private static final long serialVersionUID = 1536L;
+    public MapView(MapService<K, V> target) {
+        this.target = target;
+    }
 
-public boolean areEqual(Map.Entry<K, V> left, Map.Entry<K, V> right) {
-return MapView.this.keyComparator().areEqual(left.getKey(), right.getKey());
-}
+    public void clear() {
+        Iterator<Map.Entry<K, V>> it = iterator();
+        while (it.hasNext()) {
+            it.remove();
+        }
+    }
 
-public int compare(Map.Entry<K, V> left, Map.Entry<K, V> right) {
-return MapView.this.keyComparator().compare(left.getKey(), right.getKey());
-}
+    public MapView<K, V> clone() {
+        try {
+            MapView<K, V> copy = (MapView<K, V>) super.clone();
+            if (this.target != null) {
+                copy.target = this.target.clone();
+            }
+            return copy;
+        } catch (CloneNotSupportedException e) {
+            throw new Error("Should not happen since target is cloneable");
+        }
+    }
 
-public int hashCodeOf(Map.Entry<K, V> e) {
-return MapView.this.keyComparator().hashCodeOf(e.getKey());
-}
-}
+    public boolean containsValue(Object value) {
+        return values().contains(value);
+    }
 
-protected class EntrySet extends SetView<Map.Entry<K, V>> {
-private static final long serialVersionUID = 1536L;
+    public SetService<Map.Entry<K, V>> entrySet() {
+        return (SetService<Map.Entry<K, V>>) new EntrySet();
+    }
 
-public EntrySet() {
-super(null);
-}
+    public boolean isEmpty() {
+        return iterator().hasNext();
+    }
 
-public boolean add(Map.Entry<K, V> entry) {
-MapView.this.put(entry.getKey(), entry.getValue());
-return true;
-}
+    public SetService<K> keySet() {
+        return (SetService<K>) new KeySet();
+    }
 
-public Equality<? super Map.Entry<K, V>> comparator() {
-return new MapView.EntryComparator();
-}
+    public void perform(Consumer<MapService<K, V>> action, MapService<K, V> view) {
+        if (this.target == null) {
+            action.accept(view);
+        } else {
+            this.target.perform(action, view);
+        }
+    }
 
-public boolean contains(Object obj) {
-if (obj instanceof Map.Entry) {
-Map.Entry<K, V> e = (Map.Entry<K, V>)obj;
-return contains(e.getKey());
-} 
-return false;
-}
+    public void putAll(Map<? extends K, ? extends V> m) {
+        Iterator<?> it = m.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<K, V> e = (Map.Entry<K, V>) it.next();
+            put(e.getKey(), e.getValue());
+        }
+    }
 
-public boolean isEmpty() {
-return MapView.this.isEmpty();
-}
+    public V putIfAbsent(K key, V value) {
+        if (!containsKey(key)) return put(key, value);
+        return get(key);
+    }
 
-public Iterator<Map.Entry<K, V>> iterator() {
-return MapView.this.iterator();
-}
+    public boolean remove(Object key, Object value) {
+        if (containsKey(key) && get(key).equals(value)) {
+            remove(key);
+            return true;
+        }
+        return false;
+    }
 
-public void perform(final Consumer<CollectionService<Map.Entry<K, V>>> action, final CollectionService<Map.Entry<K, V>> view) {
-Consumer<MapService<K, V>> mapAction = new Consumer<MapService<K, V>>()
-{
-public void accept(MapService<K, V> param) {
-action.accept(view);
-}
-};
-MapView.this.perform(mapAction, MapView.this);
-}
+    public V replace(K key, V value) {
+        if (containsKey(key))
+            return put(key, value);
+        return null;
+    }
 
-public boolean remove(Object obj) {
-if (obj instanceof Map.Entry) {
-Map.Entry<K, V> e = (Map.Entry<K, V>)obj;
-if (!contains(e.getKey())) return false; 
-MapView.this.remove(e.getKey());
-return true;
-} 
-return false;
-}
+    public boolean replace(K key, V oldValue, V newValue) {
+        if (containsKey(key) && get(key).equals(oldValue)) {
+            put(key, newValue);
+            return true;
+        }
+        return false;
+    }
 
-public int size() {
-return MapView.this.size();
-}
+    public int size() {
+        int count = 0;
+        Iterator<Map.Entry<K, V>> it = iterator();
+        while (it.hasNext()) {
+            count++;
+            it.next();
+        }
+        return count;
+    }
 
-public CollectionService<Map.Entry<K, V>>[] split(int n) {
-MapService[] arrayOfMapService = MapView.this.split(n);
-CollectionService[] arrayOfCollectionService = new CollectionService[arrayOfMapService.length];
-for (int i = 0; i < arrayOfCollectionService.length; i++) {
-arrayOfCollectionService[i] = (CollectionService)arrayOfMapService[i].entrySet();
-}
-return (CollectionService<Map.Entry<K, V>>[])arrayOfCollectionService;
-}
+    public MapService<K, V>[] split(int n) {
+        if (this.target == null) return (MapService<K, V>[]) new MapService[]{this};
+        MapService[] arrayOfMapService1 = (MapService[]) this.target.split(n);
+        MapService[] arrayOfMapService2 = new MapService[arrayOfMapService1.length];
+        for (int i = 0; i < arrayOfMapService1.length; i++) {
+            MapView<K, V> copy = clone();
+            copy.target = arrayOfMapService1[i];
+            arrayOfMapService2[i] = copy;
+        }
+        return (MapService<K, V>[]) arrayOfMapService2;
+    }
 
-public void update(final Consumer<CollectionService<Map.Entry<K, V>>> action, final CollectionService<Map.Entry<K, V>> view) {
-Consumer<MapService<K, V>> mapAction = new Consumer<MapService<K, V>>()
-{
-public void accept(MapService<K, V> param) {
-action.accept(view);
-}
-};
-MapView.this.update(mapAction, MapView.this);
-}
-}
+    public MapService<K, V> threadSafe() {
+        return new SharedMapImpl<K, V>(this);
+    }
 
-protected class KeySet
-extends MappedSetImpl<Map.Entry<K, V>, K> {
-private static final long serialVersionUID = 1536L;
+    public void update(Consumer<MapService<K, V>> action, MapService<K, V> view) {
+        if (this.target == null) {
+            action.accept(view);
+        } else {
+            this.target.update(action, view);
+        }
+    }
 
-public KeySet() {
-super(MapView.this.entrySet(), new Function<Map.Entry<K, V>, K>(MapView.this)
-{
-public K apply(Map.Entry<K, V> e) {
-return e.getKey();
-}
-});
-}
+    public CollectionService<V> values() {
+        return (CollectionService<V>) new Values();
+    }
 
-public boolean add(K key) {
-if (MapView.this.containsKey(key)) return false; 
-MapView.this.put(key, null);
-return true;
-}
+    protected MapService<K, V> target() {
+        return this.target;
+    }
 
-public Equality<? super K> comparator() {
-return MapView.this.keyComparator();
-}
+    public abstract boolean containsKey(Object paramObject);
 
-public boolean contains(Object obj) {
-return MapView.this.containsKey(obj);
-}
+    public abstract V get(Object paramObject);
 
-public boolean remove(Object obj) {
-if (!MapView.this.containsKey(obj)) return false; 
-MapView.this.remove(obj);
-return true;
-}
-}
+    public abstract Iterator<Map.Entry<K, V>> iterator();
 
-protected class Values
-extends MappedCollectionImpl<Map.Entry<K, V>, V> {
-private static final long serialVersionUID = 1536L;
+    public abstract Equality<? super K> keyComparator();
 
-public Values() {
-super((CollectionService)MapView.this.entrySet(), new Function<Map.Entry<K, V>, V>(MapView.this)
-{
-public V apply(Map.Entry<K, V> e) {
-return e.getValue();
-}
-});
-}
+    public abstract V put(K paramK, V paramV);
 
-public Equality<? super V> comparator() {
-return MapView.this.valueComparator();
-}
-}
+    public abstract V remove(Object paramObject);
 
-public MapView(MapService<K, V> target) {
-this.target = target;
-}
+    public abstract Equality<? super V> valueComparator();
 
-public void clear() {
-Iterator<Map.Entry<K, V>> it = iterator();
-while (it.hasNext()) {
-it.remove();
-}
-}
+    protected class EntryComparator
+            implements Equality<Map.Entry<K, V>>, Serializable {
+        private static final long serialVersionUID = 1536L;
 
-public MapView<K, V> clone() {
-try {
-MapView<K, V> copy = (MapView<K, V>)super.clone();
-if (this.target != null) {
-copy.target = this.target.clone();
-}
-return copy;
-} catch (CloneNotSupportedException e) {
-throw new Error("Should not happen since target is cloneable");
-} 
-}
+        public boolean areEqual(Map.Entry<K, V> left, Map.Entry<K, V> right) {
+            return MapView.this.keyComparator().areEqual(left.getKey(), right.getKey());
+        }
 
-public boolean containsValue(Object value) {
-return values().contains(value);
-}
+        public int compare(Map.Entry<K, V> left, Map.Entry<K, V> right) {
+            return MapView.this.keyComparator().compare(left.getKey(), right.getKey());
+        }
 
-public SetService<Map.Entry<K, V>> entrySet() {
-return (SetService<Map.Entry<K, V>>)new EntrySet();
-}
+        public int hashCodeOf(Map.Entry<K, V> e) {
+            return MapView.this.keyComparator().hashCodeOf(e.getKey());
+        }
+    }
 
-public boolean isEmpty() {
-return iterator().hasNext();
-}
+    protected class EntrySet extends SetView<Map.Entry<K, V>> {
+        private static final long serialVersionUID = 1536L;
 
-public SetService<K> keySet() {
-return (SetService<K>)new KeySet();
-}
+        public EntrySet() {
+            super(null);
+        }
 
-public void perform(Consumer<MapService<K, V>> action, MapService<K, V> view) {
-if (this.target == null) {
-action.accept(view);
-} else {
-this.target.perform(action, view);
-} 
-}
+        public boolean add(Map.Entry<K, V> entry) {
+            MapView.this.put(entry.getKey(), entry.getValue());
+            return true;
+        }
 
-public void putAll(Map<? extends K, ? extends V> m) {
-Iterator<?> it = m.entrySet().iterator();
-while (it.hasNext()) {
-Map.Entry<K, V> e = (Map.Entry<K, V>)it.next();
-put(e.getKey(), e.getValue());
-} 
-}
+        public Equality<? super Map.Entry<K, V>> comparator() {
+            return new MapView.EntryComparator();
+        }
 
-public V putIfAbsent(K key, V value) {
-if (!containsKey(key)) return put(key, value); 
-return get(key);
-}
+        public boolean contains(Object obj) {
+            if (obj instanceof Map.Entry) {
+                Map.Entry<K, V> e = (Map.Entry<K, V>) obj;
+                return contains(e.getKey());
+            }
+            return false;
+        }
 
-public boolean remove(Object key, Object value) {
-if (containsKey(key) && get(key).equals(value)) {
-remove(key);
-return true;
-}  return false;
-}
+        public boolean isEmpty() {
+            return MapView.this.isEmpty();
+        }
 
-public V replace(K key, V value) {
-if (containsKey(key))
-return put(key, value); 
-return null;
-}
+        public Iterator<Map.Entry<K, V>> iterator() {
+            return MapView.this.iterator();
+        }
 
-public boolean replace(K key, V oldValue, V newValue) {
-if (containsKey(key) && get(key).equals(oldValue)) {
-put(key, newValue);
-return true;
-}  return false;
-}
+        public void perform(final Consumer<CollectionService<Map.Entry<K, V>>> action, final CollectionService<Map.Entry<K, V>> view) {
+            Consumer<MapService<K, V>> mapAction = new Consumer<MapService<K, V>>() {
+                public void accept(MapService<K, V> param) {
+                    action.accept(view);
+                }
+            };
+            MapView.this.perform(mapAction, MapView.this);
+        }
 
-public int size() {
-int count = 0;
-Iterator<Map.Entry<K, V>> it = iterator();
-while (it.hasNext()) {
-count++;
-it.next();
-} 
-return count;
-}
+        public boolean remove(Object obj) {
+            if (obj instanceof Map.Entry) {
+                Map.Entry<K, V> e = (Map.Entry<K, V>) obj;
+                if (!contains(e.getKey())) return false;
+                MapView.this.remove(e.getKey());
+                return true;
+            }
+            return false;
+        }
 
-public MapService<K, V>[] split(int n) {
-if (this.target == null) return (MapService<K, V>[])new MapService[] { this }; 
-MapService[] arrayOfMapService1 = (MapService[])this.target.split(n);
-MapService[] arrayOfMapService2 = new MapService[arrayOfMapService1.length];
-for (int i = 0; i < arrayOfMapService1.length; i++) {
-MapView<K, V> copy = clone();
-copy.target = arrayOfMapService1[i];
-arrayOfMapService2[i] = copy;
-} 
-return (MapService<K, V>[])arrayOfMapService2;
-}
+        public int size() {
+            return MapView.this.size();
+        }
 
-public MapService<K, V> threadSafe() {
-return new SharedMapImpl<K, V>(this);
-}
+        public CollectionService<Map.Entry<K, V>>[] split(int n) {
+            MapService[] arrayOfMapService = MapView.this.split(n);
+            CollectionService[] arrayOfCollectionService = new CollectionService[arrayOfMapService.length];
+            for (int i = 0; i < arrayOfCollectionService.length; i++) {
+                arrayOfCollectionService[i] = (CollectionService) arrayOfMapService[i].entrySet();
+            }
+            return (CollectionService<Map.Entry<K, V>>[]) arrayOfCollectionService;
+        }
 
-public void update(Consumer<MapService<K, V>> action, MapService<K, V> view) {
-if (this.target == null) {
-action.accept(view);
-} else {
-this.target.update(action, view);
-} 
-}
+        public void update(final Consumer<CollectionService<Map.Entry<K, V>>> action, final CollectionService<Map.Entry<K, V>> view) {
+            Consumer<MapService<K, V>> mapAction = new Consumer<MapService<K, V>>() {
+                public void accept(MapService<K, V> param) {
+                    action.accept(view);
+                }
+            };
+            MapView.this.update(mapAction, MapView.this);
+        }
+    }
 
-public CollectionService<V> values() {
-return (CollectionService<V>)new Values();
-}
+    protected class KeySet
+            extends MappedSetImpl<Map.Entry<K, V>, K> {
+        private static final long serialVersionUID = 1536L;
 
-protected MapService<K, V> target() {
-return this.target;
-}
+        public KeySet() {
+            super(MapView.this.entrySet(), new Function<Map.Entry<K, V>, K>(MapView.this) {
+                public K apply(Map.Entry<K, V> e) {
+                    return e.getKey();
+                }
+            });
+        }
 
-public abstract boolean containsKey(Object paramObject);
+        public boolean add(K key) {
+            if (MapView.this.containsKey(key)) return false;
+            MapView.this.put(key, null);
+            return true;
+        }
 
-public abstract V get(Object paramObject);
+        public Equality<? super K> comparator() {
+            return MapView.this.keyComparator();
+        }
 
-public abstract Iterator<Map.Entry<K, V>> iterator();
+        public boolean contains(Object obj) {
+            return MapView.this.containsKey(obj);
+        }
 
-public abstract Equality<? super K> keyComparator();
+        public boolean remove(Object obj) {
+            if (!MapView.this.containsKey(obj)) return false;
+            MapView.this.remove(obj);
+            return true;
+        }
+    }
 
-public abstract V put(K paramK, V paramV);
+    protected class Values
+            extends MappedCollectionImpl<Map.Entry<K, V>, V> {
+        private static final long serialVersionUID = 1536L;
 
-public abstract V remove(Object paramObject);
+        public Values() {
+            super((CollectionService) MapView.this.entrySet(), new Function<Map.Entry<K, V>, V>(MapView.this) {
+                public V apply(Map.Entry<K, V> e) {
+                    return e.getValue();
+                }
+            });
+        }
 
-public abstract Equality<? super V> valueComparator();
+        public Equality<? super V> comparator() {
+            return MapView.this.valueComparator();
+        }
+    }
 }
 

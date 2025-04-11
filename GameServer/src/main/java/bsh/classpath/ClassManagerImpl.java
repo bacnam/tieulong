@@ -1,10 +1,7 @@
 package bsh.classpath;
 
-import bsh.BshClassManager;
-import bsh.ClassPathException;
-import bsh.Interpreter;
-import bsh.InterpreterError;
-import bsh.UtilEvalError;
+import bsh.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -12,12 +9,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class ClassManagerImpl
         extends BshClassManager {
@@ -144,7 +136,7 @@ public class ClassManagerImpl
 
     public void addClassPath(URL path) throws IOException {
         if (this.baseLoader == null) {
-            setClassPath(new URL[] { path });
+            setClassPath(new URL[]{path});
         } else {
 
             this.baseLoader.addURL(path);
@@ -156,13 +148,6 @@ public class ClassManagerImpl
     public void reset() {
         this.baseClassPath = new BshClassPath("baseClassPath");
         this.baseLoader = null;
-        this.loaderMap = new HashMap<Object, Object>();
-        classLoaderChanged();
-    }
-
-    public void setClassPath(URL[] cp) {
-        this.baseClassPath.setPath(cp);
-        initBaseLoader();
         this.loaderMap = new HashMap<Object, Object>();
         classLoaderChanged();
     }
@@ -243,6 +228,13 @@ public class ClassManagerImpl
         return this.fullClassPath;
     }
 
+    public void setClassPath(URL[] cp) {
+        this.baseClassPath.setPath(cp);
+        initBaseLoader();
+        this.loaderMap = new HashMap<Object, Object>();
+        classLoaderChanged();
+    }
+
     public void doSuperImport() throws UtilEvalError {
         try {
             getClassPath().insureInitialized();
@@ -291,7 +283,7 @@ public class ClassManagerImpl
     public Class defineClass(String name, byte[] code) {
         this.baseClassPath.setClassSource(name, new BshClassPath.GeneratedClassSource(code));
         try {
-            reloadClasses(new String[] { name });
+            reloadClasses(new String[]{name});
         } catch (ClassPathException e) {
             throw new InterpreterError("defineClass: " + e);
         }
@@ -302,7 +294,7 @@ public class ClassManagerImpl
         clearCaches();
 
         Vector<WeakReference<BshClassManager.Listener>> toRemove = new Vector();
-        for (Enumeration<WeakReference> enumeration = this.listeners.elements(); enumeration.hasMoreElements();) {
+        for (Enumeration<WeakReference> enumeration = this.listeners.elements(); enumeration.hasMoreElements(); ) {
 
             WeakReference<BshClassManager.Listener> wr = enumeration.nextElement();
             BshClassManager.Listener l = wr.get();
@@ -312,7 +304,7 @@ public class ClassManagerImpl
             }
             l.classLoaderChanged();
         }
-        for (Enumeration<WeakReference<BshClassManager.Listener>> e = toRemove.elements(); e.hasMoreElements();) {
+        for (Enumeration<WeakReference<BshClassManager.Listener>> e = toRemove.elements(); e.hasMoreElements(); ) {
             this.listeners.removeElement(e.nextElement());
         }
     }

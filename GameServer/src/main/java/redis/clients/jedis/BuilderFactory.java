@@ -5,16 +5,6 @@ import redis.clients.util.SafeEncoder;
 import java.util.*;
 
 public class BuilderFactory {
-    public static final Builder<Double> DOUBLE = new Builder<Double>() {
-        public Double build(Object data) {
-            String asString = STRING.build(data);
-            return asString == null ? null : Double.valueOf(asString);
-        }
-
-        public String toString() {
-            return "double";
-        }
-    };
     public static final Builder<Boolean> BOOLEAN = new Builder<Boolean>() {
         public Boolean build(Object data) {
             return ((Long) data) == 1;
@@ -26,14 +16,13 @@ public class BuilderFactory {
     };
     public static final Builder<byte[]> BYTE_ARRAY = new Builder<byte[]>() {
         public byte[] build(Object data) {
-            return ((byte[]) data); 
+            return ((byte[]) data);
         }
 
         public String toString() {
             return "byte[]";
         }
     };
-
     public static final Builder<Long> LONG = new Builder<Long>() {
         public Long build(Object data) {
             return (Long) data;
@@ -53,6 +42,16 @@ public class BuilderFactory {
             return "string";
         }
 
+    };
+    public static final Builder<Double> DOUBLE = new Builder<Double>() {
+        public Double build(Object data) {
+            String asString = STRING.build(data);
+            return asString == null ? null : Double.valueOf(asString);
+        }
+
+        public String toString() {
+            return "double";
+        }
     };
     public static final Builder<List<String>> STRING_LIST = new Builder<List<String>>() {
         @SuppressWarnings("unchecked")

@@ -1,7 +1,5 @@
 package org.apache.mina.core.service;
 
-import java.util.Map;
-import java.util.Set;
 import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.core.filterchain.IoFilterChainBuilder;
 import org.apache.mina.core.future.WriteFuture;
@@ -9,51 +7,54 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.session.IoSessionConfig;
 import org.apache.mina.core.session.IoSessionDataStructureFactory;
 
+import java.util.Map;
+import java.util.Set;
+
 public interface IoService {
-  TransportMetadata getTransportMetadata();
+    TransportMetadata getTransportMetadata();
 
-  void addListener(IoServiceListener paramIoServiceListener);
+    void addListener(IoServiceListener paramIoServiceListener);
 
-  void removeListener(IoServiceListener paramIoServiceListener);
+    void removeListener(IoServiceListener paramIoServiceListener);
 
-  boolean isDisposing();
+    boolean isDisposing();
 
-  boolean isDisposed();
+    boolean isDisposed();
 
-  void dispose();
+    void dispose();
 
-  void dispose(boolean paramBoolean);
+    void dispose(boolean paramBoolean);
 
-  IoHandler getHandler();
+    IoHandler getHandler();
 
-  void setHandler(IoHandler paramIoHandler);
+    void setHandler(IoHandler paramIoHandler);
 
-  Map<Long, IoSession> getManagedSessions();
+    Map<Long, IoSession> getManagedSessions();
 
-  int getManagedSessionCount();
+    int getManagedSessionCount();
 
-  IoSessionConfig getSessionConfig();
+    IoSessionConfig getSessionConfig();
 
-  IoFilterChainBuilder getFilterChainBuilder();
+    IoFilterChainBuilder getFilterChainBuilder();
 
-  void setFilterChainBuilder(IoFilterChainBuilder paramIoFilterChainBuilder);
+    void setFilterChainBuilder(IoFilterChainBuilder paramIoFilterChainBuilder);
 
-  DefaultIoFilterChainBuilder getFilterChain();
+    DefaultIoFilterChainBuilder getFilterChain();
 
-  boolean isActive();
+    boolean isActive();
 
-  long getActivationTime();
+    long getActivationTime();
 
-  Set<WriteFuture> broadcast(Object paramObject);
+    Set<WriteFuture> broadcast(Object paramObject);
 
-  IoSessionDataStructureFactory getSessionDataStructureFactory();
+    IoSessionDataStructureFactory getSessionDataStructureFactory();
 
-  void setSessionDataStructureFactory(IoSessionDataStructureFactory paramIoSessionDataStructureFactory);
+    void setSessionDataStructureFactory(IoSessionDataStructureFactory paramIoSessionDataStructureFactory);
 
-  int getScheduledWriteBytes();
+    int getScheduledWriteBytes();
 
-  int getScheduledWriteMessages();
+    int getScheduledWriteMessages();
 
-  IoServiceStatistics getStatistics();
+    IoServiceStatistics getStatistics();
 }
 

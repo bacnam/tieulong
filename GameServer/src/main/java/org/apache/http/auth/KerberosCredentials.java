@@ -1,31 +1,31 @@
 package org.apache.http.auth;
 
-import java.io.Serializable;
-import java.security.Principal;
 import org.apache.http.annotation.Immutable;
 import org.ietf.jgss.GSSCredential;
 
+import java.io.Serializable;
+import java.security.Principal;
+
 @Immutable
 public class KerberosCredentials
-implements Credentials, Serializable
-{
-private static final long serialVersionUID = 487421613855550713L;
-private final GSSCredential gssCredential;
+        implements Credentials, Serializable {
+    private static final long serialVersionUID = 487421613855550713L;
+    private final GSSCredential gssCredential;
 
-public KerberosCredentials(GSSCredential gssCredential) {
-this.gssCredential = gssCredential;
-}
+    public KerberosCredentials(GSSCredential gssCredential) {
+        this.gssCredential = gssCredential;
+    }
 
-public GSSCredential getGSSCredential() {
-return this.gssCredential;
-}
+    public GSSCredential getGSSCredential() {
+        return this.gssCredential;
+    }
 
-public Principal getUserPrincipal() {
-return null;
-}
+    public Principal getUserPrincipal() {
+        return null;
+    }
 
-public String getPassword() {
-return null;
-}
+    public String getPassword() {
+        return null;
+    }
 }
 

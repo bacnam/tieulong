@@ -1,8 +1,8 @@
 package org.apache.http;
 
 public interface NameValuePair {
-  String getName();
+    String getName();
 
-  String getValue();
+    String getValue();
 }
 

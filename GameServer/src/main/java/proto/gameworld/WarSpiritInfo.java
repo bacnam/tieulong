@@ -1,18 +1,18 @@
 package proto.gameworld;
 
 public class WarSpiritInfo {
-  public long sid;
+    public long sid;
 
-  public int spiritId;
+    public int spiritId;
 
-  public int skill;
+    public int skill;
 
-  public boolean selected;
+    public boolean selected;
 
-  public int lv;
+    public int lv;
 
-  public int talent;
+    public int talent;
 
-  public int star;
+    public int star;
 }
 

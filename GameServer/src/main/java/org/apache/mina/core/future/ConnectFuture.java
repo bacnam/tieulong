@@ -3,26 +3,26 @@ package org.apache.mina.core.future;
 import org.apache.mina.core.session.IoSession;
 
 public interface ConnectFuture extends IoFuture {
-  IoSession getSession();
+    IoSession getSession();
 
-  Throwable getException();
+    void setSession(IoSession paramIoSession);
 
-  boolean isConnected();
+    Throwable getException();
 
-  boolean isCanceled();
+    void setException(Throwable paramThrowable);
 
-  void setSession(IoSession paramIoSession);
+    boolean isConnected();
 
-  void setException(Throwable paramThrowable);
+    boolean isCanceled();
 
-  void cancel();
+    void cancel();
 
-  ConnectFuture await() throws InterruptedException;
+    ConnectFuture await() throws InterruptedException;
 
-  ConnectFuture awaitUninterruptibly();
+    ConnectFuture awaitUninterruptibly();
 
-  ConnectFuture addListener(IoFutureListener<?> paramIoFutureListener);
+    ConnectFuture addListener(IoFutureListener<?> paramIoFutureListener);
 
-  ConnectFuture removeListener(IoFutureListener<?> paramIoFutureListener);
+    ConnectFuture removeListener(IoFutureListener<?> paramIoFutureListener);
 }
 

@@ -4,23 +4,21 @@ import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
 
-public class Computer
-{
-public static Computer serial() {
-return new Computer();
-}
+public class Computer {
+    public static Computer serial() {
+        return new Computer();
+    }
 
-public Runner getSuite(final RunnerBuilder builder, Class<?>[] classes) throws InitializationError {
-return (Runner)new Suite(new RunnerBuilder()
-{
-public Runner runnerForClass(Class<?> testClass) throws Throwable {
-return Computer.this.getRunner(builder, testClass);
-}
-}classes);
-}
+    public Runner getSuite(final RunnerBuilder builder, Class<?>[] classes) throws InitializationError {
+        return (Runner) new Suite(new RunnerBuilder() {
+            public Runner runnerForClass(Class<?> testClass) throws Throwable {
+                return Computer.this.getRunner(builder, testClass);
+            }
+        }classes);
+    }
 
-protected Runner getRunner(RunnerBuilder builder, Class<?> testClass) throws Throwable {
-return builder.runnerForClass(testClass);
-}
+    protected Runner getRunner(RunnerBuilder builder, Class<?> testClass) throws Throwable {
+        return builder.runnerForClass(testClass);
+    }
 }
 

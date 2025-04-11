@@ -4,12 +4,12 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScheme;
 
 public interface AuthCache {
-  void put(HttpHost paramHttpHost, AuthScheme paramAuthScheme);
+    void put(HttpHost paramHttpHost, AuthScheme paramAuthScheme);
 
-  AuthScheme get(HttpHost paramHttpHost);
+    AuthScheme get(HttpHost paramHttpHost);
 
-  void remove(HttpHost paramHttpHost);
+    void remove(HttpHost paramHttpHost);
 
-  void clear();
+    void clear();
 }
 

@@ -1,65 +1,65 @@
 package org.junit.runners.parameterized;
 
+import org.junit.runners.model.TestClass;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.runners.model.TestClass;
 
-public class TestWithParameters
-{
-private final String name;
-private final TestClass testClass;
-private final List<Object> parameters;
+public class TestWithParameters {
+    private final String name;
+    private final TestClass testClass;
+    private final List<Object> parameters;
 
-public TestWithParameters(String name, TestClass testClass, List<Object> parameters) {
-notNull(name, "The name is missing.");
-notNull(testClass, "The test class is missing.");
-notNull(parameters, "The parameters are missing.");
-this.name = name;
-this.testClass = testClass;
-this.parameters = Collections.unmodifiableList(new ArrayList(parameters));
-}
+    public TestWithParameters(String name, TestClass testClass, List<Object> parameters) {
+        notNull(name, "The name is missing.");
+        notNull(testClass, "The test class is missing.");
+        notNull(parameters, "The parameters are missing.");
+        this.name = name;
+        this.testClass = testClass;
+        this.parameters = Collections.unmodifiableList(new ArrayList(parameters));
+    }
 
-public String getName() {
-return this.name;
-}
+    private static void notNull(Object value, String message) {
+        if (value == null)
+            throw new NullPointerException(message);
+    }
 
-public TestClass getTestClass() {
-return this.testClass;
-}
+    public String getName() {
+        return this.name;
+    }
 
-public List<Object> getParameters() {
-return this.parameters;
-}
+    public TestClass getTestClass() {
+        return this.testClass;
+    }
 
-public int hashCode() {
-int prime = 14747;
-int result = prime + this.name.hashCode();
-result = prime * result + this.testClass.hashCode();
-return prime * result + this.parameters.hashCode();
-}
+    public List<Object> getParameters() {
+        return this.parameters;
+    }
 
-public boolean equals(Object obj) {
-if (this == obj) {
-return true;
-}
-if (obj == null) {
-return false;
-}
-if (getClass() != obj.getClass()) {
-return false;
-}
-TestWithParameters other = (TestWithParameters)obj;
-return (this.name.equals(other.name) && this.parameters.equals(other.parameters) && this.testClass.equals(other.testClass));
-}
+    public int hashCode() {
+        int prime = 14747;
+        int result = prime + this.name.hashCode();
+        result = prime * result + this.testClass.hashCode();
+        return prime * result + this.parameters.hashCode();
+    }
 
-public String toString() {
-return this.testClass.getName() + " '" + this.name + "' with parameters " + this.parameters;
-}
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TestWithParameters other = (TestWithParameters) obj;
+        return (this.name.equals(other.name) && this.parameters.equals(other.parameters) && this.testClass.equals(other.testClass));
+    }
 
-private static void notNull(Object value, String message) {
-if (value == null)
-throw new NullPointerException(message); 
-}
+    public String toString() {
+        return this.testClass.getName() + " '" + this.name + "' with parameters " + this.parameters;
+    }
 }
 

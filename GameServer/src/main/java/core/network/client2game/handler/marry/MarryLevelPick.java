@@ -8,34 +8,32 @@ import com.zhonglian.server.common.utils.StringUtils;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.List;
 
 public class MarryLevelPick
-extends PlayerHandler
-{
-public static class Request
-{
-int level;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        MarryFeature feature = (MarryFeature) player.getFeature(MarryFeature.class);
+        Reward reward = feature.pickLevelReward(req.level);
+        List<Integer> alreadyPick = StringUtils.string2Integer(feature.bo.getLevelReward());
+        request.response(new Response(alreadyPick, reward));
+    }
 
-private static class Response
-{
-List<Integer> alreadyPick;
-Reward reward;
+    public static class Request {
+        int level;
+    }
 
-public Response(List<Integer> alreadyPick, Reward reward) {
-this.alreadyPick = alreadyPick;
-this.reward = reward;
-}
-}
+    private static class Response {
+        List<Integer> alreadyPick;
+        Reward reward;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-MarryFeature feature = (MarryFeature)player.getFeature(MarryFeature.class);
-Reward reward = feature.pickLevelReward(req.level);
-List<Integer> alreadyPick = StringUtils.string2Integer(feature.bo.getLevelReward());
-request.response(new Response(alreadyPick, reward));
-}
+        public Response(List<Integer> alreadyPick, Reward reward) {
+            this.alreadyPick = alreadyPick;
+            this.reward = reward;
+        }
+    }
 }
 

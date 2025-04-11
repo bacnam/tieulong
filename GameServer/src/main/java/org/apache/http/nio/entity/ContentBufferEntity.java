@@ -9,30 +9,29 @@ import org.apache.http.util.Args;
 
 @NotThreadSafe
 public class ContentBufferEntity
-extends BasicHttpEntity
-{
-private final HttpEntity wrappedEntity;
+        extends BasicHttpEntity {
+    private final HttpEntity wrappedEntity;
 
-public ContentBufferEntity(HttpEntity entity, ContentInputBuffer buffer) {
-Args.notNull(entity, "HTTP entity");
-this.wrappedEntity = entity;
-setContent(new ContentInputStream(buffer));
-}
+    public ContentBufferEntity(HttpEntity entity, ContentInputBuffer buffer) {
+        Args.notNull(entity, "HTTP entity");
+        this.wrappedEntity = entity;
+        setContent(new ContentInputStream(buffer));
+    }
 
-public boolean isChunked() {
-return this.wrappedEntity.isChunked();
-}
+    public boolean isChunked() {
+        return this.wrappedEntity.isChunked();
+    }
 
-public long getContentLength() {
-return this.wrappedEntity.getContentLength();
-}
+    public long getContentLength() {
+        return this.wrappedEntity.getContentLength();
+    }
 
-public Header getContentType() {
-return this.wrappedEntity.getContentType();
-}
+    public Header getContentType() {
+        return this.wrappedEntity.getContentType();
+    }
 
-public Header getContentEncoding() {
-return this.wrappedEntity.getContentEncoding();
-}
+    public Header getContentEncoding() {
+        return this.wrappedEntity.getContentEncoding();
+    }
 }
 

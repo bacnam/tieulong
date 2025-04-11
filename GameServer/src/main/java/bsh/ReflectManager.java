@@ -1,28 +1,27 @@
 package bsh;
 
-public abstract class ReflectManager
-{
-private static ReflectManager rfm;
+public abstract class ReflectManager {
+    private static ReflectManager rfm;
 
-public static ReflectManager getReflectManager() throws Capabilities.Unavailable {
-if (rfm == null) {
+    public static ReflectManager getReflectManager() throws Capabilities.Unavailable {
+        if (rfm == null) {
 
-try {
+            try {
 
-Class<?> clas = Class.forName("bsh.reflect.ReflectManagerImpl");
-rfm = (ReflectManager)clas.newInstance();
-} catch (Exception e) {
-throw new Capabilities.Unavailable("Reflect Manager unavailable: " + e);
-} 
-}
+                Class<?> clas = Class.forName("bsh.reflect.ReflectManagerImpl");
+                rfm = (ReflectManager) clas.newInstance();
+            } catch (Exception e) {
+                throw new Capabilities.Unavailable("Reflect Manager unavailable: " + e);
+            }
+        }
 
-return rfm;
-}
+        return rfm;
+    }
 
-public static boolean RMSetAccessible(Object obj) throws Capabilities.Unavailable {
-return getReflectManager().setAccessible(obj);
-}
+    public static boolean RMSetAccessible(Object obj) throws Capabilities.Unavailable {
+        return getReflectManager().setAccessible(obj);
+    }
 
-public abstract boolean setAccessible(Object paramObject);
+    public abstract boolean setAccessible(Object paramObject);
 }
 

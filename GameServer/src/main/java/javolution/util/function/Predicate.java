@@ -1,6 +1,6 @@
 package javolution.util.function;
 
 public interface Predicate<T> {
-  boolean test(T paramT);
+    boolean test(T paramT);
 }
 

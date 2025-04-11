@@ -1,4 +1,5 @@
 package javax.realtime;
 
-public class RealtimeThread extends Thread {}
+public class RealtimeThread extends Thread {
+}
 

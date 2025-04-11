@@ -6,124 +6,125 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigList;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueType;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+
+import java.util.*;
 
 public class HoconMultiPropertiesConfig
-extends MultiPropertiesConfig
-{
-String quasiResourcePath;
-Properties props;
-List<DelayedLogItem> delayedLogItems = new LinkedList<DelayedLogItem>();
+        extends MultiPropertiesConfig {
+    String quasiResourcePath;
+    Properties props;
+    List<DelayedLogItem> delayedLogItems = new LinkedList<DelayedLogItem>();
 
-Map<String, Properties> propsByPrefix = new HashMap<String, Properties>();
+    Map<String, Properties> propsByPrefix = new HashMap<String, Properties>();
 
-public HoconMultiPropertiesConfig(String paramString, Config paramConfig) {
-this.quasiResourcePath = paramString;
-this.props = propsForConfig(paramConfig);
-}
+    public HoconMultiPropertiesConfig(String paramString, Config paramConfig) {
+        this.quasiResourcePath = paramString;
+        this.props = propsForConfig(paramConfig);
+    }
 
-private Properties propsForConfig(Config paramConfig) {
-Properties properties = new Properties();
-for (Map.Entry entry : paramConfig.entrySet()) {
+    private static String asSimpleString(ConfigValue paramConfigValue) throws IllegalArgumentException {
+        ConfigList<ConfigValue> configList;
+        StringBuilder stringBuilder;
+        byte b;
+        int i;
+        ConfigValueType configValueType = paramConfigValue.valueType();
+        switch (configValueType) {
 
-try {
-properties.put(entry.getKey(), asSimpleString((ConfigValue)entry.getValue()));
-} catch (IllegalArgumentException illegalArgumentException) {
-this.delayedLogItems.add(new DelayedLogItem(DelayedLogItem.Level.FINE, "For property '" + (String)entry.getKey() + "', " + illegalArgumentException.getMessage()));
-} 
-}  return properties; } private static String asSimpleString(ConfigValue paramConfigValue) throws IllegalArgumentException {
-ConfigList<ConfigValue> configList;
-StringBuilder stringBuilder;
-byte b;
-int i;
-ConfigValueType configValueType = paramConfigValue.valueType();
-switch (configValueType) {
+            case BOOLEAN:
+            case NUMBER:
+            case STRING:
+                return String.valueOf(paramConfigValue.unwrapped());
+            case LIST:
+                configList = (ConfigList) paramConfigValue;
+                for (ConfigValue configValue : configList) {
+                    if (!isSimple(configValue))
+                        throw new IllegalArgumentException("value is a complex list, could not be rendered as a simple property: " + paramConfigValue);
+                }
+                stringBuilder = new StringBuilder();
+                for (b = 0, i = configList.size(); b < i; b++) {
 
-case BOOLEAN:
-case NUMBER:
-case STRING:
-return String.valueOf(paramConfigValue.unwrapped());
-case LIST:
-configList = (ConfigList)paramConfigValue;
-for (ConfigValue configValue : configList) {
-if (!isSimple(configValue))
-throw new IllegalArgumentException("value is a complex list, could not be rendered as a simple property: " + paramConfigValue); 
-}  stringBuilder = new StringBuilder();
-for (b = 0, i = configList.size(); b < i; b++) {
+                    if (b != 0) stringBuilder.append(',');
+                    stringBuilder.append(asSimpleString(configList.get(b)));
+                }
+                return stringBuilder.toString();
+            case OBJECT:
+                throw new IllegalArgumentException("value is a ConfigValue object rather than an atom or list of atoms: " + paramConfigValue);
+            case NULL:
+                throw new IllegalArgumentException("value is a null; will be excluded from the MultiPropertiesConfig: " + paramConfigValue);
+        }
+        throw new IllegalArgumentException("value of an unexpected type: (value->" + paramConfigValue + ", type->" + configValueType + ")");
+    }
 
-if (b != 0) stringBuilder.append(','); 
-stringBuilder.append(asSimpleString(configList.get(b)));
-} 
-return stringBuilder.toString();
-case OBJECT:
-throw new IllegalArgumentException("value is a ConfigValue object rather than an atom or list of atoms: " + paramConfigValue);
-case NULL:
-throw new IllegalArgumentException("value is a null; will be excluded from the MultiPropertiesConfig: " + paramConfigValue);
-} 
-throw new IllegalArgumentException("value of an unexpected type: (value->" + paramConfigValue + ", type->" + configValueType + ")");
-}
+    private static boolean isSimple(ConfigValue paramConfigValue) {
+        ConfigValueType configValueType = paramConfigValue.valueType();
+        switch (configValueType) {
 
-private static boolean isSimple(ConfigValue paramConfigValue) {
-ConfigValueType configValueType = paramConfigValue.valueType();
-switch (configValueType) {
+            case BOOLEAN:
+            case NUMBER:
+            case STRING:
+                return true;
+        }
+        return false;
+    }
 
-case BOOLEAN:
-case NUMBER:
-case STRING:
-return true;
-} 
-return false;
-}
+    private Properties propsForConfig(Config paramConfig) {
+        Properties properties = new Properties();
+        for (Map.Entry entry : paramConfig.entrySet()) {
 
-public String[] getPropertiesResourcePaths() {
-return new String[] { this.quasiResourcePath };
-}
+            try {
+                properties.put(entry.getKey(), asSimpleString((ConfigValue) entry.getValue()));
+            } catch (IllegalArgumentException illegalArgumentException) {
+                this.delayedLogItems.add(new DelayedLogItem(DelayedLogItem.Level.FINE, "For property '" + (String) entry.getKey() + "', " + illegalArgumentException.getMessage()));
+            }
+        }
+        return properties;
+    }
 
-public Properties getPropertiesByResourcePath(String paramString) {
-if (paramString.equals(this.quasiResourcePath)) {
+    public String[] getPropertiesResourcePaths() {
+        return new String[]{this.quasiResourcePath};
+    }
 
-Properties properties = new Properties();
-properties.putAll(this.props);
-return properties;
-} 
+    public Properties getPropertiesByResourcePath(String paramString) {
+        if (paramString.equals(this.quasiResourcePath)) {
 
-return null;
-}
+            Properties properties = new Properties();
+            properties.putAll(this.props);
+            return properties;
+        }
 
-public synchronized Properties getPropertiesByPrefix(String paramString) {
-Properties properties = this.propsByPrefix.get(paramString);
-if (properties == null) {
+        return null;
+    }
 
-properties = new Properties();
+    public synchronized Properties getPropertiesByPrefix(String paramString) {
+        Properties properties = this.propsByPrefix.get(paramString);
+        if (properties == null) {
 
-if ("".equals(paramString)) {
-properties.putAll(this.props);
-} else {
+            properties = new Properties();
 
-String str = paramString + '.';
-for (Map.Entry<Object, Object> entry : this.props.entrySet()) {
+            if ("".equals(paramString)) {
+                properties.putAll(this.props);
+            } else {
 
-String str1 = (String)entry.getKey();
-if (str1.startsWith(str)) {
-properties.put(str1, entry.getValue());
-}
-} 
-} 
-this.propsByPrefix.put(paramString, properties);
-} 
-return properties;
-}
+                String str = paramString + '.';
+                for (Map.Entry<Object, Object> entry : this.props.entrySet()) {
 
-public String getProperty(String paramString) {
-return (String)this.props.get(paramString);
-}
+                    String str1 = (String) entry.getKey();
+                    if (str1.startsWith(str)) {
+                        properties.put(str1, entry.getValue());
+                    }
+                }
+            }
+            this.propsByPrefix.put(paramString, properties);
+        }
+        return properties;
+    }
 
-public List getDelayedLogItems() {
-return this.delayedLogItems;
-}
+    public String getProperty(String paramString) {
+        return (String) this.props.get(paramString);
+    }
+
+    public List getDelayedLogItems() {
+        return this.delayedLogItems;
+    }
 }
 

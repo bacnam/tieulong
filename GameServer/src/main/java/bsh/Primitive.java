@@ -5,8 +5,10 @@ import java.util.Hashtable;
 
 public final class Primitive
         implements ParserConstants, Serializable {
+    public static final Primitive NULL = new Primitive(Special.NULL_VALUE);
+    public static final Primitive VOID = new Primitive(Special.VOID_TYPE);
     static Hashtable wrapperMap = new Hashtable<Object, Object>();
-    private Object value;
+
     static {
         wrapperMap.put(boolean.class, Boolean.class);
         wrapperMap.put(byte.class, Byte.class);
@@ -26,15 +28,7 @@ public final class Primitive
         wrapperMap.put(Double.class, double.class);
     }
 
-    private static class Special
-            implements Serializable {
-        public static final Special NULL_VALUE = new Special();
-        public static final Special VOID_TYPE = new Special();
-    }
-
-    public static final Primitive NULL = new Primitive(Special.NULL_VALUE);
-
-    public static final Primitive VOID = new Primitive(Special.VOID_TYPE);
+    private Object value;
 
     public Primitive(Object value) {
         if (value == null) {
@@ -78,36 +72,6 @@ public final class Primitive
 
     public Primitive(double value) {
         this(new Double(value));
-    }
-
-    public Object getValue() {
-        if (this.value == Special.NULL_VALUE) {
-            return null;
-        }
-        if (this.value == Special.VOID_TYPE) {
-            throw new InterpreterError("attempt to unwrap void type");
-        }
-        return this.value;
-    }
-
-    public String toString() {
-        if (this.value == Special.NULL_VALUE)
-            return "null";
-        if (this.value == Special.VOID_TYPE) {
-            return "void";
-        }
-        return this.value.toString();
-    }
-
-    public Class getType() {
-        if (this == VOID) {
-            return void.class;
-        }
-
-        if (this == NULL) {
-            return null;
-        }
-        return unboxType(this.value.getClass());
     }
 
     public static Object binaryOperation(Object obj1, Object obj2, int kind) throws UtilEvalError {
@@ -481,7 +445,7 @@ public final class Primitive
                 }
             }
         }
-        return new Object[] { lhs, rhs };
+        return new Object[]{lhs, rhs};
     }
 
     public static Primitive unaryOperation(Primitive val, int kind) throws UtilEvalError {
@@ -597,47 +561,6 @@ public final class Primitive
         throw new InterpreterError("bad double unaryOperation");
     }
 
-    public int intValue() throws UtilEvalError {
-        if (this.value instanceof Number) {
-            return ((Number) this.value).intValue();
-        }
-        throw new UtilEvalError("Primitive not a number");
-    }
-
-    public boolean booleanValue() throws UtilEvalError {
-        if (this.value instanceof Boolean) {
-            return ((Boolean) this.value).booleanValue();
-        }
-        throw new UtilEvalError("Primitive not a boolean");
-    }
-
-    public boolean isNumber() {
-        return (!(this.value instanceof Boolean) && this != NULL && this != VOID);
-    }
-
-    public Number numberValue() throws UtilEvalError {
-        Object value = this.value;
-
-        if (value instanceof Character) {
-            value = new Integer(((Character) value).charValue());
-        }
-        if (value instanceof Number) {
-            return (Number) value;
-        }
-        throw new UtilEvalError("Primitive not a number");
-    }
-
-    public boolean equals(Object obj) {
-        if (obj instanceof Primitive) {
-            return ((Primitive) obj).value.equals(this.value);
-        }
-        return false;
-    }
-
-    public int hashCode() {
-        return this.value.hashCode() * 21;
-    }
-
     public static Object unwrap(Object obj) {
         if (obj == VOID) {
             return null;
@@ -707,12 +630,8 @@ public final class Primitive
         throw new InterpreterError("Not a primitive wrapper type: " + wrapperType);
     }
 
-    public Primitive castToType(Class toType, int operation) throws UtilEvalError {
-        return castPrimitive(toType, getType(), this, false, operation);
-    }
-
     static Primitive castPrimitive(Class<?> toType, Class<?> fromType, Primitive fromValue, boolean checkOnly,
-            int operation) throws UtilEvalError {
+                                   int operation) throws UtilEvalError {
         if (checkOnly && fromValue != null)
             throw new InterpreterError("bad cast param 1");
         if (!checkOnly && fromValue == null)
@@ -821,5 +740,86 @@ public final class Primitive
             return new Double(number.doubleValue());
         }
         throw new InterpreterError("error in wrapper cast");
+    }
+
+    public Object getValue() {
+        if (this.value == Special.NULL_VALUE) {
+            return null;
+        }
+        if (this.value == Special.VOID_TYPE) {
+            throw new InterpreterError("attempt to unwrap void type");
+        }
+        return this.value;
+    }
+
+    public String toString() {
+        if (this.value == Special.NULL_VALUE)
+            return "null";
+        if (this.value == Special.VOID_TYPE) {
+            return "void";
+        }
+        return this.value.toString();
+    }
+
+    public Class getType() {
+        if (this == VOID) {
+            return void.class;
+        }
+
+        if (this == NULL) {
+            return null;
+        }
+        return unboxType(this.value.getClass());
+    }
+
+    public int intValue() throws UtilEvalError {
+        if (this.value instanceof Number) {
+            return ((Number) this.value).intValue();
+        }
+        throw new UtilEvalError("Primitive not a number");
+    }
+
+    public boolean booleanValue() throws UtilEvalError {
+        if (this.value instanceof Boolean) {
+            return ((Boolean) this.value).booleanValue();
+        }
+        throw new UtilEvalError("Primitive not a boolean");
+    }
+
+    public boolean isNumber() {
+        return (!(this.value instanceof Boolean) && this != NULL && this != VOID);
+    }
+
+    public Number numberValue() throws UtilEvalError {
+        Object value = this.value;
+
+        if (value instanceof Character) {
+            value = new Integer(((Character) value).charValue());
+        }
+        if (value instanceof Number) {
+            return (Number) value;
+        }
+        throw new UtilEvalError("Primitive not a number");
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof Primitive) {
+            return ((Primitive) obj).value.equals(this.value);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this.value.hashCode() * 21;
+    }
+
+    public Primitive castToType(Class toType, int operation) throws UtilEvalError {
+        return castPrimitive(toType, getType(), this, false, operation);
+    }
+
+    private static class Special
+            implements Serializable {
+        public static final Special NULL_VALUE = new Special();
+        public static final Special VOID_TYPE = new Special();
     }
 }

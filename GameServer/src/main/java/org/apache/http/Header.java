@@ -1,10 +1,10 @@
 package org.apache.http;
 
 public interface Header {
-  String getName();
+    String getName();
 
-  String getValue();
+    String getValue();
 
-  HeaderElement[] getElements() throws ParseException;
+    HeaderElement[] getElements() throws ParseException;
 }
 

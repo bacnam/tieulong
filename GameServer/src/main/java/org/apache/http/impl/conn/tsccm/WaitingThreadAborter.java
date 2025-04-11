@@ -1,23 +1,22 @@
 package org.apache.http.impl.conn.tsccm;
 
 @Deprecated
-public class WaitingThreadAborter
-{
-private WaitingThread waitingThread;
-private boolean aborted;
+public class WaitingThreadAborter {
+    private WaitingThread waitingThread;
+    private boolean aborted;
 
-public void abort() {
-this.aborted = true;
+    public void abort() {
+        this.aborted = true;
 
-if (this.waitingThread != null) {
-this.waitingThread.interrupt();
-}
-}
+        if (this.waitingThread != null) {
+            this.waitingThread.interrupt();
+        }
+    }
 
-public void setWaitingThread(WaitingThread waitingThread) {
-this.waitingThread = waitingThread;
-if (this.aborted)
-waitingThread.interrupt(); 
-}
+    public void setWaitingThread(WaitingThread waitingThread) {
+        this.waitingThread = waitingThread;
+        if (this.aborted)
+            waitingThread.interrupt();
+    }
 }
 

@@ -2,38 +2,39 @@ package ch.qos.logback.classic.spi;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.core.spi.DeferredProcessingAware;
-import java.util.Map;
 import org.slf4j.Marker;
 
+import java.util.Map;
+
 public interface ILoggingEvent extends DeferredProcessingAware {
-  String getThreadName();
+    String getThreadName();
 
-  Level getLevel();
+    Level getLevel();
 
-  String getMessage();
+    String getMessage();
 
-  Object[] getArgumentArray();
+    Object[] getArgumentArray();
 
-  String getFormattedMessage();
+    String getFormattedMessage();
 
-  String getLoggerName();
+    String getLoggerName();
 
-  LoggerContextVO getLoggerContextVO();
+    LoggerContextVO getLoggerContextVO();
 
-  IThrowableProxy getThrowableProxy();
+    IThrowableProxy getThrowableProxy();
 
-  StackTraceElement[] getCallerData();
+    StackTraceElement[] getCallerData();
 
-  boolean hasCallerData();
+    boolean hasCallerData();
 
-  Marker getMarker();
+    Marker getMarker();
 
-  Map<String, String> getMDCPropertyMap();
+    Map<String, String> getMDCPropertyMap();
 
-  Map<String, String> getMdc();
+    Map<String, String> getMdc();
 
-  long getTimeStamp();
+    long getTimeStamp();
 
-  void prepareForDeferredProcessing();
+    void prepareForDeferredProcessing();
 }
 

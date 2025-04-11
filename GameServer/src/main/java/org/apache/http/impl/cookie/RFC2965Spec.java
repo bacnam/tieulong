@@ -1,167 +1,158 @@
 package org.apache.http.impl.cookie;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.NameValuePair;
 import org.apache.http.annotation.Obsolete;
 import org.apache.http.annotation.ThreadSafe;
-import org.apache.http.cookie.ClientCookie;
-import org.apache.http.cookie.CommonCookieAttributeHandler;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.cookie.CookieAttributeHandler;
-import org.apache.http.cookie.CookieOrigin;
-import org.apache.http.cookie.MalformedCookieException;
+import org.apache.http.cookie.*;
 import org.apache.http.message.BufferedHeader;
 import org.apache.http.util.Args;
 import org.apache.http.util.CharArrayBuffer;
 
+import java.util.*;
+
 @Obsolete
 @ThreadSafe
 public class RFC2965Spec
-extends RFC2109Spec
-{
-public RFC2965Spec() {
-this((String[])null, false);
-}
+        extends RFC2109Spec {
+    public RFC2965Spec() {
+        this((String[]) null, false);
+    }
 
-public RFC2965Spec(String[] datepatterns, boolean oneHeader) {
-super(oneHeader, new CommonCookieAttributeHandler[] { new RFC2965VersionAttributeHandler(), new BasicPathHandler(), new RFC2965DomainAttributeHandler(), new RFC2965PortAttributeHandler(), new BasicMaxAgeHandler(), new BasicSecureHandler(), new BasicCommentHandler(), new BasicExpiresHandler((datepatterns != null) ? (String[])datepatterns.clone() : DATE_PATTERNS), new RFC2965CommentUrlAttributeHandler(), new RFC2965DiscardAttributeHandler() });
-}
+    public RFC2965Spec(String[] datepatterns, boolean oneHeader) {
+        super(oneHeader, new CommonCookieAttributeHandler[]{new RFC2965VersionAttributeHandler(), new BasicPathHandler(), new RFC2965DomainAttributeHandler(), new RFC2965PortAttributeHandler(), new BasicMaxAgeHandler(), new BasicSecureHandler(), new BasicCommentHandler(), new BasicExpiresHandler((datepatterns != null) ? (String[]) datepatterns.clone() : DATE_PATTERNS), new RFC2965CommentUrlAttributeHandler(), new RFC2965DiscardAttributeHandler()});
+    }
 
-RFC2965Spec(boolean oneHeader, CommonCookieAttributeHandler... handlers) {
-super(oneHeader, handlers);
-}
+    RFC2965Spec(boolean oneHeader, CommonCookieAttributeHandler... handlers) {
+        super(oneHeader, handlers);
+    }
 
-public List<Cookie> parse(Header header, CookieOrigin origin) throws MalformedCookieException {
-Args.notNull(header, "Header");
-Args.notNull(origin, "Cookie origin");
-if (!header.getName().equalsIgnoreCase("Set-Cookie2")) {
-throw new MalformedCookieException("Unrecognized cookie header '" + header.toString() + "'");
-}
+    private static CookieOrigin adjustEffectiveHost(CookieOrigin origin) {
+        String host = origin.getHost();
 
-HeaderElement[] elems = header.getElements();
-return createCookies(elems, adjustEffectiveHost(origin));
-}
+        boolean isLocalHost = true;
+        for (int i = 0; i < host.length(); i++) {
+            char ch = host.charAt(i);
+            if (ch == '.' || ch == ':') {
+                isLocalHost = false;
+                break;
+            }
+        }
+        if (isLocalHost) {
+            host = host + ".local";
+            return new CookieOrigin(host, origin.getPort(), origin.getPath(), origin.isSecure());
+        }
 
-protected List<Cookie> parse(HeaderElement[] elems, CookieOrigin origin) throws MalformedCookieException {
-return createCookies(elems, adjustEffectiveHost(origin));
-}
+        return origin;
+    }
 
-private List<Cookie> createCookies(HeaderElement[] elems, CookieOrigin origin) throws MalformedCookieException {
-List<Cookie> cookies = new ArrayList<Cookie>(elems.length);
-for (HeaderElement headerelement : elems) {
-String name = headerelement.getName();
-String value = headerelement.getValue();
-if (name == null || name.isEmpty()) {
-throw new MalformedCookieException("Cookie name may not be empty");
-}
+    public List<Cookie> parse(Header header, CookieOrigin origin) throws MalformedCookieException {
+        Args.notNull(header, "Header");
+        Args.notNull(origin, "Cookie origin");
+        if (!header.getName().equalsIgnoreCase("Set-Cookie2")) {
+            throw new MalformedCookieException("Unrecognized cookie header '" + header.toString() + "'");
+        }
 
-BasicClientCookie2 cookie = new BasicClientCookie2(name, value);
-cookie.setPath(getDefaultPath(origin));
-cookie.setDomain(getDefaultDomain(origin));
-cookie.setPorts(new int[] { origin.getPort() });
+        HeaderElement[] elems = header.getElements();
+        return createCookies(elems, adjustEffectiveHost(origin));
+    }
 
-NameValuePair[] attribs = headerelement.getParameters();
+    protected List<Cookie> parse(HeaderElement[] elems, CookieOrigin origin) throws MalformedCookieException {
+        return createCookies(elems, adjustEffectiveHost(origin));
+    }
 
-Map<String, NameValuePair> attribmap = new HashMap<String, NameValuePair>(attribs.length);
+    private List<Cookie> createCookies(HeaderElement[] elems, CookieOrigin origin) throws MalformedCookieException {
+        List<Cookie> cookies = new ArrayList<Cookie>(elems.length);
+        for (HeaderElement headerelement : elems) {
+            String name = headerelement.getName();
+            String value = headerelement.getValue();
+            if (name == null || name.isEmpty()) {
+                throw new MalformedCookieException("Cookie name may not be empty");
+            }
 
-for (int j = attribs.length - 1; j >= 0; j--) {
-NameValuePair param = attribs[j];
-attribmap.put(param.getName().toLowerCase(Locale.ROOT), param);
-} 
-for (Map.Entry<String, NameValuePair> entry : attribmap.entrySet()) {
-NameValuePair attrib = entry.getValue();
-String s = attrib.getName().toLowerCase(Locale.ROOT);
+            BasicClientCookie2 cookie = new BasicClientCookie2(name, value);
+            cookie.setPath(getDefaultPath(origin));
+            cookie.setDomain(getDefaultDomain(origin));
+            cookie.setPorts(new int[]{origin.getPort()});
 
-cookie.setAttribute(s, attrib.getValue());
+            NameValuePair[] attribs = headerelement.getParameters();
 
-CookieAttributeHandler handler = findAttribHandler(s);
-if (handler != null) {
-handler.parse(cookie, attrib.getValue());
-}
-} 
-cookies.add(cookie);
-} 
-return cookies;
-}
+            Map<String, NameValuePair> attribmap = new HashMap<String, NameValuePair>(attribs.length);
 
-public void validate(Cookie cookie, CookieOrigin origin) throws MalformedCookieException {
-Args.notNull(cookie, "Cookie");
-Args.notNull(origin, "Cookie origin");
-super.validate(cookie, adjustEffectiveHost(origin));
-}
+            for (int j = attribs.length - 1; j >= 0; j--) {
+                NameValuePair param = attribs[j];
+                attribmap.put(param.getName().toLowerCase(Locale.ROOT), param);
+            }
+            for (Map.Entry<String, NameValuePair> entry : attribmap.entrySet()) {
+                NameValuePair attrib = entry.getValue();
+                String s = attrib.getName().toLowerCase(Locale.ROOT);
 
-public boolean match(Cookie cookie, CookieOrigin origin) {
-Args.notNull(cookie, "Cookie");
-Args.notNull(origin, "Cookie origin");
-return super.match(cookie, adjustEffectiveHost(origin));
-}
+                cookie.setAttribute(s, attrib.getValue());
 
-protected void formatCookieAsVer(CharArrayBuffer buffer, Cookie cookie, int version) {
-super.formatCookieAsVer(buffer, cookie, version);
+                CookieAttributeHandler handler = findAttribHandler(s);
+                if (handler != null) {
+                    handler.parse(cookie, attrib.getValue());
+                }
+            }
+            cookies.add(cookie);
+        }
+        return cookies;
+    }
 
-if (cookie instanceof ClientCookie) {
+    public void validate(Cookie cookie, CookieOrigin origin) throws MalformedCookieException {
+        Args.notNull(cookie, "Cookie");
+        Args.notNull(origin, "Cookie origin");
+        super.validate(cookie, adjustEffectiveHost(origin));
+    }
 
-String s = ((ClientCookie)cookie).getAttribute("port");
-if (s != null) {
-buffer.append("; $Port");
-buffer.append("=\"");
-if (!s.trim().isEmpty()) {
-int[] ports = cookie.getPorts();
-if (ports != null) {
-int len = ports.length;
-for (int i = 0; i < len; i++) {
-if (i > 0) {
-buffer.append(",");
-}
-buffer.append(Integer.toString(ports[i]));
-} 
-} 
-} 
-buffer.append("\"");
-} 
-} 
-}
+    public boolean match(Cookie cookie, CookieOrigin origin) {
+        Args.notNull(cookie, "Cookie");
+        Args.notNull(origin, "Cookie origin");
+        return super.match(cookie, adjustEffectiveHost(origin));
+    }
 
-private static CookieOrigin adjustEffectiveHost(CookieOrigin origin) {
-String host = origin.getHost();
+    protected void formatCookieAsVer(CharArrayBuffer buffer, Cookie cookie, int version) {
+        super.formatCookieAsVer(buffer, cookie, version);
 
-boolean isLocalHost = true;
-for (int i = 0; i < host.length(); i++) {
-char ch = host.charAt(i);
-if (ch == '.' || ch == ':') {
-isLocalHost = false;
-break;
-} 
-} 
-if (isLocalHost) {
-host = host + ".local";
-return new CookieOrigin(host, origin.getPort(), origin.getPath(), origin.isSecure());
-} 
+        if (cookie instanceof ClientCookie) {
 
-return origin;
-}
+            String s = ((ClientCookie) cookie).getAttribute("port");
+            if (s != null) {
+                buffer.append("; $Port");
+                buffer.append("=\"");
+                if (!s.trim().isEmpty()) {
+                    int[] ports = cookie.getPorts();
+                    if (ports != null) {
+                        int len = ports.length;
+                        for (int i = 0; i < len; i++) {
+                            if (i > 0) {
+                                buffer.append(",");
+                            }
+                            buffer.append(Integer.toString(ports[i]));
+                        }
+                    }
+                }
+                buffer.append("\"");
+            }
+        }
+    }
 
-public int getVersion() {
-return 1;
-}
+    public int getVersion() {
+        return 1;
+    }
 
-public Header getVersionHeader() {
-CharArrayBuffer buffer = new CharArrayBuffer(40);
-buffer.append("Cookie2");
-buffer.append(": ");
-buffer.append("$Version=");
-buffer.append(Integer.toString(getVersion()));
-return (Header)new BufferedHeader(buffer);
-}
+    public Header getVersionHeader() {
+        CharArrayBuffer buffer = new CharArrayBuffer(40);
+        buffer.append("Cookie2");
+        buffer.append(": ");
+        buffer.append("$Version=");
+        buffer.append(Integer.toString(getVersion()));
+        return (Header) new BufferedHeader(buffer);
+    }
 
-public String toString() {
-return "rfc2965";
-}
+    public String toString() {
+        return "rfc2965";
+    }
 }
 

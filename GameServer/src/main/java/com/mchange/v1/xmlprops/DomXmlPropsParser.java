@@ -2,14 +2,6 @@ package com.mchange.v1.xmlprops;
 
 import com.mchange.v1.xml.ResourceEntityResolver;
 import com.mchange.v1.xml.StdErrErrorHandler;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,6 +10,13 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class DomXmlPropsParser {
     static final String XMLPROPS_NAMESPACE_URI = "http:";
     static DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -25,6 +24,22 @@ public class DomXmlPropsParser {
     static {
         factory.setNamespaceAware(true);
         factory.setValidating(true);
+    }
+
+    public static void main(String[] paramArrayOfString) {
+        try {
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(paramArrayOfString[0]));
+            DomXmlPropsParser domXmlPropsParser = new DomXmlPropsParser();
+            Properties properties = domXmlPropsParser.parseXmlProps(bufferedInputStream);
+            for (String str1 : properties.keySet()) {
+
+                String str2 = properties.getProperty(str1);
+                System.err.println(str1 + '=' + str2);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public Properties parseXmlProps(InputStream paramInputStream) throws XmlPropsException {
@@ -70,22 +85,6 @@ public class DomXmlPropsParser {
 
             exception.printStackTrace();
             throw new XmlPropsException(exception);
-        }
-    }
-
-    public static void main(String[] paramArrayOfString) {
-        try {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(paramArrayOfString[0]));
-            DomXmlPropsParser domXmlPropsParser = new DomXmlPropsParser();
-            Properties properties = domXmlPropsParser.parseXmlProps(bufferedInputStream);
-            for (String str1 : properties.keySet()) {
-
-                String str2 = properties.getProperty(str1);
-                System.err.println(str1 + '=' + str2);
-            }
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
         }
     }
 }

@@ -5,16 +5,17 @@ import java.sql.Statement;
 import java.util.Set;
 
 final class NullStatementSetManagedResultSet
-extends SetManagedResultSet
-{
-NullStatementSetManagedResultSet(Set activeResultSets) {
-super(activeResultSets);
-}
-NullStatementSetManagedResultSet(ResultSet inner, Set activeResultSets) {
-super(inner, activeResultSets);
-}
-public Statement getStatement() {
-return null;
-}
+        extends SetManagedResultSet {
+    NullStatementSetManagedResultSet(Set activeResultSets) {
+        super(activeResultSets);
+    }
+
+    NullStatementSetManagedResultSet(ResultSet inner, Set activeResultSets) {
+        super(inner, activeResultSets);
+    }
+
+    public Statement getStatement() {
+        return null;
+    }
 }
 

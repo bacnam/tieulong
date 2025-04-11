@@ -1,486 +1,448 @@
 package org.apache.commons.cli;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-public class HelpFormatter
-{
-public static final int DEFAULT_WIDTH = 74;
-public static final int DEFAULT_LEFT_PAD = 1;
-public static final int DEFAULT_DESC_PAD = 3;
-public static final String DEFAULT_SYNTAX_PREFIX = "usage: ";
-public static final String DEFAULT_OPT_PREFIX = "-";
-public static final String DEFAULT_LONG_OPT_PREFIX = "--";
-public static final String DEFAULT_ARG_NAME = "arg";
-public int defaultWidth = 74;
+public class HelpFormatter {
+    public static final int DEFAULT_WIDTH = 74;
+    public static final int DEFAULT_LEFT_PAD = 1;
+    public static final int DEFAULT_DESC_PAD = 3;
+    public static final String DEFAULT_SYNTAX_PREFIX = "usage: ";
+    public static final String DEFAULT_OPT_PREFIX = "-";
+    public static final String DEFAULT_LONG_OPT_PREFIX = "--";
+    public static final String DEFAULT_ARG_NAME = "arg";
+    public int defaultWidth = 74;
 
-public int defaultLeftPad = 1;
+    public int defaultLeftPad = 1;
 
-public int defaultDescPad = 3;
+    public int defaultDescPad = 3;
 
-public String defaultSyntaxPrefix = "usage: ";
+    public String defaultSyntaxPrefix = "usage: ";
 
-public String defaultNewLine = System.getProperty("line.separator");
+    public String defaultNewLine = System.getProperty("line.separator");
 
-public String defaultOptPrefix = "-";
+    public String defaultOptPrefix = "-";
 
-public String defaultLongOptPrefix = "--";
+    public String defaultLongOptPrefix = "--";
 
-public String defaultArgName = "arg";
+    public String defaultArgName = "arg";
 
-protected Comparator optionComparator = new OptionComparator();
+    protected Comparator optionComparator = new OptionComparator();
 
-public void setWidth(int width) {
-this.defaultWidth = width;
-}
+    private static void appendOption(StringBuffer buff, Option option, boolean required) {
+        if (!required) {
+            buff.append("[");
+        }
 
-public int getWidth() {
-return this.defaultWidth;
-}
+        if (option.getOpt() != null) {
 
-public void setLeftPadding(int padding) {
-this.defaultLeftPad = padding;
-}
+            buff.append("-").append(option.getOpt());
+        } else {
 
-public int getLeftPadding() {
-return this.defaultLeftPad;
-}
+            buff.append("--").append(option.getLongOpt());
+        }
 
-public void setDescPadding(int padding) {
-this.defaultDescPad = padding;
-}
+        if (option.hasArg() && option.hasArgName()) {
+            buff.append(" <").append(option.getArgName()).append(">");
+        }
 
-public int getDescPadding() {
-return this.defaultDescPad;
-}
+        if (!required) {
+            buff.append("]");
+        }
+    }
 
-public void setSyntaxPrefix(String prefix) {
-this.defaultSyntaxPrefix = prefix;
-}
+    public int getWidth() {
+        return this.defaultWidth;
+    }
 
-public String getSyntaxPrefix() {
-return this.defaultSyntaxPrefix;
-}
+    public void setWidth(int width) {
+        this.defaultWidth = width;
+    }
 
-public void setNewLine(String newline) {
-this.defaultNewLine = newline;
-}
+    public int getLeftPadding() {
+        return this.defaultLeftPad;
+    }
 
-public String getNewLine() {
-return this.defaultNewLine;
-}
+    public void setLeftPadding(int padding) {
+        this.defaultLeftPad = padding;
+    }
 
-public void setOptPrefix(String prefix) {
-this.defaultOptPrefix = prefix;
-}
+    public int getDescPadding() {
+        return this.defaultDescPad;
+    }
 
-public String getOptPrefix() {
-return this.defaultOptPrefix;
-}
+    public void setDescPadding(int padding) {
+        this.defaultDescPad = padding;
+    }
 
-public void setLongOptPrefix(String prefix) {
-this.defaultLongOptPrefix = prefix;
-}
+    public String getSyntaxPrefix() {
+        return this.defaultSyntaxPrefix;
+    }
 
-public String getLongOptPrefix() {
-return this.defaultLongOptPrefix;
-}
+    public void setSyntaxPrefix(String prefix) {
+        this.defaultSyntaxPrefix = prefix;
+    }
 
-public void setArgName(String name) {
-this.defaultArgName = name;
-}
+    public String getNewLine() {
+        return this.defaultNewLine;
+    }
 
-public String getArgName() {
-return this.defaultArgName;
-}
+    public void setNewLine(String newline) {
+        this.defaultNewLine = newline;
+    }
 
-public Comparator getOptionComparator() {
-return this.optionComparator;
-}
+    public String getOptPrefix() {
+        return this.defaultOptPrefix;
+    }
 
-public void setOptionComparator(Comparator comparator) {
-if (comparator == null) {
+    public void setOptPrefix(String prefix) {
+        this.defaultOptPrefix = prefix;
+    }
 
-this.optionComparator = new OptionComparator();
-}
-else {
+    public String getLongOptPrefix() {
+        return this.defaultLongOptPrefix;
+    }
 
-this.optionComparator = comparator;
-} 
-}
+    public void setLongOptPrefix(String prefix) {
+        this.defaultLongOptPrefix = prefix;
+    }
 
-public void printHelp(String cmdLineSyntax, Options options) {
-printHelp(this.defaultWidth, cmdLineSyntax, null, options, null, false);
-}
+    public String getArgName() {
+        return this.defaultArgName;
+    }
 
-public void printHelp(String cmdLineSyntax, Options options, boolean autoUsage) {
-printHelp(this.defaultWidth, cmdLineSyntax, null, options, null, autoUsage);
-}
+    public void setArgName(String name) {
+        this.defaultArgName = name;
+    }
 
-public void printHelp(String cmdLineSyntax, String header, Options options, String footer) {
-printHelp(cmdLineSyntax, header, options, footer, false);
-}
+    public Comparator getOptionComparator() {
+        return this.optionComparator;
+    }
 
-public void printHelp(String cmdLineSyntax, String header, Options options, String footer, boolean autoUsage) {
-printHelp(this.defaultWidth, cmdLineSyntax, header, options, footer, autoUsage);
-}
+    public void setOptionComparator(Comparator comparator) {
+        if (comparator == null) {
 
-public void printHelp(int width, String cmdLineSyntax, String header, Options options, String footer) {
-printHelp(width, cmdLineSyntax, header, options, footer, false);
-}
+            this.optionComparator = new OptionComparator();
+        } else {
 
-public void printHelp(int width, String cmdLineSyntax, String header, Options options, String footer, boolean autoUsage) {
-PrintWriter pw = new PrintWriter(System.out);
+            this.optionComparator = comparator;
+        }
+    }
 
-printHelp(pw, width, cmdLineSyntax, header, options, this.defaultLeftPad, this.defaultDescPad, footer, autoUsage);
-pw.flush();
-}
+    public void printHelp(String cmdLineSyntax, Options options) {
+        printHelp(this.defaultWidth, cmdLineSyntax, null, options, null, false);
+    }
 
-public void printHelp(PrintWriter pw, int width, String cmdLineSyntax, String header, Options options, int leftPad, int descPad, String footer) {
-printHelp(pw, width, cmdLineSyntax, header, options, leftPad, descPad, footer, false);
-}
+    public void printHelp(String cmdLineSyntax, Options options, boolean autoUsage) {
+        printHelp(this.defaultWidth, cmdLineSyntax, null, options, null, autoUsage);
+    }
 
-public void printHelp(PrintWriter pw, int width, String cmdLineSyntax, String header, Options options, int leftPad, int descPad, String footer, boolean autoUsage) {
-if (cmdLineSyntax == null || cmdLineSyntax.length() == 0)
-{
-throw new IllegalArgumentException("cmdLineSyntax not provided");
-}
+    public void printHelp(String cmdLineSyntax, String header, Options options, String footer) {
+        printHelp(cmdLineSyntax, header, options, footer, false);
+    }
 
-if (autoUsage) {
+    public void printHelp(String cmdLineSyntax, String header, Options options, String footer, boolean autoUsage) {
+        printHelp(this.defaultWidth, cmdLineSyntax, header, options, footer, autoUsage);
+    }
 
-printUsage(pw, width, cmdLineSyntax, options);
-}
-else {
+    public void printHelp(int width, String cmdLineSyntax, String header, Options options, String footer) {
+        printHelp(width, cmdLineSyntax, header, options, footer, false);
+    }
 
-printUsage(pw, width, cmdLineSyntax);
-} 
+    public void printHelp(int width, String cmdLineSyntax, String header, Options options, String footer, boolean autoUsage) {
+        PrintWriter pw = new PrintWriter(System.out);
 
-if (header != null && header.trim().length() > 0)
-{
-printWrapped(pw, width, header);
-}
+        printHelp(pw, width, cmdLineSyntax, header, options, this.defaultLeftPad, this.defaultDescPad, footer, autoUsage);
+        pw.flush();
+    }
 
-printOptions(pw, width, options, leftPad, descPad);
+    public void printHelp(PrintWriter pw, int width, String cmdLineSyntax, String header, Options options, int leftPad, int descPad, String footer) {
+        printHelp(pw, width, cmdLineSyntax, header, options, leftPad, descPad, footer, false);
+    }
 
-if (footer != null && footer.trim().length() > 0)
-{
-printWrapped(pw, width, footer);
-}
-}
+    public void printHelp(PrintWriter pw, int width, String cmdLineSyntax, String header, Options options, int leftPad, int descPad, String footer, boolean autoUsage) {
+        if (cmdLineSyntax == null || cmdLineSyntax.length() == 0) {
+            throw new IllegalArgumentException("cmdLineSyntax not provided");
+        }
 
-public void printUsage(PrintWriter pw, int width, String app, Options options) {
-StringBuffer buff = (new StringBuffer(this.defaultSyntaxPrefix)).append(app).append(" ");
+        if (autoUsage) {
 
-Collection processedGroups = new ArrayList();
+            printUsage(pw, width, cmdLineSyntax, options);
+        } else {
 
-List optList = new ArrayList(options.getOptions());
-Collections.sort(optList, getOptionComparator());
+            printUsage(pw, width, cmdLineSyntax);
+        }
 
-for (Iterator i = optList.iterator(); i.hasNext(); ) {
+        if (header != null && header.trim().length() > 0) {
+            printWrapped(pw, width, header);
+        }
 
-Option option = (Option)i.next();
+        printOptions(pw, width, options, leftPad, descPad);
 
-OptionGroup group = options.getOptionGroup(option);
+        if (footer != null && footer.trim().length() > 0) {
+            printWrapped(pw, width, footer);
+        }
+    }
 
-if (group != null) {
+    public void printUsage(PrintWriter pw, int width, String app, Options options) {
+        StringBuffer buff = (new StringBuffer(this.defaultSyntaxPrefix)).append(app).append(" ");
 
-if (!processedGroups.contains(group))
-{
+        Collection processedGroups = new ArrayList();
 
-processedGroups.add(group);
+        List optList = new ArrayList(options.getOptions());
+        Collections.sort(optList, getOptionComparator());
 
-appendOptionGroup(buff, group);
+        for (Iterator i = optList.iterator(); i.hasNext(); ) {
 
-}
+            Option option = (Option) i.next();
 
-}
-else {
+            OptionGroup group = options.getOptionGroup(option);
 
-appendOption(buff, option, option.isRequired());
-} 
+            if (group != null) {
 
-if (i.hasNext())
-{
-buff.append(" ");
-}
-} 
+                if (!processedGroups.contains(group)) {
 
-printWrapped(pw, width, buff.toString().indexOf(' ') + 1, buff.toString());
-}
+                    processedGroups.add(group);
 
-private void appendOptionGroup(StringBuffer buff, OptionGroup group) {
-if (!group.isRequired())
-{
-buff.append("[");
-}
+                    appendOptionGroup(buff, group);
 
-List optList = new ArrayList(group.getOptions());
-Collections.sort(optList, getOptionComparator());
+                }
 
-for (Iterator i = optList.iterator(); i.hasNext(); ) {
+            } else {
 
-appendOption(buff, (Option)i.next(), true);
+                appendOption(buff, option, option.isRequired());
+            }
 
-if (i.hasNext())
-{
-buff.append(" | ");
-}
-} 
+            if (i.hasNext()) {
+                buff.append(" ");
+            }
+        }
 
-if (!group.isRequired())
-{
-buff.append("]");
-}
-}
+        printWrapped(pw, width, buff.toString().indexOf(' ') + 1, buff.toString());
+    }
 
-private static void appendOption(StringBuffer buff, Option option, boolean required) {
-if (!required)
-{
-buff.append("[");
-}
+    private void appendOptionGroup(StringBuffer buff, OptionGroup group) {
+        if (!group.isRequired()) {
+            buff.append("[");
+        }
 
-if (option.getOpt() != null) {
+        List optList = new ArrayList(group.getOptions());
+        Collections.sort(optList, getOptionComparator());
 
-buff.append("-").append(option.getOpt());
-}
-else {
+        for (Iterator i = optList.iterator(); i.hasNext(); ) {
 
-buff.append("--").append(option.getLongOpt());
-} 
+            appendOption(buff, (Option) i.next(), true);
 
-if (option.hasArg() && option.hasArgName())
-{
-buff.append(" <").append(option.getArgName()).append(">");
-}
+            if (i.hasNext()) {
+                buff.append(" | ");
+            }
+        }
 
-if (!required)
-{
-buff.append("]");
-}
-}
+        if (!group.isRequired()) {
+            buff.append("]");
+        }
+    }
 
-public void printUsage(PrintWriter pw, int width, String cmdLineSyntax) {
-int argPos = cmdLineSyntax.indexOf(' ') + 1;
+    public void printUsage(PrintWriter pw, int width, String cmdLineSyntax) {
+        int argPos = cmdLineSyntax.indexOf(' ') + 1;
 
-printWrapped(pw, width, this.defaultSyntaxPrefix.length() + argPos, this.defaultSyntaxPrefix + cmdLineSyntax);
-}
+        printWrapped(pw, width, this.defaultSyntaxPrefix.length() + argPos, this.defaultSyntaxPrefix + cmdLineSyntax);
+    }
 
-public void printOptions(PrintWriter pw, int width, Options options, int leftPad, int descPad) {
-StringBuffer sb = new StringBuffer();
+    public void printOptions(PrintWriter pw, int width, Options options, int leftPad, int descPad) {
+        StringBuffer sb = new StringBuffer();
 
-renderOptions(sb, width, options, leftPad, descPad);
-pw.println(sb.toString());
-}
+        renderOptions(sb, width, options, leftPad, descPad);
+        pw.println(sb.toString());
+    }
 
-public void printWrapped(PrintWriter pw, int width, String text) {
-printWrapped(pw, width, 0, text);
-}
+    public void printWrapped(PrintWriter pw, int width, String text) {
+        printWrapped(pw, width, 0, text);
+    }
 
-public void printWrapped(PrintWriter pw, int width, int nextLineTabStop, String text) {
-StringBuffer sb = new StringBuffer(text.length());
+    public void printWrapped(PrintWriter pw, int width, int nextLineTabStop, String text) {
+        StringBuffer sb = new StringBuffer(text.length());
 
-renderWrappedText(sb, width, nextLineTabStop, text);
-pw.println(sb.toString());
-}
+        renderWrappedText(sb, width, nextLineTabStop, text);
+        pw.println(sb.toString());
+    }
 
-protected StringBuffer renderOptions(StringBuffer sb, int width, Options options, int leftPad, int descPad) {
-String lpad = createPadding(leftPad);
-String dpad = createPadding(descPad);
+    protected StringBuffer renderOptions(StringBuffer sb, int width, Options options, int leftPad, int descPad) {
+        String lpad = createPadding(leftPad);
+        String dpad = createPadding(descPad);
 
-int max = 0;
+        int max = 0;
 
-List prefixList = new ArrayList();
+        List prefixList = new ArrayList();
 
-List optList = options.helpOptions();
+        List optList = options.helpOptions();
 
-Collections.sort(optList, getOptionComparator());
+        Collections.sort(optList, getOptionComparator());
 
-for (Iterator i = optList.iterator(); i.hasNext(); ) {
+        for (Iterator i = optList.iterator(); i.hasNext(); ) {
 
-Option option = (Option)i.next();
-StringBuffer optBuf = new StringBuffer(8);
+            Option option = (Option) i.next();
+            StringBuffer optBuf = new StringBuffer(8);
 
-if (option.getOpt() == null) {
+            if (option.getOpt() == null) {
 
-optBuf.append(lpad).append("   " + this.defaultLongOptPrefix).append(option.getLongOpt());
-}
-else {
+                optBuf.append(lpad).append("   " + this.defaultLongOptPrefix).append(option.getLongOpt());
+            } else {
 
-optBuf.append(lpad).append(this.defaultOptPrefix).append(option.getOpt());
+                optBuf.append(lpad).append(this.defaultOptPrefix).append(option.getOpt());
 
-if (option.hasLongOpt())
-{
-optBuf.append(',').append(this.defaultLongOptPrefix).append(option.getLongOpt());
-}
-} 
+                if (option.hasLongOpt()) {
+                    optBuf.append(',').append(this.defaultLongOptPrefix).append(option.getLongOpt());
+                }
+            }
 
-if (option.hasArg())
-{
-if (option.hasArgName()) {
+            if (option.hasArg()) {
+                if (option.hasArgName()) {
 
-optBuf.append(" <").append(option.getArgName()).append(">");
-}
-else {
+                    optBuf.append(" <").append(option.getArgName()).append(">");
+                } else {
 
-optBuf.append(' ');
-} 
-}
+                    optBuf.append(' ');
+                }
+            }
 
-prefixList.add(optBuf);
-max = (optBuf.length() > max) ? optBuf.length() : max;
-} 
+            prefixList.add(optBuf);
+            max = (optBuf.length() > max) ? optBuf.length() : max;
+        }
 
-int x = 0;
+        int x = 0;
 
-for (Iterator iterator1 = optList.iterator(); iterator1.hasNext(); ) {
+        for (Iterator iterator1 = optList.iterator(); iterator1.hasNext(); ) {
 
-Option option = (Option)iterator1.next();
-StringBuffer optBuf = new StringBuffer(prefixList.get(x++).toString());
+            Option option = (Option) iterator1.next();
+            StringBuffer optBuf = new StringBuffer(prefixList.get(x++).toString());
 
-if (optBuf.length() < max)
-{
-optBuf.append(createPadding(max - optBuf.length()));
-}
+            if (optBuf.length() < max) {
+                optBuf.append(createPadding(max - optBuf.length()));
+            }
 
-optBuf.append(dpad);
+            optBuf.append(dpad);
 
-int nextLineTabStop = max + descPad;
+            int nextLineTabStop = max + descPad;
 
-if (option.getDescription() != null)
-{
-optBuf.append(option.getDescription());
-}
+            if (option.getDescription() != null) {
+                optBuf.append(option.getDescription());
+            }
 
-renderWrappedText(sb, width, nextLineTabStop, optBuf.toString());
+            renderWrappedText(sb, width, nextLineTabStop, optBuf.toString());
 
-if (iterator1.hasNext())
-{
-sb.append(this.defaultNewLine);
-}
-} 
+            if (iterator1.hasNext()) {
+                sb.append(this.defaultNewLine);
+            }
+        }
 
-return sb;
-}
+        return sb;
+    }
 
-protected StringBuffer renderWrappedText(StringBuffer sb, int width, int nextLineTabStop, String text) {
-int pos = findWrapPos(text, width, 0);
+    protected StringBuffer renderWrappedText(StringBuffer sb, int width, int nextLineTabStop, String text) {
+        int pos = findWrapPos(text, width, 0);
 
-if (pos == -1) {
+        if (pos == -1) {
 
-sb.append(rtrim(text));
+            sb.append(rtrim(text));
 
-return sb;
-} 
-sb.append(rtrim(text.substring(0, pos))).append(this.defaultNewLine);
+            return sb;
+        }
+        sb.append(rtrim(text.substring(0, pos))).append(this.defaultNewLine);
 
-if (nextLineTabStop >= width)
-{
+        if (nextLineTabStop >= width) {
 
-nextLineTabStop = 1;
-}
+            nextLineTabStop = 1;
+        }
 
-String padding = createPadding(nextLineTabStop);
+        String padding = createPadding(nextLineTabStop);
 
-while (true) {
-text = padding + text.substring(pos).trim();
-pos = findWrapPos(text, width, 0);
+        while (true) {
+            text = padding + text.substring(pos).trim();
+            pos = findWrapPos(text, width, 0);
 
-if (pos == -1) {
+            if (pos == -1) {
 
-sb.append(text);
+                sb.append(text);
 
-return sb;
-} 
+                return sb;
+            }
 
-if (text.length() > width && pos == nextLineTabStop - 1)
-{
-pos = width;
-}
+            if (text.length() > width && pos == nextLineTabStop - 1) {
+                pos = width;
+            }
 
-sb.append(rtrim(text.substring(0, pos))).append(this.defaultNewLine);
-} 
-}
+            sb.append(rtrim(text.substring(0, pos))).append(this.defaultNewLine);
+        }
+    }
 
-protected int findWrapPos(String text, int width, int startPos) {
-int pos = -1;
+    protected int findWrapPos(String text, int width, int startPos) {
+        int pos = -1;
 
-if (((pos = text.indexOf('\n', startPos)) != -1 && pos <= width) || ((pos = text.indexOf('\t', startPos)) != -1 && pos <= width))
-{
+        if (((pos = text.indexOf('\n', startPos)) != -1 && pos <= width) || ((pos = text.indexOf('\t', startPos)) != -1 && pos <= width)) {
 
-return pos + 1;
-}
-if (startPos + width >= text.length())
-{
-return -1;
-}
+            return pos + 1;
+        }
+        if (startPos + width >= text.length()) {
+            return -1;
+        }
 
-pos = startPos + width;
+        pos = startPos + width;
 
-char c;
+        char c;
 
-while (pos >= startPos && (c = text.charAt(pos)) != ' ' && c != '\n' && c != '\r')
-{
-pos--;
-}
+        while (pos >= startPos && (c = text.charAt(pos)) != ' ' && c != '\n' && c != '\r') {
+            pos--;
+        }
 
-if (pos > startPos)
-{
-return pos;
-}
+        if (pos > startPos) {
+            return pos;
+        }
 
-pos = startPos + width;
+        pos = startPos + width;
 
-while (pos <= text.length() && (c = text.charAt(pos)) != ' ' && c != '\n' && c != '\r')
-{
-pos++;
-}
+        while (pos <= text.length() && (c = text.charAt(pos)) != ' ' && c != '\n' && c != '\r') {
+            pos++;
+        }
 
-return (pos == text.length()) ? -1 : pos;
-}
+        return (pos == text.length()) ? -1 : pos;
+    }
 
-protected String createPadding(int len) {
-StringBuffer sb = new StringBuffer(len);
+    protected String createPadding(int len) {
+        StringBuffer sb = new StringBuffer(len);
 
-for (int i = 0; i < len; i++)
-{
-sb.append(' ');
-}
+        for (int i = 0; i < len; i++) {
+            sb.append(' ');
+        }
 
-return sb.toString();
-}
+        return sb.toString();
+    }
 
-protected String rtrim(String s) {
-if (s == null || s.length() == 0)
-{
-return s;
-}
+    protected String rtrim(String s) {
+        if (s == null || s.length() == 0) {
+            return s;
+        }
 
-int pos = s.length();
+        int pos = s.length();
 
-while (pos > 0 && Character.isWhitespace(s.charAt(pos - 1)))
-{
-pos--;
-}
+        while (pos > 0 && Character.isWhitespace(s.charAt(pos - 1))) {
+            pos--;
+        }
 
-return s.substring(0, pos);
-}
+        return s.substring(0, pos);
+    }
 
-private static class OptionComparator
-implements Comparator
-{
-private OptionComparator() {}
+    private static class OptionComparator
+            implements Comparator {
+        private OptionComparator() {
+        }
 
-public int compare(Object o1, Object o2) {
-Option opt1 = (Option)o1;
-Option opt2 = (Option)o2;
+        public int compare(Object o1, Object o2) {
+            Option opt1 = (Option) o1;
+            Option opt2 = (Option) o2;
 
-return opt1.getKey().compareToIgnoreCase(opt2.getKey());
-}
-}
+            return opt1.getKey().compareToIgnoreCase(opt2.getKey());
+        }
+    }
 }
 

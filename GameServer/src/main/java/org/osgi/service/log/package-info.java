@@ -1,4 +1,7 @@
 package org.osgi.service.log;
 
-interface package-info {}
+interface package-
+
+info {
+}
 

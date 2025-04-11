@@ -3,90 +3,90 @@ package javolution.xml.stream;
 import javolution.text.CharArray;
 
 public interface XMLStreamReader extends XMLStreamConstants {
-  Object getProperty(String paramString) throws IllegalArgumentException;
+    Object getProperty(String paramString) throws IllegalArgumentException;
 
-  int next() throws XMLStreamException;
+    int next() throws XMLStreamException;
 
-  void require(int paramInt, CharSequence paramCharSequence1, CharSequence paramCharSequence2) throws XMLStreamException;
+    void require(int paramInt, CharSequence paramCharSequence1, CharSequence paramCharSequence2) throws XMLStreamException;
 
-  CharArray getElementText() throws XMLStreamException;
+    CharArray getElementText() throws XMLStreamException;
 
-  int nextTag() throws XMLStreamException;
+    int nextTag() throws XMLStreamException;
 
-  boolean hasNext() throws XMLStreamException;
+    boolean hasNext() throws XMLStreamException;
 
-  void close() throws XMLStreamException;
+    void close() throws XMLStreamException;
 
-  CharArray getNamespaceURI(CharSequence paramCharSequence);
+    CharArray getNamespaceURI(CharSequence paramCharSequence);
 
-  boolean isStartElement();
+    boolean isStartElement();
 
-  boolean isEndElement();
+    boolean isEndElement();
 
-  boolean isCharacters();
+    boolean isCharacters();
 
-  boolean isWhiteSpace();
+    boolean isWhiteSpace();
 
-  CharArray getAttributeValue(CharSequence paramCharSequence1, CharSequence paramCharSequence2);
+    CharArray getAttributeValue(CharSequence paramCharSequence1, CharSequence paramCharSequence2);
 
-  int getAttributeCount();
+    int getAttributeCount();
 
-  CharArray getAttributeNamespace(int paramInt);
+    CharArray getAttributeNamespace(int paramInt);
 
-  CharArray getAttributeLocalName(int paramInt);
+    CharArray getAttributeLocalName(int paramInt);
 
-  CharArray getAttributePrefix(int paramInt);
+    CharArray getAttributePrefix(int paramInt);
 
-  CharArray getAttributeType(int paramInt);
+    CharArray getAttributeType(int paramInt);
 
-  CharArray getAttributeValue(int paramInt);
+    CharArray getAttributeValue(int paramInt);
 
-  boolean isAttributeSpecified(int paramInt);
+    boolean isAttributeSpecified(int paramInt);
 
-  int getNamespaceCount();
+    int getNamespaceCount();
 
-  CharArray getNamespacePrefix(int paramInt);
+    CharArray getNamespacePrefix(int paramInt);
 
-  CharArray getNamespaceURI(int paramInt);
+    CharArray getNamespaceURI(int paramInt);
 
-  NamespaceContext getNamespaceContext();
+    NamespaceContext getNamespaceContext();
 
-  int getEventType();
+    int getEventType();
 
-  CharArray getText();
+    CharArray getText();
 
-  char[] getTextCharacters();
+    char[] getTextCharacters();
 
-  int getTextCharacters(int paramInt1, char[] paramArrayOfchar, int paramInt2, int paramInt3) throws XMLStreamException;
+    int getTextCharacters(int paramInt1, char[] paramArrayOfchar, int paramInt2, int paramInt3) throws XMLStreamException;
 
-  int getTextStart();
+    int getTextStart();
 
-  int getTextLength();
+    int getTextLength();
 
-  String getEncoding();
+    String getEncoding();
 
-  boolean hasText();
+    boolean hasText();
 
-  Location getLocation();
+    Location getLocation();
 
-  CharArray getLocalName();
+    CharArray getLocalName();
 
-  boolean hasName();
+    boolean hasName();
 
-  CharArray getNamespaceURI();
+    CharArray getNamespaceURI();
 
-  CharArray getPrefix();
+    CharArray getPrefix();
 
-  CharArray getVersion();
+    CharArray getVersion();
 
-  boolean isStandalone();
+    boolean isStandalone();
 
-  boolean standaloneSet();
+    boolean standaloneSet();
 
-  CharArray getCharacterEncodingScheme();
+    CharArray getCharacterEncodingScheme();
 
-  CharArray getPITarget();
+    CharArray getPITarget();
 
-  CharArray getPIData();
+    CharArray getPIData();
 }
 

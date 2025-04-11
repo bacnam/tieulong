@@ -1,6 +1,5 @@
 package com.google.gson;
 
-import com.google.gson.internal;
 import com.google.gson.internal.Excluder;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.reflect.TypeToken;
@@ -8,21 +7,15 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class GsonBuilder {
+    private final Map<Type, InstanceCreator<?>> instanceCreators = new HashMap<Type, InstanceCreator<?>>();
+    private final List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+    private final List<TypeAdapterFactory> hierarchyFactories = new ArrayList<TypeAdapterFactory>();
     private Excluder excluder = Excluder.DEFAULT;
     private LongSerializationPolicy longSerializationPolicy = LongSerializationPolicy.DEFAULT;
     private FieldNamingStrategy fieldNamingPolicy = FieldNamingPolicy.IDENTITY;
-    private final Map<Type, InstanceCreator<?>> instanceCreators = new HashMap<Type, InstanceCreator<?>>();
-
-    private final List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
-
-    private final List<TypeAdapterFactory> hierarchyFactories = new ArrayList<TypeAdapterFactory>();
     private boolean serializeNulls;
     private String datePattern;
     private int dateStyle = 2;

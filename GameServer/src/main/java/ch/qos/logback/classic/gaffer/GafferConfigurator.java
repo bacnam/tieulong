@@ -7,31 +7,18 @@ import ch.qos.logback.core.joran.util.ConfigurationWatchListUtil;
 import ch.qos.logback.core.status.OnConsoleStatusListener;
 import ch.qos.logback.core.util.ContextUtil;
 import ch.qos.logback.core.util.OptionHelper;
-import groovy.lang.Binding;
-import groovy.lang.Closure;
-import groovy.lang.GroovyObject;
-import groovy.lang.GroovyShell;
-import groovy.lang.MetaClass;
-import groovy.lang.Reference;
-import groovy.lang.Script;
-
-import java.io.File;
-import java.lang.ref.SoftReference;
-import java.net.URL;
-
+import groovy.lang.*;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
-import org.codehaus.groovy.reflection.ClassInfo;
-import org.codehaus.groovy.runtime.ArrayUtil;
-import org.codehaus.groovy.runtime.BytecodeInterface8;
-import org.codehaus.groovy.runtime.GStringImpl;
-import org.codehaus.groovy.runtime.GeneratedClosure;
-import org.codehaus.groovy.runtime.ScriptBytecodeAdapter;
+import org.codehaus.groovy.runtime.*;
 import org.codehaus.groovy.runtime.callsite.CallSite;
-import org.codehaus.groovy.runtime.callsite.CallSiteArray;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 
+import java.io.File;
+import java.net.URL;
+
 public class GafferConfigurator implements GroovyObject {
+    private static final String DEBUG_SYSTEM_PROPERTY_KEY = "logback.debug";
     private LoggerContext context;
 
     public GafferConfigurator(LoggerContext context) {
@@ -41,7 +28,9 @@ public class GafferConfigurator implements GroovyObject {
         this.context = (LoggerContext) ScriptBytecodeAdapter.castToType(object, LoggerContext.class);
     }
 
-    private static final String DEBUG_SYSTEM_PROPERTY_KEY = "logback.debug";
+    public static final String getDEBUG_SYSTEM_PROPERTY_KEY() {
+        return DEBUG_SYSTEM_PROPERTY_KEY;
+    }
 
     protected void informContextOfURLUsedForConfiguration(URL url) {
         CallSite[] arrayOfCallSite = $getCallSiteArray();
@@ -117,6 +106,14 @@ public class GafferConfigurator implements GroovyObject {
         return (ImportCustomizer) ScriptBytecodeAdapter.castToType(customizer, ImportCustomizer.class);
     }
 
+    public LoggerContext getContext() {
+        return this.context;
+    }
+
+    public void setContext(LoggerContext paramLoggerContext) {
+        this.context = paramLoggerContext;
+    }
+
     class _run_closure1 extends Closure implements GeneratedClosure {
         public _run_closure1(Object _outerInstance, Object _thisObject, Reference dslScript) {
             super(_outerInstance, _thisObject);
@@ -138,18 +135,6 @@ public class GafferConfigurator implements GroovyObject {
             CallSite[] arrayOfCallSite = $getCallSiteArray();
             return doCall(null);
         }
-    }
-
-    public LoggerContext getContext() {
-        return this.context;
-    }
-
-    public void setContext(LoggerContext paramLoggerContext) {
-        this.context = paramLoggerContext;
-    }
-
-    public static final String getDEBUG_SYSTEM_PROPERTY_KEY() {
-        return DEBUG_SYSTEM_PROPERTY_KEY;
     }
 }
 

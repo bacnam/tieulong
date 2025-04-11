@@ -2,33 +2,34 @@ package com.mchange.io;
 
 import com.mchange.util.ByteArrayBinding;
 import com.mchange.util.ByteArrayComparator;
+
 import java.io.IOException;
 
 public interface IOSequentialByteArrayMap extends IOByteArrayMap {
-  ByteArrayComparator getByteArrayComparator();
+    ByteArrayComparator getByteArrayComparator();
 
-  Cursor getCursor();
+    Cursor getCursor();
 
-  public static interface Cursor {
-    ByteArrayBinding getFirst() throws IOException;
+    public static interface Cursor {
+        ByteArrayBinding getFirst() throws IOException;
 
-    ByteArrayBinding getNext() throws IOException;
+        ByteArrayBinding getNext() throws IOException;
 
-    ByteArrayBinding getPrevious() throws IOException;
+        ByteArrayBinding getPrevious() throws IOException;
 
-    ByteArrayBinding getLast() throws IOException;
+        ByteArrayBinding getLast() throws IOException;
 
-    ByteArrayBinding getCurrent() throws IOException;
+        ByteArrayBinding getCurrent() throws IOException;
 
-    ByteArrayBinding find(byte[] param1ArrayOfbyte) throws IOException;
+        ByteArrayBinding find(byte[] param1ArrayOfbyte) throws IOException;
 
-    ByteArrayBinding findGreaterThanOrEqual(byte[] param1ArrayOfbyte) throws IOException;
+        ByteArrayBinding findGreaterThanOrEqual(byte[] param1ArrayOfbyte) throws IOException;
 
-    ByteArrayBinding findLessThanOrEqual(byte[] param1ArrayOfbyte) throws IOException;
+        ByteArrayBinding findLessThanOrEqual(byte[] param1ArrayOfbyte) throws IOException;
 
-    void deleteCurrent() throws IOException;
+        void deleteCurrent() throws IOException;
 
-    void replaceCurrent(byte[] param1ArrayOfbyte) throws IOException;
-  }
+        void replaceCurrent(byte[] param1ArrayOfbyte) throws IOException;
+    }
 }
 

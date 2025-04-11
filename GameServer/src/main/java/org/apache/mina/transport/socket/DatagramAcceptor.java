@@ -1,20 +1,21 @@
 package org.apache.mina.transport.socket;
 
-import java.net.InetSocketAddress;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.session.IoSessionRecycler;
 
+import java.net.InetSocketAddress;
+
 public interface DatagramAcceptor extends IoAcceptor {
-  InetSocketAddress getLocalAddress();
+    InetSocketAddress getLocalAddress();
 
-  InetSocketAddress getDefaultLocalAddress();
+    InetSocketAddress getDefaultLocalAddress();
 
-  void setDefaultLocalAddress(InetSocketAddress paramInetSocketAddress);
+    void setDefaultLocalAddress(InetSocketAddress paramInetSocketAddress);
 
-  IoSessionRecycler getSessionRecycler();
+    IoSessionRecycler getSessionRecycler();
 
-  void setSessionRecycler(IoSessionRecycler paramIoSessionRecycler);
+    void setSessionRecycler(IoSessionRecycler paramIoSessionRecycler);
 
-  DatagramSessionConfig getSessionConfig();
+    DatagramSessionConfig getSessionConfig();
 }
 

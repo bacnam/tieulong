@@ -9,78 +9,77 @@ import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 
-public class JUnitCore
-{
-private final RunNotifier notifier = new RunNotifier();
+public class JUnitCore {
+    private final RunNotifier notifier = new RunNotifier();
 
-public static void main(String... args) {
-Result result = (new JUnitCore()).runMain((JUnitSystem)new RealSystem(), args);
-System.exit(result.wasSuccessful() ? 0 : 1);
-}
+    public static void main(String... args) {
+        Result result = (new JUnitCore()).runMain((JUnitSystem) new RealSystem(), args);
+        System.exit(result.wasSuccessful() ? 0 : 1);
+    }
 
-public static Result runClasses(Class<?>... classes) {
-return runClasses(defaultComputer(), classes);
-}
+    public static Result runClasses(Class<?>... classes) {
+        return runClasses(defaultComputer(), classes);
+    }
 
-public static Result runClasses(Computer computer, Class<?>... classes) {
-return (new JUnitCore()).run(computer, classes);
-}
+    public static Result runClasses(Computer computer, Class<?>... classes) {
+        return (new JUnitCore()).run(computer, classes);
+    }
 
-Result runMain(JUnitSystem system, String... args) {
-system.out().println("JUnit version " + Version.id());
+    static Computer defaultComputer() {
+        return new Computer();
+    }
 
-JUnitCommandLineParseResult jUnitCommandLineParseResult = JUnitCommandLineParseResult.parse(args);
+    Result runMain(JUnitSystem system, String... args) {
+        system.out().println("JUnit version " + Version.id());
 
-TextListener textListener = new TextListener(system);
-addListener((RunListener)textListener);
+        JUnitCommandLineParseResult jUnitCommandLineParseResult = JUnitCommandLineParseResult.parse(args);
 
-return run(jUnitCommandLineParseResult.createRequest(defaultComputer()));
-}
+        TextListener textListener = new TextListener(system);
+        addListener((RunListener) textListener);
 
-public String getVersion() {
-return Version.id();
-}
+        return run(jUnitCommandLineParseResult.createRequest(defaultComputer()));
+    }
 
-public Result run(Class<?>... classes) {
-return run(defaultComputer(), classes);
-}
+    public String getVersion() {
+        return Version.id();
+    }
 
-public Result run(Computer computer, Class<?>... classes) {
-return run(Request.classes(computer, classes));
-}
+    public Result run(Class<?>... classes) {
+        return run(defaultComputer(), classes);
+    }
 
-public Result run(Request request) {
-return run(request.getRunner());
-}
+    public Result run(Computer computer, Class<?>... classes) {
+        return run(Request.classes(computer, classes));
+    }
 
-public Result run(Test test) {
-return run((Runner)new JUnit38ClassRunner(test));
-}
+    public Result run(Request request) {
+        return run(request.getRunner());
+    }
 
-public Result run(Runner runner) {
-Result result = new Result();
-RunListener listener = result.createListener();
-this.notifier.addFirstListener(listener);
-try {
-this.notifier.fireTestRunStarted(runner.getDescription());
-runner.run(this.notifier);
-this.notifier.fireTestRunFinished(result);
-} finally {
-removeListener(listener);
-} 
-return result;
-}
+    public Result run(Test test) {
+        return run((Runner) new JUnit38ClassRunner(test));
+    }
 
-public void addListener(RunListener listener) {
-this.notifier.addListener(listener);
-}
+    public Result run(Runner runner) {
+        Result result = new Result();
+        RunListener listener = result.createListener();
+        this.notifier.addFirstListener(listener);
+        try {
+            this.notifier.fireTestRunStarted(runner.getDescription());
+            runner.run(this.notifier);
+            this.notifier.fireTestRunFinished(result);
+        } finally {
+            removeListener(listener);
+        }
+        return result;
+    }
 
-public void removeListener(RunListener listener) {
-this.notifier.removeListener(listener);
-}
+    public void addListener(RunListener listener) {
+        this.notifier.addListener(listener);
+    }
 
-static Computer defaultComputer() {
-return new Computer();
-}
+    public void removeListener(RunListener listener) {
+        this.notifier.removeListener(listener);
+    }
 }
 

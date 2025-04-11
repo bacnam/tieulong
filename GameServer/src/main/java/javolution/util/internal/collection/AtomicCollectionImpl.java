@@ -1,160 +1,159 @@
 package javolution.util.internal.collection;
 
-import java.util.Collection;
-import java.util.Iterator;
 import javolution.util.function.Consumer;
 import javolution.util.function.Equality;
 import javolution.util.service.CollectionService;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 public class AtomicCollectionImpl<E>
-extends CollectionView<E>
-{
-private static final long serialVersionUID = 1536L;
-protected volatile CollectionService<E> immutable;
-protected transient Thread updatingThread;
+        extends CollectionView<E> {
+    private static final long serialVersionUID = 1536L;
+    protected volatile CollectionService<E> immutable;
+    protected transient Thread updatingThread;
 
-private class IteratorImpl
-implements Iterator<E>
-{
-private E current;
-private final Iterator<E> targetIterator = AtomicCollectionImpl.this.targetView().iterator();
+    public AtomicCollectionImpl(CollectionService<E> target) {
+        super(target);
+        this.immutable = cloneTarget();
+    }
 
-public boolean hasNext() {
-return this.targetIterator.hasNext();
-}
+    public synchronized boolean add(E element) {
+        boolean changed = target().add(element);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public E next() {
-this.current = this.targetIterator.next();
-return this.current;
-}
+    public synchronized boolean addAll(Collection<? extends E> c) {
+        boolean changed = target().addAll(c);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public void remove() {
-if (this.current == null) throw new IllegalStateException(); 
-AtomicCollectionImpl.this.remove(this.current);
-this.current = null;
-}
-}
+    public synchronized void clear() {
+        clear();
+        if (!updateInProgress()) {
+            this.immutable = cloneTarget();
+        }
+    }
 
-public AtomicCollectionImpl(CollectionService<E> target) {
-super(target);
-this.immutable = cloneTarget();
-}
+    public synchronized AtomicCollectionImpl<E> clone() {
+        AtomicCollectionImpl<E> copy = (AtomicCollectionImpl<E>) super.clone();
+        copy.updatingThread = null;
+        return copy;
+    }
 
-public synchronized boolean add(E element) {
-boolean changed = target().add(element);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public Equality<? super E> comparator() {
+        return this.immutable.comparator();
+    }
 
-public synchronized boolean addAll(Collection<? extends E> c) {
-boolean changed = target().addAll(c);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public boolean contains(Object o) {
+        return targetView().contains(o);
+    }
 
-public synchronized void clear() {
-clear();
-if (!updateInProgress()) {
-this.immutable = cloneTarget();
-}
-}
+    public boolean containsAll(Collection<?> c) {
+        return targetView().containsAll(c);
+    }
 
-public synchronized AtomicCollectionImpl<E> clone() {
-AtomicCollectionImpl<E> copy = (AtomicCollectionImpl<E>)super.clone();
-copy.updatingThread = null;
-return copy;
-}
+    public boolean equals(Object o) {
+        return targetView().equals(o);
+    }
 
-public Equality<? super E> comparator() {
-return this.immutable.comparator();
-}
+    public int hashCode() {
+        return targetView().hashCode();
+    }
 
-public boolean contains(Object o) {
-return targetView().contains(o);
-}
+    public boolean isEmpty() {
+        return targetView().isEmpty();
+    }
 
-public boolean containsAll(Collection<?> c) {
-return targetView().containsAll(c);
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl();
+    }
 
-public boolean equals(Object o) {
-return targetView().equals(o);
-}
+    public synchronized boolean remove(Object o) {
+        boolean changed = target().remove(o);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public int hashCode() {
-return targetView().hashCode();
-}
+    public synchronized boolean removeAll(Collection<?> c) {
+        boolean changed = target().removeAll(c);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public boolean isEmpty() {
-return targetView().isEmpty();
-}
+    public synchronized boolean retainAll(Collection<?> c) {
+        boolean changed = target().retainAll(c);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public Iterator<E> iterator() {
-return new IteratorImpl();
-}
+    public int size() {
+        return targetView().size();
+    }
 
-public synchronized boolean remove(Object o) {
-boolean changed = target().remove(o);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public CollectionService<E>[] split(int n) {
+        return (CollectionService<E>[]) new CollectionService[]{this};
+    }
 
-public synchronized boolean removeAll(Collection<?> c) {
-boolean changed = target().removeAll(c);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public CollectionService<E> threadSafe() {
+        return this;
+    }
 
-public synchronized boolean retainAll(Collection<?> c) {
-boolean changed = target().retainAll(c);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public Object[] toArray() {
+        return targetView().toArray();
+    }
 
-public int size() {
-return targetView().size();
-}
+    public <T> T[] toArray(T[] a) {
+        return (T[]) targetView().toArray((Object[]) a);
+    }
 
-public CollectionService<E>[] split(int n) {
-return (CollectionService<E>[])new CollectionService[] { this };
-}
+    public synchronized void update(Consumer<CollectionService<E>> action, CollectionService<E> view) {
+        this.updatingThread = Thread.currentThread();
+        try {
+            target().update(action, view);
+        } finally {
+            this.updatingThread = null;
+            this.immutable = cloneTarget();
+        }
+    }
 
-public CollectionService<E> threadSafe() {
-return this;
-}
+    protected CollectionService<E> targetView() {
+        return (this.updatingThread == null || this.updatingThread != Thread.currentThread()) ? this.immutable : target();
+    }
 
-public Object[] toArray() {
-return targetView().toArray();
-}
+    protected CollectionService<E> cloneTarget() {
+        try {
+            return target().clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error("Cannot happen since target is Cloneable.");
+        }
+    }
 
-public <T> T[] toArray(T[] a) {
-return (T[])targetView().toArray((Object[])a);
-}
+    protected final boolean updateInProgress() {
+        return (this.updatingThread == Thread.currentThread());
+    }
 
-public synchronized void update(Consumer<CollectionService<E>> action, CollectionService<E> view) {
-this.updatingThread = Thread.currentThread();
-try {
-target().update(action, view);
-} finally {
-this.updatingThread = null;
-this.immutable = cloneTarget();
-} 
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private final Iterator<E> targetIterator = AtomicCollectionImpl.this.targetView().iterator();
+        private E current;
 
-protected CollectionService<E> targetView() {
-return (this.updatingThread == null || this.updatingThread != Thread.currentThread()) ? this.immutable : target();
-}
+        public boolean hasNext() {
+            return this.targetIterator.hasNext();
+        }
 
-protected CollectionService<E> cloneTarget() {
-try {
-return target().clone();
-} catch (CloneNotSupportedException e) {
-throw new Error("Cannot happen since target is Cloneable.");
-} 
-}
+        public E next() {
+            this.current = this.targetIterator.next();
+            return this.current;
+        }
 
-protected final boolean updateInProgress() {
-return (this.updatingThread == Thread.currentThread());
-}
+        public void remove() {
+            if (this.current == null) throw new IllegalStateException();
+            AtomicCollectionImpl.this.remove(this.current);
+            this.current = null;
+        }
+    }
 }
 

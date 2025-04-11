@@ -8,23 +8,22 @@ import com.zhonglian.server.common.enums.StoreType;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class ManualRefresh
-extends PlayerHandler
-{
-private static class Request
-{
-StoreType storeType;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        PlayerStore store = ((StoreFeature) player.getFeature(StoreFeature.class)).getOrCreate(req.storeType);
+        store.manualRefresh();
+        player.pushProto("store.RefreshInfo", store.refreshInfo());
+        player.pushProto("store.GoodsList", store.getGoodsList());
+        request.response();
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-PlayerStore store = ((StoreFeature)player.getFeature(StoreFeature.class)).getOrCreate(req.storeType);
-store.manualRefresh();
-player.pushProto("store.RefreshInfo", store.refreshInfo());
-player.pushProto("store.GoodsList", store.getGoodsList());
-request.response();
-}
+    private static class Request {
+        StoreType storeType;
+    }
 }
 

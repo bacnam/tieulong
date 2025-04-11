@@ -19,26 +19,21 @@ import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.lang.MetaClass;
 import groovy.lang.Reference;
-
-import java.lang.management.ManagementFactory;
-import java.lang.ref.SoftReference;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
-import org.codehaus.groovy.reflection.ClassInfo;
 import org.codehaus.groovy.runtime.BytecodeInterface8;
 import org.codehaus.groovy.runtime.GStringImpl;
 import org.codehaus.groovy.runtime.GeneratedClosure;
 import org.codehaus.groovy.runtime.ScriptBytecodeAdapter;
 import org.codehaus.groovy.runtime.callsite.CallSite;
-import org.codehaus.groovy.runtime.callsite.CallSiteArray;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 import org.codehaus.groovy.runtime.typehandling.ShortTypeHandling;
-import org.slf4j.Logger;
+
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class ConfigurationDelegate extends ContextAwareBase implements GroovyObject {
     private List<Appender> appenderList;
@@ -180,24 +175,6 @@ public class ConfigurationDelegate extends ContextAwareBase implements GroovyObj
         }
     }
 
-    class _logger_closure1 extends Closure implements GeneratedClosure {
-        public _logger_closure1(Object _outerInstance, Object _thisObject, Reference aName) {
-            super(_outerInstance, _thisObject);
-            Reference reference = aName;
-            this.aName = reference;
-        }
-
-        public Object doCall(Object it) {
-            CallSite[] arrayOfCallSite = $getCallSiteArray();
-            return Boolean.valueOf(ScriptBytecodeAdapter.compareEqual(arrayOfCallSite[0].callGetProperty(it), this.aName.get()));
-        }
-
-        public Object getaName() {
-            CallSite[] arrayOfCallSite = $getCallSiteArray();
-            return this.aName.get();
-        }
-    }
-
     public void receiver(String name, Class aClass, Closure closure) {
         CallSite[] arrayOfCallSite = $getCallSiteArray();
         arrayOfCallSite[72].callCurrent(this, arrayOfCallSite[73].call(arrayOfCallSite[74].call("About to instantiate receiver of type [", arrayOfCallSite[75].callGetProperty(arrayOfCallSite[76].callGroovyObjectGetProperty(this))), "]"));
@@ -229,38 +206,6 @@ public class ConfigurationDelegate extends ContextAwareBase implements GroovyObj
         if ((Appender) reference2.get() instanceof ConfigurationContributor) {
             ConfigurationContributor cc = (ConfigurationContributor) ScriptBytecodeAdapter.castToType(reference2.get(), ConfigurationContributor.class);
             arrayOfCallSite[88].call(arrayOfCallSite[89].call(cc), new _copyContributions_closure2(this, this, reference1, reference2));
-        }
-    }
-
-    class _copyContributions_closure2 extends Closure implements GeneratedClosure {
-        public _copyContributions_closure2(Object _outerInstance, Object _thisObject, Reference appenderDelegate, Reference appender) {
-            super(_outerInstance, _thisObject);
-            Reference reference1 = appenderDelegate;
-            this.appenderDelegate = reference1;
-            Reference reference2 = appender;
-            this.appender = reference2;
-        }
-
-        public Object doCall(Object oldName, Object newName) {
-            CallSite[] arrayOfCallSite = $getCallSiteArray();
-            Closure closure = ScriptBytecodeAdapter.getMethodPointer(this.appender.get(), ShortTypeHandling.castToString(new GStringImpl(new Object[]{oldName}, new String[]{"", ""})));
-            ScriptBytecodeAdapter.setProperty(closure, null, arrayOfCallSite[0].callGroovyObjectGetProperty(this.appenderDelegate.get()), ShortTypeHandling.castToString(new GStringImpl(new Object[]{newName}, new String[]{"", ""})));
-            return closure;
-        }
-
-        public Object call(Object oldName, Object newName) {
-            CallSite[] arrayOfCallSite = $getCallSiteArray();
-            return arrayOfCallSite[1].callCurrent((GroovyObject) this, oldName, newName);
-        }
-
-        public AppenderDelegate getAppenderDelegate() {
-            CallSite[] arrayOfCallSite = $getCallSiteArray();
-            return (AppenderDelegate) ScriptBytecodeAdapter.castToType(this.appenderDelegate.get(), AppenderDelegate.class);
-        }
-
-        public Appender getAppender() {
-            CallSite[] arrayOfCallSite = $getCallSiteArray();
-            return (Appender) ScriptBytecodeAdapter.castToType(this.appender.get(), Appender.class);
         }
     }
 
@@ -386,6 +331,56 @@ public class ConfigurationDelegate extends ContextAwareBase implements GroovyObj
 
     public void setAppenderList(List<Appender> paramList) {
         this.appenderList = paramList;
+    }
+
+    class _logger_closure1 extends Closure implements GeneratedClosure {
+        public _logger_closure1(Object _outerInstance, Object _thisObject, Reference aName) {
+            super(_outerInstance, _thisObject);
+            Reference reference = aName;
+            this.aName = reference;
+        }
+
+        public Object doCall(Object it) {
+            CallSite[] arrayOfCallSite = $getCallSiteArray();
+            return Boolean.valueOf(ScriptBytecodeAdapter.compareEqual(arrayOfCallSite[0].callGetProperty(it), this.aName.get()));
+        }
+
+        public Object getaName() {
+            CallSite[] arrayOfCallSite = $getCallSiteArray();
+            return this.aName.get();
+        }
+    }
+
+    class _copyContributions_closure2 extends Closure implements GeneratedClosure {
+        public _copyContributions_closure2(Object _outerInstance, Object _thisObject, Reference appenderDelegate, Reference appender) {
+            super(_outerInstance, _thisObject);
+            Reference reference1 = appenderDelegate;
+            this.appenderDelegate = reference1;
+            Reference reference2 = appender;
+            this.appender = reference2;
+        }
+
+        public Object doCall(Object oldName, Object newName) {
+            CallSite[] arrayOfCallSite = $getCallSiteArray();
+            Closure closure = ScriptBytecodeAdapter.getMethodPointer(this.appender.get(), ShortTypeHandling.castToString(new GStringImpl(new Object[]{oldName}, new String[]{"", ""})));
+            ScriptBytecodeAdapter.setProperty(closure, null, arrayOfCallSite[0].callGroovyObjectGetProperty(this.appenderDelegate.get()), ShortTypeHandling.castToString(new GStringImpl(new Object[]{newName}, new String[]{"", ""})));
+            return closure;
+        }
+
+        public Object call(Object oldName, Object newName) {
+            CallSite[] arrayOfCallSite = $getCallSiteArray();
+            return arrayOfCallSite[1].callCurrent((GroovyObject) this, oldName, newName);
+        }
+
+        public AppenderDelegate getAppenderDelegate() {
+            CallSite[] arrayOfCallSite = $getCallSiteArray();
+            return (AppenderDelegate) ScriptBytecodeAdapter.castToType(this.appenderDelegate.get(), AppenderDelegate.class);
+        }
+
+        public Appender getAppender() {
+            CallSite[] arrayOfCallSite = $getCallSiteArray();
+            return (Appender) ScriptBytecodeAdapter.castToType(this.appender.get(), Appender.class);
+        }
     }
 }
 

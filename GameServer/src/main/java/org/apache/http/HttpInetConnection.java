@@ -3,12 +3,12 @@ package org.apache.http;
 import java.net.InetAddress;
 
 public interface HttpInetConnection extends HttpConnection {
-  InetAddress getLocalAddress();
+    InetAddress getLocalAddress();
 
-  int getLocalPort();
+    int getLocalPort();
 
-  InetAddress getRemoteAddress();
+    InetAddress getRemoteAddress();
 
-  int getRemotePort();
+    int getRemotePort();
 }
 

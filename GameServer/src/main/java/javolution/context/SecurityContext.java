@@ -3,125 +3,123 @@ package javolution.context;
 import javolution.osgi.internal.OSGiServices;
 
 public abstract class SecurityContext
-extends AbstractContext
-{
-public static class Permission<T>
-{
-public static final Permission<Object> ALL = new Permission(null);
+        extends AbstractContext {
+    public static SecurityContext enter() {
+        return (SecurityContext) currentSecurityContext().enterInner();
+    }
 
-private final Class<? super T> category;
+    public static void check(Permission<?> permission) {
+        if (!currentSecurityContext().isGranted(permission)) {
+            throw new SecurityException(permission + " is not granted.");
+        }
+    }
 
-private final String action;
+    private static SecurityContext currentSecurityContext() {
+        SecurityContext ctx = current(SecurityContext.class);
+        if (ctx != null)
+            return ctx;
+        return OSGiServices.getSecurityContext();
+    }
 
-private final T instance;
+    public abstract boolean isGranted(Permission<?> paramPermission);
 
-public Permission(Class<? super T> category) {
-this(category, null, null);
-}
+    public abstract void grant(Permission<?> paramPermission, Object paramObject);
 
-public Permission(Class<? super T> category, String action) {
-this(category, action, null);
-}
+    public abstract void revoke(Permission<?> paramPermission, Object paramObject);
 
-public Permission(Class<? super T> category, String action, T instance) {
-this.category = category;
-this.action = action;
-this.instance = instance;
-}
+    public final void grant(Permission<?> permission) {
+        grant(permission, (Object) null);
+    }
 
-public Class<? super T> getCategory() {
-return this.category;
-}
+    public final void revoke(Permission<?> permission) {
+        revoke(permission, (Object) null);
+    }
 
-public String getAction() {
-return this.action;
-}
+    public static class Permission<T> {
+        public static final Permission<Object> ALL = new Permission(null);
 
-public T getInstance() {
-return this.instance;
-}
+        private final Class<? super T> category;
 
-public boolean implies(Permission<?> that) {
-if (this.category == null)
-return true; 
-if (!this.category.isAssignableFrom(that.category))
-return false; 
-if (this.action == null)
-return true; 
-if (!this.action.equals(that.action))
-return false; 
-if (this.instance == null)
-return true; 
-if (!this.instance.equals(that.instance))
-return false; 
-return true;
-}
+        private final String action;
 
-public String toString() {
-if (this.category == null)
-return "All permissions"; 
-if (this.action == null)
-return "Permission for any action on " + this.category.getName(); 
-if (this.instance == null)
-return "Permission for " + this.action + " on " + this.category.getName(); 
-return "Permission for " + this.action + " on instance " + this.instance + " of " + this.category.getName();
-}
+        private final T instance;
 
-public boolean equals(Object obj) {
-if (obj == this)
-return true; 
-if (!(obj instanceof Permission))
-return false; 
-Permission<?> that = (Permission)obj;
-if (this.category == null && that.category != null)
-return false; 
-if (this.category != null && !this.category.equals(that.category))
-return false; 
-if (this.action == null && that.action != null)
-return false; 
-if (this.action != null && !this.action.equals(that.action))
-return false; 
-if (this.instance == null && that.instance != null)
-return false; 
-if (this.instance != null && !this.instance.equals(that.instance))
-return false; 
-return false;
-}
+        public Permission(Class<? super T> category) {
+            this(category, null, null);
+        }
 
-public int hashCode() {
-return ((this.category != null) ? this.category.hashCode() : 0) + ((this.action != null) ? this.action.hashCode() : 0) + ((this.instance != null) ? this.instance.hashCode() : 0);
-}
-}
+        public Permission(Class<? super T> category, String action) {
+            this(category, action, null);
+        }
 
-public static SecurityContext enter() {
-return (SecurityContext)currentSecurityContext().enterInner();
-}
+        public Permission(Class<? super T> category, String action, T instance) {
+            this.category = category;
+            this.action = action;
+            this.instance = instance;
+        }
 
-public static void check(Permission<?> permission) {
-if (!currentSecurityContext().isGranted(permission)) {
-throw new SecurityException(permission + " is not granted.");
-}
-}
+        public Class<? super T> getCategory() {
+            return this.category;
+        }
 
-public abstract boolean isGranted(Permission<?> paramPermission);
+        public String getAction() {
+            return this.action;
+        }
 
-public abstract void grant(Permission<?> paramPermission, Object paramObject);
+        public T getInstance() {
+            return this.instance;
+        }
 
-public abstract void revoke(Permission<?> paramPermission, Object paramObject);
+        public boolean implies(Permission<?> that) {
+            if (this.category == null)
+                return true;
+            if (!this.category.isAssignableFrom(that.category))
+                return false;
+            if (this.action == null)
+                return true;
+            if (!this.action.equals(that.action))
+                return false;
+            if (this.instance == null)
+                return true;
+            if (!this.instance.equals(that.instance))
+                return false;
+            return true;
+        }
 
-public final void grant(Permission<?> permission) {
-grant(permission, (Object)null);
-}
+        public String toString() {
+            if (this.category == null)
+                return "All permissions";
+            if (this.action == null)
+                return "Permission for any action on " + this.category.getName();
+            if (this.instance == null)
+                return "Permission for " + this.action + " on " + this.category.getName();
+            return "Permission for " + this.action + " on instance " + this.instance + " of " + this.category.getName();
+        }
 
-public final void revoke(Permission<?> permission) {
-revoke(permission, (Object)null);
-}
+        public boolean equals(Object obj) {
+            if (obj == this)
+                return true;
+            if (!(obj instanceof Permission))
+                return false;
+            Permission<?> that = (Permission) obj;
+            if (this.category == null && that.category != null)
+                return false;
+            if (this.category != null && !this.category.equals(that.category))
+                return false;
+            if (this.action == null && that.action != null)
+                return false;
+            if (this.action != null && !this.action.equals(that.action))
+                return false;
+            if (this.instance == null && that.instance != null)
+                return false;
+            if (this.instance != null && !this.instance.equals(that.instance))
+                return false;
+            return false;
+        }
 
-private static SecurityContext currentSecurityContext() {
-SecurityContext ctx = current(SecurityContext.class);
-if (ctx != null)
-return ctx; 
-return OSGiServices.getSecurityContext();
-}
+        public int hashCode() {
+            return ((this.category != null) ? this.category.hashCode() : 0) + ((this.action != null) ? this.action.hashCode() : 0) + ((this.instance != null) ? this.instance.hashCode() : 0);
+        }
+    }
 }
 

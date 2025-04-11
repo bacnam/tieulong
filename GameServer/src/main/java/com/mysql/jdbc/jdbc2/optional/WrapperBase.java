@@ -1,6 +1,7 @@
 package com.mysql.jdbc.jdbc2.optional;
 
 import com.mysql.jdbc.ExceptionInterceptor;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,72 +9,70 @@ import java.lang.reflect.Proxy;
 import java.sql.SQLException;
 import java.util.Map;
 
-abstract class WrapperBase
-{
-protected MysqlPooledConnection pooledConnection;
+abstract class WrapperBase {
+    protected MysqlPooledConnection pooledConnection;
+    protected Map unwrappedInterfaces = null;
+    protected ExceptionInterceptor exceptionInterceptor;
+    protected WrapperBase(MysqlPooledConnection pooledConnection) {
+        this.pooledConnection = pooledConnection;
+        this.exceptionInterceptor = this.pooledConnection.getExceptionInterceptor();
+    }
 
-protected void checkAndFireConnectionError(SQLException sqlEx) throws SQLException {
-if (this.pooledConnection != null && 
-"08S01".equals(sqlEx.getSQLState()))
-{
-this.pooledConnection.callConnectionEventListeners(1, sqlEx);
-}
+    protected void checkAndFireConnectionError(SQLException sqlEx) throws SQLException {
+        if (this.pooledConnection != null &&
+                "08S01".equals(sqlEx.getSQLState())) {
+            this.pooledConnection.callConnectionEventListeners(1, sqlEx);
+        }
 
-throw sqlEx;
-}
+        throw sqlEx;
+    }
 
-protected Map unwrappedInterfaces = null;
-protected ExceptionInterceptor exceptionInterceptor;
+    protected class ConnectionErrorFiringInvocationHandler implements InvocationHandler {
+        Object invokeOn = null;
 
-protected WrapperBase(MysqlPooledConnection pooledConnection) {
-this.pooledConnection = pooledConnection;
-this.exceptionInterceptor = this.pooledConnection.getExceptionInterceptor();
-}
+        public ConnectionErrorFiringInvocationHandler(Object toInvokeOn) {
+            this.invokeOn = toInvokeOn;
+        }
 
-protected class ConnectionErrorFiringInvocationHandler implements InvocationHandler {
-Object invokeOn = null;
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            Object result = null;
 
-public ConnectionErrorFiringInvocationHandler(Object toInvokeOn) {
-this.invokeOn = toInvokeOn;
-}
+            try {
+                result = method.invoke(this.invokeOn, args);
 
-public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-Object result = null;
+                if (result != null) {
+                    result = proxyIfInterfaceIsJdbc(result, result.getClass());
+                }
+            } catch (InvocationTargetException e) {
+                if (e.getTargetException() instanceof SQLException) {
+                    WrapperBase.this.checkAndFireConnectionError((SQLException) e.getTargetException());
+                } else {
 
-try {
-result = method.invoke(this.invokeOn, args);
+                    throw e;
+                }
+            }
 
-if (result != null) {
-result = proxyIfInterfaceIsJdbc(result, result.getClass());
-}
-}
-catch (InvocationTargetException e) {
-if (e.getTargetException() instanceof SQLException) {
-WrapperBase.this.checkAndFireConnectionError((SQLException)e.getTargetException());
-} else {
+            return result;
+        }
 
-throw e;
-} 
-} 
+        private Object proxyIfInterfaceIsJdbc(Object toProxy, Class<?> clazz) {
+            Class<?>[] interfaces = clazz.getInterfaces();
 
-return result;
-}
+            Class[] arr$ = interfaces;
+            int len$ = arr$.length, i$ = 0;
+            if (i$ < len$) {
+                Class<?> iclass = arr$[i$];
+                String packageName = iclass.getPackage().getName();
 
-private Object proxyIfInterfaceIsJdbc(Object toProxy, Class<?> clazz) {
-Class<?>[] interfaces = clazz.getInterfaces();
+                if ("java.sql".equals(packageName) || "javax.sql".equals(packageName)) {
+                    return Proxy.newProxyInstance(toProxy.getClass().getClassLoader(), interfaces, new ConnectionErrorFiringInvocationHandler(toProxy));
+                }
 
-Class[] arr$ = interfaces; int len$ = arr$.length, i$ = 0; if (i$ < len$) { Class<?> iclass = arr$[i$];
-String packageName = iclass.getPackage().getName();
+                return proxyIfInterfaceIsJdbc(toProxy, iclass);
+            }
 
-if ("java.sql".equals(packageName) || "javax.sql".equals(packageName))
-{
-return Proxy.newProxyInstance(toProxy.getClass().getClassLoader(), interfaces, new ConnectionErrorFiringInvocationHandler(toProxy));
-}
-
-return proxyIfInterfaceIsJdbc(toProxy, iclass); }
-
-return toProxy;
-}
-}
+            return toProxy;
+        }
+    }
 }
 

@@ -1,76 +1,70 @@
 package jsc.swt.help;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
 
 public class HelpAction
-extends AbstractAction
-{
-String browserPath;
-String initialHelpPage;
-Component parent;
+        extends AbstractAction {
+    String browserPath;
+    String initialHelpPage;
+    Component parent;
 
-public HelpAction(Component paramComponent, String paramString1, Icon paramIcon, String paramString2, String paramString3) {
-super(paramString1, paramIcon);
-this.browserPath = paramString2;
-this.initialHelpPage = paramString3;
-this.parent = paramComponent;
-}
+    public HelpAction(Component paramComponent, String paramString1, Icon paramIcon, String paramString2, String paramString3) {
+        super(paramString1, paramIcon);
+        this.browserPath = paramString2;
+        this.initialHelpPage = paramString3;
+        this.parent = paramComponent;
+    }
 
-public void actionPerformed(ActionEvent paramActionEvent) {
-showHelp(this.parent, this.browserPath, this.initialHelpPage);
-}
+    public static void showHelp(Component paramComponent, String paramString) {
+        showHelp(paramComponent, "explorer", paramString);
+    }
 
-public void setBrowserPath(String paramString) {
-this.browserPath = paramString;
-}
+    public static void showHelp(Component paramComponent, String paramString1, String paramString2) {
+        Runtime runtime = Runtime.getRuntime();
 
-public void setInitialHelpPage(String paramString) {
-this.initialHelpPage = paramString;
-}
+        Process process = null;
 
-public static void showHelp(Component paramComponent, String paramString) {
-showHelp(paramComponent, "explorer", paramString);
-}
+        String str = paramString1 + " " + paramString2;
+        try {
+            process = runtime.exec(str);
 
-public static void showHelp(Component paramComponent, String paramString1, String paramString2) {
-Runtime runtime = Runtime.getRuntime();
+        } catch (IOException iOException) {
 
-Process process = null;
+            showHelpWindow(paramComponent, paramString2);
+        }
+    }
 
-String str = paramString1 + " " + paramString2;
-try {
-process = runtime.exec(str);
+    public static void showHelpWindow(Component paramComponent, String paramString) {
+        try {
+            File file = new File(paramString);
+            URL uRL = file.toURL();
+            HelpWindow helpWindow = new HelpWindow(uRL);
+            helpWindow.show();
+        } catch (IOException iOException) {
 
-}
-catch (IOException iOException) {
+            JOptionPane.showMessageDialog(paramComponent, "Cannot find Help page " + paramString, "Error", 0);
 
-showHelpWindow(paramComponent, paramString2);
-} 
-}
+        } catch (Exception exception) {
 
-public static void showHelpWindow(Component paramComponent, String paramString) {
-try {
-File file = new File(paramString);
-URL uRL = file.toURL();
-HelpWindow helpWindow = new HelpWindow(uRL);
-helpWindow.show();
-}
-catch (IOException iOException) {
+            JOptionPane.showMessageDialog(paramComponent, "Cannot display Help page " + paramString, "Error", 0);
+        }
+    }
 
-JOptionPane.showMessageDialog(paramComponent, "Cannot find Help page " + paramString, "Error", 0);
+    public void actionPerformed(ActionEvent paramActionEvent) {
+        showHelp(this.parent, this.browserPath, this.initialHelpPage);
+    }
 
-}
-catch (Exception exception) {
+    public void setBrowserPath(String paramString) {
+        this.browserPath = paramString;
+    }
 
-JOptionPane.showMessageDialog(paramComponent, "Cannot display Help page " + paramString, "Error", 0);
-} 
-}
+    public void setInitialHelpPage(String paramString) {
+        this.initialHelpPage = paramString;
+    }
 }
 

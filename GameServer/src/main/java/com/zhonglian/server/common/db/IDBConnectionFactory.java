@@ -5,16 +5,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface IDBConnectionFactory {
-  Connection getConnection();
+    Connection getConnection();
 
-  PrintWriter getLogWriter() throws SQLException;
+    PrintWriter getLogWriter() throws SQLException;
 
-  void setLogWriter(PrintWriter paramPrintWriter) throws SQLException;
+    void setLogWriter(PrintWriter paramPrintWriter) throws SQLException;
 
-  void shutdown();
+    void shutdown();
 
-  String getCatalog();
+    String getCatalog();
 
-  int getUsedConnectCount();
+    int getUsedConnectCount();
 }
 

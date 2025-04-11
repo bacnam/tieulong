@@ -1,150 +1,145 @@
 package org.apache.http.message;
 
-import org.apache.http.FormattedHeader;
-import org.apache.http.Header;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.RequestLine;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.util.Args;
 import org.apache.http.util.CharArrayBuffer;
 
 @Immutable
 public class BasicLineFormatter
-implements LineFormatter
-{
-@Deprecated
-public static final BasicLineFormatter DEFAULT = new BasicLineFormatter();
+        implements LineFormatter {
+    @Deprecated
+    public static final BasicLineFormatter DEFAULT = new BasicLineFormatter();
 
-public static final BasicLineFormatter INSTANCE = new BasicLineFormatter();
+    public static final BasicLineFormatter INSTANCE = new BasicLineFormatter();
 
-protected CharArrayBuffer initBuffer(CharArrayBuffer charBuffer) {
-CharArrayBuffer buffer = charBuffer;
-if (buffer != null) {
-buffer.clear();
-} else {
-buffer = new CharArrayBuffer(64);
-} 
-return buffer;
-}
+    public static String formatProtocolVersion(ProtocolVersion version, LineFormatter formatter) {
+        return ((formatter != null) ? formatter : INSTANCE).appendProtocolVersion(null, version).toString();
+    }
 
-public static String formatProtocolVersion(ProtocolVersion version, LineFormatter formatter) {
-return ((formatter != null) ? formatter : INSTANCE).appendProtocolVersion(null, version).toString();
-}
+    public static String formatRequestLine(RequestLine reqline, LineFormatter formatter) {
+        return ((formatter != null) ? formatter : INSTANCE).formatRequestLine(null, reqline).toString();
+    }
 
-public CharArrayBuffer appendProtocolVersion(CharArrayBuffer buffer, ProtocolVersion version) {
-Args.notNull(version, "Protocol version");
+    public static String formatStatusLine(StatusLine statline, LineFormatter formatter) {
+        return ((formatter != null) ? formatter : INSTANCE).formatStatusLine(null, statline).toString();
+    }
 
-CharArrayBuffer result = buffer;
-int len = estimateProtocolVersionLen(version);
-if (result == null) {
-result = new CharArrayBuffer(len);
-} else {
-result.ensureCapacity(len);
-} 
+    public static String formatHeader(Header header, LineFormatter formatter) {
+        return ((formatter != null) ? formatter : INSTANCE).formatHeader(null, header).toString();
+    }
 
-result.append(version.getProtocol());
-result.append('/');
-result.append(Integer.toString(version.getMajor()));
-result.append('.');
-result.append(Integer.toString(version.getMinor()));
+    protected CharArrayBuffer initBuffer(CharArrayBuffer charBuffer) {
+        CharArrayBuffer buffer = charBuffer;
+        if (buffer != null) {
+            buffer.clear();
+        } else {
+            buffer = new CharArrayBuffer(64);
+        }
+        return buffer;
+    }
 
-return result;
-}
+    public CharArrayBuffer appendProtocolVersion(CharArrayBuffer buffer, ProtocolVersion version) {
+        Args.notNull(version, "Protocol version");
 
-protected int estimateProtocolVersionLen(ProtocolVersion version) {
-return version.getProtocol().length() + 4;
-}
+        CharArrayBuffer result = buffer;
+        int len = estimateProtocolVersionLen(version);
+        if (result == null) {
+            result = new CharArrayBuffer(len);
+        } else {
+            result.ensureCapacity(len);
+        }
 
-public static String formatRequestLine(RequestLine reqline, LineFormatter formatter) {
-return ((formatter != null) ? formatter : INSTANCE).formatRequestLine(null, reqline).toString();
-}
+        result.append(version.getProtocol());
+        result.append('/');
+        result.append(Integer.toString(version.getMajor()));
+        result.append('.');
+        result.append(Integer.toString(version.getMinor()));
 
-public CharArrayBuffer formatRequestLine(CharArrayBuffer buffer, RequestLine reqline) {
-Args.notNull(reqline, "Request line");
-CharArrayBuffer result = initBuffer(buffer);
-doFormatRequestLine(result, reqline);
+        return result;
+    }
 
-return result;
-}
+    protected int estimateProtocolVersionLen(ProtocolVersion version) {
+        return version.getProtocol().length() + 4;
+    }
 
-protected void doFormatRequestLine(CharArrayBuffer buffer, RequestLine reqline) {
-String method = reqline.getMethod();
-String uri = reqline.getUri();
+    public CharArrayBuffer formatRequestLine(CharArrayBuffer buffer, RequestLine reqline) {
+        Args.notNull(reqline, "Request line");
+        CharArrayBuffer result = initBuffer(buffer);
+        doFormatRequestLine(result, reqline);
 
-int len = method.length() + 1 + uri.length() + 1 + estimateProtocolVersionLen(reqline.getProtocolVersion());
+        return result;
+    }
 
-buffer.ensureCapacity(len);
+    protected void doFormatRequestLine(CharArrayBuffer buffer, RequestLine reqline) {
+        String method = reqline.getMethod();
+        String uri = reqline.getUri();
 
-buffer.append(method);
-buffer.append(' ');
-buffer.append(uri);
-buffer.append(' ');
-appendProtocolVersion(buffer, reqline.getProtocolVersion());
-}
+        int len = method.length() + 1 + uri.length() + 1 + estimateProtocolVersionLen(reqline.getProtocolVersion());
 
-public static String formatStatusLine(StatusLine statline, LineFormatter formatter) {
-return ((formatter != null) ? formatter : INSTANCE).formatStatusLine(null, statline).toString();
-}
+        buffer.ensureCapacity(len);
 
-public CharArrayBuffer formatStatusLine(CharArrayBuffer buffer, StatusLine statline) {
-Args.notNull(statline, "Status line");
-CharArrayBuffer result = initBuffer(buffer);
-doFormatStatusLine(result, statline);
+        buffer.append(method);
+        buffer.append(' ');
+        buffer.append(uri);
+        buffer.append(' ');
+        appendProtocolVersion(buffer, reqline.getProtocolVersion());
+    }
 
-return result;
-}
+    public CharArrayBuffer formatStatusLine(CharArrayBuffer buffer, StatusLine statline) {
+        Args.notNull(statline, "Status line");
+        CharArrayBuffer result = initBuffer(buffer);
+        doFormatStatusLine(result, statline);
 
-protected void doFormatStatusLine(CharArrayBuffer buffer, StatusLine statline) {
-int len = estimateProtocolVersionLen(statline.getProtocolVersion()) + 1 + 3 + 1;
+        return result;
+    }
 
-String reason = statline.getReasonPhrase();
-if (reason != null) {
-len += reason.length();
-}
-buffer.ensureCapacity(len);
+    protected void doFormatStatusLine(CharArrayBuffer buffer, StatusLine statline) {
+        int len = estimateProtocolVersionLen(statline.getProtocolVersion()) + 1 + 3 + 1;
 
-appendProtocolVersion(buffer, statline.getProtocolVersion());
-buffer.append(' ');
-buffer.append(Integer.toString(statline.getStatusCode()));
-buffer.append(' ');
-if (reason != null) {
-buffer.append(reason);
-}
-}
+        String reason = statline.getReasonPhrase();
+        if (reason != null) {
+            len += reason.length();
+        }
+        buffer.ensureCapacity(len);
 
-public static String formatHeader(Header header, LineFormatter formatter) {
-return ((formatter != null) ? formatter : INSTANCE).formatHeader(null, header).toString();
-}
+        appendProtocolVersion(buffer, statline.getProtocolVersion());
+        buffer.append(' ');
+        buffer.append(Integer.toString(statline.getStatusCode()));
+        buffer.append(' ');
+        if (reason != null) {
+            buffer.append(reason);
+        }
+    }
 
-public CharArrayBuffer formatHeader(CharArrayBuffer buffer, Header header) {
-CharArrayBuffer result;
-Args.notNull(header, "Header");
+    public CharArrayBuffer formatHeader(CharArrayBuffer buffer, Header header) {
+        CharArrayBuffer result;
+        Args.notNull(header, "Header");
 
-if (header instanceof FormattedHeader) {
+        if (header instanceof FormattedHeader) {
 
-result = ((FormattedHeader)header).getBuffer();
-} else {
-result = initBuffer(buffer);
-doFormatHeader(result, header);
-} 
-return result;
-}
+            result = ((FormattedHeader) header).getBuffer();
+        } else {
+            result = initBuffer(buffer);
+            doFormatHeader(result, header);
+        }
+        return result;
+    }
 
-protected void doFormatHeader(CharArrayBuffer buffer, Header header) {
-String name = header.getName();
-String value = header.getValue();
+    protected void doFormatHeader(CharArrayBuffer buffer, Header header) {
+        String name = header.getName();
+        String value = header.getValue();
 
-int len = name.length() + 2;
-if (value != null) {
-len += value.length();
-}
-buffer.ensureCapacity(len);
+        int len = name.length() + 2;
+        if (value != null) {
+            len += value.length();
+        }
+        buffer.ensureCapacity(len);
 
-buffer.append(name);
-buffer.append(": ");
-if (value != null)
-buffer.append(value); 
-}
+        buffer.append(name);
+        buffer.append(": ");
+        if (value != null)
+            buffer.append(value);
+    }
 }
 

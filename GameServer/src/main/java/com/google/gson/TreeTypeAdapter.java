@@ -1,6 +1,5 @@
 package com.google.gson;
 
-import com.google.gson.internal;
 import com.google.gson.internal.Streams;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -23,6 +22,19 @@ final class TreeTypeAdapter<T>
         this.gson = gson;
         this.typeToken = typeToken;
         this.skipPast = skipPast;
+    }
+
+    public static TypeAdapterFactory newFactory(TypeToken<?> exactType, Object typeAdapter) {
+        return new SingleTypeFactory(typeAdapter, exactType, false, null);
+    }
+
+    public static TypeAdapterFactory newFactoryWithMatchRawType(TypeToken<?> exactType, Object typeAdapter) {
+        boolean matchRawType = (exactType.getType() == exactType.getRawType());
+        return new SingleTypeFactory(typeAdapter, exactType, matchRawType, null);
+    }
+
+    public static TypeAdapterFactory newTypeHierarchyFactory(Class<?> hierarchyType, Object typeAdapter) {
+        return new SingleTypeFactory(typeAdapter, null, false, hierarchyType);
     }
 
     public T read(JsonReader in) throws IOException {
@@ -52,19 +64,6 @@ final class TreeTypeAdapter<T>
     private TypeAdapter<T> delegate() {
         TypeAdapter<T> d = this.delegate;
         return (d != null) ? d : (this.delegate = this.gson.<T>getDelegateAdapter(this.skipPast, this.typeToken));
-    }
-
-    public static TypeAdapterFactory newFactory(TypeToken<?> exactType, Object typeAdapter) {
-        return new SingleTypeFactory(typeAdapter, exactType, false, null);
-    }
-
-    public static TypeAdapterFactory newFactoryWithMatchRawType(TypeToken<?> exactType, Object typeAdapter) {
-        boolean matchRawType = (exactType.getType() == exactType.getRawType());
-        return new SingleTypeFactory(typeAdapter, exactType, matchRawType, null);
-    }
-
-    public static TypeAdapterFactory newTypeHierarchyFactory(Class<?> hierarchyType, Object typeAdapter) {
-        return new SingleTypeFactory(typeAdapter, null, false, hierarchyType);
     }
 
     private static class SingleTypeFactory implements TypeAdapterFactory {

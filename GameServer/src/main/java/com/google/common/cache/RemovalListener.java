@@ -4,6 +4,6 @@ import com.google.common.annotations.Beta;
 
 @Beta
 public interface RemovalListener<K, V> {
-  void onRemoval(RemovalNotification<K, V> paramRemovalNotification);
+    void onRemoval(RemovalNotification<K, V> paramRemovalNotification);
 }
 

@@ -1,4 +1,5 @@
 package com.mchange.util.impl;
 
-public class QuotesAndSpacesTokenizer {}
+public class QuotesAndSpacesTokenizer {
+}
 

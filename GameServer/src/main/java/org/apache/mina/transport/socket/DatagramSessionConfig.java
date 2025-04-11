@@ -3,28 +3,28 @@ package org.apache.mina.transport.socket;
 import org.apache.mina.core.session.IoSessionConfig;
 
 public interface DatagramSessionConfig extends IoSessionConfig {
-  boolean isBroadcast();
+    boolean isBroadcast();
 
-  void setBroadcast(boolean paramBoolean);
+    void setBroadcast(boolean paramBoolean);
 
-  boolean isReuseAddress();
+    boolean isReuseAddress();
 
-  void setReuseAddress(boolean paramBoolean);
+    void setReuseAddress(boolean paramBoolean);
 
-  int getReceiveBufferSize();
+    int getReceiveBufferSize();
 
-  void setReceiveBufferSize(int paramInt);
+    void setReceiveBufferSize(int paramInt);
 
-  int getSendBufferSize();
+    int getSendBufferSize();
 
-  void setSendBufferSize(int paramInt);
+    void setSendBufferSize(int paramInt);
 
-  int getTrafficClass();
+    int getTrafficClass();
 
-  void setTrafficClass(int paramInt);
+    void setTrafficClass(int paramInt);
 
-  boolean isCloseOnPortUnreachable();
+    boolean isCloseOnPortUnreachable();
 
-  void setCloseOnPortUnreachable(boolean paramBoolean);
+    void setCloseOnPortUnreachable(boolean paramBoolean);
 }
 

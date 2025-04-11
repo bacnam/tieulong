@@ -17,84 +17,83 @@ import core.config.refdata.ref.RefCrystalPrice;
 import core.config.refdata.ref.RefLongnvLevel;
 import core.config.refdata.ref.RefLongnvSacrifice;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class LongnvSacrifice
-extends PlayerHandler
-{
-public static class Request
-{
-LongnvSacrificeType type;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guild = guildMember.getGuild();
 
-private static class Sacrifice {
-boolean iscritical;
-int nowExp;
-int exp;
-int times;
-LongnvSacrificeType type;
+        if (guild == null) {
+            throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[]{Long.valueOf(player.getPid())});
+        }
 
-private Sacrifice(boolean iscritical, int nowExp, int exp, int times, LongnvSacrificeType type) {
-this.iscritical = iscritical;
-this.nowExp = nowExp;
-this.exp = exp;
-this.times = times;
-this.type = type;
-}
-}
+        RefLongnvLevel nextLeveLinfo = (RefLongnvLevel) RefDataMgr.get(RefLongnvLevel.class, Integer.valueOf(guild.getLongnvLevel() + 1));
+        if (nextLeveLinfo == null) {
+            throw new WSException(ErrorCode.Guild_LevelMax, "龙女等级已满");
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guild = guildMember.getGuild();
+        RefLongnvSacrifice ref = (RefLongnvSacrifice) RefDataMgr.get(RefLongnvSacrifice.class, req.type);
 
-if (guild == null) {
-throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[] { Long.valueOf(player.getPid()) });
-}
+        PlayerRecord recorder = (PlayerRecord) player.getFeature(PlayerRecord.class);
+        int times = recorder.getValue(ref.RefreshType);
 
-RefLongnvLevel nextLeveLinfo = (RefLongnvLevel)RefDataMgr.get(RefLongnvLevel.class, Integer.valueOf(guild.getLongnvLevel() + 1));
-if (nextLeveLinfo == null) {
-throw new WSException(ErrorCode.Guild_LevelMax, "龙女等级已满");
-}
+        if (ref.Limit >= 0 && times >= ref.Limit) {
+            throw new WSException(ErrorCode.Guild_SacrificeAlready, "玩家[%s]祭天次数已满", new Object[]{Long.valueOf(player.getPid())});
+        }
+        RefCrystalPrice prize = RefCrystalPrice.getPrize(times);
+        int cost = 0;
+        int basicexp = 0;
+        if (ref.id == LongnvSacrificeType.Donate) {
+            cost = prize.LongnvDonate;
+            basicexp = ref.Exp;
+        } else if (ref.id == LongnvSacrificeType.Crystal) {
+            cost = prize.LongnvCrystal;
+            basicexp = prize.LongnvCrystalExp;
+        }
 
-RefLongnvSacrifice ref = (RefLongnvSacrifice)RefDataMgr.get(RefLongnvSacrifice.class, req.type);
+        PlayerItem playerItem = (PlayerItem) player.getFeature(PlayerItem.class);
+        if (!playerItem.check(ref.CostItemID, cost)) {
+            throw new WSException(ErrorCode.NotEnough_GuildSacrificeCost, "玩家[%s]资源不足，不能进行相关类型的祭天", new Object[]{Long.valueOf(player.getPid())});
+        }
+        playerItem.consume(ref.CostItemID, cost, ItemFlow.Guild_Sacrifice);
 
-PlayerRecord recorder = (PlayerRecord)player.getFeature(PlayerRecord.class);
-int times = recorder.getValue(ref.RefreshType);
+        boolean critical = (CommMath.randomInt(10000) < ref.Critical);
+        int crivalue = critical ? ref.CriticalValue : 10000;
 
-if (ref.Limit >= 0 && times >= ref.Limit) {
-throw new WSException(ErrorCode.Guild_SacrificeAlready, "玩家[%s]祭天次数已满", new Object[] { Long.valueOf(player.getPid()) });
-}
-RefCrystalPrice prize = RefCrystalPrice.getPrize(times);
-int cost = 0;
-int basicexp = 0;
-if (ref.id == LongnvSacrificeType.Donate) {
-cost = prize.LongnvDonate;
-basicexp = ref.Exp;
-} else if (ref.id == LongnvSacrificeType.Crystal) {
-cost = prize.LongnvCrystal;
-basicexp = prize.LongnvCrystalExp;
-} 
+        int exp = basicexp * crivalue / 10000;
 
-PlayerItem playerItem = (PlayerItem)player.getFeature(PlayerItem.class);
-if (!playerItem.check(ref.CostItemID, cost)) {
-throw new WSException(ErrorCode.NotEnough_GuildSacrificeCost, "玩家[%s]资源不足，不能进行相关类型的祭天", new Object[] { Long.valueOf(player.getPid()) });
-}
-playerItem.consume(ref.CostItemID, cost, ItemFlow.Guild_Sacrifice);
+        guild.gainLongnvExp(exp);
 
-boolean critical = (CommMath.randomInt(10000) < ref.Critical);
-int crivalue = critical ? ref.CriticalValue : 10000;
+        recorder.addValue(ref.RefreshType);
 
-int exp = basicexp * crivalue / 10000;
+        Sacrifice sacrifice = new Sacrifice(critical, guild.bo.getLnexp(), exp, recorder.getValue(ref.RefreshType), req.type, null);
 
-guild.gainLongnvExp(exp);
+        guild.broadcast("Longnvsacrifice", Integer.valueOf(exp), player.getPid());
+        request.response(sacrifice);
+    }
 
-recorder.addValue(ref.RefreshType);
+    public static class Request {
+        LongnvSacrificeType type;
+    }
 
-Sacrifice sacrifice = new Sacrifice(critical, guild.bo.getLnexp(), exp, recorder.getValue(ref.RefreshType), req.type, null);
+    private static class Sacrifice {
+        boolean iscritical;
+        int nowExp;
+        int exp;
+        int times;
+        LongnvSacrificeType type;
 
-guild.broadcast("Longnvsacrifice", Integer.valueOf(exp), player.getPid());
-request.response(sacrifice);
-}
+        private Sacrifice(boolean iscritical, int nowExp, int exp, int times, LongnvSacrificeType type) {
+            this.iscritical = iscritical;
+            this.nowExp = nowExp;
+            this.exp = exp;
+            this.times = times;
+            this.type = type;
+        }
+    }
 }
 

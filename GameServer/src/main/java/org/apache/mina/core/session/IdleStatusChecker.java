@@ -1,87 +1,85 @@
 package org.apache.mina.core.session;
 
-import java.util.Iterator;
-import java.util.Set;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.util.ConcurrentHashSet;
 
-public class IdleStatusChecker
-{
-private final Set<AbstractIoSession> sessions = (Set<AbstractIoSession>)new ConcurrentHashSet();
+import java.util.Iterator;
+import java.util.Set;
 
-private final NotifyingTask notifyingTask = new NotifyingTask();
+public class IdleStatusChecker {
+    private final Set<AbstractIoSession> sessions = (Set<AbstractIoSession>) new ConcurrentHashSet();
 
-private final IoFutureListener<IoFuture> sessionCloseListener = new SessionCloseListener();
+    private final NotifyingTask notifyingTask = new NotifyingTask();
 
-public void addSession(AbstractIoSession session) {
-this.sessions.add(session);
-CloseFuture closeFuture = session.getCloseFuture();
+    private final IoFutureListener<IoFuture> sessionCloseListener = new SessionCloseListener();
 
-closeFuture.addListener(this.sessionCloseListener);
-}
+    public void addSession(AbstractIoSession session) {
+        this.sessions.add(session);
+        CloseFuture closeFuture = session.getCloseFuture();
 
-private void removeSession(AbstractIoSession session) {
-this.sessions.remove(session);
-}
+        closeFuture.addListener(this.sessionCloseListener);
+    }
 
-public NotifyingTask getNotifyingTask() {
-return this.notifyingTask;
-}
+    private void removeSession(AbstractIoSession session) {
+        this.sessions.remove(session);
+    }
 
-public class NotifyingTask
-implements Runnable
-{
-private volatile boolean cancelled;
+    public NotifyingTask getNotifyingTask() {
+        return this.notifyingTask;
+    }
 
-private volatile Thread thread;
+    public class NotifyingTask
+            implements Runnable {
+        private volatile boolean cancelled;
 
-public void run() {
-this.thread = Thread.currentThread();
-try {
-while (!this.cancelled)
-{
-long currentTime = System.currentTimeMillis();
+        private volatile Thread thread;
 
-notifySessions(currentTime);
+        public void run() {
+            this.thread = Thread.currentThread();
+            try {
+                while (!this.cancelled) {
+                    long currentTime = System.currentTimeMillis();
 
-try {
-Thread.sleep(1000L);
-} catch (InterruptedException e) {}
-}
+                    notifySessions(currentTime);
 
-} finally {
+                    try {
+                        Thread.sleep(1000L);
+                    } catch (InterruptedException e) {
+                    }
+                }
 
-this.thread = null;
-} 
-}
+            } finally {
 
-public void cancel() {
-this.cancelled = true;
-Thread thread = this.thread;
-if (thread != null) {
-thread.interrupt();
-}
-}
+                this.thread = null;
+            }
+        }
 
-private void notifySessions(long currentTime) {
-Iterator<AbstractIoSession> it = IdleStatusChecker.this.sessions.iterator();
-while (it.hasNext()) {
-AbstractIoSession session = it.next();
-if (session.isConnected()) {
-AbstractIoSession.notifyIdleSession(session, currentTime);
-}
-} 
-}
-}
+        public void cancel() {
+            this.cancelled = true;
+            Thread thread = this.thread;
+            if (thread != null) {
+                thread.interrupt();
+            }
+        }
 
-private class SessionCloseListener
-implements IoFutureListener<IoFuture>
-{
-public void operationComplete(IoFuture future) {
-IdleStatusChecker.this.removeSession((AbstractIoSession)future.getSession());
-}
-}
+        private void notifySessions(long currentTime) {
+            Iterator<AbstractIoSession> it = IdleStatusChecker.this.sessions.iterator();
+            while (it.hasNext()) {
+                AbstractIoSession session = it.next();
+                if (session.isConnected()) {
+                    AbstractIoSession.notifyIdleSession(session, currentTime);
+                }
+            }
+        }
+    }
+
+    private class SessionCloseListener
+            implements IoFutureListener<IoFuture> {
+        public void operationComplete(IoFuture future) {
+            IdleStatusChecker.this.removeSession((AbstractIoSession) future.getSession());
+        }
+    }
 }
 

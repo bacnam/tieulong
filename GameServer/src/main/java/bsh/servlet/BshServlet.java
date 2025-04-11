@@ -2,16 +2,12 @@ package bsh.servlet;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 public class BshServlet extends HttpServlet {
     static String exampleScript = "print(\"hello!\");";
@@ -32,6 +28,25 @@ public class BshServlet extends HttpServlet {
         }
 
         return bshVersion;
+    }
+
+    public static String escape(String value) {
+        String search = "&<>";
+        String[] replace = {"&amp;", "&lt;", "&gt;"};
+
+        StringBuffer buf = new StringBuffer();
+
+        for (int i = 0; i < value.length(); i++) {
+
+            char c = value.charAt(i);
+            int pos = search.indexOf(c);
+            if (pos < 0) {
+                buf.append(c);
+            } else {
+                buf.append(replace[pos]);
+            }
+        }
+        return buf.toString();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,7 +82,7 @@ public class BshServlet extends HttpServlet {
     }
 
     void sendHTML(HttpServletRequest request, HttpServletResponse response, String script, Exception scriptError,
-            Object scriptResult, StringBuffer scriptOutput, boolean capture) throws IOException {
+                  Object scriptResult, StringBuffer scriptOutput, boolean capture) throws IOException {
         SimpleTemplate st = new SimpleTemplate(BshServlet.class.getResource("page.template"));
 
         st.replace("version", getBshVersion());
@@ -96,7 +111,7 @@ public class BshServlet extends HttpServlet {
     }
 
     void sendRaw(HttpServletRequest request, HttpServletResponse response, Exception scriptError, Object scriptResult,
-            StringBuffer scriptOutput) throws IOException {
+                 StringBuffer scriptOutput) throws IOException {
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
         if (scriptError != null) {
@@ -181,7 +196,7 @@ public class BshServlet extends HttpServlet {
     }
 
     Object evalScript(String script, StringBuffer scriptOutput, boolean captureOutErr, HttpServletRequest request,
-            HttpServletResponse response) throws EvalError {
+                      HttpServletResponse response) throws EvalError {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream pout = new PrintStream(baos);
 
@@ -210,24 +225,5 @@ public class BshServlet extends HttpServlet {
         pout.flush();
         scriptOutput.append(baos.toString());
         return result;
-    }
-
-    public static String escape(String value) {
-        String search = "&<>";
-        String[] replace = { "&amp;", "&lt;", "&gt;" };
-
-        StringBuffer buf = new StringBuffer();
-
-        for (int i = 0; i < value.length(); i++) {
-
-            char c = value.charAt(i);
-            int pos = search.indexOf(c);
-            if (pos < 0) {
-                buf.append(c);
-            } else {
-                buf.append(replace[pos]);
-            }
-        }
-        return buf.toString();
     }
 }

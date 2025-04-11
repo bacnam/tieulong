@@ -1,121 +1,124 @@
 package javolution.util.internal.set.sorted;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import javolution.util.function.Equality;
 import javolution.util.service.SortedSetService;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class SubSortedSetImpl<E>
-extends SortedSetView<E>
-{
-private static final long serialVersionUID = 1536L;
-private final E from;
-private final E to;
+        extends SortedSetView<E> {
+    private static final long serialVersionUID = 1536L;
+    private final E from;
+    private final E to;
 
-private class IteratorImpl
-implements Iterator<E>
-{
-private boolean ahead;
-private final Equality<? super E> cmp = SubSortedSetImpl.this.comparator();
-private E next;
-private final Iterator<E> targetIterator = SubSortedSetImpl.this.target().iterator();
+    public SubSortedSetImpl(SortedSetService<E> target, E from, E to) {
+        super(target);
+        if (from != null && to != null && comparator().compare(from, to) > 0) {
+            throw new IllegalArgumentException("from: " + from + ", to: " + to);
+        }
+        this.from = from;
+        this.to = to;
+    }
 
-public boolean hasNext() {
-if (this.ahead) return true; 
-while (this.targetIterator.hasNext()) {
-this.next = this.targetIterator.next();
-if (SubSortedSetImpl.this.from != null && this.cmp.compare(this.next, SubSortedSetImpl.this.from) < 0)
-continue;  if (SubSortedSetImpl.this.to != null && this.cmp.compare(this.next, SubSortedSetImpl.this.to) >= 0)
-break;  this.ahead = true;
-return true;
-} 
-return false;
-}
+    public boolean add(E e) {
+        Equality<? super E> cmp = comparator();
+        if (this.from != null && cmp.compare(e, this.from) < 0)
+            throw new IllegalArgumentException("Element: " + e + " outside of this sub-set bounds");
 
-public E next() {
-hasNext();
-this.ahead = false;
-return this.next;
-}
+        if (this.to != null && cmp.compare(e, this.to) >= 0)
+            throw new IllegalArgumentException("Element: " + e + " outside of this sub-set bounds");
 
-public void remove() {
-this.targetIterator.remove();
-}
+        return target().add(e);
+    }
 
-private IteratorImpl() {}
-}
+    public Equality<? super E> comparator() {
+        return target().comparator();
+    }
 
-public SubSortedSetImpl(SortedSetService<E> target, E from, E to) {
-super(target);
-if (from != null && to != null && comparator().compare(from, to) > 0) {
-throw new IllegalArgumentException("from: " + from + ", to: " + to);
-}
-this.from = from;
-this.to = to;
-}
+    public boolean contains(Object obj) {
+        Equality<? super E> cmp = comparator();
+        if (this.from != null && cmp.compare(obj, this.from) < 0) return false;
+        if (this.to != null && cmp.compare(obj, this.to) >= 0) return false;
+        return target().contains(obj);
+    }
 
-public boolean add(E e) {
-Equality<? super E> cmp = comparator();
-if (this.from != null && cmp.compare(e, this.from) < 0) throw new IllegalArgumentException("Element: " + e + " outside of this sub-set bounds");
+    public E first() {
+        if (this.from == null) return (E) target().first();
+        Iterator<E> it = iterator();
+        if (!it.hasNext()) throw new NoSuchElementException();
+        return it.next();
+    }
 
-if (this.to != null && cmp.compare(e, this.to) >= 0) throw new IllegalArgumentException("Element: " + e + " outside of this sub-set bounds");
+    public boolean isEmpty() {
+        return iterator().hasNext();
+    }
 
-return target().add(e);
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl();
+    }
 
-public Equality<? super E> comparator() {
-return target().comparator();
-}
+    public E last() {
+        if (this.to == null) return (E) target().last();
+        Iterator<E> it = iterator();
+        if (!it.hasNext()) throw new NoSuchElementException();
+        E last = it.next();
+        while (it.hasNext()) {
+            last = it.next();
+        }
+        return last;
+    }
 
-public boolean contains(Object obj) {
-Equality<? super E> cmp = comparator();
-if (this.from != null && cmp.compare(obj, this.from) < 0) return false; 
-if (this.to != null && cmp.compare(obj, this.to) >= 0) return false; 
-return target().contains(obj);
-}
+    public boolean remove(Object obj) {
+        Equality<? super E> cmp = comparator();
+        if (this.from != null && cmp.compare(obj, this.from) < 0) return false;
+        if (this.to != null && cmp.compare(obj, this.to) >= 0) return false;
+        return target().remove(obj);
+    }
 
-public E first() {
-if (this.from == null) return (E)target().first(); 
-Iterator<E> it = iterator();
-if (!it.hasNext()) throw new NoSuchElementException(); 
-return it.next();
-}
+    public int size() {
+        int count = 0;
+        Iterator<E> it = iterator();
+        while (it.hasNext()) {
+            count++;
+            it.next();
+        }
+        return count;
+    }
 
-public boolean isEmpty() {
-return iterator().hasNext();
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private final Equality<? super E> cmp = SubSortedSetImpl.this.comparator();
+        private final Iterator<E> targetIterator = SubSortedSetImpl.this.target().iterator();
+        private boolean ahead;
+        private E next;
 
-public Iterator<E> iterator() {
-return new IteratorImpl();
-}
+        private IteratorImpl() {
+        }
 
-public E last() {
-if (this.to == null) return (E)target().last(); 
-Iterator<E> it = iterator();
-if (!it.hasNext()) throw new NoSuchElementException(); 
-E last = it.next();
-while (it.hasNext()) {
-last = it.next();
-}
-return last;
-}
+        public boolean hasNext() {
+            if (this.ahead) return true;
+            while (this.targetIterator.hasNext()) {
+                this.next = this.targetIterator.next();
+                if (SubSortedSetImpl.this.from != null && this.cmp.compare(this.next, SubSortedSetImpl.this.from) < 0)
+                    continue;
+                if (SubSortedSetImpl.this.to != null && this.cmp.compare(this.next, SubSortedSetImpl.this.to) >= 0)
+                    break;
+                this.ahead = true;
+                return true;
+            }
+            return false;
+        }
 
-public boolean remove(Object obj) {
-Equality<? super E> cmp = comparator();
-if (this.from != null && cmp.compare(obj, this.from) < 0) return false; 
-if (this.to != null && cmp.compare(obj, this.to) >= 0) return false; 
-return target().remove(obj);
-}
+        public E next() {
+            hasNext();
+            this.ahead = false;
+            return this.next;
+        }
 
-public int size() {
-int count = 0;
-Iterator<E> it = iterator();
-while (it.hasNext()) {
-count++;
-it.next();
-} 
-return count;
-}
+        public void remove() {
+            this.targetIterator.remove();
+        }
+    }
 }
 

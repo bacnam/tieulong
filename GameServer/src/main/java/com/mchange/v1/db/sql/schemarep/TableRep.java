@@ -4,16 +4,16 @@ import java.util.Iterator;
 import java.util.Set;
 
 public interface TableRep {
-  String getTableName();
+    String getTableName();
 
-  Iterator getColumnNames();
+    Iterator getColumnNames();
 
-  ColumnRep columnRepForName(String paramString);
+    ColumnRep columnRepForName(String paramString);
 
-  Set getPrimaryKeyColumnNames();
+    Set getPrimaryKeyColumnNames();
 
-  Set getForeignKeyReps();
+    Set getForeignKeyReps();
 
-  Set getUniquenessConstraintReps();
+    Set getUniquenessConstraintReps();
 }
 

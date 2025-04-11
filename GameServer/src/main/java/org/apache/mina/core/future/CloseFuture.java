@@ -1,16 +1,16 @@
 package org.apache.mina.core.future;
 
 public interface CloseFuture extends IoFuture {
-  boolean isClosed();
+    boolean isClosed();
 
-  void setClosed();
+    void setClosed();
 
-  CloseFuture await() throws InterruptedException;
+    CloseFuture await() throws InterruptedException;
 
-  CloseFuture awaitUninterruptibly();
+    CloseFuture awaitUninterruptibly();
 
-  CloseFuture addListener(IoFutureListener<?> paramIoFutureListener);
+    CloseFuture addListener(IoFutureListener<?> paramIoFutureListener);
 
-  CloseFuture removeListener(IoFutureListener<?> paramIoFutureListener);
+    CloseFuture removeListener(IoFutureListener<?> paramIoFutureListener);
 }
 

@@ -30,20 +30,14 @@ import com.zhonglian.server.websocket.handler.response.WebSocketResponse;
 import core.config.refdata.RefDataMgr;
 import core.database.game.bo.ChatMessageBO;
 import core.network.game2world.WorldConnector;
+import proto.gameworld.ChatMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import proto.gameworld.ChatMessage;
 
 public class ChatMgr {
     private static ChatMgr instance;
-    protected final BaseMutexObject m_mutex;
     public final Queue<ChatMessageBO> worldChat;
     public final Map<Long, Queue<ChatMessageBO>> guildChat;
     public final Map<Long, Queue<ChatMessageBO>> companyChat;
@@ -51,15 +45,9 @@ public class ChatMgr {
     public final LinkedList<ChatMessageBO> systemChat;
     public final Queue<ChatMessageBO> chatQueue;
     public final Queue<ChatMessage> allWorldChat;
+    protected final BaseMutexObject m_mutex;
     private int chatRecordCount;
     private int systemRecordCount;
-
-    public static ChatMgr getInstance() {
-        if (instance == null) {
-            instance = new ChatMgr();
-        }
-        return instance;
-    }
 
     public ChatMgr() {
         this.m_mutex = new BaseMutexObject();
@@ -81,6 +69,13 @@ public class ChatMgr {
         broadCastWorldChat();
         this.chatRecordCount = RefDataMgr.getFactor("ChatRecordCount", 30);
         this.systemRecordCount = RefDataMgr.getFactor("ChatSystemRecordCount", 10);
+    }
+
+    public static ChatMgr getInstance() {
+        if (instance == null) {
+            instance = new ChatMgr();
+        }
+        return instance;
     }
 
     public void init() {

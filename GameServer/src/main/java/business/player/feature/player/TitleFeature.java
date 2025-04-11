@@ -44,16 +44,6 @@ public class TitleFeature
         }
     }
 
-    public static class TitleIns {
-        public TitleBO bo;
-        public RefTitle refData;
-
-        public TitleIns(TitleBO bo, RefTitle refData) {
-            this.bo = bo;
-            this.refData = refData;
-        }
-    }
-
     public TitleIns getOrCreate(Title type) {
         TitleIns ret = this.titleMap.get(type);
         if (ret == null) {
@@ -94,7 +84,7 @@ public class TitleFeature
                 bo.saveValue(count + addCount);
                 taskActive(bo, ref);
             }
-        }, new Integer[]{ value });
+        }, new Integer[]{value});
     }
 
     public void updateInc(Title type) {
@@ -109,7 +99,7 @@ public class TitleFeature
                 bo.saveValue(Math.max(count, newvalue));
                 taskActive(bo, ref);
             }
-        }, new Integer[]{ value });
+        }, new Integer[]{value});
     }
 
     public void updateMin(Title type, Integer value) {
@@ -121,7 +111,7 @@ public class TitleFeature
                 bo.saveValue(Math.min(count, newvalue));
                 taskActive(bo, ref);
             }
-        }, new Integer[]{ value });
+        }, new Integer[]{value});
     }
 
     private void taskActive(TitleBO bo, RefTitle ref) {
@@ -176,6 +166,16 @@ public class TitleFeature
         } catch (Exception e) {
 
             e.printStackTrace();
+        }
+    }
+
+    public static class TitleIns {
+        public TitleBO bo;
+        public RefTitle refData;
+
+        public TitleIns(TitleBO bo, RefTitle refData) {
+            this.bo = bo;
+            this.refData = refData;
         }
     }
 }

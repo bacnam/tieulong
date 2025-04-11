@@ -1,4 +1,5 @@
 package com.mysql.jdbc.exceptions;
 
-public interface DeadlockTimeoutRollbackMarker {}
+public interface DeadlockTimeoutRollbackMarker {
+}
 

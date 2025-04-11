@@ -5,26 +5,25 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 @Immutable
-public class HttpClients
-{
-public static HttpClientBuilder custom() {
-return HttpClientBuilder.create();
-}
+public class HttpClients {
+    public static HttpClientBuilder custom() {
+        return HttpClientBuilder.create();
+    }
 
-public static CloseableHttpClient createDefault() {
-return HttpClientBuilder.create().build();
-}
+    public static CloseableHttpClient createDefault() {
+        return HttpClientBuilder.create().build();
+    }
 
-public static CloseableHttpClient createSystem() {
-return HttpClientBuilder.create().useSystemProperties().build();
-}
+    public static CloseableHttpClient createSystem() {
+        return HttpClientBuilder.create().useSystemProperties().build();
+    }
 
-public static CloseableHttpClient createMinimal() {
-return new MinimalHttpClient((HttpClientConnectionManager)new PoolingHttpClientConnectionManager());
-}
+    public static CloseableHttpClient createMinimal() {
+        return new MinimalHttpClient((HttpClientConnectionManager) new PoolingHttpClientConnectionManager());
+    }
 
-public static CloseableHttpClient createMinimal(HttpClientConnectionManager connManager) {
-return new MinimalHttpClient(connManager);
-}
+    public static CloseableHttpClient createMinimal(HttpClientConnectionManager connManager) {
+        return new MinimalHttpClient(connManager);
+    }
 }
 

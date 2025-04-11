@@ -3,16 +3,16 @@ package proto.gameworld;
 import java.util.List;
 
 public class TeamInfo {
-  List<Character.CharInfo> characters;
+    List<Character.CharInfo> characters;
 
-  WarSpiritInfo warSpirit;
+    WarSpiritInfo warSpirit;
 
-  List<Guild.GuildSkill> guildSkill;
+    List<Guild.GuildSkill> guildSkill;
 
-  List<TitleInfo> title;
+    List<TitleInfo> title;
 
-  int LingBaoLevel;
+    int LingBaoLevel;
 
-  String name;
+    String name;
 }
 

@@ -1,76 +1,72 @@
 package com.zhonglian.server.common.mgr.daily;
 
 import com.zhonglian.server.common.utils.CommTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public abstract class IDailyRefresh<Refresh extends BaseDailyRefreshEvent>
-{
-protected List<Refresh> refreshList = new ArrayList<>();
-protected Map<IDailyRefreshRef.DailyRefreshEventType, Refresh> refreshMap = new HashMap<>();
+import java.util.*;
 
-public synchronized void process(int curSec) {
-List<Refresh> toDeals = new ArrayList<>();
-for (BaseDailyRefreshEvent baseDailyRefreshEvent : this.refreshList) {
-boolean needDeal = (curSec >= baseDailyRefreshEvent.getNextRefreshTime());
-if (needDeal) {
-toDeals.add((Refresh)baseDailyRefreshEvent);
-}
-} 
-if (toDeals.size() == 0) {
-return;
-}
+public abstract class IDailyRefresh<Refresh extends BaseDailyRefreshEvent> {
+    protected List<Refresh> refreshList = new ArrayList<>();
+    protected Map<IDailyRefreshRef.DailyRefreshEventType, Refresh> refreshMap = new HashMap<>();
 
-Collections.sort(toDeals, (o1, o2) -> {
-Refresh event1 = o1;
+    public synchronized void process(int curSec) {
+        List<Refresh> toDeals = new ArrayList<>();
+        for (BaseDailyRefreshEvent baseDailyRefreshEvent : this.refreshList) {
+            boolean needDeal = (curSec >= baseDailyRefreshEvent.getNextRefreshTime());
+            if (needDeal) {
+                toDeals.add((Refresh) baseDailyRefreshEvent);
+            }
+        }
+        if (toDeals.size() == 0) {
+            return;
+        }
 
-Refresh event2 = o2;
+        Collections.sort(toDeals, (o1, o2) -> {
+            Refresh event1 = o1;
 
-int diff = event1.getNextRefreshTime() - event2.getNextRefreshTime();
+            Refresh event2 = o2;
 
-return (diff != 0) ? diff : (((BaseDailyRefreshEvent)event1).ref.getIndex() - ((BaseDailyRefreshEvent)event2).ref.getIndex());
-});
+            int diff = event1.getNextRefreshTime() - event2.getNextRefreshTime();
 
-for (BaseDailyRefreshEvent baseDailyRefreshEvent : toDeals) {
-baseDailyRefreshEvent.process(curSec);
-}
-}
+            return (diff != 0) ? diff : (((BaseDailyRefreshEvent) event1).ref.getIndex() - ((BaseDailyRefreshEvent) event2).ref.getIndex());
+        });
 
-public String toString() {
-StringBuilder sb = new StringBuilder();
-sb.append(String.valueOf(getClass().getSimpleName()) + " Refresh:").append(System.lineSeparator());
-sb.append(String.format("%-10s%-30s%-10s%-10s%s", new Object[] { "Index", "lastTime", "interval", "nextTime", "Comment" })).append(System.lineSeparator());
-for (BaseDailyRefreshEvent refresh : this.refreshList) {
-String lastTime = CommTime.getTimeStringS(refresh.getLastRefreshTime());
-String nextTime = CommTime.getTimeString((refresh.getLastRefreshTime() + refresh.ref.getInterval()));
+        for (BaseDailyRefreshEvent baseDailyRefreshEvent : toDeals) {
+            baseDailyRefreshEvent.process(curSec);
+        }
+    }
 
-sb.append(String.format("%-10s%-30s%-10s%-10s%s", new Object[] { Integer.valueOf(refresh.ref.getIndex()), lastTime, Integer.valueOf(refresh.ref.getInterval()), nextTime, refresh.ref.getComment()
-})).append(System.lineSeparator());
-} 
-return sb.toString();
-}
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.valueOf(getClass().getSimpleName()) + " Refresh:").append(System.lineSeparator());
+        sb.append(String.format("%-10s%-30s%-10s%-10s%s", new Object[]{"Index", "lastTime", "interval", "nextTime", "Comment"})).append(System.lineSeparator());
+        for (BaseDailyRefreshEvent refresh : this.refreshList) {
+            String lastTime = CommTime.getTimeStringS(refresh.getLastRefreshTime());
+            String nextTime = CommTime.getTimeString((refresh.getLastRefreshTime() + refresh.ref.getInterval()));
 
-public Refresh getEvent(IDailyRefreshRef.DailyRefreshEventType event) {
-return this.refreshMap.get(event);
-}
+            sb.append(String.format("%-10s%-30s%-10s%-10s%s", new Object[]{Integer.valueOf(refresh.ref.getIndex()), lastTime, Integer.valueOf(refresh.ref.getInterval()), nextTime, refresh.ref.getComment()
+            })).append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
 
-public int getNextFireTime(IDailyRefreshRef.DailyRefreshEventType event) {
-BaseDailyRefreshEvent refresh = (BaseDailyRefreshEvent)getEvent(event);
-if (refresh != null) {
-return refresh.getClosestRefreshTime();
-}
-return -1;
-}
+    public Refresh getEvent(IDailyRefreshRef.DailyRefreshEventType event) {
+        return this.refreshMap.get(event);
+    }
 
-public abstract void setLastRefreshTime(int paramInt1, int paramInt2);
+    public int getNextFireTime(IDailyRefreshRef.DailyRefreshEventType event) {
+        BaseDailyRefreshEvent refresh = (BaseDailyRefreshEvent) getEvent(event);
+        if (refresh != null) {
+            return refresh.getClosestRefreshTime();
+        }
+        return -1;
+    }
 
-public abstract int getLastRefreshTime(int paramInt);
+    public abstract void setLastRefreshTime(int paramInt1, int paramInt2);
 
-public abstract void gm_reset();
+    public abstract int getLastRefreshTime(int paramInt);
 
-public abstract void reload();
+    public abstract void gm_reset();
+
+    public abstract void reload();
 }
 

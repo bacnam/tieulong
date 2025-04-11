@@ -22,34 +22,6 @@ public class Selector {
         this.areaParam = (AreaParam) (new Gson()).fromJson(param, AreaParam.class);
     }
 
-    static class Result {
-        Creature selected;
-
-        Result(Creature selected, List<Creature> castOn) {
-            this.selected = selected;
-            this.castOn = castOn;
-        }
-
-        List<Creature> castOn;
-    }
-
-    public Result select(Creature me, List<Creature> all) {
-        List<Creature> toSelectCast = new ArrayList<>();
-        Creature target = null;
-
-        for (Creature e : all) {
-            if (e.isDead())
-                continue;
-            if (this.castSelect.apply(me, e)) {
-                toSelectCast.add(e);
-            }
-            if (this.targetSelect.apply(me, e) && me.inRange(e)) {
-                target = (target == null) ? e : this.strategy.apply(me, target, e);
-            }
-        }
-        return new Result(target, this.area.apply(target, toSelectCast, this.areaParam));
-    }
-
     private static ITarget target(String name) {
         String str;
         switch ((str = name).hashCode()) {
@@ -91,21 +63,6 @@ public class Selector {
         return (me, tar1, tar2) -> (distance0(me, tar1) < distance0(me, tar2)) ? tar1 : tar2;
     }
 
-    static class AreaParam {
-        double radius;
-    }
-
-    private static interface IArea {
-        default List<Creature> apply(Creature me, List<Creature> all, Selector.AreaParam param) {
-            if (me == null) {
-                return null;
-            }
-            return apply0(me, all, param);
-        }
-
-        List<Creature> apply0(Creature param1Creature, List<Creature> param1List, Selector.AreaParam param1AreaParam);
-    }
-
     private static IArea area(String name) {
         String str;
         switch ((str = name).hashCode()) {
@@ -138,12 +95,54 @@ public class Selector {
         return dx * dx + dy * dy;
     }
 
+    public Result select(Creature me, List<Creature> all) {
+        List<Creature> toSelectCast = new ArrayList<>();
+        Creature target = null;
+
+        for (Creature e : all) {
+            if (e.isDead())
+                continue;
+            if (this.castSelect.apply(me, e)) {
+                toSelectCast.add(e);
+            }
+            if (this.targetSelect.apply(me, e) && me.inRange(e)) {
+                target = (target == null) ? e : this.strategy.apply(me, target, e);
+            }
+        }
+        return new Result(target, this.area.apply(target, toSelectCast, this.areaParam));
+    }
+
+    private static interface IArea {
+        default List<Creature> apply(Creature me, List<Creature> all, Selector.AreaParam param) {
+            if (me == null) {
+                return null;
+            }
+            return apply0(me, all, param);
+        }
+
+        List<Creature> apply0(Creature param1Creature, List<Creature> param1List, Selector.AreaParam param1AreaParam);
+    }
+
     private static interface IStrategy {
         Creature apply(Creature param1Creature1, Creature param1Creature2, Creature param1Creature3);
     }
 
     private static interface ITarget {
         boolean apply(Creature param1Creature1, Creature param1Creature2);
+    }
+
+    static class Result {
+        Creature selected;
+        List<Creature> castOn;
+
+        Result(Creature selected, List<Creature> castOn) {
+            this.selected = selected;
+            this.castOn = castOn;
+        }
+    }
+
+    static class AreaParam {
+        double radius;
     }
 }
 

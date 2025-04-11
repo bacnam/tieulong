@@ -1,7 +1,7 @@
 package com.mysql.jdbc;
 
 import com.mysql.jdbc.log.Log;
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -9,108 +9,108 @@ import java.util.TimeZone;
 import java.util.concurrent.Executor;
 
 public interface Connection extends Connection, ConnectionProperties {
-  void changeUser(String paramString1, String paramString2) throws SQLException;
+    void changeUser(String paramString1, String paramString2) throws SQLException;
 
-  void clearHasTriedMaster();
+    void clearHasTriedMaster();
 
-  PreparedStatement clientPrepareStatement(String paramString) throws SQLException;
+    PreparedStatement clientPrepareStatement(String paramString) throws SQLException;
 
-  PreparedStatement clientPrepareStatement(String paramString, int paramInt) throws SQLException;
+    PreparedStatement clientPrepareStatement(String paramString, int paramInt) throws SQLException;
 
-  PreparedStatement clientPrepareStatement(String paramString, int paramInt1, int paramInt2) throws SQLException;
+    PreparedStatement clientPrepareStatement(String paramString, int paramInt1, int paramInt2) throws SQLException;
 
-  PreparedStatement clientPrepareStatement(String paramString, int[] paramArrayOfint) throws SQLException;
+    PreparedStatement clientPrepareStatement(String paramString, int[] paramArrayOfint) throws SQLException;
 
-  PreparedStatement clientPrepareStatement(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException;
+    PreparedStatement clientPrepareStatement(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException;
 
-  PreparedStatement clientPrepareStatement(String paramString, String[] paramArrayOfString) throws SQLException;
+    PreparedStatement clientPrepareStatement(String paramString, String[] paramArrayOfString) throws SQLException;
 
-  int getActiveStatementCount();
+    int getActiveStatementCount();
 
-  long getIdleFor();
+    long getIdleFor();
 
-  Log getLog() throws SQLException;
+    Log getLog() throws SQLException;
 
-  String getServerCharacterEncoding();
+    String getServerCharacterEncoding();
 
-  TimeZone getServerTimezoneTZ();
+    TimeZone getServerTimezoneTZ();
 
-  String getStatementComment();
+    String getStatementComment();
 
-  boolean hasTriedMaster();
+    void setStatementComment(String paramString);
 
-  boolean isInGlobalTx();
+    boolean hasTriedMaster();
 
-  void setInGlobalTx(boolean paramBoolean);
+    boolean isInGlobalTx();
 
-  boolean isMasterConnection();
+    void setInGlobalTx(boolean paramBoolean);
 
-  boolean isNoBackslashEscapesSet();
+    boolean isMasterConnection();
 
-  boolean isSameResource(Connection paramConnection);
+    boolean isNoBackslashEscapesSet();
 
-  boolean lowerCaseTableNames();
+    boolean isSameResource(Connection paramConnection);
 
-  boolean parserKnowsUnicode();
+    boolean lowerCaseTableNames();
 
-  void ping() throws SQLException;
+    boolean parserKnowsUnicode();
 
-  void resetServerState() throws SQLException;
+    void ping() throws SQLException;
 
-  PreparedStatement serverPrepareStatement(String paramString) throws SQLException;
+    void resetServerState() throws SQLException;
 
-  PreparedStatement serverPrepareStatement(String paramString, int paramInt) throws SQLException;
+    PreparedStatement serverPrepareStatement(String paramString) throws SQLException;
 
-  PreparedStatement serverPrepareStatement(String paramString, int paramInt1, int paramInt2) throws SQLException;
+    PreparedStatement serverPrepareStatement(String paramString, int paramInt) throws SQLException;
 
-  PreparedStatement serverPrepareStatement(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException;
+    PreparedStatement serverPrepareStatement(String paramString, int paramInt1, int paramInt2) throws SQLException;
 
-  PreparedStatement serverPrepareStatement(String paramString, int[] paramArrayOfint) throws SQLException;
+    PreparedStatement serverPrepareStatement(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException;
 
-  PreparedStatement serverPrepareStatement(String paramString, String[] paramArrayOfString) throws SQLException;
+    PreparedStatement serverPrepareStatement(String paramString, int[] paramArrayOfint) throws SQLException;
 
-  void setFailedOver(boolean paramBoolean);
+    PreparedStatement serverPrepareStatement(String paramString, String[] paramArrayOfString) throws SQLException;
 
-  void setPreferSlaveDuringFailover(boolean paramBoolean);
+    void setFailedOver(boolean paramBoolean);
 
-  void setStatementComment(String paramString);
+    void setPreferSlaveDuringFailover(boolean paramBoolean);
 
-  void shutdownServer() throws SQLException;
+    void shutdownServer() throws SQLException;
 
-  boolean supportsIsolationLevel();
+    boolean supportsIsolationLevel();
 
-  boolean supportsQuotedIdentifiers();
+    boolean supportsQuotedIdentifiers();
 
-  boolean supportsTransactions();
+    boolean supportsTransactions();
 
-  boolean versionMeetsMinimum(int paramInt1, int paramInt2, int paramInt3) throws SQLException;
+    boolean versionMeetsMinimum(int paramInt1, int paramInt2, int paramInt3) throws SQLException;
 
-  void reportQueryTime(long paramLong);
+    void reportQueryTime(long paramLong);
 
-  boolean isAbonormallyLongQuery(long paramLong);
+    boolean isAbonormallyLongQuery(long paramLong);
 
-  void initializeExtension(Extension paramExtension) throws SQLException;
+    void initializeExtension(Extension paramExtension) throws SQLException;
 
-  int getAutoIncrementIncrement();
+    int getAutoIncrementIncrement();
 
-  boolean hasSameProperties(Connection paramConnection);
+    boolean hasSameProperties(Connection paramConnection);
 
-  Properties getProperties();
+    Properties getProperties();
 
-  String getHost();
+    String getHost();
 
-  void setProxy(MySQLConnection paramMySQLConnection);
+    void setProxy(MySQLConnection paramMySQLConnection);
 
-  boolean isServerLocal() throws SQLException;
+    boolean isServerLocal() throws SQLException;
 
-  void setSchema(String paramString) throws SQLException;
+    String getSchema() throws SQLException;
 
-  String getSchema() throws SQLException;
+    void setSchema(String paramString) throws SQLException;
 
-  void abort(Executor paramExecutor) throws SQLException;
+    void abort(Executor paramExecutor) throws SQLException;
 
-  void setNetworkTimeout(Executor paramExecutor, int paramInt) throws SQLException;
+    void setNetworkTimeout(Executor paramExecutor, int paramInt) throws SQLException;
 
-  int getNetworkTimeout() throws SQLException;
+    int getNetworkTimeout() throws SQLException;
 }
 

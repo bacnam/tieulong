@@ -1,22 +1,22 @@
 package org.apache.mina.filter.codec;
 
 public class ProtocolEncoderException
-extends ProtocolCodecException
-{
-private static final long serialVersionUID = 8752989973624459604L;
+        extends ProtocolCodecException {
+    private static final long serialVersionUID = 8752989973624459604L;
 
-public ProtocolEncoderException() {}
+    public ProtocolEncoderException() {
+    }
 
-public ProtocolEncoderException(String message) {
-super(message);
-}
+    public ProtocolEncoderException(String message) {
+        super(message);
+    }
 
-public ProtocolEncoderException(Throwable cause) {
-super(cause);
-}
+    public ProtocolEncoderException(Throwable cause) {
+        super(cause);
+    }
 
-public ProtocolEncoderException(String message, Throwable cause) {
-super(message, cause);
-}
+    public ProtocolEncoderException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
 

@@ -6,24 +6,23 @@ import org.xml.sax.Locator;
 import org.xml.sax.helpers.AttributesImpl;
 
 public class StartEvent
-extends SaxEvent
-{
-public final Attributes attributes;
-public final ElementPath elementPath;
+        extends SaxEvent {
+    public final Attributes attributes;
+    public final ElementPath elementPath;
 
-StartEvent(ElementPath elementPath, String namespaceURI, String localName, String qName, Attributes attributes, Locator locator) {
-super(namespaceURI, localName, qName, locator);
+    StartEvent(ElementPath elementPath, String namespaceURI, String localName, String qName, Attributes attributes, Locator locator) {
+        super(namespaceURI, localName, qName, locator);
 
-this.attributes = new AttributesImpl(attributes);
-this.elementPath = elementPath;
-}
+        this.attributes = new AttributesImpl(attributes);
+        this.elementPath = elementPath;
+    }
 
-public Attributes getAttributes() {
-return this.attributes;
-}
+    public Attributes getAttributes() {
+        return this.attributes;
+    }
 
-public String toString() {
-return "StartEvent(" + getQName() + ")  [" + this.locator.getLineNumber() + "," + this.locator.getColumnNumber() + "]";
-}
+    public String toString() {
+        return "StartEvent(" + getQName() + ")  [" + this.locator.getLineNumber() + "," + this.locator.getColumnNumber() + "]";
+    }
 }
 

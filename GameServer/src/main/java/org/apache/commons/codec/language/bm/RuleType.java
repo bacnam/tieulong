@@ -1,21 +1,20 @@
 package org.apache.commons.codec.language.bm;
 
-public enum RuleType
-{
-APPROX("approx"),
+public enum RuleType {
+    APPROX("approx"),
 
-EXACT("exact"),
+    EXACT("exact"),
 
-RULES("rules");
+    RULES("rules");
 
-private final String name;
+    private final String name;
 
-RuleType(String name) {
-this.name = name;
-}
+    RuleType(String name) {
+        this.name = name;
+    }
 
-public String getName() {
-return this.name;
-}
+    public String getName() {
+        return this.name;
+    }
 }
 

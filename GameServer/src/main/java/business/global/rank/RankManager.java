@@ -8,163 +8,177 @@ import business.player.Player;
 import com.zhonglian.server.common.db.BM;
 import com.zhonglian.server.common.enums.RankType;
 import core.database.game.bo.RankRecordBO;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class RankManager
-{
-private static RankManager instance = new RankManager(); private Map<RankType, Rank> ranks;
+import java.util.*;
 
-public static RankManager getInstance() {
-return instance;
-}
+public class RankManager {
+    private static RankManager instance = new RankManager();
+    private Map<RankType, Rank> ranks;
 
-private RankManager() {
-this.ranks = new HashMap<>();
-}
-public void init() {
-Set<Class<?>> clazzs = CommClass.getClasses(NormalRank.class.getPackage().getName());
-for (Class<?> clz : clazzs) {
+    private RankManager() {
+        this.ranks = new HashMap<>();
+    }
 
-try {
-Class<? extends Rank> clazz = (Class)clz;
-Ranks types = clazz.<Ranks>getAnnotation(Ranks.class);
-if (types == null || (types.value()).length == 0) {
-CommLog.error("[{}]的类型没有相关排行榜类型，请检查", clazz.getSimpleName());
-System.exit(0);
-}  byte b; int i; RankType[] arrayOfRankType;
-for (i = (arrayOfRankType = types.value()).length, b = 0; b < i; ) { RankType type = arrayOfRankType[b];
-if (this.ranks.containsKey(type)) {
-String preClass = ((Rank)this.ranks.get(type)).getClass().getSimpleName();
-CommLog.error("[{},{}]重复定义[{}]类型的排行榜", preClass, clazz.getSimpleName());
-System.exit(0);
-} 
-Rank instance = clazz.getConstructor(new Class[] { RankType.class }).newInstance(new Object[] { type });
-this.ranks.put(type, instance); b++; }
+    public static RankManager getInstance() {
+        return instance;
+    }
 
-} catch (Exception e) {
-CommLog.error("排行榜[{}]初始化失败", clz.getSimpleName(), e);
-System.exit(0);
-} 
-} 
-List<RankRecordBO> list = BM.getBM(RankRecordBO.class).findAll();
-for (RankRecordBO recordBO : list) {
-RankType type = RankType.values()[recordBO.getType()];
-Rank rank = this.ranks.get(type);
-Record record = new Record(recordBO);
-rank.map.put(Long.valueOf(recordBO.getOwner()), record);
-} 
-for (Rank rank : this.ranks.values()) {
-rank.resort();
-}
-}
+    public void init() {
+        Set<Class<?>> clazzs = CommClass.getClasses(NormalRank.class.getPackage().getName());
+        for (Class<?> clz : clazzs) {
 
-public List<Record> getRankList(RankType type, int size) {
-List<Record> records, list = (getRank(type)).list;
-if (list.size() > size + 1) {
-records = list.subList(0, size + 1);
-} else {
-records = new ArrayList<>(list);
-} 
-return records;
-}
+            try {
+                Class<? extends Rank> clazz = (Class) clz;
+                Ranks types = clazz.<Ranks>getAnnotation(Ranks.class);
+                if (types == null || (types.value()).length == 0) {
+                    CommLog.error("[{}]的类型没有相关排行榜类型，请检查", clazz.getSimpleName());
+                    System.exit(0);
+                }
+                byte b;
+                int i;
+                RankType[] arrayOfRankType;
+                for (i = (arrayOfRankType = types.value()).length, b = 0; b < i; ) {
+                    RankType type = arrayOfRankType[b];
+                    if (this.ranks.containsKey(type)) {
+                        String preClass = ((Rank) this.ranks.get(type)).getClass().getSimpleName();
+                        CommLog.error("[{},{}]重复定义[{}]类型的排行榜", preClass, clazz.getSimpleName());
+                        System.exit(0);
+                    }
+                    Rank instance = clazz.getConstructor(new Class[]{RankType.class}).newInstance(new Object[]{type});
+                    this.ranks.put(type, instance);
+                    b++;
+                }
 
-public long getPlayerId(RankType type, int rank) {
-int num;
-List<Record> records = (getRank(type)).list;
+            } catch (Exception e) {
+                CommLog.error("排行榜[{}]初始化失败", clz.getSimpleName(), e);
+                System.exit(0);
+            }
+        }
+        List<RankRecordBO> list = BM.getBM(RankRecordBO.class).findAll();
+        for (RankRecordBO recordBO : list) {
+            RankType type = RankType.values()[recordBO.getType()];
+            Rank rank = this.ranks.get(type);
+            Record record = new Record(recordBO);
+            rank.map.put(Long.valueOf(recordBO.getOwner()), record);
+        }
+        for (Rank rank : this.ranks.values()) {
+            rank.resort();
+        }
+    }
 
-if (rank < 1 || records.size() < 2) {
-return 0L;
-}
-if (records.size() - 1 < rank) {
-num = records.size() - 1;
-} else {
-num = rank;
-} 
+    public List<Record> getRankList(RankType type, int size) {
+        List<Record> records, list = (getRank(type)).list;
+        if (list.size() > size + 1) {
+            records = list.subList(0, size + 1);
+        } else {
+            records = new ArrayList<>(list);
+        }
+        return records;
+    }
 
-return ((Record)records.get(num)).getPid();
-}
+    public long getPlayerId(RankType type, int rank) {
+        int num;
+        List<Record> records = (getRank(type)).list;
 
-public int getRank(RankType type, long ownerid) {
-return getRank(type).getRank(ownerid);
-}
+        if (rank < 1 || records.size() < 2) {
+            return 0L;
+        }
+        if (records.size() - 1 < rank) {
+            num = records.size() - 1;
+        } else {
+            num = rank;
+        }
 
-public long getValue(RankType type, long ownerid) {
-return getRank(type).getValue(ownerid);
-}
+        return ((Record) records.get(num)).getPid();
+    }
 
-public int update(RankType type, long ownerid, long value) {
-return getRank(type).update(ownerid, value, new long[0]);
-}
+    public int getRank(RankType type, long ownerid) {
+        return getRank(type).getRank(ownerid);
+    }
 
-public int update(RankType type, long ownerid, long value, long... ext) {
-return getRank(type).update(ownerid, value, ext);
-}
+    public long getValue(RankType type, long ownerid) {
+        return getRank(type).getValue(ownerid);
+    }
 
-public int minus(RankType type, long ownerid, int value) {
-return getRank(type).minus(ownerid, value);
-}
+    public int update(RankType type, long ownerid, long value) {
+        return getRank(type).update(ownerid, value, new long[0]);
+    }
 
-private Rank getRank(RankType type) {
-Rank rank = this.ranks.get(type);
-if (rank == null) {
-CommLog.error("排行榜[]未注册", type);
-}
-return rank;
-}
+    public int update(RankType type, long ownerid, long value, long... ext) {
+        return getRank(type).update(ownerid, value, ext);
+    }
 
-public int getRankSize(RankType type) {
-Rank rank = this.ranks.get(type);
-if (rank == null) {
-CommLog.error("排行榜[]未注册", type);
-}
-return rank.list.size();
-}
+    public int minus(RankType type, long ownerid, int value) {
+        return getRank(type).minus(ownerid, value);
+    }
 
-public void settle(RankType type) {
-settle(type, false);
-}
+    private Rank getRank(RankType type) {
+        Rank rank = this.ranks.get(type);
+        if (rank == null) {
+            CommLog.error("排行榜[]未注册", type);
+        }
+        return rank;
+    }
 
-public void settle(RankType type, boolean clear) {
-try {
-Rank rank = getRank(type);
-rank.sendReward();
-if (clear) {
-rank.clear();
-}
-} catch (Exception e) {
+    public int getRankSize(RankType type) {
+        Rank rank = this.ranks.get(type);
+        if (rank == null) {
+            CommLog.error("排行榜[]未注册", type);
+        }
+        return rank.list.size();
+    }
 
-e.printStackTrace();
-} 
-}
+    public void settle(RankType type) {
+        settle(type, false);
+    }
 
-public void clear(RankType type) {
-getRank(type).clear();
-}
+    public void settle(RankType type, boolean clear) {
+        try {
+            Rank rank = getRank(type);
+            rank.sendReward();
+            if (clear) {
+                rank.clear();
+            }
+        } catch (Exception e) {
 
-public void clearPlayerData(Player player) {
-BM.getBM(RankRecordBO.class).delAll("owner", Long.valueOf(player.getPid()));
-Ranks types = NormalRank.class.<Ranks>getAnnotation(Ranks.class); byte b; int i; RankType[] arrayOfRankType;
-for (i = (arrayOfRankType = types.value()).length, b = 0; b < i; ) { RankType type = arrayOfRankType[b];
-((Rank)this.ranks.get(type)).del(player.getPid());
-b++; }
+            e.printStackTrace();
+        }
+    }
 
-}
+    public void clear(RankType type) {
+        getRank(type).clear();
+    }
 
-public void clearPlayerData(Player player, RankType type) {
-((Rank)this.ranks.get(type)).del(player.getPid());
-}
+    public void clearPlayerData(Player player) {
+        BM.getBM(RankRecordBO.class).delAll("owner", Long.valueOf(player.getPid()));
+        Ranks types = NormalRank.class.<Ranks>getAnnotation(Ranks.class);
+        byte b;
+        int i;
+        RankType[] arrayOfRankType;
+        for (i = (arrayOfRankType = types.value()).length, b = 0; b < i; ) {
+            RankType type = arrayOfRankType[b];
+            ((Rank) this.ranks.get(type)).del(player.getPid());
+            b++;
+        }
 
-public void clearGuildDataById(long ownerid) {
-BM.getBM(RankRecordBO.class).delAll("owner", Long.valueOf(ownerid));
-Ranks types = GuildRank.class.<Ranks>getAnnotation(Ranks.class); byte b; int i; RankType[] arrayOfRankType;
-for (i = (arrayOfRankType = types.value()).length, b = 0; b < i; ) { RankType type = arrayOfRankType[b];
-((Rank)this.ranks.get(type)).del(ownerid);
-b++; }
+    }
 
-}
+    public void clearPlayerData(Player player, RankType type) {
+        ((Rank) this.ranks.get(type)).del(player.getPid());
+    }
+
+    public void clearGuildDataById(long ownerid) {
+        BM.getBM(RankRecordBO.class).delAll("owner", Long.valueOf(ownerid));
+        Ranks types = GuildRank.class.<Ranks>getAnnotation(Ranks.class);
+        byte b;
+        int i;
+        RankType[] arrayOfRankType;
+        for (i = (arrayOfRankType = types.value()).length, b = 0; b < i; ) {
+            RankType type = arrayOfRankType[b];
+            ((Rank) this.ranks.get(type)).del(ownerid);
+            b++;
+        }
+
+    }
 }
 

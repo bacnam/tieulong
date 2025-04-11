@@ -3,10 +3,10 @@ package com.mchange.v2.coalesce;
 import java.util.Iterator;
 
 public interface Coalescer {
-  Object coalesce(Object paramObject);
+    Object coalesce(Object paramObject);
 
-  int countCoalesced();
+    int countCoalesced();
 
-  Iterator iterator();
+    Iterator iterator();
 }
 

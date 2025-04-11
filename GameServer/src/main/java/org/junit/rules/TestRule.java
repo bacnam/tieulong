@@ -4,6 +4,6 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public interface TestRule {
-  Statement apply(Statement paramStatement, Description paramDescription);
+    Statement apply(Statement paramStatement, Description paramDescription);
 }
 

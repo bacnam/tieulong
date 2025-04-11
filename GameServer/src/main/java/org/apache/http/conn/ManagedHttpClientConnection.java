@@ -1,18 +1,19 @@
 package org.apache.http.conn;
 
-import java.io.IOException;
-import java.net.Socket;
-import javax.net.ssl.SSLSession;
 import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpInetConnection;
 
+import javax.net.ssl.SSLSession;
+import java.io.IOException;
+import java.net.Socket;
+
 public interface ManagedHttpClientConnection extends HttpClientConnection, HttpInetConnection {
-  String getId();
+    String getId();
 
-  void bind(Socket paramSocket) throws IOException;
+    void bind(Socket paramSocket) throws IOException;
 
-  Socket getSocket();
+    Socket getSocket();
 
-  SSLSession getSSLSession();
+    SSLSession getSSLSession();
 }
 

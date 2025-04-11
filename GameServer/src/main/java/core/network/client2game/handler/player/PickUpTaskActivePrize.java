@@ -15,59 +15,57 @@ import core.config.refdata.ref.RefDailyActive;
 import core.config.refdata.ref.RefReward;
 import core.database.game.bo.DailyactiveBO;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.List;
 
 public class PickUpTaskActivePrize
-extends PlayerHandler
-{
-public static class Request
-{
-int index;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        int rewardIndex = req.index;
 
-public static class Response
-{
-int index;
-Reward reward;
+        TaskActivityFeature taskActivityFeature = (TaskActivityFeature) player.getFeature(TaskActivityFeature.class);
+        DailyactiveBO dailyactiveBO = taskActivityFeature.getOrCreate();
 
-private Response(int index, Reward reward) {
-this.index = index;
-this.reward = reward;
-}
-}
+        List<Integer> fetchedTaskIndex = StringUtils.string2Integer(dailyactiveBO.getFetchedTaskIndex());
+        if (fetchedTaskIndex.contains(Integer.valueOf(rewardIndex))) {
+            throw new WSException(ErrorCode.NotEnough_TaskActiveValue, "奖励已领取过");
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-int rewardIndex = req.index;
+        int value = dailyactiveBO.getValue();
+        int refId = ((Integer) RefDailyActive.level2refId.get(Integer.valueOf(dailyactiveBO.getTeamLevel()))).intValue();
+        RefDailyActive refDailyActive = (RefDailyActive) RefDataMgr.get(RefDailyActive.class, Integer.valueOf(refId));
+        int needValue = ((Integer) refDailyActive.Condition.get(rewardIndex)).intValue();
 
-TaskActivityFeature taskActivityFeature = (TaskActivityFeature)player.getFeature(TaskActivityFeature.class);
-DailyactiveBO dailyactiveBO = taskActivityFeature.getOrCreate();
+        if (value < needValue) {
+            throw new WSException(ErrorCode.NotEnough_TaskActiveValue, "玩家 %s 当前活跃度:%s 需要活跃度 : %s  ", new Object[]{Long.valueOf(player.getPid()), Integer.valueOf(value), Integer.valueOf(needValue)});
+        }
 
-List<Integer> fetchedTaskIndex = StringUtils.string2Integer(dailyactiveBO.getFetchedTaskIndex());
-if (fetchedTaskIndex.contains(Integer.valueOf(rewardIndex))) {
-throw new WSException(ErrorCode.NotEnough_TaskActiveValue, "奖励已领取过");
-}
+        int rewardId = ((Integer) refDailyActive.RewardID.get(rewardIndex)).intValue();
 
-int value = dailyactiveBO.getValue();
-int refId = ((Integer)RefDailyActive.level2refId.get(Integer.valueOf(dailyactiveBO.getTeamLevel()))).intValue();
-RefDailyActive refDailyActive = (RefDailyActive)RefDataMgr.get(RefDailyActive.class, Integer.valueOf(refId));
-int needValue = ((Integer)refDailyActive.Condition.get(rewardIndex)).intValue();
+        Reward reward = ((RefReward) RefDataMgr.get(RefReward.class, Integer.valueOf(rewardId))).genReward();
 
-if (value < needValue) {
-throw new WSException(ErrorCode.NotEnough_TaskActiveValue, "玩家 %s 当前活跃度:%s 需要活跃度 : %s  ", new Object[] { Long.valueOf(player.getPid()), Integer.valueOf(value), Integer.valueOf(needValue) });
-}
+        fetchedTaskIndex.add(Integer.valueOf(rewardIndex));
+        dailyactiveBO.saveFetchedTaskIndex(StringUtils.list2String(fetchedTaskIndex));
+        Reward prize = ((PlayerItem) player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.TaskActiveGain);
 
-int rewardId = ((Integer)refDailyActive.RewardID.get(rewardIndex)).intValue();
+        taskActivityFeature.pushTaskActiveInfo();
+        request.response(new Response(req.index, prize, null));
+    }
 
-Reward reward = ((RefReward)RefDataMgr.get(RefReward.class, Integer.valueOf(rewardId))).genReward();
+    public static class Request {
+        int index;
+    }
 
-fetchedTaskIndex.add(Integer.valueOf(rewardIndex));
-dailyactiveBO.saveFetchedTaskIndex(StringUtils.list2String(fetchedTaskIndex));
-Reward prize = ((PlayerItem)player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.TaskActiveGain);
+    public static class Response {
+        int index;
+        Reward reward;
 
-taskActivityFeature.pushTaskActiveInfo();
-request.response(new Response(req.index, prize, null));
-}
+        private Response(int index, Reward reward) {
+            this.index = index;
+            this.reward = reward;
+        }
+    }
 }
 

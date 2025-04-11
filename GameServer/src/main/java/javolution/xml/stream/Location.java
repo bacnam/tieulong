@@ -1,14 +1,14 @@
 package javolution.xml.stream;
 
 public interface Location {
-  int getLineNumber();
+    int getLineNumber();
 
-  int getColumnNumber();
+    int getColumnNumber();
 
-  int getCharacterOffset();
+    int getCharacterOffset();
 
-  String getPublicId();
+    String getPublicId();
 
-  String getSystemId();
+    String getSystemId();
 }
 

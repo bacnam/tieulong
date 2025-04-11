@@ -8,47 +8,47 @@ import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 
 public abstract class Action
-extends ContextAwareBase
-{
-public static final String NAME_ATTRIBUTE = "name";
-public static final String KEY_ATTRIBUTE = "key";
-public static final String VALUE_ATTRIBUTE = "value";
-public static final String FILE_ATTRIBUTE = "file";
-public static final String CLASS_ATTRIBUTE = "class";
-public static final String PATTERN_ATTRIBUTE = "pattern";
-public static final String SCOPE_ATTRIBUTE = "scope";
-public static final String ACTION_CLASS_ATTRIBUTE = "actionClass";
+        extends ContextAwareBase {
+    public static final String NAME_ATTRIBUTE = "name";
+    public static final String KEY_ATTRIBUTE = "key";
+    public static final String VALUE_ATTRIBUTE = "value";
+    public static final String FILE_ATTRIBUTE = "file";
+    public static final String CLASS_ATTRIBUTE = "class";
+    public static final String PATTERN_ATTRIBUTE = "pattern";
+    public static final String SCOPE_ATTRIBUTE = "scope";
+    public static final String ACTION_CLASS_ATTRIBUTE = "actionClass";
 
-public abstract void begin(InterpretationContext paramInterpretationContext, String paramString, Attributes paramAttributes) throws ActionException;
+    public abstract void begin(InterpretationContext paramInterpretationContext, String paramString, Attributes paramAttributes) throws ActionException;
 
-public void body(InterpretationContext ic, String body) throws ActionException {}
+    public void body(InterpretationContext ic, String body) throws ActionException {
+    }
 
-public abstract void end(InterpretationContext paramInterpretationContext, String paramString) throws ActionException;
+    public abstract void end(InterpretationContext paramInterpretationContext, String paramString) throws ActionException;
 
-public String toString() {
-return getClass().getName();
-}
+    public String toString() {
+        return getClass().getName();
+    }
 
-protected int getColumnNumber(InterpretationContext ic) {
-Interpreter ji = ic.getJoranInterpreter();
-Locator locator = ji.getLocator();
-if (locator != null) {
-return locator.getColumnNumber();
-}
-return -1;
-}
+    protected int getColumnNumber(InterpretationContext ic) {
+        Interpreter ji = ic.getJoranInterpreter();
+        Locator locator = ji.getLocator();
+        if (locator != null) {
+            return locator.getColumnNumber();
+        }
+        return -1;
+    }
 
-protected int getLineNumber(InterpretationContext ic) {
-Interpreter ji = ic.getJoranInterpreter();
-Locator locator = ji.getLocator();
-if (locator != null) {
-return locator.getLineNumber();
-}
-return -1;
-}
+    protected int getLineNumber(InterpretationContext ic) {
+        Interpreter ji = ic.getJoranInterpreter();
+        Locator locator = ji.getLocator();
+        if (locator != null) {
+            return locator.getLineNumber();
+        }
+        return -1;
+    }
 
-protected String getLineColStr(InterpretationContext ic) {
-return "line: " + getLineNumber(ic) + ", column: " + getColumnNumber(ic);
-}
+    protected String getLineColStr(InterpretationContext ic) {
+        return "line: " + getLineNumber(ic) + ", column: " + getColumnNumber(ic);
+    }
 }
 

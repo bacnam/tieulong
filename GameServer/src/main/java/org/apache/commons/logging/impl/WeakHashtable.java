@@ -2,270 +2,262 @@ package org.apache.commons.logging.impl;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public final class WeakHashtable
-extends Hashtable
-{
-private static final int MAX_CHANGES_BEFORE_PURGE = 100;
-private static final int PARTIAL_PURGE_COUNT = 10;
-private ReferenceQueue queue = new ReferenceQueue();
+        extends Hashtable {
+    private static final int MAX_CHANGES_BEFORE_PURGE = 100;
+    private static final int PARTIAL_PURGE_COUNT = 10;
+    private ReferenceQueue queue = new ReferenceQueue();
 
-private int changeCount = 0;
+    private int changeCount = 0;
 
-public boolean containsKey(Object key) {
-Referenced referenced = new Referenced(key);
-return super.containsKey(referenced);
-}
+    public boolean containsKey(Object key) {
+        Referenced referenced = new Referenced(key);
+        return super.containsKey(referenced);
+    }
 
-public Enumeration elements() {
-purge();
-return super.elements();
-}
+    public Enumeration elements() {
+        purge();
+        return super.elements();
+    }
 
-public Set entrySet() {
-purge();
-Set referencedEntries = super.entrySet();
-Set unreferencedEntries = new HashSet();
-for (Iterator it = referencedEntries.iterator(); it.hasNext(); ) {
-Map.Entry entry = it.next();
-Referenced referencedKey = (Referenced)entry.getKey();
-Object key = referencedKey.getValue();
-Object value = entry.getValue();
-if (key != null) {
-Entry dereferencedEntry = new Entry(key, value);
-unreferencedEntries.add(dereferencedEntry);
-} 
-} 
-return unreferencedEntries;
-}
+    public Set entrySet() {
+        purge();
+        Set referencedEntries = super.entrySet();
+        Set unreferencedEntries = new HashSet();
+        for (Iterator it = referencedEntries.iterator(); it.hasNext(); ) {
+            Map.Entry entry = it.next();
+            Referenced referencedKey = (Referenced) entry.getKey();
+            Object key = referencedKey.getValue();
+            Object value = entry.getValue();
+            if (key != null) {
+                Entry dereferencedEntry = new Entry(key, value);
+                unreferencedEntries.add(dereferencedEntry);
+            }
+        }
+        return unreferencedEntries;
+    }
 
-public Object get(Object key) {
-Referenced referenceKey = new Referenced(key);
-return super.get(referenceKey);
-}
+    public Object get(Object key) {
+        Referenced referenceKey = new Referenced(key);
+        return super.get(referenceKey);
+    }
 
-public Enumeration keys() {
-purge();
-Enumeration enumer = super.keys();
-return new Enumeration(this, enumer) { private final Enumeration val$enumer;
-public boolean hasMoreElements() {
-return this.val$enumer.hasMoreElements();
-} private final WeakHashtable this$0;
-public Object nextElement() {
-WeakHashtable.Referenced nextReference = this.val$enumer.nextElement();
-return nextReference.getValue();
-} }
-;
-}
+    public Enumeration keys() {
+        purge();
+        Enumeration enumer = super.keys();
+        return new Enumeration(this, enumer) {
+            private final Enumeration val$enumer;
+            private final WeakHashtable this$0;
 
-public Set keySet() {
-purge();
-Set referencedKeys = super.keySet();
-Set unreferencedKeys = new HashSet();
-for (Iterator it = referencedKeys.iterator(); it.hasNext(); ) {
-Referenced referenceKey = (Referenced)it.next();
-Object keyValue = referenceKey.getValue();
-if (keyValue != null) {
-unreferencedKeys.add(keyValue);
-}
-} 
-return unreferencedKeys;
-}
+            public boolean hasMoreElements() {
+                return this.val$enumer.hasMoreElements();
+            }
 
-public Object put(Object key, Object value) {
-if (key == null) {
-throw new NullPointerException("Null keys are not allowed");
-}
-if (value == null) {
-throw new NullPointerException("Null values are not allowed");
-}
+            public Object nextElement() {
+                WeakHashtable.Referenced nextReference = this.val$enumer.nextElement();
+                return nextReference.getValue();
+            }
+        }
+                ;
+    }
 
-if (this.changeCount++ > 100) {
-purge();
-this.changeCount = 0;
+    public Set keySet() {
+        purge();
+        Set referencedKeys = super.keySet();
+        Set unreferencedKeys = new HashSet();
+        for (Iterator it = referencedKeys.iterator(); it.hasNext(); ) {
+            Referenced referenceKey = (Referenced) it.next();
+            Object keyValue = referenceKey.getValue();
+            if (keyValue != null) {
+                unreferencedKeys.add(keyValue);
+            }
+        }
+        return unreferencedKeys;
+    }
 
-}
-else if (this.changeCount % 10 == 0) {
-purgeOne();
-} 
+    public Object put(Object key, Object value) {
+        if (key == null) {
+            throw new NullPointerException("Null keys are not allowed");
+        }
+        if (value == null) {
+            throw new NullPointerException("Null values are not allowed");
+        }
 
-Referenced keyRef = new Referenced(key, this.queue);
-return super.put(keyRef, value);
-}
+        if (this.changeCount++ > 100) {
+            purge();
+            this.changeCount = 0;
 
-public void putAll(Map t) {
-if (t != null) {
-Set entrySet = t.entrySet();
-for (Iterator it = entrySet.iterator(); it.hasNext(); ) {
-Map.Entry entry = it.next();
-put(entry.getKey(), entry.getValue());
-} 
-} 
-}
+        } else if (this.changeCount % 10 == 0) {
+            purgeOne();
+        }
 
-public Collection values() {
-purge();
-return super.values();
-}
+        Referenced keyRef = new Referenced(key, this.queue);
+        return super.put(keyRef, value);
+    }
 
-public Object remove(Object key) {
-if (this.changeCount++ > 100) {
-purge();
-this.changeCount = 0;
+    public void putAll(Map t) {
+        if (t != null) {
+            Set entrySet = t.entrySet();
+            for (Iterator it = entrySet.iterator(); it.hasNext(); ) {
+                Map.Entry entry = it.next();
+                put(entry.getKey(), entry.getValue());
+            }
+        }
+    }
 
-}
-else if (this.changeCount % 10 == 0) {
-purgeOne();
-} 
-return super.remove(new Referenced(key));
-}
+    public Collection values() {
+        purge();
+        return super.values();
+    }
 
-public boolean isEmpty() {
-purge();
-return super.isEmpty();
-}
+    public Object remove(Object key) {
+        if (this.changeCount++ > 100) {
+            purge();
+            this.changeCount = 0;
 
-public int size() {
-purge();
-return super.size();
-}
+        } else if (this.changeCount % 10 == 0) {
+            purgeOne();
+        }
+        return super.remove(new Referenced(key));
+    }
 
-public String toString() {
-purge();
-return super.toString();
-}
+    public boolean isEmpty() {
+        purge();
+        return super.isEmpty();
+    }
 
-protected void rehash() {
-purge();
-super.rehash();
-}
+    public int size() {
+        purge();
+        return super.size();
+    }
 
-private void purge() {
-synchronized (this.queue) {
-WeakKey key;
-while ((key = (WeakKey)this.queue.poll()) != null) {
-super.remove(key.getReferenced());
-}
-} 
-}
+    public String toString() {
+        purge();
+        return super.toString();
+    }
 
-private void purgeOne() {
-synchronized (this.queue) {
-WeakKey key = (WeakKey)this.queue.poll();
-if (key != null) {
-super.remove(key.getReferenced());
-}
-} 
-}
+    protected void rehash() {
+        purge();
+        super.rehash();
+    }
 
-private static final class Entry
-implements Map.Entry
-{
-private final Object key;
-private final Object value;
+    private void purge() {
+        synchronized (this.queue) {
+            WeakKey key;
+            while ((key = (WeakKey) this.queue.poll()) != null) {
+                super.remove(key.getReferenced());
+            }
+        }
+    }
 
-private Entry(Object key, Object value) {
-this.key = key;
-this.value = value;
-}
+    private void purgeOne() {
+        synchronized (this.queue) {
+            WeakKey key = (WeakKey) this.queue.poll();
+            if (key != null) {
+                super.remove(key.getReferenced());
+            }
+        }
+    }
 
-public boolean equals(Object o) {
-boolean result = false;
-if (o != null && o instanceof Map.Entry) {
-Map.Entry entry = (Map.Entry)o;
-result = (((getKey() == null) ? (entry.getKey() == null) : getKey().equals(entry.getKey())) && ((getValue() == null) ? (entry.getValue() == null) : getValue().equals(entry.getValue())));
-} 
+    private static final class Entry
+            implements Map.Entry {
+        private final Object key;
+        private final Object value;
 
-return result;
-}
+        private Entry(Object key, Object value) {
+            this.key = key;
+            this.value = value;
+        }
 
-public int hashCode() {
-return ((getKey() == null) ? 0 : getKey().hashCode()) ^ ((getValue() == null) ? 0 : getValue().hashCode());
-}
+        public boolean equals(Object o) {
+            boolean result = false;
+            if (o != null && o instanceof Map.Entry) {
+                Map.Entry entry = (Map.Entry) o;
+                result = (((getKey() == null) ? (entry.getKey() == null) : getKey().equals(entry.getKey())) && ((getValue() == null) ? (entry.getValue() == null) : getValue().equals(entry.getValue())));
+            }
 
-public Object setValue(Object value) {
-throw new UnsupportedOperationException("Entry.setValue is not supported.");
-}
+            return result;
+        }
 
-public Object getValue() {
-return this.value;
-}
+        public int hashCode() {
+            return ((getKey() == null) ? 0 : getKey().hashCode()) ^ ((getValue() == null) ? 0 : getValue().hashCode());
+        }
 
-public Object getKey() {
-return this.key;
-}
-}
+        public Object setValue(Object value) {
+            throw new UnsupportedOperationException("Entry.setValue is not supported.");
+        }
 
-private static final class Referenced
-{
-private final WeakReference reference;
+        public Object getValue() {
+            return this.value;
+        }
 
-private final int hashCode;
+        public Object getKey() {
+            return this.key;
+        }
+    }
 
-private Referenced(Object referant) {
-this.reference = new WeakReference(referant);
+    private static final class Referenced {
+        private final WeakReference reference;
 
-this.hashCode = referant.hashCode();
-}
+        private final int hashCode;
 
-private Referenced(Object key, ReferenceQueue queue) {
-this.reference = new WeakHashtable.WeakKey(key, queue, this);
+        private Referenced(Object referant) {
+            this.reference = new WeakReference(referant);
 
-this.hashCode = key.hashCode();
-}
+            this.hashCode = referant.hashCode();
+        }
 
-public int hashCode() {
-return this.hashCode;
-}
+        private Referenced(Object key, ReferenceQueue queue) {
+            this.reference = new WeakHashtable.WeakKey(key, queue, this);
 
-private Object getValue() {
-return this.reference.get();
-}
+            this.hashCode = key.hashCode();
+        }
 
-public boolean equals(Object o) {
-boolean result = false;
-if (o instanceof Referenced) {
-Referenced otherKey = (Referenced)o;
-Object thisKeyValue = getValue();
-Object otherKeyValue = otherKey.getValue();
-if (thisKeyValue == null) {
-result = (otherKeyValue == null);
+        public int hashCode() {
+            return this.hashCode;
+        }
 
-if (result == true) {
-result = (hashCode() == otherKey.hashCode());
+        private Object getValue() {
+            return this.reference.get();
+        }
 
-}
+        public boolean equals(Object o) {
+            boolean result = false;
+            if (o instanceof Referenced) {
+                Referenced otherKey = (Referenced) o;
+                Object thisKeyValue = getValue();
+                Object otherKeyValue = otherKey.getValue();
+                if (thisKeyValue == null) {
+                    result = (otherKeyValue == null);
 
-}
-else {
+                    if (result == true) {
+                        result = (hashCode() == otherKey.hashCode());
 
-result = thisKeyValue.equals(otherKeyValue);
-} 
-} 
-return result;
-}
-}
+                    }
 
-private static final class WeakKey
-extends WeakReference
-{
-private final WeakHashtable.Referenced referenced;
+                } else {
 
-private WeakKey(Object key, ReferenceQueue queue, WeakHashtable.Referenced referenced) {
-super((T)key, queue);
-this.referenced = referenced;
-}
+                    result = thisKeyValue.equals(otherKeyValue);
+                }
+            }
+            return result;
+        }
+    }
 
-private WeakHashtable.Referenced getReferenced() {
-return this.referenced;
-}
-}
+    private static final class WeakKey
+            extends WeakReference {
+        private final WeakHashtable.Referenced referenced;
+
+        private WeakKey(Object key, ReferenceQueue queue, WeakHashtable.Referenced referenced) {
+            super((T) key, queue);
+            this.referenced = referenced;
+        }
+
+        private WeakHashtable.Referenced getReferenced() {
+            return this.referenced;
+        }
+    }
 }
 

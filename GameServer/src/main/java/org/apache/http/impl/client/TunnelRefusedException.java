@@ -7,18 +7,17 @@ import org.apache.http.annotation.Immutable;
 @Deprecated
 @Immutable
 public class TunnelRefusedException
-extends HttpException
-{
-private static final long serialVersionUID = -8646722842745617323L;
-private final HttpResponse response;
+        extends HttpException {
+    private static final long serialVersionUID = -8646722842745617323L;
+    private final HttpResponse response;
 
-public TunnelRefusedException(String message, HttpResponse response) {
-super(message);
-this.response = response;
-}
+    public TunnelRefusedException(String message, HttpResponse response) {
+        super(message);
+        this.response = response;
+    }
 
-public HttpResponse getResponse() {
-return this.response;
-}
+    public HttpResponse getResponse() {
+        return this.response;
+    }
 }
 

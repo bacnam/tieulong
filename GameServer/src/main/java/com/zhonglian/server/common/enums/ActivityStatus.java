@@ -1,12 +1,12 @@
 package com.zhonglian.server.common.enums;
 
 public enum ActivityStatus {
-Open,
+    Open,
 
-Inactive,
+    Inactive,
 
-End,
+    End,
 
-Close;
+    Close;
 }
 

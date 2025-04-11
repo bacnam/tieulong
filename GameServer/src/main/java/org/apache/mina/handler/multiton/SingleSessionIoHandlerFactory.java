@@ -4,6 +4,6 @@ import org.apache.mina.core.session.IoSession;
 
 @Deprecated
 public interface SingleSessionIoHandlerFactory {
-  SingleSessionIoHandler getHandler(IoSession paramIoSession) throws Exception;
+    SingleSessionIoHandler getHandler(IoSession paramIoSession) throws Exception;
 }
 

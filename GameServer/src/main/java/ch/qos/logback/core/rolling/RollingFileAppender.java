@@ -9,12 +9,12 @@ import java.io.IOException;
 
 public class RollingFileAppender<E>
         extends FileAppender<E> {
-    File currentlyActiveFile;
-    TriggeringPolicy<E> triggeringPolicy;
-    RollingPolicy rollingPolicy;
     private static String RFA_NO_TP_URL = "http:";
     private static String RFA_NO_RP_URL = "http:";
     private static String COLLISION_URL = "http:";
+    File currentlyActiveFile;
+    TriggeringPolicy<E> triggeringPolicy;
+    RollingPolicy rollingPolicy;
 
     public void start() {
         if (this.triggeringPolicy == null) {
@@ -79,15 +79,15 @@ public class RollingFileAppender<E>
         super.stop();
     }
 
+    public String getFile() {
+        return this.rollingPolicy.getActiveFileName();
+    }
+
     public void setFile(String file) {
         if (file != null && (this.triggeringPolicy != null || this.rollingPolicy != null)) {
             addError("File property must be set before any triggeringPolicy or rollingPolicy properties");
         }
         super.setFile(file);
-    }
-
-    public String getFile() {
-        return this.rollingPolicy.getActiveFileName();
     }
 
     public void rollover() {
@@ -136,15 +136,15 @@ public class RollingFileAppender<E>
         return this.rollingPolicy;
     }
 
-    public TriggeringPolicy<E> getTriggeringPolicy() {
-        return this.triggeringPolicy;
-    }
-
     public void setRollingPolicy(RollingPolicy policy) {
         this.rollingPolicy = policy;
         if (this.rollingPolicy instanceof TriggeringPolicy) {
             this.triggeringPolicy = (TriggeringPolicy<E>) policy;
         }
+    }
+
+    public TriggeringPolicy<E> getTriggeringPolicy() {
+        return this.triggeringPolicy;
     }
 
     public void setTriggeringPolicy(TriggeringPolicy<E> policy) {

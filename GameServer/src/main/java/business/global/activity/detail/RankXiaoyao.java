@@ -14,38 +14,37 @@ import core.database.game.bo.ActivityBO;
 import core.database.game.bo.ActivityRecordBO;
 
 public class RankXiaoyao
-extends RankActivity
-{
-public RankXiaoyao(ActivityBO bo) {
-super(bo);
-}
+        extends RankActivity {
+    public RankXiaoyao(ActivityBO bo) {
+        super(bo);
+    }
 
-public void onEnd() {
-for (Record record : RankManager.getInstance().getRankList(RankType.XiaoYaoPower, RankManager.getInstance().getRankSize(RankType.XiaoYaoPower))) {
-if (record == null)
-continue; 
-int rank = record.getRank();
-for (RefOpenServerRankReward ref : RefOpenServerRankReward.RankRewardByType.get(ConstEnum.RankRewardType.XiaoyaoRank)) {
-if (!ref.RankRange.within(rank))
-continue; 
-MailCenter.getInstance().sendMail(record.getPid(), ref.MailId, new String[] { (new StringBuilder(String.valueOf(rank))).toString() });
-} 
-} 
-}
+    public void onEnd() {
+        for (Record record : RankManager.getInstance().getRankList(RankType.XiaoYaoPower, RankManager.getInstance().getRankSize(RankType.XiaoYaoPower))) {
+            if (record == null)
+                continue;
+            int rank = record.getRank();
+            for (RefOpenServerRankReward ref : RefOpenServerRankReward.RankRewardByType.get(ConstEnum.RankRewardType.XiaoyaoRank)) {
+                if (!ref.RankRange.within(rank))
+                    continue;
+                MailCenter.getInstance().sendMail(record.getPid(), ref.MailId, new String[]{(new StringBuilder(String.valueOf(rank))).toString()});
+            }
+        }
+    }
 
-public ActivityType getType() {
-return ActivityType.XiaoyaoRank;
-}
+    public ActivityType getType() {
+        return ActivityType.XiaoyaoRank;
+    }
 
-public ActivityRecordBO createPlayerActRecord(Player player) {
-ActivityRecordBO bo = new ActivityRecordBO();
-bo.setPid(player.getPid());
-bo.setAid(this.bo.getId());
-bo.setActivity(getType().toString());
-int rank = ((DroiyanFeature)player.getFeature(DroiyanFeature.class)).getBo().getPoint();
-bo.setExtInt(0, rank);
-bo.insert();
-return bo;
-}
+    public ActivityRecordBO createPlayerActRecord(Player player) {
+        ActivityRecordBO bo = new ActivityRecordBO();
+        bo.setPid(player.getPid());
+        bo.setAid(this.bo.getId());
+        bo.setActivity(getType().toString());
+        int rank = ((DroiyanFeature) player.getFeature(DroiyanFeature.class)).getBo().getPoint();
+        bo.setExtInt(0, rank);
+        bo.insert();
+        return bo;
+    }
 }
 

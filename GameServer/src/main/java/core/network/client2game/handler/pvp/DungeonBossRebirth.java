@@ -18,34 +18,32 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefDungeonRebirth;
 import core.network.client2game.handler.PlayerHandler;
-import core.network.proto.Fight;
+
 import java.io.IOException;
 
 public class DungeonBossRebirth
-extends PlayerHandler
-{
-static class Request
-{
-int level;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        PlayerCurrency currency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        PlayerRecord recorder = (PlayerRecord) player.getFeature(PlayerRecord.class);
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-PlayerCurrency currency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-PlayerRecord recorder = (PlayerRecord)player.getFeature(PlayerRecord.class);
+        int curTimes = recorder.getValue(ConstEnum.DailyRefresh.DungeonRebirth);
+        RefDungeonRebirth ref = (RefDungeonRebirth) RefDataMgr.getOrLast(RefDungeonRebirth.class, Integer.valueOf(curTimes + 1));
 
-int curTimes = recorder.getValue(ConstEnum.DailyRefresh.DungeonRebirth);
-RefDungeonRebirth ref = (RefDungeonRebirth)RefDataMgr.getOrLast(RefDungeonRebirth.class, Integer.valueOf(curTimes + 1));
+        if (!currency.checkAndConsume(PrizeType.Crystal, ref.Cost, ItemFlow.Dungeon_Rebirth)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "元宝不足");
+        }
 
-if (!currency.checkAndConsume(PrizeType.Crystal, ref.Cost, ItemFlow.Dungeon_Rebirth)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "元宝不足");
-}
+        BossFight fight = FightFactory.createFight(player, req.level);
+        FightManager.getInstance().pushFight((Fight) fight);
+        recorder.addValue(ConstEnum.DailyRefresh.DungeonRebirth);
+        ((DungeonFeature) player.getFeature(DungeonFeature.class)).setRebirthRef(req.level, ref);
+        request.response(new DungeonBossBegin.DungeonBossBeginInfo(new Fight.Begin(fight.getId()), recorder.getValue(ConstEnum.DailyRefresh.DungeonRebirth)));
+    }
 
-BossFight fight = FightFactory.createFight(player, req.level);
-FightManager.getInstance().pushFight((Fight)fight);
-recorder.addValue(ConstEnum.DailyRefresh.DungeonRebirth);
-((DungeonFeature)player.getFeature(DungeonFeature.class)).setRebirthRef(req.level, ref);
-request.response(new DungeonBossBegin.DungeonBossBeginInfo(new Fight.Begin(fight.getId()), recorder.getValue(ConstEnum.DailyRefresh.DungeonRebirth)));
-}
+    static class Request {
+        int level;
+    }
 }
 

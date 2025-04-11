@@ -1,52 +1,53 @@
 package com.mchange.io.impl;
 
 import com.mchange.io.ReadOnlyMemoryFile;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 
 public class LazyReadOnlyMemoryFileImpl
-implements ReadOnlyMemoryFile
-{
-File file;
-byte[] bytes = null;
-long last_mod = -1L;
-int last_len = -1;
+        implements ReadOnlyMemoryFile {
+    File file;
+    byte[] bytes = null;
+    long last_mod = -1L;
+    int last_len = -1;
 
-public LazyReadOnlyMemoryFileImpl(File paramFile) {
-this.file = paramFile;
-}
-public LazyReadOnlyMemoryFileImpl(String paramString) {
-this(new File(paramString));
-}
-public File getFile() {
-return this.file;
-}
+    public LazyReadOnlyMemoryFileImpl(File paramFile) {
+        this.file = paramFile;
+    }
 
-public synchronized byte[] getBytes() throws IOException {
-update();
-return this.bytes;
-}
+    public LazyReadOnlyMemoryFileImpl(String paramString) {
+        this(new File(paramString));
+    }
 
-void update() throws IOException {
-if (this.file.lastModified() > this.last_mod) {
+    public File getFile() {
+        return this.file;
+    }
 
-if (this.bytes != null)
-this.last_len = this.bytes.length; 
-refreshBytes();
-} 
-}
+    public synchronized byte[] getBytes() throws IOException {
+        update();
+        return this.bytes;
+    }
 
-void refreshBytes() throws IOException {
-ByteArrayOutputStream byteArrayOutputStream = (this.last_len > 0) ? new ByteArrayOutputStream(2 * this.last_len) : new ByteArrayOutputStream();
+    void update() throws IOException {
+        if (this.file.lastModified() > this.last_mod) {
 
-BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(this.file));
+            if (this.bytes != null)
+                this.last_len = this.bytes.length;
+            refreshBytes();
+        }
+    }
 
-for (int i = bufferedInputStream.read(); i >= 0; ) { byteArrayOutputStream.write((byte)i); i = bufferedInputStream.read(); }
-this.bytes = byteArrayOutputStream.toByteArray();
-this.last_mod = this.file.lastModified();
-}
+    void refreshBytes() throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = (this.last_len > 0) ? new ByteArrayOutputStream(2 * this.last_len) : new ByteArrayOutputStream();
+
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(this.file));
+
+        for (int i = bufferedInputStream.read(); i >= 0; ) {
+            byteArrayOutputStream.write((byte) i);
+            i = bufferedInputStream.read();
+        }
+        this.bytes = byteArrayOutputStream.toByteArray();
+        this.last_mod = this.file.lastModified();
+    }
 }
 

@@ -13,39 +13,41 @@ import core.database.game.bo.ActivityBO;
 import core.server.OpenSeverTime;
 
 public class ResetFirstRecharge extends Activity {
-private int begin;
+    private int begin;
 
-public ResetFirstRecharge(ActivityBO bo) {
-super(bo);
+    public ResetFirstRecharge(ActivityBO bo) {
+        super(bo);
 
-this.begin = 0;
-}
+        this.begin = 0;
+    }
 
-public void load(JsonObject json) throws WSException {
-this.begin = json.get("begin").getAsInt();
-}
+    public void load(JsonObject json) throws WSException {
+        this.begin = json.get("begin").getAsInt();
+    }
 
-public int getBeginTime() {
-return OpenSeverTime.getInstance().getOpenZeroTime() + this.begin;
-}
+    public int getBeginTime() {
+        return OpenSeverTime.getInstance().getOpenZeroTime() + this.begin;
+    }
 
-public void onOpen() {
-for (RefRecharge ref : RefDataMgr.getAll(RefRecharge.class).values()) {
-if (ref.RebateAchievement == Achievement.AchievementType.MonthCardCrystal || ref.RebateAchievement == Achievement.AchievementType.YearCardCrystal) {
-continue;
-}
-RechargeMgr.getInstance().reset(ref.id);
-} 
+    public void onOpen() {
+        for (RefRecharge ref : RefDataMgr.getAll(RefRecharge.class).values()) {
+            if (ref.RebateAchievement == Achievement.AchievementType.MonthCardCrystal || ref.RebateAchievement == Achievement.AchievementType.YearCardCrystal) {
+                continue;
+            }
+            RechargeMgr.getInstance().reset(ref.id);
+        }
 
-((FirstRecharge)ActivityMgr.getActivity(FirstRecharge.class)).clearAllRecharge();
-}
+        ((FirstRecharge) ActivityMgr.getActivity(FirstRecharge.class)).clearAllRecharge();
+    }
 
-public void onEnd() {}
+    public void onEnd() {
+    }
 
-public void onClosed() {}
+    public void onClosed() {
+    }
 
-public ActivityType getType() {
-return ActivityType.ResetFirstRecharge;
-}
+    public ActivityType getType() {
+        return ActivityType.ResetFirstRecharge;
+    }
 }
 

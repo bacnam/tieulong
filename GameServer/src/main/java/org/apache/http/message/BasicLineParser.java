@@ -1,11 +1,6 @@
 package org.apache.http.message;
 
-import org.apache.http.Header;
-import org.apache.http.HttpVersion;
-import org.apache.http.ParseException;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.RequestLine;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.Args;
@@ -13,268 +8,263 @@ import org.apache.http.util.CharArrayBuffer;
 
 @Immutable
 public class BasicLineParser
-implements LineParser
-{
-@Deprecated
-public static final BasicLineParser DEFAULT = new BasicLineParser();
+        implements LineParser {
+    @Deprecated
+    public static final BasicLineParser DEFAULT = new BasicLineParser();
 
-public static final BasicLineParser INSTANCE = new BasicLineParser();
+    public static final BasicLineParser INSTANCE = new BasicLineParser();
 
-protected final ProtocolVersion protocol;
+    protected final ProtocolVersion protocol;
 
-public BasicLineParser(ProtocolVersion proto) {
-this.protocol = (proto != null) ? proto : (ProtocolVersion)HttpVersion.HTTP_1_1;
-}
+    public BasicLineParser(ProtocolVersion proto) {
+        this.protocol = (proto != null) ? proto : (ProtocolVersion) HttpVersion.HTTP_1_1;
+    }
 
-public BasicLineParser() {
-this(null);
-}
+    public BasicLineParser() {
+        this(null);
+    }
 
-public static ProtocolVersion parseProtocolVersion(String value, LineParser parser) throws ParseException {
-Args.notNull(value, "Value");
+    public static ProtocolVersion parseProtocolVersion(String value, LineParser parser) throws ParseException {
+        Args.notNull(value, "Value");
 
-CharArrayBuffer buffer = new CharArrayBuffer(value.length());
-buffer.append(value);
-ParserCursor cursor = new ParserCursor(0, value.length());
-return ((parser != null) ? parser : INSTANCE).parseProtocolVersion(buffer, cursor);
-}
+        CharArrayBuffer buffer = new CharArrayBuffer(value.length());
+        buffer.append(value);
+        ParserCursor cursor = new ParserCursor(0, value.length());
+        return ((parser != null) ? parser : INSTANCE).parseProtocolVersion(buffer, cursor);
+    }
 
-public ProtocolVersion parseProtocolVersion(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException {
-int major, minor;
-Args.notNull(buffer, "Char array buffer");
-Args.notNull(cursor, "Parser cursor");
-String protoname = this.protocol.getProtocol();
-int protolength = protoname.length();
+    public static RequestLine parseRequestLine(String value, LineParser parser) throws ParseException {
+        Args.notNull(value, "Value");
 
-int indexFrom = cursor.getPos();
-int indexTo = cursor.getUpperBound();
+        CharArrayBuffer buffer = new CharArrayBuffer(value.length());
+        buffer.append(value);
+        ParserCursor cursor = new ParserCursor(0, value.length());
+        return ((parser != null) ? parser : INSTANCE).parseRequestLine(buffer, cursor);
+    }
 
-skipWhitespace(buffer, cursor);
+    public static StatusLine parseStatusLine(String value, LineParser parser) throws ParseException {
+        Args.notNull(value, "Value");
 
-int i = cursor.getPos();
+        CharArrayBuffer buffer = new CharArrayBuffer(value.length());
+        buffer.append(value);
+        ParserCursor cursor = new ParserCursor(0, value.length());
+        return ((parser != null) ? parser : INSTANCE).parseStatusLine(buffer, cursor);
+    }
 
-if (i + protolength + 4 > indexTo) {
-throw new ParseException("Not a valid protocol version: " + buffer.substring(indexFrom, indexTo));
-}
+    public static Header parseHeader(String value, LineParser parser) throws ParseException {
+        Args.notNull(value, "Value");
 
-boolean ok = true;
-for (int j = 0; ok && j < protolength; j++) {
-ok = (buffer.charAt(i + j) == protoname.charAt(j));
-}
-if (ok) {
-ok = (buffer.charAt(i + protolength) == '/');
-}
-if (!ok) {
-throw new ParseException("Not a valid protocol version: " + buffer.substring(indexFrom, indexTo));
-}
+        CharArrayBuffer buffer = new CharArrayBuffer(value.length());
+        buffer.append(value);
+        return ((parser != null) ? parser : INSTANCE).parseHeader(buffer);
+    }
 
-i += protolength + 1;
+    public ProtocolVersion parseProtocolVersion(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException {
+        int major, minor;
+        Args.notNull(buffer, "Char array buffer");
+        Args.notNull(cursor, "Parser cursor");
+        String protoname = this.protocol.getProtocol();
+        int protolength = protoname.length();
 
-int period = buffer.indexOf(46, i, indexTo);
-if (period == -1) {
-throw new ParseException("Invalid protocol version number: " + buffer.substring(indexFrom, indexTo));
-}
+        int indexFrom = cursor.getPos();
+        int indexTo = cursor.getUpperBound();
 
-try {
-major = Integer.parseInt(buffer.substringTrimmed(i, period));
-} catch (NumberFormatException e) {
-throw new ParseException("Invalid protocol major version number: " + buffer.substring(indexFrom, indexTo));
-} 
+        skipWhitespace(buffer, cursor);
 
-i = period + 1;
+        int i = cursor.getPos();
 
-int blank = buffer.indexOf(32, i, indexTo);
-if (blank == -1) {
-blank = indexTo;
-}
+        if (i + protolength + 4 > indexTo) {
+            throw new ParseException("Not a valid protocol version: " + buffer.substring(indexFrom, indexTo));
+        }
 
-try {
-minor = Integer.parseInt(buffer.substringTrimmed(i, blank));
-} catch (NumberFormatException e) {
-throw new ParseException("Invalid protocol minor version number: " + buffer.substring(indexFrom, indexTo));
-} 
+        boolean ok = true;
+        for (int j = 0; ok && j < protolength; j++) {
+            ok = (buffer.charAt(i + j) == protoname.charAt(j));
+        }
+        if (ok) {
+            ok = (buffer.charAt(i + protolength) == '/');
+        }
+        if (!ok) {
+            throw new ParseException("Not a valid protocol version: " + buffer.substring(indexFrom, indexTo));
+        }
 
-cursor.updatePos(blank);
+        i += protolength + 1;
 
-return createProtocolVersion(major, minor);
-}
+        int period = buffer.indexOf(46, i, indexTo);
+        if (period == -1) {
+            throw new ParseException("Invalid protocol version number: " + buffer.substring(indexFrom, indexTo));
+        }
 
-protected ProtocolVersion createProtocolVersion(int major, int minor) {
-return this.protocol.forVersion(major, minor);
-}
+        try {
+            major = Integer.parseInt(buffer.substringTrimmed(i, period));
+        } catch (NumberFormatException e) {
+            throw new ParseException("Invalid protocol major version number: " + buffer.substring(indexFrom, indexTo));
+        }
 
-public boolean hasProtocolVersion(CharArrayBuffer buffer, ParserCursor cursor) {
-Args.notNull(buffer, "Char array buffer");
-Args.notNull(cursor, "Parser cursor");
-int index = cursor.getPos();
+        i = period + 1;
 
-String protoname = this.protocol.getProtocol();
-int protolength = protoname.length();
+        int blank = buffer.indexOf(32, i, indexTo);
+        if (blank == -1) {
+            blank = indexTo;
+        }
 
-if (buffer.length() < protolength + 4)
-{
-return false;
-}
+        try {
+            minor = Integer.parseInt(buffer.substringTrimmed(i, blank));
+        } catch (NumberFormatException e) {
+            throw new ParseException("Invalid protocol minor version number: " + buffer.substring(indexFrom, indexTo));
+        }
 
-if (index < 0) {
+        cursor.updatePos(blank);
 
-index = buffer.length() - 4 - protolength;
-} else if (index == 0) {
+        return createProtocolVersion(major, minor);
+    }
 
-while (index < buffer.length() && HTTP.isWhitespace(buffer.charAt(index)))
-{
-index++;
-}
-} 
+    protected ProtocolVersion createProtocolVersion(int major, int minor) {
+        return this.protocol.forVersion(major, minor);
+    }
 
-if (index + protolength + 4 > buffer.length()) {
-return false;
-}
+    public boolean hasProtocolVersion(CharArrayBuffer buffer, ParserCursor cursor) {
+        Args.notNull(buffer, "Char array buffer");
+        Args.notNull(cursor, "Parser cursor");
+        int index = cursor.getPos();
 
-boolean ok = true;
-for (int j = 0; ok && j < protolength; j++) {
-ok = (buffer.charAt(index + j) == protoname.charAt(j));
-}
-if (ok) {
-ok = (buffer.charAt(index + protolength) == '/');
-}
+        String protoname = this.protocol.getProtocol();
+        int protolength = protoname.length();
 
-return ok;
-}
+        if (buffer.length() < protolength + 4) {
+            return false;
+        }
 
-public static RequestLine parseRequestLine(String value, LineParser parser) throws ParseException {
-Args.notNull(value, "Value");
+        if (index < 0) {
 
-CharArrayBuffer buffer = new CharArrayBuffer(value.length());
-buffer.append(value);
-ParserCursor cursor = new ParserCursor(0, value.length());
-return ((parser != null) ? parser : INSTANCE).parseRequestLine(buffer, cursor);
-}
+            index = buffer.length() - 4 - protolength;
+        } else if (index == 0) {
 
-public RequestLine parseRequestLine(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException {
-Args.notNull(buffer, "Char array buffer");
-Args.notNull(cursor, "Parser cursor");
-int indexFrom = cursor.getPos();
-int indexTo = cursor.getUpperBound();
+            while (index < buffer.length() && HTTP.isWhitespace(buffer.charAt(index))) {
+                index++;
+            }
+        }
 
-try {
-skipWhitespace(buffer, cursor);
-int i = cursor.getPos();
+        if (index + protolength + 4 > buffer.length()) {
+            return false;
+        }
 
-int blank = buffer.indexOf(32, i, indexTo);
-if (blank < 0) {
-throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
-}
+        boolean ok = true;
+        for (int j = 0; ok && j < protolength; j++) {
+            ok = (buffer.charAt(index + j) == protoname.charAt(j));
+        }
+        if (ok) {
+            ok = (buffer.charAt(index + protolength) == '/');
+        }
 
-String method = buffer.substringTrimmed(i, blank);
-cursor.updatePos(blank);
+        return ok;
+    }
 
-skipWhitespace(buffer, cursor);
-i = cursor.getPos();
+    public RequestLine parseRequestLine(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException {
+        Args.notNull(buffer, "Char array buffer");
+        Args.notNull(cursor, "Parser cursor");
+        int indexFrom = cursor.getPos();
+        int indexTo = cursor.getUpperBound();
 
-blank = buffer.indexOf(32, i, indexTo);
-if (blank < 0) {
-throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
-}
+        try {
+            skipWhitespace(buffer, cursor);
+            int i = cursor.getPos();
 
-String uri = buffer.substringTrimmed(i, blank);
-cursor.updatePos(blank);
+            int blank = buffer.indexOf(32, i, indexTo);
+            if (blank < 0) {
+                throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
+            }
 
-ProtocolVersion ver = parseProtocolVersion(buffer, cursor);
+            String method = buffer.substringTrimmed(i, blank);
+            cursor.updatePos(blank);
 
-skipWhitespace(buffer, cursor);
-if (!cursor.atEnd()) {
-throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
-}
+            skipWhitespace(buffer, cursor);
+            i = cursor.getPos();
 
-return createRequestLine(method, uri, ver);
-} catch (IndexOutOfBoundsException e) {
-throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
-} 
-}
+            blank = buffer.indexOf(32, i, indexTo);
+            if (blank < 0) {
+                throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
+            }
 
-protected RequestLine createRequestLine(String method, String uri, ProtocolVersion ver) {
-return new BasicRequestLine(method, uri, ver);
-}
+            String uri = buffer.substringTrimmed(i, blank);
+            cursor.updatePos(blank);
 
-public static StatusLine parseStatusLine(String value, LineParser parser) throws ParseException {
-Args.notNull(value, "Value");
+            ProtocolVersion ver = parseProtocolVersion(buffer, cursor);
 
-CharArrayBuffer buffer = new CharArrayBuffer(value.length());
-buffer.append(value);
-ParserCursor cursor = new ParserCursor(0, value.length());
-return ((parser != null) ? parser : INSTANCE).parseStatusLine(buffer, cursor);
-}
+            skipWhitespace(buffer, cursor);
+            if (!cursor.atEnd()) {
+                throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
+            }
 
-public StatusLine parseStatusLine(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException {
-Args.notNull(buffer, "Char array buffer");
-Args.notNull(cursor, "Parser cursor");
-int indexFrom = cursor.getPos();
-int indexTo = cursor.getUpperBound();
-try {
-int statusCode;
-String reasonPhrase;
-ProtocolVersion ver = parseProtocolVersion(buffer, cursor);
+            return createRequestLine(method, uri, ver);
+        } catch (IndexOutOfBoundsException e) {
+            throw new ParseException("Invalid request line: " + buffer.substring(indexFrom, indexTo));
+        }
+    }
 
-skipWhitespace(buffer, cursor);
-int i = cursor.getPos();
+    protected RequestLine createRequestLine(String method, String uri, ProtocolVersion ver) {
+        return new BasicRequestLine(method, uri, ver);
+    }
 
-int blank = buffer.indexOf(32, i, indexTo);
-if (blank < 0) {
-blank = indexTo;
-}
+    public StatusLine parseStatusLine(CharArrayBuffer buffer, ParserCursor cursor) throws ParseException {
+        Args.notNull(buffer, "Char array buffer");
+        Args.notNull(cursor, "Parser cursor");
+        int indexFrom = cursor.getPos();
+        int indexTo = cursor.getUpperBound();
+        try {
+            int statusCode;
+            String reasonPhrase;
+            ProtocolVersion ver = parseProtocolVersion(buffer, cursor);
 
-String s = buffer.substringTrimmed(i, blank);
-for (int j = 0; j < s.length(); j++) {
-if (!Character.isDigit(s.charAt(j))) {
-throw new ParseException("Status line contains invalid status code: " + buffer.substring(indexFrom, indexTo));
-}
-} 
+            skipWhitespace(buffer, cursor);
+            int i = cursor.getPos();
 
-try {
-statusCode = Integer.parseInt(s);
-} catch (NumberFormatException e) {
-throw new ParseException("Status line contains invalid status code: " + buffer.substring(indexFrom, indexTo));
-} 
+            int blank = buffer.indexOf(32, i, indexTo);
+            if (blank < 0) {
+                blank = indexTo;
+            }
 
-i = blank;
+            String s = buffer.substringTrimmed(i, blank);
+            for (int j = 0; j < s.length(); j++) {
+                if (!Character.isDigit(s.charAt(j))) {
+                    throw new ParseException("Status line contains invalid status code: " + buffer.substring(indexFrom, indexTo));
+                }
+            }
 
-if (i < indexTo) {
-reasonPhrase = buffer.substringTrimmed(i, indexTo);
-} else {
-reasonPhrase = "";
-} 
-return createStatusLine(ver, statusCode, reasonPhrase);
-}
-catch (IndexOutOfBoundsException e) {
-throw new ParseException("Invalid status line: " + buffer.substring(indexFrom, indexTo));
-} 
-}
+            try {
+                statusCode = Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                throw new ParseException("Status line contains invalid status code: " + buffer.substring(indexFrom, indexTo));
+            }
 
-protected StatusLine createStatusLine(ProtocolVersion ver, int status, String reason) {
-return new BasicStatusLine(ver, status, reason);
-}
+            i = blank;
 
-public static Header parseHeader(String value, LineParser parser) throws ParseException {
-Args.notNull(value, "Value");
+            if (i < indexTo) {
+                reasonPhrase = buffer.substringTrimmed(i, indexTo);
+            } else {
+                reasonPhrase = "";
+            }
+            return createStatusLine(ver, statusCode, reasonPhrase);
+        } catch (IndexOutOfBoundsException e) {
+            throw new ParseException("Invalid status line: " + buffer.substring(indexFrom, indexTo));
+        }
+    }
 
-CharArrayBuffer buffer = new CharArrayBuffer(value.length());
-buffer.append(value);
-return ((parser != null) ? parser : INSTANCE).parseHeader(buffer);
-}
+    protected StatusLine createStatusLine(ProtocolVersion ver, int status, String reason) {
+        return new BasicStatusLine(ver, status, reason);
+    }
 
-public Header parseHeader(CharArrayBuffer buffer) throws ParseException {
-return (Header)new BufferedHeader(buffer);
-}
+    public Header parseHeader(CharArrayBuffer buffer) throws ParseException {
+        return (Header) new BufferedHeader(buffer);
+    }
 
-protected void skipWhitespace(CharArrayBuffer buffer, ParserCursor cursor) {
-int pos = cursor.getPos();
-int indexTo = cursor.getUpperBound();
-while (pos < indexTo && HTTP.isWhitespace(buffer.charAt(pos)))
-{
-pos++;
-}
-cursor.updatePos(pos);
-}
+    protected void skipWhitespace(CharArrayBuffer buffer, ParserCursor cursor) {
+        int pos = cursor.getPos();
+        int indexTo = cursor.getUpperBound();
+        while (pos < indexTo && HTTP.isWhitespace(buffer.charAt(pos))) {
+            pos++;
+        }
+        cursor.updatePos(pos);
+    }
 }
 

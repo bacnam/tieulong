@@ -12,26 +12,25 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefGuildJobInfo;
 import core.config.refdata.ref.RefGuildWarCenter;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class GuildWarApply
-extends PlayerHandler
-{
-public static class Request
-{
-int centerId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Guild guild = ((GuildMemberFeature) player.getFeature(GuildMemberFeature.class)).getGuild();
+        RefGuildJobInfo job = ((GuildMemberFeature) player.getFeature(GuildMemberFeature.class)).getJobRef();
+        if (!job.GuildwarApply) {
+            throw new WSException(ErrorCode.GuildWar_NotPermit, "权限不足");
+        }
+        guild.applyGuildWar(req.centerId);
+        RefGuildWarCenter ref = (RefGuildWarCenter) RefDataMgr.get(RefGuildWarCenter.class, Integer.valueOf(req.centerId));
+        request.response(GuildWarMgr.getInstance().centerInfo(ref));
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Guild guild = ((GuildMemberFeature)player.getFeature(GuildMemberFeature.class)).getGuild();
-RefGuildJobInfo job = ((GuildMemberFeature)player.getFeature(GuildMemberFeature.class)).getJobRef();
-if (!job.GuildwarApply) {
-throw new WSException(ErrorCode.GuildWar_NotPermit, "权限不足");
-}
-guild.applyGuildWar(req.centerId);
-RefGuildWarCenter ref = (RefGuildWarCenter)RefDataMgr.get(RefGuildWarCenter.class, Integer.valueOf(req.centerId));
-request.response(GuildWarMgr.getInstance().centerInfo(ref));
-}
+    public static class Request {
+        int centerId;
+    }
 }
 

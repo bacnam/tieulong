@@ -17,67 +17,66 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefTreasure;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class FindTreasure
-extends PlayerHandler
-{
-public static class Request
-{
-int times;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        FindTreasureFeature feature = (FindTreasureFeature) player.getFeature(FindTreasureFeature.class);
 
-private static class Response {
-Reward reward;
-int leftTimes;
-int leftTentimes;
+        ConstEnum.FindTreasureType find = null;
+        int times = 0;
+        if (req.times == 1) {
+            find = ConstEnum.FindTreasureType.single;
+            times = RefDataMgr.getFactor("findTreasureTimes", 20);
+        }
+        if (req.times == 10) {
+            find = ConstEnum.FindTreasureType.Ten;
+            times = RefDataMgr.getFactor("findTreasureTentimes", 2);
+        }
 
-private Response(Reward reward, int leftTimes, int leftTentimes) {
-this.reward = reward;
-this.leftTimes = leftTimes;
-this.leftTentimes = leftTentimes;
-}
-}
+        if (times != -1 && feature.getLeftTimes(find) <= 0) {
+            throw new WSException(ErrorCode.NotEnoughFindTimes, "玩家寻宝次数不足");
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-FindTreasureFeature feature = (FindTreasureFeature)player.getFeature(FindTreasureFeature.class);
+        RefTreasure ref = feature.selectRef(player.getLv());
+        int cost = 0;
+        if (req.times == 1) {
+            cost = ref.Price;
+        } else if (req.times == 10) {
+            cost = ref.TenPrice;
+        }
+        PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        if (!playerCurrency.check(PrizeType.Crystal, cost)) {
+            throw new WSException(ErrorCode.NotEnough_Money, "玩家元宝:%s<所需元宝:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getCrystal()), Integer.valueOf(cost)});
+        }
 
-ConstEnum.FindTreasureType find = null;
-int times = 0;
-if (req.times == 1) {
-find = ConstEnum.FindTreasureType.single;
-times = RefDataMgr.getFactor("findTreasureTimes", 20);
-} 
-if (req.times == 10) {
-find = ConstEnum.FindTreasureType.Ten;
-times = RefDataMgr.getFactor("findTreasureTentimes", 2);
-} 
+        playerCurrency.consume(PrizeType.Crystal, cost, ItemFlow.FindTreasure);
+        Reward reward = feature.findTreasure(req.times);
+        ((PlayerItem) player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.FindTreasure);
 
-if (times != -1 && feature.getLeftTimes(find) <= 0) {
-throw new WSException(ErrorCode.NotEnoughFindTimes, "玩家寻宝次数不足");
-}
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.FindTreasureTimes, Integer.valueOf(req.times));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.FindTreasureTimes_M1, Integer.valueOf(req.times));
 
-RefTreasure ref = feature.selectRef(player.getLv());
-int cost = 0;
-if (req.times == 1) {
-cost = ref.Price;
-} else if (req.times == 10) {
-cost = ref.TenPrice;
-} 
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-if (!playerCurrency.check(PrizeType.Crystal, cost)) {
-throw new WSException(ErrorCode.NotEnough_Money, "玩家元宝:%s<所需元宝:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getCrystal()), Integer.valueOf(cost) });
-}
+        request.response(new Response(reward, feature.getLeftTimes(ConstEnum.FindTreasureType.single), feature.getLeftTimes(ConstEnum.FindTreasureType.Ten), null));
+    }
 
-playerCurrency.consume(PrizeType.Crystal, cost, ItemFlow.FindTreasure);
-Reward reward = feature.findTreasure(req.times);
-((PlayerItem)player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.FindTreasure);
+    public static class Request {
+        int times;
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.FindTreasureTimes, Integer.valueOf(req.times));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.FindTreasureTimes_M1, Integer.valueOf(req.times));
+    private static class Response {
+        Reward reward;
+        int leftTimes;
+        int leftTentimes;
 
-request.response(new Response(reward, feature.getLeftTimes(ConstEnum.FindTreasureType.single), feature.getLeftTimes(ConstEnum.FindTreasureType.Ten), null));
-}
+        private Response(Reward reward, int leftTimes, int leftTentimes) {
+            this.reward = reward;
+            this.leftTimes = leftTimes;
+            this.leftTentimes = leftTentimes;
+        }
+    }
 }
 

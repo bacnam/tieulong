@@ -1,29 +1,21 @@
 package ch.qos.logback.core.rolling;
 
-import ch.qos.logback.core.rolling.helper.CompressionMode;
-import ch.qos.logback.core.rolling.helper.Compressor;
-import ch.qos.logback.core.rolling.helper.FileFilterUtil;
-import ch.qos.logback.core.rolling.helper.FileNamePattern;
-import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
-import ch.qos.logback.core.rolling.helper.RenameUtil;
+import ch.qos.logback.core.rolling.helper.*;
 
 import java.io.File;
 import java.util.Date;
 
 public class FixedWindowRollingPolicy
         extends RollingPolicyBase {
+    public static final String ZIP_ENTRY_DATE_PATTERN = "yyyy-MM-dd_HHmm";
     static final String FNP_NOT_SET = "The \"FileNamePattern\" property must be set before using FixedWindowRollingPolicy. ";
     static final String PRUDENT_MODE_UNSUPPORTED = "See also http:";
     static final String SEE_PARENT_FN_NOT_SET = "Please refer to http:";
+    private static int MAX_WINDOW_SIZE = 20;
     int maxIndex;
     int minIndex;
     RenameUtil util = new RenameUtil();
-
     Compressor compressor;
-
-    public static final String ZIP_ENTRY_DATE_PATTERN = "yyyy-MM-dd_HHmm";
-
-    private static int MAX_WINDOW_SIZE = 20;
 
     public FixedWindowRollingPolicy() {
         this.minIndex = 1;
@@ -133,12 +125,12 @@ public class FixedWindowRollingPolicy
         return this.maxIndex;
     }
 
-    public int getMinIndex() {
-        return this.minIndex;
-    }
-
     public void setMaxIndex(int maxIndex) {
         this.maxIndex = maxIndex;
+    }
+
+    public int getMinIndex() {
+        return this.minIndex;
     }
 
     public void setMinIndex(int minIndex) {

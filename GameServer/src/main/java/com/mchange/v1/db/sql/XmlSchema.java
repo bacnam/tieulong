@@ -1,215 +1,208 @@
 package com.mchange.v1.db.sql;
 
+import org.xml.sax.*;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import org.xml.sax.AttributeList;
-import org.xml.sax.HandlerBase;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import java.util.*;
 
 public class XmlSchema
-implements Schema
-{
-private static final int CREATE = 0;
-private static final int DROP = 1;
-List createStmts;
-List dropStmts;
-Map appMap;
+        implements Schema {
+    private static final int CREATE = 0;
+    private static final int DROP = 1;
+    List createStmts;
+    List dropStmts;
+    Map appMap;
 
-public XmlSchema(URL paramURL) throws SAXException, IOException, ParserConfigurationException {
-parse(paramURL.openStream());
-}
-public XmlSchema(InputStream paramInputStream) throws SAXException, IOException, ParserConfigurationException {
-parse(paramInputStream);
-}
+    public XmlSchema(URL paramURL) throws SAXException, IOException, ParserConfigurationException {
+        parse(paramURL.openStream());
+    }
 
-public XmlSchema() {}
+    public XmlSchema(InputStream paramInputStream) throws SAXException, IOException, ParserConfigurationException {
+        parse(paramInputStream);
+    }
 
-public void parse(InputStream paramInputStream) throws SAXException, IOException, ParserConfigurationException {
-this.createStmts = new ArrayList();
-this.dropStmts = new ArrayList();
-this.appMap = new HashMap<Object, Object>();
+    public XmlSchema() {
+    }
 
-InputSource inputSource = new InputSource();
-inputSource.setByteStream(paramInputStream);
+    public static void main(String[] paramArrayOfString) {
+        try {
+            XmlSchema xmlSchema = new XmlSchema(XmlSchema.class.getResource("/com/mchange/v1/hjug/hjugschema.xml"));
 
-inputSource.setSystemId(XmlSchema.class.getResource("schema.dtd").toExternalForm());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
-SAXParser sAXParser = SAXParserFactory.newInstance().newSAXParser();
-MySaxHandler mySaxHandler = new MySaxHandler();
+    public void parse(InputStream paramInputStream) throws SAXException, IOException, ParserConfigurationException {
+        this.createStmts = new ArrayList();
+        this.dropStmts = new ArrayList();
+        this.appMap = new HashMap<Object, Object>();
 
-sAXParser.parse(inputSource, mySaxHandler);
-}
+        InputSource inputSource = new InputSource();
+        inputSource.setByteStream(paramInputStream);
 
-private void doStatementList(List paramList, Connection paramConnection) throws SQLException {
-if (paramList != null) {
+        inputSource.setSystemId(XmlSchema.class.getResource("schema.dtd").toExternalForm());
 
-Statement statement = null;
+        SAXParser sAXParser = SAXParserFactory.newInstance().newSAXParser();
+        MySaxHandler mySaxHandler = new MySaxHandler();
 
-try {
-statement = paramConnection.createStatement();
-for (Iterator<String> iterator = paramList.iterator(); iterator.hasNext();)
-statement.executeUpdate(iterator.next()); 
-paramConnection.commit();
-}
-catch (SQLException sQLException) {
+        sAXParser.parse(inputSource, mySaxHandler);
+    }
 
-ConnectionUtils.attemptRollback(paramConnection);
-sQLException.fillInStackTrace();
-throw sQLException;
-} finally {
+    private void doStatementList(List paramList, Connection paramConnection) throws SQLException {
+        if (paramList != null) {
 
-StatementUtils.attemptClose(statement);
-} 
-} 
-}
+            Statement statement = null;
 
-public String getStatementText(String paramString1, String paramString2) {
-SqlApp sqlApp = (SqlApp)this.appMap.get(paramString1);
-String str = null;
-if (sqlApp != null)
-str = sqlApp.getStatementText(paramString2); 
-return str;
-}
+            try {
+                statement = paramConnection.createStatement();
+                for (Iterator<String> iterator = paramList.iterator(); iterator.hasNext(); )
+                    statement.executeUpdate(iterator.next());
+                paramConnection.commit();
+            } catch (SQLException sQLException) {
 
-public void createSchema(Connection paramConnection) throws SQLException {
-doStatementList(this.createStmts, paramConnection);
-}
-public void dropSchema(Connection paramConnection) throws SQLException {
-doStatementList(this.dropStmts, paramConnection);
-}
+                ConnectionUtils.attemptRollback(paramConnection);
+                sQLException.fillInStackTrace();
+                throw sQLException;
+            } finally {
 
-public static void main(String[] paramArrayOfString) {
-try {
-XmlSchema xmlSchema = new XmlSchema(XmlSchema.class.getResource("/com/mchange/v1/hjug/hjugschema.xml"));
+                StatementUtils.attemptClose(statement);
+            }
+        }
+    }
 
-}
-catch (Exception exception) {
-exception.printStackTrace();
-} 
-}
+    public String getStatementText(String paramString1, String paramString2) {
+        SqlApp sqlApp = (SqlApp) this.appMap.get(paramString1);
+        String str = null;
+        if (sqlApp != null)
+            str = sqlApp.getStatementText(paramString2);
+        return str;
+    }
 
-class MySaxHandler
-extends HandlerBase {
-int state = -1;
-boolean in_statement = false;
-boolean in_comment = false;
-StringBuffer charBuff = null;
-XmlSchema.SqlApp currentApp = null;
-String currentStmtName = null;
+    public void createSchema(Connection paramConnection) throws SQLException {
+        doStatementList(this.createStmts, paramConnection);
+    }
 
-public void startElement(String param1String, AttributeList param1AttributeList) {
-if (param1String.equals("create")) {
-this.state = 0;
-} else if (param1String.equals("drop")) {
-this.state = 1;
-} else if (param1String.equals("statement")) {
+    public void dropSchema(Connection paramConnection) throws SQLException {
+        doStatementList(this.dropStmts, paramConnection);
+    }
 
-this.in_statement = true;
-this.charBuff = new StringBuffer();
-if (this.currentApp != null) {
-byte b; int i;
-for (b = 0, i = param1AttributeList.getLength(); b < i; b++) {
+    class MySaxHandler
+            extends HandlerBase {
+        int state = -1;
+        boolean in_statement = false;
+        boolean in_comment = false;
+        StringBuffer charBuff = null;
+        XmlSchema.SqlApp currentApp = null;
+        String currentStmtName = null;
 
-String str = param1AttributeList.getName(b);
-if (str.equals("name")) {
+        public void startElement(String param1String, AttributeList param1AttributeList) {
+            if (param1String.equals("create")) {
+                this.state = 0;
+            } else if (param1String.equals("drop")) {
+                this.state = 1;
+            } else if (param1String.equals("statement")) {
 
-this.currentStmtName = param1AttributeList.getValue(b);
+                this.in_statement = true;
+                this.charBuff = new StringBuffer();
+                if (this.currentApp != null) {
+                    byte b;
+                    int i;
+                    for (b = 0, i = param1AttributeList.getLength(); b < i; b++) {
 
-break;
-} 
-} 
-} 
-} else if (param1String.equals("comment")) {
-this.in_comment = true;
-} else if (param1String.equals("application")) {
-byte b; int i;
-for (b = 0, i = param1AttributeList.getLength(); b < i; b++) {
+                        String str = param1AttributeList.getName(b);
+                        if (str.equals("name")) {
 
-String str = param1AttributeList.getName(b);
-if (str.equals("name")) {
+                            this.currentStmtName = param1AttributeList.getValue(b);
 
-String str1 = param1AttributeList.getValue(b);
-this.currentApp = (XmlSchema.SqlApp)XmlSchema.this.appMap.get(str1);
-if (this.currentApp == null) {
+                            break;
+                        }
+                    }
+                }
+            } else if (param1String.equals("comment")) {
+                this.in_comment = true;
+            } else if (param1String.equals("application")) {
+                byte b;
+                int i;
+                for (b = 0, i = param1AttributeList.getLength(); b < i; b++) {
 
-this.currentApp = new XmlSchema.SqlApp();
-XmlSchema.this.appMap.put(str1.intern(), this.currentApp);
-} 
-break;
-} 
-} 
-} 
-}
+                    String str = param1AttributeList.getName(b);
+                    if (str.equals("name")) {
 
-public void characters(char[] param1ArrayOfchar, int param1Int1, int param1Int2) throws SAXException {
-if (!this.in_comment)
-{
-if (this.in_statement) {
-this.charBuff.append(param1ArrayOfchar, param1Int1, param1Int2);
-}
-}
-}
+                        String str1 = param1AttributeList.getValue(b);
+                        this.currentApp = (XmlSchema.SqlApp) XmlSchema.this.appMap.get(str1);
+                        if (this.currentApp == null) {
 
-public void endElement(String param1String) {
-if (param1String.equals("statement")) {
+                            this.currentApp = new XmlSchema.SqlApp();
+                            XmlSchema.this.appMap.put(str1.intern(), this.currentApp);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
 
-String str = this.charBuff.toString().trim();
-if (this.state == 0) {
-XmlSchema.this.createStmts.add(str);
-} else if (this.state == 1) {
-XmlSchema.this.dropStmts.add(str);
-}
-else if (this.currentApp != null && this.currentStmtName != null) {
-this.currentApp.setStatementText(this.currentStmtName, str);
-} 
-} else if (param1String.equals("create") || param1String.equals("drop")) {
-this.state = -1;
-} else if (param1String.equals("comment")) {
-this.in_comment = false;
-} else if (param1String.equals("application")) {
-this.currentApp = null;
-} 
-}
+        public void characters(char[] param1ArrayOfchar, int param1Int1, int param1Int2) throws SAXException {
+            if (!this.in_comment) {
+                if (this.in_statement) {
+                    this.charBuff.append(param1ArrayOfchar, param1Int1, param1Int2);
+                }
+            }
+        }
 
-public void warning(SAXParseException param1SAXParseException) {
-System.err.println("[Warning] " + param1SAXParseException.getMessage());
-}
+        public void endElement(String param1String) {
+            if (param1String.equals("statement")) {
 
-public void error(SAXParseException param1SAXParseException) {
-System.err.println("[Error] " + param1SAXParseException.getMessage());
-}
+                String str = this.charBuff.toString().trim();
+                if (this.state == 0) {
+                    XmlSchema.this.createStmts.add(str);
+                } else if (this.state == 1) {
+                    XmlSchema.this.dropStmts.add(str);
+                } else if (this.currentApp != null && this.currentStmtName != null) {
+                    this.currentApp.setStatementText(this.currentStmtName, str);
+                }
+            } else if (param1String.equals("create") || param1String.equals("drop")) {
+                this.state = -1;
+            } else if (param1String.equals("comment")) {
+                this.in_comment = false;
+            } else if (param1String.equals("application")) {
+                this.currentApp = null;
+            }
+        }
 
-public void fatalError(SAXParseException param1SAXParseException) throws SAXException {
-System.err.println("[Fatal Error] " + param1SAXParseException.getMessage());
+        public void warning(SAXParseException param1SAXParseException) {
+            System.err.println("[Warning] " + param1SAXParseException.getMessage());
+        }
 
-throw param1SAXParseException;
-}
-}
+        public void error(SAXParseException param1SAXParseException) {
+            System.err.println("[Error] " + param1SAXParseException.getMessage());
+        }
 
-class SqlApp
-{
-Map stmtMap = new HashMap<Object, Object>();
+        public void fatalError(SAXParseException param1SAXParseException) throws SAXException {
+            System.err.println("[Fatal Error] " + param1SAXParseException.getMessage());
 
-public void setStatementText(String param1String1, String param1String2) {
-this.stmtMap.put(param1String1, param1String2);
-}
-public String getStatementText(String param1String) {
-return (String)this.stmtMap.get(param1String);
-}
-}
+            throw param1SAXParseException;
+        }
+    }
+
+    class SqlApp {
+        Map stmtMap = new HashMap<Object, Object>();
+
+        public void setStatementText(String param1String1, String param1String2) {
+            this.stmtMap.put(param1String1, param1String2);
+        }
+
+        public String getStatementText(String param1String) {
+            return (String) this.stmtMap.get(param1String);
+        }
+    }
 }
 

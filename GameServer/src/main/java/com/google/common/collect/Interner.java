@@ -4,6 +4,6 @@ import com.google.common.annotations.Beta;
 
 @Beta
 public interface Interner<E> {
-  E intern(E paramE);
+    E intern(E paramE);
 }
 

@@ -5,14 +5,13 @@ import com.zhonglian.server.common.enums.RankType;
 
 @Ranks({RankType.WorldBoss1, RankType.WorldBoss2, RankType.WorldBoss3, RankType.WorldBoss4})
 public class WorldBossRank
-extends NormalRank
-{
-public WorldBossRank(RankType type) {
-super(type);
-}
+        extends NormalRank {
+    public WorldBossRank(RankType type) {
+        super(type);
+    }
 
-protected boolean filter(long ownerid) {
-return false;
-}
+    protected boolean filter(long ownerid) {
+        return false;
+    }
 }
 

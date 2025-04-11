@@ -1,8 +1,8 @@
 package com.mchange.v2.holders;
 
 public interface ThreadSafeFloatHolder {
-  float getValue();
+    float getValue();
 
-  void setValue(float paramFloat);
+    void setValue(float paramFloat);
 }
 

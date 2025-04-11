@@ -5,104 +5,100 @@ import ch.qos.logback.core.spi.LogbackLock;
 import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.status.StatusListener;
 import ch.qos.logback.core.status.StatusManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BasicStatusManager
-implements StatusManager
-{
-public static final int MAX_HEADER_COUNT = 150;
-public static final int TAIL_SIZE = 150;
-int count = 0;
+        implements StatusManager {
+    public static final int MAX_HEADER_COUNT = 150;
+    public static final int TAIL_SIZE = 150;
+    protected final List<Status> statusList = new ArrayList<Status>();
+    protected final CyclicBuffer<Status> tailBuffer = new CyclicBuffer(150);
+    protected final LogbackLock statusListLock = new LogbackLock();
+    protected final List<StatusListener> statusListenerList = new ArrayList<StatusListener>();
+    protected final LogbackLock statusListenerListLock = new LogbackLock();
+    int count = 0;
+    int level = 0;
 
-protected final List<Status> statusList = new ArrayList<Status>();
-protected final CyclicBuffer<Status> tailBuffer = new CyclicBuffer(150);
+    public void add(Status newStatus) {
+        fireStatusAddEvent(newStatus);
 
-protected final LogbackLock statusListLock = new LogbackLock();
+        this.count++;
+        if (newStatus.getLevel() > this.level) {
+            this.level = newStatus.getLevel();
+        }
 
-int level = 0;
+        synchronized (this.statusListLock) {
+            if (this.statusList.size() < 150) {
+                this.statusList.add(newStatus);
+            } else {
+                this.tailBuffer.add(newStatus);
+            }
+        }
+    }
 
-protected final List<StatusListener> statusListenerList = new ArrayList<StatusListener>();
-protected final LogbackLock statusListenerListLock = new LogbackLock();
+    public List<Status> getCopyOfStatusList() {
+        synchronized (this.statusListLock) {
+            List<Status> tList = new ArrayList<Status>(this.statusList);
+            tList.addAll(this.tailBuffer.asList());
+            return tList;
+        }
+    }
 
-public void add(Status newStatus) {
-fireStatusAddEvent(newStatus);
+    private void fireStatusAddEvent(Status status) {
+        synchronized (this.statusListenerListLock) {
+            for (StatusListener sl : this.statusListenerList) {
+                sl.addStatusEvent(status);
+            }
+        }
+    }
 
-this.count++;
-if (newStatus.getLevel() > this.level) {
-this.level = newStatus.getLevel();
-}
+    public void clear() {
+        synchronized (this.statusListLock) {
+            this.count = 0;
+            this.statusList.clear();
+            this.tailBuffer.clear();
+        }
+    }
 
-synchronized (this.statusListLock) {
-if (this.statusList.size() < 150) {
-this.statusList.add(newStatus);
-} else {
-this.tailBuffer.add(newStatus);
-} 
-} 
-}
+    public int getLevel() {
+        return this.level;
+    }
 
-public List<Status> getCopyOfStatusList() {
-synchronized (this.statusListLock) {
-List<Status> tList = new ArrayList<Status>(this.statusList);
-tList.addAll(this.tailBuffer.asList());
-return tList;
-} 
-}
+    public int getCount() {
+        return this.count;
+    }
 
-private void fireStatusAddEvent(Status status) {
-synchronized (this.statusListenerListLock) {
-for (StatusListener sl : this.statusListenerList) {
-sl.addStatusEvent(status);
-}
-} 
-}
+    public void add(StatusListener listener) {
+        synchronized (this.statusListenerListLock) {
+            if (listener instanceof ch.qos.logback.core.status.OnConsoleStatusListener) {
+                boolean alreadyPresent = checkForPresence(this.statusListenerList, listener.getClass());
+                if (alreadyPresent)
+                    return;
+            }
+            this.statusListenerList.add(listener);
+        }
+    }
 
-public void clear() {
-synchronized (this.statusListLock) {
-this.count = 0;
-this.statusList.clear();
-this.tailBuffer.clear();
-} 
-}
+    private boolean checkForPresence(List<StatusListener> statusListenerList, Class<?> aClass) {
+        for (StatusListener e : statusListenerList) {
+            if (e.getClass() == aClass)
+                return true;
+        }
+        return false;
+    }
 
-public int getLevel() {
-return this.level;
-}
+    public void remove(StatusListener listener) {
+        synchronized (this.statusListenerListLock) {
+            this.statusListenerList.remove(listener);
+        }
+    }
 
-public int getCount() {
-return this.count;
-}
-
-public void add(StatusListener listener) {
-synchronized (this.statusListenerListLock) {
-if (listener instanceof ch.qos.logback.core.status.OnConsoleStatusListener) {
-boolean alreadyPresent = checkForPresence(this.statusListenerList, listener.getClass());
-if (alreadyPresent)
-return; 
-} 
-this.statusListenerList.add(listener);
-} 
-}
-
-private boolean checkForPresence(List<StatusListener> statusListenerList, Class<?> aClass) {
-for (StatusListener e : statusListenerList) {
-if (e.getClass() == aClass)
-return true; 
-} 
-return false;
-}
-
-public void remove(StatusListener listener) {
-synchronized (this.statusListenerListLock) {
-this.statusListenerList.remove(listener);
-} 
-}
-
-public List<StatusListener> getCopyOfStatusListenerList() {
-synchronized (this.statusListenerListLock) {
-return new ArrayList<StatusListener>(this.statusListenerList);
-} 
-}
+    public List<StatusListener> getCopyOfStatusListenerList() {
+        synchronized (this.statusListenerListLock) {
+            return new ArrayList<StatusListener>(this.statusListenerList);
+        }
+    }
 }
 

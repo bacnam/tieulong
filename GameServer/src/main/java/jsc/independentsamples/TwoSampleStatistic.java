@@ -3,14 +3,14 @@ package jsc.independentsamples;
 import jsc.statistics.Statistic;
 
 public interface TwoSampleStatistic extends Statistic {
-  double resampleStatistic(double[] paramArrayOfdouble1, double[] paramArrayOfdouble2);
+    double resampleStatistic(double[] paramArrayOfdouble1, double[] paramArrayOfdouble2);
 
-  double[] getSampleA();
+    double[] getSampleA();
 
-  double[] getSampleB();
+    double[] getSampleB();
 
-  int sizeA();
+    int sizeA();
 
-  int sizeB();
+    int sizeB();
 }
 

@@ -1,20 +1,20 @@
 package com.mchange.util;
 
 public interface IntObjectMap {
-  Object get(int paramInt);
+    Object get(int paramInt);
 
-  void put(int paramInt, Object paramObject);
+    void put(int paramInt, Object paramObject);
 
-  boolean putNoReplace(int paramInt, Object paramObject);
+    boolean putNoReplace(int paramInt, Object paramObject);
 
-  Object remove(int paramInt);
+    Object remove(int paramInt);
 
-  boolean containsInt(int paramInt);
+    boolean containsInt(int paramInt);
 
-  int getSize();
+    int getSize();
 
-  void clear();
+    void clear();
 
-  IntEnumeration ints();
+    IntEnumeration ints();
 }
 

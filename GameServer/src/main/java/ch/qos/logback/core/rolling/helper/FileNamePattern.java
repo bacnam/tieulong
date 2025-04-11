@@ -9,157 +9,156 @@ import ch.qos.logback.core.pattern.util.AlmostAsIsEscapeUtil;
 import ch.qos.logback.core.pattern.util.IEscapeUtil;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.ScanException;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FileNamePattern
-extends ContextAwareBase
-{
-static final Map<String, String> CONVERTER_MAP = new HashMap<String, String>();
-static {
-CONVERTER_MAP.put("i", IntegerTokenConverter.class.getName());
+        extends ContextAwareBase {
+    static final Map<String, String> CONVERTER_MAP = new HashMap<String, String>();
 
-CONVERTER_MAP.put("d", DateTokenConverter.class.getName());
-}
+    static {
+        CONVERTER_MAP.put("i", IntegerTokenConverter.class.getName());
 
-String pattern;
+        CONVERTER_MAP.put("d", DateTokenConverter.class.getName());
+    }
 
-Converter<Object> headTokenConverter;
+    String pattern;
 
-public FileNamePattern(String patternArg, Context contextArg) {
-setPattern(FileFilterUtil.slashify(patternArg));
-setContext(contextArg);
-parse();
-ConverterUtil.startConverters(this.headTokenConverter);
-}
+    Converter<Object> headTokenConverter;
 
-void parse() {
-try {
-String patternForParsing = escapeRightParantesis(this.pattern);
-Parser<Object> p = new Parser(patternForParsing, (IEscapeUtil)new AlmostAsIsEscapeUtil());
-p.setContext(this.context);
-Node t = p.parse();
-this.headTokenConverter = p.compile(t, CONVERTER_MAP);
-}
-catch (ScanException sce) {
-addError("Failed to parse pattern \"" + this.pattern + "\".", (Throwable)sce);
-} 
-}
+    public FileNamePattern(String patternArg, Context contextArg) {
+        setPattern(FileFilterUtil.slashify(patternArg));
+        setContext(contextArg);
+        parse();
+        ConverterUtil.startConverters(this.headTokenConverter);
+    }
 
-String escapeRightParantesis(String in) {
-return this.pattern.replace(")", "\\)");
-}
+    void parse() {
+        try {
+            String patternForParsing = escapeRightParantesis(this.pattern);
+            Parser<Object> p = new Parser(patternForParsing, (IEscapeUtil) new AlmostAsIsEscapeUtil());
+            p.setContext(this.context);
+            Node t = p.parse();
+            this.headTokenConverter = p.compile(t, CONVERTER_MAP);
+        } catch (ScanException sce) {
+            addError("Failed to parse pattern \"" + this.pattern + "\".", (Throwable) sce);
+        }
+    }
 
-public String toString() {
-return this.pattern;
-}
+    String escapeRightParantesis(String in) {
+        return this.pattern.replace(")", "\\)");
+    }
 
-public DateTokenConverter getPrimaryDateTokenConverter() {
-Converter<Object> p = this.headTokenConverter;
+    public String toString() {
+        return this.pattern;
+    }
 
-while (p != null) {
-if (p instanceof DateTokenConverter) {
-DateTokenConverter dtc = (DateTokenConverter)p;
+    public DateTokenConverter getPrimaryDateTokenConverter() {
+        Converter<Object> p = this.headTokenConverter;
 
-if (dtc.isPrimary()) {
-return dtc;
-}
-} 
-p = p.getNext();
-} 
+        while (p != null) {
+            if (p instanceof DateTokenConverter) {
+                DateTokenConverter dtc = (DateTokenConverter) p;
 
-return null;
-}
+                if (dtc.isPrimary()) {
+                    return dtc;
+                }
+            }
+            p = p.getNext();
+        }
 
-public IntegerTokenConverter getIntegerTokenConverter() {
-Converter<Object> p = this.headTokenConverter;
+        return null;
+    }
 
-while (p != null) {
-if (p instanceof IntegerTokenConverter) {
-return (IntegerTokenConverter)p;
-}
+    public IntegerTokenConverter getIntegerTokenConverter() {
+        Converter<Object> p = this.headTokenConverter;
 
-p = p.getNext();
-} 
-return null;
-}
+        while (p != null) {
+            if (p instanceof IntegerTokenConverter) {
+                return (IntegerTokenConverter) p;
+            }
 
-public String convertMultipleArguments(Object... objectList) {
-StringBuilder buf = new StringBuilder();
-Converter<Object> c = this.headTokenConverter;
-while (c != null) {
-if (c instanceof MonoTypedConverter) {
-MonoTypedConverter monoTyped = (MonoTypedConverter)c;
-for (Object o : objectList) {
-if (monoTyped.isApplicable(o)) {
-buf.append(c.convert(o));
-}
-} 
-} else {
-buf.append(c.convert(objectList));
-} 
-c = c.getNext();
-} 
-return buf.toString();
-}
+            p = p.getNext();
+        }
+        return null;
+    }
 
-public String convert(Object o) {
-StringBuilder buf = new StringBuilder();
-Converter<Object> p = this.headTokenConverter;
-while (p != null) {
-buf.append(p.convert(o));
-p = p.getNext();
-} 
-return buf.toString();
-}
+    public String convertMultipleArguments(Object... objectList) {
+        StringBuilder buf = new StringBuilder();
+        Converter<Object> c = this.headTokenConverter;
+        while (c != null) {
+            if (c instanceof MonoTypedConverter) {
+                MonoTypedConverter monoTyped = (MonoTypedConverter) c;
+                for (Object o : objectList) {
+                    if (monoTyped.isApplicable(o)) {
+                        buf.append(c.convert(o));
+                    }
+                }
+            } else {
+                buf.append(c.convert(objectList));
+            }
+            c = c.getNext();
+        }
+        return buf.toString();
+    }
 
-public String convertInt(int i) {
-return convert(Integer.valueOf(i));
-}
+    public String convert(Object o) {
+        StringBuilder buf = new StringBuilder();
+        Converter<Object> p = this.headTokenConverter;
+        while (p != null) {
+            buf.append(p.convert(o));
+            p = p.getNext();
+        }
+        return buf.toString();
+    }
 
-public void setPattern(String pattern) {
-if (pattern != null)
-{
-this.pattern = pattern.trim();
-}
-}
+    public String convertInt(int i) {
+        return convert(Integer.valueOf(i));
+    }
 
-public String getPattern() {
-return this.pattern;
-}
+    public String getPattern() {
+        return this.pattern;
+    }
 
-public String toRegexForFixedDate(Date date) {
-StringBuilder buf = new StringBuilder();
-Converter<Object> p = this.headTokenConverter;
-while (p != null) {
-if (p instanceof ch.qos.logback.core.pattern.LiteralConverter) {
-buf.append(p.convert(null));
-} else if (p instanceof IntegerTokenConverter) {
-buf.append("(\\d{1,3})");
-} else if (p instanceof DateTokenConverter) {
-buf.append(p.convert(date));
-} 
-p = p.getNext();
-} 
-return buf.toString();
-}
+    public void setPattern(String pattern) {
+        if (pattern != null) {
+            this.pattern = pattern.trim();
+        }
+    }
 
-public String toRegex() {
-StringBuilder buf = new StringBuilder();
-Converter<Object> p = this.headTokenConverter;
-while (p != null) {
-if (p instanceof ch.qos.logback.core.pattern.LiteralConverter) {
-buf.append(p.convert(null));
-} else if (p instanceof IntegerTokenConverter) {
-buf.append("\\d{1,2}");
-} else if (p instanceof DateTokenConverter) {
-DateTokenConverter<Object> dtc = (DateTokenConverter<Object>)p;
-buf.append(dtc.toRegex());
-} 
-p = p.getNext();
-} 
-return buf.toString();
-}
+    public String toRegexForFixedDate(Date date) {
+        StringBuilder buf = new StringBuilder();
+        Converter<Object> p = this.headTokenConverter;
+        while (p != null) {
+            if (p instanceof ch.qos.logback.core.pattern.LiteralConverter) {
+                buf.append(p.convert(null));
+            } else if (p instanceof IntegerTokenConverter) {
+                buf.append("(\\d{1,3})");
+            } else if (p instanceof DateTokenConverter) {
+                buf.append(p.convert(date));
+            }
+            p = p.getNext();
+        }
+        return buf.toString();
+    }
+
+    public String toRegex() {
+        StringBuilder buf = new StringBuilder();
+        Converter<Object> p = this.headTokenConverter;
+        while (p != null) {
+            if (p instanceof ch.qos.logback.core.pattern.LiteralConverter) {
+                buf.append(p.convert(null));
+            } else if (p instanceof IntegerTokenConverter) {
+                buf.append("\\d{1,2}");
+            } else if (p instanceof DateTokenConverter) {
+                DateTokenConverter<Object> dtc = (DateTokenConverter<Object>) p;
+                buf.append(dtc.toRegex());
+            }
+            p = p.getNext();
+        }
+        return buf.toString();
+    }
 }
 

@@ -3,25 +3,24 @@ package com.mysql.jdbc;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public interface Statement extends Statement {
-  void enableStreamingResults() throws SQLException;
+    void enableStreamingResults() throws SQLException;
 
-  void disableStreamingResults() throws SQLException;
+    void disableStreamingResults() throws SQLException;
 
-  void setLocalInfileInputStream(InputStream paramInputStream);
+    InputStream getLocalInfileInputStream();
 
-  InputStream getLocalInfileInputStream();
+    void setLocalInfileInputStream(InputStream paramInputStream);
 
-  void setPingTarget(PingTarget paramPingTarget);
+    void setPingTarget(PingTarget paramPingTarget);
 
-  ExceptionInterceptor getExceptionInterceptor();
+    ExceptionInterceptor getExceptionInterceptor();
 
-  void removeOpenResultSet(ResultSet paramResultSet);
+    void removeOpenResultSet(ResultSet paramResultSet);
 
-  int getOpenResultSetCount();
+    int getOpenResultSetCount();
 
-  void setHoldResultsOpenOverClose(boolean paramBoolean);
+    void setHoldResultsOpenOverClose(boolean paramBoolean);
 }
 

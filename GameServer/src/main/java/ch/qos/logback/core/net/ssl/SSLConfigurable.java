@@ -1,20 +1,20 @@
 package ch.qos.logback.core.net.ssl;
 
 public interface SSLConfigurable {
-  String[] getDefaultProtocols();
+    String[] getDefaultProtocols();
 
-  String[] getSupportedProtocols();
+    String[] getSupportedProtocols();
 
-  void setEnabledProtocols(String[] paramArrayOfString);
+    void setEnabledProtocols(String[] paramArrayOfString);
 
-  String[] getDefaultCipherSuites();
+    String[] getDefaultCipherSuites();
 
-  String[] getSupportedCipherSuites();
+    String[] getSupportedCipherSuites();
 
-  void setEnabledCipherSuites(String[] paramArrayOfString);
+    void setEnabledCipherSuites(String[] paramArrayOfString);
 
-  void setNeedClientAuth(boolean paramBoolean);
+    void setNeedClientAuth(boolean paramBoolean);
 
-  void setWantClientAuth(boolean paramBoolean);
+    void setWantClientAuth(boolean paramBoolean);
 }
 

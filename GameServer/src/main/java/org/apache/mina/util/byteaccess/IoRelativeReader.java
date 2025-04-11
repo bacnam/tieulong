@@ -1,33 +1,34 @@
 package org.apache.mina.util.byteaccess;
 
-import java.nio.ByteOrder;
 import org.apache.mina.core.buffer.IoBuffer;
 
+import java.nio.ByteOrder;
+
 public interface IoRelativeReader {
-  int getRemaining();
+    int getRemaining();
 
-  boolean hasRemaining();
+    boolean hasRemaining();
 
-  void skip(int paramInt);
+    void skip(int paramInt);
 
-  ByteArray slice(int paramInt);
+    ByteArray slice(int paramInt);
 
-  ByteOrder order();
+    ByteOrder order();
 
-  byte get();
+    byte get();
 
-  void get(IoBuffer paramIoBuffer);
+    void get(IoBuffer paramIoBuffer);
 
-  short getShort();
+    short getShort();
 
-  int getInt();
+    int getInt();
 
-  long getLong();
+    long getLong();
 
-  float getFloat();
+    float getFloat();
 
-  double getDouble();
+    double getDouble();
 
-  char getChar();
+    char getChar();
 }
 

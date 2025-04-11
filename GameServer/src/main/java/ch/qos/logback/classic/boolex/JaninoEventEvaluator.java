@@ -8,13 +8,12 @@ import ch.qos.logback.classic.spi.ThrowableProxy;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.boolex.JaninoEventEvaluatorBase;
 import ch.qos.logback.core.boolex.Matcher;
+import org.slf4j.Marker;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Marker;
 
 public class JaninoEventEvaluator
         extends JaninoEventEvaluatorBase<ILoggingEvent> {

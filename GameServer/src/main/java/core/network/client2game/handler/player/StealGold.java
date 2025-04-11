@@ -15,73 +15,75 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefCrystalPrice;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class StealGold
-extends PlayerHandler
-{
-private static class Request {
-long targetPid;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        StealGoldFeature feature = (StealGoldFeature) player.getFeature(StealGoldFeature.class);
+        if (!feature.getList().contains(Long.valueOf(req.targetPid))) {
+            throw new WSException(ErrorCode.StealGold_NotFound, "人物不存在");
+        }
+        PlayerCurrency currency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
 
-private static class StealGoldInfo {
-int nowTimes;
-Reward reward;
-List<Long> money;
+        int times = feature.getTimes();
+        if (!feature.checkTimes()) {
+            throw new WSException(ErrorCode.StealGold_NotEnough, "探金手次数不足");
+        }
 
-private StealGoldInfo(int nowTimes, Reward reward, List<Long> money) {
-this.nowTimes = nowTimes;
-this.reward = reward;
-this.money = money;
-}
-}
+        RefCrystalPrice prize = RefCrystalPrice.getPrize(times);
+        if (!currency.check(PrizeType.Crystal, prize.StealGoldPrice)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "玩家第%s次探金手需要钻石%s", new Object[]{Integer.valueOf(times), Integer.valueOf(prize.StealGoldPrice)});
+        }
+        currency.consume(PrizeType.Crystal, prize.StealGoldPrice, ItemFlow.StealGold);
+        long get = 0L;
+        int index = feature.getList().indexOf(Long.valueOf(req.targetPid));
+        long money = prize.StealGoldGain * (1000 + ((Integer) feature.getMoneyList().get(index)).intValue()) / 1000L;
+        if (Random.nextInt(10000) < RefDataMgr.getFactor("StealGoldCrit", 5000)) {
+            get = money * 2L;
+        } else {
+            get = money;
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-StealGoldFeature feature = (StealGoldFeature)player.getFeature(StealGoldFeature.class);
-if (!feature.getList().contains(Long.valueOf(req.targetPid))) {
-throw new WSException(ErrorCode.StealGold_NotFound, "人物不存在");
-}
-PlayerCurrency currency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
+        int gain = currency.gain(PrizeType.Gold, (int) get, ItemFlow.StealGold);
 
-int times = feature.getTimes();
-if (!feature.checkTimes()) {
-throw new WSException(ErrorCode.StealGold_NotEnough, "探金手次数不足");
-}
+        feature.addTimes();
 
-RefCrystalPrice prize = RefCrystalPrice.getPrize(times);
-if (!currency.check(PrizeType.Crystal, prize.StealGoldPrice)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "玩家第%s次探金手需要钻石%s", new Object[] { Integer.valueOf(times), Integer.valueOf(prize.StealGoldPrice) });
-}
-currency.consume(PrizeType.Crystal, prize.StealGoldPrice, ItemFlow.StealGold);
-long get = 0L;
-int index = feature.getList().indexOf(Long.valueOf(req.targetPid));
-long money = prize.StealGoldGain * (1000 + ((Integer)feature.getMoneyList().get(index)).intValue()) / 1000L;
-if (Random.nextInt(10000) < RefDataMgr.getFactor("StealGoldCrit", 5000)) {
-get = money * 2L;
-} else {
-get = money;
-} 
+        Player target = PlayerMgr.getInstance().getPlayer(req.targetPid);
+        ((StealGoldFeature) target.getFeature(StealGoldFeature.class)).addNews(player.getPid(), gain);
+        Reward reward = new Reward();
+        reward.add(PrizeType.Gold, gain);
 
-int gain = currency.gain(PrizeType.Gold, (int)get, ItemFlow.StealGold);
+        int nowTime = feature.getTimes();
+        List<Long> moneylist = new ArrayList<>();
+        for (Iterator<Integer> iterator = feature.getMoneyList().iterator(); iterator.hasNext(); ) {
+            int ext = ((Integer) iterator.next()).intValue();
+            RefCrystalPrice tmp_prize = RefCrystalPrice.getPrize(nowTime);
+            moneylist.add(Long.valueOf(tmp_prize.StealGoldGain * (1000 + ext) / 1000L));
+        }
 
-feature.addTimes();
+        request.response(new StealGoldInfo(feature.getTimes(), reward, moneylist, null));
+    }
 
-Player target = PlayerMgr.getInstance().getPlayer(req.targetPid);
-((StealGoldFeature)target.getFeature(StealGoldFeature.class)).addNews(player.getPid(), gain);
-Reward reward = new Reward();
-reward.add(PrizeType.Gold, gain);
+    private static class Request {
+        long targetPid;
+    }
 
-int nowTime = feature.getTimes();
-List<Long> moneylist = new ArrayList<>();
-for (Iterator<Integer> iterator = feature.getMoneyList().iterator(); iterator.hasNext(); ) { int ext = ((Integer)iterator.next()).intValue();
-RefCrystalPrice tmp_prize = RefCrystalPrice.getPrize(nowTime);
-moneylist.add(Long.valueOf(tmp_prize.StealGoldGain * (1000 + ext) / 1000L)); }
+    private static class StealGoldInfo {
+        int nowTimes;
+        Reward reward;
+        List<Long> money;
 
-request.response(new StealGoldInfo(feature.getTimes(), reward, moneylist, null));
-}
+        private StealGoldInfo(int nowTimes, Reward reward, List<Long> money) {
+            this.nowTimes = nowTimes;
+            this.reward = reward;
+            this.money = money;
+        }
+    }
 }
 

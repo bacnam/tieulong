@@ -15,64 +15,64 @@ import core.config.refdata.ref.RefSkill;
 import core.config.refdata.ref.RefWarSpirit;
 import core.config.refdata.ref.RefWarSpiritStar;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.Map;
 
 public class WarSpiritSkill
-extends PlayerHandler
-{
-public static class Request {
-int spiritId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        WarSpirit warSpirit = ((WarSpiritFeature) player.getFeature(WarSpiritFeature.class)).getWarSpirit(req.spiritId);
+        if (warSpirit == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "战灵[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.spiritId)});
+        }
+        int skillLevel = warSpirit.getBo().getSkill();
 
-public static class SkillNotify {
-int spiritId;
-long skillLevel;
+        if (skillLevel + 1 >= RefDataMgr.getFactor("MaxSkillLevel", 100)) {
+            throw new WSException(ErrorCode.Skill_LevelFull, "技能等级[%s]已满", new Object[]{Integer.valueOf(skillLevel)});
+        }
+        int star = warSpirit.getBo().getStar();
+        RefWarSpiritStar refstar = (RefWarSpiritStar) ((Map) RefWarSpiritStar.spiritMap.get(Integer.valueOf(req.spiritId))).get(Integer.valueOf(star));
 
-public SkillNotify(int spiritId, long skillLevel) {
-this.spiritId = spiritId;
-this.skillLevel = skillLevel;
-}
-}
+        if (skillLevel + 1 >= refstar.SkillLevel) {
+            throw new WSException(ErrorCode.Skill_LevelFull, "当前星级下技能等级[%s]已满", new Object[]{Integer.valueOf(skillLevel)});
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-WarSpirit warSpirit = ((WarSpiritFeature)player.getFeature(WarSpiritFeature.class)).getWarSpirit(req.spiritId);
-if (warSpirit == null) {
-throw new WSException(ErrorCode.Char_NotFound, "战灵[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.spiritId) });
-}
-int skillLevel = warSpirit.getBo().getSkill();
+        RefWarSpirit refspirit = (RefWarSpirit) RefDataMgr.get(RefWarSpirit.class, Integer.valueOf(req.spiritId));
+        RefSkill refSkill = (RefSkill) RefDataMgr.get(RefSkill.class, refspirit.SkillList.get(0));
+        if (refSkill == null) {
+            throw new WSException(ErrorCode.Skill_NotFound, "技能没找到");
+        }
 
-if (skillLevel + 1 >= RefDataMgr.getFactor("MaxSkillLevel", 100)) {
-throw new WSException(ErrorCode.Skill_LevelFull, "技能等级[%s]已满", new Object[] { Integer.valueOf(skillLevel) });
-}
-int star = warSpirit.getBo().getStar();
-RefWarSpiritStar refstar = (RefWarSpiritStar)((Map)RefWarSpiritStar.spiritMap.get(Integer.valueOf(req.spiritId))).get(Integer.valueOf(star));
+        PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        int goldRequired = refSkill.GoldAdd * (skillLevel + 1 - 1) + refSkill.Gold;
+        if (!playerCurrency.check(PrizeType.Gold, goldRequired)) {
+            throw new WSException(ErrorCode.NotEnough_Money, "玩家金币:%s<升级金币:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getGold()), Integer.valueOf(goldRequired)});
+        }
 
-if (skillLevel + 1 >= refstar.SkillLevel) {
-throw new WSException(ErrorCode.Skill_LevelFull, "当前星级下技能等级[%s]已满", new Object[] { Integer.valueOf(skillLevel) });
-}
+        playerCurrency.consume(PrizeType.Gold, goldRequired, ItemFlow.SkillLevelUp);
 
-RefWarSpirit refspirit = (RefWarSpirit)RefDataMgr.get(RefWarSpirit.class, Integer.valueOf(req.spiritId));
-RefSkill refSkill = (RefSkill)RefDataMgr.get(RefSkill.class, refspirit.SkillList.get(0));
-if (refSkill == null) {
-throw new WSException(ErrorCode.Skill_NotFound, "技能没找到");
-}
+        warSpirit.getBo().saveSkill(skillLevel + 1);
 
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-int goldRequired = refSkill.GoldAdd * (skillLevel + 1 - 1) + refSkill.Gold;
-if (!playerCurrency.check(PrizeType.Gold, goldRequired)) {
-throw new WSException(ErrorCode.NotEnough_Money, "玩家金币:%s<升级金币:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getGold()), Integer.valueOf(goldRequired) });
-}
+        warSpirit.onAttrChanged();
 
-playerCurrency.consume(PrizeType.Gold, goldRequired, ItemFlow.SkillLevelUp);
+        SkillNotify notify = new SkillNotify(warSpirit.getSpiritId(), warSpirit.getBo().getSkill());
+        request.response(notify);
+    }
 
-warSpirit.getBo().saveSkill(skillLevel + 1);
+    public static class Request {
+        int spiritId;
+    }
 
-warSpirit.onAttrChanged();
+    public static class SkillNotify {
+        int spiritId;
+        long skillLevel;
 
-SkillNotify notify = new SkillNotify(warSpirit.getSpiritId(), warSpirit.getBo().getSkill());
-request.response(notify);
-}
+        public SkillNotify(int spiritId, long skillLevel) {
+            this.spiritId = spiritId;
+            this.skillLevel = skillLevel;
+        }
+    }
 }
 

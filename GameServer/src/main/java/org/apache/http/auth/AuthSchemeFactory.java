@@ -4,6 +4,6 @@ import org.apache.http.params.HttpParams;
 
 @Deprecated
 public interface AuthSchemeFactory {
-  AuthScheme newInstance(HttpParams paramHttpParams);
+    AuthScheme newInstance(HttpParams paramHttpParams);
 }
 

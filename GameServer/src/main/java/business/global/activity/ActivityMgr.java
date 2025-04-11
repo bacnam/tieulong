@@ -22,42 +22,13 @@ import core.network.game2world.WorldConnector;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ActivityMgr {
+    public static Comparator<Activity> Sorter;
     private static ActivityMgr instance = new ActivityMgr();
-
-    public static ActivityMgr getInstance() {
-        return instance;
-    }
-
-    public Map<ActivityType, List<Activity>> activities = new HashMap<>();
-
     private static Map<String, ActivityType> calss2Type = new HashMap<>();
     private static Map<ActivityType, String> type2Class = new HashMap<>();
-    public static Comparator<Activity> Sorter;
-    public long pid;
-    public int icon;
-    public String name;
-    public int lv;
-    public int vipLv;
-    public long guildID;
-    public String guildName;
-    public int serverId;
-    public int maxPower;
-
-    public String getActivityName(ActivityType type) {
-        return type2Class.get(type);
-    }
-
-    public Collection<ActivityType> getAllSurportActivity() {
-        return calss2Type.values();
-    }
 
     static {
         List<Class<?>> bases = CommClass.getAllClassByInterface(Activity.class, "business.global.activity.detail");
@@ -86,6 +57,74 @@ public class ActivityMgr {
 
             return (leftend != 0 && leftend > nowsec && rightend != 0 && rightend > nowsec) ? (leftend - rightend) : ((left.bo.getCloseTime() < nowsec && right.bo.getCloseTime() < nowsec) ? (left.bo.getCloseTime() - right.bo.getCloseTime()) : (right.bo.getCloseTime() - left.bo.getCloseTime()));
         });
+    }
+
+    public Map<ActivityType, List<Activity>> activities = new HashMap<>();
+    public long pid;
+    public int icon;
+    public String name;
+    public int lv;
+    public int vipLv;
+    public long guildID;
+    public String guildName;
+    public int serverId;
+    public int maxPower;
+
+    public static ActivityMgr getInstance() {
+        return instance;
+    }
+
+    public static <ACT extends Activity> ACT getActivity(Class<ACT> clazz) {
+        ActivityType type = calss2Type.get(clazz.getName());
+        List<Activity> actList = (getInstance()).activities.get(type);
+        return (ACT) actList.get(0);
+    }
+
+    public static <ACT extends Activity> ACT getLastActivity(Class<ACT> clazz) {
+        ActivityType type = calss2Type.get(clazz.getName());
+
+        List<Activity> actList = (getInstance()).activities.get(type);
+
+        if (actList.size() > 1) {
+
+            return (ACT) actList.get(1);
+        }
+
+        return (ACT) actList.get(0);
+    }
+
+    public static Activity getActivityByType(ActivityType type) {
+        List<Activity> actList = (getInstance()).activities.get(type);
+        return actList.get(0);
+    }
+
+    public static void updateWorldRank(Player player, long value, RankType rankType) {
+        if (!WorldConnector.getInstance().isConnected()) {
+            return;
+        }
+        Player.PlayerInfo info = new Player.PlayerInfo();
+        info.pid = player.getPid();
+        info.serverId = Config.ServerID();
+        WorldRankRequest request = new WorldRankRequest(null);
+        request.player = info;
+        request.value = value;
+        request.rankType = rankType;
+
+        WorldConnector.request("activity.RankActivityUpdate", request, new ResponseHandler() {
+            public void handleResponse(WebSocketResponse ssresponse, String body) throws WSException, IOException {
+            }
+
+            public void handleError(WebSocketResponse ssresponse, short statusCode, String message) {
+            }
+        });
+    }
+
+    public String getActivityName(ActivityType type) {
+        return type2Class.get(type);
+    }
+
+    public Collection<ActivityType> getAllSurportActivity() {
+        return calss2Type.values();
     }
 
     private Activity instanceACT(ActivityBO bo) {
@@ -160,12 +199,6 @@ public class ActivityMgr {
         return activityBases;
     }
 
-    public static <ACT extends Activity> ACT getActivity(Class<ACT> clazz) {
-        ActivityType type = calss2Type.get(clazz.getName());
-        List<Activity> actList = (getInstance()).activities.get(type);
-        return (ACT) actList.get(0);
-    }
-
     public void init() {
         for (ActivityType type : getAllSurportActivity())
             this.activities.put(type, new ArrayList<>());
@@ -223,7 +256,8 @@ public class ActivityMgr {
             }
             find.playerActRecords.put(Long.valueOf(bo.getPid()), bo);
         }
-        this.activities.forEach((key, list) -> activities.forEach()); final int MS_PER_MIN = 30000;
+        this.activities.forEach((key, list) -> activities.forEach());
+        final int MS_PER_MIN = 30000;
         Long nextMin = Long.valueOf(MS_PER_MIN - CommTime.nowMS() % MS_PER_MIN);
         SyncTaskManager.task(new SyncTask() {
             public void run() {
@@ -231,24 +265,6 @@ public class ActivityMgr {
                 SyncTaskManager.task(this, MS_PER_MIN);
             }
         }, nextMin.longValue());
-    }
-
-    public static <ACT extends Activity> ACT getLastActivity(Class<ACT> clazz) {
-        ActivityType type = calss2Type.get(clazz.getName());
-
-        List<Activity> actList = (getInstance()).activities.get(type);
-
-        if (actList.size() > 1) {
-
-            return (ACT) actList.get(1);
-        }
-
-        return (ACT) actList.get(0);
-    }
-
-    public static Activity getActivityByType(ActivityType type) {
-        List<Activity> actList = (getInstance()).activities.get(type);
-        return actList.get(0);
     }
 
     public Activity getActivity(ActivityType type) {
@@ -265,26 +281,5 @@ public class ActivityMgr {
 
         private WorldRankRequest() {
         }
-    }
-
-    public static void updateWorldRank(Player player, long value, RankType rankType) {
-        if (!WorldConnector.getInstance().isConnected()) {
-            return;
-        }
-        Player.PlayerInfo info = new Player.PlayerInfo();
-        info.pid = player.getPid();
-        info.serverId = Config.ServerID();
-        WorldRankRequest request = new WorldRankRequest(null);
-        request.player = info;
-        request.value = value;
-        request.rankType = rankType;
-
-        WorldConnector.request("activity.RankActivityUpdate", request, new ResponseHandler() {
-            public void handleResponse(WebSocketResponse ssresponse, String body) throws WSException, IOException {
-            }
-
-            public void handleError(WebSocketResponse ssresponse, short statusCode, String message) {
-            }
-        });
     }
 }

@@ -14,78 +14,76 @@ import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.database.game.bo.PlayerBO;
 import core.network.client2game.handler.PlayerHandler;
-import core.network.proto.Player;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuildBossRank
-extends PlayerHandler
-{
-private static class Response
-{
-int rank;
-long damage;
-int attacktimes;
-List<GuildBossRank.RankInfo> rankList;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guild = guildMember.getGuild();
+        if (guild == null) {
+            throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[]{Long.valueOf(player.getPid())});
+        }
+        List<GuildRecord> records = guild.getRankList(GuildRankType.GuildBoss, 30);
+        int rank = guild.getRank(GuildRankType.GuildBoss, player.getPid());
+        long damage = guild.getValue(GuildRankType.GuildBoss, player.getPid());
+        int times = guildMember.getOrCreateChalleng().getAttackTimes();
+        request.response(new Response(rank, damage, times, records));
+    }
 
-public Response(int rank, long damage, int attacktimes, List<GuildRecord> records) {
-this.rank = rank;
-this.damage = damage;
-this.attacktimes = attacktimes;
-this.rankList = new ArrayList<>();
-for (int i = 0; i < records.size(); i++) {
-GuildRecord r = records.get(i);
-if (r != null)
-{
+    private static class Response {
+        int rank;
+        long damage;
+        int attacktimes;
+        List<GuildBossRank.RankInfo> rankList;
 
-this.rankList.add(new GuildBossRank.RankInfo(r)); } 
-} 
-}
-}
+        public Response(int rank, long damage, int attacktimes, List<GuildRecord> records) {
+            this.rank = rank;
+            this.damage = damage;
+            this.attacktimes = attacktimes;
+            this.rankList = new ArrayList<>();
+            for (int i = 0; i < records.size(); i++) {
+                GuildRecord r = records.get(i);
+                if (r != null) {
 
-public static class RankInfo extends Player.Summary {
-static PlayerMgr playerMgr;
-int rank;
-long value;
-int attacktimes;
+                    this.rankList.add(new GuildBossRank.RankInfo(r));
+                }
+            }
+        }
+    }
 
-public RankInfo(GuildRecord record) {
-if (playerMgr == null) {
-playerMgr = PlayerMgr.getInstance();
-}
+    public static class RankInfo extends Player.Summary {
+        static PlayerMgr playerMgr;
+        int rank;
+        long value;
+        int attacktimes;
 
-Player player = playerMgr.getPlayer(record.getPid());
-PlayerBO bo = player.getPlayerBO();
-this.pid = bo.getId();
-this.name = bo.getName();
-this.lv = bo.getLv();
-this.icon = bo.getIcon();
-this.vipLv = bo.getVipLevel();
-this.power = ((CharFeature)player.getFeature(CharFeature.class)).getPower();
-this.rank = record.getRank();
-this.value = record.getValue();
-this.attacktimes = ((GuildMemberFeature)player.getFeature(GuildMemberFeature.class)).getOrCreateChalleng().getAttackTimes();
+        public RankInfo(GuildRecord record) {
+            if (playerMgr == null) {
+                playerMgr = PlayerMgr.getInstance();
+            }
 
-RechargeFeature rechargeFeature = (RechargeFeature)player.getFeature(RechargeFeature.class);
-int monthNum = rechargeFeature.getRebateRemains(Achievement.AchievementType.MonthCardCrystal);
-this.MonthCard = (monthNum > 0);
-int yearNum = rechargeFeature.getRebateRemains(Achievement.AchievementType.YearCardCrystal);
-this.YearCard = (yearNum == -1);
-}
-}
+            Player player = playerMgr.getPlayer(record.getPid());
+            PlayerBO bo = player.getPlayerBO();
+            this.pid = bo.getId();
+            this.name = bo.getName();
+            this.lv = bo.getLv();
+            this.icon = bo.getIcon();
+            this.vipLv = bo.getVipLevel();
+            this.power = ((CharFeature) player.getFeature(CharFeature.class)).getPower();
+            this.rank = record.getRank();
+            this.value = record.getValue();
+            this.attacktimes = ((GuildMemberFeature) player.getFeature(GuildMemberFeature.class)).getOrCreateChalleng().getAttackTimes();
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guild = guildMember.getGuild();
-if (guild == null) {
-throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[] { Long.valueOf(player.getPid()) });
-}
-List<GuildRecord> records = guild.getRankList(GuildRankType.GuildBoss, 30);
-int rank = guild.getRank(GuildRankType.GuildBoss, player.getPid());
-long damage = guild.getValue(GuildRankType.GuildBoss, player.getPid());
-int times = guildMember.getOrCreateChalleng().getAttackTimes();
-request.response(new Response(rank, damage, times, records));
-}
+            RechargeFeature rechargeFeature = (RechargeFeature) player.getFeature(RechargeFeature.class);
+            int monthNum = rechargeFeature.getRebateRemains(Achievement.AchievementType.MonthCardCrystal);
+            this.MonthCard = (monthNum > 0);
+            int yearNum = rechargeFeature.getRebateRemains(Achievement.AchievementType.YearCardCrystal);
+            this.YearCard = (yearNum == -1);
+        }
+    }
 }
 

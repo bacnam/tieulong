@@ -1,43 +1,42 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
-import javax.annotation.Nullable;
 
 @GwtCompatible
 abstract class AbstractSortedSetMultimap<K, V>
-extends AbstractSetMultimap<K, V>
-implements SortedSetMultimap<K, V>
-{
-private static final long serialVersionUID = 430848587173315748L;
+        extends AbstractSetMultimap<K, V>
+        implements SortedSetMultimap<K, V> {
+    private static final long serialVersionUID = 430848587173315748L;
 
-protected AbstractSortedSetMultimap(Map<K, Collection<V>> map) {
-super(map);
-}
+    protected AbstractSortedSetMultimap(Map<K, Collection<V>> map) {
+        super(map);
+    }
 
-public SortedSet<V> get(@Nullable K key) {
-return (SortedSet<V>)super.get(key);
-}
+    public SortedSet<V> get(@Nullable K key) {
+        return (SortedSet<V>) super.get(key);
+    }
 
-public SortedSet<V> removeAll(@Nullable Object key) {
-return (SortedSet<V>)super.removeAll(key);
-}
+    public SortedSet<V> removeAll(@Nullable Object key) {
+        return (SortedSet<V>) super.removeAll(key);
+    }
 
-public SortedSet<V> replaceValues(K key, Iterable<? extends V> values) {
-return (SortedSet<V>)super.replaceValues(key, values);
-}
+    public SortedSet<V> replaceValues(K key, Iterable<? extends V> values) {
+        return (SortedSet<V>) super.replaceValues(key, values);
+    }
 
-public Map<K, Collection<V>> asMap() {
-return super.asMap();
-}
+    public Map<K, Collection<V>> asMap() {
+        return super.asMap();
+    }
 
-public Collection<V> values() {
-return super.values();
-}
+    public Collection<V> values() {
+        return super.values();
+    }
 
-abstract SortedSet<V> createCollection();
+    abstract SortedSet<V> createCollection();
 }
 

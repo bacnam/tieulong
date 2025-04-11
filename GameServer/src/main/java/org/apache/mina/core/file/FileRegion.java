@@ -3,16 +3,16 @@ package org.apache.mina.core.file;
 import java.nio.channels.FileChannel;
 
 public interface FileRegion {
-  FileChannel getFileChannel();
+    FileChannel getFileChannel();
 
-  long getPosition();
+    long getPosition();
 
-  void update(long paramLong);
+    void update(long paramLong);
 
-  long getRemainingBytes();
+    long getRemainingBytes();
 
-  long getWrittenBytes();
+    long getWrittenBytes();
 
-  String getFilename();
+    String getFilename();
 }
 

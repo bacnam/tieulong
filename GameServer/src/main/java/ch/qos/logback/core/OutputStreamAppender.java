@@ -12,13 +12,30 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class OutputStreamAppender<E>
         extends UnsynchronizedAppenderBase<E> {
-    protected Encoder<E> encoder;
     protected final ReentrantLock lock = new ReentrantLock(true);
-
+    protected Encoder<E> encoder;
     private OutputStream outputStream;
 
     public OutputStream getOutputStream() {
         return this.outputStream;
+    }
+
+    public void setOutputStream(OutputStream outputStream) {
+        this.lock.lock();
+
+        try {
+            closeOutputStream();
+
+            this.outputStream = outputStream;
+            if (this.encoder == null) {
+                addWarn("Encoder has not been set. Cannot invoke its init method.");
+
+                return;
+            }
+            encoderInit();
+        } finally {
+            this.lock.unlock();
+        }
     }
 
     public void start() {
@@ -44,7 +61,7 @@ public class OutputStreamAppender<E>
         addWarn("This appender no longer admits a layout as a sub-component, set an encoder instead.");
         addWarn("To ensure compatibility, wrapping your layout in LayoutWrappingEncoder.");
         addWarn("See also http:");
-        LayoutWrappingEncoder < E > lwe = new LayoutWrappingEncoder();
+        LayoutWrappingEncoder<E> lwe = new LayoutWrappingEncoder();
         lwe.setLayout(layout);
         lwe.setContext(this.context);
         this.encoder = (Encoder<E>) lwe;
@@ -100,24 +117,6 @@ public class OutputStreamAppender<E>
                 this.started = false;
                 addStatus((Status) new ErrorStatus("Failed to write footer for appender named [" + this.name + "].", this, ioe));
             }
-        }
-    }
-
-    public void setOutputStream(OutputStream outputStream) {
-        this.lock.lock();
-
-        try {
-            closeOutputStream();
-
-            this.outputStream = outputStream;
-            if (this.encoder == null) {
-                addWarn("Encoder has not been set. Cannot invoke its init method.");
-
-                return;
-            }
-            encoderInit();
-        } finally {
-            this.lock.unlock();
         }
     }
 

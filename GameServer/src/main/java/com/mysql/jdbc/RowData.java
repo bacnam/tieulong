@@ -3,52 +3,52 @@ package com.mysql.jdbc;
 import java.sql.SQLException;
 
 public interface RowData {
-  public static final int RESULT_SET_SIZE_UNKNOWN = -1;
+    public static final int RESULT_SET_SIZE_UNKNOWN = -1;
 
-  void addRow(ResultSetRow paramResultSetRow) throws SQLException;
+    void addRow(ResultSetRow paramResultSetRow) throws SQLException;
 
-  void afterLast() throws SQLException;
+    void afterLast() throws SQLException;
 
-  void beforeFirst() throws SQLException;
+    void beforeFirst() throws SQLException;
 
-  void beforeLast() throws SQLException;
+    void beforeLast() throws SQLException;
 
-  void close() throws SQLException;
+    void close() throws SQLException;
 
-  ResultSetRow getAt(int paramInt) throws SQLException;
+    ResultSetRow getAt(int paramInt) throws SQLException;
 
-  int getCurrentRowNumber() throws SQLException;
+    int getCurrentRowNumber() throws SQLException;
 
-  ResultSetInternalMethods getOwner();
+    ResultSetInternalMethods getOwner();
 
-  boolean hasNext() throws SQLException;
+    void setOwner(ResultSetImpl paramResultSetImpl);
 
-  boolean isAfterLast() throws SQLException;
+    boolean hasNext() throws SQLException;
 
-  boolean isBeforeFirst() throws SQLException;
+    boolean isAfterLast() throws SQLException;
 
-  boolean isDynamic() throws SQLException;
+    boolean isBeforeFirst() throws SQLException;
 
-  boolean isEmpty() throws SQLException;
+    boolean isDynamic() throws SQLException;
 
-  boolean isFirst() throws SQLException;
+    boolean isEmpty() throws SQLException;
 
-  boolean isLast() throws SQLException;
+    boolean isFirst() throws SQLException;
 
-  void moveRowRelative(int paramInt) throws SQLException;
+    boolean isLast() throws SQLException;
 
-  ResultSetRow next() throws SQLException;
+    void moveRowRelative(int paramInt) throws SQLException;
 
-  void removeRow(int paramInt) throws SQLException;
+    ResultSetRow next() throws SQLException;
 
-  void setCurrentRow(int paramInt) throws SQLException;
+    void removeRow(int paramInt) throws SQLException;
 
-  void setOwner(ResultSetImpl paramResultSetImpl);
+    void setCurrentRow(int paramInt) throws SQLException;
 
-  int size() throws SQLException;
+    int size() throws SQLException;
 
-  boolean wasEmpty();
+    boolean wasEmpty();
 
-  void setMetadata(Field[] paramArrayOfField);
+    void setMetadata(Field[] paramArrayOfField);
 }
 

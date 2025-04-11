@@ -1,81 +1,80 @@
 package javolution.lang;
 
-import java.lang.reflect.Field;
-import java.util.Vector;
 import javolution.context.LogContext;
 
-public class Initializer
-{
-public static final Configurable<Boolean> SHOW_INITIALIZED = new Configurable<Boolean>()
-{
-protected Boolean getDefault() {
-return Boolean.valueOf(false);
-}
-};
+import java.lang.reflect.Field;
+import java.util.Vector;
 
-private final ClassLoader classLoader;
+public class Initializer {
+    public static final Configurable<Boolean> SHOW_INITIALIZED = new Configurable<Boolean>() {
+        protected Boolean getDefault() {
+            return Boolean.valueOf(false);
+        }
+    };
 
-public Initializer(ClassLoader classLoader) {
-this.classLoader = classLoader;
-}
+    private final ClassLoader classLoader;
 
-public Class<?>[] loadedClasses() {
-Class<?> cls = this.classLoader.getClass();
-while (cls != ClassLoader.class) {
-cls = cls.getSuperclass();
-}
-try {
-Field fldClasses = cls.getDeclaredField("classes");
+    public Initializer(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
-fldClasses.setAccessible(true);
-Vector<Class<?>> list = (Vector<Class<?>>)fldClasses.get(this.classLoader);
+    public Class<?>[] loadedClasses() {
+        Class<?> cls = this.classLoader.getClass();
+        while (cls != ClassLoader.class) {
+            cls = cls.getSuperclass();
+        }
+        try {
+            Field fldClasses = cls.getDeclaredField("classes");
 
-Class<?>[] classes = new Class[list.size()];
-for (int i = 0; i < classes.length; i++) {
-classes[i] = list.get(i);
-}
-return classes;
-} catch (Throwable e) {
-return null;
-} 
-}
+            fldClasses.setAccessible(true);
+            Vector<Class<?>> list = (Vector<Class<?>>) fldClasses.get(this.classLoader);
 
-public void loadClass(Class<?> cls) {
-try {
-this.classLoader.loadClass(cls.getName());
-} catch (ClassNotFoundException e) {
-LogContext.debug(new Object[] { "Class " + cls + " not found." });
-} 
-}
+            Class<?>[] classes = new Class[list.size()];
+            for (int i = 0; i < classes.length; i++) {
+                classes[i] = list.get(i);
+            }
+            return classes;
+        } catch (Throwable e) {
+            return null;
+        }
+    }
 
-public boolean initializeLoadedClasses() {
-boolean isInitializationSuccessful = true;
-int nbrClassesInitialized = 0;
-while (true) {
-Class<?>[] classes = loadedClasses();
-if (classes == null) {
-LogContext.debug(new Object[] { "Automatic class initialization not supported." });
+    public void loadClass(Class<?> cls) {
+        try {
+            this.classLoader.loadClass(cls.getName());
+        } catch (ClassNotFoundException e) {
+            LogContext.debug(new Object[]{"Class " + cls + " not found."});
+        }
+    }
 
-return false;
-} 
-if (nbrClassesInitialized >= classes.length)
-break; 
-for (int i = nbrClassesInitialized; i < classes.length; i++) {
-Class<?> cls = classes[i];
-try {
-if (((Boolean)SHOW_INITIALIZED.get()).booleanValue())
-LogContext.debug(new Object[] { "Initialize ", cls.getName() }); 
-Class.forName(cls.getName(), true, this.classLoader);
-} catch (ClassNotFoundException ex) {
-isInitializationSuccessful = false;
-LogContext.error(new Object[] { ex });
-} 
-} 
-nbrClassesInitialized = classes.length;
-} 
-LogContext.debug(new Object[] { "Initialization of ", Integer.valueOf(nbrClassesInitialized), " classes loaded by ", this.classLoader });
+    public boolean initializeLoadedClasses() {
+        boolean isInitializationSuccessful = true;
+        int nbrClassesInitialized = 0;
+        while (true) {
+            Class<?>[] classes = loadedClasses();
+            if (classes == null) {
+                LogContext.debug(new Object[]{"Automatic class initialization not supported."});
 
-return isInitializationSuccessful;
-}
+                return false;
+            }
+            if (nbrClassesInitialized >= classes.length)
+                break;
+            for (int i = nbrClassesInitialized; i < classes.length; i++) {
+                Class<?> cls = classes[i];
+                try {
+                    if (((Boolean) SHOW_INITIALIZED.get()).booleanValue())
+                        LogContext.debug(new Object[]{"Initialize ", cls.getName()});
+                    Class.forName(cls.getName(), true, this.classLoader);
+                } catch (ClassNotFoundException ex) {
+                    isInitializationSuccessful = false;
+                    LogContext.error(new Object[]{ex});
+                }
+            }
+            nbrClassesInitialized = classes.length;
+        }
+        LogContext.debug(new Object[]{"Initialization of ", Integer.valueOf(nbrClassesInitialized), " classes loaded by ", this.classLoader});
+
+        return isInitializationSuccessful;
+    }
 }
 

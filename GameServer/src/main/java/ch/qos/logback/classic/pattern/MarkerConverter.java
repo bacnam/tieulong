@@ -4,16 +4,15 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.slf4j.Marker;
 
 public class MarkerConverter
-extends ClassicConverter
-{
-private static String EMPTY = "";
+        extends ClassicConverter {
+    private static String EMPTY = "";
 
-public String convert(ILoggingEvent le) {
-Marker marker = le.getMarker();
-if (marker == null) {
-return EMPTY;
-}
-return marker.toString();
-}
+    public String convert(ILoggingEvent le) {
+        Marker marker = le.getMarker();
+        if (marker == null) {
+            return EMPTY;
+        }
+        return marker.toString();
+    }
 }
 

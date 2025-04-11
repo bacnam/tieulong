@@ -1,7 +1,9 @@
 package org.apache.http.client.methods;
 
-import java.io.Closeable;
 import org.apache.http.HttpResponse;
 
-public interface CloseableHttpResponse extends HttpResponse, Closeable {}
+import java.io.Closeable;
+
+public interface CloseableHttpResponse extends HttpResponse, Closeable {
+}
 

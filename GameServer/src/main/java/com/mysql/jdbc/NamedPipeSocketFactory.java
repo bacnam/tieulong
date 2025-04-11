@@ -10,121 +10,118 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class NamedPipeSocketFactory
-implements SocketFactory, SocketMetadata
-{
-public static final String NAMED_PIPE_PROP_NAME = "namedPipePath";
-private Socket namedPipeSocket;
+        implements SocketFactory, SocketMetadata {
+    public static final String NAMED_PIPE_PROP_NAME = "namedPipePath";
+    private Socket namedPipeSocket;
 
-class NamedPipeSocket
-extends Socket
-{
-private boolean isClosed = false;
-private RandomAccessFile namedPipeFile;
+    public Socket afterHandshake() throws SocketException, IOException {
+        return this.namedPipeSocket;
+    }
 
-NamedPipeSocket(String filePath) throws IOException {
-if (filePath == null || filePath.length() == 0) {
-throw new IOException(Messages.getString("NamedPipeSocketFactory.4"));
-}
+    public Socket beforeHandshake() throws SocketException, IOException {
+        return this.namedPipeSocket;
+    }
 
-this.namedPipeFile = new RandomAccessFile(filePath, "rw");
-}
+    public Socket connect(String host, int portNumber, Properties props) throws SocketException, IOException {
+        String namedPipePath = props.getProperty("namedPipePath");
 
-public synchronized void close() throws IOException {
-this.namedPipeFile.close();
-this.isClosed = true;
-}
+        if (namedPipePath == null) {
+            namedPipePath = "\\\\.\\pipe\\MySQL";
+        } else if (namedPipePath.length() == 0) {
+            throw new SocketException(Messages.getString("NamedPipeSocketFactory.2") + "namedPipePath" + Messages.getString("NamedPipeSocketFactory.3"));
+        }
 
-public InputStream getInputStream() throws IOException {
-return new NamedPipeSocketFactory.RandomAccessFileInputStream(this.namedPipeFile);
-}
+        this.namedPipeSocket = new NamedPipeSocket(namedPipePath);
 
-public OutputStream getOutputStream() throws IOException {
-return new NamedPipeSocketFactory.RandomAccessFileOutputStream(this.namedPipeFile);
-}
+        return this.namedPipeSocket;
+    }
 
-public boolean isClosed() {
-return this.isClosed;
-}
-}
+    public boolean isLocallyConnected(ConnectionImpl conn) throws SQLException {
+        return true;
+    }
 
-class RandomAccessFileInputStream
-extends InputStream
-{
-RandomAccessFile raFile;
+    class NamedPipeSocket
+            extends Socket {
+        private boolean isClosed = false;
+        private RandomAccessFile namedPipeFile;
 
-RandomAccessFileInputStream(RandomAccessFile file) {
-this.raFile = file;
-}
+        NamedPipeSocket(String filePath) throws IOException {
+            if (filePath == null || filePath.length() == 0) {
+                throw new IOException(Messages.getString("NamedPipeSocketFactory.4"));
+            }
 
-public int available() throws IOException {
-return -1;
-}
+            this.namedPipeFile = new RandomAccessFile(filePath, "rw");
+        }
 
-public void close() throws IOException {
-this.raFile.close();
-}
+        public synchronized void close() throws IOException {
+            this.namedPipeFile.close();
+            this.isClosed = true;
+        }
 
-public int read() throws IOException {
-return this.raFile.read();
-}
+        public InputStream getInputStream() throws IOException {
+            return new NamedPipeSocketFactory.RandomAccessFileInputStream(this.namedPipeFile);
+        }
 
-public int read(byte[] b) throws IOException {
-return this.raFile.read(b);
-}
+        public OutputStream getOutputStream() throws IOException {
+            return new NamedPipeSocketFactory.RandomAccessFileOutputStream(this.namedPipeFile);
+        }
 
-public int read(byte[] b, int off, int len) throws IOException {
-return this.raFile.read(b, off, len);
-}
-}
+        public boolean isClosed() {
+            return this.isClosed;
+        }
+    }
 
-class RandomAccessFileOutputStream
-extends OutputStream
-{
-RandomAccessFile raFile;
+    class RandomAccessFileInputStream
+            extends InputStream {
+        RandomAccessFile raFile;
 
-RandomAccessFileOutputStream(RandomAccessFile file) {
-this.raFile = file;
-}
+        RandomAccessFileInputStream(RandomAccessFile file) {
+            this.raFile = file;
+        }
 
-public void close() throws IOException {
-this.raFile.close();
-}
+        public int available() throws IOException {
+            return -1;
+        }
 
-public void write(byte[] b) throws IOException {
-this.raFile.write(b);
-}
+        public void close() throws IOException {
+            this.raFile.close();
+        }
 
-public void write(byte[] b, int off, int len) throws IOException {
-this.raFile.write(b, off, len);
-}
+        public int read() throws IOException {
+            return this.raFile.read();
+        }
 
-public void write(int b) throws IOException {}
-}
+        public int read(byte[] b) throws IOException {
+            return this.raFile.read(b);
+        }
 
-public Socket afterHandshake() throws SocketException, IOException {
-return this.namedPipeSocket;
-}
+        public int read(byte[] b, int off, int len) throws IOException {
+            return this.raFile.read(b, off, len);
+        }
+    }
 
-public Socket beforeHandshake() throws SocketException, IOException {
-return this.namedPipeSocket;
-}
+    class RandomAccessFileOutputStream
+            extends OutputStream {
+        RandomAccessFile raFile;
 
-public Socket connect(String host, int portNumber, Properties props) throws SocketException, IOException {
-String namedPipePath = props.getProperty("namedPipePath");
+        RandomAccessFileOutputStream(RandomAccessFile file) {
+            this.raFile = file;
+        }
 
-if (namedPipePath == null) {
-namedPipePath = "\\\\.\\pipe\\MySQL";
-} else if (namedPipePath.length() == 0) {
-throw new SocketException(Messages.getString("NamedPipeSocketFactory.2") + "namedPipePath" + Messages.getString("NamedPipeSocketFactory.3"));
-} 
+        public void close() throws IOException {
+            this.raFile.close();
+        }
 
-this.namedPipeSocket = new NamedPipeSocket(namedPipePath);
+        public void write(byte[] b) throws IOException {
+            this.raFile.write(b);
+        }
 
-return this.namedPipeSocket;
-}
+        public void write(byte[] b, int off, int len) throws IOException {
+            this.raFile.write(b, off, len);
+        }
 
-public boolean isLocallyConnected(ConnectionImpl conn) throws SQLException {
-return true;
-}
+        public void write(int b) throws IOException {
+        }
+    }
 }
 

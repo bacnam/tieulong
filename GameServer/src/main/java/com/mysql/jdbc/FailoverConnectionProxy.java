@@ -10,179 +10,182 @@ import java.util.Map;
 import java.util.Properties;
 
 public class FailoverConnectionProxy
-extends LoadBalancingConnectionProxy
-{
-boolean failedOver;
-boolean hasTriedMaster;
-private long masterFailTimeMillis;
-boolean preferSlaveDuringFailover;
-private String primaryHostPortSpec;
-private long queriesBeforeRetryMaster;
-long queriesIssuedFailedOver;
-private int secondsBeforeRetryMaster;
+        extends LoadBalancingConnectionProxy {
+    boolean failedOver;
+    boolean hasTriedMaster;
+    boolean preferSlaveDuringFailover;
+    long queriesIssuedFailedOver;
+    private long masterFailTimeMillis;
+    private String primaryHostPortSpec;
+    private long queriesBeforeRetryMaster;
+    private int secondsBeforeRetryMaster;
 
-class FailoverInvocationHandler
-extends LoadBalancingConnectionProxy.ConnectionErrorFiringInvocationHandler
-{
-public FailoverInvocationHandler(Object toInvokeOn) {
-super(toInvokeOn);
-}
+    FailoverConnectionProxy(List<String> hosts, Properties props) throws SQLException {
+        super(hosts, props);
+        ConnectionPropertiesImpl connectionProps = new ConnectionPropertiesImpl();
+        connectionProps.initializeProperties(props);
 
-public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-String methodName = method.getName();
+        this.queriesBeforeRetryMaster = connectionProps.getQueriesBeforeRetryMaster();
+        this.secondsBeforeRetryMaster = connectionProps.getSecondsBeforeRetryMaster();
+        this.preferSlaveDuringFailover = false;
+    }
 
-if (FailoverConnectionProxy.this.failedOver && methodName.indexOf("execute") != -1) {
-FailoverConnectionProxy.this.queriesIssuedFailedOver++;
-}
+    protected LoadBalancingConnectionProxy.ConnectionErrorFiringInvocationHandler createConnectionProxy(Object toProxy) {
+        return new FailoverInvocationHandler(toProxy);
+    }
 
-return super.invoke(proxy, method, args);
-}
-}
+    synchronized void dealWithInvocationException(InvocationTargetException e) throws SQLException, Throwable, InvocationTargetException {
+        Throwable t = e.getTargetException();
 
-FailoverConnectionProxy(List<String> hosts, Properties props) throws SQLException {
-super(hosts, props);
-ConnectionPropertiesImpl connectionProps = new ConnectionPropertiesImpl();
-connectionProps.initializeProperties(props);
+        if (t != null) {
+            if (this.failedOver) {
+                createPrimaryConnection();
 
-this.queriesBeforeRetryMaster = connectionProps.getQueriesBeforeRetryMaster();
-this.secondsBeforeRetryMaster = connectionProps.getSecondsBeforeRetryMaster();
-this.preferSlaveDuringFailover = false;
-}
+                if (this.currentConn != null) {
+                    throw t;
+                }
+            }
 
-protected LoadBalancingConnectionProxy.ConnectionErrorFiringInvocationHandler createConnectionProxy(Object toProxy) {
-return new FailoverInvocationHandler(toProxy);
-}
+            failOver();
 
-synchronized void dealWithInvocationException(InvocationTargetException e) throws SQLException, Throwable, InvocationTargetException {
-Throwable t = e.getTargetException();
+            throw t;
+        }
 
-if (t != null) {
-if (this.failedOver) {
-createPrimaryConnection();
+        throw e;
+    }
 
-if (this.currentConn != null) {
-throw t;
-}
-} 
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        String methodName = method.getName();
 
-failOver();
+        if ("setPreferSlaveDuringFailover".equals(methodName)) {
+            this.preferSlaveDuringFailover = ((Boolean) args[0]).booleanValue();
+        } else if ("clearHasTriedMaster".equals(methodName)) {
+            this.hasTriedMaster = false;
+        } else {
+            if ("hasTriedMaster".equals(methodName))
+                return Boolean.valueOf(this.hasTriedMaster);
+            if ("isMasterConnection".equals(methodName))
+                return Boolean.valueOf(!this.failedOver);
+            if ("isSlaveConnection".equals(methodName))
+                return Boolean.valueOf(this.failedOver);
+            if ("setReadOnly".equals(methodName)) {
+                if (this.failedOver)
+                    return null;
+            } else {
+                if ("setAutoCommit".equals(methodName) && this.failedOver && shouldFallBack() && Boolean.TRUE.equals(args[0]) && this.failedOver) {
 
-throw t;
-} 
+                    createPrimaryConnection();
 
-throw e;
-}
+                    return invoke(proxy, method, args, this.failedOver);
+                }
+                if ("hashCode".equals(methodName))
+                    return Integer.valueOf(hashCode());
+                if ("equals".equals(methodName)) {
+                    if (args[0] instanceof Proxy) {
+                        return Boolean.valueOf(((Proxy) args[0]).equals(this));
+                    }
+                    return Boolean.valueOf(equals(args[0]));
+                }
+            }
+        }
+        return invoke(proxy, method, args, this.failedOver);
+    }
 
-public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-String methodName = method.getName();
+    private synchronized void createPrimaryConnection() throws SQLException {
+        try {
+            this.currentConn = createConnectionForHost(this.primaryHostPortSpec);
+            this.failedOver = false;
+            this.hasTriedMaster = true;
 
-if ("setPreferSlaveDuringFailover".equals(methodName))
-{ this.preferSlaveDuringFailover = ((Boolean)args[0]).booleanValue(); }
-else if ("clearHasTriedMaster".equals(methodName))
-{ this.hasTriedMaster = false; }
-else { if ("hasTriedMaster".equals(methodName))
-return Boolean.valueOf(this.hasTriedMaster); 
-if ("isMasterConnection".equals(methodName))
-return Boolean.valueOf(!this.failedOver); 
-if ("isSlaveConnection".equals(methodName))
-return Boolean.valueOf(this.failedOver); 
-if ("setReadOnly".equals(methodName)) {
-if (this.failedOver)
-return null; 
-} else {
-if ("setAutoCommit".equals(methodName) && this.failedOver && shouldFallBack() && Boolean.TRUE.equals(args[0]) && this.failedOver) {
+            this.queriesIssuedFailedOver = 0L;
+        } catch (SQLException sqlEx) {
+            this.failedOver = true;
 
-createPrimaryConnection();
+            if (this.currentConn != null) {
+                this.currentConn.getLog().logWarn("Connection to primary host failed", sqlEx);
+            }
+        }
+    }
 
-return invoke(proxy, method, args, this.failedOver);
-}  if ("hashCode".equals(methodName))
-return Integer.valueOf(hashCode()); 
-if ("equals".equals(methodName))
-{ if (args[0] instanceof Proxy) {
-return Boolean.valueOf(((Proxy)args[0]).equals(this));
-}
-return Boolean.valueOf(equals(args[0])); } 
-}  }
-return invoke(proxy, method, args, this.failedOver);
-}
+    synchronized void invalidateCurrentConnection() throws SQLException {
+        if (!this.failedOver) {
+            this.failedOver = true;
+            this.queriesIssuedFailedOver = 0L;
+            this.masterFailTimeMillis = System.currentTimeMillis();
+        }
+        super.invalidateCurrentConnection();
+    }
 
-private synchronized void createPrimaryConnection() throws SQLException {
-try {
-this.currentConn = createConnectionForHost(this.primaryHostPortSpec);
-this.failedOver = false;
-this.hasTriedMaster = true;
+    protected synchronized void pickNewConnection() throws SQLException {
+        if (this.primaryHostPortSpec == null) {
+            this.primaryHostPortSpec = this.hostList.remove(0);
+        }
 
-this.queriesIssuedFailedOver = 0L;
-} catch (SQLException sqlEx) {
-this.failedOver = true;
+        if (this.currentConn == null || (this.failedOver && shouldFallBack())) {
+            createPrimaryConnection();
 
-if (this.currentConn != null) {
-this.currentConn.getLog().logWarn("Connection to primary host failed", sqlEx);
-}
-} 
-}
+            if (this.currentConn != null) {
+                return;
+            }
+        }
 
-synchronized void invalidateCurrentConnection() throws SQLException {
-if (!this.failedOver) {
-this.failedOver = true;
-this.queriesIssuedFailedOver = 0L;
-this.masterFailTimeMillis = System.currentTimeMillis();
-} 
-super.invalidateCurrentConnection();
-}
+        failOver();
+    }
 
-protected synchronized void pickNewConnection() throws SQLException {
-if (this.primaryHostPortSpec == null) {
-this.primaryHostPortSpec = this.hostList.remove(0);
-}
+    private synchronized void failOver() throws SQLException {
+        if (this.failedOver) {
+            Iterator<Map.Entry<String, ConnectionImpl>> iter = this.liveConnections.entrySet().iterator();
 
-if (this.currentConn == null || (this.failedOver && shouldFallBack())) {
-createPrimaryConnection();
+            while (iter.hasNext()) {
+                Map.Entry<String, ConnectionImpl> entry = iter.next();
+                ((ConnectionImpl) entry.getValue()).close();
+            }
 
-if (this.currentConn != null) {
-return;
-}
-} 
+            this.liveConnections.clear();
+        }
 
-failOver();
-}
+        super.pickNewConnection();
 
-private synchronized void failOver() throws SQLException {
-if (this.failedOver) {
-Iterator<Map.Entry<String, ConnectionImpl>> iter = this.liveConnections.entrySet().iterator();
+        if (this.currentConn.getFailOverReadOnly()) {
+            this.currentConn.setReadOnly(true);
+        } else {
+            this.currentConn.setReadOnly(false);
+        }
 
-while (iter.hasNext()) {
-Map.Entry<String, ConnectionImpl> entry = iter.next();
-((ConnectionImpl)entry.getValue()).close();
-} 
+        this.failedOver = true;
+    }
 
-this.liveConnections.clear();
-} 
+    private boolean shouldFallBack() {
+        long secondsSinceFailedOver = (System.currentTimeMillis() - this.masterFailTimeMillis) / 1000L;
 
-super.pickNewConnection();
+        if (secondsSinceFailedOver >= this.secondsBeforeRetryMaster) {
 
-if (this.currentConn.getFailOverReadOnly()) {
-this.currentConn.setReadOnly(true);
-} else {
-this.currentConn.setReadOnly(false);
-} 
+            this.masterFailTimeMillis = System.currentTimeMillis();
 
-this.failedOver = true;
-}
+            return true;
+        }
+        if (this.queriesBeforeRetryMaster != 0L && this.queriesIssuedFailedOver >= this.queriesBeforeRetryMaster) {
+            return true;
+        }
 
-private boolean shouldFallBack() {
-long secondsSinceFailedOver = (System.currentTimeMillis() - this.masterFailTimeMillis) / 1000L;
+        return false;
+    }
 
-if (secondsSinceFailedOver >= this.secondsBeforeRetryMaster) {
+    class FailoverInvocationHandler
+            extends LoadBalancingConnectionProxy.ConnectionErrorFiringInvocationHandler {
+        public FailoverInvocationHandler(Object toInvokeOn) {
+            super(toInvokeOn);
+        }
 
-this.masterFailTimeMillis = System.currentTimeMillis();
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            String methodName = method.getName();
 
-return true;
-}  if (this.queriesBeforeRetryMaster != 0L && this.queriesIssuedFailedOver >= this.queriesBeforeRetryMaster) {
-return true;
-}
+            if (FailoverConnectionProxy.this.failedOver && methodName.indexOf("execute") != -1) {
+                FailoverConnectionProxy.this.queriesIssuedFailedOver++;
+            }
 
-return false;
-}
+            return super.invoke(proxy, method, args);
+        }
+    }
 }
 

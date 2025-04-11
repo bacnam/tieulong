@@ -4,6 +4,6 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
 public interface MessageEncoder<T> {
-  void encode(IoSession paramIoSession, T paramT, ProtocolEncoderOutput paramProtocolEncoderOutput) throws Exception;
+    void encode(IoSession paramIoSession, T paramT, ProtocolEncoderOutput paramProtocolEncoderOutput) throws Exception;
 }
 

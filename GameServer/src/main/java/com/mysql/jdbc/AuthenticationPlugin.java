@@ -4,14 +4,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface AuthenticationPlugin extends Extension {
-  String getProtocolPluginName();
+    String getProtocolPluginName();
 
-  boolean requiresConfidentiality();
+    boolean requiresConfidentiality();
 
-  boolean isReusable();
+    boolean isReusable();
 
-  void setAuthenticationParameters(String paramString1, String paramString2);
+    void setAuthenticationParameters(String paramString1, String paramString2);
 
-  boolean nextAuthenticationStep(Buffer paramBuffer, List<Buffer> paramList) throws SQLException;
+    boolean nextAuthenticationStep(Buffer paramBuffer, List<Buffer> paramList) throws SQLException;
 }
 

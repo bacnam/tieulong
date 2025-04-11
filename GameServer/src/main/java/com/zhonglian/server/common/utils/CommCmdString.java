@@ -3,311 +3,310 @@ package com.zhonglian.server.common.utils;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.NameSpace;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.Reader;
+
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommCmdString
-{
-private final Interpreter it;
-private Thread workThread;
-private String defaultImports = "import com.mg.server.common.conf.*; import com.mg.server.common.utils.*; import com.mg.server.common.mgr.*; import com.mg.server.common.db.*; import com.mg.server.common.db.game.*; import com.mg.server.common.db.game.bo.*; import com.mg.server.common.db.game.create.*; import com.mg.server.common.db.log.*; import com.mg.server.common.db.log.create.*; import com.mg.server.common.data.ref.*; import com.mg.server.utils.*; import com.mg.server.utils.collections.*; import com.mg.server.common.async.*;import com.mg.server.framework.*; import com.mg.server.framework.telnet.*; import com.mg.server.framework.session.*; import com.mg.server.framework.protocol.*;";
+public class CommCmdString {
+    private final Interpreter it;
+    private Thread workThread;
+    private String defaultImports = "import com.mg.server.common.conf.*; import com.mg.server.common.utils.*; import com.mg.server.common.mgr.*; import com.mg.server.common.db.*; import com.mg.server.common.db.game.*; import com.mg.server.common.db.game.bo.*; import com.mg.server.common.db.game.create.*; import com.mg.server.common.db.log.*; import com.mg.server.common.db.log.create.*; import com.mg.server.common.data.ref.*; import com.mg.server.utils.*; import com.mg.server.utils.collections.*; import com.mg.server.common.async.*;import com.mg.server.framework.*; import com.mg.server.framework.telnet.*; import com.mg.server.framework.session.*; import com.mg.server.framework.protocol.*;";
 
-private String scriptPath = "";
+    private String scriptPath = "";
 
-public CommCmdString(boolean interactive) {
-BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-this.it = new Interpreter(br, System.out, System.err, interactive);
-}
+    public CommCmdString(boolean interactive) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        this.it = new Interpreter(br, System.out, System.err, interactive);
+    }
 
-public CommCmdString(Reader in, PrintStream out, PrintStream err, boolean interactive, NameSpace namespace) {
-this.it = new Interpreter(in, out, err, interactive, namespace);
-}
+    public CommCmdString(Reader in, PrintStream out, PrintStream err, boolean interactive, NameSpace namespace) {
+        this.it = new Interpreter(in, out, err, interactive, namespace);
+    }
 
-public void run() {
-try {
-this.it.run();
-} catch (Throwable ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public static void redirectOutputToFile(String filename) {
+        Interpreter.redirectOutputToFile(filename);
+    }
 
-public Object source(String filename, NameSpace nameSpace) {
-try {
-return this.it.source(filename, nameSpace);
-} catch (FileNotFoundException ex) {
-this.it.getErr().println(ex);
-} catch (EvalError|IOException ex) {
-this.it.getErr().println(ex);
-} 
-return null;
-}
+    public void run() {
+        try {
+            this.it.run();
+        } catch (Throwable ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public Object source(String filename) {
-try {
-return this.it.source(filename);
-} catch (FileNotFoundException ex) {
-this.it.getErr().println(ex);
-} catch (EvalError|IOException ex) {
-this.it.getErr().println(ex);
-} 
-return null;
-}
+    public Object source(String filename, NameSpace nameSpace) {
+        try {
+            return this.it.source(filename, nameSpace);
+        } catch (FileNotFoundException ex) {
+            this.it.getErr().println(ex);
+        } catch (EvalError | IOException ex) {
+            this.it.getErr().println(ex);
+        }
+        return null;
+    }
 
-public Object eval(String statements) {
-try {
-String filterdCmd = statements.trim().toLowerCase();
-int foundExit = filterdCmd.indexOf("exit");
-if (foundExit >= 0) {
-Pattern pName = Pattern.compile("exit[\\s]?([\\s]?)[\\s]?");
-Matcher matcherName = pName.matcher(filterdCmd);
-if (matcherName.find()) {
-String res = "exit() not allowed!\n";
-return res;
-} 
-} 
+    public Object source(String filename) {
+        try {
+            return this.it.source(filename);
+        } catch (FileNotFoundException ex) {
+            this.it.getErr().println(ex);
+        } catch (EvalError | IOException ex) {
+            this.it.getErr().println(ex);
+        }
+        return null;
+    }
 
-return this.it.eval(statements);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-return ex;
-} 
-}
+    public Object eval(String statements) {
+        try {
+            String filterdCmd = statements.trim().toLowerCase();
+            int foundExit = filterdCmd.indexOf("exit");
+            if (foundExit >= 0) {
+                Pattern pName = Pattern.compile("exit[\\s]?([\\s]?)[\\s]?");
+                Matcher matcherName = pName.matcher(filterdCmd);
+                if (matcherName.find()) {
+                    String res = "exit() not allowed!\n";
+                    return res;
+                }
+            }
 
-public Object eval(String statements, NameSpace nameSpace) {
-try {
-return this.it.eval(statements, nameSpace);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
+            return this.it.eval(statements);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+            return ex;
+        }
+    }
 
-return null;
-} 
-}
-public Reader getIn() {
-return this.it.getIn();
-}
+    public Object eval(String statements, NameSpace nameSpace) {
+        try {
+            return this.it.eval(statements, nameSpace);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
 
-public PrintStream getOut() {
-return this.it.getOut();
-}
+            return null;
+        }
+    }
 
-public PrintStream getErr() {
-return this.it.getErr();
-}
+    public Reader getIn() {
+        return this.it.getIn();
+    }
 
-public final void println(Object o) {
-this.it.println(o);
-}
+    public PrintStream getOut() {
+        return this.it.getOut();
+    }
 
-public final void print(Object o) {
-this.it.print(o);
-}
+    public void setOut(PrintStream out) {
+        this.it.setOut(out);
+    }
 
-public Object get(String name) {
-try {
-return this.it.get(name);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
+    public PrintStream getErr() {
+        return this.it.getErr();
+    }
 
-return null;
-} 
-}
-public void set(String name, Object value) {
-try {
-this.it.set(name, value);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public void setErr(PrintStream err) {
+        this.it.setErr(err);
+    }
 
-public void set(String name, long value) throws EvalError {
-try {
-this.it.set(name, value);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public final void println(Object o) {
+        this.it.println(o);
+    }
 
-public void set(String name, int value) throws EvalError {
-try {
-this.it.set(name, value);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public final void print(Object o) {
+        this.it.print(o);
+    }
 
-public void set(String name, double value) throws EvalError {
-try {
-this.it.set(name, value);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public Object get(String name) {
+        try {
+            return this.it.get(name);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
 
-public void set(String name, float value) throws EvalError {
-try {
-this.it.set(name, value);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+            return null;
+        }
+    }
 
-public void set(String name, boolean value) throws EvalError {
-try {
-this.it.set(name, value);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public void set(String name, Object value) {
+        try {
+            this.it.set(name, value);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public void unset(String name) throws EvalError {
-try {
-this.it.unset(name);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().println(ex);
-} 
-}
+    public void set(String name, long value) throws EvalError {
+        try {
+            this.it.set(name, value);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public static void redirectOutputToFile(String filename) {
-Interpreter.redirectOutputToFile(filename);
-}
+    public void set(String name, int value) throws EvalError {
+        try {
+            this.it.set(name, value);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public void setStrictJava(boolean b) {
-this.it.setStrictJava(b);
-}
+    public void set(String name, double value) throws EvalError {
+        try {
+            this.it.set(name, value);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public boolean getStrictJava() {
-return this.it.getStrictJava();
-}
+    public void set(String name, float value) throws EvalError {
+        try {
+            this.it.set(name, value);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public String getSourceFileInfo() {
-return this.it.getSourceFileInfo();
-}
+    public void set(String name, boolean value) throws EvalError {
+        try {
+            this.it.set(name, value);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public void setOut(PrintStream out) {
-this.it.setOut(out);
-}
+    public void unset(String name) throws EvalError {
+        try {
+            this.it.unset(name);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().println(ex);
+        }
+    }
 
-public void setErr(PrintStream err) {
-this.it.setErr(err);
-}
+    public boolean getStrictJava() {
+        return this.it.getStrictJava();
+    }
 
-public void setShowResults(boolean showResults) {
-this.it.setShowResults(showResults);
-}
+    public void setStrictJava(boolean b) {
+        this.it.setStrictJava(b);
+    }
 
-public boolean getShowResults() {
-return this.it.getShowResults();
-}
+    public String getSourceFileInfo() {
+        return this.it.getSourceFileInfo();
+    }
 
-public String getDefaultImports() {
-return this.defaultImports;
-}
+    public boolean getShowResults() {
+        return this.it.getShowResults();
+    }
 
-public void setDefaultImports(String defaultImports) {
-this.defaultImports = defaultImports;
-}
+    public void setShowResults(boolean showResults) {
+        this.it.setShowResults(showResults);
+    }
 
-public void setScriptPath(String scripts) {
-this.scriptPath = scripts;
-}
+    public String getDefaultImports() {
+        return this.defaultImports;
+    }
 
-public void reloadCommands() {
-try {
-if (this.defaultImports != null && !this.defaultImports.isEmpty()) {
-this.it.getOut().print("bsh: " + this.defaultImports + "\r\n");
-this.it.eval(this.defaultImports);
-this.it.set("cmdline", this);
-} 
-loadCommands(this.scriptPath);
-} catch (LinkageError|EvalError ex) {
-this.it.getErr().print("bsh: import defaults error:" + ex.toString() + "\r\n");
-} 
-}
+    public void setDefaultImports(String defaultImports) {
+        this.defaultImports = defaultImports;
+    }
 
-public void start() {
-stop();
+    public void setScriptPath(String scripts) {
+        this.scriptPath = scripts;
+    }
 
-reloadCommands();
+    public void reloadCommands() {
+        try {
+            if (this.defaultImports != null && !this.defaultImports.isEmpty()) {
+                this.it.getOut().print("bsh: " + this.defaultImports + "\r\n");
+                this.it.eval(this.defaultImports);
+                this.it.set("cmdline", this);
+            }
+            loadCommands(this.scriptPath);
+        } catch (LinkageError | EvalError ex) {
+            this.it.getErr().print("bsh: import defaults error:" + ex.toString() + "\r\n");
+        }
+    }
 
-this.workThread = new CommCmdStringThread((Runnable)this.it);
-this.workThread.start();
-}
+    public void start() {
+        stop();
 
-public int loadCommands(String path) {
-try {
-File dirs = new File(path);
-if (dirs.exists()) {
-File[] files = dirs.listFiles(new FileFilter()
-{
-public boolean accept(File pathname) {
-return pathname.getName().endsWith(".bsh"); } });
-byte b;
-int i;
-File[] arrayOfFile1;
-for (i = (arrayOfFile1 = files).length, b = 0; b < i; ) { File f = arrayOfFile1[b];
-try {
-this.it.source(f.getPath());
-} catch (LinkageError|EvalError e) {
-this.it.getErr().println(e);
-}  b++; }
+        reloadCommands();
 
-return files.length;
-} 
-} catch (IOException e) {
-this.it.getErr().println(e);
-} 
-return 0;
-}
+        this.workThread = new CommCmdStringThread((Runnable) this.it);
+        this.workThread.start();
+    }
 
-public void stop() {
-if (this.workThread != null) {
-try {
-this.it.getIn().close();
-} catch (IOException ex) {
-this.it.getErr().println(ex);
-} 
-this.workThread = null;
-} 
-}
+    public int loadCommands(String path) {
+        try {
+            File dirs = new File(path);
+            if (dirs.exists()) {
+                File[] files = dirs.listFiles(new FileFilter() {
+                    public boolean accept(File pathname) {
+                        return pathname.getName().endsWith(".bsh");
+                    }
+                });
+                byte b;
+                int i;
+                File[] arrayOfFile1;
+                for (i = (arrayOfFile1 = files).length, b = 0; b < i; ) {
+                    File f = arrayOfFile1[b];
+                    try {
+                        this.it.source(f.getPath());
+                    } catch (LinkageError | EvalError e) {
+                        this.it.getErr().println(e);
+                    }
+                    b++;
+                }
 
-class CommCmdStringThread
-extends Thread {
-private Runnable target = null;
+                return files.length;
+            }
+        } catch (IOException e) {
+            this.it.getErr().println(e);
+        }
+        return 0;
+    }
 
-public CommCmdStringThread(Runnable target) {
-super(target, "CommCmdString:bsh");
-this.target = target;
-}
+    public void stop() {
+        if (this.workThread != null) {
+            try {
+                this.it.getIn().close();
+            } catch (IOException ex) {
+                this.it.getErr().println(ex);
+            }
+            this.workThread = null;
+        }
+    }
 
-public CommCmdStringThread(Runnable target, String name) {
-super(target, name);
-this.target = target;
-}
+    class CommCmdStringThread
+            extends Thread {
+        private Runnable target = null;
 
-public void run() {
-while (true) {
-try {
-if (this.target != null) {
-this.target.run();
-}
+        public CommCmdStringThread(Runnable target) {
+            super(target, "CommCmdString:bsh");
+            this.target = target;
+        }
 
-break;
-} catch (LinkageError ex) {
-CommCmdString.this.it.getErr().println(ex);
-} catch (Throwable ex) {
-CommCmdString.this.it.getErr().println(ex);
-throw ex;
-} 
-} 
-}
-}
+        public CommCmdStringThread(Runnable target, String name) {
+            super(target, name);
+            this.target = target;
+        }
+
+        public void run() {
+            while (true) {
+                try {
+                    if (this.target != null) {
+                        this.target.run();
+                    }
+
+                    break;
+                } catch (LinkageError ex) {
+                    CommCmdString.this.it.getErr().println(ex);
+                } catch (Throwable ex) {
+                    CommCmdString.this.it.getErr().println(ex);
+                    throw ex;
+                }
+            }
+        }
+    }
 }
 

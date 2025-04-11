@@ -5,13 +5,13 @@ import java.lang.reflect.Field;
 
 class LHS
         implements ParserConstants, Serializable {
-    NameSpace nameSpace;
-    boolean localVar;
     static final int VARIABLE = 0;
     static final int FIELD = 1;
     static final int PROPERTY = 2;
     static final int INDEX = 3;
     static final int METHOD_EVAL = 4;
+    NameSpace nameSpace;
+    boolean localVar;
     int type;
     String varName;
     String propName;
@@ -96,9 +96,7 @@ class LHS
     }
 
     public Object assign(Object val, boolean strictJava) throws UtilEvalError {
-        if (this.type == 0)
-
-        {
+        if (this.type == 0) {
             if (this.localVar) {
                 this.nameSpace.setLocalVariable(this.varName, val, strictJava);
             } else {

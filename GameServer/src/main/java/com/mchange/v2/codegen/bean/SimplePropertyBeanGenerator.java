@@ -10,68 +10,73 @@ import com.mchange.v2.log.MLogger;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class SimplePropertyBeanGenerator
         implements PropertyBeanGenerator {
     private static final MLogger logger = MLog.getLogger(SimplePropertyBeanGenerator.class);
-
-    private boolean inner = false;
-    private int java_version = 140;
-    private boolean force_unmodifiable = false;
-    private String generatorName = getClass().getName();
-
     protected ClassInfo info;
-
     protected Property[] props;
-
     protected IndentedWriter iw;
-
     protected Set generalImports;
-
     protected Set specificImports;
     protected Set interfaceNames;
     protected Class superclassType;
     protected List interfaceTypes;
     protected Class[] propertyTypes;
     protected List generatorExtensions = new ArrayList();
+    private boolean inner = false;
+    private int java_version = 140;
+    private boolean force_unmodifiable = false;
+    private String generatorName = getClass().getName();
 
-    public synchronized void setInner(boolean paramBoolean) {
-        this.inner = paramBoolean;
+    public static void main(String[] paramArrayOfString) {
+        try {
+            SimpleClassInfo simpleClassInfo = new SimpleClassInfo("test", 1, paramArrayOfString[0], null, null, new String[]{"java.awt"}, null);
+
+            Property[] arrayOfProperty = {new SimpleProperty("number", "int", null, "7", false, true, false), new SimpleProperty("fpNumber", "float", null, null, true, true, false), new SimpleProperty("location", "Point", "new Point( location.x, location.y )", "new Point( 0, 0 )", false, true, true)};
+
+            FileWriter fileWriter = new FileWriter(paramArrayOfString[0] + ".java");
+            SimplePropertyBeanGenerator simplePropertyBeanGenerator = new SimplePropertyBeanGenerator();
+            simplePropertyBeanGenerator.addExtension(new SerializableExtension());
+            simplePropertyBeanGenerator.generate(simpleClassInfo, arrayOfProperty, fileWriter);
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public synchronized boolean isInner() {
         return this.inner;
     }
 
-    public synchronized void setJavaVersion(int paramInt) {
-        this.java_version = paramInt;
+    public synchronized void setInner(boolean paramBoolean) {
+        this.inner = paramBoolean;
     }
 
     public synchronized int getJavaVersion() {
         return this.java_version;
     }
 
-    public synchronized void setGeneratorName(String paramString) {
-        this.generatorName = paramString;
+    public synchronized void setJavaVersion(int paramInt) {
+        this.java_version = paramInt;
     }
 
     public synchronized String getGeneratorName() {
         return this.generatorName;
     }
 
-    public synchronized void setForceUnmodifiable(boolean paramBoolean) {
-        this.force_unmodifiable = paramBoolean;
+    public synchronized void setGeneratorName(String paramString) {
+        this.generatorName = paramString;
     }
 
     public synchronized boolean isForceUnmodifiable() {
         return this.force_unmodifiable;
+    }
+
+    public synchronized void setForceUnmodifiable(boolean paramBoolean) {
+        this.force_unmodifiable = paramBoolean;
     }
 
     public synchronized void addExtension(GeneratorExtension paramGeneratorExtension) {
@@ -431,23 +436,6 @@ public class SimplePropertyBeanGenerator
 
     boolean constrainedProperties() {
         return BeangenUtils.hasConstrainedProperties(this.props);
-    }
-
-    public static void main(String[] paramArrayOfString) {
-        try {
-            SimpleClassInfo simpleClassInfo = new SimpleClassInfo("test", 1, paramArrayOfString[0], null, null, new String[]{"java.awt"}, null);
-
-            Property[] arrayOfProperty = {new SimpleProperty("number", "int", null, "7", false, true, false), new SimpleProperty("fpNumber", "float", null, null, true, true, false), new SimpleProperty("location", "Point", "new Point( location.x, location.y )", "new Point( 0, 0 )", false, true, true)};
-
-            FileWriter fileWriter = new FileWriter(paramArrayOfString[0] + ".java");
-            SimplePropertyBeanGenerator simplePropertyBeanGenerator = new SimplePropertyBeanGenerator();
-            simplePropertyBeanGenerator.addExtension(new SerializableExtension());
-            simplePropertyBeanGenerator.generate(simpleClassInfo, arrayOfProperty, fileWriter);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
     }
 }
 

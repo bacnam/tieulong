@@ -8,28 +8,27 @@ import org.apache.http.util.Args;
 
 @Immutable
 public class DefaultServiceUnavailableRetryStrategy
-implements ServiceUnavailableRetryStrategy
-{
-private final int maxRetries;
-private final long retryInterval;
+        implements ServiceUnavailableRetryStrategy {
+    private final int maxRetries;
+    private final long retryInterval;
 
-public DefaultServiceUnavailableRetryStrategy(int maxRetries, int retryInterval) {
-Args.positive(maxRetries, "Max retries");
-Args.positive(retryInterval, "Retry interval");
-this.maxRetries = maxRetries;
-this.retryInterval = retryInterval;
-}
+    public DefaultServiceUnavailableRetryStrategy(int maxRetries, int retryInterval) {
+        Args.positive(maxRetries, "Max retries");
+        Args.positive(retryInterval, "Retry interval");
+        this.maxRetries = maxRetries;
+        this.retryInterval = retryInterval;
+    }
 
-public DefaultServiceUnavailableRetryStrategy() {
-this(1, 1000);
-}
+    public DefaultServiceUnavailableRetryStrategy() {
+        this(1, 1000);
+    }
 
-public boolean retryRequest(HttpResponse response, int executionCount, HttpContext context) {
-return (executionCount <= this.maxRetries && response.getStatusLine().getStatusCode() == 503);
-}
+    public boolean retryRequest(HttpResponse response, int executionCount, HttpContext context) {
+        return (executionCount <= this.maxRetries && response.getStatusLine().getStatusCode() == 503);
+    }
 
-public long getRetryInterval() {
-return this.retryInterval;
-}
+    public long getRetryInterval() {
+        return this.retryInterval;
+    }
 }
 

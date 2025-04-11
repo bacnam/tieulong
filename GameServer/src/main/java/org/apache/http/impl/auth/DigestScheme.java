@@ -1,22 +1,6 @@
 package org.apache.http.impl.auth;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.StringTokenizer;
-import org.apache.http.Consts;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
-import org.apache.http.HttpRequest;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.ChallengeState;
@@ -31,323 +15,322 @@ import org.apache.http.util.Args;
 import org.apache.http.util.CharArrayBuffer;
 import org.apache.http.util.EncodingUtils;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.*;
+
 @NotThreadSafe
 public class DigestScheme
-extends RFC2617Scheme
-{
-private static final long serialVersionUID = 3883908186234566916L;
-private static final char[] HEXADECIMAL = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+        extends RFC2617Scheme {
+    private static final long serialVersionUID = 3883908186234566916L;
+    private static final char[] HEXADECIMAL = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final int QOP_UNKNOWN = -1;
+    private static final int QOP_MISSING = 0;
+    private static final int QOP_AUTH_INT = 1;
+    private static final int QOP_AUTH = 2;
+    private boolean complete;
+    private String lastNonce;
 
-private boolean complete;
+    private long nounceCount;
 
-private static final int QOP_UNKNOWN = -1;
+    private String cnonce;
 
-private static final int QOP_MISSING = 0;
+    private String a1;
 
-private static final int QOP_AUTH_INT = 1;
+    private String a2;
 
-private static final int QOP_AUTH = 2;
+    public DigestScheme(Charset credentialsCharset) {
+        super(credentialsCharset);
+        this.complete = false;
+    }
 
-private String lastNonce;
+    @Deprecated
+    public DigestScheme(ChallengeState challengeState) {
+        super(challengeState);
+    }
 
-private long nounceCount;
+    public DigestScheme() {
+        this(Consts.ASCII);
+    }
 
-private String cnonce;
+    private static MessageDigest createMessageDigest(String digAlg) throws UnsupportedDigestAlgorithmException {
+        try {
+            return MessageDigest.getInstance(digAlg);
+        } catch (Exception e) {
+            throw new UnsupportedDigestAlgorithmException("Unsupported algorithm in HTTP Digest authentication: " + digAlg);
+        }
+    }
 
-private String a1;
+    static String encode(byte[] binaryData) {
+        int n = binaryData.length;
+        char[] buffer = new char[n * 2];
+        for (int i = 0; i < n; i++) {
+            int low = binaryData[i] & 0xF;
+            int high = (binaryData[i] & 0xF0) >> 4;
+            buffer[i * 2] = HEXADECIMAL[high];
+            buffer[i * 2 + 1] = HEXADECIMAL[low];
+        }
 
-private String a2;
+        return new String(buffer);
+    }
 
-public DigestScheme(Charset credentialsCharset) {
-super(credentialsCharset);
-this.complete = false;
-}
+    public static String createCnonce() {
+        SecureRandom rnd = new SecureRandom();
+        byte[] tmp = new byte[8];
+        rnd.nextBytes(tmp);
+        return encode(tmp);
+    }
 
-@Deprecated
-public DigestScheme(ChallengeState challengeState) {
-super(challengeState);
-}
+    public void processChallenge(Header header) throws MalformedChallengeException {
+        super.processChallenge(header);
+        this.complete = true;
+        if (getParameters().isEmpty()) {
+            throw new MalformedChallengeException("Authentication challenge is empty");
+        }
+    }
 
-public DigestScheme() {
-this(Consts.ASCII);
-}
+    public boolean isComplete() {
+        String s = getParameter("stale");
+        if ("true".equalsIgnoreCase(s)) {
+            return false;
+        }
+        return this.complete;
+    }
 
-public void processChallenge(Header header) throws MalformedChallengeException {
-super.processChallenge(header);
-this.complete = true;
-if (getParameters().isEmpty()) {
-throw new MalformedChallengeException("Authentication challenge is empty");
-}
-}
+    public String getSchemeName() {
+        return "digest";
+    }
 
-public boolean isComplete() {
-String s = getParameter("stale");
-if ("true".equalsIgnoreCase(s)) {
-return false;
-}
-return this.complete;
-}
+    public boolean isConnectionBased() {
+        return false;
+    }
 
-public String getSchemeName() {
-return "digest";
-}
+    public void overrideParamter(String name, String value) {
+        getParameters().put(name, value);
+    }
 
-public boolean isConnectionBased() {
-return false;
-}
+    @Deprecated
+    public Header authenticate(Credentials credentials, HttpRequest request) throws AuthenticationException {
+        return authenticate(credentials, request, (HttpContext) new BasicHttpContext());
+    }
 
-public void overrideParamter(String name, String value) {
-getParameters().put(name, value);
-}
+    public Header authenticate(Credentials credentials, HttpRequest request, HttpContext context) throws AuthenticationException {
+        Args.notNull(credentials, "Credentials");
+        Args.notNull(request, "HTTP request");
+        if (getParameter("realm") == null) {
+            throw new AuthenticationException("missing realm in challenge");
+        }
+        if (getParameter("nonce") == null) {
+            throw new AuthenticationException("missing nonce in challenge");
+        }
 
-@Deprecated
-public Header authenticate(Credentials credentials, HttpRequest request) throws AuthenticationException {
-return authenticate(credentials, request, (HttpContext)new BasicHttpContext());
-}
+        getParameters().put("methodname", request.getRequestLine().getMethod());
+        getParameters().put("uri", request.getRequestLine().getUri());
+        String charset = getParameter("charset");
+        if (charset == null) {
+            getParameters().put("charset", getCredentialsCharset(request));
+        }
+        return createDigestHeader(credentials, request);
+    }
 
-public Header authenticate(Credentials credentials, HttpRequest request, HttpContext context) throws AuthenticationException {
-Args.notNull(credentials, "Credentials");
-Args.notNull(request, "HTTP request");
-if (getParameter("realm") == null) {
-throw new AuthenticationException("missing realm in challenge");
-}
-if (getParameter("nonce") == null) {
-throw new AuthenticationException("missing nonce in challenge");
-}
+    private Header createDigestHeader(Credentials credentials, HttpRequest request) throws AuthenticationException {
+        MessageDigest digester;
+        String digestValue, uri = getParameter("uri");
+        String realm = getParameter("realm");
+        String nonce = getParameter("nonce");
+        String opaque = getParameter("opaque");
+        String method = getParameter("methodname");
+        String algorithm = getParameter("algorithm");
 
-getParameters().put("methodname", request.getRequestLine().getMethod());
-getParameters().put("uri", request.getRequestLine().getUri());
-String charset = getParameter("charset");
-if (charset == null) {
-getParameters().put("charset", getCredentialsCharset(request));
-}
-return createDigestHeader(credentials, request);
-}
+        if (algorithm == null) {
+            algorithm = "MD5";
+        }
 
-private static MessageDigest createMessageDigest(String digAlg) throws UnsupportedDigestAlgorithmException {
-try {
-return MessageDigest.getInstance(digAlg);
-} catch (Exception e) {
-throw new UnsupportedDigestAlgorithmException("Unsupported algorithm in HTTP Digest authentication: " + digAlg);
-} 
-}
+        Set<String> qopset = new HashSet<String>(8);
+        int qop = -1;
+        String qoplist = getParameter("qop");
+        if (qoplist != null) {
+            StringTokenizer tok = new StringTokenizer(qoplist, ",");
+            while (tok.hasMoreTokens()) {
+                String variant = tok.nextToken().trim();
+                qopset.add(variant.toLowerCase(Locale.ROOT));
+            }
+            if (request instanceof HttpEntityEnclosingRequest && qopset.contains("auth-int")) {
+                qop = 1;
+            } else if (qopset.contains("auth")) {
+                qop = 2;
+            }
+        } else {
+            qop = 0;
+        }
 
-private Header createDigestHeader(Credentials credentials, HttpRequest request) throws AuthenticationException {
-MessageDigest digester;
-String digestValue, uri = getParameter("uri");
-String realm = getParameter("realm");
-String nonce = getParameter("nonce");
-String opaque = getParameter("opaque");
-String method = getParameter("methodname");
-String algorithm = getParameter("algorithm");
+        if (qop == -1) {
+            throw new AuthenticationException("None of the qop methods is supported: " + qoplist);
+        }
 
-if (algorithm == null) {
-algorithm = "MD5";
-}
+        String charset = getParameter("charset");
+        if (charset == null) {
+            charset = "ISO-8859-1";
+        }
 
-Set<String> qopset = new HashSet<String>(8);
-int qop = -1;
-String qoplist = getParameter("qop");
-if (qoplist != null) {
-StringTokenizer tok = new StringTokenizer(qoplist, ",");
-while (tok.hasMoreTokens()) {
-String variant = tok.nextToken().trim();
-qopset.add(variant.toLowerCase(Locale.ROOT));
-} 
-if (request instanceof HttpEntityEnclosingRequest && qopset.contains("auth-int")) {
-qop = 1;
-} else if (qopset.contains("auth")) {
-qop = 2;
-} 
-} else {
-qop = 0;
-} 
+        String digAlg = algorithm;
+        if (digAlg.equalsIgnoreCase("MD5-sess")) {
+            digAlg = "MD5";
+        }
 
-if (qop == -1) {
-throw new AuthenticationException("None of the qop methods is supported: " + qoplist);
-}
+        try {
+            digester = createMessageDigest(digAlg);
+        } catch (UnsupportedDigestAlgorithmException ex) {
+            throw new AuthenticationException("Unsuppported digest algorithm: " + digAlg);
+        }
 
-String charset = getParameter("charset");
-if (charset == null) {
-charset = "ISO-8859-1";
-}
+        String uname = credentials.getUserPrincipal().getName();
+        String pwd = credentials.getPassword();
 
-String digAlg = algorithm;
-if (digAlg.equalsIgnoreCase("MD5-sess")) {
-digAlg = "MD5";
-}
+        if (nonce.equals(this.lastNonce)) {
+            this.nounceCount++;
+        } else {
+            this.nounceCount = 1L;
+            this.cnonce = null;
+            this.lastNonce = nonce;
+        }
+        StringBuilder sb = new StringBuilder(256);
+        Formatter formatter = new Formatter(sb, Locale.US);
+        formatter.format("%08x", new Object[]{Long.valueOf(this.nounceCount)});
+        formatter.close();
+        String nc = sb.toString();
 
-try {
-digester = createMessageDigest(digAlg);
-} catch (UnsupportedDigestAlgorithmException ex) {
-throw new AuthenticationException("Unsuppported digest algorithm: " + digAlg);
-} 
+        if (this.cnonce == null) {
+            this.cnonce = createCnonce();
+        }
 
-String uname = credentials.getUserPrincipal().getName();
-String pwd = credentials.getPassword();
+        this.a1 = null;
+        this.a2 = null;
 
-if (nonce.equals(this.lastNonce)) {
-this.nounceCount++;
-} else {
-this.nounceCount = 1L;
-this.cnonce = null;
-this.lastNonce = nonce;
-} 
-StringBuilder sb = new StringBuilder(256);
-Formatter formatter = new Formatter(sb, Locale.US);
-formatter.format("%08x", new Object[] { Long.valueOf(this.nounceCount) });
-formatter.close();
-String nc = sb.toString();
+        if (algorithm.equalsIgnoreCase("MD5-sess")) {
 
-if (this.cnonce == null) {
-this.cnonce = createCnonce();
-}
+            sb.setLength(0);
+            sb.append(uname).append(':').append(realm).append(':').append(pwd);
+            String checksum = encode(digester.digest(EncodingUtils.getBytes(sb.toString(), charset)));
+            sb.setLength(0);
+            sb.append(checksum).append(':').append(nonce).append(':').append(this.cnonce);
+            this.a1 = sb.toString();
+        } else {
 
-this.a1 = null;
-this.a2 = null;
+            sb.setLength(0);
+            sb.append(uname).append(':').append(realm).append(':').append(pwd);
+            this.a1 = sb.toString();
+        }
 
-if (algorithm.equalsIgnoreCase("MD5-sess")) {
+        String hasha1 = encode(digester.digest(EncodingUtils.getBytes(this.a1, charset)));
 
-sb.setLength(0);
-sb.append(uname).append(':').append(realm).append(':').append(pwd);
-String checksum = encode(digester.digest(EncodingUtils.getBytes(sb.toString(), charset)));
-sb.setLength(0);
-sb.append(checksum).append(':').append(nonce).append(':').append(this.cnonce);
-this.a1 = sb.toString();
-} else {
+        if (qop == 2) {
 
-sb.setLength(0);
-sb.append(uname).append(':').append(realm).append(':').append(pwd);
-this.a1 = sb.toString();
-} 
+            this.a2 = method + ':' + uri;
+        } else if (qop == 1) {
 
-String hasha1 = encode(digester.digest(EncodingUtils.getBytes(this.a1, charset)));
+            HttpEntity entity = null;
+            if (request instanceof HttpEntityEnclosingRequest) {
+                entity = ((HttpEntityEnclosingRequest) request).getEntity();
+            }
+            if (entity != null && !entity.isRepeatable()) {
 
-if (qop == 2) {
+                if (qopset.contains("auth")) {
+                    qop = 2;
+                    this.a2 = method + ':' + uri;
+                } else {
+                    throw new AuthenticationException("Qop auth-int cannot be used with a non-repeatable entity");
+                }
+            } else {
 
-this.a2 = method + ':' + uri;
-} else if (qop == 1) {
+                HttpEntityDigester entityDigester = new HttpEntityDigester(digester);
+                try {
+                    if (entity != null) {
+                        entity.writeTo(entityDigester);
+                    }
+                    entityDigester.close();
+                } catch (IOException ex) {
+                    throw new AuthenticationException("I/O error reading entity content", ex);
+                }
+                this.a2 = method + ':' + uri + ':' + encode(entityDigester.getDigest());
+            }
+        } else {
+            this.a2 = method + ':' + uri;
+        }
 
-HttpEntity entity = null;
-if (request instanceof HttpEntityEnclosingRequest) {
-entity = ((HttpEntityEnclosingRequest)request).getEntity();
-}
-if (entity != null && !entity.isRepeatable()) {
+        String hasha2 = encode(digester.digest(EncodingUtils.getBytes(this.a2, charset)));
 
-if (qopset.contains("auth")) {
-qop = 2;
-this.a2 = method + ':' + uri;
-} else {
-throw new AuthenticationException("Qop auth-int cannot be used with a non-repeatable entity");
-} 
-} else {
+        if (qop == 0) {
+            sb.setLength(0);
+            sb.append(hasha1).append(':').append(nonce).append(':').append(hasha2);
+            digestValue = sb.toString();
+        } else {
+            sb.setLength(0);
+            sb.append(hasha1).append(':').append(nonce).append(':').append(nc).append(':').append(this.cnonce).append(':').append((qop == 1) ? "auth-int" : "auth").append(':').append(hasha2);
 
-HttpEntityDigester entityDigester = new HttpEntityDigester(digester);
-try {
-if (entity != null) {
-entity.writeTo(entityDigester);
-}
-entityDigester.close();
-} catch (IOException ex) {
-throw new AuthenticationException("I/O error reading entity content", ex);
-} 
-this.a2 = method + ':' + uri + ':' + encode(entityDigester.getDigest());
-} 
-} else {
-this.a2 = method + ':' + uri;
-} 
+            digestValue = sb.toString();
+        }
 
-String hasha2 = encode(digester.digest(EncodingUtils.getBytes(this.a2, charset)));
+        String digest = encode(digester.digest(EncodingUtils.getAsciiBytes(digestValue)));
 
-if (qop == 0) {
-sb.setLength(0);
-sb.append(hasha1).append(':').append(nonce).append(':').append(hasha2);
-digestValue = sb.toString();
-} else {
-sb.setLength(0);
-sb.append(hasha1).append(':').append(nonce).append(':').append(nc).append(':').append(this.cnonce).append(':').append((qop == 1) ? "auth-int" : "auth").append(':').append(hasha2);
+        CharArrayBuffer buffer = new CharArrayBuffer(128);
+        if (isProxy()) {
+            buffer.append("Proxy-Authorization");
+        } else {
+            buffer.append("Authorization");
+        }
+        buffer.append(": Digest ");
 
-digestValue = sb.toString();
-} 
+        List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(20);
+        params.add(new BasicNameValuePair("username", uname));
+        params.add(new BasicNameValuePair("realm", realm));
+        params.add(new BasicNameValuePair("nonce", nonce));
+        params.add(new BasicNameValuePair("uri", uri));
+        params.add(new BasicNameValuePair("response", digest));
 
-String digest = encode(digester.digest(EncodingUtils.getAsciiBytes(digestValue)));
+        if (qop != 0) {
+            params.add(new BasicNameValuePair("qop", (qop == 1) ? "auth-int" : "auth"));
+            params.add(new BasicNameValuePair("nc", nc));
+            params.add(new BasicNameValuePair("cnonce", this.cnonce));
+        }
 
-CharArrayBuffer buffer = new CharArrayBuffer(128);
-if (isProxy()) {
-buffer.append("Proxy-Authorization");
-} else {
-buffer.append("Authorization");
-} 
-buffer.append(": Digest ");
+        params.add(new BasicNameValuePair("algorithm", algorithm));
+        if (opaque != null) {
+            params.add(new BasicNameValuePair("opaque", opaque));
+        }
 
-List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(20);
-params.add(new BasicNameValuePair("username", uname));
-params.add(new BasicNameValuePair("realm", realm));
-params.add(new BasicNameValuePair("nonce", nonce));
-params.add(new BasicNameValuePair("uri", uri));
-params.add(new BasicNameValuePair("response", digest));
+        for (int i = 0; i < params.size(); i++) {
+            BasicNameValuePair param = params.get(i);
+            if (i > 0) {
+                buffer.append(", ");
+            }
+            String name = param.getName();
+            boolean noQuotes = ("nc".equals(name) || "qop".equals(name) || "algorithm".equals(name));
 
-if (qop != 0) {
-params.add(new BasicNameValuePair("qop", (qop == 1) ? "auth-int" : "auth"));
-params.add(new BasicNameValuePair("nc", nc));
-params.add(new BasicNameValuePair("cnonce", this.cnonce));
-} 
+            BasicHeaderValueFormatter.INSTANCE.formatNameValuePair(buffer, (NameValuePair) param, !noQuotes);
+        }
+        return (Header) new BufferedHeader(buffer);
+    }
 
-params.add(new BasicNameValuePair("algorithm", algorithm));
-if (opaque != null) {
-params.add(new BasicNameValuePair("opaque", opaque));
-}
+    String getCnonce() {
+        return this.cnonce;
+    }
 
-for (int i = 0; i < params.size(); i++) {
-BasicNameValuePair param = params.get(i);
-if (i > 0) {
-buffer.append(", ");
-}
-String name = param.getName();
-boolean noQuotes = ("nc".equals(name) || "qop".equals(name) || "algorithm".equals(name));
+    String getA1() {
+        return this.a1;
+    }
 
-BasicHeaderValueFormatter.INSTANCE.formatNameValuePair(buffer, (NameValuePair)param, !noQuotes);
-} 
-return (Header)new BufferedHeader(buffer);
-}
+    String getA2() {
+        return this.a2;
+    }
 
-String getCnonce() {
-return this.cnonce;
-}
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DIGEST [complete=").append(this.complete).append(", nonce=").append(this.lastNonce).append(", nc=").append(this.nounceCount).append("]");
 
-String getA1() {
-return this.a1;
-}
-
-String getA2() {
-return this.a2;
-}
-
-static String encode(byte[] binaryData) {
-int n = binaryData.length;
-char[] buffer = new char[n * 2];
-for (int i = 0; i < n; i++) {
-int low = binaryData[i] & 0xF;
-int high = (binaryData[i] & 0xF0) >> 4;
-buffer[i * 2] = HEXADECIMAL[high];
-buffer[i * 2 + 1] = HEXADECIMAL[low];
-} 
-
-return new String(buffer);
-}
-
-public static String createCnonce() {
-SecureRandom rnd = new SecureRandom();
-byte[] tmp = new byte[8];
-rnd.nextBytes(tmp);
-return encode(tmp);
-}
-
-public String toString() {
-StringBuilder builder = new StringBuilder();
-builder.append("DIGEST [complete=").append(this.complete).append(", nonce=").append(this.lastNonce).append(", nc=").append(this.nounceCount).append("]");
-
-return builder.toString();
-}
+        return builder.toString();
+    }
 }
 

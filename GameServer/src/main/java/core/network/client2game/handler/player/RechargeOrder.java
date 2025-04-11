@@ -17,94 +17,95 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefRecharge;
 import core.network.client2game.handler.PlayerHandler;
 import core.server.ServerConfig;
+
 import java.io.IOException;
 
 public class RechargeOrder
-extends PlayerHandler
-{
-private static RechargeMgr rechargeManager = null;
+        extends PlayerHandler {
+    private static RechargeMgr rechargeManager = null;
 
-private static class Request {
-String goodsId; }
+    public void handle(final Player player, final WebSocketRequest request, String message) throws WSException, IOException {
+        if (rechargeManager == null) {
+            rechargeManager = RechargeMgr.getInstance();
+        }
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
 
-private static class PayData {
-String open_id;
-String access_token;
-String goods_name;
-String bill_no;
-int total_fee;
-String ext;
-String sign;
+        final RefRecharge ref = (RefRecharge) RefDataMgr.get(RefRecharge.class, req.goodsId);
+        if (ref == null) {
+            throw new WSException(ErrorCode.RechargeOrderFailed, "产品%s不存在", new Object[]{req.goodsId});
+        }
 
-private PayData() {}
+        GMParam params = new GMParam();
+        params.put("carrier", "aiaiu");
+        params.put("adfrom", "aiaiu");
+        params.put("adfrom2", "aiaiu");
+        params.put("app_id", "10294");
+        params.put("amount", Integer.valueOf(ref.Price));
+        params.put("quantity", Integer.valueOf(1));
+        params.put("crystal", Integer.valueOf(ref.Price));
+        params.put("productid", req.goodsId);
+        params.put("uid", player.getOpenId());
+        params.put("cid", Long.valueOf(player.getPid()));
 
-public String getSignSrc() {
-return "access_token=" + this.access_token + 
-"&bill_no=" + this.bill_no + 
-"&ext=" + this.ext + 
-"&goods_name=" + this.goods_name + 
-"&open_id=" + this.open_id + 
-"&secret_key=" + ServerConfig.AAY_SecretKey() + 
-"&total_fee=" + this.total_fee;
-}
-}
+        String createorderurl = System.getProperty("RechargeCreateOrderAddr",
+                "http:
+                HttpUtils.RequestGM(createorderurl, params, new IResponseHandler() {
+                    public void compeleted(String response) {
+                        try {
+                            JsonObject resJson = (new JsonParser()).parse(response).getAsJsonObject();
+                            if (resJson.get("code").getAsInt() != 1000) {
+                                CommLog.error("充值回调结果：{}", response);
+                                request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败1", new Object[0]);
+                                return;
+                            }
+                            RechargeOrder.PayData data = new RechargeOrder.PayData(null);
+                            data.open_id = player.getOpenId();
+                            data.access_token = player.getClientSession().getAccessToken();
+                            data.bill_no = resJson.get("bill_no").getAsString();
+                            data.goods_name = ref.Title;
+                            data.total_fee = ref.Price;
+                            data.ext = String.valueOf(resJson.get("bill_no").getAsString());
+                            String signsrc = data.getSignSrc();
+                            data.sign = MD5.md5(signsrc);
+                            CommLog.info("sign src: {}, \nsign:{}", signsrc, data.sign);
+                            request.response(data);
+                        } catch (Exception e) {
+                            request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败2", new Object[]{e});
+                            CommLog.error("订单充值失败,error", e);
+                        }
+                    }
 
-public void handle(final Player player, final WebSocketRequest request, String message) throws WSException, IOException {
-if (rechargeManager == null) {
-rechargeManager = RechargeMgr.getInstance();
-}
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
+                    public void failed(Exception exception) {
+                        request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败3", new Object[0]);
+                    }
+                });
+    }
 
-final RefRecharge ref = (RefRecharge)RefDataMgr.get(RefRecharge.class, req.goodsId);
-if (ref == null) {
-throw new WSException(ErrorCode.RechargeOrderFailed, "产品%s不存在", new Object[] { req.goodsId });
-}
+    private static class Request {
+        String goodsId;
+    }
 
-GMParam params = new GMParam();
-params.put("carrier", "aiaiu");
-params.put("adfrom", "aiaiu");
-params.put("adfrom2", "aiaiu");
-params.put("app_id", "10294");
-params.put("amount", Integer.valueOf(ref.Price));
-params.put("quantity", Integer.valueOf(1));
-params.put("crystal", Integer.valueOf(ref.Price));
-params.put("productid", req.goodsId);
-params.put("uid", player.getOpenId());
-params.put("cid", Long.valueOf(player.getPid()));
+    private static class PayData {
+        String open_id;
+        String access_token;
+        String goods_name;
+        String bill_no;
+        int total_fee;
+        String ext;
+        String sign;
 
-String createorderurl = System.getProperty("RechargeCreateOrderAddr", 
-"http:
-HttpUtils.RequestGM(createorderurl, params, new IResponseHandler()
-{
-public void compeleted(String response) {
-try {
-JsonObject resJson = (new JsonParser()).parse(response).getAsJsonObject();
-if (resJson.get("code").getAsInt() != 1000) {
-CommLog.error("充值回调结果：{}", response);
-request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败1", new Object[0]);
-return;
-} 
-RechargeOrder.PayData data = new RechargeOrder.PayData(null);
-data.open_id = player.getOpenId();
-data.access_token = player.getClientSession().getAccessToken();
-data.bill_no = resJson.get("bill_no").getAsString();
-data.goods_name = ref.Title;
-data.total_fee = ref.Price;
-data.ext = String.valueOf(resJson.get("bill_no").getAsString());
-String signsrc = data.getSignSrc();
-data.sign = MD5.md5(signsrc);
-CommLog.info("sign src: {}, \nsign:{}", signsrc, data.sign);
-request.response(data);
-} catch (Exception e) {
-request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败2", new Object[] { e });
-CommLog.error("订单充值失败,error", e);
-} 
-}
+        private PayData() {
+        }
 
-public void failed(Exception exception) {
-request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败3", new Object[0]);
-}
-});
-}
+        public String getSignSrc() {
+            return "access_token=" + this.access_token +
+                    "&bill_no=" + this.bill_no +
+                    "&ext=" + this.ext +
+                    "&goods_name=" + this.goods_name +
+                    "&open_id=" + this.open_id +
+                    "&secret_key=" + ServerConfig.AAY_SecretKey() +
+                    "&total_fee=" + this.total_fee;
+        }
+    }
 }
 

@@ -1,15 +1,16 @@
 package org.apache.http.conn;
 
-import javax.net.ssl.SSLSession;
 import org.apache.http.HttpInetConnection;
 import org.apache.http.conn.routing.HttpRoute;
 
+import javax.net.ssl.SSLSession;
+
 @Deprecated
 public interface HttpRoutedConnection extends HttpInetConnection {
-  boolean isSecure();
+    boolean isSecure();
 
-  HttpRoute getRoute();
+    HttpRoute getRoute();
 
-  SSLSession getSSLSession();
+    SSLSession getSSLSession();
 }
 

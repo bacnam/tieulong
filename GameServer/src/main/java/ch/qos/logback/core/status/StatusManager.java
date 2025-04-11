@@ -3,18 +3,18 @@ package ch.qos.logback.core.status;
 import java.util.List;
 
 public interface StatusManager {
-  void add(Status paramStatus);
+    void add(Status paramStatus);
 
-  List<Status> getCopyOfStatusList();
+    List<Status> getCopyOfStatusList();
 
-  int getCount();
+    int getCount();
 
-  void add(StatusListener paramStatusListener);
+    void add(StatusListener paramStatusListener);
 
-  void remove(StatusListener paramStatusListener);
+    void remove(StatusListener paramStatusListener);
 
-  void clear();
+    void clear();
 
-  List<StatusListener> getCopyOfStatusListenerList();
+    List<StatusListener> getCopyOfStatusListenerList();
 }
 

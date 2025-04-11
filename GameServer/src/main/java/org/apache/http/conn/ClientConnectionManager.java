@@ -1,21 +1,22 @@
 package org.apache.http.conn;
 
-import java.util.concurrent.TimeUnit;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.scheme.SchemeRegistry;
 
+import java.util.concurrent.TimeUnit;
+
 @Deprecated
 public interface ClientConnectionManager {
-  SchemeRegistry getSchemeRegistry();
+    SchemeRegistry getSchemeRegistry();
 
-  ClientConnectionRequest requestConnection(HttpRoute paramHttpRoute, Object paramObject);
+    ClientConnectionRequest requestConnection(HttpRoute paramHttpRoute, Object paramObject);
 
-  void releaseConnection(ManagedClientConnection paramManagedClientConnection, long paramLong, TimeUnit paramTimeUnit);
+    void releaseConnection(ManagedClientConnection paramManagedClientConnection, long paramLong, TimeUnit paramTimeUnit);
 
-  void closeIdleConnections(long paramLong, TimeUnit paramTimeUnit);
+    void closeIdleConnections(long paramLong, TimeUnit paramTimeUnit);
 
-  void closeExpiredConnections();
+    void closeExpiredConnections();
 
-  void shutdown();
+    void shutdown();
 }
 

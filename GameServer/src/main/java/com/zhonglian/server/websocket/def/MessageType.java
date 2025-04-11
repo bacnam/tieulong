@@ -1,11 +1,11 @@
 package com.zhonglian.server.websocket.def;
 
 public enum MessageType {
-None,
+    None,
 
-Response,
-Request,
+    Response,
+    Request,
 
-Notify;
+    Notify;
 }
 

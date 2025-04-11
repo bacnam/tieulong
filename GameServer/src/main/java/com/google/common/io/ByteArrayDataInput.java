@@ -3,34 +3,34 @@ package com.google.common.io;
 import java.io.DataInput;
 
 public interface ByteArrayDataInput extends DataInput {
-  void readFully(byte[] paramArrayOfbyte);
+    void readFully(byte[] paramArrayOfbyte);
 
-  void readFully(byte[] paramArrayOfbyte, int paramInt1, int paramInt2);
+    void readFully(byte[] paramArrayOfbyte, int paramInt1, int paramInt2);
 
-  int skipBytes(int paramInt);
+    int skipBytes(int paramInt);
 
-  boolean readBoolean();
+    boolean readBoolean();
 
-  byte readByte();
+    byte readByte();
 
-  int readUnsignedByte();
+    int readUnsignedByte();
 
-  short readShort();
+    short readShort();
 
-  int readUnsignedShort();
+    int readUnsignedShort();
 
-  char readChar();
+    char readChar();
 
-  int readInt();
+    int readInt();
 
-  long readLong();
+    long readLong();
 
-  float readFloat();
+    float readFloat();
 
-  double readDouble();
+    double readDouble();
 
-  String readLine();
+    String readLine();
 
-  String readUTF();
+    String readUTF();
 }
 

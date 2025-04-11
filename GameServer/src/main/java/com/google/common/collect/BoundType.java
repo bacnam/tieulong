@@ -5,14 +5,13 @@ import com.google.common.annotations.GwtCompatible;
 
 @Beta
 @GwtCompatible
-public enum BoundType
-{
-OPEN,
+public enum BoundType {
+    OPEN,
 
-CLOSED;
+    CLOSED;
 
-static BoundType forBoolean(boolean inclusive) {
-return inclusive ? CLOSED : OPEN;
-}
+    static BoundType forBoolean(boolean inclusive) {
+        return inclusive ? CLOSED : OPEN;
+    }
 }
 

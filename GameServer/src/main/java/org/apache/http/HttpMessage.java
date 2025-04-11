@@ -3,40 +3,40 @@ package org.apache.http;
 import org.apache.http.params.HttpParams;
 
 public interface HttpMessage {
-  ProtocolVersion getProtocolVersion();
+    ProtocolVersion getProtocolVersion();
 
-  boolean containsHeader(String paramString);
+    boolean containsHeader(String paramString);
 
-  Header[] getHeaders(String paramString);
+    Header[] getHeaders(String paramString);
 
-  Header getFirstHeader(String paramString);
+    Header getFirstHeader(String paramString);
 
-  Header getLastHeader(String paramString);
+    Header getLastHeader(String paramString);
 
-  Header[] getAllHeaders();
+    Header[] getAllHeaders();
 
-  void addHeader(Header paramHeader);
+    void addHeader(Header paramHeader);
 
-  void addHeader(String paramString1, String paramString2);
+    void addHeader(String paramString1, String paramString2);
 
-  void setHeader(Header paramHeader);
+    void setHeader(Header paramHeader);
 
-  void setHeader(String paramString1, String paramString2);
+    void setHeader(String paramString1, String paramString2);
 
-  void setHeaders(Header[] paramArrayOfHeader);
+    void setHeaders(Header[] paramArrayOfHeader);
 
-  void removeHeader(Header paramHeader);
+    void removeHeader(Header paramHeader);
 
-  void removeHeaders(String paramString);
+    void removeHeaders(String paramString);
 
-  HeaderIterator headerIterator();
+    HeaderIterator headerIterator();
 
-  HeaderIterator headerIterator(String paramString);
+    HeaderIterator headerIterator(String paramString);
 
-  @Deprecated
-  HttpParams getParams();
+    @Deprecated
+    HttpParams getParams();
 
-  @Deprecated
-  void setParams(HttpParams paramHttpParams);
+    @Deprecated
+    void setParams(HttpParams paramHttpParams);
 }
 

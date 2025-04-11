@@ -3,24 +3,24 @@ package org.apache.http;
 import java.util.Locale;
 
 public interface HttpResponse extends HttpMessage {
-  StatusLine getStatusLine();
+    StatusLine getStatusLine();
 
-  void setStatusLine(StatusLine paramStatusLine);
+    void setStatusLine(StatusLine paramStatusLine);
 
-  void setStatusLine(ProtocolVersion paramProtocolVersion, int paramInt);
+    void setStatusLine(ProtocolVersion paramProtocolVersion, int paramInt);
 
-  void setStatusLine(ProtocolVersion paramProtocolVersion, int paramInt, String paramString);
+    void setStatusLine(ProtocolVersion paramProtocolVersion, int paramInt, String paramString);
 
-  void setStatusCode(int paramInt) throws IllegalStateException;
+    void setStatusCode(int paramInt) throws IllegalStateException;
 
-  void setReasonPhrase(String paramString) throws IllegalStateException;
+    void setReasonPhrase(String paramString) throws IllegalStateException;
 
-  HttpEntity getEntity();
+    HttpEntity getEntity();
 
-  void setEntity(HttpEntity paramHttpEntity);
+    void setEntity(HttpEntity paramHttpEntity);
 
-  Locale getLocale();
+    Locale getLocale();
 
-  void setLocale(Locale paramLocale);
+    void setLocale(Locale paramLocale);
 }
 

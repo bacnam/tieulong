@@ -1,8 +1,8 @@
 package jsc.tests;
 
 public interface SignificanceTest {
-  double getSP();
+    double getSP();
 
-  double getTestStatistic();
+    double getTestStatistic();
 }
 

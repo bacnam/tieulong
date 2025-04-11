@@ -4,16 +4,15 @@ import org.apache.http.HttpHost;
 import org.apache.http.nio.reactor.IOSession;
 
 public class NoopIOSessionStrategy
-implements SchemeIOSessionStrategy
-{
-public static final NoopIOSessionStrategy INSTANCE = new NoopIOSessionStrategy();
+        implements SchemeIOSessionStrategy {
+    public static final NoopIOSessionStrategy INSTANCE = new NoopIOSessionStrategy();
 
-public IOSession upgrade(HttpHost host, IOSession iosession) {
-return iosession;
-}
+    public IOSession upgrade(HttpHost host, IOSession iosession) {
+        return iosession;
+    }
 
-public boolean isLayeringRequired() {
-return false;
-}
+    public boolean isLayeringRequired() {
+        return false;
+    }
 }
 

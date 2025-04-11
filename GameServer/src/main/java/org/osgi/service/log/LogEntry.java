@@ -4,16 +4,16 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 
 public interface LogEntry {
-  Bundle getBundle();
+    Bundle getBundle();
 
-  ServiceReference getServiceReference();
+    ServiceReference getServiceReference();
 
-  int getLevel();
+    int getLevel();
 
-  String getMessage();
+    String getMessage();
 
-  Throwable getException();
+    Throwable getException();
 
-  long getTime();
+    long getTime();
 }
 

@@ -3,20 +3,20 @@ package core.network.proto;
 import business.global.guild.Guild;
 
 public class LongnvWarInfo {
-  public int level;
+    public int level;
 
-  public int robotLevel;
+    public int robotLevel;
 
-  public int leftTime;
+    public int leftTime;
 
-  public int pickTimes;
+    public int pickTimes;
 
-  public boolean isApply;
+    public boolean isApply;
 
-  public int result;
+    public int result;
 
-  public Guild.rebirth puppet;
+    public Guild.rebirth puppet;
 
-  public int leftRebirthTime;
+    public int leftRebirthTime;
 }
 

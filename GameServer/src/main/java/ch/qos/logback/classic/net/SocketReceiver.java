@@ -7,6 +7,7 @@ import ch.qos.logback.core.net.DefaultSocketConnector;
 import ch.qos.logback.core.net.SocketConnector;
 import ch.qos.logback.core.util.CloseUtil;
 
+import javax.net.SocketFactory;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +18,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
-import javax.net.SocketFactory;
 
 public class SocketReceiver
         extends ReceiverBase

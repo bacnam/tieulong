@@ -1,29 +1,21 @@
 package redis.clients.util;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Sharded<R, S extends ShardInfo<R>> {
 
     public static final int DEFAULT_WEIGHT = 1;
-    private TreeMap<Long, S> nodes;
-    private final Hashing algo;
-    private final Map<ShardInfo<R>, R> resources = new LinkedHashMap<ShardInfo<R>, R>();
-
-    private Pattern tagPattern = null;
-
     public static final Pattern DEFAULT_KEY_TAG_PATTERN = Pattern
             .compile("\\{(.+?)\\}");
+    private final Hashing algo;
+    private final Map<ShardInfo<R>, R> resources = new LinkedHashMap<ShardInfo<R>, R>();
+    private TreeMap<Long, S> nodes;
+    private Pattern tagPattern = null;
 
     public Sharded(List<S> shards) {
-        this(shards, Hashing.MURMUR_HASH); 
+        this(shards, Hashing.MURMUR_HASH);
 
     }
 
@@ -33,7 +25,7 @@ public class Sharded<R, S extends ShardInfo<R>> {
     }
 
     public Sharded(List<S> shards, Pattern tagPattern) {
-        this(shards, Hashing.MURMUR_HASH, tagPattern); 
+        this(shards, Hashing.MURMUR_HASH, tagPattern);
 
     }
 
@@ -49,13 +41,13 @@ public class Sharded<R, S extends ShardInfo<R>> {
         for (int i = 0; i != shards.size(); ++i) {
             final S shardInfo = shards.get(i);
             if (shardInfo.getName() == null)
-            	for (int n = 0; n < 160 * shardInfo.getWeight(); n++) {
-            		nodes.put(this.algo.hash("SHARD-" + i + "-NODE-" + n), shardInfo);
-            	}
+                for (int n = 0; n < 160 * shardInfo.getWeight(); n++) {
+                    nodes.put(this.algo.hash("SHARD-" + i + "-NODE-" + n), shardInfo);
+                }
             else
-            	for (int n = 0; n < 160 * shardInfo.getWeight(); n++) {
-            		nodes.put(this.algo.hash(shardInfo.getName() + "*" + shardInfo.getWeight() + n), shardInfo);
-            	}
+                for (int n = 0; n < 160 * shardInfo.getWeight(); n++) {
+                    nodes.put(this.algo.hash(shardInfo.getName() + "*" + shardInfo.getWeight() + n), shardInfo);
+                }
             resources.put(shardInfo, shardInfo.createResource());
         }
     }

@@ -1,24 +1,24 @@
 package com.mchange.v2.codegen.bean;
 
 public interface Property {
-  int getVariableModifiers();
+    int getVariableModifiers();
 
-  String getName();
+    String getName();
 
-  String getSimpleTypeName();
+    String getSimpleTypeName();
 
-  String getDefensiveCopyExpression();
+    String getDefensiveCopyExpression();
 
-  String getDefaultValueExpression();
+    String getDefaultValueExpression();
 
-  int getGetterModifiers();
+    int getGetterModifiers();
 
-  int getSetterModifiers();
+    int getSetterModifiers();
 
-  boolean isReadOnly();
+    boolean isReadOnly();
 
-  boolean isBound();
+    boolean isBound();
 
-  boolean isConstrained();
+    boolean isConstrained();
 }
 

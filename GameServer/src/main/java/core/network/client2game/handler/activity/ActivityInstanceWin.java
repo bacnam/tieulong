@@ -7,26 +7,25 @@ import business.player.item.Reward;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class ActivityInstanceWin
-extends PlayerHandler
-{
-private static class Response
-{
-int leftTimes;
-Reward rewardItem;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        ActivityInstance instance = (ActivityInstance) ActivityMgr.getActivity(ActivityInstance.class);
+        Reward reward = instance.instanceWin(player);
+        request.response(new Response(instance.getLeftTimes(player), reward, null));
+    }
 
-private Response(int leftTimes, Reward rewardItem) {
-this.leftTimes = leftTimes;
-this.rewardItem = rewardItem;
-}
-}
+    private static class Response {
+        int leftTimes;
+        Reward rewardItem;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-ActivityInstance instance = (ActivityInstance)ActivityMgr.getActivity(ActivityInstance.class);
-Reward reward = instance.instanceWin(player);
-request.response(new Response(instance.getLeftTimes(player), reward, null));
-}
+        private Response(int leftTimes, Reward rewardItem) {
+            this.leftTimes = leftTimes;
+            this.rewardItem = rewardItem;
+        }
+    }
 }
 

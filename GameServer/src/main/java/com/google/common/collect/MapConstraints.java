@@ -4,35 +4,14 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
 import javax.annotation.Nullable;
+import java.util.*;
 
 @Beta
 @GwtCompatible
 public final class MapConstraints {
     public static MapConstraint<Object, Object> notNull() {
         return NotNullMapConstraint.INSTANCE;
-    }
-
-    private enum NotNullMapConstraint
-            implements MapConstraint<Object, Object> {
-        INSTANCE;
-
-        public void checkKeyValue(Object key, Object value) {
-            Preconditions.checkNotNull(key);
-            Preconditions.checkNotNull(value);
-        }
-
-        public String toString() {
-            return "Not null";
-        }
     }
 
     public static <K, V> Map<K, V> constrainedMap(Map<K, V> map, MapConstraint<? super K, ? super V> constraint) {
@@ -108,10 +87,44 @@ public final class MapConstraints {
         return new ConstrainedEntrySet<K, V>(entries, constraint);
     }
 
+    public static <K, V> BiMap<K, V> constrainedBiMap(BiMap<K, V> map, MapConstraint<? super K, ? super V> constraint) {
+        return new ConstrainedBiMap<K, V>(map, null, constraint);
+    }
+
+    private static <K, V> Collection<V> checkValues(K key, Iterable<? extends V> values, MapConstraint<? super K, ? super V> constraint) {
+        Collection<V> copy = Lists.newArrayList(values);
+        for (V value : copy) {
+            constraint.checkKeyValue(key, value);
+        }
+        return copy;
+    }
+
+    private static <K, V> Map<K, V> checkMap(Map<? extends K, ? extends V> map, MapConstraint<? super K, ? super V> constraint) {
+        Map<K, V> copy = new LinkedHashMap<K, V>(map);
+        for (Map.Entry<K, V> entry : copy.entrySet()) {
+            constraint.checkKeyValue(entry.getKey(), entry.getValue());
+        }
+        return copy;
+    }
+
+    private enum NotNullMapConstraint
+            implements MapConstraint<Object, Object> {
+        INSTANCE;
+
+        public void checkKeyValue(Object key, Object value) {
+            Preconditions.checkNotNull(key);
+            Preconditions.checkNotNull(value);
+        }
+
+        public String toString() {
+            return "Not null";
+        }
+    }
+
     static class ConstrainedMap<K, V>
             extends ForwardingMap<K, V> {
-        private final Map<K, V> delegate;
         final MapConstraint<? super K, ? super V> constraint;
+        private final Map<K, V> delegate;
         private transient Set<Map.Entry<K, V>> entrySet;
 
         ConstrainedMap(Map<K, V> delegate, MapConstraint<? super K, ? super V> constraint) {
@@ -140,10 +153,6 @@ public final class MapConstraints {
         public void putAll(Map<? extends K, ? extends V> map) {
             this.delegate.putAll(MapConstraints.checkMap(map, this.constraint));
         }
-    }
-
-    public static <K, V> BiMap<K, V> constrainedBiMap(BiMap<K, V> map, MapConstraint<? super K, ? super V> constraint) {
-        return new ConstrainedBiMap<K, V>(map, null, constraint);
     }
 
     private static class ConstrainedBiMap<K, V>
@@ -557,22 +566,6 @@ public final class MapConstraints {
         public Comparator<? super V> valueComparator() {
             return ((SortedSetMultimap) delegate()).valueComparator();
         }
-    }
-
-    private static <K, V> Collection<V> checkValues(K key, Iterable<? extends V> values, MapConstraint<? super K, ? super V> constraint) {
-        Collection<V> copy = Lists.newArrayList(values);
-        for (V value : copy) {
-            constraint.checkKeyValue(key, value);
-        }
-        return copy;
-    }
-
-    private static <K, V> Map<K, V> checkMap(Map<? extends K, ? extends V> map, MapConstraint<? super K, ? super V> constraint) {
-        Map<K, V> copy = new LinkedHashMap<K, V>(map);
-        for (Map.Entry<K, V> entry : copy.entrySet()) {
-            constraint.checkKeyValue(entry.getKey(), entry.getValue());
-        }
-        return copy;
     }
 }
 

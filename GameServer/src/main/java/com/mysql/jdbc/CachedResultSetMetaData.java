@@ -3,30 +3,29 @@ package com.mysql.jdbc;
 import java.sql.ResultSetMetaData;
 import java.util.Map;
 
-public class CachedResultSetMetaData
-{
-Map<String, Integer> columnNameToIndex = null;
+public class CachedResultSetMetaData {
+    Map<String, Integer> columnNameToIndex = null;
 
-Field[] fields;
+    Field[] fields;
 
-Map<String, Integer> fullColumnNameToIndex = null;
+    Map<String, Integer> fullColumnNameToIndex = null;
 
-ResultSetMetaData metadata;
+    ResultSetMetaData metadata;
 
-public Map<String, Integer> getColumnNameToIndex() {
-return this.columnNameToIndex;
-}
+    public Map<String, Integer> getColumnNameToIndex() {
+        return this.columnNameToIndex;
+    }
 
-public Field[] getFields() {
-return this.fields;
-}
+    public Field[] getFields() {
+        return this.fields;
+    }
 
-public Map<String, Integer> getFullColumnNameToIndex() {
-return this.fullColumnNameToIndex;
-}
+    public Map<String, Integer> getFullColumnNameToIndex() {
+        return this.fullColumnNameToIndex;
+    }
 
-public ResultSetMetaData getMetadata() {
-return this.metadata;
-}
+    public ResultSetMetaData getMetadata() {
+        return this.metadata;
+    }
 }
 

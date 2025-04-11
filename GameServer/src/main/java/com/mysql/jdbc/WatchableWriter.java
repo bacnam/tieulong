@@ -3,20 +3,19 @@ package com.mysql.jdbc;
 import java.io.CharArrayWriter;
 
 class WatchableWriter
-extends CharArrayWriter
-{
-private WriterWatcher watcher;
+        extends CharArrayWriter {
+    private WriterWatcher watcher;
 
-public void close() {
-super.close();
+    public void close() {
+        super.close();
 
-if (this.watcher != null) {
-this.watcher.writerClosed(this);
-}
-}
+        if (this.watcher != null) {
+            this.watcher.writerClosed(this);
+        }
+    }
 
-public void setWatcher(WriterWatcher watcher) {
-this.watcher = watcher;
-}
+    public void setWatcher(WriterWatcher watcher) {
+        this.watcher = watcher;
+    }
 }
 

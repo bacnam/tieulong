@@ -1,10 +1,9 @@
 package ch.qos.logback.core.pattern.color;
 
 public class BoldWhiteCompositeConverter<E>
-extends ForegroundCompositeConverterBase<E>
-{
-protected String getForegroundColorCode(E event) {
-return "1;37";
-}
+        extends ForegroundCompositeConverterBase<E> {
+    protected String getForegroundColorCode(E event) {
+        return "1;37";
+    }
 }
 

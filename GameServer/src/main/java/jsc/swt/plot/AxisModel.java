@@ -1,26 +1,26 @@
 package jsc.swt.plot;
 
 public interface AxisModel extends Cloneable {
-  Object clone();
+    Object clone();
 
-  double getLength();
+    double getLength();
 
-  double getMin();
+    double getMin();
 
-  double getMax();
+    double getMax();
 
-  int getTickCount();
+    int getTickCount();
 
-  double getFirstTickValue();
+    double getFirstTickValue();
 
-  double getLastTickValue();
+    double getLastTickValue();
 
-  String getTickLabel(int paramInt);
+    String getTickLabel(int paramInt);
 
-  double getTickValue(int paramInt);
+    double getTickValue(int paramInt);
 
-  String getLabel();
+    String getLabel();
 
-  void setLabel(String paramString);
+    void setLabel(String paramString);
 }
 

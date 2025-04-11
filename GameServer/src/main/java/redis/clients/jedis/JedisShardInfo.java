@@ -4,24 +4,11 @@ import redis.clients.util.ShardInfo;
 import redis.clients.util.Sharded;
 
 public class JedisShardInfo extends ShardInfo<Jedis> {
-    public String toString() {
-        return host + ":" + port + "*" + getWeight();
-    }
-
     private int timeout;
     private String host;
     private int port;
     private String password = null;
     private String name = null;
-
-    public String getHost() {
-        return host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
     public JedisShardInfo(String host) {
         this(host, Protocol.DEFAULT_PORT);
     }
@@ -52,6 +39,18 @@ public class JedisShardInfo extends ShardInfo<Jedis> {
         this.host = host;
         this.port = port;
         this.timeout = timeout;
+    }
+
+    public String toString() {
+        return host + ":" + port + "*" + getWeight();
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public String getPassword() {

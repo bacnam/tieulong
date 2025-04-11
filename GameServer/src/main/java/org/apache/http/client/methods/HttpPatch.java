@@ -1,26 +1,27 @@
 package org.apache.http.client.methods;
 
-import java.net.URI;
 import org.apache.http.annotation.NotThreadSafe;
+
+import java.net.URI;
 
 @NotThreadSafe
 public class HttpPatch
-extends HttpEntityEnclosingRequestBase
-{
-public static final String METHOD_NAME = "PATCH";
+        extends HttpEntityEnclosingRequestBase {
+    public static final String METHOD_NAME = "PATCH";
 
-public HttpPatch() {}
+    public HttpPatch() {
+    }
 
-public HttpPatch(URI uri) {
-setURI(uri);
-}
+    public HttpPatch(URI uri) {
+        setURI(uri);
+    }
 
-public HttpPatch(String uri) {
-setURI(URI.create(uri));
-}
+    public HttpPatch(String uri) {
+        setURI(URI.create(uri));
+    }
 
-public String getMethod() {
-return "PATCH";
-}
+    public String getMethod() {
+        return "PATCH";
+    }
 }
 

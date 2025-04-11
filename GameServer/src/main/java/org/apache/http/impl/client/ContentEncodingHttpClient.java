@@ -12,27 +12,26 @@ import org.apache.http.protocol.BasicHttpProcessor;
 @Deprecated
 @ThreadSafe
 public class ContentEncodingHttpClient
-extends DefaultHttpClient
-{
-public ContentEncodingHttpClient(ClientConnectionManager conman, HttpParams params) {
-super(conman, params);
-}
+        extends DefaultHttpClient {
+    public ContentEncodingHttpClient(ClientConnectionManager conman, HttpParams params) {
+        super(conman, params);
+    }
 
-public ContentEncodingHttpClient(HttpParams params) {
-this(null, params);
-}
+    public ContentEncodingHttpClient(HttpParams params) {
+        this(null, params);
+    }
 
-public ContentEncodingHttpClient() {
-this(null);
-}
+    public ContentEncodingHttpClient() {
+        this(null);
+    }
 
-protected BasicHttpProcessor createHttpProcessor() {
-BasicHttpProcessor result = super.createHttpProcessor();
+    protected BasicHttpProcessor createHttpProcessor() {
+        BasicHttpProcessor result = super.createHttpProcessor();
 
-result.addRequestInterceptor((HttpRequestInterceptor)new RequestAcceptEncoding());
-result.addResponseInterceptor((HttpResponseInterceptor)new ResponseContentEncoding());
+        result.addRequestInterceptor((HttpRequestInterceptor) new RequestAcceptEncoding());
+        result.addResponseInterceptor((HttpResponseInterceptor) new ResponseContentEncoding());
 
-return result;
-}
+        return result;
+    }
 }
 

@@ -4,143 +4,141 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Jdk14Logger
-implements Log
-{
-private static final Level DEBUG = Level.FINE;
+        implements Log {
+    private static final Level DEBUG = Level.FINE;
 
-private static final Level ERROR = Level.SEVERE;
+    private static final Level ERROR = Level.SEVERE;
 
-private static final Level FATAL = Level.SEVERE;
+    private static final Level FATAL = Level.SEVERE;
 
-private static final Level INFO = Level.INFO;
+    private static final Level INFO = Level.INFO;
 
-private static final Level TRACE = Level.FINEST;
+    private static final Level TRACE = Level.FINEST;
 
-private static final Level WARN = Level.WARNING;
+    private static final Level WARN = Level.WARNING;
 
-protected Logger jdkLogger = null;
+    protected Logger jdkLogger = null;
 
-public Jdk14Logger(String name) {
-this.jdkLogger = Logger.getLogger(name);
-}
+    public Jdk14Logger(String name) {
+        this.jdkLogger = Logger.getLogger(name);
+    }
 
-public boolean isDebugEnabled() {
-return this.jdkLogger.isLoggable(Level.FINE);
-}
+    private static final int findCallerStackDepth(StackTraceElement[] stackTrace) {
+        int numFrames = stackTrace.length;
 
-public boolean isErrorEnabled() {
-return this.jdkLogger.isLoggable(Level.SEVERE);
-}
+        for (int i = 0; i < numFrames; i++) {
+            String callerClassName = stackTrace[i].getClassName();
 
-public boolean isFatalEnabled() {
-return this.jdkLogger.isLoggable(Level.SEVERE);
-}
+            if (!callerClassName.startsWith("com.mysql.jdbc") || callerClassName.startsWith("com.mysql.jdbc.compliance")) {
+                return i;
+            }
+        }
 
-public boolean isInfoEnabled() {
-return this.jdkLogger.isLoggable(Level.INFO);
-}
+        return 0;
+    }
 
-public boolean isTraceEnabled() {
-return this.jdkLogger.isLoggable(Level.FINEST);
-}
+    public boolean isDebugEnabled() {
+        return this.jdkLogger.isLoggable(Level.FINE);
+    }
 
-public boolean isWarnEnabled() {
-return this.jdkLogger.isLoggable(Level.WARNING);
-}
+    public boolean isErrorEnabled() {
+        return this.jdkLogger.isLoggable(Level.SEVERE);
+    }
 
-public void logDebug(Object message) {
-logInternal(DEBUG, message, null);
-}
+    public boolean isFatalEnabled() {
+        return this.jdkLogger.isLoggable(Level.SEVERE);
+    }
 
-public void logDebug(Object message, Throwable exception) {
-logInternal(DEBUG, message, exception);
-}
+    public boolean isInfoEnabled() {
+        return this.jdkLogger.isLoggable(Level.INFO);
+    }
 
-public void logError(Object message) {
-logInternal(ERROR, message, null);
-}
+    public boolean isTraceEnabled() {
+        return this.jdkLogger.isLoggable(Level.FINEST);
+    }
 
-public void logError(Object message, Throwable exception) {
-logInternal(ERROR, message, exception);
-}
+    public boolean isWarnEnabled() {
+        return this.jdkLogger.isLoggable(Level.WARNING);
+    }
 
-public void logFatal(Object message) {
-logInternal(FATAL, message, null);
-}
+    public void logDebug(Object message) {
+        logInternal(DEBUG, message, null);
+    }
 
-public void logFatal(Object message, Throwable exception) {
-logInternal(FATAL, message, exception);
-}
+    public void logDebug(Object message, Throwable exception) {
+        logInternal(DEBUG, message, exception);
+    }
 
-public void logInfo(Object message) {
-logInternal(INFO, message, null);
-}
+    public void logError(Object message) {
+        logInternal(ERROR, message, null);
+    }
 
-public void logInfo(Object message, Throwable exception) {
-logInternal(INFO, message, exception);
-}
+    public void logError(Object message, Throwable exception) {
+        logInternal(ERROR, message, exception);
+    }
 
-public void logTrace(Object message) {
-logInternal(TRACE, message, null);
-}
+    public void logFatal(Object message) {
+        logInternal(FATAL, message, null);
+    }
 
-public void logTrace(Object message, Throwable exception) {
-logInternal(TRACE, message, exception);
-}
+    public void logFatal(Object message, Throwable exception) {
+        logInternal(FATAL, message, exception);
+    }
 
-public void logWarn(Object message) {
-logInternal(WARN, message, null);
-}
+    public void logInfo(Object message) {
+        logInternal(INFO, message, null);
+    }
 
-public void logWarn(Object message, Throwable exception) {
-logInternal(WARN, message, exception);
-}
+    public void logInfo(Object message, Throwable exception) {
+        logInternal(INFO, message, exception);
+    }
 
-private static final int findCallerStackDepth(StackTraceElement[] stackTrace) {
-int numFrames = stackTrace.length;
+    public void logTrace(Object message) {
+        logInternal(TRACE, message, null);
+    }
 
-for (int i = 0; i < numFrames; i++) {
-String callerClassName = stackTrace[i].getClassName();
+    public void logTrace(Object message, Throwable exception) {
+        logInternal(TRACE, message, exception);
+    }
 
-if (!callerClassName.startsWith("com.mysql.jdbc") || callerClassName.startsWith("com.mysql.jdbc.compliance"))
-{
-return i;
-}
-} 
+    public void logWarn(Object message) {
+        logInternal(WARN, message, null);
+    }
 
-return 0;
-}
+    public void logWarn(Object message, Throwable exception) {
+        logInternal(WARN, message, exception);
+    }
 
-private void logInternal(Level level, Object msg, Throwable exception) {
-if (this.jdkLogger.isLoggable(level)) {
-String messageAsString = null;
-String callerMethodName = "N/A";
-String callerClassName = "N/A";
+    private void logInternal(Level level, Object msg, Throwable exception) {
+        if (this.jdkLogger.isLoggable(level)) {
+            String messageAsString = null;
+            String callerMethodName = "N/A";
+            String callerClassName = "N/A";
 
-if (msg instanceof com.mysql.jdbc.profiler.ProfilerEvent) {
-messageAsString = LogUtils.expandProfilerEventIfNecessary(msg).toString();
-} else {
+            if (msg instanceof com.mysql.jdbc.profiler.ProfilerEvent) {
+                messageAsString = LogUtils.expandProfilerEventIfNecessary(msg).toString();
+            } else {
 
-Throwable locationException = new Throwable();
-StackTraceElement[] locations = locationException.getStackTrace();
+                Throwable locationException = new Throwable();
+                StackTraceElement[] locations = locationException.getStackTrace();
 
-int frameIdx = findCallerStackDepth(locations);
+                int frameIdx = findCallerStackDepth(locations);
 
-if (frameIdx != 0) {
-callerClassName = locations[frameIdx].getClassName();
-callerMethodName = locations[frameIdx].getMethodName();
-} 
+                if (frameIdx != 0) {
+                    callerClassName = locations[frameIdx].getClassName();
+                    callerMethodName = locations[frameIdx].getMethodName();
+                }
 
-messageAsString = String.valueOf(msg);
-} 
+                messageAsString = String.valueOf(msg);
+            }
 
-if (exception == null) {
-this.jdkLogger.logp(level, callerClassName, callerMethodName, messageAsString);
-} else {
+            if (exception == null) {
+                this.jdkLogger.logp(level, callerClassName, callerMethodName, messageAsString);
+            } else {
 
-this.jdkLogger.logp(level, callerClassName, callerMethodName, messageAsString, exception);
-} 
-} 
-}
+                this.jdkLogger.logp(level, callerClassName, callerMethodName, messageAsString, exception);
+            }
+        }
+    }
 }
 

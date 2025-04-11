@@ -1,14 +1,14 @@
 package com.mchange.v2.cmdline;
 
 public interface ParsedCommandLine {
-  String[] getRawArgs();
+    String[] getRawArgs();
 
-  String getSwitchPrefix();
+    String getSwitchPrefix();
 
-  boolean includesSwitch(String paramString);
+    boolean includesSwitch(String paramString);
 
-  String getSwitchArg(String paramString);
+    String getSwitchArg(String paramString);
 
-  String[] getUnswitchedArgs();
+    String[] getUnswitchedArgs();
 }
 

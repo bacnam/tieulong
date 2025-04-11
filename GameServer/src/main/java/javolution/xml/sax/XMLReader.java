@@ -1,41 +1,36 @@
 package javolution.xml.sax;
 
+import org.xml.sax.*;
+
 import java.io.IOException;
-import org.xml.sax.DTDHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 
 public interface XMLReader {
-  boolean getFeature(String paramString) throws SAXNotRecognizedException, SAXNotSupportedException;
+    boolean getFeature(String paramString) throws SAXNotRecognizedException, SAXNotSupportedException;
 
-  void setFeature(String paramString, boolean paramBoolean) throws SAXNotRecognizedException, SAXNotSupportedException;
+    void setFeature(String paramString, boolean paramBoolean) throws SAXNotRecognizedException, SAXNotSupportedException;
 
-  Object getProperty(String paramString) throws SAXNotRecognizedException, SAXNotSupportedException;
+    Object getProperty(String paramString) throws SAXNotRecognizedException, SAXNotSupportedException;
 
-  void setProperty(String paramString, Object paramObject) throws SAXNotRecognizedException, SAXNotSupportedException;
+    void setProperty(String paramString, Object paramObject) throws SAXNotRecognizedException, SAXNotSupportedException;
 
-  void setEntityResolver(EntityResolver paramEntityResolver);
+    EntityResolver getEntityResolver();
 
-  EntityResolver getEntityResolver();
+    void setEntityResolver(EntityResolver paramEntityResolver);
 
-  void setDTDHandler(DTDHandler paramDTDHandler);
+    DTDHandler getDTDHandler();
 
-  DTDHandler getDTDHandler();
+    void setDTDHandler(DTDHandler paramDTDHandler);
 
-  void setContentHandler(ContentHandler paramContentHandler);
+    ContentHandler getContentHandler();
 
-  ContentHandler getContentHandler();
+    void setContentHandler(ContentHandler paramContentHandler);
 
-  void setErrorHandler(ErrorHandler paramErrorHandler);
+    ErrorHandler getErrorHandler();
 
-  ErrorHandler getErrorHandler();
+    void setErrorHandler(ErrorHandler paramErrorHandler);
 
-  void parse(InputSource paramInputSource) throws IOException, SAXException;
+    void parse(InputSource paramInputSource) throws IOException, SAXException;
 
-  void parse(String paramString) throws IOException, SAXException;
+    void parse(String paramString) throws IOException, SAXException;
 }
 

@@ -5,10 +5,10 @@ import ch.qos.logback.core.spi.FilterAttachable;
 import ch.qos.logback.core.spi.LifeCycle;
 
 public interface Appender<E> extends LifeCycle, ContextAware, FilterAttachable<E> {
-  String getName();
+    String getName();
 
-  void doAppend(E paramE) throws LogbackException;
+    void setName(String paramString);
 
-  void setName(String paramString);
+    void doAppend(E paramE) throws LogbackException;
 }
 

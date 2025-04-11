@@ -4,23 +4,22 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 public class StringContains
-extends SubstringMatcher
-{
-public StringContains(String substring) {
-super(substring);
-}
+        extends SubstringMatcher {
+    public StringContains(String substring) {
+        super(substring);
+    }
 
-protected boolean evalSubstringOf(String s) {
-return (s.indexOf(this.substring) >= 0);
-}
+    @Factory
+    public static Matcher<String> containsString(String substring) {
+        return (Matcher<String>) new StringContains(substring);
+    }
 
-protected String relationship() {
-return "containing";
-}
+    protected boolean evalSubstringOf(String s) {
+        return (s.indexOf(this.substring) >= 0);
+    }
 
-@Factory
-public static Matcher<String> containsString(String substring) {
-return (Matcher<String>)new StringContains(substring);
-}
+    protected String relationship() {
+        return "containing";
+    }
 }
 

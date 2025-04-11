@@ -1,8 +1,8 @@
 package com.mchange.util;
 
 public interface ByteArrayBinding {
-  byte[] getKey();
+    byte[] getKey();
 
-  byte[] getValue();
+    byte[] getValue();
 }
 

@@ -1,10 +1,7 @@
 package bsh;
 
-import bsh.org.objectweb.asm.ClassWriter;
-import bsh.org.objectweb.asm.CodeVisitor;
-import bsh.org.objectweb.asm.Constants;
-import bsh.org.objectweb.asm.Label;
-import bsh.org.objectweb.asm.Type;
+import bsh.org.objectweb.asm.*;
+
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Constructor;
@@ -36,8 +33,8 @@ public class ClassGeneratorUtil
     boolean isInterface;
 
     public ClassGeneratorUtil(Modifiers classModifiers, String className, String packageName, Class<Object> superClass,
-            Class[] interfaces, Variable[] vars, DelayedEvalBshMethod[] bshmethods, NameSpace classStaticNameSpace,
-            boolean isInterface) {
+                              Class[] interfaces, Variable[] vars, DelayedEvalBshMethod[] bshmethods, NameSpace classStaticNameSpace,
+                              boolean isInterface) {
         this.classModifiers = classModifiers;
         this.className = className;
         if (packageName != null) {
@@ -83,86 +80,6 @@ public class ClassGeneratorUtil
         this.isInterface = isInterface;
     }
 
-    public byte[] generateClass() {
-        int classMods = getASMModifiers(this.classModifiers) | 0x1;
-        if (this.isInterface) {
-            classMods |= 0x200;
-        }
-        String[] interfaceNames = new String[this.interfaces.length];
-        for (int i = 0; i < this.interfaces.length; i++) {
-            interfaceNames[i] = Type.getInternalName(this.interfaces[i]);
-        }
-        String sourceFile = "BeanShell Generated via ASM (www.objectweb.org)";
-        ClassWriter cw = new ClassWriter(true);
-        cw.visit(classMods, this.fqClassName, this.superClassName, interfaceNames, sourceFile);
-
-        if (!this.isInterface) {
-
-            generateField("_bshThis" + this.className, "Lbsh/This;", 1, cw);
-
-            generateField("_bshStatic" + this.className, "Lbsh/This;", 9, cw);
-        }
-
-        for (int j = 0; j < this.vars.length; j++) {
-
-            String type = this.vars[j].getTypeDescriptor();
-
-            if (!this.vars[j].hasModifier("private") && type != null) {
-                int modifiers;
-
-                if (this.isInterface) {
-                    modifiers = 25;
-                } else {
-                    modifiers = getASMModifiers(this.vars[j].getModifiers());
-                }
-                generateField(this.vars[j].getName(), type, modifiers, cw);
-            }
-        }
-
-        boolean hasConstructor = false;
-        int k;
-        for (k = 0; k < this.constructors.length; k++) {
-
-            if (!this.constructors[k].hasModifier("private")) {
-
-                int modifiers = getASMModifiers(this.constructors[k].getModifiers());
-                generateConstructor(k, this.constructors[k].getParamTypeDescriptors(), modifiers, cw);
-
-                hasConstructor = true;
-            }
-        }
-
-        if (!this.isInterface && !hasConstructor) {
-            generateConstructor(-1, new String[0], 1, cw);
-        }
-
-        for (k = 0; k < this.methods.length; k++) {
-
-            String returnType = this.methods[k].getReturnTypeDescriptor();
-
-            if (!this.methods[k].hasModifier("private")) {
-
-                int modifiers = getASMModifiers(this.methods[k].getModifiers());
-                if (this.isInterface) {
-                    modifiers |= 0x401;
-                }
-                generateMethod(this.className, this.fqClassName, this.methods[k].getName(), returnType,
-                        this.methods[k].getParamTypeDescriptors(), modifiers, cw);
-
-                boolean isStatic = ((modifiers & 0x8) > 0);
-                boolean overridden = classContainsMethod(this.superClass, this.methods[k].getName(),
-                        this.methods[k].getParamTypeDescriptors());
-
-                if (!isStatic && overridden) {
-                    generateSuperDelegateMethod(this.superClassName, this.methods[k].getName(), returnType,
-                            this.methods[k].getParamTypeDescriptors(), modifiers, cw);
-                }
-            }
-        }
-
-        return cw.toByteArray();
-    }
-
     static int getASMModifiers(Modifiers modifiers) {
         int mods = 0;
         if (modifiers == null) {
@@ -187,7 +104,7 @@ public class ClassGeneratorUtil
     }
 
     static void generateMethod(String className, String fqClassName, String methodName, String returnType,
-            String[] paramTypes, int modifiers, ClassWriter cw) {
+                               String[] paramTypes, int modifiers, ClassWriter cw) {
         String[] exceptions = null;
         boolean isStatic = ((modifiers & 0x8) != 0);
 
@@ -225,9 +142,9 @@ public class ClassGeneratorUtil
 
         cv.visitMethodInsn(182, "bsh/This", "invokeMethod",
                 Type.getMethodDescriptor(Type.getType(Object.class),
-                        new Type[] { Type.getType(String.class), Type.getType(Object[].class),
+                        new Type[]{Type.getType(String.class), Type.getType(Object[].class),
                                 Type.getType(Interpreter.class), Type.getType(CallStack.class),
-                                Type.getType(SimpleNode.class), Type.getType(boolean.class) }));
+                                Type.getType(SimpleNode.class), Type.getType(boolean.class)}));
 
         cv.visitMethodInsn(184, "bsh/Primitive", "unwrap", "(Ljava/lang/Object;)Ljava/lang/Object;");
 
@@ -236,86 +153,8 @@ public class ClassGeneratorUtil
         cv.visitMaxs(0, 0);
     }
 
-    void generateConstructor(int index, String[] paramTypes, int modifiers, ClassWriter cw) {
-        int argsVar = paramTypes.length + 1;
-
-        int consArgsVar = paramTypes.length + 2;
-
-        String[] exceptions = null;
-        String methodDescriptor = getMethodDescriptor("V", paramTypes);
-
-        CodeVisitor cv = cw.visitMethod(modifiers, "<init>", methodDescriptor, exceptions);
-
-        generateParameterReifierCode(paramTypes, false, cv);
-        cv.visitVarInsn(58, argsVar);
-
-        generateConstructorSwitch(index, argsVar, consArgsVar, cv);
-
-        cv.visitVarInsn(25, 0);
-
-        cv.visitLdcInsn(this.className);
-
-        cv.visitVarInsn(25, argsVar);
-
-        cv.visitMethodInsn(184, "bsh/ClassGeneratorUtil", "initInstance",
-                "(Ljava/lang/Object;Ljava/lang/String;[Ljava/lang/Object;)V");
-
-        cv.visitInsn(177);
-
-        cv.visitMaxs(0, 0);
-    }
-
-    void generateConstructorSwitch(int consIndex, int argsVar, int consArgsVar, CodeVisitor cv) {
-        Label defaultLabel = new Label();
-        Label endLabel = new Label();
-        int cases = this.superConstructors.length + this.constructors.length;
-
-        Label[] labels = new Label[cases];
-        for (int i = 0; i < cases; i++) {
-            labels[i] = new Label();
-        }
-
-        cv.visitLdcInsn(this.superClass.getName());
-
-        cv.visitFieldInsn(178, this.fqClassName, "_bshStatic" + this.className, "Lbsh/This;");
-
-        cv.visitVarInsn(25, argsVar);
-
-        cv.visitIntInsn(16, consIndex);
-
-        cv.visitMethodInsn(184, "bsh/ClassGeneratorUtil", "getConstructorArgs",
-                "(Ljava/lang/String;Lbsh/This;[Ljava/lang/Object;I)Lbsh/ClassGeneratorUtil$ConstructorArgs;");
-
-        cv.visitVarInsn(58, consArgsVar);
-
-        cv.visitVarInsn(25, consArgsVar);
-        cv.visitFieldInsn(180, "bsh/ClassGeneratorUtil$ConstructorArgs", "selector", "I");
-
-        cv.visitTableSwitchInsn(0, cases - 1, defaultLabel, labels);
-
-        int index = 0;
-        int j;
-        for (j = 0; j < this.superConstructors.length; j++, index++) {
-            doSwitchBranch(index, this.superClassName,
-                    getTypeDescriptors(this.superConstructors[j].getParameterTypes()), endLabel, labels, consArgsVar,
-                    cv);
-        }
-
-        for (j = 0; j < this.constructors.length; j++, index++) {
-            doSwitchBranch(index, this.fqClassName, this.constructors[j].getParamTypeDescriptors(), endLabel, labels,
-                    consArgsVar, cv);
-        }
-
-        cv.visitLabel(defaultLabel);
-
-        cv.visitVarInsn(25, 0);
-        cv.visitMethodInsn(183, this.superClassName, "<init>", "()V");
-
-        cv.visitLabel(endLabel);
-    }
-
     static void doSwitchBranch(int index, String targetClassName, String[] paramTypes, Label endLabel, Label[] labels,
-            int consArgsVar, CodeVisitor cv) {
+                               int consArgsVar, CodeVisitor cv) {
         cv.visitLabel(labels[index]);
 
         cv.visitVarInsn(25, 0);
@@ -374,7 +213,7 @@ public class ClassGeneratorUtil
     }
 
     static void generateSuperDelegateMethod(String superClassName, String methodName, String returnType,
-            String[] paramTypes, int modifiers, ClassWriter cw) {
+                                            String[] paramTypes, int modifiers, ClassWriter cw) {
         String[] exceptions = null;
 
         if (returnType == null) {
@@ -402,35 +241,6 @@ public class ClassGeneratorUtil
         generatePlainReturnCode(returnType, cv);
 
         cv.visitMaxs(20, 20);
-    }
-
-    boolean classContainsMethod(Class clas, String methodName, String[] paramTypes) {
-        while (clas != null) {
-
-            Method[] methods = clas.getDeclaredMethods();
-            for (int i = 0; i < methods.length; i++) {
-
-                if (methods[i].getName().equals(methodName)) {
-
-                    String[] methodParamTypes = getTypeDescriptors(methods[i].getParameterTypes());
-
-                    boolean found = true;
-                    for (int j = 0; j < methodParamTypes.length; j++) {
-
-                        if (!paramTypes[j].equals(methodParamTypes[j])) {
-                            found = false;
-                            break;
-                        }
-                    }
-                    if (found) {
-                        return true;
-                    }
-                }
-            }
-            clas = clas.getSuperclass();
-        }
-
-        return false;
     }
 
     static void generatePlainReturnCode(String returnType, CodeVisitor cv) {
@@ -542,7 +352,7 @@ public class ClassGeneratorUtil
     }
 
     public static ConstructorArgs getConstructorArgs(String superClassName, This classStaticThis, Object[] consArgs,
-            int index) {
+                                                     int index) {
         DelayedEvalBshMethod[] constructors;
         try {
             constructors = (DelayedEvalBshMethod[]) classStaticThis.getNameSpace().getVariable("_bshConstructors");
@@ -770,6 +580,215 @@ public class ClassGeneratorUtil
         return className.substring(i + 1);
     }
 
+    public static void startInterpreterForClass(Class clas) {
+        System.out.println("starting interpreter for class: " + clas);
+        String baseName = Name.suffix(clas.getName(), 1);
+        String resName = baseName + ".bsh";
+        Reader in = new InputStreamReader(clas.getResourceAsStream(resName));
+
+        if (in == null) {
+            throw new InterpreterError("Script for BeanShell class file not found: " + resName);
+        }
+
+        Interpreter bsh = new Interpreter();
+        try {
+            bsh.eval(in, bsh.getNameSpace(), resName);
+        } catch (TargetError e) {
+            System.out.println("Script threw exception: " + e);
+            if (e.inNativeCode())
+                e.printStackTrace(System.err);
+        } catch (EvalError e) {
+            System.out.println("Evaluation Error: " + e);
+        }
+    }
+
+    public byte[] generateClass() {
+        int classMods = getASMModifiers(this.classModifiers) | 0x1;
+        if (this.isInterface) {
+            classMods |= 0x200;
+        }
+        String[] interfaceNames = new String[this.interfaces.length];
+        for (int i = 0; i < this.interfaces.length; i++) {
+            interfaceNames[i] = Type.getInternalName(this.interfaces[i]);
+        }
+        String sourceFile = "BeanShell Generated via ASM (www.objectweb.org)";
+        ClassWriter cw = new ClassWriter(true);
+        cw.visit(classMods, this.fqClassName, this.superClassName, interfaceNames, sourceFile);
+
+        if (!this.isInterface) {
+
+            generateField("_bshThis" + this.className, "Lbsh/This;", 1, cw);
+
+            generateField("_bshStatic" + this.className, "Lbsh/This;", 9, cw);
+        }
+
+        for (int j = 0; j < this.vars.length; j++) {
+
+            String type = this.vars[j].getTypeDescriptor();
+
+            if (!this.vars[j].hasModifier("private") && type != null) {
+                int modifiers;
+
+                if (this.isInterface) {
+                    modifiers = 25;
+                } else {
+                    modifiers = getASMModifiers(this.vars[j].getModifiers());
+                }
+                generateField(this.vars[j].getName(), type, modifiers, cw);
+            }
+        }
+
+        boolean hasConstructor = false;
+        int k;
+        for (k = 0; k < this.constructors.length; k++) {
+
+            if (!this.constructors[k].hasModifier("private")) {
+
+                int modifiers = getASMModifiers(this.constructors[k].getModifiers());
+                generateConstructor(k, this.constructors[k].getParamTypeDescriptors(), modifiers, cw);
+
+                hasConstructor = true;
+            }
+        }
+
+        if (!this.isInterface && !hasConstructor) {
+            generateConstructor(-1, new String[0], 1, cw);
+        }
+
+        for (k = 0; k < this.methods.length; k++) {
+
+            String returnType = this.methods[k].getReturnTypeDescriptor();
+
+            if (!this.methods[k].hasModifier("private")) {
+
+                int modifiers = getASMModifiers(this.methods[k].getModifiers());
+                if (this.isInterface) {
+                    modifiers |= 0x401;
+                }
+                generateMethod(this.className, this.fqClassName, this.methods[k].getName(), returnType,
+                        this.methods[k].getParamTypeDescriptors(), modifiers, cw);
+
+                boolean isStatic = ((modifiers & 0x8) > 0);
+                boolean overridden = classContainsMethod(this.superClass, this.methods[k].getName(),
+                        this.methods[k].getParamTypeDescriptors());
+
+                if (!isStatic && overridden) {
+                    generateSuperDelegateMethod(this.superClassName, this.methods[k].getName(), returnType,
+                            this.methods[k].getParamTypeDescriptors(), modifiers, cw);
+                }
+            }
+        }
+
+        return cw.toByteArray();
+    }
+
+    void generateConstructor(int index, String[] paramTypes, int modifiers, ClassWriter cw) {
+        int argsVar = paramTypes.length + 1;
+
+        int consArgsVar = paramTypes.length + 2;
+
+        String[] exceptions = null;
+        String methodDescriptor = getMethodDescriptor("V", paramTypes);
+
+        CodeVisitor cv = cw.visitMethod(modifiers, "<init>", methodDescriptor, exceptions);
+
+        generateParameterReifierCode(paramTypes, false, cv);
+        cv.visitVarInsn(58, argsVar);
+
+        generateConstructorSwitch(index, argsVar, consArgsVar, cv);
+
+        cv.visitVarInsn(25, 0);
+
+        cv.visitLdcInsn(this.className);
+
+        cv.visitVarInsn(25, argsVar);
+
+        cv.visitMethodInsn(184, "bsh/ClassGeneratorUtil", "initInstance",
+                "(Ljava/lang/Object;Ljava/lang/String;[Ljava/lang/Object;)V");
+
+        cv.visitInsn(177);
+
+        cv.visitMaxs(0, 0);
+    }
+
+    void generateConstructorSwitch(int consIndex, int argsVar, int consArgsVar, CodeVisitor cv) {
+        Label defaultLabel = new Label();
+        Label endLabel = new Label();
+        int cases = this.superConstructors.length + this.constructors.length;
+
+        Label[] labels = new Label[cases];
+        for (int i = 0; i < cases; i++) {
+            labels[i] = new Label();
+        }
+
+        cv.visitLdcInsn(this.superClass.getName());
+
+        cv.visitFieldInsn(178, this.fqClassName, "_bshStatic" + this.className, "Lbsh/This;");
+
+        cv.visitVarInsn(25, argsVar);
+
+        cv.visitIntInsn(16, consIndex);
+
+        cv.visitMethodInsn(184, "bsh/ClassGeneratorUtil", "getConstructorArgs",
+                "(Ljava/lang/String;Lbsh/This;[Ljava/lang/Object;I)Lbsh/ClassGeneratorUtil$ConstructorArgs;");
+
+        cv.visitVarInsn(58, consArgsVar);
+
+        cv.visitVarInsn(25, consArgsVar);
+        cv.visitFieldInsn(180, "bsh/ClassGeneratorUtil$ConstructorArgs", "selector", "I");
+
+        cv.visitTableSwitchInsn(0, cases - 1, defaultLabel, labels);
+
+        int index = 0;
+        int j;
+        for (j = 0; j < this.superConstructors.length; j++, index++) {
+            doSwitchBranch(index, this.superClassName,
+                    getTypeDescriptors(this.superConstructors[j].getParameterTypes()), endLabel, labels, consArgsVar,
+                    cv);
+        }
+
+        for (j = 0; j < this.constructors.length; j++, index++) {
+            doSwitchBranch(index, this.fqClassName, this.constructors[j].getParamTypeDescriptors(), endLabel, labels,
+                    consArgsVar, cv);
+        }
+
+        cv.visitLabel(defaultLabel);
+
+        cv.visitVarInsn(25, 0);
+        cv.visitMethodInsn(183, this.superClassName, "<init>", "()V");
+
+        cv.visitLabel(endLabel);
+    }
+
+    boolean classContainsMethod(Class clas, String methodName, String[] paramTypes) {
+        while (clas != null) {
+
+            Method[] methods = clas.getDeclaredMethods();
+            for (int i = 0; i < methods.length; i++) {
+
+                if (methods[i].getName().equals(methodName)) {
+
+                    String[] methodParamTypes = getTypeDescriptors(methods[i].getParameterTypes());
+
+                    boolean found = true;
+                    for (int j = 0; j < methodParamTypes.length; j++) {
+
+                        if (!paramTypes[j].equals(methodParamTypes[j])) {
+                            found = false;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        return true;
+                    }
+                }
+            }
+            clas = clas.getSuperclass();
+        }
+
+        return false;
+    }
+
     public static class ConstructorArgs {
         public static ConstructorArgs DEFAULT = new ConstructorArgs();
 
@@ -823,28 +842,6 @@ public class ClassGeneratorUtil
 
         public Object getObject() {
             return next();
-        }
-    }
-
-    public static void startInterpreterForClass(Class clas) {
-        System.out.println("starting interpreter for class: " + clas);
-        String baseName = Name.suffix(clas.getName(), 1);
-        String resName = baseName + ".bsh";
-        Reader in = new InputStreamReader(clas.getResourceAsStream(resName));
-
-        if (in == null) {
-            throw new InterpreterError("Script for BeanShell class file not found: " + resName);
-        }
-
-        Interpreter bsh = new Interpreter();
-        try {
-            bsh.eval(in, bsh.getNameSpace(), resName);
-        } catch (TargetError e) {
-            System.out.println("Script threw exception: " + e);
-            if (e.inNativeCode())
-                e.printStackTrace(System.err);
-        } catch (EvalError e) {
-            System.out.println("Evaluation Error: " + e);
         }
     }
 }

@@ -5,18 +5,17 @@ import org.apache.http.params.HttpParams;
 
 @Deprecated
 public class NIOReactorParamBean
-extends HttpAbstractParamBean
-{
-public NIOReactorParamBean(HttpParams params) {
-super(params);
-}
+        extends HttpAbstractParamBean {
+    public NIOReactorParamBean(HttpParams params) {
+        super(params);
+    }
 
-public void setContentBufferSize(int contentBufferSize) {
-NIOReactorParams.setContentBufferSize(this.params, contentBufferSize);
-}
+    public void setContentBufferSize(int contentBufferSize) {
+        NIOReactorParams.setContentBufferSize(this.params, contentBufferSize);
+    }
 
-public void setSelectInterval(long selectInterval) {
-NIOReactorParams.setSelectInterval(this.params, selectInterval);
-}
+    public void setSelectInterval(long selectInterval) {
+        NIOReactorParams.setSelectInterval(this.params, selectInterval);
+    }
 }
 

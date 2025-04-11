@@ -1,12 +1,5 @@
 package redis.clients.jedis;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
-
 import redis.clients.jedis.Protocol.Command;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
@@ -14,6 +7,13 @@ import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
 import redis.clients.util.SafeEncoder;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Connection {
     private String host;
@@ -23,6 +23,21 @@ public class Connection {
     private RedisInputStream inputStream;
     private int pipelinedCommands = 0;
     private int timeout = Protocol.DEFAULT_TIMEOUT;
+
+    public Connection(final String host) {
+        super();
+        this.host = host;
+    }
+
+    public Connection(final String host, final int port) {
+        super();
+        this.host = host;
+        this.port = port;
+    }
+
+    public Connection() {
+
+    }
 
     public Socket getSocket() {
         return socket;
@@ -52,11 +67,6 @@ public class Connection {
         } catch (SocketException ex) {
             throw new JedisException(ex);
         }
-    }
-
-    public Connection(final String host) {
-        super();
-        this.host = host;
     }
 
     protected void flush() {
@@ -89,12 +99,6 @@ public class Connection {
         return this;
     }
 
-    public Connection(final String host, final int port) {
-        super();
-        this.host = host;
-        this.port = port;
-    }
-
     public String getHost() {
         return host;
     }
@@ -111,19 +115,15 @@ public class Connection {
         this.port = port;
     }
 
-    public Connection() {
-
-    }
-
     public void connect() {
         if (!isConnected()) {
             try {
                 socket = new Socket();
 
                 socket.setReuseAddress(true);
-                socket.setKeepAlive(true);  
-                socket.setTcpNoDelay(true);  
-                socket.setSoLinger(true,0);  
+                socket.setKeepAlive(true);
+                socket.setTcpNoDelay(true);
+                socket.setSoLinger(true, 0);
 
                 socket.connect(new InetSocketAddress(host, port), timeout);
                 socket.setSoTimeout(timeout);
@@ -220,11 +220,11 @@ public class Connection {
         List<Object> all = new ArrayList<Object>();
         flush();
         while (pipelinedCommands > except) {
-        	try{
+            try {
                 all.add(Protocol.read(inputStream));
-        	}catch(JedisDataException e){
-        		all.add(e);
-        	}
+            } catch (JedisDataException e) {
+                all.add(e);
+            }
             pipelinedCommands--;
         }
         return all;

@@ -6,10 +6,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface C3P0ProxyConnection
-extends Connection
-{
-public static final Object RAW_CONNECTION = new Object();
+        extends Connection {
+    public static final Object RAW_CONNECTION = new Object();
 
-Object rawConnectionOperation(Method paramMethod, Object paramObject, Object[] paramArrayOfObject) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException;
+    Object rawConnectionOperation(Method paramMethod, Object paramObject, Object[] paramArrayOfObject) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException;
 }
 

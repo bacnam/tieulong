@@ -10,43 +10,42 @@ import com.zhonglian.server.websocket.def.ErrorCode;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class LongnvSacrificeInfo
-extends PlayerHandler
-{
-public static class Request
-{
-LongnvSacrificeType type;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guild = guildMember.getGuild();
 
-private static class Sacrifice {
-int level;
-int exp;
-int donateTimes;
-int crystalTimes;
+        if (guild == null) {
+            throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[]{Long.valueOf(player.getPid())});
+        }
+        int level = guild.bo.getLnlevel();
+        int exp = guild.bo.getLnexp();
+        int donateTimes = ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.LongnvDonate);
+        int crystalTimes = ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.LongnvCrystal);
 
-private Sacrifice(int level, int exp, int donateTimes, int crystalTimes) {
-this.level = level;
-this.exp = exp;
-this.donateTimes = donateTimes;
-this.crystalTimes = crystalTimes;
-}
-}
+        request.response(new Sacrifice(level, exp, donateTimes, crystalTimes, null));
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guild = guildMember.getGuild();
+    public static class Request {
+        LongnvSacrificeType type;
+    }
 
-if (guild == null) {
-throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[] { Long.valueOf(player.getPid()) });
-}
-int level = guild.bo.getLnlevel();
-int exp = guild.bo.getLnexp();
-int donateTimes = ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.LongnvDonate);
-int crystalTimes = ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.LongnvCrystal);
+    private static class Sacrifice {
+        int level;
+        int exp;
+        int donateTimes;
+        int crystalTimes;
 
-request.response(new Sacrifice(level, exp, donateTimes, crystalTimes, null));
-}
+        private Sacrifice(int level, int exp, int donateTimes, int crystalTimes) {
+            this.level = level;
+            this.exp = exp;
+            this.donateTimes = donateTimes;
+            this.crystalTimes = crystalTimes;
+        }
+    }
 }
 

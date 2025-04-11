@@ -1,6 +1,6 @@
 package org.apache.commons.codec;
 
 public interface BinaryEncoder extends Encoder {
-  byte[] encode(byte[] paramArrayOfbyte) throws EncoderException;
+    byte[] encode(byte[] paramArrayOfbyte) throws EncoderException;
 }
 

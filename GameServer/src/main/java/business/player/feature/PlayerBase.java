@@ -14,11 +14,8 @@ import business.global.worldboss.WorldBossMgr;
 import business.player.Player;
 import business.player.PlayerMgr;
 import business.player.feature.achievement.AchievementFeature;
-import business.player.feature.character.CharFeature;
+import business.player.feature.character.*;
 import business.player.feature.character.Character;
-import business.player.feature.character.DressFeature;
-import business.player.feature.character.Equip;
-import business.player.feature.character.WarSpiritFeature;
 import business.player.feature.features.MailFeature;
 import business.player.feature.features.PlayerRecord;
 import business.player.feature.features.RechargeFeature;
@@ -32,14 +29,7 @@ import business.player.feature.store.PlayerStore;
 import business.player.feature.store.StoreFeature;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.zhonglian.server.common.enums.Achievement;
-import com.zhonglian.server.common.enums.Attribute;
-import com.zhonglian.server.common.enums.ConstEnum;
-import com.zhonglian.server.common.enums.DressType;
-import com.zhonglian.server.common.enums.EquipPos;
-import com.zhonglian.server.common.enums.InstanceType;
-import com.zhonglian.server.common.enums.RankType;
-import com.zhonglian.server.common.enums.StoreType;
+import com.zhonglian.server.common.enums.*;
 import com.zhonglian.server.common.utils.CommTime;
 import com.zhonglian.server.http.client.IResponseHandler;
 import com.zhonglian.server.http.server.GMParam;
@@ -50,19 +40,12 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefGuildJobInfo;
 import core.config.refdata.ref.RefRobot;
 import core.config.refdata.ref.RefVIP;
-import core.database.game.bo.CharacterBO;
-import core.database.game.bo.DressBO;
-import core.database.game.bo.InstanceInfoBO;
-import core.database.game.bo.PlayerBO;
-import core.database.game.bo.WorldBossBO;
-import core.network.proto.Player;
+import core.database.game.bo.*;
 import core.network.proto.WarSpiritInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import proto.gamezone.Player;
 
 public class PlayerBase
         extends Feature {

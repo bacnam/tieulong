@@ -1,126 +1,132 @@
 package bsh;
 
 class SimpleNode
-implements Node
-{
-public static SimpleNode JAVACODE = new SimpleNode(-1)
-{
-public String getSourceFile() {
-return "<Called from Java Code>";
-}
+        implements Node {
+    public static SimpleNode JAVACODE = new SimpleNode(-1) {
+        public String getSourceFile() {
+            return "<Called from Java Code>";
+        }
 
-public int getLineNumber() {
-return -1;
-}
+        public int getLineNumber() {
+            return -1;
+        }
 
-public String getText() {
-return "<Compiled Java Code>";
-}
-};
+        public String getText() {
+            return "<Compiled Java Code>";
+        }
+    };
 
-protected Node parent;
-protected Node[] children;
-protected int id;
-Token firstToken;
-Token lastToken;
-String sourceFile;
+    protected Node parent;
+    protected Node[] children;
+    protected int id;
+    Token firstToken;
+    Token lastToken;
+    String sourceFile;
 
-public SimpleNode(int i) {
-this.id = i;
-}
+    public SimpleNode(int i) {
+        this.id = i;
+    }
 
-public void jjtOpen() {}
-public void jjtClose() {}
+    public void jjtOpen() {
+    }
 
-public void jjtSetParent(Node n) { this.parent = n; } public Node jjtGetParent() {
-return this.parent;
-}
+    public void jjtClose() {
+    }
 
-public void jjtAddChild(Node n, int i) {
-if (this.children == null) {
-this.children = new Node[i + 1];
-}
-else if (i >= this.children.length) {
+    public void jjtSetParent(Node n) {
+        this.parent = n;
+    }
 
-Node[] c = new Node[i + 1];
-System.arraycopy(this.children, 0, c, 0, this.children.length);
-this.children = c;
-} 
+    public Node jjtGetParent() {
+        return this.parent;
+    }
 
-this.children[i] = n;
-}
+    public void jjtAddChild(Node n, int i) {
+        if (this.children == null) {
+            this.children = new Node[i + 1];
+        } else if (i >= this.children.length) {
 
-public Node jjtGetChild(int i) {
-return this.children[i];
-}
-public SimpleNode getChild(int i) {
-return (SimpleNode)jjtGetChild(i);
-}
+            Node[] c = new Node[i + 1];
+            System.arraycopy(this.children, 0, c, 0, this.children.length);
+            this.children = c;
+        }
 
-public int jjtGetNumChildren() {
-return (this.children == null) ? 0 : this.children.length;
-}
+        this.children[i] = n;
+    }
 
-public String toString() {
-return ParserTreeConstants.jjtNodeName[this.id]; } public String toString(String prefix) {
-return prefix + toString();
-}
+    public Node jjtGetChild(int i) {
+        return this.children[i];
+    }
 
-public void dump(String prefix) {
-System.out.println(toString(prefix));
-if (this.children != null)
-{
-for (int i = 0; i < this.children.length; i++) {
+    public SimpleNode getChild(int i) {
+        return (SimpleNode) jjtGetChild(i);
+    }
 
-SimpleNode n = (SimpleNode)this.children[i];
-if (n != null)
-{
-n.dump(prefix + " ");
-}
-} 
-}
-}
+    public int jjtGetNumChildren() {
+        return (this.children == null) ? 0 : this.children.length;
+    }
 
-public void prune() {
-jjtSetParent(null);
-}
+    public String toString() {
+        return ParserTreeConstants.jjtNodeName[this.id];
+    }
 
-public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
-throw new InterpreterError("Unimplemented or inappropriate for " + getClass().getName());
-}
+    public String toString(String prefix) {
+        return prefix + toString();
+    }
 
-public void setSourceFile(String sourceFile) {
-this.sourceFile = sourceFile;
-}
+    public void dump(String prefix) {
+        System.out.println(toString(prefix));
+        if (this.children != null) {
+            for (int i = 0; i < this.children.length; i++) {
 
-public String getSourceFile() {
-if (this.sourceFile == null) {
-if (this.parent != null) {
-return ((SimpleNode)this.parent).getSourceFile();
-}
-return "<unknown file>";
-} 
-return this.sourceFile;
-}
+                SimpleNode n = (SimpleNode) this.children[i];
+                if (n != null) {
+                    n.dump(prefix + " ");
+                }
+            }
+        }
+    }
 
-public int getLineNumber() {
-return this.firstToken.beginLine;
-}
+    public void prune() {
+        jjtSetParent(null);
+    }
 
-public String getText() {
-StringBuffer text = new StringBuffer();
-Token t = this.firstToken;
-while (t != null) {
-text.append(t.image);
-if (!t.image.equals("."))
-text.append(" "); 
-if (t == this.lastToken || t.image.equals("{") || t.image.equals(";")) {
-break;
-}
-t = t.next;
-} 
+    public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
+        throw new InterpreterError("Unimplemented or inappropriate for " + getClass().getName());
+    }
 
-return text.toString();
-}
+    public String getSourceFile() {
+        if (this.sourceFile == null) {
+            if (this.parent != null) {
+                return ((SimpleNode) this.parent).getSourceFile();
+            }
+            return "<unknown file>";
+        }
+        return this.sourceFile;
+    }
+
+    public void setSourceFile(String sourceFile) {
+        this.sourceFile = sourceFile;
+    }
+
+    public int getLineNumber() {
+        return this.firstToken.beginLine;
+    }
+
+    public String getText() {
+        StringBuffer text = new StringBuffer();
+        Token t = this.firstToken;
+        while (t != null) {
+            text.append(t.image);
+            if (!t.image.equals("."))
+                text.append(" ");
+            if (t == this.lastToken || t.image.equals("{") || t.image.equals(";")) {
+                break;
+            }
+            t = t.next;
+        }
+
+        return text.toString();
+    }
 }
 

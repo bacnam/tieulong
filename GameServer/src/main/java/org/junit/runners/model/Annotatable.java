@@ -3,8 +3,8 @@ package org.junit.runners.model;
 import java.lang.annotation.Annotation;
 
 public interface Annotatable {
-  Annotation[] getAnnotations();
+    Annotation[] getAnnotations();
 
-  <T extends Annotation> T getAnnotation(Class<T> paramClass);
+    <T extends Annotation> T getAnnotation(Class<T> paramClass);
 }
 

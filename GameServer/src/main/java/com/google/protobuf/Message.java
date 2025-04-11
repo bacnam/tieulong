@@ -1,81 +1,92 @@
-
-
 package com.google.protobuf;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 public interface Message extends MessageLite, MessageOrBuilder {
 
-  Parser<? extends Message> getParserForType();
+    Parser<? extends Message> getParserForType();
 
-  @Override
-  boolean equals(Object other);
+    @Override
+    boolean equals(Object other);
 
-  @Override
-  int hashCode();
+    @Override
+    int hashCode();
 
-  @Override
-  String toString();
+    @Override
+    String toString();
 
-  Builder newBuilderForType();
-  Builder toBuilder();
+    Builder newBuilderForType();
 
-  interface Builder extends MessageLite.Builder, MessageOrBuilder {
+    Builder toBuilder();
 
-    Builder clear();
+    interface Builder extends MessageLite.Builder, MessageOrBuilder {
 
-    Builder mergeFrom(Message other);
+        Builder clear();
 
-    Message build();
-    Message buildPartial();
-    Builder clone();
-    Builder mergeFrom(CodedInputStream input) throws IOException;
-    Builder mergeFrom(CodedInputStream input,
-                      ExtensionRegistryLite extensionRegistry)
-                      throws IOException;
+        Builder mergeFrom(Message other);
 
-    Descriptors.Descriptor getDescriptorForType();
+        Message build();
 
-    Builder newBuilderForField(Descriptors.FieldDescriptor field);
+        Message buildPartial();
 
-    Builder getFieldBuilder(Descriptors.FieldDescriptor field);
+        Builder clone();
 
-    Builder setField(Descriptors.FieldDescriptor field, Object value);
+        Builder mergeFrom(CodedInputStream input) throws IOException;
 
-    Builder clearField(Descriptors.FieldDescriptor field);
+        Builder mergeFrom(CodedInputStream input,
+                          ExtensionRegistryLite extensionRegistry)
+                throws IOException;
 
-    Builder setRepeatedField(Descriptors.FieldDescriptor field,
-                             int index, Object value);
+        Descriptors.Descriptor getDescriptorForType();
 
-    Builder addRepeatedField(Descriptors.FieldDescriptor field, Object value);
+        Builder newBuilderForField(Descriptors.FieldDescriptor field);
 
-    Builder setUnknownFields(UnknownFieldSet unknownFields);
+        Builder getFieldBuilder(Descriptors.FieldDescriptor field);
 
-    Builder mergeUnknownFields(UnknownFieldSet unknownFields);
+        Builder setField(Descriptors.FieldDescriptor field, Object value);
 
-    Builder mergeFrom(ByteString data) throws InvalidProtocolBufferException;
-    Builder mergeFrom(ByteString data,
-                      ExtensionRegistryLite extensionRegistry)
-                      throws InvalidProtocolBufferException;
-    Builder mergeFrom(byte[] data) throws InvalidProtocolBufferException;
-    Builder mergeFrom(byte[] data, int off, int len)
-                      throws InvalidProtocolBufferException;
-    Builder mergeFrom(byte[] data,
-                      ExtensionRegistryLite extensionRegistry)
-                      throws InvalidProtocolBufferException;
-    Builder mergeFrom(byte[] data, int off, int len,
-                      ExtensionRegistryLite extensionRegistry)
-                      throws InvalidProtocolBufferException;
-    Builder mergeFrom(InputStream input) throws IOException;
-    Builder mergeFrom(InputStream input,
-                      ExtensionRegistryLite extensionRegistry)
-                      throws IOException;
-    boolean mergeDelimitedFrom(InputStream input)
-                               throws IOException;
-    boolean mergeDelimitedFrom(InputStream input,
-                               ExtensionRegistryLite extensionRegistry)
-                               throws IOException;
-  }
+        Builder clearField(Descriptors.FieldDescriptor field);
+
+        Builder setRepeatedField(Descriptors.FieldDescriptor field,
+                                 int index, Object value);
+
+        Builder addRepeatedField(Descriptors.FieldDescriptor field, Object value);
+
+        Builder setUnknownFields(UnknownFieldSet unknownFields);
+
+        Builder mergeUnknownFields(UnknownFieldSet unknownFields);
+
+        Builder mergeFrom(ByteString data) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(ByteString data,
+                          ExtensionRegistryLite extensionRegistry)
+                throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data, int off, int len)
+                throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data,
+                          ExtensionRegistryLite extensionRegistry)
+                throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data, int off, int len,
+                          ExtensionRegistryLite extensionRegistry)
+                throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(InputStream input) throws IOException;
+
+        Builder mergeFrom(InputStream input,
+                          ExtensionRegistryLite extensionRegistry)
+                throws IOException;
+
+        boolean mergeDelimitedFrom(InputStream input)
+                throws IOException;
+
+        boolean mergeDelimitedFrom(InputStream input,
+                                   ExtensionRegistryLite extensionRegistry)
+                throws IOException;
+    }
 }

@@ -5,6 +5,6 @@ import org.apache.http.HttpRequest;
 import org.apache.http.protocol.HttpContext;
 
 public interface ContextAwareAuthScheme extends AuthScheme {
-  Header authenticate(Credentials paramCredentials, HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws AuthenticationException;
+    Header authenticate(Credentials paramCredentials, HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws AuthenticationException;
 }
 

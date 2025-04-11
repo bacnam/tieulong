@@ -1,8 +1,8 @@
 package jsc.statistics;
 
 public interface Statistic {
-  int getN();
+    int getN();
 
-  double getStatistic();
+    double getStatistic();
 }
 

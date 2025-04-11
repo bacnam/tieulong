@@ -2,139 +2,146 @@ package com.google.common.collect;
 
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
+
+import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
-import javax.annotation.Nullable;
 
 final class RegularImmutableSortedMultiset<E>
-extends ImmutableSortedMultiset<E>
-{
-final transient ImmutableList<CumulativeCountEntry<E>> entries;
+        extends ImmutableSortedMultiset<E> {
+    final transient ImmutableList<CumulativeCountEntry<E>> entries;
 
-private static final class CumulativeCountEntry<E>
-extends Multisets.AbstractEntry<E>
-{
-final E element;
-final int count;
-final long cumulativeCount;
+    RegularImmutableSortedMultiset(Comparator<? super E> comparator, ImmutableList<CumulativeCountEntry<E>> entries) {
+        super(comparator);
+        this.entries = entries;
+        assert !entries.isEmpty();
+    }
 
-CumulativeCountEntry(E element, int count, @Nullable CumulativeCountEntry<E> previous) {
-this.element = element;
-this.count = count;
-this.cumulativeCount = count + ((previous == null) ? 0L : previous.cumulativeCount);
-}
+    static <E> RegularImmutableSortedMultiset<E> createFromSorted(Comparator<? super E> comparator, List<? extends Multiset.Entry<E>> entries) {
+        List<CumulativeCountEntry<E>> newEntries = Lists.newArrayListWithCapacity(entries.size());
+        CumulativeCountEntry<E> previous = null;
+        for (Multiset.Entry<E> entry : entries) {
+            newEntries.add(previous = new CumulativeCountEntry<E>(entry.getElement(), entry.getCount(), previous));
+        }
 
-public E getElement() {
-return this.element;
-}
+        return new RegularImmutableSortedMultiset<E>(comparator, ImmutableList.copyOf(newEntries));
+    }
 
-public int getCount() {
-return this.count;
-}
-}
+    ImmutableList<E> elementList() {
+        return new TransformedImmutableList<CumulativeCountEntry<E>, E>(this.entries) {
+            E transform(RegularImmutableSortedMultiset.CumulativeCountEntry<E> entry) {
+                return entry.getElement();
+            }
+        };
+    }
 
-static <E> RegularImmutableSortedMultiset<E> createFromSorted(Comparator<? super E> comparator, List<? extends Multiset.Entry<E>> entries) {
-List<CumulativeCountEntry<E>> newEntries = Lists.newArrayListWithCapacity(entries.size());
-CumulativeCountEntry<E> previous = null;
-for (Multiset.Entry<E> entry : entries) {
-newEntries.add(previous = new CumulativeCountEntry<E>(entry.getElement(), entry.getCount(), previous));
-}
+    ImmutableSortedSet<E> createElementSet() {
+        return new RegularImmutableSortedSet<E>(elementList(), comparator());
+    }
 
-return new RegularImmutableSortedMultiset<E>(comparator, ImmutableList.copyOf(newEntries));
-}
+    ImmutableSortedSet<E> createDescendingElementSet() {
+        return new RegularImmutableSortedSet<E>(elementList().reverse(), reverseComparator());
+    }
 
-RegularImmutableSortedMultiset(Comparator<? super E> comparator, ImmutableList<CumulativeCountEntry<E>> entries) {
-super(comparator);
-this.entries = entries;
-assert !entries.isEmpty();
-}
+    UnmodifiableIterator<Multiset.Entry<E>> entryIterator() {
+        return this.entries.iterator();
+    }
 
-ImmutableList<E> elementList() {
-return new TransformedImmutableList<CumulativeCountEntry<E>, E>(this.entries)
-{
-E transform(RegularImmutableSortedMultiset.CumulativeCountEntry<E> entry) {
-return entry.getElement();
-}
-};
-}
+    UnmodifiableIterator<Multiset.Entry<E>> descendingEntryIterator() {
+        return this.entries.reverse().iterator();
+    }
 
-ImmutableSortedSet<E> createElementSet() {
-return new RegularImmutableSortedSet<E>(elementList(), comparator());
-}
+    public CumulativeCountEntry<E> firstEntry() {
+        return this.entries.get(0);
+    }
 
-ImmutableSortedSet<E> createDescendingElementSet() {
-return new RegularImmutableSortedSet<E>(elementList().reverse(), reverseComparator());
-}
+    public CumulativeCountEntry<E> lastEntry() {
+        return this.entries.get(this.entries.size() - 1);
+    }
 
-UnmodifiableIterator<Multiset.Entry<E>> entryIterator() {
-return this.entries.iterator();
-}
+    public int size() {
+        CumulativeCountEntry<E> firstEntry = firstEntry();
+        CumulativeCountEntry<E> lastEntry = lastEntry();
+        return Ints.saturatedCast(lastEntry.cumulativeCount - firstEntry.cumulativeCount + firstEntry.count);
+    }
 
-UnmodifiableIterator<Multiset.Entry<E>> descendingEntryIterator() {
-return this.entries.reverse().iterator();
-}
+    int distinctElements() {
+        return this.entries.size();
+    }
 
-public CumulativeCountEntry<E> firstEntry() {
-return this.entries.get(0);
-}
+    boolean isPartialView() {
+        return this.entries.isPartialView();
+    }
 
-public CumulativeCountEntry<E> lastEntry() {
-return this.entries.get(this.entries.size() - 1);
-}
+    public int count(@Nullable Object element) {
+        if (element == null) {
+            return 0;
+        }
+        try {
+            int index = SortedLists.binarySearch(elementList(), (E) element, comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.INVERTED_INSERTION_INDEX);
 
-public int size() {
-CumulativeCountEntry<E> firstEntry = firstEntry();
-CumulativeCountEntry<E> lastEntry = lastEntry();
-return Ints.saturatedCast(lastEntry.cumulativeCount - firstEntry.cumulativeCount + firstEntry.count);
-}
+            return (index >= 0) ? ((CumulativeCountEntry) this.entries.get(index)).getCount() : 0;
+        } catch (ClassCastException e) {
+            return 0;
+        }
+    }
 
-int distinctElements() {
-return this.entries.size();
-}
+    public ImmutableSortedMultiset<E> headMultiset(E upperBound, BoundType boundType) {
+        int index;
+        switch (boundType) {
+            case OPEN:
+                index = SortedLists.binarySearch(elementList(), (E) Preconditions.checkNotNull(upperBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_HIGHER);
 
-boolean isPartialView() {
-return this.entries.isPartialView();
-}
+                return createSubMultiset(0, index);
+            case CLOSED:
+                index = SortedLists.<E>binarySearch(elementList(), (E) Preconditions.checkNotNull(upperBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_LOWER) + 1;
+                return createSubMultiset(0, index);
+        }
+        throw new AssertionError();
+    }
 
-public int count(@Nullable Object element) {
-if (element == null) {
-return 0;
-}
-try {
-int index = SortedLists.binarySearch(elementList(), (E)element, comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.INVERTED_INSERTION_INDEX);
+    public ImmutableSortedMultiset<E> tailMultiset(E lowerBound, BoundType boundType) {
+        int index;
+        switch (boundType) {
+            case OPEN:
+                index = SortedLists.<E>binarySearch(elementList(), (E) Preconditions.checkNotNull(lowerBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_LOWER) + 1;
 
-return (index >= 0) ? ((CumulativeCountEntry)this.entries.get(index)).getCount() : 0;
-} catch (ClassCastException e) {
-return 0;
-} 
-}
+                return createSubMultiset(index, distinctElements());
+            case CLOSED:
+                index = SortedLists.binarySearch(elementList(), (E) Preconditions.checkNotNull(lowerBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_HIGHER);
+                return createSubMultiset(index, distinctElements());
+        }
+        throw new AssertionError();
+    }
 
-public ImmutableSortedMultiset<E> headMultiset(E upperBound, BoundType boundType) {
-int index;
-switch (boundType) {
-case OPEN:
-index = SortedLists.binarySearch(elementList(), (E)Preconditions.checkNotNull(upperBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_HIGHER);
+    private ImmutableSortedMultiset<E> createSubMultiset(int newFromIndex, int newToIndex) {
+        if (newFromIndex == 0 && newToIndex == this.entries.size())
+            return this;
+        if (newFromIndex >= newToIndex) {
+            return emptyMultiset(comparator());
+        }
+        return new RegularImmutableSortedMultiset(comparator(), this.entries.subList(newFromIndex, newToIndex));
+    }
 
-return createSubMultiset(0, index);case CLOSED: index = SortedLists.<E>binarySearch(elementList(), (E)Preconditions.checkNotNull(upperBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_LOWER) + 1; return createSubMultiset(0, index);
-} 
-throw new AssertionError();
-}
-public ImmutableSortedMultiset<E> tailMultiset(E lowerBound, BoundType boundType) {
-int index;
-switch (boundType) {
-case OPEN:
-index = SortedLists.<E>binarySearch(elementList(), (E)Preconditions.checkNotNull(lowerBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_LOWER) + 1;
+    private static final class CumulativeCountEntry<E>
+            extends Multisets.AbstractEntry<E> {
+        final E element;
+        final int count;
+        final long cumulativeCount;
 
-return createSubMultiset(index, distinctElements());case CLOSED: index = SortedLists.binarySearch(elementList(), (E)Preconditions.checkNotNull(lowerBound), comparator(), SortedLists.KeyPresentBehavior.ANY_PRESENT, SortedLists.KeyAbsentBehavior.NEXT_HIGHER); return createSubMultiset(index, distinctElements());
-} 
-throw new AssertionError();
-} private ImmutableSortedMultiset<E> createSubMultiset(int newFromIndex, int newToIndex) {
-if (newFromIndex == 0 && newToIndex == this.entries.size())
-return this; 
-if (newFromIndex >= newToIndex) {
-return emptyMultiset(comparator());
-}
-return new RegularImmutableSortedMultiset(comparator(), this.entries.subList(newFromIndex, newToIndex));
-}
+        CumulativeCountEntry(E element, int count, @Nullable CumulativeCountEntry<E> previous) {
+            this.element = element;
+            this.count = count;
+            this.cumulativeCount = count + ((previous == null) ? 0L : previous.cumulativeCount);
+        }
+
+        public E getElement() {
+            return this.element;
+        }
+
+        public int getCount() {
+            return this.count;
+        }
+    }
 }
 

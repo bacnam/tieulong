@@ -8,23 +8,22 @@ import ch.qos.logback.core.sift.SiftingAppenderBase;
 import org.slf4j.Marker;
 
 public class SiftingAppender
-extends SiftingAppenderBase<ILoggingEvent>
-{
-protected long getTimestamp(ILoggingEvent event) {
-return event.getTimeStamp();
-}
+        extends SiftingAppenderBase<ILoggingEvent> {
+    protected long getTimestamp(ILoggingEvent event) {
+        return event.getTimeStamp();
+    }
 
-@DefaultClass(MDCBasedDiscriminator.class)
-public void setDiscriminator(Discriminator<ILoggingEvent> discriminator) {
-super.setDiscriminator(discriminator);
-}
+    @DefaultClass(MDCBasedDiscriminator.class)
+    public void setDiscriminator(Discriminator<ILoggingEvent> discriminator) {
+        super.setDiscriminator(discriminator);
+    }
 
-protected boolean eventMarksEndOfLife(ILoggingEvent event) {
-Marker marker = event.getMarker();
-if (marker == null) {
-return false;
-}
-return marker.contains(ClassicConstants.FINALIZE_SESSION_MARKER);
-}
+    protected boolean eventMarksEndOfLife(ILoggingEvent event) {
+        Marker marker = event.getMarker();
+        if (marker == null) {
+            return false;
+        }
+        return marker.contains(ClassicConstants.FINALIZE_SESSION_MARKER);
+    }
 }
 

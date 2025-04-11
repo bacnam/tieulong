@@ -1,16 +1,16 @@
 package org.apache.http;
 
 public interface HttpConnectionMetrics {
-  long getRequestCount();
+    long getRequestCount();
 
-  long getResponseCount();
+    long getResponseCount();
 
-  long getSentBytesCount();
+    long getSentBytesCount();
 
-  long getReceivedBytesCount();
+    long getReceivedBytesCount();
 
-  Object getMetric(String paramString);
+    Object getMetric(String paramString);
 
-  void reset();
+    void reset();
 }
 

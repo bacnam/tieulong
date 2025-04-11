@@ -5,142 +5,143 @@ import org.apache.http.util.Args;
 
 @Immutable
 public class SocketConfig
-implements Cloneable
-{
-public static final SocketConfig DEFAULT = (new Builder()).build();
+        implements Cloneable {
+    public static final SocketConfig DEFAULT = (new Builder()).build();
 
-private final int soTimeout;
+    private final int soTimeout;
 
-private final boolean soReuseAddress;
+    private final boolean soReuseAddress;
 
-private final int soLinger;
+    private final int soLinger;
 
-private final boolean soKeepAlive;
+    private final boolean soKeepAlive;
 
-private final boolean tcpNoDelay;
+    private final boolean tcpNoDelay;
 
-private final int sndBufSize;
+    private final int sndBufSize;
 
-private final int rcvBufSize;
+    private final int rcvBufSize;
 
-private int backlogSize;
+    private int backlogSize;
 
-SocketConfig(int soTimeout, boolean soReuseAddress, int soLinger, boolean soKeepAlive, boolean tcpNoDelay, int sndBufSize, int rcvBufSize, int backlogSize) {
-this.soTimeout = soTimeout;
-this.soReuseAddress = soReuseAddress;
-this.soLinger = soLinger;
-this.soKeepAlive = soKeepAlive;
-this.tcpNoDelay = tcpNoDelay;
-this.sndBufSize = sndBufSize;
-this.rcvBufSize = rcvBufSize;
-this.backlogSize = backlogSize;
-}
+    SocketConfig(int soTimeout, boolean soReuseAddress, int soLinger, boolean soKeepAlive, boolean tcpNoDelay, int sndBufSize, int rcvBufSize, int backlogSize) {
+        this.soTimeout = soTimeout;
+        this.soReuseAddress = soReuseAddress;
+        this.soLinger = soLinger;
+        this.soKeepAlive = soKeepAlive;
+        this.tcpNoDelay = tcpNoDelay;
+        this.sndBufSize = sndBufSize;
+        this.rcvBufSize = rcvBufSize;
+        this.backlogSize = backlogSize;
+    }
 
-public int getSoTimeout() {
-return this.soTimeout;
-}
+    public static Builder custom() {
+        return new Builder();
+    }
 
-public boolean isSoReuseAddress() {
-return this.soReuseAddress;
-}
+    public static Builder copy(SocketConfig config) {
+        Args.notNull(config, "Socket config");
+        return (new Builder()).setSoTimeout(config.getSoTimeout()).setSoReuseAddress(config.isSoReuseAddress()).setSoLinger(config.getSoLinger()).setSoKeepAlive(config.isSoKeepAlive()).setTcpNoDelay(config.isTcpNoDelay()).setSndBufSize(config.getSndBufSize()).setRcvBufSize(config.getRcvBufSize()).setBacklogSize(config.getBacklogSize());
+    }
 
-public int getSoLinger() {
-return this.soLinger;
-}
+    public int getSoTimeout() {
+        return this.soTimeout;
+    }
 
-public boolean isSoKeepAlive() {
-return this.soKeepAlive;
-}
+    public boolean isSoReuseAddress() {
+        return this.soReuseAddress;
+    }
 
-public boolean isTcpNoDelay() {
-return this.tcpNoDelay;
-}
+    public int getSoLinger() {
+        return this.soLinger;
+    }
 
-public int getSndBufSize() {
-return this.sndBufSize;
-}
+    public boolean isSoKeepAlive() {
+        return this.soKeepAlive;
+    }
 
-public int getRcvBufSize() {
-return this.rcvBufSize;
-}
+    public boolean isTcpNoDelay() {
+        return this.tcpNoDelay;
+    }
 
-public int getBacklogSize() {
-return this.backlogSize;
-}
+    public int getSndBufSize() {
+        return this.sndBufSize;
+    }
 
-protected SocketConfig clone() throws CloneNotSupportedException {
-return (SocketConfig)super.clone();
-}
+    public int getRcvBufSize() {
+        return this.rcvBufSize;
+    }
 
-public String toString() {
-StringBuilder builder = new StringBuilder();
-builder.append("[soTimeout=").append(this.soTimeout).append(", soReuseAddress=").append(this.soReuseAddress).append(", soLinger=").append(this.soLinger).append(", soKeepAlive=").append(this.soKeepAlive).append(", tcpNoDelay=").append(this.tcpNoDelay).append(", sndBufSize=").append(this.sndBufSize).append(", rcvBufSize=").append(this.rcvBufSize).append(", backlogSize=").append(this.backlogSize).append("]");
+    public int getBacklogSize() {
+        return this.backlogSize;
+    }
 
-return builder.toString();
-}
+    protected SocketConfig clone() throws CloneNotSupportedException {
+        return (SocketConfig) super.clone();
+    }
 
-public static Builder custom() {
-return new Builder();
-}
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[soTimeout=").append(this.soTimeout).append(", soReuseAddress=").append(this.soReuseAddress).append(", soLinger=").append(this.soLinger).append(", soKeepAlive=").append(this.soKeepAlive).append(", tcpNoDelay=").append(this.tcpNoDelay).append(", sndBufSize=").append(this.sndBufSize).append(", rcvBufSize=").append(this.rcvBufSize).append(", backlogSize=").append(this.backlogSize).append("]");
 
-public static Builder copy(SocketConfig config) {
-Args.notNull(config, "Socket config");
-return (new Builder()).setSoTimeout(config.getSoTimeout()).setSoReuseAddress(config.isSoReuseAddress()).setSoLinger(config.getSoLinger()).setSoKeepAlive(config.isSoKeepAlive()).setTcpNoDelay(config.isTcpNoDelay()).setSndBufSize(config.getSndBufSize()).setRcvBufSize(config.getRcvBufSize()).setBacklogSize(config.getBacklogSize());
-}
+        return builder.toString();
+    }
 
-public static class Builder
-{
-private int soTimeout;
+    public static class Builder {
+        private int soTimeout;
 
-private boolean soReuseAddress;
+        private boolean soReuseAddress;
 
-private int soLinger = -1;
-private boolean soKeepAlive;
-private boolean tcpNoDelay = true;
+        private int soLinger = -1;
+        private boolean soKeepAlive;
+        private boolean tcpNoDelay = true;
+        private int sndBufSize;
+        private int rcvBufSize;
+        private int backlogSize;
 
-public Builder setSoTimeout(int soTimeout) {
-this.soTimeout = soTimeout;
-return this;
-}
-private int sndBufSize; private int rcvBufSize; private int backlogSize;
-public Builder setSoReuseAddress(boolean soReuseAddress) {
-this.soReuseAddress = soReuseAddress;
-return this;
-}
+        public Builder setSoTimeout(int soTimeout) {
+            this.soTimeout = soTimeout;
+            return this;
+        }
 
-public Builder setSoLinger(int soLinger) {
-this.soLinger = soLinger;
-return this;
-}
+        public Builder setSoReuseAddress(boolean soReuseAddress) {
+            this.soReuseAddress = soReuseAddress;
+            return this;
+        }
 
-public Builder setSoKeepAlive(boolean soKeepAlive) {
-this.soKeepAlive = soKeepAlive;
-return this;
-}
+        public Builder setSoLinger(int soLinger) {
+            this.soLinger = soLinger;
+            return this;
+        }
 
-public Builder setTcpNoDelay(boolean tcpNoDelay) {
-this.tcpNoDelay = tcpNoDelay;
-return this;
-}
+        public Builder setSoKeepAlive(boolean soKeepAlive) {
+            this.soKeepAlive = soKeepAlive;
+            return this;
+        }
 
-public Builder setSndBufSize(int sndBufSize) {
-this.sndBufSize = sndBufSize;
-return this;
-}
+        public Builder setTcpNoDelay(boolean tcpNoDelay) {
+            this.tcpNoDelay = tcpNoDelay;
+            return this;
+        }
 
-public Builder setRcvBufSize(int rcvBufSize) {
-this.rcvBufSize = rcvBufSize;
-return this;
-}
+        public Builder setSndBufSize(int sndBufSize) {
+            this.sndBufSize = sndBufSize;
+            return this;
+        }
 
-public Builder setBacklogSize(int backlogSize) {
-this.backlogSize = backlogSize;
-return this;
-}
+        public Builder setRcvBufSize(int rcvBufSize) {
+            this.rcvBufSize = rcvBufSize;
+            return this;
+        }
 
-public SocketConfig build() {
-return new SocketConfig(this.soTimeout, this.soReuseAddress, this.soLinger, this.soKeepAlive, this.tcpNoDelay, this.sndBufSize, this.rcvBufSize, this.backlogSize);
-}
-}
+        public Builder setBacklogSize(int backlogSize) {
+            this.backlogSize = backlogSize;
+            return this;
+        }
+
+        public SocketConfig build() {
+            return new SocketConfig(this.soTimeout, this.soReuseAddress, this.soLinger, this.soKeepAlive, this.tcpNoDelay, this.sndBufSize, this.rcvBufSize, this.backlogSize);
+        }
+    }
 }
 

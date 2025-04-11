@@ -3,798 +3,798 @@ package com.mysql.jdbc;
 import java.sql.SQLException;
 
 public interface ConnectionProperties {
-  String exposeAsXml() throws SQLException;
+    String exposeAsXml() throws SQLException;
 
-  boolean getAllowLoadLocalInfile();
+    boolean getAllowLoadLocalInfile();
 
-  boolean getAllowMultiQueries();
+    void setAllowLoadLocalInfile(boolean paramBoolean);
 
-  boolean getAllowNanAndInf();
+    boolean getAllowMultiQueries();
 
-  boolean getAllowUrlInLocalInfile();
+    void setAllowMultiQueries(boolean paramBoolean);
 
-  boolean getAlwaysSendSetIsolation();
+    boolean getAllowNanAndInf();
 
-  boolean getAutoDeserialize();
+    void setAllowNanAndInf(boolean paramBoolean);
 
-  boolean getAutoGenerateTestcaseScript();
+    boolean getAllowUrlInLocalInfile();
 
-  boolean getAutoReconnectForPools();
+    void setAllowUrlInLocalInfile(boolean paramBoolean);
 
-  int getBlobSendChunkSize();
+    boolean getAlwaysSendSetIsolation();
 
-  boolean getCacheCallableStatements();
+    void setAlwaysSendSetIsolation(boolean paramBoolean);
 
-  boolean getCachePreparedStatements();
+    boolean getAutoDeserialize();
 
-  boolean getCacheResultSetMetadata();
+    void setAutoDeserialize(boolean paramBoolean);
 
-  boolean getCacheServerConfiguration();
+    boolean getAutoGenerateTestcaseScript();
 
-  int getCallableStatementCacheSize();
+    void setAutoGenerateTestcaseScript(boolean paramBoolean);
 
-  boolean getCapitalizeTypeNames();
+    boolean getAutoReconnectForPools();
 
-  String getCharacterSetResults();
+    void setAutoReconnectForPools(boolean paramBoolean);
 
-  boolean getClobberStreamingResults();
+    int getBlobSendChunkSize();
 
-  String getClobCharacterEncoding();
+    void setBlobSendChunkSize(String paramString) throws SQLException;
 
-  String getConnectionCollation();
+    boolean getCacheCallableStatements();
 
-  int getConnectTimeout();
+    void setCacheCallableStatements(boolean paramBoolean);
 
-  boolean getContinueBatchOnError();
+    boolean getCachePreparedStatements();
 
-  boolean getCreateDatabaseIfNotExist();
+    void setCachePreparedStatements(boolean paramBoolean);
 
-  int getDefaultFetchSize();
+    boolean getCacheResultSetMetadata();
 
-  boolean getDontTrackOpenResources();
+    void setCacheResultSetMetadata(boolean paramBoolean);
 
-  boolean getDumpQueriesOnException();
+    boolean getCacheServerConfiguration();
 
-  boolean getDynamicCalendars();
+    void setCacheServerConfiguration(boolean paramBoolean);
 
-  boolean getElideSetAutoCommits();
+    int getCallableStatementCacheSize();
 
-  boolean getEmptyStringsConvertToZero();
+    void setCallableStatementCacheSize(int paramInt);
 
-  boolean getEmulateLocators();
+    boolean getCapitalizeTypeNames();
 
-  boolean getEmulateUnsupportedPstmts();
+    void setCapitalizeTypeNames(boolean paramBoolean);
 
-  boolean getEnablePacketDebug();
+    String getCharacterSetResults();
 
-  String getEncoding();
+    void setCharacterSetResults(String paramString);
 
-  boolean getExplainSlowQueries();
+    boolean getClobberStreamingResults();
 
-  boolean getFailOverReadOnly();
+    void setClobberStreamingResults(boolean paramBoolean);
 
-  boolean getGatherPerformanceMetrics();
+    String getClobCharacterEncoding();
 
-  boolean getHoldResultsOpenOverStatementClose();
+    void setClobCharacterEncoding(String paramString);
 
-  boolean getIgnoreNonTxTables();
+    String getConnectionCollation();
 
-  int getInitialTimeout();
+    void setConnectionCollation(String paramString);
 
-  boolean getInteractiveClient();
+    int getConnectTimeout();
 
-  boolean getIsInteractiveClient();
+    void setConnectTimeout(int paramInt);
 
-  boolean getJdbcCompliantTruncation();
+    boolean getContinueBatchOnError();
 
-  int getLocatorFetchBufferSize();
+    void setContinueBatchOnError(boolean paramBoolean);
 
-  String getLogger();
+    boolean getCreateDatabaseIfNotExist();
 
-  String getLoggerClassName();
+    void setCreateDatabaseIfNotExist(boolean paramBoolean);
 
-  boolean getLogSlowQueries();
+    int getDefaultFetchSize();
 
-  boolean getMaintainTimeStats();
+    void setDefaultFetchSize(int paramInt);
 
-  int getMaxQuerySizeToLog();
+    boolean getDontTrackOpenResources();
 
-  int getMaxReconnects();
+    void setDontTrackOpenResources(boolean paramBoolean);
 
-  int getMaxRows();
+    boolean getDumpQueriesOnException();
 
-  int getMetadataCacheSize();
+    void setDumpQueriesOnException(boolean paramBoolean);
 
-  boolean getNoDatetimeStringSync();
+    boolean getDynamicCalendars();
 
-  boolean getNullCatalogMeansCurrent();
+    void setDynamicCalendars(boolean paramBoolean);
 
-  boolean getNullNamePatternMatchesAll();
+    boolean getElideSetAutoCommits();
 
-  int getPacketDebugBufferSize();
+    void setElideSetAutoCommits(boolean paramBoolean);
 
-  boolean getParanoid();
+    boolean getEmptyStringsConvertToZero();
 
-  boolean getPedantic();
+    void setEmptyStringsConvertToZero(boolean paramBoolean);
 
-  int getPreparedStatementCacheSize();
+    boolean getEmulateLocators();
 
-  int getPreparedStatementCacheSqlLimit();
+    void setEmulateLocators(boolean paramBoolean);
 
-  boolean getProfileSql();
+    boolean getEmulateUnsupportedPstmts();
 
-  boolean getProfileSQL();
+    void setEmulateUnsupportedPstmts(boolean paramBoolean);
 
-  String getPropertiesTransform();
+    boolean getEnablePacketDebug();
 
-  int getQueriesBeforeRetryMaster();
+    void setEnablePacketDebug(boolean paramBoolean);
 
-  boolean getReconnectAtTxEnd();
+    String getEncoding();
 
-  boolean getRelaxAutoCommit();
+    void setEncoding(String paramString);
 
-  int getReportMetricsIntervalMillis();
+    boolean getExplainSlowQueries();
 
-  boolean getRequireSSL();
+    void setExplainSlowQueries(boolean paramBoolean);
 
-  boolean getRollbackOnPooledClose();
+    boolean getFailOverReadOnly();
 
-  boolean getRoundRobinLoadBalance();
+    void setFailOverReadOnly(boolean paramBoolean);
 
-  boolean getRunningCTS13();
+    boolean getGatherPerformanceMetrics();
 
-  int getSecondsBeforeRetryMaster();
+    void setGatherPerformanceMetrics(boolean paramBoolean);
 
-  String getServerTimezone();
+    boolean getHoldResultsOpenOverStatementClose();
 
-  String getSessionVariables();
+    void setHoldResultsOpenOverStatementClose(boolean paramBoolean);
 
-  int getSlowQueryThresholdMillis();
+    boolean getIgnoreNonTxTables();
 
-  String getSocketFactoryClassName();
+    void setIgnoreNonTxTables(boolean paramBoolean);
 
-  int getSocketTimeout();
+    int getInitialTimeout();
 
-  boolean getStrictFloatingPoint();
+    void setInitialTimeout(int paramInt);
 
-  boolean getStrictUpdates();
+    boolean getInteractiveClient();
 
-  boolean getTinyInt1isBit();
+    void setInteractiveClient(boolean paramBoolean);
 
-  boolean getTraceProtocol();
+    boolean getIsInteractiveClient();
 
-  boolean getTransformedBitIsBoolean();
+    void setIsInteractiveClient(boolean paramBoolean);
 
-  boolean getUseCompression();
+    boolean getJdbcCompliantTruncation();
 
-  boolean getUseFastIntParsing();
+    void setJdbcCompliantTruncation(boolean paramBoolean);
 
-  boolean getUseHostsInPrivileges();
+    int getLocatorFetchBufferSize();
 
-  boolean getUseInformationSchema();
+    void setLocatorFetchBufferSize(String paramString) throws SQLException;
 
-  boolean getUseLocalSessionState();
+    String getLogger();
 
-  boolean getUseOldUTF8Behavior();
+    void setLogger(String paramString);
 
-  boolean getUseOnlyServerErrorMessages();
+    String getLoggerClassName();
 
-  boolean getUseReadAheadInput();
+    void setLoggerClassName(String paramString);
 
-  boolean getUseServerPreparedStmts();
+    boolean getLogSlowQueries();
 
-  boolean getUseSqlStateCodes();
+    void setLogSlowQueries(boolean paramBoolean);
 
-  boolean getUseSSL();
+    boolean getMaintainTimeStats();
 
-  boolean getUseStreamLengthsInPrepStmts();
+    void setMaintainTimeStats(boolean paramBoolean);
 
-  boolean getUseTimezone();
+    int getMaxQuerySizeToLog();
 
-  boolean getUseUltraDevWorkAround();
+    void setMaxQuerySizeToLog(int paramInt);
 
-  boolean getUseUnbufferedInput();
+    int getMaxReconnects();
 
-  boolean getUseUnicode();
+    void setMaxReconnects(int paramInt);
 
-  boolean getUseUsageAdvisor();
+    int getMaxRows();
 
-  boolean getYearIsDateType();
+    void setMaxRows(int paramInt);
 
-  String getZeroDateTimeBehavior();
+    int getMetadataCacheSize();
 
-  void setAllowLoadLocalInfile(boolean paramBoolean);
+    void setMetadataCacheSize(int paramInt);
 
-  void setAllowMultiQueries(boolean paramBoolean);
+    boolean getNoDatetimeStringSync();
 
-  void setAllowNanAndInf(boolean paramBoolean);
+    void setNoDatetimeStringSync(boolean paramBoolean);
 
-  void setAllowUrlInLocalInfile(boolean paramBoolean);
+    boolean getNullCatalogMeansCurrent();
 
-  void setAlwaysSendSetIsolation(boolean paramBoolean);
+    void setNullCatalogMeansCurrent(boolean paramBoolean);
 
-  void setAutoDeserialize(boolean paramBoolean);
+    boolean getNullNamePatternMatchesAll();
 
-  void setAutoGenerateTestcaseScript(boolean paramBoolean);
+    void setNullNamePatternMatchesAll(boolean paramBoolean);
 
-  void setAutoReconnect(boolean paramBoolean);
+    int getPacketDebugBufferSize();
 
-  void setAutoReconnectForConnectionPools(boolean paramBoolean);
+    void setPacketDebugBufferSize(int paramInt);
 
-  void setAutoReconnectForPools(boolean paramBoolean);
+    boolean getParanoid();
 
-  void setBlobSendChunkSize(String paramString) throws SQLException;
+    void setParanoid(boolean paramBoolean);
 
-  void setCacheCallableStatements(boolean paramBoolean);
+    boolean getPedantic();
 
-  void setCachePreparedStatements(boolean paramBoolean);
+    void setPedantic(boolean paramBoolean);
 
-  void setCacheResultSetMetadata(boolean paramBoolean);
+    int getPreparedStatementCacheSize();
 
-  void setCacheServerConfiguration(boolean paramBoolean);
+    void setPreparedStatementCacheSize(int paramInt);
 
-  void setCallableStatementCacheSize(int paramInt);
+    int getPreparedStatementCacheSqlLimit();
 
-  void setCapitalizeDBMDTypes(boolean paramBoolean);
+    void setPreparedStatementCacheSqlLimit(int paramInt);
 
-  void setCapitalizeTypeNames(boolean paramBoolean);
+    boolean getProfileSql();
 
-  void setCharacterEncoding(String paramString);
+    void setProfileSql(boolean paramBoolean);
 
-  void setCharacterSetResults(String paramString);
+    boolean getProfileSQL();
 
-  void setClobberStreamingResults(boolean paramBoolean);
+    void setProfileSQL(boolean paramBoolean);
 
-  void setClobCharacterEncoding(String paramString);
+    String getPropertiesTransform();
 
-  void setConnectionCollation(String paramString);
+    void setPropertiesTransform(String paramString);
 
-  void setConnectTimeout(int paramInt);
+    int getQueriesBeforeRetryMaster();
 
-  void setContinueBatchOnError(boolean paramBoolean);
+    void setQueriesBeforeRetryMaster(int paramInt);
 
-  void setCreateDatabaseIfNotExist(boolean paramBoolean);
+    boolean getReconnectAtTxEnd();
 
-  void setDefaultFetchSize(int paramInt);
+    void setReconnectAtTxEnd(boolean paramBoolean);
 
-  void setDetectServerPreparedStmts(boolean paramBoolean);
+    boolean getRelaxAutoCommit();
 
-  void setDontTrackOpenResources(boolean paramBoolean);
+    void setRelaxAutoCommit(boolean paramBoolean);
 
-  void setDumpQueriesOnException(boolean paramBoolean);
+    int getReportMetricsIntervalMillis();
 
-  void setDynamicCalendars(boolean paramBoolean);
+    void setReportMetricsIntervalMillis(int paramInt);
 
-  void setElideSetAutoCommits(boolean paramBoolean);
+    boolean getRequireSSL();
 
-  void setEmptyStringsConvertToZero(boolean paramBoolean);
+    void setRequireSSL(boolean paramBoolean);
 
-  void setEmulateLocators(boolean paramBoolean);
+    boolean getRollbackOnPooledClose();
 
-  void setEmulateUnsupportedPstmts(boolean paramBoolean);
+    void setRollbackOnPooledClose(boolean paramBoolean);
 
-  void setEnablePacketDebug(boolean paramBoolean);
+    boolean getRoundRobinLoadBalance();
 
-  void setEncoding(String paramString);
+    void setRoundRobinLoadBalance(boolean paramBoolean);
 
-  void setExplainSlowQueries(boolean paramBoolean);
+    boolean getRunningCTS13();
 
-  void setFailOverReadOnly(boolean paramBoolean);
+    void setRunningCTS13(boolean paramBoolean);
 
-  void setGatherPerformanceMetrics(boolean paramBoolean);
+    int getSecondsBeforeRetryMaster();
 
-  void setHoldResultsOpenOverStatementClose(boolean paramBoolean);
+    void setSecondsBeforeRetryMaster(int paramInt);
 
-  void setIgnoreNonTxTables(boolean paramBoolean);
+    String getServerTimezone();
 
-  void setInitialTimeout(int paramInt);
+    void setServerTimezone(String paramString);
 
-  void setIsInteractiveClient(boolean paramBoolean);
+    String getSessionVariables();
 
-  void setJdbcCompliantTruncation(boolean paramBoolean);
+    void setSessionVariables(String paramString);
 
-  void setLocatorFetchBufferSize(String paramString) throws SQLException;
+    int getSlowQueryThresholdMillis();
 
-  void setLogger(String paramString);
+    void setSlowQueryThresholdMillis(int paramInt);
 
-  void setLoggerClassName(String paramString);
+    String getSocketFactoryClassName();
 
-  void setLogSlowQueries(boolean paramBoolean);
+    void setSocketFactoryClassName(String paramString);
 
-  void setMaintainTimeStats(boolean paramBoolean);
+    int getSocketTimeout();
 
-  void setMaxQuerySizeToLog(int paramInt);
+    void setSocketTimeout(int paramInt);
 
-  void setMaxReconnects(int paramInt);
+    boolean getStrictFloatingPoint();
 
-  void setMaxRows(int paramInt);
+    void setStrictFloatingPoint(boolean paramBoolean);
 
-  void setMetadataCacheSize(int paramInt);
+    boolean getStrictUpdates();
 
-  void setNoDatetimeStringSync(boolean paramBoolean);
+    void setStrictUpdates(boolean paramBoolean);
 
-  void setNullCatalogMeansCurrent(boolean paramBoolean);
+    boolean getTinyInt1isBit();
 
-  void setNullNamePatternMatchesAll(boolean paramBoolean);
+    void setTinyInt1isBit(boolean paramBoolean);
 
-  void setPacketDebugBufferSize(int paramInt);
+    boolean getTraceProtocol();
 
-  void setParanoid(boolean paramBoolean);
+    void setTraceProtocol(boolean paramBoolean);
 
-  void setPedantic(boolean paramBoolean);
+    boolean getTransformedBitIsBoolean();
 
-  void setPreparedStatementCacheSize(int paramInt);
+    void setTransformedBitIsBoolean(boolean paramBoolean);
 
-  void setPreparedStatementCacheSqlLimit(int paramInt);
+    boolean getUseCompression();
 
-  void setProfileSql(boolean paramBoolean);
+    void setUseCompression(boolean paramBoolean);
 
-  void setProfileSQL(boolean paramBoolean);
+    boolean getUseFastIntParsing();
 
-  void setPropertiesTransform(String paramString);
+    void setUseFastIntParsing(boolean paramBoolean);
 
-  void setQueriesBeforeRetryMaster(int paramInt);
+    boolean getUseHostsInPrivileges();
 
-  void setReconnectAtTxEnd(boolean paramBoolean);
+    void setUseHostsInPrivileges(boolean paramBoolean);
 
-  void setRelaxAutoCommit(boolean paramBoolean);
+    boolean getUseInformationSchema();
 
-  void setReportMetricsIntervalMillis(int paramInt);
+    void setUseInformationSchema(boolean paramBoolean);
 
-  void setRequireSSL(boolean paramBoolean);
+    boolean getUseLocalSessionState();
 
-  void setRetainStatementAfterResultSetClose(boolean paramBoolean);
+    void setUseLocalSessionState(boolean paramBoolean);
 
-  void setRollbackOnPooledClose(boolean paramBoolean);
+    boolean getUseOldUTF8Behavior();
 
-  void setRoundRobinLoadBalance(boolean paramBoolean);
+    void setUseOldUTF8Behavior(boolean paramBoolean);
 
-  void setRunningCTS13(boolean paramBoolean);
+    boolean getUseOnlyServerErrorMessages();
 
-  void setSecondsBeforeRetryMaster(int paramInt);
+    void setUseOnlyServerErrorMessages(boolean paramBoolean);
 
-  void setServerTimezone(String paramString);
+    boolean getUseReadAheadInput();
 
-  void setSessionVariables(String paramString);
+    void setUseReadAheadInput(boolean paramBoolean);
 
-  void setSlowQueryThresholdMillis(int paramInt);
+    boolean getUseServerPreparedStmts();
 
-  void setSocketFactoryClassName(String paramString);
+    void setUseServerPreparedStmts(boolean paramBoolean);
 
-  void setSocketTimeout(int paramInt);
+    boolean getUseSqlStateCodes();
 
-  void setStrictFloatingPoint(boolean paramBoolean);
+    void setUseSqlStateCodes(boolean paramBoolean);
 
-  void setStrictUpdates(boolean paramBoolean);
+    boolean getUseSSL();
 
-  void setTinyInt1isBit(boolean paramBoolean);
+    void setUseSSL(boolean paramBoolean);
 
-  void setTraceProtocol(boolean paramBoolean);
+    boolean getUseStreamLengthsInPrepStmts();
 
-  void setTransformedBitIsBoolean(boolean paramBoolean);
+    void setUseStreamLengthsInPrepStmts(boolean paramBoolean);
 
-  void setUseCompression(boolean paramBoolean);
+    boolean getUseTimezone();
 
-  void setUseFastIntParsing(boolean paramBoolean);
+    void setUseTimezone(boolean paramBoolean);
 
-  void setUseHostsInPrivileges(boolean paramBoolean);
+    boolean getUseUltraDevWorkAround();
 
-  void setUseInformationSchema(boolean paramBoolean);
+    void setUseUltraDevWorkAround(boolean paramBoolean);
 
-  void setUseLocalSessionState(boolean paramBoolean);
+    boolean getUseUnbufferedInput();
 
-  void setUseOldUTF8Behavior(boolean paramBoolean);
+    void setUseUnbufferedInput(boolean paramBoolean);
 
-  void setUseOnlyServerErrorMessages(boolean paramBoolean);
+    boolean getUseUnicode();
 
-  void setUseReadAheadInput(boolean paramBoolean);
+    void setUseUnicode(boolean paramBoolean);
 
-  void setUseServerPreparedStmts(boolean paramBoolean);
+    boolean getUseUsageAdvisor();
 
-  void setUseSqlStateCodes(boolean paramBoolean);
+    void setUseUsageAdvisor(boolean paramBoolean);
 
-  void setUseSSL(boolean paramBoolean);
+    boolean getYearIsDateType();
 
-  void setUseStreamLengthsInPrepStmts(boolean paramBoolean);
+    void setYearIsDateType(boolean paramBoolean);
 
-  void setUseTimezone(boolean paramBoolean);
+    String getZeroDateTimeBehavior();
 
-  void setUseUltraDevWorkAround(boolean paramBoolean);
+    void setZeroDateTimeBehavior(String paramString);
 
-  void setUseUnbufferedInput(boolean paramBoolean);
+    void setAutoReconnect(boolean paramBoolean);
 
-  void setUseUnicode(boolean paramBoolean);
+    void setAutoReconnectForConnectionPools(boolean paramBoolean);
 
-  void setUseUsageAdvisor(boolean paramBoolean);
+    void setCapitalizeDBMDTypes(boolean paramBoolean);
 
-  void setYearIsDateType(boolean paramBoolean);
+    void setCharacterEncoding(String paramString);
 
-  void setZeroDateTimeBehavior(String paramString);
+    void setDetectServerPreparedStmts(boolean paramBoolean);
 
-  boolean useUnbufferedInput();
+    boolean useUnbufferedInput();
 
-  boolean getUseCursorFetch();
+    boolean getUseCursorFetch();
 
-  void setUseCursorFetch(boolean paramBoolean);
+    void setUseCursorFetch(boolean paramBoolean);
 
-  boolean getOverrideSupportsIntegrityEnhancementFacility();
+    boolean getOverrideSupportsIntegrityEnhancementFacility();
 
-  void setOverrideSupportsIntegrityEnhancementFacility(boolean paramBoolean);
+    void setOverrideSupportsIntegrityEnhancementFacility(boolean paramBoolean);
 
-  boolean getNoTimezoneConversionForTimeType();
+    boolean getNoTimezoneConversionForTimeType();
 
-  void setNoTimezoneConversionForTimeType(boolean paramBoolean);
+    void setNoTimezoneConversionForTimeType(boolean paramBoolean);
 
-  boolean getUseJDBCCompliantTimezoneShift();
+    boolean getUseJDBCCompliantTimezoneShift();
 
-  void setUseJDBCCompliantTimezoneShift(boolean paramBoolean);
+    void setUseJDBCCompliantTimezoneShift(boolean paramBoolean);
 
-  boolean getAutoClosePStmtStreams();
+    boolean getAutoClosePStmtStreams();
 
-  void setAutoClosePStmtStreams(boolean paramBoolean);
+    void setAutoClosePStmtStreams(boolean paramBoolean);
 
-  boolean getProcessEscapeCodesForPrepStmts();
+    boolean getProcessEscapeCodesForPrepStmts();
 
-  void setProcessEscapeCodesForPrepStmts(boolean paramBoolean);
+    void setProcessEscapeCodesForPrepStmts(boolean paramBoolean);
 
-  boolean getUseGmtMillisForDatetimes();
+    boolean getUseGmtMillisForDatetimes();
 
-  void setUseGmtMillisForDatetimes(boolean paramBoolean);
+    void setUseGmtMillisForDatetimes(boolean paramBoolean);
 
-  boolean getDumpMetadataOnColumnNotFound();
+    boolean getDumpMetadataOnColumnNotFound();
 
-  void setDumpMetadataOnColumnNotFound(boolean paramBoolean);
+    void setDumpMetadataOnColumnNotFound(boolean paramBoolean);
 
-  String getResourceId();
+    String getResourceId();
 
-  void setResourceId(String paramString);
+    void setResourceId(String paramString);
 
-  boolean getRewriteBatchedStatements();
+    boolean getRewriteBatchedStatements();
 
-  void setRewriteBatchedStatements(boolean paramBoolean);
+    void setRewriteBatchedStatements(boolean paramBoolean);
 
-  boolean getJdbcCompliantTruncationForReads();
+    boolean getJdbcCompliantTruncationForReads();
 
-  void setJdbcCompliantTruncationForReads(boolean paramBoolean);
+    void setJdbcCompliantTruncationForReads(boolean paramBoolean);
 
-  boolean getUseJvmCharsetConverters();
+    boolean getUseJvmCharsetConverters();
 
-  void setUseJvmCharsetConverters(boolean paramBoolean);
+    void setUseJvmCharsetConverters(boolean paramBoolean);
 
-  boolean getPinGlobalTxToPhysicalConnection();
+    boolean getPinGlobalTxToPhysicalConnection();
 
-  void setPinGlobalTxToPhysicalConnection(boolean paramBoolean);
+    void setPinGlobalTxToPhysicalConnection(boolean paramBoolean);
 
-  void setGatherPerfMetrics(boolean paramBoolean);
+    boolean getGatherPerfMetrics();
 
-  boolean getGatherPerfMetrics();
+    void setGatherPerfMetrics(boolean paramBoolean);
 
-  void setUltraDevHack(boolean paramBoolean);
+    boolean getUltraDevHack();
 
-  boolean getUltraDevHack();
+    void setUltraDevHack(boolean paramBoolean);
 
-  void setInteractiveClient(boolean paramBoolean);
+    String getSocketFactory();
 
-  void setSocketFactory(String paramString);
+    void setSocketFactory(String paramString);
 
-  String getSocketFactory();
+    boolean getUseServerPrepStmts();
 
-  void setUseServerPrepStmts(boolean paramBoolean);
+    void setUseServerPrepStmts(boolean paramBoolean);
 
-  boolean getUseServerPrepStmts();
+    boolean getCacheCallableStmts();
 
-  void setCacheCallableStmts(boolean paramBoolean);
+    void setCacheCallableStmts(boolean paramBoolean);
 
-  boolean getCacheCallableStmts();
+    boolean getCachePrepStmts();
 
-  void setCachePrepStmts(boolean paramBoolean);
+    void setCachePrepStmts(boolean paramBoolean);
 
-  boolean getCachePrepStmts();
+    int getCallableStmtCacheSize();
 
-  void setCallableStmtCacheSize(int paramInt);
+    void setCallableStmtCacheSize(int paramInt);
 
-  int getCallableStmtCacheSize();
+    int getPrepStmtCacheSize();
 
-  void setPrepStmtCacheSize(int paramInt);
+    void setPrepStmtCacheSize(int paramInt);
 
-  int getPrepStmtCacheSize();
+    int getPrepStmtCacheSqlLimit();
 
-  void setPrepStmtCacheSqlLimit(int paramInt);
+    void setPrepStmtCacheSqlLimit(int paramInt);
 
-  int getPrepStmtCacheSqlLimit();
+    boolean getNoAccessToProcedureBodies();
 
-  boolean getNoAccessToProcedureBodies();
+    void setNoAccessToProcedureBodies(boolean paramBoolean);
 
-  void setNoAccessToProcedureBodies(boolean paramBoolean);
+    boolean getUseOldAliasMetadataBehavior();
 
-  boolean getUseOldAliasMetadataBehavior();
+    void setUseOldAliasMetadataBehavior(boolean paramBoolean);
 
-  void setUseOldAliasMetadataBehavior(boolean paramBoolean);
+    String getClientCertificateKeyStorePassword();
 
-  String getClientCertificateKeyStorePassword();
+    void setClientCertificateKeyStorePassword(String paramString);
 
-  void setClientCertificateKeyStorePassword(String paramString);
+    String getClientCertificateKeyStoreType();
 
-  String getClientCertificateKeyStoreType();
+    void setClientCertificateKeyStoreType(String paramString);
 
-  void setClientCertificateKeyStoreType(String paramString);
+    String getClientCertificateKeyStoreUrl();
 
-  String getClientCertificateKeyStoreUrl();
+    void setClientCertificateKeyStoreUrl(String paramString);
 
-  void setClientCertificateKeyStoreUrl(String paramString);
+    String getTrustCertificateKeyStorePassword();
 
-  String getTrustCertificateKeyStorePassword();
+    void setTrustCertificateKeyStorePassword(String paramString);
 
-  void setTrustCertificateKeyStorePassword(String paramString);
+    String getTrustCertificateKeyStoreType();
 
-  String getTrustCertificateKeyStoreType();
+    void setTrustCertificateKeyStoreType(String paramString);
 
-  void setTrustCertificateKeyStoreType(String paramString);
+    String getTrustCertificateKeyStoreUrl();
 
-  String getTrustCertificateKeyStoreUrl();
+    void setTrustCertificateKeyStoreUrl(String paramString);
 
-  void setTrustCertificateKeyStoreUrl(String paramString);
+    boolean getUseSSPSCompatibleTimezoneShift();
 
-  boolean getUseSSPSCompatibleTimezoneShift();
+    void setUseSSPSCompatibleTimezoneShift(boolean paramBoolean);
 
-  void setUseSSPSCompatibleTimezoneShift(boolean paramBoolean);
+    boolean getTreatUtilDateAsTimestamp();
 
-  boolean getTreatUtilDateAsTimestamp();
+    void setTreatUtilDateAsTimestamp(boolean paramBoolean);
 
-  void setTreatUtilDateAsTimestamp(boolean paramBoolean);
+    boolean getUseFastDateParsing();
 
-  boolean getUseFastDateParsing();
+    void setUseFastDateParsing(boolean paramBoolean);
 
-  void setUseFastDateParsing(boolean paramBoolean);
+    String getLocalSocketAddress();
 
-  String getLocalSocketAddress();
+    void setLocalSocketAddress(String paramString);
 
-  void setLocalSocketAddress(String paramString);
+    String getUseConfigs();
 
-  void setUseConfigs(String paramString);
+    void setUseConfigs(String paramString);
 
-  String getUseConfigs();
+    boolean getGenerateSimpleParameterMetadata();
 
-  boolean getGenerateSimpleParameterMetadata();
+    void setGenerateSimpleParameterMetadata(boolean paramBoolean);
 
-  void setGenerateSimpleParameterMetadata(boolean paramBoolean);
+    boolean getLogXaCommands();
 
-  boolean getLogXaCommands();
+    void setLogXaCommands(boolean paramBoolean);
 
-  void setLogXaCommands(boolean paramBoolean);
+    int getResultSetSizeThreshold();
 
-  int getResultSetSizeThreshold();
+    void setResultSetSizeThreshold(int paramInt);
 
-  void setResultSetSizeThreshold(int paramInt);
+    int getNetTimeoutForStreamingResults();
 
-  int getNetTimeoutForStreamingResults();
+    void setNetTimeoutForStreamingResults(int paramInt);
 
-  void setNetTimeoutForStreamingResults(int paramInt);
+    boolean getEnableQueryTimeouts();
 
-  boolean getEnableQueryTimeouts();
+    void setEnableQueryTimeouts(boolean paramBoolean);
 
-  void setEnableQueryTimeouts(boolean paramBoolean);
+    boolean getPadCharsWithSpace();
 
-  boolean getPadCharsWithSpace();
+    void setPadCharsWithSpace(boolean paramBoolean);
 
-  void setPadCharsWithSpace(boolean paramBoolean);
+    boolean getUseDynamicCharsetInfo();
 
-  boolean getUseDynamicCharsetInfo();
+    void setUseDynamicCharsetInfo(boolean paramBoolean);
 
-  void setUseDynamicCharsetInfo(boolean paramBoolean);
+    String getClientInfoProvider();
 
-  String getClientInfoProvider();
+    void setClientInfoProvider(String paramString);
 
-  void setClientInfoProvider(String paramString);
+    boolean getPopulateInsertRowWithDefaultValues();
 
-  boolean getPopulateInsertRowWithDefaultValues();
+    void setPopulateInsertRowWithDefaultValues(boolean paramBoolean);
 
-  void setPopulateInsertRowWithDefaultValues(boolean paramBoolean);
+    String getLoadBalanceStrategy();
 
-  String getLoadBalanceStrategy();
+    void setLoadBalanceStrategy(String paramString);
 
-  void setLoadBalanceStrategy(String paramString);
+    boolean getTcpNoDelay();
 
-  boolean getTcpNoDelay();
+    void setTcpNoDelay(boolean paramBoolean);
 
-  void setTcpNoDelay(boolean paramBoolean);
+    boolean getTcpKeepAlive();
 
-  boolean getTcpKeepAlive();
+    void setTcpKeepAlive(boolean paramBoolean);
 
-  void setTcpKeepAlive(boolean paramBoolean);
+    int getTcpRcvBuf();
 
-  int getTcpRcvBuf();
+    void setTcpRcvBuf(int paramInt);
 
-  void setTcpRcvBuf(int paramInt);
+    int getTcpSndBuf();
 
-  int getTcpSndBuf();
+    void setTcpSndBuf(int paramInt);
 
-  void setTcpSndBuf(int paramInt);
+    int getTcpTrafficClass();
 
-  int getTcpTrafficClass();
+    void setTcpTrafficClass(int paramInt);
 
-  void setTcpTrafficClass(int paramInt);
+    boolean getUseNanosForElapsedTime();
 
-  boolean getUseNanosForElapsedTime();
+    void setUseNanosForElapsedTime(boolean paramBoolean);
 
-  void setUseNanosForElapsedTime(boolean paramBoolean);
+    long getSlowQueryThresholdNanos();
 
-  long getSlowQueryThresholdNanos();
+    void setSlowQueryThresholdNanos(long paramLong);
 
-  void setSlowQueryThresholdNanos(long paramLong);
+    String getStatementInterceptors();
 
-  String getStatementInterceptors();
+    void setStatementInterceptors(String paramString);
 
-  void setStatementInterceptors(String paramString);
+    boolean getUseDirectRowUnpack();
 
-  boolean getUseDirectRowUnpack();
+    void setUseDirectRowUnpack(boolean paramBoolean);
 
-  void setUseDirectRowUnpack(boolean paramBoolean);
+    String getLargeRowSizeThreshold();
 
-  String getLargeRowSizeThreshold();
+    void setLargeRowSizeThreshold(String paramString);
 
-  void setLargeRowSizeThreshold(String paramString);
+    boolean getUseBlobToStoreUTF8OutsideBMP();
 
-  boolean getUseBlobToStoreUTF8OutsideBMP();
+    void setUseBlobToStoreUTF8OutsideBMP(boolean paramBoolean);
 
-  void setUseBlobToStoreUTF8OutsideBMP(boolean paramBoolean);
+    String getUtf8OutsideBmpExcludedColumnNamePattern();
 
-  String getUtf8OutsideBmpExcludedColumnNamePattern();
+    void setUtf8OutsideBmpExcludedColumnNamePattern(String paramString);
 
-  void setUtf8OutsideBmpExcludedColumnNamePattern(String paramString);
+    String getUtf8OutsideBmpIncludedColumnNamePattern();
 
-  String getUtf8OutsideBmpIncludedColumnNamePattern();
+    void setUtf8OutsideBmpIncludedColumnNamePattern(String paramString);
 
-  void setUtf8OutsideBmpIncludedColumnNamePattern(String paramString);
+    boolean getIncludeInnodbStatusInDeadlockExceptions();
 
-  boolean getIncludeInnodbStatusInDeadlockExceptions();
+    void setIncludeInnodbStatusInDeadlockExceptions(boolean paramBoolean);
 
-  void setIncludeInnodbStatusInDeadlockExceptions(boolean paramBoolean);
+    boolean getIncludeThreadDumpInDeadlockExceptions();
 
-  boolean getIncludeThreadDumpInDeadlockExceptions();
+    void setIncludeThreadDumpInDeadlockExceptions(boolean paramBoolean);
 
-  void setIncludeThreadDumpInDeadlockExceptions(boolean paramBoolean);
+    boolean getIncludeThreadNamesAsStatementComment();
 
-  boolean getIncludeThreadNamesAsStatementComment();
+    void setIncludeThreadNamesAsStatementComment(boolean paramBoolean);
 
-  void setIncludeThreadNamesAsStatementComment(boolean paramBoolean);
+    boolean getBlobsAreStrings();
 
-  boolean getBlobsAreStrings();
+    void setBlobsAreStrings(boolean paramBoolean);
 
-  void setBlobsAreStrings(boolean paramBoolean);
+    boolean getFunctionsNeverReturnBlobs();
 
-  boolean getFunctionsNeverReturnBlobs();
+    void setFunctionsNeverReturnBlobs(boolean paramBoolean);
 
-  void setFunctionsNeverReturnBlobs(boolean paramBoolean);
+    boolean getAutoSlowLog();
 
-  boolean getAutoSlowLog();
+    void setAutoSlowLog(boolean paramBoolean);
 
-  void setAutoSlowLog(boolean paramBoolean);
+    String getConnectionLifecycleInterceptors();
 
-  String getConnectionLifecycleInterceptors();
+    void setConnectionLifecycleInterceptors(String paramString);
 
-  void setConnectionLifecycleInterceptors(String paramString);
+    String getProfilerEventHandler();
 
-  String getProfilerEventHandler();
+    void setProfilerEventHandler(String paramString);
 
-  void setProfilerEventHandler(String paramString);
+    boolean getVerifyServerCertificate();
 
-  boolean getVerifyServerCertificate();
+    void setVerifyServerCertificate(boolean paramBoolean);
 
-  void setVerifyServerCertificate(boolean paramBoolean);
+    boolean getUseLegacyDatetimeCode();
 
-  boolean getUseLegacyDatetimeCode();
+    void setUseLegacyDatetimeCode(boolean paramBoolean);
 
-  void setUseLegacyDatetimeCode(boolean paramBoolean);
+    int getSelfDestructOnPingSecondsLifetime();
 
-  int getSelfDestructOnPingSecondsLifetime();
+    void setSelfDestructOnPingSecondsLifetime(int paramInt);
 
-  void setSelfDestructOnPingSecondsLifetime(int paramInt);
+    int getSelfDestructOnPingMaxOperations();
 
-  int getSelfDestructOnPingMaxOperations();
+    void setSelfDestructOnPingMaxOperations(int paramInt);
 
-  void setSelfDestructOnPingMaxOperations(int paramInt);
+    boolean getUseColumnNamesInFindColumn();
 
-  boolean getUseColumnNamesInFindColumn();
+    void setUseColumnNamesInFindColumn(boolean paramBoolean);
 
-  void setUseColumnNamesInFindColumn(boolean paramBoolean);
+    boolean getUseLocalTransactionState();
 
-  boolean getUseLocalTransactionState();
+    void setUseLocalTransactionState(boolean paramBoolean);
 
-  void setUseLocalTransactionState(boolean paramBoolean);
+    boolean getCompensateOnDuplicateKeyUpdateCounts();
 
-  boolean getCompensateOnDuplicateKeyUpdateCounts();
+    void setCompensateOnDuplicateKeyUpdateCounts(boolean paramBoolean);
 
-  void setCompensateOnDuplicateKeyUpdateCounts(boolean paramBoolean);
+    boolean getUseAffectedRows();
 
-  void setUseAffectedRows(boolean paramBoolean);
+    void setUseAffectedRows(boolean paramBoolean);
 
-  boolean getUseAffectedRows();
+    String getPasswordCharacterEncoding();
 
-  void setPasswordCharacterEncoding(String paramString);
+    void setPasswordCharacterEncoding(String paramString);
 
-  String getPasswordCharacterEncoding();
+    int getLoadBalanceBlacklistTimeout();
 
-  int getLoadBalanceBlacklistTimeout();
+    void setLoadBalanceBlacklistTimeout(int paramInt);
 
-  void setLoadBalanceBlacklistTimeout(int paramInt);
+    int getRetriesAllDown();
 
-  void setRetriesAllDown(int paramInt);
+    void setRetriesAllDown(int paramInt);
 
-  int getRetriesAllDown();
+    ExceptionInterceptor getExceptionInterceptor();
 
-  ExceptionInterceptor getExceptionInterceptor();
+    String getExceptionInterceptors();
 
-  void setExceptionInterceptors(String paramString);
+    void setExceptionInterceptors(String paramString);
 
-  String getExceptionInterceptors();
+    boolean getQueryTimeoutKillsConnection();
 
-  boolean getQueryTimeoutKillsConnection();
+    void setQueryTimeoutKillsConnection(boolean paramBoolean);
 
-  void setQueryTimeoutKillsConnection(boolean paramBoolean);
+    int getMaxAllowedPacket();
 
-  int getMaxAllowedPacket();
+    boolean getRetainStatementAfterResultSetClose();
 
-  boolean getRetainStatementAfterResultSetClose();
+    void setRetainStatementAfterResultSetClose(boolean paramBoolean);
 
-  int getLoadBalancePingTimeout();
+    int getLoadBalancePingTimeout();
 
-  void setLoadBalancePingTimeout(int paramInt);
+    void setLoadBalancePingTimeout(int paramInt);
 
-  boolean getLoadBalanceValidateConnectionOnSwapServer();
+    boolean getLoadBalanceValidateConnectionOnSwapServer();
 
-  void setLoadBalanceValidateConnectionOnSwapServer(boolean paramBoolean);
+    void setLoadBalanceValidateConnectionOnSwapServer(boolean paramBoolean);
 
-  String getLoadBalanceConnectionGroup();
+    String getLoadBalanceConnectionGroup();
 
-  void setLoadBalanceConnectionGroup(String paramString);
+    void setLoadBalanceConnectionGroup(String paramString);
 
-  String getLoadBalanceExceptionChecker();
+    String getLoadBalanceExceptionChecker();
 
-  void setLoadBalanceExceptionChecker(String paramString);
+    void setLoadBalanceExceptionChecker(String paramString);
 
-  String getLoadBalanceSQLStateFailover();
+    String getLoadBalanceSQLStateFailover();
 
-  void setLoadBalanceSQLStateFailover(String paramString);
+    void setLoadBalanceSQLStateFailover(String paramString);
 
-  String getLoadBalanceSQLExceptionSubclassFailover();
+    String getLoadBalanceSQLExceptionSubclassFailover();
 
-  void setLoadBalanceSQLExceptionSubclassFailover(String paramString);
+    void setLoadBalanceSQLExceptionSubclassFailover(String paramString);
 
-  boolean getLoadBalanceEnableJMX();
+    boolean getLoadBalanceEnableJMX();
 
-  void setLoadBalanceEnableJMX(boolean paramBoolean);
+    void setLoadBalanceEnableJMX(boolean paramBoolean);
 
-  void setLoadBalanceAutoCommitStatementThreshold(int paramInt);
+    int getLoadBalanceAutoCommitStatementThreshold();
 
-  int getLoadBalanceAutoCommitStatementThreshold();
+    void setLoadBalanceAutoCommitStatementThreshold(int paramInt);
 
-  void setLoadBalanceAutoCommitStatementRegex(String paramString);
+    String getLoadBalanceAutoCommitStatementRegex();
 
-  String getLoadBalanceAutoCommitStatementRegex();
+    void setLoadBalanceAutoCommitStatementRegex(String paramString);
 
-  void setAuthenticationPlugins(String paramString);
+    String getAuthenticationPlugins();
 
-  String getAuthenticationPlugins();
+    void setAuthenticationPlugins(String paramString);
 
-  void setDisabledAuthenticationPlugins(String paramString);
+    String getDisabledAuthenticationPlugins();
 
-  String getDisabledAuthenticationPlugins();
+    void setDisabledAuthenticationPlugins(String paramString);
 
-  void setDefaultAuthenticationPlugin(String paramString);
+    String getDefaultAuthenticationPlugin();
 
-  String getDefaultAuthenticationPlugin();
+    void setDefaultAuthenticationPlugin(String paramString);
 
-  void setParseInfoCacheFactory(String paramString);
+    String getParseInfoCacheFactory();
 
-  String getParseInfoCacheFactory();
+    void setParseInfoCacheFactory(String paramString);
 
-  void setServerConfigCacheFactory(String paramString);
+    String getServerConfigCacheFactory();
 
-  String getServerConfigCacheFactory();
+    void setServerConfigCacheFactory(String paramString);
 
-  void setDisconnectOnExpiredPasswords(boolean paramBoolean);
+    boolean getDisconnectOnExpiredPasswords();
 
-  boolean getDisconnectOnExpiredPasswords();
+    void setDisconnectOnExpiredPasswords(boolean paramBoolean);
 }
 

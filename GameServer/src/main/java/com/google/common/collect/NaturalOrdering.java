@@ -2,46 +2,47 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 @GwtCompatible(serializable = true)
 final class NaturalOrdering
-extends Ordering<Comparable>
-implements Serializable
-{
-static final NaturalOrdering INSTANCE = new NaturalOrdering();
+        extends Ordering<Comparable>
+        implements Serializable {
+    static final NaturalOrdering INSTANCE = new NaturalOrdering();
+    private static final long serialVersionUID = 0L;
 
-public int compare(Comparable<Comparable> left, Comparable right) {
-Preconditions.checkNotNull(right);
-if (left == right) {
-return 0;
-}
+    public int compare(Comparable<Comparable> left, Comparable right) {
+        Preconditions.checkNotNull(right);
+        if (left == right) {
+            return 0;
+        }
 
-return left.compareTo(right);
-}
-private static final long serialVersionUID = 0L;
-public <S extends Comparable> Ordering<S> reverse() {
-return ReverseNaturalOrdering.INSTANCE;
-}
+        return left.compareTo(right);
+    }
 
-public int binarySearch(List<? extends Comparable> sortedList, Comparable key) {
-return Collections.binarySearch((List)sortedList, key);
-}
+    public <S extends Comparable> Ordering<S> reverse() {
+        return ReverseNaturalOrdering.INSTANCE;
+    }
 
-public <E extends Comparable> List<E> sortedCopy(Iterable<E> iterable) {
-List<E> list = Lists.newArrayList(iterable);
-Collections.sort(list);
-return list;
-}
+    public int binarySearch(List<? extends Comparable> sortedList, Comparable key) {
+        return Collections.binarySearch((List) sortedList, key);
+    }
 
-private Object readResolve() {
-return INSTANCE;
-}
+    public <E extends Comparable> List<E> sortedCopy(Iterable<E> iterable) {
+        List<E> list = Lists.newArrayList(iterable);
+        Collections.sort(list);
+        return list;
+    }
 
-public String toString() {
-return "Ordering.natural()";
-}
+    private Object readResolve() {
+        return INSTANCE;
+    }
+
+    public String toString() {
+        return "Ordering.natural()";
+    }
 }
 

@@ -1,40 +1,40 @@
 package org.apache.http.impl.nio.reactor;
 
-import java.nio.channels.SelectionKey;
 import org.apache.http.util.Args;
 
-class InterestOpEntry
-{
-private final SelectionKey key;
-private final int eventMask;
+import java.nio.channels.SelectionKey;
 
-public InterestOpEntry(SelectionKey key, int eventMask) {
-Args.notNull(key, "Selection key");
-this.key = key;
-this.eventMask = eventMask;
-}
+class InterestOpEntry {
+    private final SelectionKey key;
+    private final int eventMask;
 
-public SelectionKey getSelectionKey() {
-return this.key;
-}
+    public InterestOpEntry(SelectionKey key, int eventMask) {
+        Args.notNull(key, "Selection key");
+        this.key = key;
+        this.eventMask = eventMask;
+    }
 
-public int getEventMask() {
-return this.eventMask;
-}
+    public SelectionKey getSelectionKey() {
+        return this.key;
+    }
 
-public boolean equals(Object obj) {
-if (this == obj) {
-return true;
-}
-if (obj instanceof InterestOpEntry) {
-InterestOpEntry that = (InterestOpEntry)obj;
-return this.key.equals(that.key);
-} 
-return false;
-}
+    public int getEventMask() {
+        return this.eventMask;
+    }
 
-public int hashCode() {
-return this.key.hashCode();
-}
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof InterestOpEntry) {
+            InterestOpEntry that = (InterestOpEntry) obj;
+            return this.key.equals(that.key);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return this.key.hashCode();
+    }
 }
 

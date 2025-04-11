@@ -7,150 +7,148 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class VersionInfo
-{
-public static final String UNAVAILABLE = "UNAVAILABLE";
-public static final String VERSION_PROPERTY_FILE = "version.properties";
-public static final String PROPERTY_MODULE = "info.module";
-public static final String PROPERTY_RELEASE = "info.release";
-public static final String PROPERTY_TIMESTAMP = "info.timestamp";
-private final String infoPackage;
-private final String infoModule;
-private final String infoRelease;
-private final String infoTimestamp;
-private final String infoClassloader;
+public class VersionInfo {
+    public static final String UNAVAILABLE = "UNAVAILABLE";
+    public static final String VERSION_PROPERTY_FILE = "version.properties";
+    public static final String PROPERTY_MODULE = "info.module";
+    public static final String PROPERTY_RELEASE = "info.release";
+    public static final String PROPERTY_TIMESTAMP = "info.timestamp";
+    private final String infoPackage;
+    private final String infoModule;
+    private final String infoRelease;
+    private final String infoTimestamp;
+    private final String infoClassloader;
 
-protected VersionInfo(String pckg, String module, String release, String time, String clsldr) {
-Args.notNull(pckg, "Package identifier");
-this.infoPackage = pckg;
-this.infoModule = (module != null) ? module : "UNAVAILABLE";
-this.infoRelease = (release != null) ? release : "UNAVAILABLE";
-this.infoTimestamp = (time != null) ? time : "UNAVAILABLE";
-this.infoClassloader = (clsldr != null) ? clsldr : "UNAVAILABLE";
-}
+    protected VersionInfo(String pckg, String module, String release, String time, String clsldr) {
+        Args.notNull(pckg, "Package identifier");
+        this.infoPackage = pckg;
+        this.infoModule = (module != null) ? module : "UNAVAILABLE";
+        this.infoRelease = (release != null) ? release : "UNAVAILABLE";
+        this.infoTimestamp = (time != null) ? time : "UNAVAILABLE";
+        this.infoClassloader = (clsldr != null) ? clsldr : "UNAVAILABLE";
+    }
 
-public final String getPackage() {
-return this.infoPackage;
-}
+    public static VersionInfo[] loadVersionInfo(String[] pckgs, ClassLoader clsldr) {
+        Args.notNull(pckgs, "Package identifier array");
+        List<VersionInfo> vil = new ArrayList<VersionInfo>(pckgs.length);
+        for (String pckg : pckgs) {
+            VersionInfo vi = loadVersionInfo(pckg, clsldr);
+            if (vi != null) {
+                vil.add(vi);
+            }
+        }
 
-public final String getModule() {
-return this.infoModule;
-}
+        return vil.<VersionInfo>toArray(new VersionInfo[vil.size()]);
+    }
 
-public final String getRelease() {
-return this.infoRelease;
-}
+    public static VersionInfo loadVersionInfo(String pckg, ClassLoader clsldr) {
+        Args.notNull(pckg, "Package identifier");
+        ClassLoader cl = (clsldr != null) ? clsldr : Thread.currentThread().getContextClassLoader();
 
-public final String getTimestamp() {
-return this.infoTimestamp;
-}
+        Properties vip = null;
 
-public final String getClassloader() {
-return this.infoClassloader;
-}
+        try {
+            InputStream is = cl.getResourceAsStream(pckg.replace('.', '/') + "/" + "version.properties");
 
-public String toString() {
-StringBuilder sb = new StringBuilder(20 + this.infoPackage.length() + this.infoModule.length() + this.infoRelease.length() + this.infoTimestamp.length() + this.infoClassloader.length());
+            if (is != null) {
+                try {
+                    Properties props = new Properties();
+                    props.load(is);
+                    vip = props;
+                } finally {
+                    is.close();
+                }
+            }
+        } catch (IOException ex) {
+        }
 
-sb.append("VersionInfo(").append(this.infoPackage).append(':').append(this.infoModule);
+        VersionInfo result = null;
+        if (vip != null) {
+            result = fromMap(pckg, vip, cl);
+        }
 
-if (!"UNAVAILABLE".equals(this.infoRelease)) {
-sb.append(':').append(this.infoRelease);
-}
-if (!"UNAVAILABLE".equals(this.infoTimestamp)) {
-sb.append(':').append(this.infoTimestamp);
-}
+        return result;
+    }
 
-sb.append(')');
+    protected static VersionInfo fromMap(String pckg, Map<?, ?> info, ClassLoader clsldr) {
+        Args.notNull(pckg, "Package identifier");
+        String module = null;
+        String release = null;
+        String timestamp = null;
 
-if (!"UNAVAILABLE".equals(this.infoClassloader)) {
-sb.append('@').append(this.infoClassloader);
-}
+        if (info != null) {
+            module = (String) info.get("info.module");
+            if (module != null && module.length() < 1) {
+                module = null;
+            }
 
-return sb.toString();
-}
+            release = (String) info.get("info.release");
+            if (release != null && (release.length() < 1 || release.equals("${pom.version}"))) {
+                release = null;
+            }
 
-public static VersionInfo[] loadVersionInfo(String[] pckgs, ClassLoader clsldr) {
-Args.notNull(pckgs, "Package identifier array");
-List<VersionInfo> vil = new ArrayList<VersionInfo>(pckgs.length);
-for (String pckg : pckgs) {
-VersionInfo vi = loadVersionInfo(pckg, clsldr);
-if (vi != null) {
-vil.add(vi);
-}
-} 
+            timestamp = (String) info.get("info.timestamp");
+            if (timestamp != null && (timestamp.length() < 1 || timestamp.equals("${mvn.timestamp}"))) {
 
-return vil.<VersionInfo>toArray(new VersionInfo[vil.size()]);
-}
+                timestamp = null;
+            }
+        }
 
-public static VersionInfo loadVersionInfo(String pckg, ClassLoader clsldr) {
-Args.notNull(pckg, "Package identifier");
-ClassLoader cl = (clsldr != null) ? clsldr : Thread.currentThread().getContextClassLoader();
+        String clsldrstr = null;
+        if (clsldr != null) {
+            clsldrstr = clsldr.toString();
+        }
 
-Properties vip = null;
+        return new VersionInfo(pckg, module, release, timestamp, clsldrstr);
+    }
 
-try {
-InputStream is = cl.getResourceAsStream(pckg.replace('.', '/') + "/" + "version.properties");
+    public static String getUserAgent(String name, String pkg, Class<?> cls) {
+        VersionInfo vi = loadVersionInfo(pkg, cls.getClassLoader());
+        String release = (vi != null) ? vi.getRelease() : "UNAVAILABLE";
+        String javaVersion = System.getProperty("java.version");
 
-if (is != null) {
-try {
-Properties props = new Properties();
-props.load(is);
-vip = props;
-} finally {
-is.close();
-} 
-}
-} catch (IOException ex) {}
+        return String.format("%s/%s (Java/%s)", new Object[]{name, release, javaVersion});
+    }
 
-VersionInfo result = null;
-if (vip != null) {
-result = fromMap(pckg, vip, cl);
-}
+    public final String getPackage() {
+        return this.infoPackage;
+    }
 
-return result;
-}
+    public final String getModule() {
+        return this.infoModule;
+    }
 
-protected static VersionInfo fromMap(String pckg, Map<?, ?> info, ClassLoader clsldr) {
-Args.notNull(pckg, "Package identifier");
-String module = null;
-String release = null;
-String timestamp = null;
+    public final String getRelease() {
+        return this.infoRelease;
+    }
 
-if (info != null) {
-module = (String)info.get("info.module");
-if (module != null && module.length() < 1) {
-module = null;
-}
+    public final String getTimestamp() {
+        return this.infoTimestamp;
+    }
 
-release = (String)info.get("info.release");
-if (release != null && (release.length() < 1 || release.equals("${pom.version}")))
-{
-release = null;
-}
+    public final String getClassloader() {
+        return this.infoClassloader;
+    }
 
-timestamp = (String)info.get("info.timestamp");
-if (timestamp != null && (timestamp.length() < 1 || timestamp.equals("${mvn.timestamp}")))
-{
+    public String toString() {
+        StringBuilder sb = new StringBuilder(20 + this.infoPackage.length() + this.infoModule.length() + this.infoRelease.length() + this.infoTimestamp.length() + this.infoClassloader.length());
 
-timestamp = null;
-}
-} 
+        sb.append("VersionInfo(").append(this.infoPackage).append(':').append(this.infoModule);
 
-String clsldrstr = null;
-if (clsldr != null) {
-clsldrstr = clsldr.toString();
-}
+        if (!"UNAVAILABLE".equals(this.infoRelease)) {
+            sb.append(':').append(this.infoRelease);
+        }
+        if (!"UNAVAILABLE".equals(this.infoTimestamp)) {
+            sb.append(':').append(this.infoTimestamp);
+        }
 
-return new VersionInfo(pckg, module, release, timestamp, clsldrstr);
-}
+        sb.append(')');
 
-public static String getUserAgent(String name, String pkg, Class<?> cls) {
-VersionInfo vi = loadVersionInfo(pkg, cls.getClassLoader());
-String release = (vi != null) ? vi.getRelease() : "UNAVAILABLE";
-String javaVersion = System.getProperty("java.version");
+        if (!"UNAVAILABLE".equals(this.infoClassloader)) {
+            sb.append('@').append(this.infoClassloader);
+        }
 
-return String.format("%s/%s (Java/%s)", new Object[] { name, release, javaVersion });
-}
+        return sb.toString();
+    }
 }
 

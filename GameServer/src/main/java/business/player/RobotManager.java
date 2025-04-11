@@ -6,133 +6,125 @@ import com.zhonglian.server.common.utils.CommMath;
 import com.zhonglian.server.common.utils.Maps;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefRobot;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 
-public class RobotManager
-{
-private final Map<Long, Player> pidDatas = Maps.newConcurrentMap();
+import java.util.*;
 
-private final Map<Integer, List<Player>> lvCidDatas = Maps.newConcurrentMap();
+public class RobotManager {
+    private static RobotManager instance = new RobotManager();
+    private final Map<Long, Player> pidDatas = Maps.newConcurrentMap();
+    private final Map<Integer, List<Player>> lvCidDatas = Maps.newConcurrentMap();
+    private final BaseMutexObject _lock = new BaseMutexObject();
 
-private final BaseMutexObject _lock = new BaseMutexObject();
+    public static RobotManager getInstance() {
+        return instance;
+    }
 
-private static RobotManager instance = new RobotManager();
+    public void lock() {
+        this._lock.lock();
+    }
 
-public static RobotManager getInstance() {
-return instance;
-}
+    public void unlock() {
+        this._lock.unlock();
+    }
 
-public void lock() {
-this._lock.lock();
-}
+    public void init() {
+        reload();
+    }
 
-public void unlock() {
-this._lock.unlock();
-}
+    public Map<Long, Player> getAll() {
+        return this.pidDatas;
+    }
 
-public void init() {
-reload();
-}
+    public Player getRandomPlayer() {
+        List<Player> players = new ArrayList<>();
+        players.addAll(this.pidDatas.values());
+        Player player = (Player) CommMath.randomOne(players);
+        return player;
+    }
 
-public Map<Long, Player> getAll() {
-return this.pidDatas;
-}
+    public List<Player> getRandomPlayers(int size) {
+        List<Player> players = new ArrayList<>();
+        players.addAll(this.pidDatas.values());
+        List<Player> player = CommMath.getRandomListByCnt(players, size);
+        return player;
+    }
 
-public Player getRandomPlayer() {
-List<Player> players = new ArrayList<>();
-players.addAll(this.pidDatas.values());
-Player player = (Player)CommMath.randomOne(players);
-return player;
-}
+    public void reload() {
+        this.lvCidDatas.clear();
+        this.pidDatas.clear();
 
-public List<Player> getRandomPlayers(int size) {
-List<Player> players = new ArrayList<>();
-players.addAll(this.pidDatas.values());
-List<Player> player = CommMath.getRandomListByCnt(players, size);
-return player;
-}
+        for (Player player : PlayerMgr.getInstance().getAllPlayers()) {
+            if (!player.isVirtualPlayer())
+                continue;
+            regVPlayer(player);
+        }
 
-public void reload() {
-this.lvCidDatas.clear();
-this.pidDatas.clear();
+        int totalVPlayerCnt = 0;
+        List<RefRobot> vPlayerInits = new ArrayList<>(RefDataMgr.getAll(RefRobot.class).values());
+        for (RefRobot init : vPlayerInits) {
+            totalVPlayerCnt += init.Count;
+        }
 
-for (Player player : PlayerMgr.getInstance().getAllPlayers()) {
-if (!player.isVirtualPlayer())
-continue; 
-regVPlayer(player);
-} 
+        if (this.pidDatas.size() >= totalVPlayerCnt) {
+            return;
+        }
 
-int totalVPlayerCnt = 0;
-List<RefRobot> vPlayerInits = new ArrayList<>(RefDataMgr.getAll(RefRobot.class).values());
-for (RefRobot init : vPlayerInits) {
-totalVPlayerCnt += init.Count;
-}
+        CommLog.info("[RobotManager.init] 机器人数量不足，开始创建机器人... 大概需要1min 请稍等");
 
-if (this.pidDatas.size() >= totalVPlayerCnt) {
-return;
-}
+        Collections.sort(vPlayerInits, new Comparator<RefRobot>() {
+            public int compare(RefRobot o1, RefRobot o2) {
+                return o2.Level - o1.Level;
+            }
+        });
 
-CommLog.info("[RobotManager.init] 机器人数量不足，开始创建机器人... 大概需要1min 请稍等");
+        for (RefRobot init : vPlayerInits) {
+            List<Player> players = this.lvCidDatas.get(Integer.valueOf(init.Level));
+            if (players == null) {
+                players = new ArrayList<>();
+                this.lvCidDatas.put(Integer.valueOf(init.Level), players);
+            }
 
-Collections.sort(vPlayerInits, new Comparator<RefRobot>()
-{
-public int compare(RefRobot o1, RefRobot o2) {
-return o2.Level - o1.Level;
-}
-});
+            if (players.size() >= init.Count) {
+                continue;
+            }
 
-for (RefRobot init : vPlayerInits) {
-List<Player> players = this.lvCidDatas.get(Integer.valueOf(init.Level));
-if (players == null) {
-players = new ArrayList<>();
-this.lvCidDatas.put(Integer.valueOf(init.Level), players);
-} 
+            createRobot(init);
+        }
+        CommLog.info("[RobotManager.init]机器人创建完毕，当前总量: {}", Integer.valueOf(this.pidDatas.size()));
+        CommLog.info("[RobotManager.init]机器人创建完后并未入库请入库完毕后再停服重启!!否则会导致数据丢失!!");
+    }
 
-if (players.size() >= init.Count) {
-continue;
-}
+    public void createRobot(RefRobot init) {
+        CommLog.info("[RobotManager.init] 创建机器人lv:{},数量:{}, 机器人创建完后并未入库请入库完毕后再停服重启!!!", Integer.valueOf(init.Level), Integer.valueOf(init.Count));
+        for (int i = 0; i < init.Count; i++) {
+            Player player = PlayerMgr.getInstance().createRobot(init);
+            if (player == null)
+                return;
+            regVPlayer(player);
+        }
+    }
 
-createRobot(init);
-} 
-CommLog.info("[RobotManager.init]机器人创建完毕，当前总量: {}", Integer.valueOf(this.pidDatas.size()));
-CommLog.info("[RobotManager.init]机器人创建完后并未入库请入库完毕后再停服重启!!否则会导致数据丢失!!");
-}
+    public void regVPlayer(Player player) {
+        int lv = player.getPlayerBO().getLv();
+        List<Player> lvInfoMap = this.lvCidDatas.get(Integer.valueOf(lv));
+        if (lvInfoMap == null) {
+            lvInfoMap = new ArrayList<>();
+            this.lvCidDatas.put(Integer.valueOf(lv), lvInfoMap);
+        }
+        lvInfoMap.add(player);
+        this.pidDatas.put(Long.valueOf(player.getPid()), player);
+    }
 
-public void createRobot(RefRobot init) {
-CommLog.info("[RobotManager.init] 创建机器人lv:{},数量:{}, 机器人创建完后并未入库请入库完毕后再停服重启!!!", Integer.valueOf(init.Level), Integer.valueOf(init.Count));
-for (int i = 0; i < init.Count; i++) {
-Player player = PlayerMgr.getInstance().createRobot(init);
-if (player == null)
-return; 
-regVPlayer(player);
-} 
-}
+    public List<Player> getLvlPlayers(int teamLevel) {
+        return this.lvCidDatas.get(Integer.valueOf(teamLevel));
+    }
 
-public void regVPlayer(Player player) {
-int lv = player.getPlayerBO().getLv();
-List<Player> lvInfoMap = this.lvCidDatas.get(Integer.valueOf(lv));
-if (lvInfoMap == null) {
-lvInfoMap = new ArrayList<>();
-this.lvCidDatas.put(Integer.valueOf(lv), lvInfoMap);
-} 
-lvInfoMap.add(player);
-this.pidDatas.put(Long.valueOf(player.getPid()), player);
-}
+    public boolean isRobot(long pid) {
+        return this.pidDatas.containsKey(Long.valueOf(pid));
+    }
 
-public List<Player> getLvlPlayers(int teamLevel) {
-return this.lvCidDatas.get(Integer.valueOf(teamLevel));
-}
-
-public boolean isRobot(long pid) {
-return this.pidDatas.containsKey(Long.valueOf(pid));
-}
-
-public void setRobot(long pid, Player player) {
-this.pidDatas.put(Long.valueOf(pid), player);
-}
+    public void setRobot(long pid, Player player) {
+        this.pidDatas.put(Long.valueOf(pid), player);
+    }
 }
 

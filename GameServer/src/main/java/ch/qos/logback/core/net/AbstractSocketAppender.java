@@ -5,6 +5,7 @@ import ch.qos.logback.core.spi.PreSerializationTransformer;
 import ch.qos.logback.core.util.CloseUtil;
 import ch.qos.logback.core.util.Duration;
 
+import javax.net.SocketFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -13,7 +14,6 @@ import java.net.UnknownHostException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import javax.net.SocketFactory;
 
 public abstract class AbstractSocketAppender<E>
         extends AppenderBase<E>
@@ -196,44 +196,44 @@ public abstract class AbstractSocketAppender<E>
         return SocketFactory.getDefault();
     }
 
-    public void setRemoteHost(String host) {
-        this.remoteHost = host;
-    }
-
     public String getRemoteHost() {
         return this.remoteHost;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setRemoteHost(String host) {
+        this.remoteHost = host;
     }
 
     public int getPort() {
         return this.port;
     }
 
-    public void setReconnectionDelay(Duration delay) {
-        this.reconnectionDelay = delay;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public Duration getReconnectionDelay() {
         return this.reconnectionDelay;
     }
 
-    public void setQueueSize(int queueSize) {
-        this.queueSize = queueSize;
+    public void setReconnectionDelay(Duration delay) {
+        this.reconnectionDelay = delay;
     }
 
     public int getQueueSize() {
         return this.queueSize;
     }
 
-    public void setEventDelayLimit(Duration eventDelayLimit) {
-        this.eventDelayLimit = eventDelayLimit;
+    public void setQueueSize(int queueSize) {
+        this.queueSize = queueSize;
     }
 
     public Duration getEventDelayLimit() {
         return this.eventDelayLimit;
+    }
+
+    public void setEventDelayLimit(Duration eventDelayLimit) {
+        this.eventDelayLimit = eventDelayLimit;
     }
 
     void setAcceptConnectionTimeout(int acceptConnectionTimeout) {

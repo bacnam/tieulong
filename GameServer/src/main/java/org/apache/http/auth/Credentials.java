@@ -3,8 +3,8 @@ package org.apache.http.auth;
 import java.security.Principal;
 
 public interface Credentials {
-  Principal getUserPrincipal();
+    Principal getUserPrincipal();
 
-  String getPassword();
+    String getPassword();
 }
 

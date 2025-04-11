@@ -1,14 +1,15 @@
 package org.apache.http.nio;
 
-import java.io.IOException;
-import java.nio.channels.ReadableByteChannel;
 import org.apache.http.HttpException;
 
+import java.io.IOException;
+import java.nio.channels.ReadableByteChannel;
+
 public interface NHttpMessageParser<T extends org.apache.http.HttpMessage> {
-  void reset();
+    void reset();
 
-  int fillBuffer(ReadableByteChannel paramReadableByteChannel) throws IOException;
+    int fillBuffer(ReadableByteChannel paramReadableByteChannel) throws IOException;
 
-  T parse() throws IOException, HttpException;
+    T parse() throws IOException, HttpException;
 }
 

@@ -7,111 +7,109 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class LazyInitializedCacheMap<K, V>
-implements Map<K, V>
-{
-private ConcurrentMap<K, LazyInitializer<V>> cache;
+        implements Map<K, V> {
+    private ConcurrentMap<K, LazyInitializer<V>> cache;
 
-public class NoopInitializer
-extends LazyInitializer<V>
-{
-private V value;
+    public LazyInitializedCacheMap() {
+        this.cache = new ConcurrentHashMap<K, LazyInitializer<V>>();
+    }
 
-public NoopInitializer(V value) {
-this.value = value;
-}
+    public LazyInitializedCacheMap(ConcurrentHashMap<K, LazyInitializer<V>> map) {
+        this.cache = map;
+    }
 
-public V init() {
-return this.value;
-}
-}
+    public V get(Object key) {
+        LazyInitializer<V> c = this.cache.get(key);
+        if (c != null) {
+            return c.get();
+        }
 
-public LazyInitializedCacheMap() {
-this.cache = new ConcurrentHashMap<K, LazyInitializer<V>>();
-}
+        return null;
+    }
 
-public LazyInitializedCacheMap(ConcurrentHashMap<K, LazyInitializer<V>> map) {
-this.cache = map;
-}
+    public V remove(Object key) {
+        LazyInitializer<V> c = this.cache.remove(key);
+        if (c != null) {
+            return c.get();
+        }
 
-public V get(Object key) {
-LazyInitializer<V> c = this.cache.get(key);
-if (c != null) {
-return c.get();
-}
+        return null;
+    }
 
-return null;
-}
+    public V putIfAbsent(K key, LazyInitializer<V> value) {
+        LazyInitializer<V> v = this.cache.get(key);
+        if (v == null) {
+            v = this.cache.putIfAbsent(key, value);
+            if (v == null) {
+                return value.get();
+            }
+        }
 
-public V remove(Object key) {
-LazyInitializer<V> c = this.cache.remove(key);
-if (c != null) {
-return c.get();
-}
+        return v.get();
+    }
 
-return null;
-}
+    public V put(K key, V value) {
+        LazyInitializer<V> c = this.cache.put(key, new NoopInitializer(value));
+        if (c != null) {
+            return c.get();
+        }
 
-public V putIfAbsent(K key, LazyInitializer<V> value) {
-LazyInitializer<V> v = this.cache.get(key);
-if (v == null) {
-v = this.cache.putIfAbsent(key, value);
-if (v == null) {
-return value.get();
-}
-} 
+        return null;
+    }
 
-return v.get();
-}
+    public boolean containsValue(Object value) {
+        throw new UnsupportedOperationException();
+    }
 
-public V put(K key, V value) {
-LazyInitializer<V> c = this.cache.put(key, new NoopInitializer(value));
-if (c != null) {
-return c.get();
-}
+    public Collection<V> values() {
+        throw new UnsupportedOperationException();
+    }
 
-return null;
-}
+    public Set<Map.Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException();
+    }
 
-public boolean containsValue(Object value) {
-throw new UnsupportedOperationException();
-}
+    public void putAll(Map<? extends K, ? extends V> m) {
+        for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
+            this.cache.put(e.getKey(), new NoopInitializer(e.getValue()));
+        }
+    }
 
-public Collection<V> values() {
-throw new UnsupportedOperationException();
-}
+    public Collection<LazyInitializer<V>> getValues() {
+        return this.cache.values();
+    }
 
-public Set<Map.Entry<K, V>> entrySet() {
-throw new UnsupportedOperationException();
-}
+    public void clear() {
+        this.cache.clear();
+    }
 
-public void putAll(Map<? extends K, ? extends V> m) {
-for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
-this.cache.put(e.getKey(), new NoopInitializer(e.getValue()));
-}
-}
+    public boolean containsKey(Object key) {
+        return this.cache.containsKey(key);
+    }
 
-public Collection<LazyInitializer<V>> getValues() {
-return this.cache.values();
-}
+    public boolean isEmpty() {
+        return this.cache.isEmpty();
+    }
 
-public void clear() {
-this.cache.clear();
-}
+    public Set<K> keySet() {
+        return this.cache.keySet();
+    }
 
-public boolean containsKey(Object key) {
-return this.cache.containsKey(key);
-}
+    public int size() {
+        return this.cache.size();
+    }
 
-public boolean isEmpty() {
-return this.cache.isEmpty();
-}
+    public class NoopInitializer
+            extends LazyInitializer<V> {
+        private V value;
 
-public Set<K> keySet() {
-return this.cache.keySet();
-}
+        public NoopInitializer(V value) {
+            this.value = value;
+        }
 
-public int size() {
-return this.cache.size();
-}
+        public V init() {
+            return this.value;
+        }
+    }
 }
 

@@ -7,23 +7,22 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 public class WeakHashPSManager
-implements PSManager
-{
-WeakHashMap wmap = new WeakHashMap<Object, Object>();
+        implements PSManager {
+    WeakHashMap wmap = new WeakHashMap<Object, Object>();
 
-public PreparedStatement getPS(Connection paramConnection, String paramString) {
-Map map = (Map)this.wmap.get(paramConnection);
-return (map == null) ? null : (PreparedStatement)map.get(paramString);
-}
+    public PreparedStatement getPS(Connection paramConnection, String paramString) {
+        Map map = (Map) this.wmap.get(paramConnection);
+        return (map == null) ? null : (PreparedStatement) map.get(paramString);
+    }
 
-public void putPS(Connection paramConnection, String paramString, PreparedStatement paramPreparedStatement) {
-Map<Object, Object> map = (Map)this.wmap.get(paramConnection);
-if (map == null) {
+    public void putPS(Connection paramConnection, String paramString, PreparedStatement paramPreparedStatement) {
+        Map<Object, Object> map = (Map) this.wmap.get(paramConnection);
+        if (map == null) {
 
-map = new HashMap<Object, Object>();
-this.wmap.put(paramConnection, map);
-} 
-map.put(paramString, paramPreparedStatement);
-}
+            map = new HashMap<Object, Object>();
+            this.wmap.put(paramConnection, map);
+        }
+        map.put(paramString, paramPreparedStatement);
+    }
 }
 

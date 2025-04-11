@@ -1,11 +1,11 @@
 package redis.clients.jedis;
 
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
 public interface BinaryJedisCommands {
     String set(byte[] key, byte[] value);
@@ -133,37 +133,37 @@ public interface BinaryJedisCommands {
     Set<byte[]> zrangeByScore(byte[] key, double min, double max);
 
     Set<byte[]> zrangeByScore(byte[] key, double min, double max, int offset,
-	    int count);
+                              int count);
 
     Set<Tuple> zrangeByScoreWithScores(byte[] key, double min, double max);
 
     Set<Tuple> zrangeByScoreWithScores(byte[] key, double min, double max,
-	    int offset, int count);
+                                       int offset, int count);
 
     Set<Tuple> zrangeByScoreWithScores(byte[] key, byte[] min, byte[] max);
 
     Set<Tuple> zrangeByScoreWithScores(byte[] key, byte[] min, byte[] max,
-	    int offset, int count);
+                                       int offset, int count);
 
     Set<byte[]> zrevrangeByScore(byte[] key, double max, double min);
 
     Set<byte[]> zrevrangeByScore(byte[] key, double max, double min,
-	    int offset, int count);
+                                 int offset, int count);
 
     Set<byte[]> zrevrangeByScore(byte[] key, byte[] max, byte[] min);
 
     Set<byte[]> zrevrangeByScore(byte[] key, byte[] max, byte[] min,
-	    int offset, int count);
+                                 int offset, int count);
 
     Set<Tuple> zrevrangeByScoreWithScores(byte[] key, double max, double min);
 
     Set<Tuple> zrevrangeByScoreWithScores(byte[] key, double max, double min,
-	    int offset, int count);
+                                          int offset, int count);
 
     Set<Tuple> zrevrangeByScoreWithScores(byte[] key, byte[] max, byte[] min);
 
     Set<Tuple> zrevrangeByScoreWithScores(byte[] key, byte[] max, byte[] min,
-	    int offset, int count);
+                                          int offset, int count);
 
     Long zremrangeByRank(byte[] key, int start, int end);
 

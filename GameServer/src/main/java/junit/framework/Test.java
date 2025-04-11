@@ -1,8 +1,8 @@
 package junit.framework;
 
 public interface Test {
-  int countTestCases();
+    int countTestCases();
 
-  void run(TestResult paramTestResult);
+    void run(TestResult paramTestResult);
 }
 

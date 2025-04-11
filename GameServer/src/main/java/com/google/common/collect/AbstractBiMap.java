@@ -4,6 +4,8 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,330 +14,338 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nullable;
 
 @GwtCompatible(emulated = true)
 abstract class AbstractBiMap<K, V>
-extends ForwardingMap<K, V>
-implements BiMap<K, V>, Serializable
-{
-private transient Map<K, V> delegate;
-private transient AbstractBiMap<V, K> inverse;
-private transient Set<K> keySet;
-private transient Set<V> valueSet;
-private transient Set<Map.Entry<K, V>> entrySet;
-@GwtIncompatible("Not needed in emulated source.")
-private static final long serialVersionUID = 0L;
+        extends ForwardingMap<K, V>
+        implements BiMap<K, V>, Serializable {
+    @GwtIncompatible("Not needed in emulated source.")
+    private static final long serialVersionUID = 0L;
+    private transient Map<K, V> delegate;
+    private transient AbstractBiMap<V, K> inverse;
+    private transient Set<K> keySet;
+    private transient Set<V> valueSet;
+    private transient Set<Map.Entry<K, V>> entrySet;
 
-AbstractBiMap(Map<K, V> forward, Map<V, K> backward) {
-setDelegates(forward, backward);
-}
+    AbstractBiMap(Map<K, V> forward, Map<V, K> backward) {
+        setDelegates(forward, backward);
+    }
 
-private AbstractBiMap(Map<K, V> backward, AbstractBiMap<V, K> forward) {
-this.delegate = backward;
-this.inverse = forward;
-}
+    private AbstractBiMap(Map<K, V> backward, AbstractBiMap<V, K> forward) {
+        this.delegate = backward;
+        this.inverse = forward;
+    }
 
-protected Map<K, V> delegate() {
-return this.delegate;
-}
+    protected Map<K, V> delegate() {
+        return this.delegate;
+    }
 
-void setDelegates(Map<K, V> forward, Map<V, K> backward) {
-Preconditions.checkState((this.delegate == null));
-Preconditions.checkState((this.inverse == null));
-Preconditions.checkArgument(forward.isEmpty());
-Preconditions.checkArgument(backward.isEmpty());
-Preconditions.checkArgument((forward != backward));
-this.delegate = forward;
-this.inverse = new Inverse<V, K>(backward, this);
-}
+    void setDelegates(Map<K, V> forward, Map<V, K> backward) {
+        Preconditions.checkState((this.delegate == null));
+        Preconditions.checkState((this.inverse == null));
+        Preconditions.checkArgument(forward.isEmpty());
+        Preconditions.checkArgument(backward.isEmpty());
+        Preconditions.checkArgument((forward != backward));
+        this.delegate = forward;
+        this.inverse = new Inverse<V, K>(backward, this);
+    }
 
-void setInverse(AbstractBiMap<V, K> inverse) {
-this.inverse = inverse;
-}
+    void setInverse(AbstractBiMap<V, K> inverse) {
+        this.inverse = inverse;
+    }
 
-public boolean containsValue(Object value) {
-return this.inverse.containsKey(value);
-}
+    public boolean containsValue(Object value) {
+        return this.inverse.containsKey(value);
+    }
 
-public V put(K key, V value) {
-return putInBothMaps(key, value, false);
-}
+    public V put(K key, V value) {
+        return putInBothMaps(key, value, false);
+    }
 
-public V forcePut(K key, V value) {
-return putInBothMaps(key, value, true);
-}
+    public V forcePut(K key, V value) {
+        return putInBothMaps(key, value, true);
+    }
 
-private V putInBothMaps(@Nullable K key, @Nullable V value, boolean force) {
-boolean containedKey = containsKey(key);
-if (containedKey && Objects.equal(value, get(key))) {
-return value;
-}
-if (force) {
-inverse().remove(value);
-} else {
-Preconditions.checkArgument(!containsValue(value), "value already present: %s", new Object[] { value });
-} 
-V oldValue = this.delegate.put(key, value);
-updateInverseMap(key, containedKey, oldValue, value);
-return oldValue;
-}
+    private V putInBothMaps(@Nullable K key, @Nullable V value, boolean force) {
+        boolean containedKey = containsKey(key);
+        if (containedKey && Objects.equal(value, get(key))) {
+            return value;
+        }
+        if (force) {
+            inverse().remove(value);
+        } else {
+            Preconditions.checkArgument(!containsValue(value), "value already present: %s", new Object[]{value});
+        }
+        V oldValue = this.delegate.put(key, value);
+        updateInverseMap(key, containedKey, oldValue, value);
+        return oldValue;
+    }
 
-private void updateInverseMap(K key, boolean containedKey, V oldValue, V newValue) {
-if (containedKey) {
-removeFromInverseMap(oldValue);
-}
-this.inverse.delegate.put((K)newValue, (V)key);
-}
+    private void updateInverseMap(K key, boolean containedKey, V oldValue, V newValue) {
+        if (containedKey) {
+            removeFromInverseMap(oldValue);
+        }
+        this.inverse.delegate.put((K) newValue, (V) key);
+    }
 
-public V remove(Object key) {
-return containsKey(key) ? removeFromBothMaps(key) : null;
-}
+    public V remove(Object key) {
+        return containsKey(key) ? removeFromBothMaps(key) : null;
+    }
 
-private V removeFromBothMaps(Object key) {
-V oldValue = this.delegate.remove(key);
-removeFromInverseMap(oldValue);
-return oldValue;
-}
+    private V removeFromBothMaps(Object key) {
+        V oldValue = this.delegate.remove(key);
+        removeFromInverseMap(oldValue);
+        return oldValue;
+    }
 
-private void removeFromInverseMap(V oldValue) {
-this.inverse.delegate.remove(oldValue);
-}
+    private void removeFromInverseMap(V oldValue) {
+        this.inverse.delegate.remove(oldValue);
+    }
 
-public void putAll(Map<? extends K, ? extends V> map) {
-for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-put(entry.getKey(), entry.getValue());
-}
-}
+    public void putAll(Map<? extends K, ? extends V> map) {
+        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
+    }
 
-public void clear() {
-this.delegate.clear();
-this.inverse.delegate.clear();
-}
+    public void clear() {
+        this.delegate.clear();
+        this.inverse.delegate.clear();
+    }
 
-public BiMap<V, K> inverse() {
-return this.inverse;
-}
+    public BiMap<V, K> inverse() {
+        return this.inverse;
+    }
 
-public Set<K> keySet() {
-Set<K> result = this.keySet;
-return (result == null) ? (this.keySet = new KeySet()) : result;
-}
+    public Set<K> keySet() {
+        Set<K> result = this.keySet;
+        return (result == null) ? (this.keySet = new KeySet()) : result;
+    }
 
-private class KeySet extends ForwardingSet<K> {
-protected Set<K> delegate() {
-return AbstractBiMap.this.delegate.keySet();
-}
-private KeySet() {}
-public void clear() {
-AbstractBiMap.this.clear();
-}
+    public Set<V> values() {
+        Set<V> result = this.valueSet;
+        return (result == null) ? (this.valueSet = new ValueSet()) : result;
+    }
 
-public boolean remove(Object key) {
-if (!contains(key)) {
-return false;
-}
-AbstractBiMap.this.removeFromBothMaps(key);
-return true;
-}
+    public Set<Map.Entry<K, V>> entrySet() {
+        Set<Map.Entry<K, V>> result = this.entrySet;
+        return (result == null) ? (this.entrySet = new EntrySet()) : result;
+    }
 
-public boolean removeAll(Collection<?> keysToRemove) {
-return standardRemoveAll(keysToRemove);
-}
+    private static class Inverse<K, V> extends AbstractBiMap<K, V> {
+        @GwtIncompatible("Not needed in emulated source.")
+        private static final long serialVersionUID = 0L;
 
-public boolean retainAll(Collection<?> keysToRetain) {
-return standardRetainAll(keysToRetain);
-}
+        private Inverse(Map<K, V> backward, AbstractBiMap<V, K> forward) {
+            super(backward, forward);
+        }
 
-public Iterator<K> iterator() {
-final Iterator<Map.Entry<K, V>> iterator = AbstractBiMap.this.delegate.entrySet().iterator();
-return new Iterator<K>()
-{
-Map.Entry<K, V> entry;
+        @GwtIncompatible("java.io.ObjectOuputStream")
+        private void writeObject(ObjectOutputStream stream) throws IOException {
+            stream.defaultWriteObject();
+            stream.writeObject(inverse());
+        }
 
-public boolean hasNext() {
-return iterator.hasNext();
-}
+        @GwtIncompatible("java.io.ObjectInputStream")
+        private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+            stream.defaultReadObject();
+            setInverse((AbstractBiMap<V, K>) stream.readObject());
+        }
 
-public K next() {
-this.entry = iterator.next();
-return this.entry.getKey();
-}
+        @GwtIncompatible("Not needed in the emulated source.")
+        Object readResolve() {
+            return inverse().inverse();
+        }
+    }
 
-public void remove() {
-Preconditions.checkState((this.entry != null));
-V value = this.entry.getValue();
-iterator.remove();
-AbstractBiMap.this.removeFromInverseMap(value);
-}
-};
-}
-}
+    private class KeySet extends ForwardingSet<K> {
+        private KeySet() {
+        }
 
-public Set<V> values() {
-Set<V> result = this.valueSet;
-return (result == null) ? (this.valueSet = new ValueSet()) : result;
-}
+        protected Set<K> delegate() {
+            return AbstractBiMap.this.delegate.keySet();
+        }
 
-private class ValueSet extends ForwardingSet<V> {
-final Set<V> valuesDelegate = AbstractBiMap.this.inverse.keySet();
+        public void clear() {
+            AbstractBiMap.this.clear();
+        }
 
-protected Set<V> delegate() {
-return this.valuesDelegate;
-}
+        public boolean remove(Object key) {
+            if (!contains(key)) {
+                return false;
+            }
+            AbstractBiMap.this.removeFromBothMaps(key);
+            return true;
+        }
 
-public Iterator<V> iterator() {
-final Iterator<V> iterator = AbstractBiMap.this.delegate.values().iterator();
-return new Iterator<V>() {
-V valueToRemove;
+        public boolean removeAll(Collection<?> keysToRemove) {
+            return standardRemoveAll(keysToRemove);
+        }
 
-public boolean hasNext() {
-return iterator.hasNext();
-}
+        public boolean retainAll(Collection<?> keysToRetain) {
+            return standardRetainAll(keysToRetain);
+        }
 
-public V next() {
-return this.valueToRemove = (V)iterator.next();
-}
+        public Iterator<K> iterator() {
+            final Iterator<Map.Entry<K, V>> iterator = AbstractBiMap.this.delegate.entrySet().iterator();
+            return new Iterator<K>() {
+                Map.Entry<K, V> entry;
 
-public void remove() {
-iterator.remove();
-AbstractBiMap.this.removeFromInverseMap(this.valueToRemove);
-}
-};
-}
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-public Object[] toArray() {
-return standardToArray();
-}
+                public K next() {
+                    this.entry = iterator.next();
+                    return this.entry.getKey();
+                }
 
-public <T> T[] toArray(T[] array) {
-return (T[])standardToArray((Object[])array);
-}
+                public void remove() {
+                    Preconditions.checkState((this.entry != null));
+                    V value = this.entry.getValue();
+                    iterator.remove();
+                    AbstractBiMap.this.removeFromInverseMap(value);
+                }
+            };
+        }
+    }
 
-public String toString() {
-return standardToString();
-}
+    private class ValueSet extends ForwardingSet<V> {
+        final Set<V> valuesDelegate = AbstractBiMap.this.inverse.keySet();
 
-private ValueSet() {}
-}
+        private ValueSet() {
+        }
 
-public Set<Map.Entry<K, V>> entrySet() {
-Set<Map.Entry<K, V>> result = this.entrySet;
-return (result == null) ? (this.entrySet = new EntrySet()) : result;
-}
+        protected Set<V> delegate() {
+            return this.valuesDelegate;
+        }
 
-private class EntrySet extends ForwardingSet<Map.Entry<K, V>> {
-final Set<Map.Entry<K, V>> esDelegate = AbstractBiMap.this.delegate.entrySet();
+        public Iterator<V> iterator() {
+            final Iterator<V> iterator = AbstractBiMap.this.delegate.values().iterator();
+            return new Iterator<V>() {
+                V valueToRemove;
 
-protected Set<Map.Entry<K, V>> delegate() {
-return this.esDelegate;
-}
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-public void clear() {
-AbstractBiMap.this.clear();
-}
+                public V next() {
+                    return this.valueToRemove = (V) iterator.next();
+                }
 
-public boolean remove(Object object) {
-if (!this.esDelegate.contains(object)) {
-return false;
-}
+                public void remove() {
+                    iterator.remove();
+                    AbstractBiMap.this.removeFromInverseMap(this.valueToRemove);
+                }
+            };
+        }
 
-Map.Entry<?, ?> entry = (Map.Entry<?, ?>)object;
-AbstractBiMap.this.inverse.delegate.remove(entry.getValue());
+        public Object[] toArray() {
+            return standardToArray();
+        }
 
-this.esDelegate.remove(entry);
-return true;
-}
+        public <T> T[] toArray(T[] array) {
+            return (T[]) standardToArray((Object[]) array);
+        }
 
-public Iterator<Map.Entry<K, V>> iterator() {
-final Iterator<Map.Entry<K, V>> iterator = this.esDelegate.iterator();
-return new Iterator<Map.Entry<K, V>>() {
-Map.Entry<K, V> entry;
+        public String toString() {
+            return standardToString();
+        }
+    }
 
-public boolean hasNext() {
-return iterator.hasNext();
-}
+    private class EntrySet extends ForwardingSet<Map.Entry<K, V>> {
+        final Set<Map.Entry<K, V>> esDelegate = AbstractBiMap.this.delegate.entrySet();
 
-public Map.Entry<K, V> next() {
-this.entry = iterator.next();
-final Map.Entry<K, V> finalEntry = this.entry;
+        private EntrySet() {
+        }
 
-return new ForwardingMapEntry<K, V>() {
-protected Map.Entry<K, V> delegate() {
-return finalEntry;
-}
+        protected Set<Map.Entry<K, V>> delegate() {
+            return this.esDelegate;
+        }
 
-public V setValue(V value) {
-Preconditions.checkState(AbstractBiMap.EntrySet.this.contains(this), "entry no longer in map");
+        public void clear() {
+            AbstractBiMap.this.clear();
+        }
 
-if (Objects.equal(value, getValue())) {
-return value;
-}
-Preconditions.checkArgument(!AbstractBiMap.this.containsValue(value), "value already present: %s", new Object[] { value });
+        public boolean remove(Object object) {
+            if (!this.esDelegate.contains(object)) {
+                return false;
+            }
 
-V oldValue = (V)finalEntry.setValue(value);
-Preconditions.checkState(Objects.equal(value, AbstractBiMap.this.get(getKey())), "entry no longer in map");
+            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) object;
+            AbstractBiMap.this.inverse.delegate.remove(entry.getValue());
 
-AbstractBiMap.this.updateInverseMap(getKey(), true, oldValue, value);
-return oldValue;
-}
-};
-}
+            this.esDelegate.remove(entry);
+            return true;
+        }
 
-public void remove() {
-Preconditions.checkState((this.entry != null));
-V value = this.entry.getValue();
-iterator.remove();
-AbstractBiMap.this.removeFromInverseMap(value);
-}
-};
-}
+        public Iterator<Map.Entry<K, V>> iterator() {
+            final Iterator<Map.Entry<K, V>> iterator = this.esDelegate.iterator();
+            return new Iterator<Map.Entry<K, V>>() {
+                Map.Entry<K, V> entry;
 
-public Object[] toArray() {
-return standardToArray();
-}
-public <T> T[] toArray(T[] array) {
-return (T[])standardToArray((Object[])array);
-}
-public boolean contains(Object o) {
-return Maps.containsEntryImpl(delegate(), o);
-}
-public boolean containsAll(Collection<?> c) {
-return standardContainsAll(c);
-}
-public boolean removeAll(Collection<?> c) {
-return standardRemoveAll(c);
-}
-public boolean retainAll(Collection<?> c) {
-return standardRetainAll(c);
-}
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-private EntrySet() {} }
+                public Map.Entry<K, V> next() {
+                    this.entry = iterator.next();
+                    final Map.Entry<K, V> finalEntry = this.entry;
 
-private static class Inverse<K, V> extends AbstractBiMap<K, V> {
-private Inverse(Map<K, V> backward, AbstractBiMap<V, K> forward) {
-super(backward, forward);
-}
+                    return new ForwardingMapEntry<K, V>() {
+                        protected Map.Entry<K, V> delegate() {
+                            return finalEntry;
+                        }
 
-@GwtIncompatible("Not needed in emulated source.")
-private static final long serialVersionUID = 0L;
+                        public V setValue(V value) {
+                            Preconditions.checkState(AbstractBiMap.EntrySet.this.contains(this), "entry no longer in map");
 
-@GwtIncompatible("java.io.ObjectOuputStream")
-private void writeObject(ObjectOutputStream stream) throws IOException {
-stream.defaultWriteObject();
-stream.writeObject(inverse());
-}
+                            if (Objects.equal(value, getValue())) {
+                                return value;
+                            }
+                            Preconditions.checkArgument(!AbstractBiMap.this.containsValue(value), "value already present: %s", new Object[]{value});
 
-@GwtIncompatible("java.io.ObjectInputStream")
-private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-stream.defaultReadObject();
-setInverse((AbstractBiMap<V, K>)stream.readObject());
-}
+                            V oldValue = (V) finalEntry.setValue(value);
+                            Preconditions.checkState(Objects.equal(value, AbstractBiMap.this.get(getKey())), "entry no longer in map");
 
-@GwtIncompatible("Not needed in the emulated source.")
-Object readResolve() {
-return inverse().inverse();
-}
-}
+                            AbstractBiMap.this.updateInverseMap(getKey(), true, oldValue, value);
+                            return oldValue;
+                        }
+                    };
+                }
+
+                public void remove() {
+                    Preconditions.checkState((this.entry != null));
+                    V value = this.entry.getValue();
+                    iterator.remove();
+                    AbstractBiMap.this.removeFromInverseMap(value);
+                }
+            };
+        }
+
+        public Object[] toArray() {
+            return standardToArray();
+        }
+
+        public <T> T[] toArray(T[] array) {
+            return (T[]) standardToArray((Object[]) array);
+        }
+
+        public boolean contains(Object o) {
+            return Maps.containsEntryImpl(delegate(), o);
+        }
+
+        public boolean containsAll(Collection<?> c) {
+            return standardContainsAll(c);
+        }
+
+        public boolean removeAll(Collection<?> c) {
+            return standardRemoveAll(c);
+        }
+
+        public boolean retainAll(Collection<?> c) {
+            return standardRetainAll(c);
+        }
+    }
 }
 

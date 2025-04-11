@@ -7,6 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface ValidateWith {
-  Class<? extends AnnotationValidator> value();
+    Class<? extends AnnotationValidator> value();
 }
 

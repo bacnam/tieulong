@@ -1,58 +1,58 @@
 package org.apache.mina.core.session;
 
 public interface IoSessionConfig {
-  int getReadBufferSize();
+    int getReadBufferSize();
 
-  void setReadBufferSize(int paramInt);
+    void setReadBufferSize(int paramInt);
 
-  int getMinReadBufferSize();
+    int getMinReadBufferSize();
 
-  void setMinReadBufferSize(int paramInt);
+    void setMinReadBufferSize(int paramInt);
 
-  int getMaxReadBufferSize();
+    int getMaxReadBufferSize();
 
-  void setMaxReadBufferSize(int paramInt);
+    void setMaxReadBufferSize(int paramInt);
 
-  int getThroughputCalculationInterval();
+    int getThroughputCalculationInterval();
 
-  long getThroughputCalculationIntervalInMillis();
+    void setThroughputCalculationInterval(int paramInt);
 
-  void setThroughputCalculationInterval(int paramInt);
+    long getThroughputCalculationIntervalInMillis();
 
-  int getIdleTime(IdleStatus paramIdleStatus);
+    int getIdleTime(IdleStatus paramIdleStatus);
 
-  long getIdleTimeInMillis(IdleStatus paramIdleStatus);
+    long getIdleTimeInMillis(IdleStatus paramIdleStatus);
 
-  void setIdleTime(IdleStatus paramIdleStatus, int paramInt);
+    void setIdleTime(IdleStatus paramIdleStatus, int paramInt);
 
-  int getReaderIdleTime();
+    int getReaderIdleTime();
 
-  long getReaderIdleTimeInMillis();
+    void setReaderIdleTime(int paramInt);
 
-  void setReaderIdleTime(int paramInt);
+    long getReaderIdleTimeInMillis();
 
-  int getWriterIdleTime();
+    int getWriterIdleTime();
 
-  long getWriterIdleTimeInMillis();
+    void setWriterIdleTime(int paramInt);
 
-  void setWriterIdleTime(int paramInt);
+    long getWriterIdleTimeInMillis();
 
-  int getBothIdleTime();
+    int getBothIdleTime();
 
-  long getBothIdleTimeInMillis();
+    void setBothIdleTime(int paramInt);
 
-  void setBothIdleTime(int paramInt);
+    long getBothIdleTimeInMillis();
 
-  int getWriteTimeout();
+    int getWriteTimeout();
 
-  long getWriteTimeoutInMillis();
+    void setWriteTimeout(int paramInt);
 
-  void setWriteTimeout(int paramInt);
+    long getWriteTimeoutInMillis();
 
-  boolean isUseReadOperation();
+    boolean isUseReadOperation();
 
-  void setUseReadOperation(boolean paramBoolean);
+    void setUseReadOperation(boolean paramBoolean);
 
-  void setAll(IoSessionConfig paramIoSessionConfig);
+    void setAll(IoSessionConfig paramIoSessionConfig);
 }
 

@@ -5,210 +5,208 @@ import ch.qos.logback.core.status.ErrorStatus;
 import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.status.WarnStatus;
 import ch.qos.logback.core.util.FileUtil;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Compressor
-extends ContextAwareBase
-{
-final CompressionMode compressionMode;
-static final int BUFFER_SIZE = 8192;
+        extends ContextAwareBase {
+    static final int BUFFER_SIZE = 8192;
+    final CompressionMode compressionMode;
 
-public Compressor(CompressionMode compressionMode) {
-this.compressionMode = compressionMode;
-}
+    public Compressor(CompressionMode compressionMode) {
+        this.compressionMode = compressionMode;
+    }
 
-public void compress(String nameOfFile2Compress, String nameOfCompressedFile, String innerEntryName) {
-switch (this.compressionMode) {
-case GZ:
-gzCompress(nameOfFile2Compress, nameOfCompressedFile);
-break;
-case ZIP:
-zipCompress(nameOfFile2Compress, nameOfCompressedFile, innerEntryName);
-break;
-case NONE:
-throw new UnsupportedOperationException("compress method called in NONE compression mode");
-} 
-}
+    public static String computeFileNameStr_WCS(String fileNamePatternStr, CompressionMode compressionMode) {
+        int len = fileNamePatternStr.length();
+        switch (compressionMode) {
+            case GZ:
+                if (fileNamePatternStr.endsWith(".gz")) {
+                    return fileNamePatternStr.substring(0, len - 3);
+                }
+                return fileNamePatternStr;
+            case ZIP:
+                if (fileNamePatternStr.endsWith(".zip")) {
+                    return fileNamePatternStr.substring(0, len - 4);
+                }
+                return fileNamePatternStr;
+            case NONE:
+                return fileNamePatternStr;
+        }
+        throw new IllegalStateException("Execution should not reach this point");
+    }
 
-private void zipCompress(String nameOfFile2zip, String nameOfZippedFile, String innerEntryName) {
-File file2zip = new File(nameOfFile2zip);
+    public void compress(String nameOfFile2Compress, String nameOfCompressedFile, String innerEntryName) {
+        switch (this.compressionMode) {
+            case GZ:
+                gzCompress(nameOfFile2Compress, nameOfCompressedFile);
+                break;
+            case ZIP:
+                zipCompress(nameOfFile2Compress, nameOfCompressedFile, innerEntryName);
+                break;
+            case NONE:
+                throw new UnsupportedOperationException("compress method called in NONE compression mode");
+        }
+    }
 
-if (!file2zip.exists()) {
-addStatus((Status)new WarnStatus("The file to compress named [" + nameOfFile2zip + "] does not exist.", this));
+    private void zipCompress(String nameOfFile2zip, String nameOfZippedFile, String innerEntryName) {
+        File file2zip = new File(nameOfFile2zip);
 
-return;
-} 
+        if (!file2zip.exists()) {
+            addStatus((Status) new WarnStatus("The file to compress named [" + nameOfFile2zip + "] does not exist.", this));
 
-if (innerEntryName == null) {
-addStatus((Status)new WarnStatus("The innerEntryName parameter cannot be null", this));
+            return;
+        }
 
-return;
-} 
-if (!nameOfZippedFile.endsWith(".zip")) {
-nameOfZippedFile = nameOfZippedFile + ".zip";
-}
+        if (innerEntryName == null) {
+            addStatus((Status) new WarnStatus("The innerEntryName parameter cannot be null", this));
 
-File zippedFile = new File(nameOfZippedFile);
+            return;
+        }
+        if (!nameOfZippedFile.endsWith(".zip")) {
+            nameOfZippedFile = nameOfZippedFile + ".zip";
+        }
 
-if (zippedFile.exists()) {
-addStatus((Status)new WarnStatus("The target compressed file named [" + nameOfZippedFile + "] exist already.", this));
+        File zippedFile = new File(nameOfZippedFile);
 
-return;
-} 
+        if (zippedFile.exists()) {
+            addStatus((Status) new WarnStatus("The target compressed file named [" + nameOfZippedFile + "] exist already.", this));
 
-addInfo("ZIP compressing [" + file2zip + "] as [" + zippedFile + "]");
-createMissingTargetDirsIfNecessary(zippedFile);
+            return;
+        }
 
-BufferedInputStream bis = null;
-ZipOutputStream zos = null;
-try {
-bis = new BufferedInputStream(new FileInputStream(nameOfFile2zip));
-zos = new ZipOutputStream(new FileOutputStream(nameOfZippedFile));
+        addInfo("ZIP compressing [" + file2zip + "] as [" + zippedFile + "]");
+        createMissingTargetDirsIfNecessary(zippedFile);
 
-ZipEntry zipEntry = computeZipEntry(innerEntryName);
-zos.putNextEntry(zipEntry);
+        BufferedInputStream bis = null;
+        ZipOutputStream zos = null;
+        try {
+            bis = new BufferedInputStream(new FileInputStream(nameOfFile2zip));
+            zos = new ZipOutputStream(new FileOutputStream(nameOfZippedFile));
 
-byte[] inbuf = new byte[8192];
+            ZipEntry zipEntry = computeZipEntry(innerEntryName);
+            zos.putNextEntry(zipEntry);
 
-int n;
-while ((n = bis.read(inbuf)) != -1) {
-zos.write(inbuf, 0, n);
-}
+            byte[] inbuf = new byte[8192];
 
-bis.close();
-bis = null;
-zos.close();
-zos = null;
+            int n;
+            while ((n = bis.read(inbuf)) != -1) {
+                zos.write(inbuf, 0, n);
+            }
 
-if (!file2zip.delete()) {
-addStatus((Status)new WarnStatus("Could not delete [" + nameOfFile2zip + "].", this));
-}
-}
-catch (Exception e) {
-addStatus((Status)new ErrorStatus("Error occurred while compressing [" + nameOfFile2zip + "] into [" + nameOfZippedFile + "].", this, e));
-} finally {
+            bis.close();
+            bis = null;
+            zos.close();
+            zos = null;
 
-if (bis != null) {
-try {
-bis.close();
-} catch (IOException e) {}
-}
+            if (!file2zip.delete()) {
+                addStatus((Status) new WarnStatus("Could not delete [" + nameOfFile2zip + "].", this));
+            }
+        } catch (Exception e) {
+            addStatus((Status) new ErrorStatus("Error occurred while compressing [" + nameOfFile2zip + "] into [" + nameOfZippedFile + "].", this, e));
+        } finally {
 
-if (zos != null) {
-try {
-zos.close();
-} catch (IOException e) {}
-}
-} 
-}
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                }
+            }
 
-ZipEntry computeZipEntry(File zippedFile) {
-return computeZipEntry(zippedFile.getName());
-}
+            if (zos != null) {
+                try {
+                    zos.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
-ZipEntry computeZipEntry(String filename) {
-String nameOfFileNestedWithinArchive = computeFileNameStr_WCS(filename, this.compressionMode);
-return new ZipEntry(nameOfFileNestedWithinArchive);
-}
+    ZipEntry computeZipEntry(File zippedFile) {
+        return computeZipEntry(zippedFile.getName());
+    }
 
-private void gzCompress(String nameOfFile2gz, String nameOfgzedFile) {
-File file2gz = new File(nameOfFile2gz);
+    ZipEntry computeZipEntry(String filename) {
+        String nameOfFileNestedWithinArchive = computeFileNameStr_WCS(filename, this.compressionMode);
+        return new ZipEntry(nameOfFileNestedWithinArchive);
+    }
 
-if (!file2gz.exists()) {
-addStatus((Status)new WarnStatus("The file to compress named [" + nameOfFile2gz + "] does not exist.", this));
+    private void gzCompress(String nameOfFile2gz, String nameOfgzedFile) {
+        File file2gz = new File(nameOfFile2gz);
 
-return;
-} 
+        if (!file2gz.exists()) {
+            addStatus((Status) new WarnStatus("The file to compress named [" + nameOfFile2gz + "] does not exist.", this));
 
-if (!nameOfgzedFile.endsWith(".gz")) {
-nameOfgzedFile = nameOfgzedFile + ".gz";
-}
+            return;
+        }
 
-File gzedFile = new File(nameOfgzedFile);
+        if (!nameOfgzedFile.endsWith(".gz")) {
+            nameOfgzedFile = nameOfgzedFile + ".gz";
+        }
 
-if (gzedFile.exists()) {
-addWarn("The target compressed file named [" + nameOfgzedFile + "] exist already. Aborting file compression.");
+        File gzedFile = new File(nameOfgzedFile);
 
-return;
-} 
+        if (gzedFile.exists()) {
+            addWarn("The target compressed file named [" + nameOfgzedFile + "] exist already. Aborting file compression.");
 
-addInfo("GZ compressing [" + file2gz + "] as [" + gzedFile + "]");
-createMissingTargetDirsIfNecessary(gzedFile);
+            return;
+        }
 
-BufferedInputStream bis = null;
-GZIPOutputStream gzos = null;
-try {
-bis = new BufferedInputStream(new FileInputStream(nameOfFile2gz));
-gzos = new GZIPOutputStream(new FileOutputStream(nameOfgzedFile));
-byte[] inbuf = new byte[8192];
+        addInfo("GZ compressing [" + file2gz + "] as [" + gzedFile + "]");
+        createMissingTargetDirsIfNecessary(gzedFile);
 
-int n;
-while ((n = bis.read(inbuf)) != -1) {
-gzos.write(inbuf, 0, n);
-}
+        BufferedInputStream bis = null;
+        GZIPOutputStream gzos = null;
+        try {
+            bis = new BufferedInputStream(new FileInputStream(nameOfFile2gz));
+            gzos = new GZIPOutputStream(new FileOutputStream(nameOfgzedFile));
+            byte[] inbuf = new byte[8192];
 
-bis.close();
-bis = null;
-gzos.close();
-gzos = null;
+            int n;
+            while ((n = bis.read(inbuf)) != -1) {
+                gzos.write(inbuf, 0, n);
+            }
 
-if (!file2gz.delete()) {
-addStatus((Status)new WarnStatus("Could not delete [" + nameOfFile2gz + "].", this));
-}
-}
-catch (Exception e) {
-addStatus((Status)new ErrorStatus("Error occurred while compressing [" + nameOfFile2gz + "] into [" + nameOfgzedFile + "].", this, e));
-} finally {
+            bis.close();
+            bis = null;
+            gzos.close();
+            gzos = null;
 
-if (bis != null) {
-try {
-bis.close();
-} catch (IOException e) {}
-}
+            if (!file2gz.delete()) {
+                addStatus((Status) new WarnStatus("Could not delete [" + nameOfFile2gz + "].", this));
+            }
+        } catch (Exception e) {
+            addStatus((Status) new ErrorStatus("Error occurred while compressing [" + nameOfFile2gz + "] into [" + nameOfgzedFile + "].", this, e));
+        } finally {
 
-if (gzos != null) {
-try {
-gzos.close();
-} catch (IOException e) {}
-}
-} 
-}
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                }
+            }
 
-public static String computeFileNameStr_WCS(String fileNamePatternStr, CompressionMode compressionMode) {
-int len = fileNamePatternStr.length();
-switch (compressionMode) {
-case GZ:
-if (fileNamePatternStr.endsWith(".gz")) {
-return fileNamePatternStr.substring(0, len - 3);
-}
-return fileNamePatternStr;
-case ZIP:
-if (fileNamePatternStr.endsWith(".zip")) {
-return fileNamePatternStr.substring(0, len - 4);
-}
-return fileNamePatternStr;
-case NONE:
-return fileNamePatternStr;
-} 
-throw new IllegalStateException("Execution should not reach this point");
-}
+            if (gzos != null) {
+                try {
+                    gzos.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 
-void createMissingTargetDirsIfNecessary(File file) {
-boolean result = FileUtil.createMissingParentDirectories(file);
-if (!result) {
-addError("Failed to create parent directories for [" + file.getAbsolutePath() + "]");
-}
-}
+    void createMissingTargetDirsIfNecessary(File file) {
+        boolean result = FileUtil.createMissingParentDirectories(file);
+        if (!result) {
+            addError("Failed to create parent directories for [" + file.getAbsolutePath() + "]");
+        }
+    }
 
-public String toString() {
-return getClass().getName();
-}
+    public String toString() {
+        return getClass().getName();
+    }
 }
 

@@ -9,72 +9,70 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LocalHostManager
-{
-Set localAddresses;
-Set knownGoodNames;
-Set knownBadNames;
+public class LocalHostManager {
+    Set localAddresses;
+    Set knownGoodNames;
+    Set knownBadNames;
 
-public synchronized void update() throws SocketException {
-HashSet<?> hashSet = new HashSet();
-Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
-while (enumeration.hasMoreElements()) {
+    public LocalHostManager() throws SocketException {
+        update();
+    }
 
-NetworkInterface networkInterface = enumeration.nextElement();
-Enumeration<InetAddress> enumeration1 = networkInterface.getInetAddresses();
-while (enumeration1.hasMoreElements())
-hashSet.add(enumeration1.nextElement()); 
-} 
-this.localAddresses = Collections.unmodifiableSet(hashSet);
-this.knownGoodNames = new HashSet();
-this.knownBadNames = new HashSet();
-}
+    public static void main(String[] paramArrayOfString) {
+        try {
+            LocalHostManager localHostManager = new LocalHostManager();
+            System.out.println(localHostManager.getLocalAddresses());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
-public synchronized Set getLocalAddresses() {
-return this.localAddresses;
-}
-public synchronized boolean isLocalAddress(InetAddress paramInetAddress) {
-return this.localAddresses.contains(paramInetAddress);
-}
+    public synchronized void update() throws SocketException {
+        HashSet<?> hashSet = new HashSet();
+        Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
+        while (enumeration.hasMoreElements()) {
 
-public synchronized boolean isLocalHostName(String paramString) {
-if (this.knownGoodNames.contains(paramString))
-return true; 
-if (this.knownGoodNames.contains(paramString)) {
-return false;
-}
+            NetworkInterface networkInterface = enumeration.nextElement();
+            Enumeration<InetAddress> enumeration1 = networkInterface.getInetAddresses();
+            while (enumeration1.hasMoreElements())
+                hashSet.add(enumeration1.nextElement());
+        }
+        this.localAddresses = Collections.unmodifiableSet(hashSet);
+        this.knownGoodNames = new HashSet();
+        this.knownBadNames = new HashSet();
+    }
 
-try {
-InetAddress inetAddress = InetAddress.getByName(paramString);
-if (this.localAddresses.contains(inetAddress)) {
+    public synchronized Set getLocalAddresses() {
+        return this.localAddresses;
+    }
 
-this.knownGoodNames.add(paramString);
-return true;
-} 
+    public synchronized boolean isLocalAddress(InetAddress paramInetAddress) {
+        return this.localAddresses.contains(paramInetAddress);
+    }
 
-this.knownBadNames.add(paramString);
-return false;
+    public synchronized boolean isLocalHostName(String paramString) {
+        if (this.knownGoodNames.contains(paramString))
+            return true;
+        if (this.knownGoodNames.contains(paramString)) {
+            return false;
+        }
 
-}
-catch (UnknownHostException unknownHostException) {
+        try {
+            InetAddress inetAddress = InetAddress.getByName(paramString);
+            if (this.localAddresses.contains(inetAddress)) {
 
-this.knownBadNames.add(paramString);
-return false;
-} 
-}
+                this.knownGoodNames.add(paramString);
+                return true;
+            }
 
-public LocalHostManager() throws SocketException {
-update();
-}
+            this.knownBadNames.add(paramString);
+            return false;
 
-public static void main(String[] paramArrayOfString) {
-try {
-LocalHostManager localHostManager = new LocalHostManager();
-System.out.println(localHostManager.getLocalAddresses());
-}
-catch (Exception exception) {
-exception.printStackTrace();
-} 
-}
+        } catch (UnknownHostException unknownHostException) {
+
+            this.knownBadNames.add(paramString);
+            return false;
+        }
+    }
 }
 

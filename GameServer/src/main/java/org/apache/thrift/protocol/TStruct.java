@@ -1,15 +1,13 @@
-
-
 package org.apache.thrift.protocol;
 
 public final class TStruct {
-  public TStruct() {
-    this("");
-  }
+    public final String name;
 
-  public TStruct(String n) {
-    name = n;
-  }
+    public TStruct() {
+        this("");
+    }
 
-  public final String name;
+    public TStruct(String n) {
+        name = n;
+    }
 }

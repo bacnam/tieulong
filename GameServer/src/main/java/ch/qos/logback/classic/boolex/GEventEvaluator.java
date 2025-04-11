@@ -43,7 +43,7 @@ public class GEventEvaluator
 
         //scriptText = scriptText.replace("
 
-                GroovyClassLoader gLoader = new GroovyClassLoader(classLoader);
+        GroovyClassLoader gLoader = new GroovyClassLoader(classLoader);
         try {
             Class<GroovyObject> scriptClass = gLoader.parseClass(scriptText);
 

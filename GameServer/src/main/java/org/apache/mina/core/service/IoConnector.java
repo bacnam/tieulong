@@ -1,36 +1,37 @@
 package org.apache.mina.core.service;
 
-import java.net.SocketAddress;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IoSessionInitializer;
 
+import java.net.SocketAddress;
+
 public interface IoConnector extends IoService {
-  int getConnectTimeout();
+    int getConnectTimeout();
 
-  long getConnectTimeoutMillis();
+    void setConnectTimeout(int paramInt);
 
-  void setConnectTimeout(int paramInt);
+    long getConnectTimeoutMillis();
 
-  void setConnectTimeoutMillis(long paramLong);
+    void setConnectTimeoutMillis(long paramLong);
 
-  SocketAddress getDefaultRemoteAddress();
+    SocketAddress getDefaultRemoteAddress();
 
-  void setDefaultRemoteAddress(SocketAddress paramSocketAddress);
+    void setDefaultRemoteAddress(SocketAddress paramSocketAddress);
 
-  SocketAddress getDefaultLocalAddress();
+    SocketAddress getDefaultLocalAddress();
 
-  void setDefaultLocalAddress(SocketAddress paramSocketAddress);
+    void setDefaultLocalAddress(SocketAddress paramSocketAddress);
 
-  ConnectFuture connect();
+    ConnectFuture connect();
 
-  ConnectFuture connect(IoSessionInitializer<? extends ConnectFuture> paramIoSessionInitializer);
+    ConnectFuture connect(IoSessionInitializer<? extends ConnectFuture> paramIoSessionInitializer);
 
-  ConnectFuture connect(SocketAddress paramSocketAddress);
+    ConnectFuture connect(SocketAddress paramSocketAddress);
 
-  ConnectFuture connect(SocketAddress paramSocketAddress, IoSessionInitializer<? extends ConnectFuture> paramIoSessionInitializer);
+    ConnectFuture connect(SocketAddress paramSocketAddress, IoSessionInitializer<? extends ConnectFuture> paramIoSessionInitializer);
 
-  ConnectFuture connect(SocketAddress paramSocketAddress1, SocketAddress paramSocketAddress2);
+    ConnectFuture connect(SocketAddress paramSocketAddress1, SocketAddress paramSocketAddress2);
 
-  ConnectFuture connect(SocketAddress paramSocketAddress1, SocketAddress paramSocketAddress2, IoSessionInitializer<? extends ConnectFuture> paramIoSessionInitializer);
+    ConnectFuture connect(SocketAddress paramSocketAddress1, SocketAddress paramSocketAddress2, IoSessionInitializer<? extends ConnectFuture> paramIoSessionInitializer);
 }
 

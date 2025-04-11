@@ -4,6 +4,6 @@ import java.util.Set;
 
 @Deprecated
 public interface HttpParamsNames {
-  Set<String> getNames();
+    Set<String> getNames();
 }
 

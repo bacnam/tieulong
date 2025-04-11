@@ -4,16 +4,16 @@ import java.io.PrintStream;
 import java.io.Reader;
 
 public interface ConsoleInterface {
-  Reader getIn();
+    Reader getIn();
 
-  PrintStream getOut();
+    PrintStream getOut();
 
-  PrintStream getErr();
+    PrintStream getErr();
 
-  void println(Object paramObject);
+    void println(Object paramObject);
 
-  void print(Object paramObject);
+    void print(Object paramObject);
 
-  void error(Object paramObject);
+    void error(Object paramObject);
 }
 

@@ -17,63 +17,62 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefCrystalPrice;
 import core.config.refdata.ref.RefGuildSacrifice;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class GuildSacrificeCrystal
-extends PlayerHandler
-{
-private static class Sacrifice
-{
-boolean iscritical;
-int donate;
-int exp;
-int totalexp;
-int sacrificeTimes;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guild = guildMember.getGuild();
 
-private Sacrifice(boolean iscritical, int donate, int exp, int totalexp, int sacrificeTimes) {
-this.iscritical = iscritical;
-this.donate = donate;
-this.exp = exp;
-this.totalexp = totalexp;
-this.sacrificeTimes = sacrificeTimes;
-}
-}
+        if (guild == null) {
+            throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[]{Long.valueOf(player.getPid())});
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guild = guildMember.getGuild();
+        PlayerCurrency currency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        PlayerRecord recorder = (PlayerRecord) player.getFeature(PlayerRecord.class);
 
-if (guild == null) {
-throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[] { Long.valueOf(player.getPid()) });
-}
+        int times = recorder.getValue(ConstEnum.DailyRefresh.GuildSacrifice);
+        RefCrystalPrice prize = RefCrystalPrice.getPrize(times);
+        if (!currency.check(PrizeType.Crystal, prize.SacrificeCost)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "玩家第%s次祭天需要钻石%s", new Object[]{Integer.valueOf(times), Integer.valueOf(prize.ArenaResetRefreshCD)});
+        }
+        currency.consume(PrizeType.Crystal, prize.SacrificeCost, ItemFlow.Guild_GuildSacrifice);
 
-PlayerCurrency currency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-PlayerRecord recorder = (PlayerRecord)player.getFeature(PlayerRecord.class);
+        RefGuildSacrifice ref = (RefGuildSacrifice) RefDataMgr.get(RefGuildSacrifice.class, SacrificeType.Crystal);
 
-int times = recorder.getValue(ConstEnum.DailyRefresh.GuildSacrifice);
-RefCrystalPrice prize = RefCrystalPrice.getPrize(times);
-if (!currency.check(PrizeType.Crystal, prize.SacrificeCost)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "玩家第%s次祭天需要钻石%s", new Object[] { Integer.valueOf(times), Integer.valueOf(prize.ArenaResetRefreshCD) });
-}
-currency.consume(PrizeType.Crystal, prize.SacrificeCost, ItemFlow.Guild_GuildSacrifice);
+        boolean critical = (CommMath.randomInt(10000) < ref.Critical);
+        int crivalue = critical ? ref.CriticalValue : 10000;
 
-RefGuildSacrifice ref = (RefGuildSacrifice)RefDataMgr.get(RefGuildSacrifice.class, SacrificeType.Crystal);
+        int exp = prize.SacrificeExp * crivalue / 10000;
+        int donate = prize.SacrificeDonate * crivalue / 10000;
 
-boolean critical = (CommMath.randomInt(10000) < ref.Critical);
-int crivalue = critical ? ref.CriticalValue : 10000;
+        int gain = guild.gainExp(exp);
+        guild.incSacrificeCount(player.getPid());
+        recorder.addValue(ConstEnum.DailyRefresh.GuildSacrifice);
+        guildMember.gainDonate(donate, ItemFlow.Guild_GuildSacrifice);
+        guildMember.gainSacriDonate(donate);
 
-int exp = prize.SacrificeExp * crivalue / 10000;
-int donate = prize.SacrificeDonate * crivalue / 10000;
+        Sacrifice sacrifice = new Sacrifice(critical, donate, gain, guild.bo.getExp(), recorder.getValue(ConstEnum.DailyRefresh.GuildSacrifice), null);
+        guild.broadcast("sacrifice", sacrifice, player.getPid());
+        request.response(sacrifice);
+    }
 
-int gain = guild.gainExp(exp);
-guild.incSacrificeCount(player.getPid());
-recorder.addValue(ConstEnum.DailyRefresh.GuildSacrifice);
-guildMember.gainDonate(donate, ItemFlow.Guild_GuildSacrifice);
-guildMember.gainSacriDonate(donate);
+    private static class Sacrifice {
+        boolean iscritical;
+        int donate;
+        int exp;
+        int totalexp;
+        int sacrificeTimes;
 
-Sacrifice sacrifice = new Sacrifice(critical, donate, gain, guild.bo.getExp(), recorder.getValue(ConstEnum.DailyRefresh.GuildSacrifice), null);
-guild.broadcast("sacrifice", sacrifice, player.getPid());
-request.response(sacrifice);
-}
+        private Sacrifice(boolean iscritical, int donate, int exp, int totalexp, int sacrificeTimes) {
+            this.iscritical = iscritical;
+            this.donate = donate;
+            this.exp = exp;
+            this.totalexp = totalexp;
+            this.sacrificeTimes = sacrificeTimes;
+        }
+    }
 }
 

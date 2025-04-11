@@ -9,16 +9,165 @@ import java.util.Vector;
 
 public class Parser
         implements ParserTreeConstants, ParserConstants {
-    protected JJTParserState jjtree = new JJTParserState();
-    boolean retainComments = false;
+    private static int[] jj_la1_0;
+    private static int[] jj_la1_1;
+    private static int[] jj_la1_2;
+    private static int[] jj_la1_3;
+    private static int[] jj_la1_4;
+
+    static {
+        jj_la1_0();
+        jj_la1_1();
+        jj_la1_2();
+        jj_la1_3();
+        jj_la1_4();
+    }
+
+    private final int[] jj_la1 = new int[87];
+    private final JJCalls[] jj_2_rtns = new JJCalls[31];
+    private final LookaheadSuccess jj_ls;
     public ParserTokenManager token_source;
-    JavaCharStream jj_input_stream;
     public Token token;
     public Token jj_nt;
+    public boolean lookingAhead = false;
+    protected JJTParserState jjtree = new JJTParserState();
+    boolean retainComments = false;
+    JavaCharStream jj_input_stream;
     private int jj_ntk;
     private Token jj_scanpos;
     private Token jj_lastpos;
     private int jj_la;
+    private boolean jj_semLA;
+    private int jj_gen;
+    private boolean jj_rescan = false;
+    private int jj_gc = 0;
+    private Vector jj_expentries;
+    private int[] jj_expentry;
+    private int jj_kind;
+    private int[] jj_lasttokens;
+    private int jj_endpos;
+
+    public Parser(InputStream stream) {
+        this.jj_ls = new LookaheadSuccess();
+
+        this.jj_expentries = new Vector();
+
+        this.jj_kind = -1;
+        this.jj_lasttokens = new int[100];
+        this.jj_input_stream = new JavaCharStream(stream, 1, 1);
+        this.token_source = new ParserTokenManager(this.jj_input_stream);
+        this.token = new Token();
+        this.jj_ntk = -1;
+        this.jj_gen = 0;
+        int i;
+        for (i = 0; i < 87; ) {
+            this.jj_la1[i] = -1;
+            i++;
+        }
+        for (i = 0; i < this.jj_2_rtns.length; ) {
+            this.jj_2_rtns[i] = new JJCalls();
+            i++;
+        }
+    }
+
+    public Parser(Reader stream) {
+        this.jj_ls = new LookaheadSuccess();
+        this.jj_expentries = new Vector();
+        this.jj_kind = -1;
+        this.jj_lasttokens = new int[100];
+        this.jj_input_stream = new JavaCharStream(stream, 1, 1);
+        this.token_source = new ParserTokenManager(this.jj_input_stream);
+        this.token = new Token();
+        this.jj_ntk = -1;
+        this.jj_gen = 0;
+        int i;
+        for (i = 0; i < 87; ) {
+            this.jj_la1[i] = -1;
+            i++;
+        }
+        for (i = 0; i < this.jj_2_rtns.length; ) {
+            this.jj_2_rtns[i] = new JJCalls();
+            i++;
+        }
+    }
+
+    public Parser(ParserTokenManager tm) {
+        this.jj_ls = new LookaheadSuccess();
+        this.jj_expentries = new Vector();
+        this.jj_kind = -1;
+        this.jj_lasttokens = new int[100];
+        this.token_source = tm;
+        this.token = new Token();
+        this.jj_ntk = -1;
+        this.jj_gen = 0;
+        int i;
+        for (i = 0; i < 87; ) {
+            this.jj_la1[i] = -1;
+            i++;
+        }
+        for (i = 0; i < this.jj_2_rtns.length; ) {
+            this.jj_2_rtns[i] = new JJCalls();
+            i++;
+        }
+    }
+
+    public static void main(String[] args) throws IOException, ParseException {
+        boolean print = false;
+        int i = 0;
+        if (args[0].equals("-p")) {
+            i++;
+            print = true;
+        }
+        for (; i < args.length; i++) {
+            Reader in = new FileReader(args[i]);
+            Parser parser = new Parser(in);
+            parser.setRetainComments(true);
+            while (!parser.Line()) {
+                if (print) {
+                    System.out.println(parser.popNode());
+                }
+            }
+        }
+    }
+
+    private static void jj_la1_0() {
+        jj_la1_0 = new int[]{1, 134218752, 134218752, 8192, 33554432, 0, 541214720, 0, 0, 0, 0, 0, 0, 608323584,
+                608323584, 0, 0, 541214720, 0, 541214720, 541214720, 541214720, 0, 608323584, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 608323584, 0, 0, 608323584, 67108864, 0, 0, 608323584, 0, 0,
+                67108864, 0, 0, 0, 67108864, 67108864, 608323584, 0, 0, 0, 0, 0, 610420736, 1074270208, 0, 1081344,
+                1081344, 8388608, 742542336, 608323584, 608323584, 1073741824, 608323584, 0, 0, 0, 0, 608323584, 65536,
+                268435456};
+    }
+
+    private static void jj_la1_1() {
+        jj_la1_1 = new int[]{0, 68892800, 68892800, 32, 0, 2, 33587280, 4194304, 0, 65536, 0, 4, 0, 310412112,
+                310412112, 0, 0, 32848, 0, 32848, 33587280, 32848, 0, 310412112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 310412112, 0, 0, 310412112, 310379264, 0, 0, 310412112, 0, 0, 310379264,
+                0, 0, 0, 310379008, 8388608, 310412112, 0, 0, 256, 0, 0, 444891985, 19415040, 66564, 0, 0, 0, 379304912,
+                310412112, 310412112, 0, 310412112, 0, 0, 0, 0, 310412112, 0, 0};
+    }
+
+    private static void jj_la1_2() {
+        jj_la1_2 = new int[]{0, 0, 0, 0, 0, 0, 32, 0, 17408, 0, 65536, 0, 131072, 12584237, 12584237, 32768, 32768,
+                32, 32, 32, 32, 0, 32768, 12583213, 131072, 16777216, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2080374784,
+                -2080374784, 0, 2017198080, 2017198080, 0, 0, 0, 0, 0, 0, 0, 12583213, 12582912, 12582912, 301,
+                12583213, 256, 0, 301, 256, 70656, 269, 32, 256, 70656, 13, 0, 12583213, 32768, 4352, 0, 4096, 4096,
+                12600621, 0, 16, 0, 0, 0, 12583213, 12583213, 12583213, 0, 12583213, 32768, 32768, 32, 32, 12583213, 0,
+                0};
+    }
+
+    private static void jj_la1_3() {
+        jj_la1_3 = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 240, 0, 0, 0, 0, 0, 0, 0, 0, 240, -675282944,
+                0, 3, 3, 12, 12, 12288, 12288, 16384, 3072, 3072, 0, 0, 0, 0, 0, 4128768, 4128768, 192, 192, 33536,
+                33536, 192, 240, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0,
+                240, 240, 240, 0, 240, 0, 0, 0, 0, 240, 0, 0};
+    }
+
+    private static void jj_la1_4() {
+        jj_la1_4 = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    }
 
     public void setRetainComments(boolean b) {
         this.retainComments = b;
@@ -45,25 +194,6 @@ public class Parser
 
     void reInitTokenInput(Reader in) {
         this.jj_input_stream.ReInit(in, this.jj_input_stream.getEndLine(), this.jj_input_stream.getEndColumn());
-    }
-
-    public static void main(String[] args) throws IOException, ParseException {
-        boolean print = false;
-        int i = 0;
-        if (args[0].equals("-p")) {
-            i++;
-            print = true;
-        }
-        for (; i < args.length; i++) {
-            Reader in = new FileReader(args[i]);
-            Parser parser = new Parser(in);
-            parser.setRetainComments(true);
-            while (!parser.Line()) {
-                if (print) {
-                    System.out.println(parser.popNode());
-                }
-            }
-        }
     }
 
     boolean isRegularForStatement() {
@@ -6329,80 +6459,6 @@ public class Parser
         }
     }
 
-    public boolean lookingAhead = false;
-
-    private boolean jj_semLA;
-
-    private int jj_gen;
-
-    private final int[] jj_la1 = new int[87];
-    private static int[] jj_la1_0;
-    private static int[] jj_la1_1;
-    private static int[] jj_la1_2;
-    private static int[] jj_la1_3;
-    private static int[] jj_la1_4;
-
-    static {
-        jj_la1_0();
-        jj_la1_1();
-        jj_la1_2();
-        jj_la1_3();
-        jj_la1_4();
-    }
-
-    private static void jj_la1_0() {
-        jj_la1_0 = new int[] { 1, 134218752, 134218752, 8192, 33554432, 0, 541214720, 0, 0, 0, 0, 0, 0, 608323584,
-                608323584, 0, 0, 541214720, 0, 541214720, 541214720, 541214720, 0, 608323584, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 608323584, 0, 0, 608323584, 67108864, 0, 0, 608323584, 0, 0,
-                67108864, 0, 0, 0, 67108864, 67108864, 608323584, 0, 0, 0, 0, 0, 610420736, 1074270208, 0, 1081344,
-                1081344, 8388608, 742542336, 608323584, 608323584, 1073741824, 608323584, 0, 0, 0, 0, 608323584, 65536,
-                268435456 };
-    }
-
-    private static void jj_la1_1() {
-        jj_la1_1 = new int[] { 0, 68892800, 68892800, 32, 0, 2, 33587280, 4194304, 0, 65536, 0, 4, 0, 310412112,
-                310412112, 0, 0, 32848, 0, 32848, 33587280, 32848, 0, 310412112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 310412112, 0, 0, 310412112, 310379264, 0, 0, 310412112, 0, 0, 310379264,
-                0, 0, 0, 310379008, 8388608, 310412112, 0, 0, 256, 0, 0, 444891985, 19415040, 66564, 0, 0, 0, 379304912,
-                310412112, 310412112, 0, 310412112, 0, 0, 0, 0, 310412112, 0, 0 };
-    }
-
-    private static void jj_la1_2() {
-        jj_la1_2 = new int[] { 0, 0, 0, 0, 0, 0, 32, 0, 17408, 0, 65536, 0, 131072, 12584237, 12584237, 32768, 32768,
-                32, 32, 32, 32, 0, 32768, 12583213, 131072, 16777216, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2080374784,
-                -2080374784, 0, 2017198080, 2017198080, 0, 0, 0, 0, 0, 0, 0, 12583213, 12582912, 12582912, 301,
-                12583213, 256, 0, 301, 256, 70656, 269, 32, 256, 70656, 13, 0, 12583213, 32768, 4352, 0, 4096, 4096,
-                12600621, 0, 16, 0, 0, 0, 12583213, 12583213, 12583213, 0, 12583213, 32768, 32768, 32, 32, 12583213, 0,
-                0 };
-    }
-
-    private static void jj_la1_3() {
-        jj_la1_3 = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 240, 0, 0, 0, 0, 0, 0, 0, 0, 240, -675282944,
-                0, 3, 3, 12, 12, 12288, 12288, 16384, 3072, 3072, 0, 0, 0, 0, 0, 4128768, 4128768, 192, 192, 33536,
-                33536, 192, 240, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0,
-                240, 240, 240, 0, 240, 0, 0, 0, 0, 240, 0, 0 };
-    }
-
-    private static void jj_la1_4() {
-        jj_la1_4 = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    }
-
-    private final JJCalls[] jj_2_rtns = new JJCalls[31];
-    private boolean jj_rescan = false;
-    private int jj_gc = 0;
-
-    private final LookaheadSuccess jj_ls;
-
-    private Vector jj_expentries;
-
-    private int[] jj_expentry;
-
-    private int jj_kind;
-    private int[] jj_lasttokens;
-    private int jj_endpos;
-
     public void ReInit(InputStream stream) {
         this.jj_input_stream.ReInit(stream, 1, 1);
         this.token_source.ReInit(this.jj_input_stream);
@@ -6411,11 +6467,11 @@ public class Parser
         this.jjtree.reset();
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87;) {
+        for (i = 0; i < 87; ) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length;) {
+        for (i = 0; i < this.jj_2_rtns.length; ) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -6430,11 +6486,11 @@ public class Parser
         this.jjtree.reset();
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87;) {
+        for (i = 0; i < 87; ) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length;) {
+        for (i = 0; i < this.jj_2_rtns.length; ) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -6448,11 +6504,11 @@ public class Parser
         this.jjtree.reset();
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87;) {
+        for (i = 0; i < 87; ) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length;) {
+        for (i = 0; i < this.jj_2_rtns.length; ) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -6485,75 +6541,6 @@ public class Parser
         this.token = oldToken;
         this.jj_kind = kind;
         throw generateParseException();
-    }
-
-    private static final class LookaheadSuccess extends Error {
-        private LookaheadSuccess() {
-        }
-    }
-
-    public Parser(InputStream stream) {
-        this.jj_ls = new LookaheadSuccess();
-
-        this.jj_expentries = new Vector();
-
-        this.jj_kind = -1;
-        this.jj_lasttokens = new int[100];
-        this.jj_input_stream = new JavaCharStream(stream, 1, 1);
-        this.token_source = new ParserTokenManager(this.jj_input_stream);
-        this.token = new Token();
-        this.jj_ntk = -1;
-        this.jj_gen = 0;
-        int i;
-        for (i = 0; i < 87;) {
-            this.jj_la1[i] = -1;
-            i++;
-        }
-        for (i = 0; i < this.jj_2_rtns.length;) {
-            this.jj_2_rtns[i] = new JJCalls();
-            i++;
-        }
-    }
-
-    public Parser(Reader stream) {
-        this.jj_ls = new LookaheadSuccess();
-        this.jj_expentries = new Vector();
-        this.jj_kind = -1;
-        this.jj_lasttokens = new int[100];
-        this.jj_input_stream = new JavaCharStream(stream, 1, 1);
-        this.token_source = new ParserTokenManager(this.jj_input_stream);
-        this.token = new Token();
-        this.jj_ntk = -1;
-        this.jj_gen = 0;
-        int i;
-        for (i = 0; i < 87;) {
-            this.jj_la1[i] = -1;
-            i++;
-        }
-        for (i = 0; i < this.jj_2_rtns.length;) {
-            this.jj_2_rtns[i] = new JJCalls();
-            i++;
-        }
-    }
-
-    public Parser(ParserTokenManager tm) {
-        this.jj_ls = new LookaheadSuccess();
-        this.jj_expentries = new Vector();
-        this.jj_kind = -1;
-        this.jj_lasttokens = new int[100];
-        this.token_source = tm;
-        this.token = new Token();
-        this.jj_ntk = -1;
-        this.jj_gen = 0;
-        int i;
-        for (i = 0; i < 87;) {
-            this.jj_la1[i] = -1;
-            i++;
-        }
-        for (i = 0; i < this.jj_2_rtns.length;) {
-            this.jj_2_rtns[i] = new JJCalls();
-            i++;
-        }
     }
 
     private final boolean jj_scan_token(int kind) {
@@ -6606,7 +6593,7 @@ public class Parser
                 this.jj_expentry[i] = this.jj_lasttokens[i];
             }
             boolean exists = false;
-            for (Enumeration<int[]> e = this.jj_expentries.elements(); e.hasMoreElements();) {
+            for (Enumeration<int[]> e = this.jj_expentries.elements(); e.hasMoreElements(); ) {
                 int[] oldentry = e.nextElement();
                 if (oldentry.length == this.jj_expentry.length) {
                     exists = true;
@@ -6702,7 +6689,7 @@ public class Parser
 
     private final void jj_rescan_token() {
         this.jj_rescan = true;
-        for (int i = 0; i < 31;) {
+        for (int i = 0; i < 31; ) {
             JJCalls p = this.jj_2_rtns[i];
             while (true) {
                 if (p.gen > this.jj_gen) {
@@ -6825,6 +6812,11 @@ public class Parser
         p.gen = this.jj_gen + xla - this.jj_la;
         p.first = this.token;
         p.arg = xla;
+    }
+
+    private static final class LookaheadSuccess extends Error {
+        private LookaheadSuccess() {
+        }
     }
 
     static final class JJCalls {

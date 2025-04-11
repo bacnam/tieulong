@@ -6,8 +6,8 @@ import com.google.common.annotations.GwtCompatible;
 @Beta
 @GwtCompatible
 public interface Constraint<E> {
-  E checkElement(E paramE);
+    E checkElement(E paramE);
 
-  String toString();
+    String toString();
 }
 

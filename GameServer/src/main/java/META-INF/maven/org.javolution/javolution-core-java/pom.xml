@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- ======================================================= -->
@@ -29,7 +30,7 @@
             <version>4.3.1</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <!-- ======================================================= -->
@@ -46,14 +47,15 @@
                         <Private-Package>javolution.*.internal.*,javax.realtime.*</Private-Package>
                         <Bundle-Activator>javolution.osgi.internal.JavolutionActivator</Bundle-Activator>
                         <Export-Service>javolution.xml.stream.XMLInputFactory,
-                                        javolution.xml.stream.XMLOutputFactory</Export-Service>
+                            javolution.xml.stream.XMLOutputFactory
+                        </Export-Service>
                     </instructions>
                 </configuration>
             </plugin>
-            
+
             <!-- ======================================================= -->
             <!--     Source code packaging (for IDE)                     -->
-            <!-- ======================================================= -->  
+            <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -83,20 +85,20 @@
                     </execution>
                 </executions>
             </plugin>
-  
+
             <!-- ======================================================= -->
             <!--     Javadoc packaging  (for IDE)                        -->
-            <!-- ======================================================= -->  
+            <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9</version>
                 <configuration>
-                   <sourcepath>${project.build.directory}/colorized</sourcepath>
-                   <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
-                   <excludePackageNames>javax.*,*.internal</excludePackageNames>
-                   <overview>${project.build.directory}/colorized/javolution/doc-files/overview.html</overview>
-                   <docfilessubdirs>true</docfilessubdirs>
+                    <sourcepath>${project.build.directory}/colorized</sourcepath>
+                    <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+                    <excludePackageNames>javax.*,*.internal</excludePackageNames>
+                    <overview>${project.build.directory}/colorized/javolution/doc-files/overview.html</overview>
+                    <docfilessubdirs>true</docfilessubdirs>
                 </configuration>
                 <executions>
                     <execution>
@@ -107,7 +109,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
         </plugins>
     </build>
 </project>

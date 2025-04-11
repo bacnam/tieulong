@@ -1,30 +1,30 @@
 package jsc.descriptive;
 
 public interface DoubleFrequencyTable {
-  int addValue(double paramDouble);
+    int addValue(double paramDouble);
 
-  int addValues(double[] paramArrayOfdouble);
+    int addValues(double[] paramArrayOfdouble);
 
-  double getBoundary(int paramInt);
+    double getBoundary(int paramInt);
 
-  void clearData();
+    void clearData();
 
-  int getCumulativeFrequency(int paramInt);
+    int getCumulativeFrequency(int paramInt);
 
-  double getCumulativeProportion(int paramInt);
+    double getCumulativeProportion(int paramInt);
 
-  int[] getFrequencies();
+    int[] getFrequencies();
 
-  int getFrequency(int paramInt);
+    int getFrequency(int paramInt);
 
-  int getMaximumFreq();
+    int getMaximumFreq();
 
-  double getMaximumProportion();
+    double getMaximumProportion();
 
-  int getNumberOfBins();
+    int getNumberOfBins();
 
-  int getN();
+    int getN();
 
-  double getProportion(int paramInt);
+    double getProportion(int paramInt);
 }
 

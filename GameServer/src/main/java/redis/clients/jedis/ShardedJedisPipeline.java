@@ -9,18 +9,6 @@ public class ShardedJedisPipeline extends Queable {
     private List<FutureResult> results = new ArrayList<FutureResult>();
     private Queue<Client> clients = new LinkedList<Client>();
 
-    private static class FutureResult {
-        private Client client;
-
-        public FutureResult(Client client) {
-            this.client = client;
-        }
-
-        public Object get() {
-            return client.getOne();
-        }
-    }
-
     public void setShardedJedis(BinaryShardedJedis jedis) {
         this.jedis = jedis;
     }
@@ -92,7 +80,7 @@ public class ShardedJedisPipeline extends Queable {
         Client c = getClient(key);
         c.setex(key, seconds, value);
         results.add(new FutureResult(c));
-        return getResponse(BuilderFactory.LONG);        
+        return getResponse(BuilderFactory.LONG);
     }
 
     public Response<Long> decrBy(String key, long integer) {
@@ -461,7 +449,7 @@ public class ShardedJedisPipeline extends Queable {
     }
 
     public Response<Set<Tuple>> zrangeByScoreWithScores(String key, double min, double max,
-            int offset, int count) {
+                                                        int offset, int count) {
         Client c = getClient(key);
         c.zrangeByScoreWithScores(key, min, max, offset, count);
         results.add(new FutureResult(c));
@@ -549,5 +537,17 @@ public class ShardedJedisPipeline extends Queable {
         Client client = jedis.getShard(key).getClient();
         clients.add(client);
         return client;
+    }
+
+    private static class FutureResult {
+        private Client client;
+
+        public FutureResult(Client client) {
+            this.client = client;
+        }
+
+        public Object get() {
+            return client.getOne();
+        }
     }
 }

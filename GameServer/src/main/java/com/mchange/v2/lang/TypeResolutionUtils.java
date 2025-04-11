@@ -1,4 +1,5 @@
 package com.mchange.v2.lang;
 
-public final class TypeResolutionUtils {}
+public final class TypeResolutionUtils {
+}
 

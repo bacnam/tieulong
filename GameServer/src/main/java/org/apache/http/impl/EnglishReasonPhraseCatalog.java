@@ -1,133 +1,132 @@
 package org.apache.http.impl;
 
-import java.util.Locale;
 import org.apache.http.ReasonPhraseCatalog;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.util.Args;
 
+import java.util.Locale;
+
 @Immutable
 public class EnglishReasonPhraseCatalog
-implements ReasonPhraseCatalog
-{
-public static final EnglishReasonPhraseCatalog INSTANCE = new EnglishReasonPhraseCatalog();
+        implements ReasonPhraseCatalog {
+    public static final EnglishReasonPhraseCatalog INSTANCE = new EnglishReasonPhraseCatalog();
+    private static final String[][] REASON_PHRASES = new String[][]{null, new String[3], new String[8], new String[8], new String[25], new String[8]};
 
-public String getReason(int status, Locale loc) {
-Args.check((status >= 100 && status < 600), "Unknown category for status code " + status);
-int category = status / 100;
-int subcode = status - 100 * category;
+    static {
+        setReason(200, "OK");
 
-String reason = null;
-if ((REASON_PHRASES[category]).length > subcode) {
-reason = REASON_PHRASES[category][subcode];
-}
+        setReason(201, "Created");
 
-return reason;
-}
+        setReason(202, "Accepted");
 
-private static final String[][] REASON_PHRASES = new String[][] { null, new String[3], new String[8], new String[8], new String[25], new String[8] };
+        setReason(204, "No Content");
 
-private static void setReason(int status, String reason) {
-int category = status / 100;
-int subcode = status - 100 * category;
-REASON_PHRASES[category][subcode] = reason;
-}
+        setReason(301, "Moved Permanently");
 
-static {
-setReason(200, "OK");
+        setReason(302, "Moved Temporarily");
 
-setReason(201, "Created");
+        setReason(304, "Not Modified");
 
-setReason(202, "Accepted");
+        setReason(400, "Bad Request");
 
-setReason(204, "No Content");
+        setReason(401, "Unauthorized");
 
-setReason(301, "Moved Permanently");
+        setReason(403, "Forbidden");
 
-setReason(302, "Moved Temporarily");
+        setReason(404, "Not Found");
 
-setReason(304, "Not Modified");
+        setReason(500, "Internal Server Error");
 
-setReason(400, "Bad Request");
+        setReason(501, "Not Implemented");
 
-setReason(401, "Unauthorized");
+        setReason(502, "Bad Gateway");
 
-setReason(403, "Forbidden");
+        setReason(503, "Service Unavailable");
 
-setReason(404, "Not Found");
+        setReason(100, "Continue");
 
-setReason(500, "Internal Server Error");
+        setReason(307, "Temporary Redirect");
 
-setReason(501, "Not Implemented");
+        setReason(405, "Method Not Allowed");
 
-setReason(502, "Bad Gateway");
+        setReason(409, "Conflict");
 
-setReason(503, "Service Unavailable");
+        setReason(412, "Precondition Failed");
 
-setReason(100, "Continue");
+        setReason(413, "Request Too Long");
 
-setReason(307, "Temporary Redirect");
+        setReason(414, "Request-URI Too Long");
 
-setReason(405, "Method Not Allowed");
+        setReason(415, "Unsupported Media Type");
 
-setReason(409, "Conflict");
+        setReason(300, "Multiple Choices");
 
-setReason(412, "Precondition Failed");
+        setReason(303, "See Other");
 
-setReason(413, "Request Too Long");
+        setReason(305, "Use Proxy");
 
-setReason(414, "Request-URI Too Long");
+        setReason(402, "Payment Required");
 
-setReason(415, "Unsupported Media Type");
+        setReason(406, "Not Acceptable");
 
-setReason(300, "Multiple Choices");
+        setReason(407, "Proxy Authentication Required");
 
-setReason(303, "See Other");
+        setReason(408, "Request Timeout");
 
-setReason(305, "Use Proxy");
+        setReason(101, "Switching Protocols");
 
-setReason(402, "Payment Required");
+        setReason(203, "Non Authoritative Information");
 
-setReason(406, "Not Acceptable");
+        setReason(205, "Reset Content");
 
-setReason(407, "Proxy Authentication Required");
+        setReason(206, "Partial Content");
 
-setReason(408, "Request Timeout");
+        setReason(504, "Gateway Timeout");
 
-setReason(101, "Switching Protocols");
+        setReason(505, "Http Version Not Supported");
 
-setReason(203, "Non Authoritative Information");
+        setReason(410, "Gone");
 
-setReason(205, "Reset Content");
+        setReason(411, "Length Required");
 
-setReason(206, "Partial Content");
+        setReason(416, "Requested Range Not Satisfiable");
 
-setReason(504, "Gateway Timeout");
+        setReason(417, "Expectation Failed");
 
-setReason(505, "Http Version Not Supported");
+        setReason(102, "Processing");
 
-setReason(410, "Gone");
+        setReason(207, "Multi-Status");
 
-setReason(411, "Length Required");
+        setReason(422, "Unprocessable Entity");
 
-setReason(416, "Requested Range Not Satisfiable");
+        setReason(419, "Insufficient Space On Resource");
 
-setReason(417, "Expectation Failed");
+        setReason(420, "Method Failure");
 
-setReason(102, "Processing");
+        setReason(423, "Locked");
 
-setReason(207, "Multi-Status");
+        setReason(507, "Insufficient Storage");
 
-setReason(422, "Unprocessable Entity");
+        setReason(424, "Failed Dependency");
+    }
 
-setReason(419, "Insufficient Space On Resource");
+    private static void setReason(int status, String reason) {
+        int category = status / 100;
+        int subcode = status - 100 * category;
+        REASON_PHRASES[category][subcode] = reason;
+    }
 
-setReason(420, "Method Failure");
+    public String getReason(int status, Locale loc) {
+        Args.check((status >= 100 && status < 600), "Unknown category for status code " + status);
+        int category = status / 100;
+        int subcode = status - 100 * category;
 
-setReason(423, "Locked");
+        String reason = null;
+        if ((REASON_PHRASES[category]).length > subcode) {
+            reason = REASON_PHRASES[category][subcode];
+        }
 
-setReason(507, "Insufficient Storage");
-
-setReason(424, "Failed Dependency");
-}
+        return reason;
+    }
 }
 

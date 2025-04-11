@@ -1,8 +1,8 @@
 package com.mchange.util;
 
 public interface IntEnumeration extends MEnumeration {
-  boolean hasMoreInts();
+    boolean hasMoreInts();
 
-  int nextInt();
+    int nextInt();
 }
 

@@ -5,14 +5,14 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 
 public interface LoggerContextListener {
-  boolean isResetResistant();
+    boolean isResetResistant();
 
-  void onStart(LoggerContext paramLoggerContext);
+    void onStart(LoggerContext paramLoggerContext);
 
-  void onReset(LoggerContext paramLoggerContext);
+    void onReset(LoggerContext paramLoggerContext);
 
-  void onStop(LoggerContext paramLoggerContext);
+    void onStop(LoggerContext paramLoggerContext);
 
-  void onLevelChange(Logger paramLogger, Level paramLevel);
+    void onLevelChange(Logger paramLogger, Level paramLevel);
 }
 

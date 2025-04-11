@@ -2,23 +2,14 @@ package bsh.util;
 
 import bsh.ConsoleInterface;
 import bsh.Interpreter;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.TextArea;
+
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.peer.TextComponentPeer;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
-import java.io.Reader;
+import java.io.*;
 import java.util.Vector;
 
 public class AWTConsole
@@ -28,25 +19,11 @@ public class AWTConsole
     private InputStream inPipe;
     private InputStream in;
     private PrintStream out;
-
-    public Reader getIn() {
-        return new InputStreamReader(this.in);
-    }
-
-    public PrintStream getOut() {
-        return this.out;
-    }
-
-    public PrintStream getErr() {
-        return this.out;
-    }
-
     private StringBuffer line = new StringBuffer();
     private String startedLine;
     private int textLength = 0;
     private Vector history = new Vector();
     private int histLine = 0;
-
     public AWTConsole(int rows, int cols, InputStream cin, OutputStream cout) {
         super(rows, cols);
         setFont(new Font("Monospaced", 0, 14));
@@ -68,18 +45,44 @@ public class AWTConsole
 
         requestFocus();
     }
+    public AWTConsole() {
+        this(12, 80, (InputStream) null, (OutputStream) null);
+    }
+    public AWTConsole(InputStream in, OutputStream out) {
+        this(12, 80, in, out);
+    }
+
+    public static void main(String[] args) {
+        AWTConsole console = new AWTConsole();
+        final Frame f = new Frame("Bsh Console");
+        f.add(console, "Center");
+        f.pack();
+        f.show();
+        f.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                f.dispose();
+            }
+        });
+
+        Interpreter interpreter = new Interpreter(console);
+        interpreter.run();
+    }
+
+    public Reader getIn() {
+        return new InputStreamReader(this.in);
+    }
+
+    public PrintStream getOut() {
+        return this.out;
+    }
+
+    public PrintStream getErr() {
+        return this.out;
+    }
 
     public void keyPressed(KeyEvent e) {
         type(e.getKeyCode(), e.getKeyChar(), e.getModifiers());
         e.consume();
-    }
-
-    public AWTConsole() {
-        this(12, 80, (InputStream) null, (OutputStream) null);
-    }
-
-    public AWTConsole(InputStream in, OutputStream out) {
-        this(12, 80, in, out);
     }
 
     public void type(int code, char ch, int modifiers) {
@@ -251,22 +254,6 @@ public class AWTConsole
         } catch (IOException e) {
             println("Console: I/O Error...");
         }
-    }
-
-    public static void main(String[] args) {
-        AWTConsole console = new AWTConsole();
-        final Frame f = new Frame("Bsh Console");
-        f.add(console, "Center");
-        f.pack();
-        f.show();
-        f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                f.dispose();
-            }
-        });
-
-        Interpreter interpreter = new Interpreter(console);
-        interpreter.run();
     }
 
     public String toString() {

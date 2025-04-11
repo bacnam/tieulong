@@ -13,14 +13,67 @@ public abstract class SyslogAppenderBase<E>
         extends AppenderBase<E> {
     static final String SYSLOG_LAYOUT_URL = "http:";
     static final int MAX_MESSAGE_SIZE_LIMIT = 65000;
+    protected String suffixPattern;
     Layout<E> layout;
     String facilityStr;
     String syslogHost;
-    protected String suffixPattern;
     SyslogOutputStream sos;
     int port = 514;
     int maxMessageSize;
     Charset charset;
+
+    public static int facilityStringToint(String facilityStr) {
+        if ("KERN".equalsIgnoreCase(facilityStr))
+            return 0;
+        if ("USER".equalsIgnoreCase(facilityStr))
+            return 8;
+        if ("MAIL".equalsIgnoreCase(facilityStr))
+            return 16;
+        if ("DAEMON".equalsIgnoreCase(facilityStr))
+            return 24;
+        if ("AUTH".equalsIgnoreCase(facilityStr))
+            return 32;
+        if ("SYSLOG".equalsIgnoreCase(facilityStr))
+            return 40;
+        if ("LPR".equalsIgnoreCase(facilityStr))
+            return 48;
+        if ("NEWS".equalsIgnoreCase(facilityStr))
+            return 56;
+        if ("UUCP".equalsIgnoreCase(facilityStr))
+            return 64;
+        if ("CRON".equalsIgnoreCase(facilityStr))
+            return 72;
+        if ("AUTHPRIV".equalsIgnoreCase(facilityStr))
+            return 80;
+        if ("FTP".equalsIgnoreCase(facilityStr))
+            return 88;
+        if ("NTP".equalsIgnoreCase(facilityStr))
+            return 96;
+        if ("AUDIT".equalsIgnoreCase(facilityStr))
+            return 104;
+        if ("ALERT".equalsIgnoreCase(facilityStr))
+            return 112;
+        if ("CLOCK".equalsIgnoreCase(facilityStr))
+            return 120;
+        if ("LOCAL0".equalsIgnoreCase(facilityStr))
+            return 128;
+        if ("LOCAL1".equalsIgnoreCase(facilityStr))
+            return 136;
+        if ("LOCAL2".equalsIgnoreCase(facilityStr))
+            return 144;
+        if ("LOCAL3".equalsIgnoreCase(facilityStr))
+            return 152;
+        if ("LOCAL4".equalsIgnoreCase(facilityStr))
+            return 160;
+        if ("LOCAL5".equalsIgnoreCase(facilityStr))
+            return 168;
+        if ("LOCAL6".equalsIgnoreCase(facilityStr))
+            return 176;
+        if ("LOCAL7".equalsIgnoreCase(facilityStr)) {
+            return 184;
+        }
+        throw new IllegalArgumentException(facilityStr + " is not a valid syslog facility string");
+    }
 
     public void start() {
         int errorCount = 0;
@@ -89,59 +142,6 @@ public abstract class SyslogAppenderBase<E>
     }
 
     protected void postProcess(Object event, OutputStream sw) {
-    }
-
-    public static int facilityStringToint(String facilityStr) {
-        if ("KERN".equalsIgnoreCase(facilityStr))
-            return 0;
-        if ("USER".equalsIgnoreCase(facilityStr))
-            return 8;
-        if ("MAIL".equalsIgnoreCase(facilityStr))
-            return 16;
-        if ("DAEMON".equalsIgnoreCase(facilityStr))
-            return 24;
-        if ("AUTH".equalsIgnoreCase(facilityStr))
-            return 32;
-        if ("SYSLOG".equalsIgnoreCase(facilityStr))
-            return 40;
-        if ("LPR".equalsIgnoreCase(facilityStr))
-            return 48;
-        if ("NEWS".equalsIgnoreCase(facilityStr))
-            return 56;
-        if ("UUCP".equalsIgnoreCase(facilityStr))
-            return 64;
-        if ("CRON".equalsIgnoreCase(facilityStr))
-            return 72;
-        if ("AUTHPRIV".equalsIgnoreCase(facilityStr))
-            return 80;
-        if ("FTP".equalsIgnoreCase(facilityStr))
-            return 88;
-        if ("NTP".equalsIgnoreCase(facilityStr))
-            return 96;
-        if ("AUDIT".equalsIgnoreCase(facilityStr))
-            return 104;
-        if ("ALERT".equalsIgnoreCase(facilityStr))
-            return 112;
-        if ("CLOCK".equalsIgnoreCase(facilityStr))
-            return 120;
-        if ("LOCAL0".equalsIgnoreCase(facilityStr))
-            return 128;
-        if ("LOCAL1".equalsIgnoreCase(facilityStr))
-            return 136;
-        if ("LOCAL2".equalsIgnoreCase(facilityStr))
-            return 144;
-        if ("LOCAL3".equalsIgnoreCase(facilityStr))
-            return 152;
-        if ("LOCAL4".equalsIgnoreCase(facilityStr))
-            return 160;
-        if ("LOCAL5".equalsIgnoreCase(facilityStr))
-            return 168;
-        if ("LOCAL6".equalsIgnoreCase(facilityStr))
-            return 176;
-        if ("LOCAL7".equalsIgnoreCase(facilityStr)) {
-            return 184;
-        }
-        throw new IllegalArgumentException(facilityStr + " is not a valid syslog facility string");
     }
 
     public String getSyslogHost() {

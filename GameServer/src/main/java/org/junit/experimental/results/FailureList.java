@@ -1,29 +1,29 @@
 package org.junit.experimental.results;
 
-import java.util.List;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
-class FailureList
-{
-private final List<Failure> failures;
+import java.util.List;
 
-public FailureList(List<Failure> failures) {
-this.failures = failures;
-}
+class FailureList {
+    private final List<Failure> failures;
 
-public Result result() {
-Result result = new Result();
-RunListener listener = result.createListener();
-for (Failure failure : this.failures) {
-try {
-listener.testFailure(failure);
-} catch (Exception e) {
-throw new RuntimeException("I can't believe this happened");
-} 
-} 
-return result;
-}
+    public FailureList(List<Failure> failures) {
+        this.failures = failures;
+    }
+
+    public Result result() {
+        Result result = new Result();
+        RunListener listener = result.createListener();
+        for (Failure failure : this.failures) {
+            try {
+                listener.testFailure(failure);
+            } catch (Exception e) {
+                throw new RuntimeException("I can't believe this happened");
+            }
+        }
+        return result;
+    }
 }
 

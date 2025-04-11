@@ -4,10 +4,9 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.joran.spi.InterpretationContext;
 import ch.qos.logback.core.spi.AppenderAttachable;
 import ch.qos.logback.core.util.OptionHelper;
+import org.xml.sax.Attributes;
 
 import java.util.HashMap;
-
-import org.xml.sax.Attributes;
 
 public class AppenderRefAction<E>
         extends Action {

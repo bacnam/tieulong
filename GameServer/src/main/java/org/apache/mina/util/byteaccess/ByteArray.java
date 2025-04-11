@@ -1,49 +1,50 @@
 package org.apache.mina.util.byteaccess;
 
-import java.nio.ByteOrder;
 import org.apache.mina.core.buffer.IoBuffer;
 
+import java.nio.ByteOrder;
+
 public interface ByteArray extends IoAbsoluteReader, IoAbsoluteWriter {
-  int first();
+    int first();
 
-  int last();
+    int last();
 
-  ByteOrder order();
+    ByteOrder order();
 
-  void order(ByteOrder paramByteOrder);
+    void order(ByteOrder paramByteOrder);
 
-  void free();
+    void free();
 
-  Iterable<IoBuffer> getIoBuffers();
+    Iterable<IoBuffer> getIoBuffers();
 
-  IoBuffer getSingleIoBuffer();
+    IoBuffer getSingleIoBuffer();
 
-  boolean equals(Object paramObject);
+    boolean equals(Object paramObject);
 
-  byte get(int paramInt);
+    byte get(int paramInt);
 
-  void get(int paramInt, IoBuffer paramIoBuffer);
+    void get(int paramInt, IoBuffer paramIoBuffer);
 
-  int getInt(int paramInt);
+    int getInt(int paramInt);
 
-  Cursor cursor();
+    Cursor cursor();
 
-  Cursor cursor(int paramInt);
+    Cursor cursor(int paramInt);
 
-  public static interface Cursor extends IoRelativeReader, IoRelativeWriter {
-    int getIndex();
+    public static interface Cursor extends IoRelativeReader, IoRelativeWriter {
+        int getIndex();
 
-    void setIndex(int param1Int);
+        void setIndex(int param1Int);
 
-    int getRemaining();
+        int getRemaining();
 
-    boolean hasRemaining();
+        boolean hasRemaining();
 
-    byte get();
+        byte get();
 
-    void get(IoBuffer param1IoBuffer);
+        void get(IoBuffer param1IoBuffer);
 
-    int getInt();
-  }
+        int getInt();
+    }
 }
 

@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 public class Capabilities {
     private static boolean accessibility = false;
+    private static Hashtable classes = new Hashtable<Object, Object>();
 
     public static boolean haveSwing() {
         return classExists("javax.swing.JButton");
@@ -37,8 +38,6 @@ public class Capabilities {
 
         accessibility = true;
     }
-
-    private static Hashtable classes = new Hashtable<Object, Object>();
 
     public static boolean classExists(String name) {
         Object c = classes.get(name);

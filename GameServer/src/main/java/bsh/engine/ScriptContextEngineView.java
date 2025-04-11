@@ -1,13 +1,7 @@
 package bsh.engine;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.script.ScriptContext;
+import java.util.*;
 
 public class ScriptContextEngineView
         implements Map<String, Object> {
@@ -76,7 +70,7 @@ public class ScriptContextEngineView
     private Set totalKeySet() {
         Set<String> keys = new HashSet();
         List<Integer> scopes = this.context.getScopes();
-        for (Iterator<Integer> i$ = scopes.iterator(); i$.hasNext();) {
+        for (Iterator<Integer> i$ = scopes.iterator(); i$.hasNext(); ) {
             int i = ((Integer) i$.next()).intValue();
             keys.addAll(this.context.getBindings(i).keySet());
         }
@@ -87,11 +81,11 @@ public class ScriptContextEngineView
     private Set<Object> totalValueSet() {
         Set<Object> values = new HashSet<>();
         List<Integer> scopes = this.context.getScopes();
-        for (Iterator<Integer> i$ = scopes.iterator(); i$.hasNext();) {
+        for (Iterator<Integer> i$ = scopes.iterator(); i$.hasNext(); ) {
             int i = i$.next();
             values.addAll(this.context.getBindings(i).values());
         }
-    
+
         return Collections.unmodifiableSet(values);
-    }    
+    }
 }

@@ -1,214 +1,218 @@
 package jsc.swt.file;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import jsc.Utilities;
 
-public class AppFileActions
-{
-static String writeFileErrorMessage = "\nCheck the following.\nIs the file name valid for your system?\nIs there sufficient free space on your disk?\nAre you allowed to write to the disk?";
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 
-String confirmCloseMessage = "Save changes to file?";
+public class AppFileActions {
+    static String writeFileErrorMessage = "\nCheck the following.\nIs the file name valid for your system?\nIs there sufficient free space on your disk?\nAre you allowed to write to the disk?";
+    protected JFileChooser openFileChooser;
+    protected JFileChooser saveFileChooser;
+    String confirmCloseMessage = "Save changes to file?";
+    boolean changed;
+    Component app;
+    AppFile appFile;
+    File currentFile = null;
+    FileFilter filter;
+    String defaultFileName;
 
-boolean changed;
+    public AppFileActions(Component paramComponent, AppFile paramAppFile, FileFilter paramFileFilter, String paramString) {
+        this.app = paramComponent;
+        this.appFile = paramAppFile;
 
-Component app;
-AppFile appFile;
-File currentFile = null;
+        this.filter = paramFileFilter;
+        this.defaultFileName = paramString;
 
-FileFilter filter;
+        this.openFileChooser = new JFileChooser();
+        this.openFileChooser.addChoosableFileFilter(paramFileFilter);
+        this.openFileChooser.setApproveButtonToolTipText("Open file");
 
-String defaultFileName;
+        this.saveFileChooser = new JFileChooser();
+        this.saveFileChooser.addChoosableFileFilter(paramFileFilter);
+        this.saveFileChooser.setApproveButtonToolTipText("Save file");
+    }
 
-protected JFileChooser openFileChooser;
+    public AppFileActions(Component paramComponent, AppFile paramAppFile, String paramString1, String paramString2) {
+        this(paramComponent, paramAppFile, new ExampleFileFilter(paramString2, paramString1 + " file"), new String("*." + paramString2));
+    }
 
-protected JFileChooser saveFileChooser;
+    public boolean confirmClose() {
+        if (this.changed) {
 
-public AppFileActions(Component paramComponent, AppFile paramAppFile, FileFilter paramFileFilter, String paramString) {
-this.app = paramComponent;
-this.appFile = paramAppFile;
+            int i = JOptionPane.showConfirmDialog(this.app, this.confirmCloseMessage, " Confirm", 1);
+            if (i == 0) {
+                if (!save(false)) return false;
+            } else if (i == 2) {
+                return false;
+            }
 
-this.filter = paramFileFilter;
-this.defaultFileName = paramString;
+        }
+        return true;
+    }
 
-this.openFileChooser = new JFileChooser();
-this.openFileChooser.addChoosableFileFilter(paramFileFilter);
-this.openFileChooser.setApproveButtonToolTipText("Open file");
+    public File getFile() {
+        return this.currentFile;
+    }
 
-this.saveFileChooser = new JFileChooser();
-this.saveFileChooser.addChoosableFileFilter(paramFileFilter);
-this.saveFileChooser.setApproveButtonToolTipText("Save file");
-}
+    public void setFile(File paramFile) {
+        this.currentFile = paramFile;
+    }
 
-public AppFileActions(Component paramComponent, AppFile paramAppFile, String paramString1, String paramString2) {
-this(paramComponent, paramAppFile, new ExampleFileFilter(paramString2, paramString1 + " file"), new String("*." + paramString2));
-}
+    public AbstractAction getOpenAction(String paramString, Icon paramIcon) {
+        return new OpenAction(this, paramString, paramIcon);
+    }
 
-public boolean confirmClose() {
-if (this.changed) {
+    public String getPath() {
+        return this.currentFile.getParent();
+    }
 
-int i = JOptionPane.showConfirmDialog(this.app, this.confirmCloseMessage, " Confirm", 1);
-if (i == 0)
-{ if (!save(false)) return false;  }
-else if (i == 2) { return false; }
+    public AbstractAction getSaveAction(String paramString, Icon paramIcon) {
+        return new SaveAction(this, paramString, paramIcon);
+    }
 
-}  return true;
-}
+    public AbstractAction getSaveAsAction(String paramString) {
+        return new SaveAsAction(this, paramString);
+    }
 
-public File getFile() {
-return this.currentFile;
-}
+    public boolean isChanged() {
+        return this.changed;
+    }
 
-public AbstractAction getOpenAction(String paramString, Icon paramIcon) {
-return new OpenAction(this, paramString, paramIcon);
-}
+    public void setChanged(boolean paramBoolean) {
+        this.changed = paramBoolean;
+    }
 
-public String getPath() {
-return this.currentFile.getParent();
-}
+    public boolean save(boolean paramBoolean) {
+        File file = this.currentFile;
+        if (paramBoolean || file == null || file.isDirectory() || !file.isFile()) {
 
-public AbstractAction getSaveAction(String paramString, Icon paramIcon) {
-return new SaveAction(this, paramString, paramIcon);
-}
+            if (file != null && file.isDirectory()) {
+                this.saveFileChooser.setCurrentDirectory(file);
+            }
 
-public AbstractAction getSaveAsAction(String paramString) {
-return new SaveAsAction(this, paramString);
-}
+            if (!this.saveFileChooser.isTraversable(file)) {
 
-public boolean isChanged() {
-return this.changed;
-}
+                this.saveFileChooser.setCurrentDirectory(Utilities.getUserDirectory());
+            }
 
-public boolean save(boolean paramBoolean) {
-File file = this.currentFile;
-if (paramBoolean || file == null || file.isDirectory() || !file.isFile()) {
+            if (file == null || file.isDirectory()) {
 
-if (file != null && file.isDirectory()) {
-this.saveFileChooser.setCurrentDirectory(file);
-}
+                this.saveFileChooser.setSelectedFile(new File(this.defaultFileName));
+            } else {
+                this.saveFileChooser.setSelectedFile(file);
+            }
 
-if (!this.saveFileChooser.isTraversable(file))
-{
+            int i = this.saveFileChooser.showSaveDialog(this.app);
+            if (i == 0) {
 
-this.saveFileChooser.setCurrentDirectory(Utilities.getUserDirectory());
-}
+                file = this.saveFileChooser.getSelectedFile();
+                if (file == null) return false;
 
-if (file == null || file.isDirectory()) {
+            } else {
+                return false;
+            }
+        }
+        if (this.appFile.write(file)) {
 
-this.saveFileChooser.setSelectedFile(new File(this.defaultFileName));
-} else {
-this.saveFileChooser.setSelectedFile(file);
-} 
+            this.appFile.setFile(file);
 
-int i = this.saveFileChooser.showSaveDialog(this.app);
-if (i == 0) {
+            this.currentFile = file;
+            setChanged(false);
+            return true;
+        }
 
-file = this.saveFileChooser.getSelectedFile();
-if (file == null) return false;
+        showFileWriteErrorMessage(file);
+        return false;
+    }
 
-} else {
-return false;
-} 
-} 
-if (this.appFile.write(file)) {
+    public void setConfirmCloseMessage(String paramString) {
+        this.confirmCloseMessage = paramString;
+    }
 
-this.appFile.setFile(file);
+    public void setDefaultFileName(String paramString) {
+        this.defaultFileName = paramString;
+    }
 
-this.currentFile = file;
-setChanged(false);
-return true;
-} 
+    public void setWriteFileErrorMessage(String paramString) {
+        this;
+        writeFileErrorMessage = paramString;
+    }
 
-showFileWriteErrorMessage(file); return false;
-}
+    public void showFileWriteErrorMessage(File paramFile) {
+        JOptionPane.showMessageDialog(this.app, "Cannot save to file " + paramFile.getName() + writeFileErrorMessage, "Error", 0);
+    }
 
-public void setChanged(boolean paramBoolean) {
-this.changed = paramBoolean;
-}
+    class OpenAction
+            extends AbstractAction {
+        private final AppFileActions this$0;
 
-public void setConfirmCloseMessage(String paramString) {
-this.confirmCloseMessage = paramString;
-}
+        public OpenAction(AppFileActions this$0, String param1String, Icon param1Icon) {
+            super(param1String, param1Icon);
+            this.this$0 = this$0;
+        }
 
-public void setDefaultFileName(String paramString) {
-this.defaultFileName = paramString;
-}
+        public void actionPerformed(ActionEvent param1ActionEvent) {
+            if (!this.this$0.confirmClose()) {
+                return;
+            }
 
-public void setFile(File paramFile) {
-this.currentFile = paramFile;
-}
+            if (this.this$0.currentFile == null) {
 
-public void setWriteFileErrorMessage(String paramString) {
-this; writeFileErrorMessage = paramString;
-}
+                this.this$0.openFileChooser.setCurrentDirectory(Utilities.getUserDirectory());
+            } else {
 
-public void showFileWriteErrorMessage(File paramFile) {
-JOptionPane.showMessageDialog(this.app, "Cannot save to file " + paramFile.getName() + writeFileErrorMessage, "Error", 0);
-}
+                this.this$0.openFileChooser.setCurrentDirectory(this.this$0.currentFile);
+            }
 
-class OpenAction
-extends AbstractAction
-{
-private final AppFileActions this$0;
+            int i = this.this$0.openFileChooser.showOpenDialog(this.this$0.app);
+            if (i == 0) {
 
-public OpenAction(AppFileActions this$0, String param1String, Icon param1Icon) {
-super(param1String, param1Icon); this.this$0 = this$0;
-}
+                File file = this.this$0.openFileChooser.getSelectedFile();
+                if (file != null) {
+                    if (this.this$0.appFile.read(file)) {
 
-public void actionPerformed(ActionEvent param1ActionEvent) {
-if (!this.this$0.confirmClose()) {
-return;
-}
+                        this.this$0.currentFile = file;
 
-if (this.this$0.currentFile == null) {
+                        this.this$0.appFile.setFile(file);
+                    } else {
 
-this.this$0.openFileChooser.setCurrentDirectory(Utilities.getUserDirectory());
-} else {
+                        JOptionPane.showMessageDialog(this.this$0.app, "Cannot read file " + file.getName() + "\nThe file must exist and be a file previously saved by this program.", "Error", 0);
+                    }
+                }
+            }
+        }
+    }
 
-this.this$0.openFileChooser.setCurrentDirectory(this.this$0.currentFile);
-} 
+    class SaveAction
+            extends AbstractAction {
+        private final AppFileActions this$0;
 
-int i = this.this$0.openFileChooser.showOpenDialog(this.this$0.app);
-if (i == 0) {
+        public SaveAction(AppFileActions this$0, String param1String, Icon param1Icon) {
+            super(param1String, param1Icon);
+            this.this$0 = this$0;
+        }
 
-File file = this.this$0.openFileChooser.getSelectedFile();
-if (file != null)
-{
-if (this.this$0.appFile.read(file)) {
+        public void actionPerformed(ActionEvent param1ActionEvent) {
+            this.this$0.save(false);
+        }
+    }
 
-this.this$0.currentFile = file;
+    class SaveAsAction extends AbstractAction {
+        private final AppFileActions this$0;
 
-this.this$0.appFile.setFile(file);
-}
-else {
+        public SaveAsAction(AppFileActions this$0, String param1String) {
+            super(param1String);
+            this.this$0 = this$0;
+        }
 
-JOptionPane.showMessageDialog(this.this$0.app, "Cannot read file " + file.getName() + "\nThe file must exist and be a file previously saved by this program.", "Error", 0);
-} 
-}
-} 
-}
-}
-
-class SaveAction
-extends AbstractAction
-{
-private final AppFileActions this$0;
-
-public SaveAction(AppFileActions this$0, String param1String, Icon param1Icon) { super(param1String, param1Icon); this.this$0 = this$0; } public void actionPerformed(ActionEvent param1ActionEvent) {
-this.this$0.save(false);
-}
-}
-class SaveAsAction extends AbstractAction { private final AppFileActions this$0;
-
-public SaveAsAction(AppFileActions this$0, String param1String) { super(param1String); this.this$0 = this$0; } public void actionPerformed(ActionEvent param1ActionEvent) {
-this.this$0.save(true);
-} }
+        public void actionPerformed(ActionEvent param1ActionEvent) {
+            this.this$0.save(true);
+        }
+    }
 
 }
 

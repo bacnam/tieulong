@@ -127,7 +127,28 @@ public class DefaultConnectionTester
 
     private static final String PROP_KEY = "com.mchange.v2.c3p0.impl.DefaultConnectionTester.querylessTestRunner";
 
+    static {
+        Set<String> temp = new HashSet();
+        temp.add("08001");
+        temp.add("08007");
+
+        INVALID_DB_STATES = Collections.unmodifiableSet(temp);
+    }
+
     private final QuerylessTestRunner querylessTestRunner;
+
+    public DefaultConnectionTester() {
+        QuerylessTestRunner defaultQuerylessTestRunner = SWITCH;
+
+        String prop = C3P0Config.getMultiPropertiesConfig().getProperty("com.mchange.v2.c3p0.impl.DefaultConnectionTester.querylessTestRunner");
+        if (prop == null) {
+            this.querylessTestRunner = defaultQuerylessTestRunner;
+        } else {
+
+            QuerylessTestRunner reflected = reflectTestRunner(prop.trim());
+            this.querylessTestRunner = (reflected != null) ? reflected : defaultQuerylessTestRunner;
+        }
+    }
 
     private static QuerylessTestRunner reflectTestRunner(String propval) {
         try {
@@ -146,25 +167,8 @@ public class DefaultConnectionTester
         }
     }
 
-    static {
-        Set<String> temp = new HashSet();
-        temp.add("08001");
-        temp.add("08007");
-
-        INVALID_DB_STATES = Collections.unmodifiableSet(temp);
-    }
-
-    public DefaultConnectionTester() {
-        QuerylessTestRunner defaultQuerylessTestRunner = SWITCH;
-
-        String prop = C3P0Config.getMultiPropertiesConfig().getProperty("com.mchange.v2.c3p0.impl.DefaultConnectionTester.querylessTestRunner");
-        if (prop == null) {
-            this.querylessTestRunner = defaultQuerylessTestRunner;
-        } else {
-
-            QuerylessTestRunner reflected = reflectTestRunner(prop.trim());
-            this.querylessTestRunner = (reflected != null) ? reflected : defaultQuerylessTestRunner;
-        }
+    private static String queryInfo(String query) {
+        return (query == null) ? "[using Connection.isValid(...) if supported, or else traditional default query]" : ("[query=" + query + "]");
     }
 
     public int activeCheckConnection(Connection c, String query, Throwable[] rootCauseOutParamHolder) {
@@ -253,10 +257,6 @@ public class DefaultConnectionTester
             return -1;
         } finally {
         }
-    }
-
-    private static String queryInfo(String query) {
-        return (query == null) ? "[using Connection.isValid(...) if supported, or else traditional default query]" : ("[query=" + query + "]");
     }
 
     public boolean equals(Object o) {

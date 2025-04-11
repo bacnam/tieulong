@@ -10,22 +10,21 @@ import org.apache.http.message.LineFormatter;
 
 @Immutable
 public class DefaultHttpRequestWriterFactory
-implements HttpMessageWriterFactory<HttpRequest>
-{
-public static final DefaultHttpRequestWriterFactory INSTANCE = new DefaultHttpRequestWriterFactory();
+        implements HttpMessageWriterFactory<HttpRequest> {
+    public static final DefaultHttpRequestWriterFactory INSTANCE = new DefaultHttpRequestWriterFactory();
 
-private final LineFormatter lineFormatter;
+    private final LineFormatter lineFormatter;
 
-public DefaultHttpRequestWriterFactory(LineFormatter lineFormatter) {
-this.lineFormatter = (lineFormatter != null) ? lineFormatter : (LineFormatter)BasicLineFormatter.INSTANCE;
-}
+    public DefaultHttpRequestWriterFactory(LineFormatter lineFormatter) {
+        this.lineFormatter = (lineFormatter != null) ? lineFormatter : (LineFormatter) BasicLineFormatter.INSTANCE;
+    }
 
-public DefaultHttpRequestWriterFactory() {
-this(null);
-}
+    public DefaultHttpRequestWriterFactory() {
+        this(null);
+    }
 
-public HttpMessageWriter<HttpRequest> create(SessionOutputBuffer buffer) {
-return new DefaultHttpRequestWriter(buffer, this.lineFormatter);
-}
+    public HttpMessageWriter<HttpRequest> create(SessionOutputBuffer buffer) {
+        return new DefaultHttpRequestWriter(buffer, this.lineFormatter);
+    }
 }
 

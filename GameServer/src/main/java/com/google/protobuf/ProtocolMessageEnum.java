@@ -1,5 +1,3 @@
-
-
 package com.google.protobuf;
 
 import com.google.protobuf.Descriptors.EnumDescriptor;
@@ -7,9 +5,9 @@ import com.google.protobuf.Descriptors.EnumValueDescriptor;
 
 public interface ProtocolMessageEnum extends Internal.EnumLite {
 
-  int getNumber();
+    int getNumber();
 
-  EnumValueDescriptor getValueDescriptor();
+    EnumValueDescriptor getValueDescriptor();
 
-  EnumDescriptor getDescriptorForType();
+    EnumDescriptor getDescriptorForType();
 }

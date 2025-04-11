@@ -5,14 +5,13 @@ import com.zhonglian.server.common.enums.RankType;
 
 @Ranks({RankType.Guild})
 public class GuildRank
-extends NormalRank
-{
-public GuildRank(RankType type) {
-super(type);
-}
+        extends NormalRank {
+    public GuildRank(RankType type) {
+        super(type);
+    }
 
-protected boolean filter(long ownerid) {
-return false;
-}
+    protected boolean filter(long ownerid) {
+        return false;
+    }
 }
 

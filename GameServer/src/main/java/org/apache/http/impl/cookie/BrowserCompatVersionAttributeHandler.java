@@ -8,24 +8,24 @@ import org.apache.http.util.Args;
 
 @Immutable
 public class BrowserCompatVersionAttributeHandler
-extends AbstractCookieAttributeHandler
-implements CommonCookieAttributeHandler
-{
-public void parse(SetCookie cookie, String value) throws MalformedCookieException {
-Args.notNull(cookie, "Cookie");
-if (value == null) {
-throw new MalformedCookieException("Missing value for version attribute");
-}
-int version = 0;
-try {
-version = Integer.parseInt(value);
-} catch (NumberFormatException e) {}
+        extends AbstractCookieAttributeHandler
+        implements CommonCookieAttributeHandler {
+    public void parse(SetCookie cookie, String value) throws MalformedCookieException {
+        Args.notNull(cookie, "Cookie");
+        if (value == null) {
+            throw new MalformedCookieException("Missing value for version attribute");
+        }
+        int version = 0;
+        try {
+            version = Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+        }
 
-cookie.setVersion(version);
-}
+        cookie.setVersion(version);
+    }
 
-public String getAttributeName() {
-return "version";
-}
+    public String getAttributeName() {
+        return "version";
+    }
 }
 

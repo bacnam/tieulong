@@ -7,25 +7,23 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.annotation.Nullable;
 
 @Beta
 public final class Futures {
+    private static final Ordering<Constructor<?>> WITH_STRING_PARAM_FIRST = Ordering.natural().onResultOf(new Function<Constructor<?>, Boolean>() {
+        public Boolean apply(Constructor<?> input) {
+            return Boolean.valueOf(Arrays.<Class<?>>asList(input.getParameterTypes()).contains(String.class));
+        }
+    }).reverse();
+
     @Deprecated
     public static <V> UninterruptibleFuture<V> makeUninterruptible(final Future<V> future) {
         Preconditions.checkNotNull(future);
@@ -218,18 +216,168 @@ public final class Futures {
         };
     }
 
+    @Beta
+    public static <V> ListenableFuture<List<V>> allAsList(ListenableFuture<? extends V>... futures) {
+        return new ListFuture<V>(ImmutableList.copyOf((Object[]) futures), true, MoreExecutors.sameThreadExecutor());
+    }
+
+    @Beta
+    public static <V> ListenableFuture<List<V>> allAsList(Iterable<? extends ListenableFuture<? extends V>> futures) {
+        return new ListFuture<V>(ImmutableList.copyOf(futures), true, MoreExecutors.sameThreadExecutor());
+    }
+
+    @Beta
+    public static <V> ListenableFuture<List<V>> successfulAsList(ListenableFuture<? extends V>... futures) {
+        return new ListFuture<V>(ImmutableList.copyOf((Object[]) futures), false, MoreExecutors.sameThreadExecutor());
+    }
+
+    @Beta
+    public static <V> ListenableFuture<List<V>> successfulAsList(Iterable<? extends ListenableFuture<? extends V>> futures) {
+        return new ListFuture<V>(ImmutableList.copyOf(futures), false, MoreExecutors.sameThreadExecutor());
+    }
+
+    public static <V> void addCallback(ListenableFuture<V> future, FutureCallback<? super V> callback) {
+        addCallback(future, callback, MoreExecutors.sameThreadExecutor());
+    }
+
+    public static <V> void addCallback(final ListenableFuture<V> future, final FutureCallback<? super V> callback, Executor executor) {
+        Preconditions.checkNotNull(callback);
+        Runnable callbackListener = new Runnable() {
+
+            public void run() {
+                try {
+                    V value = Uninterruptibles.getUninterruptibly(future);
+                    callback.onSuccess(value);
+                } catch (ExecutionException e) {
+                    callback.onFailure(e.getCause());
+                } catch (RuntimeException e) {
+                    callback.onFailure(e);
+                } catch (Error e) {
+                    callback.onFailure(e);
+                }
+            }
+        };
+        future.addListener(callbackListener, executor);
+    }
+
+    @Beta
+    public static <V, X extends Exception> V get(Future<V> future, Class<X> exceptionClass) throws X {
+        Preconditions.checkNotNull(future);
+        Preconditions.checkArgument(!RuntimeException.class.isAssignableFrom(exceptionClass), "Futures.get exception type (%s) must not be a RuntimeException", new Object[]{exceptionClass});
+
+        try {
+            return future.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw newWithCause(exceptionClass, e);
+        } catch (ExecutionException e) {
+            wrapAndThrowExceptionOrError(e.getCause(), exceptionClass);
+            throw (X) new AssertionError();
+        }
+    }
+
+    @Beta
+    public static <V, X extends Exception> V get(Future<V> future, long timeout, TimeUnit unit, Class<X> exceptionClass) throws X {
+        Preconditions.checkNotNull(future);
+        Preconditions.checkNotNull(unit);
+        Preconditions.checkArgument(!RuntimeException.class.isAssignableFrom(exceptionClass), "Futures.get exception type (%s) must not be a RuntimeException", new Object[]{exceptionClass});
+
+        try {
+            return future.get(timeout, unit);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw newWithCause(exceptionClass, e);
+        } catch (TimeoutException e) {
+            throw newWithCause(exceptionClass, e);
+        } catch (ExecutionException e) {
+            wrapAndThrowExceptionOrError(e.getCause(), exceptionClass);
+            throw (X) new AssertionError();
+        }
+    }
+
+    private static <X extends Exception> void wrapAndThrowExceptionOrError(Throwable cause, Class<X> exceptionClass) throws X {
+        if (cause instanceof Error) {
+            throw (X) new ExecutionError((Error) cause);
+        }
+        if (cause instanceof RuntimeException) {
+            throw (X) new UncheckedExecutionException(cause);
+        }
+        throw newWithCause(exceptionClass, cause);
+    }
+
+    @Beta
+    public static <V> V getUnchecked(Future<V> future) {
+        Preconditions.checkNotNull(future);
+        try {
+            return Uninterruptibles.getUninterruptibly(future);
+        } catch (ExecutionException e) {
+            wrapAndThrowUnchecked(e.getCause());
+            throw new AssertionError();
+        }
+    }
+
+    private static void wrapAndThrowUnchecked(Throwable cause) {
+        if (cause instanceof Error) {
+            throw new ExecutionError((Error) cause);
+        }
+
+        throw new UncheckedExecutionException(cause);
+    }
+
+    private static <X extends Exception> X newWithCause(Class<X> exceptionClass, Throwable cause) {
+        List<Constructor<X>> constructors = (List) Arrays.asList(exceptionClass.getConstructors());
+
+        for (Constructor<X> constructor : preferringStrings(constructors)) {
+            Exception exception = newFromConstructor(constructor, cause);
+            if (exception != null) {
+                if (exception.getCause() == null) {
+                    exception.initCause(cause);
+                }
+                return (X) exception;
+            }
+        }
+        throw new IllegalArgumentException("No appropriate constructor for exception of type " + exceptionClass + " in response to chained exception", cause);
+    }
+
+    private static <X extends Exception> List<Constructor<X>> preferringStrings(List<Constructor<X>> constructors) {
+        return WITH_STRING_PARAM_FIRST.sortedCopy(constructors);
+    }
+
+    @Nullable
+    private static <X> X newFromConstructor(Constructor<X> constructor, Throwable cause) {
+        Class<?>[] paramTypes = constructor.getParameterTypes();
+        Object[] params = new Object[paramTypes.length];
+        for (int i = 0; i < paramTypes.length; i++) {
+            Class<?> paramType = paramTypes[i];
+            if (paramType.equals(String.class)) {
+                params[i] = cause.toString();
+            } else if (paramType.equals(Throwable.class)) {
+                params[i] = cause;
+            } else {
+                return null;
+            }
+        }
+        try {
+            return constructor.newInstance(params);
+        } catch (IllegalArgumentException e) {
+            return null;
+        } catch (InstantiationException e) {
+            return null;
+        } catch (IllegalAccessException e) {
+            return null;
+        } catch (InvocationTargetException e) {
+            return null;
+        }
+    }
+
     private static class ChainingListenableFuture<I, O>
             extends AbstractFuture<O>
             implements Runnable {
-        private Function<? super I, ? extends ListenableFuture<? extends O>> function;
-
-        private ListenableFuture<? extends I> inputFuture;
-
-        private volatile ListenableFuture<? extends O> outputFuture;
-
         private final BlockingQueue<Boolean> mayInterruptIfRunningChannel = new LinkedBlockingQueue<Boolean>(1);
-
         private final CountDownLatch outputCreated = new CountDownLatch(1);
+        private Function<? super I, ? extends ListenableFuture<? extends O>> function;
+        private ListenableFuture<? extends I> inputFuture;
+        private volatile ListenableFuture<? extends O> outputFuture;
 
         private ChainingListenableFuture(Function<? super I, ? extends ListenableFuture<? extends O>> function, ListenableFuture<? extends I> inputFuture) {
             this.function = (Function<? super I, ? extends ListenableFuture<? extends O>>) Preconditions.checkNotNull(function);
@@ -361,174 +509,11 @@ public final class Futures {
         }
     }
 
-    @Beta
-    public static <V> ListenableFuture<List<V>> allAsList(ListenableFuture<? extends V>... futures) {
-        return new ListFuture<V>(ImmutableList.copyOf((Object[]) futures), true, MoreExecutors.sameThreadExecutor());
-    }
-
-    @Beta
-    public static <V> ListenableFuture<List<V>> allAsList(Iterable<? extends ListenableFuture<? extends V>> futures) {
-        return new ListFuture<V>(ImmutableList.copyOf(futures), true, MoreExecutors.sameThreadExecutor());
-    }
-
-    @Beta
-    public static <V> ListenableFuture<List<V>> successfulAsList(ListenableFuture<? extends V>... futures) {
-        return new ListFuture<V>(ImmutableList.copyOf((Object[]) futures), false, MoreExecutors.sameThreadExecutor());
-    }
-
-    @Beta
-    public static <V> ListenableFuture<List<V>> successfulAsList(Iterable<? extends ListenableFuture<? extends V>> futures) {
-        return new ListFuture<V>(ImmutableList.copyOf(futures), false, MoreExecutors.sameThreadExecutor());
-    }
-
-    public static <V> void addCallback(ListenableFuture<V> future, FutureCallback<? super V> callback) {
-        addCallback(future, callback, MoreExecutors.sameThreadExecutor());
-    }
-
-    public static <V> void addCallback(final ListenableFuture<V> future, final FutureCallback<? super V> callback, Executor executor) {
-        Preconditions.checkNotNull(callback);
-        Runnable callbackListener = new Runnable() {
-
-            public void run() {
-                try {
-                    V value = Uninterruptibles.getUninterruptibly(future);
-                    callback.onSuccess(value);
-                } catch (ExecutionException e) {
-                    callback.onFailure(e.getCause());
-                } catch (RuntimeException e) {
-                    callback.onFailure(e);
-                } catch (Error e) {
-                    callback.onFailure(e);
-                }
-            }
-        };
-        future.addListener(callbackListener, executor);
-    }
-
-    @Beta
-    public static <V, X extends Exception> V get(Future<V> future, Class<X> exceptionClass) throws X {
-        Preconditions.checkNotNull(future);
-        Preconditions.checkArgument(!RuntimeException.class.isAssignableFrom(exceptionClass), "Futures.get exception type (%s) must not be a RuntimeException", new Object[]{exceptionClass});
-
-        try {
-            return future.get();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw newWithCause(exceptionClass, e);
-        } catch (ExecutionException e) {
-            wrapAndThrowExceptionOrError(e.getCause(), exceptionClass);
-            throw (X) new AssertionError();
-        }
-    }
-
-    @Beta
-    public static <V, X extends Exception> V get(Future<V> future, long timeout, TimeUnit unit, Class<X> exceptionClass) throws X {
-        Preconditions.checkNotNull(future);
-        Preconditions.checkNotNull(unit);
-        Preconditions.checkArgument(!RuntimeException.class.isAssignableFrom(exceptionClass), "Futures.get exception type (%s) must not be a RuntimeException", new Object[]{exceptionClass});
-
-        try {
-            return future.get(timeout, unit);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw newWithCause(exceptionClass, e);
-        } catch (TimeoutException e) {
-            throw newWithCause(exceptionClass, e);
-        } catch (ExecutionException e) {
-            wrapAndThrowExceptionOrError(e.getCause(), exceptionClass);
-            throw (X) new AssertionError();
-        }
-    }
-
-    private static <X extends Exception> void wrapAndThrowExceptionOrError(Throwable cause, Class<X> exceptionClass) throws X {
-        if (cause instanceof Error) {
-            throw (X) new ExecutionError((Error) cause);
-        }
-        if (cause instanceof RuntimeException) {
-            throw (X) new UncheckedExecutionException(cause);
-        }
-        throw newWithCause(exceptionClass, cause);
-    }
-
-    @Beta
-    public static <V> V getUnchecked(Future<V> future) {
-        Preconditions.checkNotNull(future);
-        try {
-            return Uninterruptibles.getUninterruptibly(future);
-        } catch (ExecutionException e) {
-            wrapAndThrowUnchecked(e.getCause());
-            throw new AssertionError();
-        }
-    }
-
-    private static void wrapAndThrowUnchecked(Throwable cause) {
-        if (cause instanceof Error) {
-            throw new ExecutionError((Error) cause);
-        }
-
-        throw new UncheckedExecutionException(cause);
-    }
-
-    private static <X extends Exception> X newWithCause(Class<X> exceptionClass, Throwable cause) {
-        List<Constructor<X>> constructors = (List) Arrays.asList(exceptionClass.getConstructors());
-
-        for (Constructor<X> constructor : preferringStrings(constructors)) {
-            Exception exception = newFromConstructor(constructor, cause);
-            if (exception != null) {
-                if (exception.getCause() == null) {
-                    exception.initCause(cause);
-                }
-                return (X) exception;
-            }
-        }
-        throw new IllegalArgumentException("No appropriate constructor for exception of type " + exceptionClass + " in response to chained exception", cause);
-    }
-
-    private static <X extends Exception> List<Constructor<X>> preferringStrings(List<Constructor<X>> constructors) {
-        return WITH_STRING_PARAM_FIRST.sortedCopy(constructors);
-    }
-
-    private static final Ordering<Constructor<?>> WITH_STRING_PARAM_FIRST = Ordering.natural().onResultOf(new Function<Constructor<?>, Boolean>() {
-        public Boolean apply(Constructor<?> input) {
-            return Boolean.valueOf(Arrays.<Class<?>>asList(input.getParameterTypes()).contains(String.class));
-        }
-    }).reverse();
-
-    @Nullable
-    private static <X> X newFromConstructor(Constructor<X> constructor, Throwable cause) {
-        Class<?>[] paramTypes = constructor.getParameterTypes();
-        Object[] params = new Object[paramTypes.length];
-        for (int i = 0; i < paramTypes.length; i++) {
-            Class<?> paramType = paramTypes[i];
-            if (paramType.equals(String.class)) {
-                params[i] = cause.toString();
-            } else if (paramType.equals(Throwable.class)) {
-                params[i] = cause;
-            } else {
-                return null;
-            }
-        }
-        try {
-            return constructor.newInstance(params);
-        } catch (IllegalArgumentException e) {
-            return null;
-        } catch (InstantiationException e) {
-            return null;
-        } catch (IllegalAccessException e) {
-            return null;
-        } catch (InvocationTargetException e) {
-            return null;
-        }
-    }
-
     private static class ListFuture<V>
             extends AbstractFuture<List<V>> {
-        ImmutableList<? extends ListenableFuture<? extends V>> futures;
-
         final boolean allMustSucceed;
-
         final AtomicInteger remaining;
-
+        ImmutableList<? extends ListenableFuture<? extends V>> futures;
         List<V> values;
 
         ListFuture(ImmutableList<? extends ListenableFuture<? extends V>> futures, boolean allMustSucceed, Executor listenerExecutor) {

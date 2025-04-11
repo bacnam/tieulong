@@ -2,7 +2,6 @@ package redis.clients.jedis;
 
 import org.apache.commons.pool.BasePoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
-
 import redis.clients.util.Pool;
 
 public class JedisPool extends Pool<Jedis> {
@@ -20,7 +19,7 @@ public class JedisPool extends Pool<Jedis> {
     }
 
     public JedisPool(final Config poolConfig, final String host, int port,
-            int timeout, final String password) {
+                     int timeout, final String password) {
         this(poolConfig, host, port, timeout, password, Protocol.DEFAULT_DATABASE);
     }
 
@@ -38,11 +37,11 @@ public class JedisPool extends Pool<Jedis> {
     }
 
     public void returnBrokenResource(final BinaryJedis resource) {
-    	returnBrokenResourceObject(resource);
+        returnBrokenResourceObject(resource);
     }
 
     public void returnResource(final BinaryJedis resource) {
-    	returnResourceObject(resource);
+        returnResourceObject(resource);
     }
 
     private static class JedisFactory extends BasePoolableObjectFactory {
@@ -53,7 +52,7 @@ public class JedisPool extends Pool<Jedis> {
         private final int database;
 
         public JedisFactory(final String host, final int port,
-                final int timeout, final String password, final int database) {
+                            final int timeout, final String password, final int database) {
             super();
             this.host = host;
             this.port = port;
@@ -69,7 +68,7 @@ public class JedisPool extends Pool<Jedis> {
             if (null != this.password) {
                 jedis.auth(this.password);
             }
-            if( database != 0 ) {
+            if (database != 0) {
                 jedis.select(database);
             }
 

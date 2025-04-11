@@ -1,8 +1,8 @@
 package org.apache.http.nio.reactor;
 
 public interface SessionBufferStatus {
-  boolean hasBufferedInput();
+    boolean hasBufferedInput();
 
-  boolean hasBufferedOutput();
+    boolean hasBufferedOutput();
 }
 

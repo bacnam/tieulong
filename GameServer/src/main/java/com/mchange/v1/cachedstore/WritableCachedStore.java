@@ -3,24 +3,24 @@ package com.mchange.v1.cachedstore;
 import java.util.Set;
 
 public interface WritableCachedStore extends CachedStore {
-  void write(Object paramObject1, Object paramObject2) throws CachedStoreException;
+    void write(Object paramObject1, Object paramObject2) throws CachedStoreException;
 
-  void remove(Object paramObject) throws CachedStoreException;
+    void remove(Object paramObject) throws CachedStoreException;
 
-  void flushWrites() throws CacheFlushException;
+    void flushWrites() throws CacheFlushException;
 
-  Set getFailedWrites() throws CachedStoreException;
+    Set getFailedWrites() throws CachedStoreException;
 
-  void clearPendingWrites() throws CachedStoreException;
+    void clearPendingWrites() throws CachedStoreException;
 
-  void reset() throws CachedStoreException;
+    void reset() throws CachedStoreException;
 
-  void sync() throws CachedStoreException;
+    void sync() throws CachedStoreException;
 
-  public static interface Manager extends CachedStore.Manager {
-    void writeToStorage(Object param1Object1, Object param1Object2) throws Exception;
+    public static interface Manager extends CachedStore.Manager {
+        void writeToStorage(Object param1Object1, Object param1Object2) throws Exception;
 
-    void removeFromStorage(Object param1Object) throws Exception;
-  }
+        void removeFromStorage(Object param1Object) throws Exception;
+    }
 }
 

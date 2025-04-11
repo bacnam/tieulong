@@ -1,25 +1,26 @@
 package org.apache.http.nio;
 
-import java.io.IOException;
 import org.apache.http.HttpException;
 
+import java.io.IOException;
+
 public interface NHttpClientEventHandler {
-  void connected(NHttpClientConnection paramNHttpClientConnection, Object paramObject) throws IOException, HttpException;
+    void connected(NHttpClientConnection paramNHttpClientConnection, Object paramObject) throws IOException, HttpException;
 
-  void requestReady(NHttpClientConnection paramNHttpClientConnection) throws IOException, HttpException;
+    void requestReady(NHttpClientConnection paramNHttpClientConnection) throws IOException, HttpException;
 
-  void responseReceived(NHttpClientConnection paramNHttpClientConnection) throws IOException, HttpException;
+    void responseReceived(NHttpClientConnection paramNHttpClientConnection) throws IOException, HttpException;
 
-  void inputReady(NHttpClientConnection paramNHttpClientConnection, ContentDecoder paramContentDecoder) throws IOException, HttpException;
+    void inputReady(NHttpClientConnection paramNHttpClientConnection, ContentDecoder paramContentDecoder) throws IOException, HttpException;
 
-  void outputReady(NHttpClientConnection paramNHttpClientConnection, ContentEncoder paramContentEncoder) throws IOException, HttpException;
+    void outputReady(NHttpClientConnection paramNHttpClientConnection, ContentEncoder paramContentEncoder) throws IOException, HttpException;
 
-  void endOfInput(NHttpClientConnection paramNHttpClientConnection) throws IOException;
+    void endOfInput(NHttpClientConnection paramNHttpClientConnection) throws IOException;
 
-  void timeout(NHttpClientConnection paramNHttpClientConnection) throws IOException, HttpException;
+    void timeout(NHttpClientConnection paramNHttpClientConnection) throws IOException, HttpException;
 
-  void closed(NHttpClientConnection paramNHttpClientConnection);
+    void closed(NHttpClientConnection paramNHttpClientConnection);
 
-  void exception(NHttpClientConnection paramNHttpClientConnection, Exception paramException);
+    void exception(NHttpClientConnection paramNHttpClientConnection, Exception paramException);
 }
 

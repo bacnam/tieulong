@@ -1,40 +1,40 @@
 package org.junit.rules;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.junit.matchers.JUnitMatchers;
 
-class ExpectedExceptionMatcherBuilder
-{
-private final List<Matcher<?>> matchers = new ArrayList<Matcher<?>>();
+import java.util.ArrayList;
+import java.util.List;
 
-void add(Matcher<?> matcher) {
-this.matchers.add(matcher);
-}
+class ExpectedExceptionMatcherBuilder {
+    private final List<Matcher<?>> matchers = new ArrayList<Matcher<?>>();
 
-boolean expectsThrowable() {
-return !this.matchers.isEmpty();
-}
+    void add(Matcher<?> matcher) {
+        this.matchers.add(matcher);
+    }
 
-Matcher<Throwable> build() {
-return JUnitMatchers.isThrowable(allOfTheMatchers());
-}
+    boolean expectsThrowable() {
+        return !this.matchers.isEmpty();
+    }
 
-private Matcher<Throwable> allOfTheMatchers() {
-if (this.matchers.size() == 1) {
-return cast(this.matchers.get(0));
-}
-return CoreMatchers.allOf(castedMatchers());
-}
+    Matcher<Throwable> build() {
+        return JUnitMatchers.isThrowable(allOfTheMatchers());
+    }
 
-private List<Matcher<? super Throwable>> castedMatchers() {
-return (List)new ArrayList<Matcher<?>>(this.matchers);
-}
+    private Matcher<Throwable> allOfTheMatchers() {
+        if (this.matchers.size() == 1) {
+            return cast(this.matchers.get(0));
+        }
+        return CoreMatchers.allOf(castedMatchers());
+    }
 
-private Matcher<Throwable> cast(Matcher<?> singleMatcher) {
-return (Matcher)singleMatcher;
-}
+    private List<Matcher<? super Throwable>> castedMatchers() {
+        return (List) new ArrayList<Matcher<?>>(this.matchers);
+    }
+
+    private Matcher<Throwable> cast(Matcher<?> singleMatcher) {
+        return (Matcher) singleMatcher;
+    }
 }
 

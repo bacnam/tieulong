@@ -1,8 +1,8 @@
 package com.mchange.v1.lang.holders;
 
 public interface ThreadSafeByteHolder {
-  byte getValue();
+    byte getValue();
 
-  void setValue(byte paramByte);
+    void setValue(byte paramByte);
 }
 

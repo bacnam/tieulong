@@ -1,14 +1,14 @@
 package BaseThread;
 
 public class CosMutexException
-extends Exception
-{
-private static final long serialVersionUID = 1L;
+        extends Exception {
+    private static final long serialVersionUID = 1L;
 
-public CosMutexException() {}
+    public CosMutexException() {
+    }
 
-public CosMutexException(String string) {
-super(string);
-}
+    public CosMutexException(String string) {
+        super(string);
+    }
 }
 

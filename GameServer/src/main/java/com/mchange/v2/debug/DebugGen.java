@@ -9,11 +9,7 @@ import com.mchange.v2.cmdline.ParsedCommandLine;
 import com.mchange.v2.io.DirectoryDescentUtils;
 import com.mchange.v2.io.FileIterator;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package junit.framework;
 
 public interface Protectable {
-  void protect() throws Throwable;
+    void protect() throws Throwable;
 }
 

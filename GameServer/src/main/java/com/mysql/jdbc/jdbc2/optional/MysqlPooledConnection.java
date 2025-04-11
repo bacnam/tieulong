@@ -4,144 +4,144 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.ExceptionInterceptor;
 import com.mysql.jdbc.SQLError;
 import com.mysql.jdbc.Util;
+
+import javax.sql.ConnectionEvent;
+import javax.sql.ConnectionEventListener;
+import javax.sql.PooledConnection;
 import java.lang.reflect.Constructor;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import javax.sql.ConnectionEvent;
-import javax.sql.ConnectionEventListener;
-import javax.sql.PooledConnection;
 
 public class MysqlPooledConnection
-implements PooledConnection
-{
-private static final Constructor<?> JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR;
-public static final int CONNECTION_ERROR_EVENT = 1;
-public static final int CONNECTION_CLOSED_EVENT = 2;
-private Map<ConnectionEventListener, ConnectionEventListener> connectionEventListeners;
-private Connection logicalHandle;
-private Connection physicalConn;
-private ExceptionInterceptor exceptionInterceptor;
+        implements PooledConnection {
+    public static final int CONNECTION_ERROR_EVENT = 1;
+    public static final int CONNECTION_CLOSED_EVENT = 2;
+    private static final Constructor<?> JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR;
 
-static {
-if (Util.isJdbc4()) {
-try {
-JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR = Class.forName("com.mysql.jdbc.jdbc2.optional.JDBC4MysqlPooledConnection").getConstructor(new Class[] { Connection.class });
+    static {
+        if (Util.isJdbc4()) {
+            try {
+                JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR = Class.forName("com.mysql.jdbc.jdbc2.optional.JDBC4MysqlPooledConnection").getConstructor(new Class[]{Connection.class});
 
-}
-catch (SecurityException e) {
-throw new RuntimeException(e);
-} catch (NoSuchMethodException e) {
-throw new RuntimeException(e);
-} catch (ClassNotFoundException e) {
-throw new RuntimeException(e);
-} 
-} else {
-JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR = null;
-} 
-}
+            } catch (SecurityException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR = null;
+        }
+    }
 
-protected static MysqlPooledConnection getInstance(Connection connection) throws SQLException {
-if (!Util.isJdbc4()) {
-return new MysqlPooledConnection(connection);
-}
+    private Map<ConnectionEventListener, ConnectionEventListener> connectionEventListeners;
+    private Connection logicalHandle;
+    private Connection physicalConn;
+    private ExceptionInterceptor exceptionInterceptor;
 
-return (MysqlPooledConnection)Util.handleNewInstance(JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR, new Object[] { connection }, connection.getExceptionInterceptor());
-}
+    public MysqlPooledConnection(Connection connection) {
+        this.logicalHandle = null;
+        this.physicalConn = connection;
+        this.connectionEventListeners = new HashMap<ConnectionEventListener, ConnectionEventListener>();
+        this.exceptionInterceptor = this.physicalConn.getExceptionInterceptor();
+    }
 
-public MysqlPooledConnection(Connection connection) {
-this.logicalHandle = null;
-this.physicalConn = connection;
-this.connectionEventListeners = new HashMap<ConnectionEventListener, ConnectionEventListener>();
-this.exceptionInterceptor = this.physicalConn.getExceptionInterceptor();
-}
+    protected static MysqlPooledConnection getInstance(Connection connection) throws SQLException {
+        if (!Util.isJdbc4()) {
+            return new MysqlPooledConnection(connection);
+        }
 
-public synchronized void addConnectionEventListener(ConnectionEventListener connectioneventlistener) {
-if (this.connectionEventListeners != null) {
-this.connectionEventListeners.put(connectioneventlistener, connectioneventlistener);
-}
-}
+        return (MysqlPooledConnection) Util.handleNewInstance(JDBC_4_POOLED_CONNECTION_WRAPPER_CTOR, new Object[]{connection}, connection.getExceptionInterceptor());
+    }
 
-public synchronized void removeConnectionEventListener(ConnectionEventListener connectioneventlistener) {
-if (this.connectionEventListeners != null) {
-this.connectionEventListeners.remove(connectioneventlistener);
-}
-}
+    public synchronized void addConnectionEventListener(ConnectionEventListener connectioneventlistener) {
+        if (this.connectionEventListeners != null) {
+            this.connectionEventListeners.put(connectioneventlistener, connectioneventlistener);
+        }
+    }
 
-public synchronized Connection getConnection() throws SQLException {
-return getConnection(true, false);
-}
+    public synchronized void removeConnectionEventListener(ConnectionEventListener connectioneventlistener) {
+        if (this.connectionEventListeners != null) {
+            this.connectionEventListeners.remove(connectioneventlistener);
+        }
+    }
 
-protected synchronized Connection getConnection(boolean resetServerState, boolean forXa) throws SQLException {
-if (this.physicalConn == null) {
+    public synchronized Connection getConnection() throws SQLException {
+        return getConnection(true, false);
+    }
 
-SQLException sqlException = SQLError.createSQLException("Physical Connection doesn't exist", this.exceptionInterceptor);
+    protected synchronized Connection getConnection(boolean resetServerState, boolean forXa) throws SQLException {
+        if (this.physicalConn == null) {
 
-callConnectionEventListeners(1, sqlException);
+            SQLException sqlException = SQLError.createSQLException("Physical Connection doesn't exist", this.exceptionInterceptor);
 
-throw sqlException;
-} 
+            callConnectionEventListeners(1, sqlException);
 
-try {
-if (this.logicalHandle != null) {
-((ConnectionWrapper)this.logicalHandle).close(false);
-}
+            throw sqlException;
+        }
 
-if (resetServerState) {
-this.physicalConn.resetServerState();
-}
+        try {
+            if (this.logicalHandle != null) {
+                ((ConnectionWrapper) this.logicalHandle).close(false);
+            }
 
-this.logicalHandle = (Connection)ConnectionWrapper.getInstance(this, this.physicalConn, forXa);
+            if (resetServerState) {
+                this.physicalConn.resetServerState();
+            }
 
-}
-catch (SQLException sqlException) {
-callConnectionEventListeners(1, sqlException);
+            this.logicalHandle = (Connection) ConnectionWrapper.getInstance(this, this.physicalConn, forXa);
 
-throw sqlException;
-} 
+        } catch (SQLException sqlException) {
+            callConnectionEventListeners(1, sqlException);
 
-return this.logicalHandle;
-}
+            throw sqlException;
+        }
 
-public synchronized void close() throws SQLException {
-if (this.physicalConn != null) {
-this.physicalConn.close();
+        return this.logicalHandle;
+    }
 
-this.physicalConn = null;
-} 
+    public synchronized void close() throws SQLException {
+        if (this.physicalConn != null) {
+            this.physicalConn.close();
 
-if (this.connectionEventListeners != null) {
-this.connectionEventListeners.clear();
+            this.physicalConn = null;
+        }
 
-this.connectionEventListeners = null;
-} 
-}
+        if (this.connectionEventListeners != null) {
+            this.connectionEventListeners.clear();
 
-protected synchronized void callConnectionEventListeners(int eventType, SQLException sqlException) {
-if (this.connectionEventListeners == null) {
-return;
-}
+            this.connectionEventListeners = null;
+        }
+    }
 
-Iterator<Map.Entry<ConnectionEventListener, ConnectionEventListener>> iterator = this.connectionEventListeners.entrySet().iterator();
+    protected synchronized void callConnectionEventListeners(int eventType, SQLException sqlException) {
+        if (this.connectionEventListeners == null) {
+            return;
+        }
 
-ConnectionEvent connectionevent = new ConnectionEvent(this, sqlException);
+        Iterator<Map.Entry<ConnectionEventListener, ConnectionEventListener>> iterator = this.connectionEventListeners.entrySet().iterator();
 
-while (iterator.hasNext()) {
+        ConnectionEvent connectionevent = new ConnectionEvent(this, sqlException);
 
-ConnectionEventListener connectioneventlistener = (ConnectionEventListener)((Map.Entry)iterator.next()).getValue();
+        while (iterator.hasNext()) {
 
-if (eventType == 2) {
-connectioneventlistener.connectionClosed(connectionevent); continue;
-}  if (eventType == 1) {
-connectioneventlistener.connectionErrorOccurred(connectionevent);
-}
-} 
-}
+            ConnectionEventListener connectioneventlistener = (ConnectionEventListener) ((Map.Entry) iterator.next()).getValue();
 
-protected ExceptionInterceptor getExceptionInterceptor() {
-return this.exceptionInterceptor;
-}
+            if (eventType == 2) {
+                connectioneventlistener.connectionClosed(connectionevent);
+                continue;
+            }
+            if (eventType == 1) {
+                connectioneventlistener.connectionErrorOccurred(connectionevent);
+            }
+        }
+    }
+
+    protected ExceptionInterceptor getExceptionInterceptor() {
+        return this.exceptionInterceptor;
+    }
 }
 

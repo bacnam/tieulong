@@ -1,166 +1,156 @@
 package bsh.servlet;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleTemplate
-{
-StringBuffer buff;
-static String NO_TEMPLATE = "NO_TEMPLATE";
-static Map templateData = new HashMap<Object, Object>();
+public class SimpleTemplate {
+    static String NO_TEMPLATE = "NO_TEMPLATE";
+    static Map templateData = new HashMap<Object, Object>();
+    static boolean cacheTemplates = true;
+    StringBuffer buff;
 
-static boolean cacheTemplates = true;
+    public SimpleTemplate(String template) {
+        init(template);
+    }
 
-public static SimpleTemplate getTemplate(String file) {
-String templateText = (String)templateData.get(file);
+    public SimpleTemplate(Reader reader) throws IOException {
+        String template = getStringFromStream(reader);
+        init(template);
+    }
 
-if (templateText == null || !cacheTemplates) {
-try {
-FileReader fr = new FileReader(file);
-templateText = getStringFromStream(fr);
-templateData.put(file, templateText);
-} catch (IOException e) {
+    public SimpleTemplate(URL url) throws IOException {
+        String template = getStringFromStream(url.openStream());
+        init(template);
+    }
 
-templateData.put(file, NO_TEMPLATE);
-}
+    public static SimpleTemplate getTemplate(String file) {
+        String templateText = (String) templateData.get(file);
 
-}
-else if (templateText.equals(NO_TEMPLATE)) {
-return null;
-} 
-if (templateText == null) {
-return null;
-}
-return new SimpleTemplate(templateText);
-}
+        if (templateText == null || !cacheTemplates) {
+            try {
+                FileReader fr = new FileReader(file);
+                templateText = getStringFromStream(fr);
+                templateData.put(file, templateText);
+            } catch (IOException e) {
 
-public static String getStringFromStream(InputStream ins) throws IOException {
-return getStringFromStream(new InputStreamReader(ins));
-}
+                templateData.put(file, NO_TEMPLATE);
+            }
 
-public static String getStringFromStream(Reader reader) throws IOException {
-StringBuffer sb = new StringBuffer();
-BufferedReader br = new BufferedReader(reader);
-String line;
-while ((line = br.readLine()) != null) {
-sb.append(line + "\n");
-}
-return sb.toString();
-}
+        } else if (templateText.equals(NO_TEMPLATE)) {
+            return null;
+        }
+        if (templateText == null) {
+            return null;
+        }
+        return new SimpleTemplate(templateText);
+    }
 
-public SimpleTemplate(String template) {
-init(template);
-}
+    public static String getStringFromStream(InputStream ins) throws IOException {
+        return getStringFromStream(new InputStreamReader(ins));
+    }
 
-public SimpleTemplate(Reader reader) throws IOException {
-String template = getStringFromStream(reader);
-init(template);
-}
+    public static String getStringFromStream(Reader reader) throws IOException {
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = new BufferedReader(reader);
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        return sb.toString();
+    }
 
-public SimpleTemplate(URL url) throws IOException {
-String template = getStringFromStream(url.openStream());
-init(template);
-}
+    public static void main(String[] args) throws IOException {
+        String filename = args[0];
+        String param = args[1];
+        String value = args[2];
 
-private void init(String s) {
-this.buff = new StringBuffer(s);
-}
+        FileReader fr = new FileReader(filename);
+        String templateText = getStringFromStream(fr);
+        SimpleTemplate template = new SimpleTemplate(templateText);
 
-public void replace(String param, String value) {
-int[] range;
-while ((range = findTemplate(param)) != null) {
-this.buff.replace(range[0], range[1], value);
-}
-}
+        template.replace(param, value);
+        template.write(System.out);
+    }
 
-int[] findTemplate(String name) {
-String text = this.buff.toString();
-int len = text.length();
+    public static void setCacheTemplates(boolean b) {
+        cacheTemplates = b;
+    }
 
-int start = 0;
+    private void init(String s) {
+        this.buff = new StringBuffer(s);
+    }
 
-while (start < len) {
+    public void replace(String param, String value) {
+        int[] range;
+        while ((range = findTemplate(param)) != null) {
+            this.buff.replace(range[0], range[1], value);
+        }
+    }
 
-int cstart = text.indexOf("<!--", start);
-if (cstart == -1)
-return null; 
-int cend = text.indexOf("-->", cstart);
-if (cend == -1)
-return null; 
-cend += "-->".length();
+    int[] findTemplate(String name) {
+        String text = this.buff.toString();
+        int len = text.length();
 
-int tstart = text.indexOf("TEMPLATE-", cstart);
-if (tstart == -1) {
-start = cend;
+        int start = 0;
 
-continue;
-} 
+        while (start < len) {
 
-if (tstart > cend) {
-start = cend;
+            int cstart = text.indexOf("<!--", start);
+            if (cstart == -1)
+                return null;
+            int cend = text.indexOf("-->", cstart);
+            if (cend == -1)
+                return null;
+            cend += "-->".length();
 
-continue;
-} 
+            int tstart = text.indexOf("TEMPLATE-", cstart);
+            if (tstart == -1) {
+                start = cend;
 
-int pstart = tstart + "TEMPLATE-".length();
+                continue;
+            }
 
-int pend = len;
-for (pend = pstart; pend < len; pend++) {
-char c = text.charAt(pend);
-if (c == ' ' || c == '\t' || c == '-')
-break; 
-} 
-if (pend >= len) {
-return null;
-}
-String param = text.substring(pstart, pend);
+            if (tstart > cend) {
+                start = cend;
 
-if (param.equals(name)) {
-return new int[] { cstart, cend };
-}
+                continue;
+            }
 
-start = cend;
-} 
+            int pstart = tstart + "TEMPLATE-".length();
 
-return null;
-}
+            int pend = len;
+            for (pend = pstart; pend < len; pend++) {
+                char c = text.charAt(pend);
+                if (c == ' ' || c == '\t' || c == '-')
+                    break;
+            }
+            if (pend >= len) {
+                return null;
+            }
+            String param = text.substring(pstart, pend);
 
-public String toString() {
-return this.buff.toString();
-}
+            if (param.equals(name)) {
+                return new int[]{cstart, cend};
+            }
 
-public void write(PrintWriter out) {
-out.println(toString());
-}
+            start = cend;
+        }
 
-public void write(PrintStream out) {
-out.println(toString());
-}
+        return null;
+    }
 
-public static void main(String[] args) throws IOException {
-String filename = args[0];
-String param = args[1];
-String value = args[2];
+    public String toString() {
+        return this.buff.toString();
+    }
 
-FileReader fr = new FileReader(filename);
-String templateText = getStringFromStream(fr);
-SimpleTemplate template = new SimpleTemplate(templateText);
+    public void write(PrintWriter out) {
+        out.println(toString());
+    }
 
-template.replace(param, value);
-template.write(System.out);
-}
-
-public static void setCacheTemplates(boolean b) {
-cacheTemplates = b;
-}
+    public void write(PrintStream out) {
+        out.println(toString());
+    }
 }
 

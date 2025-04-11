@@ -14,58 +14,57 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefCrystalPrice;
 import core.config.refdata.ref.RefVIP;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class StealGoldAll
-extends PlayerHandler
-{
-private static class StealGoldInfo
-{
-int nowTimes;
-Reward reward;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        StealGoldFeature feature = (StealGoldFeature) player.getFeature(StealGoldFeature.class);
+        if (!feature.checkTimes()) {
+            throw new WSException(ErrorCode.StealGold_NotEnough, "探金手次数不足");
+        }
 
-private StealGoldInfo(int nowTimes, Reward reward) {
-this.nowTimes = nowTimes;
-this.reward = reward;
-}
-}
+        PlayerCurrency currency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        int nowTime = feature.getTimes();
+        int maxTimes = ((RefVIP) RefDataMgr.get(RefVIP.class, Integer.valueOf(player.getVipLevel()))).StealGold;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-StealGoldFeature feature = (StealGoldFeature)player.getFeature(StealGoldFeature.class);
-if (!feature.checkTimes()) {
-throw new WSException(ErrorCode.StealGold_NotEnough, "探金手次数不足");
-}
+        int cost = 0;
+        long gain = 0L;
+        for (int i = nowTime; i < maxTimes; i++) {
+            cost += (RefCrystalPrice.getPrize(i)).StealGoldPrice;
+            gain += (RefCrystalPrice.getPrize(i)).StealGoldGain;
+        }
 
-PlayerCurrency currency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-int nowTime = feature.getTimes();
-int maxTimes = ((RefVIP)RefDataMgr.get(RefVIP.class, Integer.valueOf(player.getVipLevel()))).StealGold;
+        if (!currency.check(PrizeType.Crystal, cost)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "探金手需要钻石%s", new Object[]{Integer.valueOf(cost)});
+        }
+        currency.consume(PrizeType.Crystal, cost, ItemFlow.StealGold);
+        long get = gain * (10000 + RefDataMgr.getFactor("StealGoldCrit", 5000)) / 10000L;
 
-int cost = 0;
-long gain = 0L;
-for (int i = nowTime; i < maxTimes; i++) {
-cost += (RefCrystalPrice.getPrize(i)).StealGoldPrice;
-gain += (RefCrystalPrice.getPrize(i)).StealGoldGain;
-} 
+        feature.addTimes(maxTimes - nowTime);
 
-if (!currency.check(PrizeType.Crystal, cost)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "探金手需要钻石%s", new Object[] { Integer.valueOf(cost) });
-}
-currency.consume(PrizeType.Crystal, cost, ItemFlow.StealGold);
-long get = gain * (10000 + RefDataMgr.getFactor("StealGoldCrit", 5000)) / 10000L;
+        currency.gain(PrizeType.Gold, (int) get, ItemFlow.StealGold);
 
-feature.addTimes(maxTimes - nowTime);
+        for (int j = 0; j < maxTimes - nowTime; j++) {
 
-currency.gain(PrizeType.Gold, (int)get, ItemFlow.StealGold);
+            Player target = PlayerMgr.getInstance().getPlayer(((Long) feature.getList().get(j % 4)).longValue());
+            ((StealGoldFeature) target.getFeature(StealGoldFeature.class)).addNews(player.getPid(), (int) (get / maxTimes - nowTime));
+        }
 
-for (int j = 0; j < maxTimes - nowTime; j++) {
+        Reward reward = new Reward();
+        reward.add(PrizeType.Gold, (int) get);
+        request.response(new StealGoldInfo(feature.getTimes(), reward, null));
+    }
 
-Player target = PlayerMgr.getInstance().getPlayer(((Long)feature.getList().get(j % 4)).longValue());
-((StealGoldFeature)target.getFeature(StealGoldFeature.class)).addNews(player.getPid(), (int)(get / maxTimes - nowTime));
-} 
+    private static class StealGoldInfo {
+        int nowTimes;
+        Reward reward;
 
-Reward reward = new Reward();
-reward.add(PrizeType.Gold, (int)get);
-request.response(new StealGoldInfo(feature.getTimes(), reward, null));
-}
+        private StealGoldInfo(int nowTimes, Reward reward) {
+            this.nowTimes = nowTimes;
+            this.reward = reward;
+        }
+    }
 }
 

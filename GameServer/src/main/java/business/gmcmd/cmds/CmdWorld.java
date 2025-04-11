@@ -7,24 +7,23 @@ import business.player.Player;
 import core.network.game2world.WorldConnector;
 
 @Commander(name = "world", comment = "跨服相关命令")
-public class CmdWorld
-{
-@Command(comment = "测试跨服请求")
-public String test(Player player) {
-WorldConnector.request("wforward.client.Test", "", null);
+public class CmdWorld {
+    @Command(comment = "测试跨服请求")
+    public String test(Player player) {
+        WorldConnector.request("wforward.client.Test", "", null);
 
-return "ok";
-}
+        return "ok";
+    }
 
-@Command(comment = "测试聊天")
-public String chat(Player player) {
-ChatMgr.getInstance().init();
-return "ok";
-}
+    @Command(comment = "测试聊天")
+    public String chat(Player player) {
+        ChatMgr.getInstance().init();
+        return "ok";
+    }
 
-@Command(comment = "测试聊天2")
-public String chat2(Player player) {
-return "ok";
-}
+    @Command(comment = "测试聊天2")
+    public String chat2(Player player) {
+        return "ok";
+    }
 }
 

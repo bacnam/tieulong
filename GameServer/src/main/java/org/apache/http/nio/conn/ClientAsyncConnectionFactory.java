@@ -5,6 +5,6 @@ import org.apache.http.params.HttpParams;
 
 @Deprecated
 public interface ClientAsyncConnectionFactory {
-  ClientAsyncConnection create(String paramString, IOSession paramIOSession, HttpParams paramHttpParams);
+    ClientAsyncConnection create(String paramString, IOSession paramIOSession, HttpParams paramHttpParams);
 }
 

@@ -1,68 +1,69 @@
 package com.mchange.v2.sql.filter;
 
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
 
 public abstract class SynchronizedFilterDataSource
-implements DataSource
-{
-protected DataSource inner;
+        implements DataSource {
+    protected DataSource inner;
 
-private void __setInner(DataSource paramDataSource) {
-this.inner = paramDataSource;
-}
+    public SynchronizedFilterDataSource(DataSource paramDataSource) {
+        __setInner(paramDataSource);
+    }
 
-public SynchronizedFilterDataSource(DataSource paramDataSource) {
-__setInner(paramDataSource);
-}
+    public SynchronizedFilterDataSource() {
+    }
 
-public SynchronizedFilterDataSource() {}
+    private void __setInner(DataSource paramDataSource) {
+        this.inner = paramDataSource;
+    }
 
-public synchronized void setInner(DataSource paramDataSource) {
-__setInner(paramDataSource);
-}
-public synchronized DataSource getInner() {
-return this.inner;
-}
+    public synchronized DataSource getInner() {
+        return this.inner;
+    }
 
-public synchronized Connection getConnection() throws SQLException {
-return this.inner.getConnection();
-}
+    public synchronized void setInner(DataSource paramDataSource) {
+        __setInner(paramDataSource);
+    }
 
-public synchronized Connection getConnection(String paramString1, String paramString2) throws SQLException {
-return this.inner.getConnection(paramString1, paramString2);
-}
+    public synchronized Connection getConnection() throws SQLException {
+        return this.inner.getConnection();
+    }
 
-public synchronized PrintWriter getLogWriter() throws SQLException {
-return this.inner.getLogWriter();
-}
+    public synchronized Connection getConnection(String paramString1, String paramString2) throws SQLException {
+        return this.inner.getConnection(paramString1, paramString2);
+    }
 
-public synchronized int getLoginTimeout() throws SQLException {
-return this.inner.getLoginTimeout();
-}
+    public synchronized PrintWriter getLogWriter() throws SQLException {
+        return this.inner.getLogWriter();
+    }
 
-public synchronized Logger getParentLogger() throws SQLFeatureNotSupportedException {
-return this.inner.getParentLogger();
-}
+    public synchronized void setLogWriter(PrintWriter paramPrintWriter) throws SQLException {
+        this.inner.setLogWriter(paramPrintWriter);
+    }
 
-public synchronized void setLogWriter(PrintWriter paramPrintWriter) throws SQLException {
-this.inner.setLogWriter(paramPrintWriter);
-}
+    public synchronized int getLoginTimeout() throws SQLException {
+        return this.inner.getLoginTimeout();
+    }
 
-public synchronized void setLoginTimeout(int paramInt) throws SQLException {
-this.inner.setLoginTimeout(paramInt);
-}
+    public synchronized void setLoginTimeout(int paramInt) throws SQLException {
+        this.inner.setLoginTimeout(paramInt);
+    }
 
-public synchronized boolean isWrapperFor(Class<?> paramClass) throws SQLException {
-return this.inner.isWrapperFor(paramClass);
-}
+    public synchronized Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return this.inner.getParentLogger();
+    }
 
-public synchronized Object unwrap(Class<?> paramClass) throws SQLException {
-return this.inner.unwrap(paramClass);
-}
+    public synchronized boolean isWrapperFor(Class<?> paramClass) throws SQLException {
+        return this.inner.isWrapperFor(paramClass);
+    }
+
+    public synchronized Object unwrap(Class<?> paramClass) throws SQLException {
+        return this.inner.unwrap(paramClass);
+    }
 }
 

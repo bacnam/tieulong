@@ -7,86 +7,82 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class OptionGroup
-implements Serializable
-{
-private static final long serialVersionUID = 1L;
-private Map optionMap = new HashMap();
+        implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private Map optionMap = new HashMap();
 
-private String selected;
+    private String selected;
 
-private boolean required;
+    private boolean required;
 
-public OptionGroup addOption(Option option) {
-this.optionMap.put(option.getKey(), option);
+    public OptionGroup addOption(Option option) {
+        this.optionMap.put(option.getKey(), option);
 
-return this;
-}
+        return this;
+    }
 
-public Collection getNames() {
-return this.optionMap.keySet();
-}
+    public Collection getNames() {
+        return this.optionMap.keySet();
+    }
 
-public Collection getOptions() {
-return this.optionMap.values();
-}
+    public Collection getOptions() {
+        return this.optionMap.values();
+    }
 
-public void setSelected(Option option) throws AlreadySelectedException {
-if (this.selected == null || this.selected.equals(option.getOpt())) {
+    public String getSelected() {
+        return this.selected;
+    }
 
-this.selected = option.getOpt();
-}
-else {
+    public void setSelected(Option option) throws AlreadySelectedException {
+        if (this.selected == null || this.selected.equals(option.getOpt())) {
 
-throw new AlreadySelectedException(this, option);
-} 
-}
+            this.selected = option.getOpt();
+        } else {
 
-public String getSelected() {
-return this.selected;
-}
+            throw new AlreadySelectedException(this, option);
+        }
+    }
 
-public void setRequired(boolean required) {
-this.required = required;
-}
+    public boolean isRequired() {
+        return this.required;
+    }
 
-public boolean isRequired() {
-return this.required;
-}
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
 
-public String toString() {
-StringBuffer buff = new StringBuffer();
+    public String toString() {
+        StringBuffer buff = new StringBuffer();
 
-Iterator iter = getOptions().iterator();
+        Iterator iter = getOptions().iterator();
 
-buff.append("[");
+        buff.append("[");
 
-while (iter.hasNext()) {
+        while (iter.hasNext()) {
 
-Option option = iter.next();
+            Option option = iter.next();
 
-if (option.getOpt() != null) {
+            if (option.getOpt() != null) {
 
-buff.append("-");
-buff.append(option.getOpt());
-}
-else {
+                buff.append("-");
+                buff.append(option.getOpt());
+            } else {
 
-buff.append("--");
-buff.append(option.getLongOpt());
-} 
+                buff.append("--");
+                buff.append(option.getLongOpt());
+            }
 
-buff.append(" ");
-buff.append(option.getDescription());
+            buff.append(" ");
+            buff.append(option.getDescription());
 
-if (iter.hasNext())
-{
-buff.append(", ");
-}
-} 
+            if (iter.hasNext()) {
+                buff.append(", ");
+            }
+        }
 
-buff.append("]");
+        buff.append("]");
 
-return buff.toString();
-}
+        return buff.toString();
+    }
 }
 

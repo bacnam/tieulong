@@ -1,16 +1,16 @@
 package org.apache.http;
 
 public interface HeaderElement {
-  String getName();
+    String getName();
 
-  String getValue();
+    String getValue();
 
-  NameValuePair[] getParameters();
+    NameValuePair[] getParameters();
 
-  NameValuePair getParameterByName(String paramString);
+    NameValuePair getParameterByName(String paramString);
 
-  int getParameterCount();
+    int getParameterCount();
 
-  NameValuePair getParameter(int paramInt);
+    NameValuePair getParameter(int paramInt);
 }
 

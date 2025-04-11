@@ -1,10 +1,10 @@
 package org.apache.http;
 
 public interface RequestLine {
-  String getMethod();
+    String getMethod();
 
-  ProtocolVersion getProtocolVersion();
+    ProtocolVersion getProtocolVersion();
 
-  String getUri();
+    String getUri();
 }
 

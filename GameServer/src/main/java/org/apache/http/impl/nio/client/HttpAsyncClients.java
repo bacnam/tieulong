@@ -8,32 +8,31 @@ import org.apache.http.nio.reactor.ConnectingIOReactor;
 import org.apache.http.util.Args;
 
 @Immutable
-public class HttpAsyncClients
-{
-public static HttpAsyncClientBuilder custom() {
-return HttpAsyncClientBuilder.create();
-}
+public class HttpAsyncClients {
+    public static HttpAsyncClientBuilder custom() {
+        return HttpAsyncClientBuilder.create();
+    }
 
-public static CloseableHttpAsyncClient createDefault() {
-return HttpAsyncClientBuilder.create().build();
-}
+    public static CloseableHttpAsyncClient createDefault() {
+        return HttpAsyncClientBuilder.create().build();
+    }
 
-public static CloseableHttpAsyncClient createSystem() {
-return HttpAsyncClientBuilder.create().useSystemProperties().build();
-}
+    public static CloseableHttpAsyncClient createSystem() {
+        return HttpAsyncClientBuilder.create().useSystemProperties().build();
+    }
 
-public static CloseableHttpAsyncClient createMinimal() {
-return new MinimalHttpAsyncClient((NHttpClientConnectionManager)new PoolingNHttpClientConnectionManager(IOReactorUtils.create(IOReactorConfig.DEFAULT)));
-}
+    public static CloseableHttpAsyncClient createMinimal() {
+        return new MinimalHttpAsyncClient((NHttpClientConnectionManager) new PoolingNHttpClientConnectionManager(IOReactorUtils.create(IOReactorConfig.DEFAULT)));
+    }
 
-public static CloseableHttpAsyncClient createMinimal(ConnectingIOReactor ioreactor) {
-Args.notNull(ioreactor, "I/O reactor");
-return new MinimalHttpAsyncClient((NHttpClientConnectionManager)new PoolingNHttpClientConnectionManager(ioreactor));
-}
+    public static CloseableHttpAsyncClient createMinimal(ConnectingIOReactor ioreactor) {
+        Args.notNull(ioreactor, "I/O reactor");
+        return new MinimalHttpAsyncClient((NHttpClientConnectionManager) new PoolingNHttpClientConnectionManager(ioreactor));
+    }
 
-public static CloseableHttpAsyncClient createMinimal(NHttpClientConnectionManager connManager) {
-Args.notNull(connManager, "Connection manager");
-return new MinimalHttpAsyncClient(connManager);
-}
+    public static CloseableHttpAsyncClient createMinimal(NHttpClientConnectionManager connManager) {
+        Args.notNull(connManager, "Connection manager");
+        return new MinimalHttpAsyncClient(connManager);
+    }
 }
 

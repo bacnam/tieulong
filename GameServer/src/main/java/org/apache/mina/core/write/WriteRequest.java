@@ -1,17 +1,18 @@
 package org.apache.mina.core.write;
 
-import java.net.SocketAddress;
 import org.apache.mina.core.future.WriteFuture;
 
+import java.net.SocketAddress;
+
 public interface WriteRequest {
-  WriteRequest getOriginalRequest();
+    WriteRequest getOriginalRequest();
 
-  WriteFuture getFuture();
+    WriteFuture getFuture();
 
-  Object getMessage();
+    Object getMessage();
 
-  SocketAddress getDestination();
+    SocketAddress getDestination();
 
-  boolean isEncoded();
+    boolean isEncoded();
 }
 

@@ -9,14 +9,13 @@ import org.apache.http.protocol.HttpContext;
 
 @Immutable
 public class NTLMSchemeFactory
-implements AuthSchemeFactory, AuthSchemeProvider
-{
-public AuthScheme newInstance(HttpParams params) {
-return (AuthScheme)new NTLMScheme();
-}
+        implements AuthSchemeFactory, AuthSchemeProvider {
+    public AuthScheme newInstance(HttpParams params) {
+        return (AuthScheme) new NTLMScheme();
+    }
 
-public AuthScheme create(HttpContext context) {
-return (AuthScheme)new NTLMScheme();
-}
+    public AuthScheme create(HttpContext context) {
+        return (AuthScheme) new NTLMScheme();
+    }
 }
 

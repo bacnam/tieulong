@@ -3,16 +3,16 @@ package org.slf4j.spi;
 import java.util.Map;
 
 public interface MDCAdapter {
-  void put(String paramString1, String paramString2);
+    void put(String paramString1, String paramString2);
 
-  String get(String paramString);
+    String get(String paramString);
 
-  void remove(String paramString);
+    void remove(String paramString);
 
-  void clear();
+    void clear();
 
-  Map<String, String> getCopyOfContextMap();
+    Map<String, String> getCopyOfContextMap();
 
-  void setContextMap(Map<String, String> paramMap);
+    void setContextMap(Map<String, String> paramMap);
 }
 

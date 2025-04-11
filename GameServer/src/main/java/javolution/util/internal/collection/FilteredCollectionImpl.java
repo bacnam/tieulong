@@ -1,78 +1,77 @@
 package javolution.util.internal.collection;
 
-import java.util.Iterator;
 import javolution.util.function.Equality;
 import javolution.util.function.Predicate;
 import javolution.util.service.CollectionService;
 
+import java.util.Iterator;
+
 public class FilteredCollectionImpl<E>
-extends CollectionView<E>
-{
-private static final long serialVersionUID = 1536L;
-protected final Predicate<? super E> filter;
+        extends CollectionView<E> {
+    private static final long serialVersionUID = 1536L;
+    protected final Predicate<? super E> filter;
 
-private class IteratorImpl
-implements Iterator<E>
-{
-private boolean ahead;
-private final Predicate<? super E> filter;
-private E next;
-private final Iterator<E> targetIterator;
+    public FilteredCollectionImpl(CollectionService<E> target, Predicate<? super E> filter) {
+        super(target);
+        this.filter = filter;
+    }
 
-public IteratorImpl(Predicate<? super E> filter) {
-this.filter = filter;
-this.targetIterator = FilteredCollectionImpl.this.target().iterator();
-}
+    public boolean add(E element) {
+        if (!this.filter.test(element)) return false;
+        return target().add(element);
+    }
 
-public boolean hasNext() {
-if (this.ahead) return true; 
-while (this.targetIterator.hasNext()) {
-this.next = this.targetIterator.next();
-if (this.filter.test(this.next)) {
-this.ahead = true;
-return true;
-} 
-} 
-return false;
-}
+    public Equality<? super E> comparator() {
+        return target().comparator();
+    }
 
-public E next() {
-hasNext();
-this.ahead = false;
-return this.next;
-}
+    public boolean contains(Object o) {
+        if (!this.filter.test(o)) return false;
+        return target().contains(o);
+    }
 
-public void remove() {
-this.targetIterator.remove();
-}
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl(this.filter);
+    }
 
-public FilteredCollectionImpl(CollectionService<E> target, Predicate<? super E> filter) {
-super(target);
-this.filter = filter;
-}
+    public boolean remove(Object o) {
+        if (!this.filter.test(o)) return false;
+        return target().remove(o);
+    }
 
-public boolean add(E element) {
-if (!this.filter.test(element)) return false; 
-return target().add(element);
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private final Predicate<? super E> filter;
+        private final Iterator<E> targetIterator;
+        private boolean ahead;
+        private E next;
 
-public Equality<? super E> comparator() {
-return target().comparator();
-}
+        public IteratorImpl(Predicate<? super E> filter) {
+            this.filter = filter;
+            this.targetIterator = FilteredCollectionImpl.this.target().iterator();
+        }
 
-public boolean contains(Object o) {
-if (!this.filter.test(o)) return false; 
-return target().contains(o);
-}
+        public boolean hasNext() {
+            if (this.ahead) return true;
+            while (this.targetIterator.hasNext()) {
+                this.next = this.targetIterator.next();
+                if (this.filter.test(this.next)) {
+                    this.ahead = true;
+                    return true;
+                }
+            }
+            return false;
+        }
 
-public Iterator<E> iterator() {
-return new IteratorImpl(this.filter);
-}
+        public E next() {
+            hasNext();
+            this.ahead = false;
+            return this.next;
+        }
 
-public boolean remove(Object o) {
-if (!this.filter.test(o)) return false; 
-return target().remove(o);
-}
+        public void remove() {
+            this.targetIterator.remove();
+        }
+    }
 }
 

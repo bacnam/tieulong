@@ -2,163 +2,162 @@ package org.apache.mina.proxy.utils;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
-public class IoBufferDecoder
-{
-public class DecodingContext
-{
-private IoBuffer decodedBuffer;
-private IoBuffer delimiter;
-private int matchCount = 0;
+public class IoBufferDecoder {
+    private DecodingContext ctx = new DecodingContext();
 
-private int contentLength = -1;
+    public IoBufferDecoder(byte[] delimiter) {
+        setDelimiter(delimiter, true);
+    }
 
-public void reset() {
-this.contentLength = -1;
-this.matchCount = 0;
-this.decodedBuffer = null;
-}
+    public IoBufferDecoder(int contentLength) {
+        setContentLength(contentLength, false);
+    }
 
-public int getContentLength() {
-return this.contentLength;
-}
+    public void setContentLength(int contentLength, boolean resetMatchCount) {
+        if (contentLength <= 0) {
+            throw new IllegalArgumentException("contentLength: " + contentLength);
+        }
 
-public void setContentLength(int contentLength) {
-this.contentLength = contentLength;
-}
+        this.ctx.setContentLength(contentLength);
+        if (resetMatchCount) {
+            this.ctx.setMatchCount(0);
+        }
+    }
 
-public int getMatchCount() {
-return this.matchCount;
-}
+    public void setDelimiter(byte[] delim, boolean resetMatchCount) {
+        if (delim == null) {
+            throw new IllegalArgumentException("Null delimiter not allowed");
+        }
 
-public void setMatchCount(int matchCount) {
-this.matchCount = matchCount;
-}
+        IoBuffer delimiter = IoBuffer.allocate(delim.length);
+        delimiter.put(delim);
+        delimiter.flip();
 
-public IoBuffer getDecodedBuffer() {
-return this.decodedBuffer;
-}
+        this.ctx.setDelimiter(delimiter);
+        this.ctx.setContentLength(-1);
+        if (resetMatchCount) {
+            this.ctx.setMatchCount(0);
+        }
+    }
 
-public void setDecodedBuffer(IoBuffer decodedBuffer) {
-this.decodedBuffer = decodedBuffer;
-}
+    public IoBuffer decodeFully(IoBuffer in) {
+        int contentLength = this.ctx.getContentLength();
+        IoBuffer decodedBuffer = this.ctx.getDecodedBuffer();
 
-public IoBuffer getDelimiter() {
-return this.delimiter;
-}
+        int oldLimit = in.limit();
 
-public void setDelimiter(IoBuffer delimiter) {
-this.delimiter = delimiter;
-}
-}
+        if (contentLength > -1) {
+            if (decodedBuffer == null) {
+                decodedBuffer = IoBuffer.allocate(contentLength).setAutoExpand(true);
+            }
 
-private DecodingContext ctx = new DecodingContext();
+            if (in.remaining() < contentLength) {
+                int readBytes = in.remaining();
+                decodedBuffer.put(in);
+                this.ctx.setDecodedBuffer(decodedBuffer);
+                this.ctx.setContentLength(contentLength - readBytes);
+                return null;
+            }
 
-public IoBufferDecoder(byte[] delimiter) {
-setDelimiter(delimiter, true);
-}
+            int newLimit = in.position() + contentLength;
+            in.limit(newLimit);
+            decodedBuffer.put(in);
+            decodedBuffer.flip();
+            in.limit(oldLimit);
+            this.ctx.reset();
 
-public IoBufferDecoder(int contentLength) {
-setContentLength(contentLength, false);
-}
+            return decodedBuffer;
+        }
 
-public void setContentLength(int contentLength, boolean resetMatchCount) {
-if (contentLength <= 0) {
-throw new IllegalArgumentException("contentLength: " + contentLength);
-}
+        int oldPos = in.position();
+        int matchCount = this.ctx.getMatchCount();
+        IoBuffer delimiter = this.ctx.getDelimiter();
 
-this.ctx.setContentLength(contentLength);
-if (resetMatchCount) {
-this.ctx.setMatchCount(0);
-}
-}
+        while (in.hasRemaining()) {
+            byte b = in.get();
+            if (delimiter.get(matchCount) == b) {
+                matchCount++;
+                if (matchCount == delimiter.limit()) {
 
-public void setDelimiter(byte[] delim, boolean resetMatchCount) {
-if (delim == null) {
-throw new IllegalArgumentException("Null delimiter not allowed");
-}
+                    int pos = in.position();
+                    in.position(oldPos);
 
-IoBuffer delimiter = IoBuffer.allocate(delim.length);
-delimiter.put(delim);
-delimiter.flip();
+                    in.limit(pos);
 
-this.ctx.setDelimiter(delimiter);
-this.ctx.setContentLength(-1);
-if (resetMatchCount) {
-this.ctx.setMatchCount(0);
-}
-}
+                    if (decodedBuffer == null) {
+                        decodedBuffer = IoBuffer.allocate(in.remaining()).setAutoExpand(true);
+                    }
 
-public IoBuffer decodeFully(IoBuffer in) {
-int contentLength = this.ctx.getContentLength();
-IoBuffer decodedBuffer = this.ctx.getDecodedBuffer();
+                    decodedBuffer.put(in);
+                    decodedBuffer.flip();
 
-int oldLimit = in.limit();
+                    in.limit(oldLimit);
+                    this.ctx.reset();
 
-if (contentLength > -1) {
-if (decodedBuffer == null) {
-decodedBuffer = IoBuffer.allocate(contentLength).setAutoExpand(true);
-}
+                    return decodedBuffer;
+                }
+                continue;
+            }
+            in.position(Math.max(0, in.position() - matchCount));
+            matchCount = 0;
+        }
 
-if (in.remaining() < contentLength) {
-int readBytes = in.remaining();
-decodedBuffer.put(in);
-this.ctx.setDecodedBuffer(decodedBuffer);
-this.ctx.setContentLength(contentLength - readBytes);
-return null;
-} 
+        if (in.remaining() > 0) {
+            in.position(oldPos);
+            decodedBuffer.put(in);
+            in.position(in.limit());
+        }
 
-int newLimit = in.position() + contentLength;
-in.limit(newLimit);
-decodedBuffer.put(in);
-decodedBuffer.flip();
-in.limit(oldLimit);
-this.ctx.reset();
+        this.ctx.setMatchCount(matchCount);
+        this.ctx.setDecodedBuffer(decodedBuffer);
 
-return decodedBuffer;
-} 
+        return decodedBuffer;
+    }
 
-int oldPos = in.position();
-int matchCount = this.ctx.getMatchCount();
-IoBuffer delimiter = this.ctx.getDelimiter();
+    public class DecodingContext {
+        private IoBuffer decodedBuffer;
+        private IoBuffer delimiter;
+        private int matchCount = 0;
 
-while (in.hasRemaining()) {
-byte b = in.get();
-if (delimiter.get(matchCount) == b) {
-matchCount++;
-if (matchCount == delimiter.limit()) {
+        private int contentLength = -1;
 
-int pos = in.position();
-in.position(oldPos);
+        public void reset() {
+            this.contentLength = -1;
+            this.matchCount = 0;
+            this.decodedBuffer = null;
+        }
 
-in.limit(pos);
+        public int getContentLength() {
+            return this.contentLength;
+        }
 
-if (decodedBuffer == null) {
-decodedBuffer = IoBuffer.allocate(in.remaining()).setAutoExpand(true);
-}
+        public void setContentLength(int contentLength) {
+            this.contentLength = contentLength;
+        }
 
-decodedBuffer.put(in);
-decodedBuffer.flip();
+        public int getMatchCount() {
+            return this.matchCount;
+        }
 
-in.limit(oldLimit);
-this.ctx.reset();
+        public void setMatchCount(int matchCount) {
+            this.matchCount = matchCount;
+        }
 
-return decodedBuffer;
-}  continue;
-} 
-in.position(Math.max(0, in.position() - matchCount));
-matchCount = 0;
-} 
+        public IoBuffer getDecodedBuffer() {
+            return this.decodedBuffer;
+        }
 
-if (in.remaining() > 0) {
-in.position(oldPos);
-decodedBuffer.put(in);
-in.position(in.limit());
-} 
+        public void setDecodedBuffer(IoBuffer decodedBuffer) {
+            this.decodedBuffer = decodedBuffer;
+        }
 
-this.ctx.setMatchCount(matchCount);
-this.ctx.setDecodedBuffer(decodedBuffer);
+        public IoBuffer getDelimiter() {
+            return this.delimiter;
+        }
 
-return decodedBuffer;
-}
+        public void setDelimiter(IoBuffer delimiter) {
+            this.delimiter = delimiter;
+        }
+    }
 }
 

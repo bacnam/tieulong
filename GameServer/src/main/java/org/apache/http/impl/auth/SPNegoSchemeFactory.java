@@ -9,39 +9,38 @@ import org.apache.http.protocol.HttpContext;
 
 @Immutable
 public class SPNegoSchemeFactory
-implements AuthSchemeFactory, AuthSchemeProvider
-{
-private final boolean stripPort;
-private final boolean useCanonicalHostname;
+        implements AuthSchemeFactory, AuthSchemeProvider {
+    private final boolean stripPort;
+    private final boolean useCanonicalHostname;
 
-public SPNegoSchemeFactory(boolean stripPort, boolean useCanonicalHostname) {
-this.stripPort = stripPort;
-this.useCanonicalHostname = useCanonicalHostname;
-}
+    public SPNegoSchemeFactory(boolean stripPort, boolean useCanonicalHostname) {
+        this.stripPort = stripPort;
+        this.useCanonicalHostname = useCanonicalHostname;
+    }
 
-public SPNegoSchemeFactory(boolean stripPort) {
-this.stripPort = stripPort;
-this.useCanonicalHostname = true;
-}
+    public SPNegoSchemeFactory(boolean stripPort) {
+        this.stripPort = stripPort;
+        this.useCanonicalHostname = true;
+    }
 
-public SPNegoSchemeFactory() {
-this(true, true);
-}
+    public SPNegoSchemeFactory() {
+        this(true, true);
+    }
 
-public boolean isStripPort() {
-return this.stripPort;
-}
+    public boolean isStripPort() {
+        return this.stripPort;
+    }
 
-public boolean isUseCanonicalHostname() {
-return this.useCanonicalHostname;
-}
+    public boolean isUseCanonicalHostname() {
+        return this.useCanonicalHostname;
+    }
 
-public AuthScheme newInstance(HttpParams params) {
-return (AuthScheme)new SPNegoScheme(this.stripPort, this.useCanonicalHostname);
-}
+    public AuthScheme newInstance(HttpParams params) {
+        return (AuthScheme) new SPNegoScheme(this.stripPort, this.useCanonicalHostname);
+    }
 
-public AuthScheme create(HttpContext context) {
-return (AuthScheme)new SPNegoScheme(this.stripPort, this.useCanonicalHostname);
-}
+    public AuthScheme create(HttpContext context) {
+        return (AuthScheme) new SPNegoScheme(this.stripPort, this.useCanonicalHostname);
+    }
 }
 

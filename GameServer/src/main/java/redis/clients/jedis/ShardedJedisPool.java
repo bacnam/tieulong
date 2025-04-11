@@ -1,32 +1,31 @@
 package redis.clients.jedis;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.apache.commons.pool.BasePoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
-
 import redis.clients.util.Hashing;
 import redis.clients.util.Pool;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 public class ShardedJedisPool extends Pool<ShardedJedis> {
     public ShardedJedisPool(final GenericObjectPool.Config poolConfig,
-            List<JedisShardInfo> shards) {
+                            List<JedisShardInfo> shards) {
         this(poolConfig, shards, Hashing.MURMUR_HASH);
     }
 
     public ShardedJedisPool(final GenericObjectPool.Config poolConfig,
-            List<JedisShardInfo> shards, Hashing algo) {
+                            List<JedisShardInfo> shards, Hashing algo) {
         this(poolConfig, shards, algo, null);
     }
 
     public ShardedJedisPool(final GenericObjectPool.Config poolConfig,
-            List<JedisShardInfo> shards, Pattern keyTagPattern) {
+                            List<JedisShardInfo> shards, Pattern keyTagPattern) {
         this(poolConfig, shards, Hashing.MURMUR_HASH, keyTagPattern);
     }
 
     public ShardedJedisPool(final GenericObjectPool.Config poolConfig,
-            List<JedisShardInfo> shards, Hashing algo, Pattern keyTagPattern) {
+                            List<JedisShardInfo> shards, Hashing algo, Pattern keyTagPattern) {
         super(poolConfig, new ShardedJedisFactory(shards, algo, keyTagPattern));
     }
 
@@ -36,7 +35,7 @@ public class ShardedJedisPool extends Pool<ShardedJedis> {
         private Pattern keyTagPattern;
 
         public ShardedJedisFactory(List<JedisShardInfo> shards, Hashing algo,
-                Pattern keyTagPattern) {
+                                   Pattern keyTagPattern) {
             this.shards = shards;
             this.algo = algo;
             this.keyTagPattern = keyTagPattern;
@@ -52,8 +51,8 @@ public class ShardedJedisPool extends Pool<ShardedJedis> {
                 ShardedJedis shardedJedis = (ShardedJedis) obj;
                 for (Jedis jedis : shardedJedis.getAllShards()) {
                     try {
-                   		try {
-                   			jedis.quit();
+                        try {
+                            jedis.quit();
                         } catch (Exception e) {
 
                         }
@@ -66,7 +65,7 @@ public class ShardedJedisPool extends Pool<ShardedJedis> {
         }
 
         public boolean validateObject(final Object obj) {
-        	try {
+            try {
                 ShardedJedis jedis = (ShardedJedis) obj;
                 for (Jedis shard : jedis.getAllShards()) {
                     if (!shard.ping().equals("PONG")) {

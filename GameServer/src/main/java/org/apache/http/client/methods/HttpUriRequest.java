@@ -1,15 +1,16 @@
 package org.apache.http.client.methods;
 
-import java.net.URI;
 import org.apache.http.HttpRequest;
 
+import java.net.URI;
+
 public interface HttpUriRequest extends HttpRequest {
-  String getMethod();
+    String getMethod();
 
-  URI getURI();
+    URI getURI();
 
-  void abort() throws UnsupportedOperationException;
+    void abort() throws UnsupportedOperationException;
 
-  boolean isAborted();
+    boolean isAborted();
 }
 

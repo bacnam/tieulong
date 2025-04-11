@@ -59,16 +59,6 @@ public class AchievementFeature
         }
     }
 
-    public static class AchievementIns {
-        public AchievementBO bo;
-        public RefAchievement refData;
-
-        public AchievementIns(AchievementBO bo, RefAchievement refData) {
-            this.bo = bo;
-            this.refData = refData;
-        }
-    }
-
     public AchieveInfo build(AchievementBO achieveBo) {
         AchieveInfo res = new AchieveInfo();
         res.setAchieveId(achieveBo.getAchieveId());
@@ -150,7 +140,7 @@ public class AchievementFeature
                 bo.saveCompleteCount(count + addCount);
                 taskChieveCount(bo, ref);
             }
-        }, new Integer[]{ value });
+        }, new Integer[]{value});
     }
 
     public void updateInc(Achievement.AchievementType type) {
@@ -165,7 +155,7 @@ public class AchievementFeature
                 bo.saveCompleteCount(Math.max(count, newvalue));
                 taskChieveCount(bo, ref);
             }
-        }, new Integer[]{ value });
+        }, new Integer[]{value});
     }
 
     public void updateMin(Achievement.AchievementType type, Integer value) {
@@ -179,7 +169,7 @@ public class AchievementFeature
                 while (i < ref.FirstArgsList.size() && bo.getCompleteCount() <= (int) ref.FirstArgsList.get(i))
                     bo.saveAchieveCount(++i);
             }
-        }, new Integer[]{ value });
+        }, new Integer[]{value});
     }
 
     public void clearValue(Achievement.AchievementType type) {
@@ -423,6 +413,16 @@ public class AchievementFeature
                 bo.getCompleteCount() >= ((Integer) ref.FirstArgsList.get(i)).intValue(); ) {
 
             bo.saveAchieveCount(++i);
+        }
+    }
+
+    public static class AchievementIns {
+        public AchievementBO bo;
+        public RefAchievement refData;
+
+        public AchievementIns(AchievementBO bo, RefAchievement refData) {
+            this.bo = bo;
+            this.refData = refData;
         }
     }
 }

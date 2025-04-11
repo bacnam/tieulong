@@ -9,28 +9,27 @@ import org.apache.http.protocol.HttpContext;
 @Obsolete
 @Immutable
 public class NetscapeDraftSpecProvider
-implements CookieSpecProvider
-{
-private final String[] datepatterns;
-private volatile CookieSpec cookieSpec;
+        implements CookieSpecProvider {
+    private final String[] datepatterns;
+    private volatile CookieSpec cookieSpec;
 
-public NetscapeDraftSpecProvider(String[] datepatterns) {
-this.datepatterns = datepatterns;
-}
+    public NetscapeDraftSpecProvider(String[] datepatterns) {
+        this.datepatterns = datepatterns;
+    }
 
-public NetscapeDraftSpecProvider() {
-this(null);
-}
+    public NetscapeDraftSpecProvider() {
+        this(null);
+    }
 
-public CookieSpec create(HttpContext context) {
-if (this.cookieSpec == null) {
-synchronized (this) {
-if (this.cookieSpec == null) {
-this.cookieSpec = new NetscapeDraftSpec(this.datepatterns);
-}
-} 
-}
-return this.cookieSpec;
-}
+    public CookieSpec create(HttpContext context) {
+        if (this.cookieSpec == null) {
+            synchronized (this) {
+                if (this.cookieSpec == null) {
+                    this.cookieSpec = new NetscapeDraftSpec(this.datepatterns);
+                }
+            }
+        }
+        return this.cookieSpec;
+    }
 }
 

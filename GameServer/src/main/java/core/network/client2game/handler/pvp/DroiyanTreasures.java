@@ -8,44 +8,43 @@ import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.database.game.bo.DroiyanTreasureBO;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DroiyanTreasures
-extends PlayerHandler
-{
-private static class Respose
-{
-int openTimes;
-List<DroiyanTreasures.Treasure> treasures;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        List<DroiyanTreasureBO> list = ((DroiyanFeature) player.getFeature(DroiyanFeature.class)).getTreasures();
+        List<Treasure> rtn = new ArrayList<>();
+        for (DroiyanTreasureBO bo : list) {
+            rtn.add(new Treasure(bo));
+        }
+        int times = ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.OpenTreasure);
+        request.response(new Respose(times, rtn, null));
+    }
 
-private Respose(int openTimes, List<DroiyanTreasures.Treasure> treasures) {
-this.openTimes = openTimes;
-this.treasures = treasures;
-}
-}
+    private static class Respose {
+        int openTimes;
+        List<DroiyanTreasures.Treasure> treasures;
 
-public static class Treasure {
-long sid;
-int treasureId;
-int expireTime;
+        private Respose(int openTimes, List<DroiyanTreasures.Treasure> treasures) {
+            this.openTimes = openTimes;
+            this.treasures = treasures;
+        }
+    }
 
-public Treasure(DroiyanTreasureBO bo) {
-this.sid = bo.getId();
-this.treasureId = bo.getTreasureId();
-this.expireTime = bo.getExpireTime();
-}
-}
+    public static class Treasure {
+        long sid;
+        int treasureId;
+        int expireTime;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-List<DroiyanTreasureBO> list = ((DroiyanFeature)player.getFeature(DroiyanFeature.class)).getTreasures();
-List<Treasure> rtn = new ArrayList<>();
-for (DroiyanTreasureBO bo : list) {
-rtn.add(new Treasure(bo));
-}
-int times = ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.OpenTreasure);
-request.response(new Respose(times, rtn, null));
-}
+        public Treasure(DroiyanTreasureBO bo) {
+            this.sid = bo.getId();
+            this.treasureId = bo.getTreasureId();
+            this.expireTime = bo.getExpireTime();
+        }
+    }
 }
 

@@ -1,16 +1,16 @@
 package bsh.engine;
 
-import java.util.Arrays;
-import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
+import java.util.Arrays;
+import java.util.List;
 
 public class BshScriptEngineFactory implements ScriptEngineFactory {
-    final List<String> extensions = Arrays.asList(new String[] { "bsh", "java" });
+    final List<String> extensions = Arrays.asList(new String[]{"bsh", "java"});
 
-    final List<String> mimeTypes = Arrays.asList(new String[] { "application/x-beanshell", "application/x-bsh", "application/x-java-source" });
+    final List<String> mimeTypes = Arrays.asList(new String[]{"application/x-beanshell", "application/x-bsh", "application/x-java-source"});
 
-    final List<String> names = Arrays.asList(new String[] { "beanshell", "bsh", "java" });
+    final List<String> names = Arrays.asList(new String[]{"beanshell", "bsh", "java"});
 
     public String getEngineName() {
         return "BeanShell Engine";

@@ -1,241 +1,233 @@
 package org.apache.mina.core.session;
 
+import org.apache.mina.core.file.FileRegion;
+import org.apache.mina.core.filterchain.DefaultIoFilterChain;
+import org.apache.mina.core.filterchain.IoFilterChain;
+import org.apache.mina.core.service.*;
+import org.apache.mina.core.write.WriteRequest;
+import org.apache.mina.core.write.WriteRequestQueue;
+
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
-import org.apache.mina.core.file.FileRegion;
-import org.apache.mina.core.filterchain.DefaultIoFilterChain;
-import org.apache.mina.core.filterchain.IoFilterChain;
-import org.apache.mina.core.service.AbstractIoAcceptor;
-import org.apache.mina.core.service.DefaultTransportMetadata;
-import org.apache.mina.core.service.IoHandler;
-import org.apache.mina.core.service.IoHandlerAdapter;
-import org.apache.mina.core.service.IoProcessor;
-import org.apache.mina.core.service.IoService;
-import org.apache.mina.core.service.TransportMetadata;
-import org.apache.mina.core.write.WriteRequest;
-import org.apache.mina.core.write.WriteRequestQueue;
 
 public class DummySession
-extends AbstractIoSession
-{
-private static final TransportMetadata TRANSPORT_METADATA = (TransportMetadata)new DefaultTransportMetadata("mina", "dummy", false, false, SocketAddress.class, IoSessionConfig.class, new Class[] { Object.class });
+        extends AbstractIoSession {
+    private static final TransportMetadata TRANSPORT_METADATA = (TransportMetadata) new DefaultTransportMetadata("mina", "dummy", false, false, SocketAddress.class, IoSessionConfig.class, new Class[]{Object.class});
 
-private static final SocketAddress ANONYMOUS_ADDRESS = new SocketAddress()
-{
-private static final long serialVersionUID = -496112902353454179L;
+    private static final SocketAddress ANONYMOUS_ADDRESS = new SocketAddress() {
+        private static final long serialVersionUID = -496112902353454179L;
 
-public String toString() {
-return "?";
-}
-};
+        public String toString() {
+            return "?";
+        }
+    };
+    private final IoFilterChain filterChain = (IoFilterChain) new DefaultIoFilterChain(this);
+    private final IoProcessor<IoSession> processor;
+    private volatile IoService service;
+    private volatile IoSessionConfig config = new AbstractIoSessionConfig() {
+        protected void doSetAll(IoSessionConfig config) {
+        }
+    };
+    private volatile IoHandler handler = (IoHandler) new IoHandlerAdapter();
 
-private volatile IoService service;
+    private volatile SocketAddress localAddress = ANONYMOUS_ADDRESS;
 
-private volatile IoSessionConfig config = new AbstractIoSessionConfig()
-{
-protected void doSetAll(IoSessionConfig config) {}
-};
+    private volatile SocketAddress remoteAddress = ANONYMOUS_ADDRESS;
 
-private final IoFilterChain filterChain = (IoFilterChain)new DefaultIoFilterChain(this);
+    private volatile TransportMetadata transportMetadata = TRANSPORT_METADATA;
 
-private final IoProcessor<IoSession> processor;
+    public DummySession() {
+        super((IoService) new AbstractIoAcceptor(new AbstractIoSessionConfig() {
+            protected void doSetAll(IoSessionConfig config) {
+            }
+        }, new Executor() {
 
-private volatile IoHandler handler = (IoHandler)new IoHandlerAdapter();
+            public void execute(Runnable command) {
+            }
+        }) {
 
-private volatile SocketAddress localAddress = ANONYMOUS_ADDRESS;
+            protected Set<SocketAddress> bindInternal(List<? extends SocketAddress> localAddresses) throws Exception {
+                throw new UnsupportedOperationException();
+            }
 
-private volatile SocketAddress remoteAddress = ANONYMOUS_ADDRESS;
+            protected void unbind0(List<? extends SocketAddress> localAddresses) throws Exception {
+                throw new UnsupportedOperationException();
+            }
 
-private volatile TransportMetadata transportMetadata = TRANSPORT_METADATA;
+            public IoSession newSession(SocketAddress remoteAddress, SocketAddress localAddress) {
+                throw new UnsupportedOperationException();
+            }
 
-public DummySession() {
-super((IoService)new AbstractIoAcceptor(new AbstractIoSessionConfig() { protected void doSetAll(IoSessionConfig config) {} }, new Executor()
-{
+            public TransportMetadata getTransportMetadata() {
+                return DummySession.TRANSPORT_METADATA;
+            }
 
-public void execute(Runnable command) {}
-})
-{
+            protected void dispose0() throws Exception {
+            }
 
-protected Set<SocketAddress> bindInternal(List<? extends SocketAddress> localAddresses) throws Exception
-{
-throw new UnsupportedOperationException();
-}
+            public IoSessionConfig getSessionConfig() {
+                return this.sessionConfig;
+            }
+        });
 
-protected void unbind0(List<? extends SocketAddress> localAddresses) throws Exception {
-throw new UnsupportedOperationException();
-}
+        this.processor = new IoProcessor<IoSession>() {
+            public void add(IoSession session) {
+            }
 
-public IoSession newSession(SocketAddress remoteAddress, SocketAddress localAddress) {
-throw new UnsupportedOperationException();
-}
+            public void flush(IoSession session) {
+                DummySession s = (DummySession) session;
+                WriteRequest req = s.getWriteRequestQueue().poll(session);
 
-public TransportMetadata getTransportMetadata() {
-return DummySession.TRANSPORT_METADATA;
-}
+                if (req != null) {
+                    Object m = req.getMessage();
+                    if (m instanceof FileRegion) {
+                        FileRegion file = (FileRegion) m;
+                        try {
+                            file.getFileChannel().position(file.getPosition() + file.getRemainingBytes());
+                            file.update(file.getRemainingBytes());
+                        } catch (IOException e) {
+                            s.getFilterChain().fireExceptionCaught(e);
+                        }
+                    }
+                    DummySession.this.getFilterChain().fireMessageSent(req);
+                }
+            }
 
-protected void dispose0() throws Exception {}
+            public void write(IoSession session, WriteRequest writeRequest) {
+                WriteRequestQueue writeRequestQueue = session.getWriteRequestQueue();
 
-public IoSessionConfig getSessionConfig() {
-return this.sessionConfig;
-}
-});
+                writeRequestQueue.offer(session, writeRequest);
 
-this.processor = new IoProcessor<IoSession>()
-{
-public void add(IoSession session) {}
+                if (!session.isWriteSuspended()) {
+                    flush(session);
+                }
+            }
 
-public void flush(IoSession session) {
-DummySession s = (DummySession)session;
-WriteRequest req = s.getWriteRequestQueue().poll(session);
+            public void remove(IoSession session) {
+                if (!session.getCloseFuture().isClosed()) {
+                    session.getFilterChain().fireSessionClosed();
+                }
+            }
 
-if (req != null) {
-Object m = req.getMessage();
-if (m instanceof FileRegion) {
-FileRegion file = (FileRegion)m;
-try {
-file.getFileChannel().position(file.getPosition() + file.getRemainingBytes());
-file.update(file.getRemainingBytes());
-} catch (IOException e) {
-s.getFilterChain().fireExceptionCaught(e);
-} 
-} 
-DummySession.this.getFilterChain().fireMessageSent(req);
-} 
-}
+            public void updateTrafficControl(IoSession session) {
+            }
 
-public void write(IoSession session, WriteRequest writeRequest) {
-WriteRequestQueue writeRequestQueue = session.getWriteRequestQueue();
+            public void dispose() {
+            }
 
-writeRequestQueue.offer(session, writeRequest);
+            public boolean isDisposed() {
+                return false;
+            }
 
-if (!session.isWriteSuspended()) {
-flush(session);
-}
-}
+            public boolean isDisposing() {
+                return false;
+            }
+        };
 
-public void remove(IoSession session) {
-if (!session.getCloseFuture().isClosed()) {
-session.getFilterChain().fireSessionClosed();
-}
-}
+        this.service = super.getService();
 
-public void updateTrafficControl(IoSession session) {}
+        try {
+            IoSessionDataStructureFactory factory = new DefaultIoSessionDataStructureFactory();
+            setAttributeMap(factory.getAttributeMap(this));
+            setWriteRequestQueue(factory.getWriteRequestQueue(this));
+        } catch (Exception e) {
+            throw new InternalError();
+        }
+    }
 
-public void dispose() {}
+    public IoSessionConfig getConfig() {
+        return this.config;
+    }
 
-public boolean isDisposed() {
-return false;
-}
+    public void setConfig(IoSessionConfig config) {
+        if (config == null) {
+            throw new IllegalArgumentException("config");
+        }
 
-public boolean isDisposing() {
-return false;
-}
-};
+        this.config = config;
+    }
 
-this.service = super.getService();
+    public IoFilterChain getFilterChain() {
+        return this.filterChain;
+    }
 
-try {
-IoSessionDataStructureFactory factory = new DefaultIoSessionDataStructureFactory();
-setAttributeMap(factory.getAttributeMap(this));
-setWriteRequestQueue(factory.getWriteRequestQueue(this));
-} catch (Exception e) {
-throw new InternalError();
-} 
-}
+    public IoHandler getHandler() {
+        return this.handler;
+    }
 
-public IoSessionConfig getConfig() {
-return this.config;
-}
+    public void setHandler(IoHandler handler) {
+        if (handler == null) {
+            throw new IllegalArgumentException("handler");
+        }
 
-public void setConfig(IoSessionConfig config) {
-if (config == null) {
-throw new IllegalArgumentException("config");
-}
+        this.handler = handler;
+    }
 
-this.config = config;
-}
+    public SocketAddress getLocalAddress() {
+        return this.localAddress;
+    }
 
-public IoFilterChain getFilterChain() {
-return this.filterChain;
-}
+    public void setLocalAddress(SocketAddress localAddress) {
+        if (localAddress == null) {
+            throw new IllegalArgumentException("localAddress");
+        }
 
-public IoHandler getHandler() {
-return this.handler;
-}
+        this.localAddress = localAddress;
+    }
 
-public void setHandler(IoHandler handler) {
-if (handler == null) {
-throw new IllegalArgumentException("handler");
-}
+    public SocketAddress getRemoteAddress() {
+        return this.remoteAddress;
+    }
 
-this.handler = handler;
-}
+    public void setRemoteAddress(SocketAddress remoteAddress) {
+        if (remoteAddress == null) {
+            throw new IllegalArgumentException("remoteAddress");
+        }
 
-public SocketAddress getLocalAddress() {
-return this.localAddress;
-}
+        this.remoteAddress = remoteAddress;
+    }
 
-public SocketAddress getRemoteAddress() {
-return this.remoteAddress;
-}
+    public IoService getService() {
+        return this.service;
+    }
 
-public void setLocalAddress(SocketAddress localAddress) {
-if (localAddress == null) {
-throw new IllegalArgumentException("localAddress");
-}
+    public void setService(IoService service) {
+        if (service == null) {
+            throw new IllegalArgumentException("service");
+        }
 
-this.localAddress = localAddress;
-}
+        this.service = service;
+    }
 
-public void setRemoteAddress(SocketAddress remoteAddress) {
-if (remoteAddress == null) {
-throw new IllegalArgumentException("remoteAddress");
-}
+    public final IoProcessor<IoSession> getProcessor() {
+        return this.processor;
+    }
 
-this.remoteAddress = remoteAddress;
-}
+    public TransportMetadata getTransportMetadata() {
+        return this.transportMetadata;
+    }
 
-public IoService getService() {
-return this.service;
-}
+    public void setTransportMetadata(TransportMetadata transportMetadata) {
+        if (transportMetadata == null) {
+            throw new IllegalArgumentException("transportMetadata");
+        }
 
-public void setService(IoService service) {
-if (service == null) {
-throw new IllegalArgumentException("service");
-}
+        this.transportMetadata = transportMetadata;
+    }
 
-this.service = service;
-}
+    public void setScheduledWriteBytes(int byteCount) {
+        super.setScheduledWriteBytes(byteCount);
+    }
 
-public final IoProcessor<IoSession> getProcessor() {
-return this.processor;
-}
+    public void setScheduledWriteMessages(int messages) {
+        super.setScheduledWriteMessages(messages);
+    }
 
-public TransportMetadata getTransportMetadata() {
-return this.transportMetadata;
-}
-
-public void setTransportMetadata(TransportMetadata transportMetadata) {
-if (transportMetadata == null) {
-throw new IllegalArgumentException("transportMetadata");
-}
-
-this.transportMetadata = transportMetadata;
-}
-
-public void setScheduledWriteBytes(int byteCount) {
-super.setScheduledWriteBytes(byteCount);
-}
-
-public void setScheduledWriteMessages(int messages) {
-super.setScheduledWriteMessages(messages);
-}
-
-public void updateThroughput(boolean force) {
-updateThroughput(System.currentTimeMillis(), force);
-}
+    public void updateThroughput(boolean force) {
+        updateThroughput(System.currentTimeMillis(), force);
+    }
 }
 

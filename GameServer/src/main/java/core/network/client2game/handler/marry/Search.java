@@ -7,26 +7,24 @@ import com.google.gson.Gson;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
-import core.network.proto.Player;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Search
-extends PlayerHandler
-{
-public static class Request
-{
-String name;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        List<Player> search = ((MarryFeature) player.getFeature(MarryFeature.class)).search(req.name);
+        List<Player.Summary> summary = new ArrayList<>();
+        search.stream().forEach(x -> paramList.add(((PlayerBase) x.getFeature(PlayerBase.class)).summary()));
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-List<Player> search = ((MarryFeature)player.getFeature(MarryFeature.class)).search(req.name);
-List<Player.Summary> summary = new ArrayList<>();
-search.stream().forEach(x -> paramList.add(((PlayerBase)x.getFeature(PlayerBase.class)).summary()));
+        request.response(summary);
+    }
 
-request.response(summary);
-}
+    public static class Request {
+        String name;
+    }
 }
 

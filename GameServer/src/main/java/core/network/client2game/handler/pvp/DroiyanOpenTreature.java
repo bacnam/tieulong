@@ -9,32 +9,30 @@ import com.zhonglian.server.common.enums.ConstEnum;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class DroiyanOpenTreature
-extends PlayerHandler
-{
-static class Request
-{
-long sid;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Reward reward = ((DroiyanFeature) player.getFeature(DroiyanFeature.class)).openTreature(req.sid);
+        int times = ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.OpenTreasure);
+        request.response(new Response(times, reward, null));
+    }
 
-private static class Response
-{
-int openTimes;
-Reward reward;
+    static class Request {
+        long sid;
+    }
 
-private Response(int openTimes, Reward reward) {
-this.openTimes = openTimes;
-this.reward = reward;
-}
-}
+    private static class Response {
+        int openTimes;
+        Reward reward;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Reward reward = ((DroiyanFeature)player.getFeature(DroiyanFeature.class)).openTreature(req.sid);
-int times = ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.OpenTreasure);
-request.response(new Response(times, reward, null));
-}
+        private Response(int openTimes, Reward reward) {
+            this.openTimes = openTimes;
+            this.reward = reward;
+        }
+    }
 }
 

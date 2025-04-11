@@ -5,18 +5,18 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 
 public class IgnoredClassRunner extends Runner {
-private final Class<?> clazz;
+    private final Class<?> clazz;
 
-public IgnoredClassRunner(Class<?> testClass) {
-this.clazz = testClass;
-}
+    public IgnoredClassRunner(Class<?> testClass) {
+        this.clazz = testClass;
+    }
 
-public void run(RunNotifier notifier) {
-notifier.fireTestIgnored(getDescription());
-}
+    public void run(RunNotifier notifier) {
+        notifier.fireTestIgnored(getDescription());
+    }
 
-public Description getDescription() {
-return Description.createSuiteDescription(this.clazz);
-}
+    public Description getDescription() {
+        return Description.createSuiteDescription(this.clazz);
+    }
 }
 

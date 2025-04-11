@@ -3,10 +3,10 @@ package org.apache.mina.filter.codec;
 import org.apache.mina.core.future.WriteFuture;
 
 public interface ProtocolEncoderOutput {
-  void write(Object paramObject);
+    void write(Object paramObject);
 
-  void mergeAll();
+    void mergeAll();
 
-  WriteFuture flush();
+    WriteFuture flush();
 }
 

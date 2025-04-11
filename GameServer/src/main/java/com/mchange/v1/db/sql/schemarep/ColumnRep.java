@@ -1,14 +1,14 @@
 package com.mchange.v1.db.sql.schemarep;
 
 public interface ColumnRep {
-  String getColumnName();
+    String getColumnName();
 
-  int getColumnType();
+    int getColumnType();
 
-  int[] getColumnSize();
+    int[] getColumnSize();
 
-  boolean acceptsNulls();
+    boolean acceptsNulls();
 
-  Object getDefaultValue();
+    Object getDefaultValue();
 }
 

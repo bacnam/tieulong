@@ -1,72 +1,72 @@
 package javolution.util.internal.collection;
 
-import java.util.Iterator;
 import javolution.util.function.Equality;
 import javolution.util.service.CollectionService;
 
+import java.util.Iterator;
+
 public class UnmodifiableCollectionImpl<E>
-extends CollectionView<E>
-{
-private static final long serialVersionUID = 1536L;
+        extends CollectionView<E> {
+    private static final long serialVersionUID = 1536L;
 
-private class IteratorImpl
-implements Iterator<E>
-{
-private final Iterator<E> targetIterator = UnmodifiableCollectionImpl.this.target().iterator();
+    public UnmodifiableCollectionImpl(CollectionService<E> target) {
+        super(target);
+    }
 
-public boolean hasNext() {
-return this.targetIterator.hasNext();
-}
+    public boolean add(E element) {
+        throw new UnsupportedOperationException("Read-Only Collection.");
+    }
 
-public E next() {
-return this.targetIterator.next();
-}
+    public void clear() {
+        throw new UnsupportedOperationException("Read-Only Collection.");
+    }
 
-public void remove() {
-throw new UnsupportedOperationException("Read-Only Collection.");
-}
+    public Equality<? super E> comparator() {
+        return target().comparator();
+    }
 
-private IteratorImpl() {}
-}
+    public boolean contains(Object obj) {
+        return target().contains(obj);
+    }
 
-public UnmodifiableCollectionImpl(CollectionService<E> target) {
-super(target);
-}
+    public boolean isEmpty() {
+        return target().isEmpty();
+    }
 
-public boolean add(E element) {
-throw new UnsupportedOperationException("Read-Only Collection.");
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl();
+    }
 
-public void clear() {
-throw new UnsupportedOperationException("Read-Only Collection.");
-}
+    public boolean remove(Object o) {
+        throw new UnsupportedOperationException("Read-Only Collection.");
+    }
 
-public Equality<? super E> comparator() {
-return target().comparator();
-}
+    public int size() {
+        return target().size();
+    }
 
-public boolean contains(Object obj) {
-return target().contains(obj);
-}
+    public CollectionService<E> threadSafe() {
+        return this;
+    }
 
-public boolean isEmpty() {
-return target().isEmpty();
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private final Iterator<E> targetIterator = UnmodifiableCollectionImpl.this.target().iterator();
 
-public Iterator<E> iterator() {
-return new IteratorImpl();
-}
+        private IteratorImpl() {
+        }
 
-public boolean remove(Object o) {
-throw new UnsupportedOperationException("Read-Only Collection.");
-}
+        public boolean hasNext() {
+            return this.targetIterator.hasNext();
+        }
 
-public int size() {
-return target().size();
-}
+        public E next() {
+            return this.targetIterator.next();
+        }
 
-public CollectionService<E> threadSafe() {
-return this;
-}
+        public void remove() {
+            throw new UnsupportedOperationException("Read-Only Collection.");
+        }
+    }
 }
 

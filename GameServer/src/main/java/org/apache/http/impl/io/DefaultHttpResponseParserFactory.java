@@ -13,25 +13,24 @@ import org.apache.http.message.LineParser;
 
 @Immutable
 public class DefaultHttpResponseParserFactory
-implements HttpMessageParserFactory<HttpResponse>
-{
-public static final DefaultHttpResponseParserFactory INSTANCE = new DefaultHttpResponseParserFactory();
+        implements HttpMessageParserFactory<HttpResponse> {
+    public static final DefaultHttpResponseParserFactory INSTANCE = new DefaultHttpResponseParserFactory();
 
-private final LineParser lineParser;
+    private final LineParser lineParser;
 
-private final HttpResponseFactory responseFactory;
+    private final HttpResponseFactory responseFactory;
 
-public DefaultHttpResponseParserFactory(LineParser lineParser, HttpResponseFactory responseFactory) {
-this.lineParser = (lineParser != null) ? lineParser : (LineParser)BasicLineParser.INSTANCE;
-this.responseFactory = (responseFactory != null) ? responseFactory : (HttpResponseFactory)DefaultHttpResponseFactory.INSTANCE;
-}
+    public DefaultHttpResponseParserFactory(LineParser lineParser, HttpResponseFactory responseFactory) {
+        this.lineParser = (lineParser != null) ? lineParser : (LineParser) BasicLineParser.INSTANCE;
+        this.responseFactory = (responseFactory != null) ? responseFactory : (HttpResponseFactory) DefaultHttpResponseFactory.INSTANCE;
+    }
 
-public DefaultHttpResponseParserFactory() {
-this(null, null);
-}
+    public DefaultHttpResponseParserFactory() {
+        this(null, null);
+    }
 
-public HttpMessageParser<HttpResponse> create(SessionInputBuffer buffer, MessageConstraints constraints) {
-return new DefaultHttpResponseParser(buffer, this.lineParser, this.responseFactory, constraints);
-}
+    public HttpMessageParser<HttpResponse> create(SessionInputBuffer buffer, MessageConstraints constraints) {
+        return new DefaultHttpResponseParser(buffer, this.lineParser, this.responseFactory, constraints);
+    }
 }
 

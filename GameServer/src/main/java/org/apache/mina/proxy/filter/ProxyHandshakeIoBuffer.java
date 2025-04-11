@@ -4,10 +4,9 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.buffer.IoBufferWrapper;
 
 public class ProxyHandshakeIoBuffer
-extends IoBufferWrapper
-{
-public ProxyHandshakeIoBuffer(IoBuffer buf) {
-super(buf);
-}
+        extends IoBufferWrapper {
+    public ProxyHandshakeIoBuffer(IoBuffer buf) {
+        super(buf);
+    }
 }
 

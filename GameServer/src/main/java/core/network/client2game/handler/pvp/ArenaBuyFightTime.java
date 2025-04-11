@@ -17,64 +17,63 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefCrystalPrice;
 import core.config.refdata.ref.RefVIP;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class ArenaBuyFightTime
-extends PlayerHandler
-{
-public static class Request
-{
-int times;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        if (req.times == 0) {
+            req.times = 1;
+        }
+        PlayerCurrency currency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        PlayerRecord recorder = (PlayerRecord) player.getFeature(PlayerRecord.class);
 
-private static class buyTimesInfo {
-int remainChallengeTimes;
-int remainBuyTimes;
-int buyTimes;
+        int curTimes = recorder.getValue(ConstEnum.DailyRefresh.ArenaChallenge);
+        if (curTimes - req.times < 0) {
+            throw new WSException(ErrorCode.Arena_ChallengeTimesFull, "玩家[%s]的挑战次数已满", new Object[]{Long.valueOf(player.getPid())});
+        }
+        int times = recorder.getValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes);
 
-public buyTimesInfo(int remainChallengeTimes, int remainBuyTimes, int buyTimes) {
-this.remainChallengeTimes = remainChallengeTimes;
-this.remainBuyTimes = remainBuyTimes;
-this.buyTimes = buyTimes;
-}
-}
+        if (times + req.times > ((RefVIP) RefDataMgr.get(RefVIP.class, Integer.valueOf(player.getVipLevel()))).ArenalTimes) {
+            throw new WSException(ErrorCode.Arena_ChallengeTimesFull, "玩家[%s]的购买次数已达到最大值", new Object[]{Long.valueOf(player.getPid())});
+        }
+        int finalcount = 0;
+        for (int i = 0; i < req.times; i++) {
+            RefCrystalPrice prize = RefCrystalPrice.getPrize(times + i);
+            finalcount += prize.ArenaAddChallenge;
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-if (req.times == 0) {
-req.times = 1;
-}
-PlayerCurrency currency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-PlayerRecord recorder = (PlayerRecord)player.getFeature(PlayerRecord.class);
+        if (!currency.check(PrizeType.Crystal, finalcount)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "玩家增加挑战需要钻石%s", new Object[]{Integer.valueOf(finalcount)});
+        }
+        currency.consume(PrizeType.Crystal, finalcount, ItemFlow.ArenaAddChallenge);
 
-int curTimes = recorder.getValue(ConstEnum.DailyRefresh.ArenaChallenge);
-if (curTimes - req.times < 0) {
-throw new WSException(ErrorCode.Arena_ChallengeTimesFull, "玩家[%s]的挑战次数已满", new Object[] { Long.valueOf(player.getPid()) });
-}
-int times = recorder.getValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes);
+        recorder.addValue(ConstEnum.DailyRefresh.ArenaChallenge, -req.times);
+        recorder.addValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes, req.times);
+        int remains = ArenaConfig.maxChallengeTimes() - ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.ArenaChallenge);
+        int remainBuyTimes = ((RefVIP) RefDataMgr.get(RefVIP.class, Integer.valueOf(player.getVipLevel()))).ArenalTimes - recorder.getValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes);
 
-if (times + req.times > ((RefVIP)RefDataMgr.get(RefVIP.class, Integer.valueOf(player.getVipLevel()))).ArenalTimes) {
-throw new WSException(ErrorCode.Arena_ChallengeTimesFull, "玩家[%s]的购买次数已达到最大值", new Object[] { Long.valueOf(player.getPid()) });
-}
-int finalcount = 0;
-for (int i = 0; i < req.times; i++) {
-RefCrystalPrice prize = RefCrystalPrice.getPrize(times + i);
-finalcount += prize.ArenaAddChallenge;
-} 
+        Competitor competitor = ArenaManager.getInstance().getOrCreate(player.getPid());
+        competitor.setFightCD(0);
+        request.response(new buyTimesInfo(remains, remainBuyTimes, recorder.getValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes)));
+    }
 
-if (!currency.check(PrizeType.Crystal, finalcount)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "玩家增加挑战需要钻石%s", new Object[] { Integer.valueOf(finalcount) });
-}
-currency.consume(PrizeType.Crystal, finalcount, ItemFlow.ArenaAddChallenge);
+    public static class Request {
+        int times;
+    }
 
-recorder.addValue(ConstEnum.DailyRefresh.ArenaChallenge, -req.times);
-recorder.addValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes, req.times);
-int remains = ArenaConfig.maxChallengeTimes() - ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.ArenaChallenge);
-int remainBuyTimes = ((RefVIP)RefDataMgr.get(RefVIP.class, Integer.valueOf(player.getVipLevel()))).ArenalTimes - recorder.getValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes);
+    private static class buyTimesInfo {
+        int remainChallengeTimes;
+        int remainBuyTimes;
+        int buyTimes;
 
-Competitor competitor = ArenaManager.getInstance().getOrCreate(player.getPid());
-competitor.setFightCD(0);
-request.response(new buyTimesInfo(remains, remainBuyTimes, recorder.getValue(ConstEnum.DailyRefresh.ArenaBuyChallengeTimes)));
-}
+        public buyTimesInfo(int remainChallengeTimes, int remainBuyTimes, int buyTimes) {
+            this.remainChallengeTimes = remainChallengeTimes;
+            this.remainBuyTimes = remainBuyTimes;
+            this.buyTimes = buyTimes;
+        }
+    }
 }
 

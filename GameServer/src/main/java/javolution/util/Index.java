@@ -1,130 +1,122 @@
 package javolution.util;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import javolution.lang.Configurable;
 import javolution.lang.MathLib;
 import javolution.lang.Realtime;
 import javolution.lang.ValueType;
-import javolution.text.Cursor;
-import javolution.text.DefaultTextFormat;
-import javolution.text.TextContext;
-import javolution.text.TextFormat;
-import javolution.text.TypeFormat;
+import javolution.text.*;
+
+import java.io.IOException;
+import java.io.ObjectStreamException;
 
 @Realtime
 @DefaultTextFormat(Index.Decimal.class)
 public final class Index
-extends Number
-implements Comparable<Index>, ValueType<Index>
-{
-public static class Decimal
-extends TextFormat<Index>
-{
-public Appendable format(Index obj, Appendable dest) throws IOException {
-return TypeFormat.format(obj.intValue(), dest);
-}
+        extends Number
+        implements Comparable<Index>, ValueType<Index> {
+    public static final Configurable<Integer> UNIQUE = new Configurable<Integer>() {
+        protected Integer getDefault() {
+            return Integer.valueOf(1024);
+        }
 
-public Index parse(CharSequence csq, Cursor cursor) throws IllegalArgumentException {
-return Index.valueOf(TypeFormat.parseInt(csq, cursor));
-}
-}
+        protected Integer initialized(Integer value) {
+            return Integer.valueOf(MathLib.min(value.intValue(), 65536));
+        }
 
-public static final Configurable<Integer> UNIQUE = new Configurable<Integer>()
-{
-protected Integer getDefault()
-{
-return Integer.valueOf(1024);
-}
+        protected Integer reconfigured(Integer oldCount, Integer newCount) {
+            throw new UnsupportedOperationException("Unicity reconfiguration not supported.");
+        }
+    };
+    public static final Index ZERO = new Index(0);
+    private static final long serialVersionUID = 1536L;
+    private static final Index[] INSTANCES = new Index[((Integer) UNIQUE.get()).intValue()];
 
-protected Integer initialized(Integer value) {
-return Integer.valueOf(MathLib.min(value.intValue(), 65536));
-}
+    static {
+        INSTANCES[0] = ZERO;
+        for (int i = 1; i < INSTANCES.length; i++) {
+            INSTANCES[i] = new Index(i);
+        }
+    }
 
-protected Integer reconfigured(Integer oldCount, Integer newCount) {
-throw new UnsupportedOperationException("Unicity reconfiguration not supported.");
-}
-};
+    private final int value;
 
-public static final Index ZERO = new Index(0);
+    private Index(int value) {
+        this.value = value;
+    }
 
-private static final long serialVersionUID = 1536L;
-private static final Index[] INSTANCES = new Index[((Integer)UNIQUE.get()).intValue()];
-static {
-INSTANCES[0] = ZERO;
-for (int i = 1; i < INSTANCES.length; i++) {
-INSTANCES[i] = new Index(i);
-}
-}
+    public static Index valueOf(int value) {
+        return (value < INSTANCES.length) ? INSTANCES[value] : new Index(value);
+    }
 
-private final int value;
+    public int compareTo(Index that) {
+        return this.value - that.value;
+    }
 
-public static Index valueOf(int value) {
-return (value < INSTANCES.length) ? INSTANCES[value] : new Index(value);
-}
+    public int compareTo(int value) {
+        return this.value - value;
+    }
 
-private Index(int value) {
-this.value = value;
-}
+    public Index copy() {
+        return (this.value < INSTANCES.length) ? this : new Index(this.value);
+    }
 
-public int compareTo(Index that) {
-return this.value - that.value;
-}
+    public double doubleValue() {
+        return this.value;
+    }
 
-public int compareTo(int value) {
-return this.value - value;
-}
+    public boolean equals(Object obj) {
+        return (this.value < INSTANCES.length) ? ((this == obj)) : ((obj instanceof Index) ? ((((Index) obj).value == this.value)) : false);
+    }
 
-public Index copy() {
-return (this.value < INSTANCES.length) ? this : new Index(this.value);
-}
+    public float floatValue() {
+        return this.value;
+    }
 
-public double doubleValue() {
-return this.value;
-}
+    public int hashCode() {
+        return this.value;
+    }
 
-public boolean equals(Object obj) {
-return (this.value < INSTANCES.length) ? ((this == obj)) : ((obj instanceof Index) ? ((((Index)obj).value == this.value)) : false);
-}
+    public int intValue() {
+        return this.value;
+    }
 
-public float floatValue() {
-return this.value;
-}
+    public boolean isZero() {
+        return (this == ZERO);
+    }
 
-public int hashCode() {
-return this.value;
-}
+    public long longValue() {
+        return this.value;
+    }
 
-public int intValue() {
-return this.value;
-}
+    public Index next() {
+        return valueOf(this.value + 1);
+    }
 
-public boolean isZero() {
-return (this == ZERO);
-}
+    public Index previous() {
+        return valueOf(this.value - 1);
+    }
 
-public long longValue() {
-return this.value;
-}
+    protected final Object readResolve() throws ObjectStreamException {
+        return valueOf(this.value);
+    }
 
-public Index next() {
-return valueOf(this.value + 1);
-}
+    public String toString() {
+        return TextContext.getFormat(Index.class).format(this);
+    }
 
-public Index previous() {
-return valueOf(this.value - 1);
-}
+    public Index value() {
+        return this;
+    }
 
-protected final Object readResolve() throws ObjectStreamException {
-return valueOf(this.value);
-}
+    public static class Decimal
+            extends TextFormat<Index> {
+        public Appendable format(Index obj, Appendable dest) throws IOException {
+            return TypeFormat.format(obj.intValue(), dest);
+        }
 
-public String toString() {
-return TextContext.getFormat(Index.class).format(this);
-}
-
-public Index value() {
-return this;
-}
+        public Index parse(CharSequence csq, Cursor cursor) throws IllegalArgumentException {
+            return Index.valueOf(TypeFormat.parseInt(csq, cursor));
+        }
+    }
 }
 

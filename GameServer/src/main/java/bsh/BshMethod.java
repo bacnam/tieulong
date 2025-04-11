@@ -8,12 +8,12 @@ public class BshMethod
         implements Serializable {
     NameSpace declaringNameSpace;
     Modifiers modifiers;
+    BSHBlock methodBody;
     private String name;
     private Class creturnType;
     private String[] paramNames;
     private int numArgs;
     private Class[] cparamTypes;
-    BSHBlock methodBody;
     private Method javaMethod;
     private Object javaObject;
 
@@ -23,7 +23,7 @@ public class BshMethod
     }
 
     BshMethod(String name, Class returnType, String[] paramNames, Class[] paramTypes, BSHBlock methodBody,
-            NameSpace declaringNameSpace, Modifiers modifiers) {
+              NameSpace declaringNameSpace, Modifiers modifiers) {
         this.name = name;
         this.creturnType = returnType;
         this.paramNames = paramNames;
@@ -72,7 +72,7 @@ public class BshMethod
     }
 
     Object invoke(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo,
-            boolean overrideNameSpace) throws EvalError {
+                  boolean overrideNameSpace) throws EvalError {
         if (argValues != null)
             for (int i = 0; i < argValues.length; i++) {
                 if (argValues[i] == null)
@@ -111,120 +111,114 @@ public class BshMethod
         return invokeImpl(argValues, interpreter, callstack, callerInfo, overrideNameSpace);
     }
 
-private Object invokeImpl(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo, boolean overrideNameSpace) throws EvalError {
-NameSpace localNameSpace;
-Class<?> returnType = getReturnType();
-Class[] paramTypes = getParameterTypes();
+    private Object invokeImpl(Object[] argValues, Interpreter interpreter, CallStack callstack, SimpleNode callerInfo, boolean overrideNameSpace) throws EvalError {
+        NameSpace localNameSpace;
+        Class<?> returnType = getReturnType();
+        Class[] paramTypes = getParameterTypes();
 
-if (callstack == null) {
-callstack = new CallStack(this.declaringNameSpace);
-}
-if (argValues == null) {
-argValues = new Object[0];
-}
+        if (callstack == null) {
+            callstack = new CallStack(this.declaringNameSpace);
+        }
+        if (argValues == null) {
+            argValues = new Object[0];
+        }
 
-if (argValues.length != this.numArgs)
-{
+        if (argValues.length != this.numArgs) {
 
-throw new EvalError("Wrong number of arguments for local method: " + this.name, callerInfo, callstack);
-}
+            throw new EvalError("Wrong number of arguments for local method: " + this.name, callerInfo, callstack);
+        }
 
-if (overrideNameSpace) {
-localNameSpace = callstack.top();
-} else {
+        if (overrideNameSpace) {
+            localNameSpace = callstack.top();
+        } else {
 
-localNameSpace = new NameSpace(this.declaringNameSpace, this.name);
-localNameSpace.isMethod = true;
-} 
+            localNameSpace = new NameSpace(this.declaringNameSpace, this.name);
+            localNameSpace.isMethod = true;
+        }
 
-localNameSpace.setNode(callerInfo);
+        localNameSpace.setNode(callerInfo);
 
-for (int i = 0; i < this.numArgs; i++) {
+        for (int i = 0; i < this.numArgs; i++) {
 
-if (paramTypes[i] != null) {
+            if (paramTypes[i] != null) {
 
-try {
-argValues[i] = Types.castObject(argValues[i], paramTypes[i], 1);
+                try {
+                    argValues[i] = Types.castObject(argValues[i], paramTypes[i], 1);
 
-}
-catch (UtilEvalError e) {
-throw new EvalError("Invalid argument: `" + this.paramNames[i] + "'" + " for method: " + this.name + " : " + e.getMessage(), callerInfo, callstack);
-} 
+                } catch (UtilEvalError e) {
+                    throw new EvalError("Invalid argument: `" + this.paramNames[i] + "'" + " for method: " + this.name + " : " + e.getMessage(), callerInfo, callstack);
+                }
 
-try {
-localNameSpace.setTypedVariable(this.paramNames[i], paramTypes[i], argValues[i], (Modifiers)null);
-}
-catch (UtilEvalError e2) {
-throw e2.toEvalError("Typed method parameter assignment", callerInfo, callstack);
+                try {
+                    localNameSpace.setTypedVariable(this.paramNames[i], paramTypes[i], argValues[i], (Modifiers) null);
+                } catch (UtilEvalError e2) {
+                    throw e2.toEvalError("Typed method parameter assignment", callerInfo, callstack);
 
-}
+                }
 
-}
-else {
+            } else {
 
-if (argValues[i] == Primitive.VOID) {
-throw new EvalError("Undefined variable or class name, parameter: " + this.paramNames[i] + " to method: " + this.name, callerInfo, callstack);
-}
+                if (argValues[i] == Primitive.VOID) {
+                    throw new EvalError("Undefined variable or class name, parameter: " + this.paramNames[i] + " to method: " + this.name, callerInfo, callstack);
+                }
 
-try {
-localNameSpace.setLocalVariable(this.paramNames[i], argValues[i], interpreter.getStrictJava());
+                try {
+                    localNameSpace.setLocalVariable(this.paramNames[i], argValues[i], interpreter.getStrictJava());
 
-}
-catch (UtilEvalError e3) {
-throw e3.toEvalError(callerInfo, callstack);
-} 
-} 
-} 
+                } catch (UtilEvalError e3) {
+                    throw e3.toEvalError(callerInfo, callstack);
+                }
+            }
+        }
 
-if (!overrideNameSpace) {
-callstack.push(localNameSpace);
-}
+        if (!overrideNameSpace) {
+            callstack.push(localNameSpace);
+        }
 
-Object ret = this.methodBody.eval(callstack, interpreter, true);
+        Object ret = this.methodBody.eval(callstack, interpreter, true);
 
-CallStack returnStack = callstack.copy();
+        CallStack returnStack = callstack.copy();
 
-if (!overrideNameSpace) {
-callstack.pop();
-}
-ReturnControl retControl = null;
-if (ret instanceof ReturnControl) {
+        if (!overrideNameSpace) {
+            callstack.pop();
+        }
+        ReturnControl retControl = null;
+        if (ret instanceof ReturnControl) {
 
-retControl = (ReturnControl)ret;
+            retControl = (ReturnControl) ret;
 
-if (retControl.kind == 46) {
-ret = ((ReturnControl)ret).value;
-} else {
+            if (retControl.kind == 46) {
+                ret = ((ReturnControl) ret).value;
+            } else {
 
-throw new EvalError("'continue' or 'break' in method body", retControl.returnPoint, returnStack);
-} 
+                throw new EvalError("'continue' or 'break' in method body", retControl.returnPoint, returnStack);
+            }
 
-if (returnType == void.class && ret != Primitive.VOID) {
-throw new EvalError("Cannot return value from void method", retControl.returnPoint, returnStack);
-}
-} 
+            if (returnType == void.class && ret != Primitive.VOID) {
+                throw new EvalError("Cannot return value from void method", retControl.returnPoint, returnStack);
+            }
+        }
 
-if (returnType != null) {
+        if (returnType != null) {
 
-if (returnType == void.class) {
-return Primitive.VOID;
-}
+            if (returnType == void.class) {
+                return Primitive.VOID;
+            }
 
-try {
-ret = Types.castObject(ret, returnType, 1);
+            try {
+                ret = Types.castObject(ret, returnType, 1);
 
-}
-catch (UtilEvalError e) {
+            } catch (UtilEvalError e) {
 
-SimpleNode node = callerInfo;
-if (retControl != null)
-node = retControl.returnPoint; 
-throw e.toEvalError("Incorrect type returned from method: " + this.name + e.getMessage(), node, callstack);
-} 
-} 
+                SimpleNode node = callerInfo;
+                if (retControl != null)
+                    node = retControl.returnPoint;
+                throw e.toEvalError("Incorrect type returned from method: " + this.name + e.getMessage(), node, callstack);
+            }
+        }
 
-return ret;
-}
+        return ret;
+    }
 
     public boolean hasModifier(String name) {
         return (this.modifiers != null && this.modifiers.hasModifier(name));

@@ -170,36 +170,6 @@ public class Type {
         return new Type(10, buf, off, len + 1);
     }
 
-    public int getSort() {
-        return this.sort;
-    }
-
-    public int getDimensions() {
-        int i = 1;
-        while (this.buf[this.off + i] == '[') {
-            i++;
-        }
-        return i;
-    }
-
-    public Type getElementType() {
-        return getType(this.buf, this.off + getDimensions());
-    }
-
-    public String getClassName() {
-        return (new String(this.buf, this.off + 1, this.len - 2)).replace('/', '.');
-    }
-
-    public String getInternalName() {
-        return new String(this.buf, this.off + 1, this.len - 2);
-    }
-
-    public String getDescriptor() {
-        StringBuffer buf = new StringBuffer();
-        getDescriptor(buf);
-        return buf.toString();
-    }
-
     public static String getMethodDescriptor(Type returnType, Type[] argumentTypes) {
         StringBuffer buf = new StringBuffer();
         buf.append('(');
@@ -209,40 +179,6 @@ public class Type {
         buf.append(')');
         returnType.getDescriptor(buf);
         return buf.toString();
-    }
-
-    private void getDescriptor(StringBuffer buf) {
-        switch (this.sort) {
-            case 0:
-                buf.append('V');
-                return;
-            case 1:
-                buf.append('Z');
-                return;
-            case 2:
-                buf.append('C');
-                return;
-            case 3:
-                buf.append('B');
-                return;
-            case 4:
-                buf.append('S');
-                return;
-            case 5:
-                buf.append('I');
-                return;
-            case 6:
-                buf.append('F');
-                return;
-            case 7:
-                buf.append('J');
-                return;
-            case 8:
-                buf.append('D');
-                return;
-        }
-
-        buf.append(this.buf, this.off, this.len);
     }
 
     public static String getInternalName(Class c) {
@@ -309,6 +245,70 @@ public class Type {
             buf.append((car == '.') ? 47 : car);
         }
         buf.append(';');
+    }
+
+    public int getSort() {
+        return this.sort;
+    }
+
+    public int getDimensions() {
+        int i = 1;
+        while (this.buf[this.off + i] == '[') {
+            i++;
+        }
+        return i;
+    }
+
+    public Type getElementType() {
+        return getType(this.buf, this.off + getDimensions());
+    }
+
+    public String getClassName() {
+        return (new String(this.buf, this.off + 1, this.len - 2)).replace('/', '.');
+    }
+
+    public String getInternalName() {
+        return new String(this.buf, this.off + 1, this.len - 2);
+    }
+
+    public String getDescriptor() {
+        StringBuffer buf = new StringBuffer();
+        getDescriptor(buf);
+        return buf.toString();
+    }
+
+    private void getDescriptor(StringBuffer buf) {
+        switch (this.sort) {
+            case 0:
+                buf.append('V');
+                return;
+            case 1:
+                buf.append('Z');
+                return;
+            case 2:
+                buf.append('C');
+                return;
+            case 3:
+                buf.append('B');
+                return;
+            case 4:
+                buf.append('S');
+                return;
+            case 5:
+                buf.append('I');
+                return;
+            case 6:
+                buf.append('F');
+                return;
+            case 7:
+                buf.append('J');
+                return;
+            case 8:
+                buf.append('D');
+                return;
+        }
+
+        buf.append(this.buf, this.off, this.len);
     }
 
     public int getSize() {

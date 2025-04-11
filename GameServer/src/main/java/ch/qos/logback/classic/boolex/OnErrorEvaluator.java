@@ -5,10 +5,9 @@ import ch.qos.logback.core.boolex.EvaluationException;
 import ch.qos.logback.core.boolex.EventEvaluatorBase;
 
 public class OnErrorEvaluator
-extends EventEvaluatorBase<ILoggingEvent>
-{
-public boolean evaluate(ILoggingEvent event) throws NullPointerException, EvaluationException {
-return ((event.getLevel()).levelInt >= 40000);
-}
+        extends EventEvaluatorBase<ILoggingEvent> {
+    public boolean evaluate(ILoggingEvent event) throws NullPointerException, EvaluationException {
+        return ((event.getLevel()).levelInt >= 40000);
+    }
 }
 

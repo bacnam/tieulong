@@ -2,279 +2,266 @@ package com.mysql.jdbc;
 
 import com.mysql.jdbc.profiler.ProfilerEvent;
 import com.mysql.jdbc.profiler.ProfilerEventHandler;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class RowDataDynamic
-implements RowData
-{
-private int columnCount;
-private Field[] metadata;
+        implements RowData {
+    private int columnCount;
+    private Field[] metadata;
+    private int index = -1;
+    private MysqlIO io;
+    private boolean isAfterEnd = false;
+    private boolean noMoreRows = false;
+    private boolean isBinaryEncoded = false;
+    private ResultSetRow nextRow;
+    private ResultSetImpl owner;
+    private boolean streamerClosed = false;
+    private boolean wasEmpty = false;
+    private boolean useBufferRowExplicit;
+    private boolean moreResultsExisted;
+    private ExceptionInterceptor exceptionInterceptor;
+
+    public RowDataDynamic(MysqlIO io, int colCount, Field[] fields, boolean isBinaryEncoded) throws SQLException {
+        this.io = io;
+        this.columnCount = colCount;
+        this.isBinaryEncoded = isBinaryEncoded;
+        this.metadata = fields;
+        this.exceptionInterceptor = this.io.getExceptionInterceptor();
+        this.useBufferRowExplicit = MysqlIO.useBufferRowExplicit(this.metadata);
+    }
+
+    public void addRow(ResultSetRow row) throws SQLException {
+        notSupported();
+    }
+
+    public void afterLast() throws SQLException {
+        notSupported();
+    }
+
+    public void beforeFirst() throws SQLException {
+        notSupported();
+    }
+
+    public void beforeLast() throws SQLException {
+        notSupported();
+    }
+
+    public void close() throws SQLException {
+        Object mutex = this;
+
+        MySQLConnection conn = null;
+
+        if (this.owner != null) {
+            conn = this.owner.connection;
+
+            if (conn != null) {
+                mutex = conn;
+            }
+        }
+
+        boolean hadMore = false;
+        int howMuchMore = 0;
+
+        synchronized (mutex) {
+
+            while (next() != null) {
+                hadMore = true;
+                howMuchMore++;
+
+                if (howMuchMore % 100 == 0) {
+                    Thread.yield();
+                }
+            }
 
-class OperationNotSupportedException
-extends SQLException
-{
-static final long serialVersionUID = 5582227030787355276L;
+            if (conn != null) {
+                if (!conn.getClobberStreamingResults() && conn.getNetTimeoutForStreamingResults() > 0) {
 
-OperationNotSupportedException() {
-super(Messages.getString("RowDataDynamic.10"), "S1009");
-}
-}
+                    String oldValue = conn.getServerVariable("net_write_timeout");
 
-private int index = -1;
+                    if (oldValue == null || oldValue.length() == 0) {
+                        oldValue = "60";
+                    }
 
-private MysqlIO io;
+                    this.io.clearInputStream();
 
-private boolean isAfterEnd = false;
+                    Statement stmt = null;
 
-private boolean noMoreRows = false;
+                    try {
+                        stmt = conn.createStatement();
+                        ((StatementImpl) stmt).executeSimpleNonQuery(conn, "SET net_write_timeout=" + oldValue);
+                    } finally {
+                        if (stmt != null) {
+                            stmt.close();
+                        }
+                    }
+                }
+
+                if (conn.getUseUsageAdvisor() &&
+                        hadMore) {
+
+                    ProfilerEventHandler eventSink = ProfilerEventHandlerFactory.getInstance(conn);
+
+                    eventSink.consumeEvent(new ProfilerEvent((byte) 0, "", (this.owner.owningStatement == null) ? "N/A" : this.owner.owningStatement.currentCatalog, this.owner.connectionId, (this.owner.owningStatement == null) ? -1 : this.owner.owningStatement.getId(), -1, System.currentTimeMillis(), 0L, Constants.MILLIS_I18N, null, null, Messages.getString("RowDataDynamic.2") + howMuchMore + Messages.getString("RowDataDynamic.3") + Messages.getString("RowDataDynamic.4") + Messages.getString("RowDataDynamic.5") + Messages.getString("RowDataDynamic.6") + this.owner.pointOfOrigin));
+                }
+            }
+        }
+
+        this.metadata = null;
+        this.owner = null;
+    }
 
-private boolean isBinaryEncoded = false;
+    public ResultSetRow getAt(int ind) throws SQLException {
+        notSupported();
 
-private ResultSetRow nextRow;
+        return null;
+    }
 
-private ResultSetImpl owner;
+    public int getCurrentRowNumber() throws SQLException {
+        notSupported();
 
-private boolean streamerClosed = false;
+        return -1;
+    }
 
-private boolean wasEmpty = false;
+    public ResultSetInternalMethods getOwner() {
+        return this.owner;
+    }
 
-private boolean useBufferRowExplicit;
+    public void setOwner(ResultSetImpl rs) {
+        this.owner = rs;
+    }
 
-private boolean moreResultsExisted;
+    public boolean hasNext() throws SQLException {
+        boolean hasNext = (this.nextRow != null);
 
-private ExceptionInterceptor exceptionInterceptor;
+        if (!hasNext && !this.streamerClosed) {
+            this.io.closeStreamer(this);
+            this.streamerClosed = true;
+        }
 
-public RowDataDynamic(MysqlIO io, int colCount, Field[] fields, boolean isBinaryEncoded) throws SQLException {
-this.io = io;
-this.columnCount = colCount;
-this.isBinaryEncoded = isBinaryEncoded;
-this.metadata = fields;
-this.exceptionInterceptor = this.io.getExceptionInterceptor();
-this.useBufferRowExplicit = MysqlIO.useBufferRowExplicit(this.metadata);
-}
+        return hasNext;
+    }
 
-public void addRow(ResultSetRow row) throws SQLException {
-notSupported();
-}
+    public boolean isAfterLast() throws SQLException {
+        return this.isAfterEnd;
+    }
 
-public void afterLast() throws SQLException {
-notSupported();
-}
+    public boolean isBeforeFirst() throws SQLException {
+        return (this.index < 0);
+    }
 
-public void beforeFirst() throws SQLException {
-notSupported();
-}
+    public boolean isDynamic() {
+        return true;
+    }
 
-public void beforeLast() throws SQLException {
-notSupported();
-}
+    public boolean isEmpty() throws SQLException {
+        notSupported();
 
-public void close() throws SQLException {
-Object mutex = this;
+        return false;
+    }
 
-MySQLConnection conn = null;
+    public boolean isFirst() throws SQLException {
+        notSupported();
 
-if (this.owner != null) {
-conn = this.owner.connection;
+        return false;
+    }
 
-if (conn != null) {
-mutex = conn;
-}
-} 
+    public boolean isLast() throws SQLException {
+        notSupported();
 
-boolean hadMore = false;
-int howMuchMore = 0;
+        return false;
+    }
 
-synchronized (mutex) {
+    public void moveRowRelative(int rows) throws SQLException {
+        notSupported();
+    }
 
-while (next() != null) {
-hadMore = true;
-howMuchMore++;
+    public ResultSetRow next() throws SQLException {
+        nextRecord();
 
-if (howMuchMore % 100 == 0) {
-Thread.yield();
-}
-} 
+        if (this.nextRow == null && !this.streamerClosed && !this.moreResultsExisted) {
+            this.io.closeStreamer(this);
+            this.streamerClosed = true;
+        }
 
-if (conn != null) {
-if (!conn.getClobberStreamingResults() && conn.getNetTimeoutForStreamingResults() > 0) {
+        if (this.nextRow != null &&
+                this.index != Integer.MAX_VALUE) {
+            this.index++;
+        }
 
-String oldValue = conn.getServerVariable("net_write_timeout");
+        return this.nextRow;
+    }
 
-if (oldValue == null || oldValue.length() == 0) {
-oldValue = "60";
-}
+    private void nextRecord() throws SQLException {
+        try {
+            if (!this.noMoreRows) {
+                this.nextRow = this.io.nextRow(this.metadata, this.columnCount, this.isBinaryEncoded, 1007, true, this.useBufferRowExplicit, true, null);
 
-this.io.clearInputStream();
+                if (this.nextRow == null) {
+                    this.noMoreRows = true;
+                    this.isAfterEnd = true;
+                    this.moreResultsExisted = this.io.tackOnMoreStreamingResults(this.owner);
 
-Statement stmt = null;
+                    if (this.index == -1) {
+                        this.wasEmpty = true;
+                    }
+                }
+            } else {
+                this.isAfterEnd = true;
+            }
+        } catch (SQLException sqlEx) {
+            if (sqlEx instanceof StreamingNotifiable) {
+                ((StreamingNotifiable) sqlEx).setWasStreamingResults();
+            }
 
-try {
-stmt = conn.createStatement();
-((StatementImpl)stmt).executeSimpleNonQuery(conn, "SET net_write_timeout=" + oldValue);
-} finally {
-if (stmt != null) {
-stmt.close();
-}
-} 
-} 
+            throw sqlEx;
+        } catch (Exception ex) {
+            String exceptionType = ex.getClass().getName();
+            String exceptionMessage = ex.getMessage();
 
-if (conn.getUseUsageAdvisor() && 
-hadMore) {
+            exceptionMessage = exceptionMessage + Messages.getString("RowDataDynamic.7");
+            exceptionMessage = exceptionMessage + Util.stackTraceToString(ex);
 
-ProfilerEventHandler eventSink = ProfilerEventHandlerFactory.getInstance(conn);
+            SQLException sqlEx = SQLError.createSQLException(Messages.getString("RowDataDynamic.8") + exceptionType + Messages.getString("RowDataDynamic.9") + exceptionMessage, "S1000", this.exceptionInterceptor);
 
-eventSink.consumeEvent(new ProfilerEvent((byte)0, "", (this.owner.owningStatement == null) ? "N/A" : this.owner.owningStatement.currentCatalog, this.owner.connectionId, (this.owner.owningStatement == null) ? -1 : this.owner.owningStatement.getId(), -1, System.currentTimeMillis(), 0L, Constants.MILLIS_I18N, null, null, Messages.getString("RowDataDynamic.2") + howMuchMore + Messages.getString("RowDataDynamic.3") + Messages.getString("RowDataDynamic.4") + Messages.getString("RowDataDynamic.5") + Messages.getString("RowDataDynamic.6") + this.owner.pointOfOrigin));
-} 
-} 
-} 
+            sqlEx.initCause(ex);
 
-this.metadata = null;
-this.owner = null;
-}
+            throw sqlEx;
+        }
+    }
 
-public ResultSetRow getAt(int ind) throws SQLException {
-notSupported();
-
-return null;
-}
-
-public int getCurrentRowNumber() throws SQLException {
-notSupported();
+    private void notSupported() throws SQLException {
+        throw new OperationNotSupportedException();
+    }
 
-return -1;
-}
+    public void removeRow(int ind) throws SQLException {
+        notSupported();
+    }
 
-public ResultSetInternalMethods getOwner() {
-return this.owner;
-}
+    public void setCurrentRow(int rowNumber) throws SQLException {
+        notSupported();
+    }
 
-public boolean hasNext() throws SQLException {
-boolean hasNext = (this.nextRow != null);
+    public int size() {
+        return -1;
+    }
 
-if (!hasNext && !this.streamerClosed) {
-this.io.closeStreamer(this);
-this.streamerClosed = true;
-} 
+    public boolean wasEmpty() {
+        return this.wasEmpty;
+    }
 
-return hasNext;
-}
+    public void setMetadata(Field[] metadata) {
+        this.metadata = metadata;
+    }
 
-public boolean isAfterLast() throws SQLException {
-return this.isAfterEnd;
-}
+    class OperationNotSupportedException
+            extends SQLException {
+        static final long serialVersionUID = 5582227030787355276L;
 
-public boolean isBeforeFirst() throws SQLException {
-return (this.index < 0);
-}
-
-public boolean isDynamic() {
-return true;
-}
-
-public boolean isEmpty() throws SQLException {
-notSupported();
-
-return false;
-}
-
-public boolean isFirst() throws SQLException {
-notSupported();
-
-return false;
-}
-
-public boolean isLast() throws SQLException {
-notSupported();
-
-return false;
-}
-
-public void moveRowRelative(int rows) throws SQLException {
-notSupported();
-}
-
-public ResultSetRow next() throws SQLException {
-nextRecord();
-
-if (this.nextRow == null && !this.streamerClosed && !this.moreResultsExisted) {
-this.io.closeStreamer(this);
-this.streamerClosed = true;
-} 
-
-if (this.nextRow != null && 
-this.index != Integer.MAX_VALUE) {
-this.index++;
-}
-
-return this.nextRow;
-}
-
-private void nextRecord() throws SQLException {
-try {
-if (!this.noMoreRows) {
-this.nextRow = this.io.nextRow(this.metadata, this.columnCount, this.isBinaryEncoded, 1007, true, this.useBufferRowExplicit, true, null);
-
-if (this.nextRow == null) {
-this.noMoreRows = true;
-this.isAfterEnd = true;
-this.moreResultsExisted = this.io.tackOnMoreStreamingResults(this.owner);
-
-if (this.index == -1) {
-this.wasEmpty = true;
-}
-} 
-} else {
-this.isAfterEnd = true;
-} 
-} catch (SQLException sqlEx) {
-if (sqlEx instanceof StreamingNotifiable) {
-((StreamingNotifiable)sqlEx).setWasStreamingResults();
-}
-
-throw sqlEx;
-} catch (Exception ex) {
-String exceptionType = ex.getClass().getName();
-String exceptionMessage = ex.getMessage();
-
-exceptionMessage = exceptionMessage + Messages.getString("RowDataDynamic.7");
-exceptionMessage = exceptionMessage + Util.stackTraceToString(ex);
-
-SQLException sqlEx = SQLError.createSQLException(Messages.getString("RowDataDynamic.8") + exceptionType + Messages.getString("RowDataDynamic.9") + exceptionMessage, "S1000", this.exceptionInterceptor);
-
-sqlEx.initCause(ex);
-
-throw sqlEx;
-} 
-}
-
-private void notSupported() throws SQLException {
-throw new OperationNotSupportedException();
-}
-
-public void removeRow(int ind) throws SQLException {
-notSupported();
-}
-
-public void setCurrentRow(int rowNumber) throws SQLException {
-notSupported();
-}
-
-public void setOwner(ResultSetImpl rs) {
-this.owner = rs;
-}
-
-public int size() {
-return -1;
-}
-
-public boolean wasEmpty() {
-return this.wasEmpty;
-}
-
-public void setMetadata(Field[] metadata) {
-this.metadata = metadata;
-}
+        OperationNotSupportedException() {
+            super(Messages.getString("RowDataDynamic.10"), "S1009");
+        }
+    }
 }
 

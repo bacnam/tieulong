@@ -1,51 +1,52 @@
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
+
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nullable;
 
 @GwtCompatible
 public interface Multimap<K, V> {
-  int size();
+    int size();
 
-  boolean isEmpty();
+    boolean isEmpty();
 
-  boolean containsKey(@Nullable Object paramObject);
+    boolean containsKey(@Nullable Object paramObject);
 
-  boolean containsValue(@Nullable Object paramObject);
+    boolean containsValue(@Nullable Object paramObject);
 
-  boolean containsEntry(@Nullable Object paramObject1, @Nullable Object paramObject2);
+    boolean containsEntry(@Nullable Object paramObject1, @Nullable Object paramObject2);
 
-  boolean put(@Nullable K paramK, @Nullable V paramV);
+    boolean put(@Nullable K paramK, @Nullable V paramV);
 
-  boolean remove(@Nullable Object paramObject1, @Nullable Object paramObject2);
+    boolean remove(@Nullable Object paramObject1, @Nullable Object paramObject2);
 
-  boolean putAll(@Nullable K paramK, Iterable<? extends V> paramIterable);
+    boolean putAll(@Nullable K paramK, Iterable<? extends V> paramIterable);
 
-  boolean putAll(Multimap<? extends K, ? extends V> paramMultimap);
+    boolean putAll(Multimap<? extends K, ? extends V> paramMultimap);
 
-  Collection<V> replaceValues(@Nullable K paramK, Iterable<? extends V> paramIterable);
+    Collection<V> replaceValues(@Nullable K paramK, Iterable<? extends V> paramIterable);
 
-  Collection<V> removeAll(@Nullable Object paramObject);
+    Collection<V> removeAll(@Nullable Object paramObject);
 
-  void clear();
+    void clear();
 
-  Collection<V> get(@Nullable K paramK);
+    Collection<V> get(@Nullable K paramK);
 
-  Set<K> keySet();
+    Set<K> keySet();
 
-  Multiset<K> keys();
+    Multiset<K> keys();
 
-  Collection<V> values();
+    Collection<V> values();
 
-  Collection<Map.Entry<K, V>> entries();
+    Collection<Map.Entry<K, V>> entries();
 
-  Map<K, Collection<V>> asMap();
+    Map<K, Collection<V>> asMap();
 
-  boolean equals(@Nullable Object paramObject);
+    boolean equals(@Nullable Object paramObject);
 
-  int hashCode();
+    int hashCode();
 }
 

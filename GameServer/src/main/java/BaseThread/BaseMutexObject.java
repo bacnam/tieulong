@@ -1,10 +1,9 @@
 package BaseThread;
 
 public class BaseMutexObject
-extends CosMutex
-{
-public BaseMutexObject() {
-super(30);
-}
+        extends CosMutex {
+    public BaseMutexObject() {
+        super(30);
+    }
 }
 

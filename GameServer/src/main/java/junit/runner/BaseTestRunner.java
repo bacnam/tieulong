@@ -1,274 +1,274 @@
 package junit.runner;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.text.NumberFormat;
-import java.util.Properties;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestListener;
 import junit.framework.TestSuite;
 
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.text.NumberFormat;
+import java.util.Properties;
+
 public abstract class BaseTestRunner
-implements TestListener
-{
-public static final String SUITE_METHODNAME = "suite";
-private static Properties fPreferences;
-static int fgMaxMessageLength = 500;
+        implements TestListener {
+    public static final String SUITE_METHODNAME = "suite";
+    static int fgMaxMessageLength = 500;
+    static boolean fgFilterStack = true;
+    private static Properties fPreferences;
 
-static boolean fgFilterStack = true;
+    static {
+        fgMaxMessageLength = getPreference("maxmessage", fgMaxMessageLength);
+    }
 
-boolean fLoading = true;
+    boolean fLoading = true;
 
-public synchronized void startTest(Test test) {
-testStarted(test.toString());
-}
+    protected static Properties getPreferences() {
+        if (fPreferences == null) {
+            fPreferences = new Properties();
+            fPreferences.put("loading", "true");
+            fPreferences.put("filterstack", "true");
+            readPreferences();
+        }
+        return fPreferences;
+    }
 
-protected static void setPreferences(Properties preferences) {
-fPreferences = preferences;
-}
+    protected static void setPreferences(Properties preferences) {
+        fPreferences = preferences;
+    }
 
-protected static Properties getPreferences() {
-if (fPreferences == null) {
-fPreferences = new Properties();
-fPreferences.put("loading", "true");
-fPreferences.put("filterstack", "true");
-readPreferences();
-} 
-return fPreferences;
-}
+    public static void savePreferences() throws IOException {
+        FileOutputStream fos = new FileOutputStream(getPreferencesFile());
+        try {
+            getPreferences().store(fos, "");
+        } finally {
+            fos.close();
+        }
+    }
 
-public static void savePreferences() throws IOException {
-FileOutputStream fos = new FileOutputStream(getPreferencesFile());
-try {
-getPreferences().store(fos, "");
-} finally {
-fos.close();
-} 
-}
+    public static void setPreference(String key, String value) {
+        getPreferences().put(key, value);
+    }
 
-public static void setPreference(String key, String value) {
-getPreferences().put(key, value);
-}
+    public static String truncate(String s) {
+        if (fgMaxMessageLength != -1 && s.length() > fgMaxMessageLength) {
+            s = s.substring(0, fgMaxMessageLength) + "...";
+        }
+        return s;
+    }
 
-public synchronized void endTest(Test test) {
-testEnded(test.toString());
-}
+    private static File getPreferencesFile() {
+        String home = System.getProperty("user.home");
+        return new File(home, "junit.properties");
+    }
 
-public synchronized void addError(Test test, Throwable e) {
-testFailed(1, test, e);
-}
+    private static void readPreferences() {
+        InputStream is = null;
 
-public synchronized void addFailure(Test test, AssertionFailedError e) {
-testFailed(2, test, (Throwable)e);
-}
+        try {
+            is = new FileInputStream(getPreferencesFile());
+            setPreferences(new Properties(getPreferences()));
+            getPreferences().load(is);
+        } catch (IOException ignored) {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e1) {
+            }
+        } finally {
+            try {
+                if (is != null) is.close();
+            } catch (IOException e1) {
+            }
+        }
 
-public abstract void testStarted(String paramString);
+    }
 
-public abstract void testEnded(String paramString);
+    public static String getPreference(String key) {
+        return getPreferences().getProperty(key);
+    }
 
-public abstract void testFailed(int paramInt, Test paramTest, Throwable paramThrowable);
+    public static int getPreference(String key, int dflt) {
+        String value = getPreference(key);
+        int intValue = dflt;
+        if (value == null) {
+            return intValue;
+        }
+        try {
+            intValue = Integer.parseInt(value);
+        } catch (NumberFormatException ne) {
+        }
 
-public Test getTest(String suiteClassName) {
-if (suiteClassName.length() <= 0) {
-clearStatus();
-return null;
-} 
-Class<?> testClass = null;
-try {
-testClass = loadSuiteClass(suiteClassName);
-} catch (ClassNotFoundException e) {
-String clazz = e.getMessage();
-if (clazz == null) {
-clazz = suiteClassName;
-}
-runFailed("Class not found \"" + clazz + "\"");
-return null;
-} catch (Exception e) {
-runFailed("Error: " + e.toString());
-return null;
-} 
-Method suiteMethod = null;
-try {
-suiteMethod = testClass.getMethod("suite", new Class[0]);
-} catch (Exception e) {
+        return intValue;
+    }
 
-clearStatus();
-return (Test)new TestSuite(testClass);
-} 
-if (!Modifier.isStatic(suiteMethod.getModifiers())) {
-runFailed("Suite() method must be static");
-return null;
-} 
-Test test = null;
-try {
-test = (Test)suiteMethod.invoke(null, new Object[0]);
-if (test == null) {
-return test;
-}
-} catch (InvocationTargetException e) {
-runFailed("Failed to invoke suite():" + e.getTargetException().toString());
-return null;
-} catch (IllegalAccessException e) {
-runFailed("Failed to invoke suite():" + e.toString());
-return null;
-} 
+    public static String getFilteredTrace(Throwable e) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        e.printStackTrace(writer);
+        String trace = stringWriter.toString();
+        return getFilteredTrace(trace);
+    }
 
-clearStatus();
-return test;
-}
+    public static String getFilteredTrace(String stack) {
+        if (showStackRaw()) {
+            return stack;
+        }
 
-public String elapsedTimeAsString(long runTime) {
-return NumberFormat.getInstance().format(runTime / 1000.0D);
-}
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        StringReader sr = new StringReader(stack);
+        BufferedReader br = new BufferedReader(sr);
 
-protected String processArguments(String[] args) {
-String suiteName = null;
-for (int i = 0; i < args.length; i++) {
-if (args[i].equals("-noloading")) {
-setLoading(false);
-} else if (args[i].equals("-nofilterstack")) {
-fgFilterStack = false;
-} else if (args[i].equals("-c")) {
-if (args.length > i + 1) {
-suiteName = extractClassName(args[i + 1]);
-} else {
-System.out.println("Missing Test class name");
-} 
-i++;
-} else {
-suiteName = args[i];
-} 
-} 
-return suiteName;
-}
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!filterLine(line)) {
+                    pw.println(line);
+                }
+            }
+        } catch (Exception IOException) {
+            return stack;
+        }
+        return sw.toString();
+    }
 
-public void setLoading(boolean enable) {
-this.fLoading = enable;
-}
+    protected static boolean showStackRaw() {
+        return (!getPreference("filterstack").equals("true") || !fgFilterStack);
+    }
 
-public String extractClassName(String className) {
-if (className.startsWith("Default package for")) {
-return className.substring(className.lastIndexOf(".") + 1);
-}
-return className;
-}
+    static boolean filterLine(String line) {
+        String[] patterns = {"junit.framework.TestCase", "junit.framework.TestResult", "junit.framework.TestSuite", "junit.framework.Assert.", "junit.swingui.TestRunner", "junit.awtui.TestRunner", "junit.textui.TestRunner", "java.lang.reflect.Method.invoke("};
 
-public static String truncate(String s) {
-if (fgMaxMessageLength != -1 && s.length() > fgMaxMessageLength) {
-s = s.substring(0, fgMaxMessageLength) + "...";
-}
-return s;
-}
+        for (int i = 0; i < patterns.length; i++) {
+            if (line.indexOf(patterns[i]) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-protected abstract void runFailed(String paramString);
+    public synchronized void startTest(Test test) {
+        testStarted(test.toString());
+    }
 
-protected Class<?> loadSuiteClass(String suiteClassName) throws ClassNotFoundException {
-return Class.forName(suiteClassName);
-}
+    public synchronized void endTest(Test test) {
+        testEnded(test.toString());
+    }
 
-protected void clearStatus() {}
+    public synchronized void addError(Test test, Throwable e) {
+        testFailed(1, test, e);
+    }
 
-protected boolean useReloadingTestSuiteLoader() {
-return (getPreference("loading").equals("true") && this.fLoading);
-}
+    public synchronized void addFailure(Test test, AssertionFailedError e) {
+        testFailed(2, test, (Throwable) e);
+    }
 
-private static File getPreferencesFile() {
-String home = System.getProperty("user.home");
-return new File(home, "junit.properties");
-}
+    public abstract void testStarted(String paramString);
 
-private static void readPreferences() {
-InputStream is = null;
+    public abstract void testEnded(String paramString);
 
-try { is = new FileInputStream(getPreferencesFile());
-setPreferences(new Properties(getPreferences()));
-getPreferences().load(is); }
-catch (IOException ignored)
+    public abstract void testFailed(int paramInt, Test paramTest, Throwable paramThrowable);
 
-{ try {
-if (is != null) {
-is.close();
-}
-} catch (IOException e1) {} } finally { try { if (is != null) is.close();  } catch (IOException e1) {} }
+    public Test getTest(String suiteClassName) {
+        if (suiteClassName.length() <= 0) {
+            clearStatus();
+            return null;
+        }
+        Class<?> testClass = null;
+        try {
+            testClass = loadSuiteClass(suiteClassName);
+        } catch (ClassNotFoundException e) {
+            String clazz = e.getMessage();
+            if (clazz == null) {
+                clazz = suiteClassName;
+            }
+            runFailed("Class not found \"" + clazz + "\"");
+            return null;
+        } catch (Exception e) {
+            runFailed("Error: " + e.toString());
+            return null;
+        }
+        Method suiteMethod = null;
+        try {
+            suiteMethod = testClass.getMethod("suite", new Class[0]);
+        } catch (Exception e) {
 
-}
+            clearStatus();
+            return (Test) new TestSuite(testClass);
+        }
+        if (!Modifier.isStatic(suiteMethod.getModifiers())) {
+            runFailed("Suite() method must be static");
+            return null;
+        }
+        Test test = null;
+        try {
+            test = (Test) suiteMethod.invoke(null, new Object[0]);
+            if (test == null) {
+                return test;
+            }
+        } catch (InvocationTargetException e) {
+            runFailed("Failed to invoke suite():" + e.getTargetException().toString());
+            return null;
+        } catch (IllegalAccessException e) {
+            runFailed("Failed to invoke suite():" + e.toString());
+            return null;
+        }
 
-public static String getPreference(String key) {
-return getPreferences().getProperty(key);
-}
+        clearStatus();
+        return test;
+    }
 
-public static int getPreference(String key, int dflt) {
-String value = getPreference(key);
-int intValue = dflt;
-if (value == null) {
-return intValue;
-}
-try {
-intValue = Integer.parseInt(value);
-} catch (NumberFormatException ne) {}
+    public String elapsedTimeAsString(long runTime) {
+        return NumberFormat.getInstance().format(runTime / 1000.0D);
+    }
 
-return intValue;
-}
+    protected String processArguments(String[] args) {
+        String suiteName = null;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-noloading")) {
+                setLoading(false);
+            } else if (args[i].equals("-nofilterstack")) {
+                fgFilterStack = false;
+            } else if (args[i].equals("-c")) {
+                if (args.length > i + 1) {
+                    suiteName = extractClassName(args[i + 1]);
+                } else {
+                    System.out.println("Missing Test class name");
+                }
+                i++;
+            } else {
+                suiteName = args[i];
+            }
+        }
+        return suiteName;
+    }
 
-public static String getFilteredTrace(Throwable e) {
-StringWriter stringWriter = new StringWriter();
-PrintWriter writer = new PrintWriter(stringWriter);
-e.printStackTrace(writer);
-String trace = stringWriter.toString();
-return getFilteredTrace(trace);
-}
+    public void setLoading(boolean enable) {
+        this.fLoading = enable;
+    }
 
-public static String getFilteredTrace(String stack) {
-if (showStackRaw()) {
-return stack;
-}
+    public String extractClassName(String className) {
+        if (className.startsWith("Default package for")) {
+            return className.substring(className.lastIndexOf(".") + 1);
+        }
+        return className;
+    }
 
-StringWriter sw = new StringWriter();
-PrintWriter pw = new PrintWriter(sw);
-StringReader sr = new StringReader(stack);
-BufferedReader br = new BufferedReader(sr);
+    protected abstract void runFailed(String paramString);
 
-try {
-String line;
-while ((line = br.readLine()) != null) {
-if (!filterLine(line)) {
-pw.println(line);
-}
-} 
-} catch (Exception IOException) {
-return stack;
-} 
-return sw.toString();
-}
+    protected Class<?> loadSuiteClass(String suiteClassName) throws ClassNotFoundException {
+        return Class.forName(suiteClassName);
+    }
 
-protected static boolean showStackRaw() {
-return (!getPreference("filterstack").equals("true") || !fgFilterStack);
-}
+    protected void clearStatus() {
+    }
 
-static boolean filterLine(String line) {
-String[] patterns = { "junit.framework.TestCase", "junit.framework.TestResult", "junit.framework.TestSuite", "junit.framework.Assert.", "junit.swingui.TestRunner", "junit.awtui.TestRunner", "junit.textui.TestRunner", "java.lang.reflect.Method.invoke(" };
-
-for (int i = 0; i < patterns.length; i++) {
-if (line.indexOf(patterns[i]) > 0) {
-return true;
-}
-} 
-return false;
-}
-
-static {
-fgMaxMessageLength = getPreference("maxmessage", fgMaxMessageLength);
-}
+    protected boolean useReloadingTestSuiteLoader() {
+        return (getPreference("loading").equals("true") && this.fLoading);
+    }
 }
 

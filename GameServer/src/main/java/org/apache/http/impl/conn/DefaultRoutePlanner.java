@@ -1,6 +1,5 @@
 package org.apache.http.impl.conn;
 
-import java.net.InetAddress;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -15,50 +14,50 @@ import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 
+import java.net.InetAddress;
+
 @Immutable
 public class DefaultRoutePlanner
-implements HttpRoutePlanner
-{
-private final SchemePortResolver schemePortResolver;
+        implements HttpRoutePlanner {
+    private final SchemePortResolver schemePortResolver;
 
-public DefaultRoutePlanner(SchemePortResolver schemePortResolver) {
-this.schemePortResolver = (schemePortResolver != null) ? schemePortResolver : DefaultSchemePortResolver.INSTANCE;
-}
+    public DefaultRoutePlanner(SchemePortResolver schemePortResolver) {
+        this.schemePortResolver = (schemePortResolver != null) ? schemePortResolver : DefaultSchemePortResolver.INSTANCE;
+    }
 
-public HttpRoute determineRoute(HttpHost host, HttpRequest request, HttpContext context) throws HttpException {
-HttpHost httpHost1;
-Args.notNull(request, "Request");
-if (host == null) {
-throw new ProtocolException("Target host is not specified");
-}
-HttpClientContext clientContext = HttpClientContext.adapt(context);
-RequestConfig config = clientContext.getRequestConfig();
-InetAddress local = config.getLocalAddress();
-HttpHost proxy = config.getProxy();
-if (proxy == null) {
-proxy = determineProxy(host, request, context);
-}
+    public HttpRoute determineRoute(HttpHost host, HttpRequest request, HttpContext context) throws HttpException {
+        HttpHost httpHost1;
+        Args.notNull(request, "Request");
+        if (host == null) {
+            throw new ProtocolException("Target host is not specified");
+        }
+        HttpClientContext clientContext = HttpClientContext.adapt(context);
+        RequestConfig config = clientContext.getRequestConfig();
+        InetAddress local = config.getLocalAddress();
+        HttpHost proxy = config.getProxy();
+        if (proxy == null) {
+            proxy = determineProxy(host, request, context);
+        }
 
-if (host.getPort() <= 0) {
-try {
-httpHost1 = new HttpHost(host.getHostName(), this.schemePortResolver.resolve(host), host.getSchemeName());
+        if (host.getPort() <= 0) {
+            try {
+                httpHost1 = new HttpHost(host.getHostName(), this.schemePortResolver.resolve(host), host.getSchemeName());
 
-}
-catch (UnsupportedSchemeException ex) {
-throw new HttpException(ex.getMessage());
-} 
-} else {
-httpHost1 = host;
-} 
-boolean secure = httpHost1.getSchemeName().equalsIgnoreCase("https");
-if (proxy == null) {
-return new HttpRoute(httpHost1, local, secure);
-}
-return new HttpRoute(httpHost1, local, proxy, secure);
-}
+            } catch (UnsupportedSchemeException ex) {
+                throw new HttpException(ex.getMessage());
+            }
+        } else {
+            httpHost1 = host;
+        }
+        boolean secure = httpHost1.getSchemeName().equalsIgnoreCase("https");
+        if (proxy == null) {
+            return new HttpRoute(httpHost1, local, secure);
+        }
+        return new HttpRoute(httpHost1, local, proxy, secure);
+    }
 
-protected HttpHost determineProxy(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
-return null;
-}
+    protected HttpHost determineProxy(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
+        return null;
+    }
 }
 

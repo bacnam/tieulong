@@ -6,34 +6,33 @@ import org.apache.http.params.HttpParams;
 
 @Deprecated
 public class NegotiateSchemeFactory
-implements AuthSchemeFactory
-{
-private final SpnegoTokenGenerator spengoGenerator;
-private final boolean stripPort;
+        implements AuthSchemeFactory {
+    private final SpnegoTokenGenerator spengoGenerator;
+    private final boolean stripPort;
 
-public NegotiateSchemeFactory(SpnegoTokenGenerator spengoGenerator, boolean stripPort) {
-this.spengoGenerator = spengoGenerator;
-this.stripPort = stripPort;
-}
+    public NegotiateSchemeFactory(SpnegoTokenGenerator spengoGenerator, boolean stripPort) {
+        this.spengoGenerator = spengoGenerator;
+        this.stripPort = stripPort;
+    }
 
-public NegotiateSchemeFactory(SpnegoTokenGenerator spengoGenerator) {
-this(spengoGenerator, false);
-}
+    public NegotiateSchemeFactory(SpnegoTokenGenerator spengoGenerator) {
+        this(spengoGenerator, false);
+    }
 
-public NegotiateSchemeFactory() {
-this(null, false);
-}
+    public NegotiateSchemeFactory() {
+        this(null, false);
+    }
 
-public AuthScheme newInstance(HttpParams params) {
-return (AuthScheme)new NegotiateScheme(this.spengoGenerator, this.stripPort);
-}
+    public AuthScheme newInstance(HttpParams params) {
+        return (AuthScheme) new NegotiateScheme(this.spengoGenerator, this.stripPort);
+    }
 
-public boolean isStripPort() {
-return this.stripPort;
-}
+    public boolean isStripPort() {
+        return this.stripPort;
+    }
 
-public SpnegoTokenGenerator getSpengoGenerator() {
-return this.spengoGenerator;
-}
+    public SpnegoTokenGenerator getSpengoGenerator() {
+        return this.spengoGenerator;
+    }
 }
 

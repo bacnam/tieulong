@@ -9,24 +9,23 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 
 @Deprecated
 @ThreadSafe
-public final class SchemeRegistryFactory
-{
-public static SchemeRegistry createDefault() {
-SchemeRegistry registry = new SchemeRegistry();
-registry.register(new Scheme("http", 80, (SchemeSocketFactory)PlainSocketFactory.getSocketFactory()));
+public final class SchemeRegistryFactory {
+    public static SchemeRegistry createDefault() {
+        SchemeRegistry registry = new SchemeRegistry();
+        registry.register(new Scheme("http", 80, (SchemeSocketFactory) PlainSocketFactory.getSocketFactory()));
 
-registry.register(new Scheme("https", 443, (SchemeSocketFactory)SSLSocketFactory.getSocketFactory()));
+        registry.register(new Scheme("https", 443, (SchemeSocketFactory) SSLSocketFactory.getSocketFactory()));
 
-return registry;
-}
+        return registry;
+    }
 
-public static SchemeRegistry createSystemDefault() {
-SchemeRegistry registry = new SchemeRegistry();
-registry.register(new Scheme("http", 80, (SchemeSocketFactory)PlainSocketFactory.getSocketFactory()));
+    public static SchemeRegistry createSystemDefault() {
+        SchemeRegistry registry = new SchemeRegistry();
+        registry.register(new Scheme("http", 80, (SchemeSocketFactory) PlainSocketFactory.getSocketFactory()));
 
-registry.register(new Scheme("https", 443, (SchemeSocketFactory)SSLSocketFactory.getSystemSocketFactory()));
+        registry.register(new Scheme("https", 443, (SchemeSocketFactory) SSLSocketFactory.getSystemSocketFactory()));
 
-return registry;
-}
+        return registry;
+    }
 }
 

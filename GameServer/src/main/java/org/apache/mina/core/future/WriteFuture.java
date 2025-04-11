@@ -1,20 +1,20 @@
 package org.apache.mina.core.future;
 
 public interface WriteFuture extends IoFuture {
-  boolean isWritten();
+    boolean isWritten();
 
-  Throwable getException();
+    Throwable getException();
 
-  void setWritten();
+    void setException(Throwable paramThrowable);
 
-  void setException(Throwable paramThrowable);
+    void setWritten();
 
-  WriteFuture await() throws InterruptedException;
+    WriteFuture await() throws InterruptedException;
 
-  WriteFuture awaitUninterruptibly();
+    WriteFuture awaitUninterruptibly();
 
-  WriteFuture addListener(IoFutureListener<?> paramIoFutureListener);
+    WriteFuture addListener(IoFutureListener<?> paramIoFutureListener);
 
-  WriteFuture removeListener(IoFutureListener<?> paramIoFutureListener);
+    WriteFuture removeListener(IoFutureListener<?> paramIoFutureListener);
 }
 

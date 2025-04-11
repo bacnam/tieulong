@@ -4,6 +4,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.net.server.Client;
 
 interface RemoteAppenderClient extends Client {
-  void setLoggerContext(LoggerContext paramLoggerContext);
+    void setLoggerContext(LoggerContext paramLoggerContext);
 }
 

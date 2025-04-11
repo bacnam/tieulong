@@ -10,114 +10,110 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Finalizer
-extends Thread
-{
-private static final Logger logger = Logger.getLogger(Finalizer.class.getName());
+        extends Thread {
+    private static final Logger logger = Logger.getLogger(Finalizer.class.getName());
 
-private static final String FINALIZABLE_REFERENCE = "com.google.common.base.FinalizableReference";
+    private static final String FINALIZABLE_REFERENCE = "com.google.common.base.FinalizableReference";
+    private static final Field inheritableThreadLocals = getInheritableThreadLocalsField();
+    private final WeakReference<Class<?>> finalizableReferenceClassReference;
+    private final PhantomReference<Object> frqReference;
+    private final ReferenceQueue<Object> queue = new ReferenceQueue();
 
-private final WeakReference<Class<?>> finalizableReferenceClassReference;
+    private Finalizer(Class<?> finalizableReferenceClass, Object frq) {
+        super(Finalizer.class.getName());
 
-private final PhantomReference<Object> frqReference;
+        this.finalizableReferenceClassReference = new WeakReference<Class<?>>(finalizableReferenceClass);
 
-public static ReferenceQueue<Object> startFinalizer(Class<?> finalizableReferenceClass, Object frq) {
-if (!finalizableReferenceClass.getName().equals("com.google.common.base.FinalizableReference")) {
-throw new IllegalArgumentException("Expected com.google.common.base.FinalizableReference.");
-}
+        this.frqReference = new PhantomReference(frq, this.queue);
 
-Finalizer finalizer = new Finalizer(finalizableReferenceClass, frq);
-finalizer.start();
-return finalizer.queue;
-}
+        setDaemon(true);
 
-private final ReferenceQueue<Object> queue = new ReferenceQueue();
+        try {
+            if (inheritableThreadLocals != null) {
+                inheritableThreadLocals.set(this, (Object) null);
+            }
+        } catch (Throwable t) {
+            logger.log(Level.INFO, "Failed to clear thread local values inherited by reference finalizer thread.", t);
+        }
+    }
 
-private static final Field inheritableThreadLocals = getInheritableThreadLocalsField();
+    public static ReferenceQueue<Object> startFinalizer(Class<?> finalizableReferenceClass, Object frq) {
+        if (!finalizableReferenceClass.getName().equals("com.google.common.base.FinalizableReference")) {
+            throw new IllegalArgumentException("Expected com.google.common.base.FinalizableReference.");
+        }
 
-private Finalizer(Class<?> finalizableReferenceClass, Object frq) {
-super(Finalizer.class.getName());
+        Finalizer finalizer = new Finalizer(finalizableReferenceClass, frq);
+        finalizer.start();
+        return finalizer.queue;
+    }
 
-this.finalizableReferenceClassReference = new WeakReference<Class<?>>(finalizableReferenceClass);
+    public static Field getInheritableThreadLocalsField() {
+        try {
+            Field inheritableThreadLocals = Thread.class.getDeclaredField("inheritableThreadLocals");
 
-this.frqReference = new PhantomReference(frq, this.queue);
+            inheritableThreadLocals.setAccessible(true);
+            return inheritableThreadLocals;
+        } catch (Throwable t) {
+            logger.log(Level.INFO, "Couldn't access Thread.inheritableThreadLocals. Reference finalizer threads will inherit thread local values.");
 
-setDaemon(true);
+            return null;
+        }
+    }
 
-try {
-if (inheritableThreadLocals != null) {
-inheritableThreadLocals.set(this, (Object)null);
-}
-} catch (Throwable t) {
-logger.log(Level.INFO, "Failed to clear thread local values inherited by reference finalizer thread.", t);
-} 
-}
+    public void run() {
+        try {
+            while (true) {
+                try {
+                    while (true)
+                        cleanUp(this.queue.remove());
+                    break;
+                } catch (InterruptedException e) {
+                }
+            }
+        } catch (ShutDown shutDown) {
+            return;
+        }
+    }
 
-public void run() {
-try {
-while (true) {
-try {
-while (true)
-cleanUp(this.queue.remove());  break;
-} catch (InterruptedException e) {}
-} 
-} catch (ShutDown shutDown) {
-return;
-} 
-}
+    private void cleanUp(Reference<?> reference) throws ShutDown {
+        Method finalizeReferentMethod = getFinalizeReferentMethod();
 
-private void cleanUp(Reference<?> reference) throws ShutDown {
-Method finalizeReferentMethod = getFinalizeReferentMethod();
+        do {
+            reference.clear();
 
-do {
-reference.clear();
+            if (reference == this.frqReference) {
 
-if (reference == this.frqReference)
-{
+                throw new ShutDown();
+            }
 
-throw new ShutDown();
-}
+            try {
+                finalizeReferentMethod.invoke(reference, new Object[0]);
+            } catch (Throwable t) {
+                logger.log(Level.SEVERE, "Error cleaning up after reference.", t);
 
-try {
-finalizeReferentMethod.invoke(reference, new Object[0]);
-} catch (Throwable t) {
-logger.log(Level.SEVERE, "Error cleaning up after reference.", t);
+            }
 
-}
+        }
+        while ((reference = this.queue.poll()) != null);
+    }
 
-}
-while ((reference = this.queue.poll()) != null);
-}
+    private Method getFinalizeReferentMethod() throws ShutDown {
+        Class<?> finalizableReferenceClass = this.finalizableReferenceClassReference.get();
 
-private Method getFinalizeReferentMethod() throws ShutDown {
-Class<?> finalizableReferenceClass = this.finalizableReferenceClassReference.get();
+        if (finalizableReferenceClass == null) {
 
-if (finalizableReferenceClass == null)
-{
+            throw new ShutDown();
+        }
+        try {
+            return finalizableReferenceClass.getMethod("finalizeReferent", new Class[0]);
+        } catch (NoSuchMethodException e) {
+            throw new AssertionError(e);
+        }
+    }
 
-throw new ShutDown();
-}
-try {
-return finalizableReferenceClass.getMethod("finalizeReferent", new Class[0]);
-} catch (NoSuchMethodException e) {
-throw new AssertionError(e);
-} 
-}
-
-public static Field getInheritableThreadLocalsField() {
-try {
-Field inheritableThreadLocals = Thread.class.getDeclaredField("inheritableThreadLocals");
-
-inheritableThreadLocals.setAccessible(true);
-return inheritableThreadLocals;
-} catch (Throwable t) {
-logger.log(Level.INFO, "Couldn't access Thread.inheritableThreadLocals. Reference finalizer threads will inherit thread local values.");
-
-return null;
-} 
-}
-
-private static class ShutDown extends Exception {
-private ShutDown() {}
-}
+    private static class ShutDown extends Exception {
+        private ShutDown() {
+        }
+    }
 }
 

@@ -1,10 +1,10 @@
 package org.apache.http.io;
 
 public interface BufferInfo {
-  int length();
+    int length();
 
-  int capacity();
+    int capacity();
 
-  int available();
+    int available();
 }
 

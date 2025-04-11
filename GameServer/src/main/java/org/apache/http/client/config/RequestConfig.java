@@ -1,265 +1,270 @@
 package org.apache.http.client.config;
 
-import java.net.InetAddress;
-import java.util.Collection;
 import org.apache.http.HttpHost;
 import org.apache.http.annotation.Immutable;
 
+import java.net.InetAddress;
+import java.util.Collection;
+
 @Immutable
 public class RequestConfig
-implements Cloneable
-{
-public static final RequestConfig DEFAULT = (new Builder()).build();
+        implements Cloneable {
+    public static final RequestConfig DEFAULT = (new Builder()).build();
 
-private final boolean expectContinueEnabled;
+    private final boolean expectContinueEnabled;
 
-private final HttpHost proxy;
+    private final HttpHost proxy;
 
-private final InetAddress localAddress;
+    private final InetAddress localAddress;
 
-private final boolean staleConnectionCheckEnabled;
+    private final boolean staleConnectionCheckEnabled;
 
-private final String cookieSpec;
+    private final String cookieSpec;
 
-private final boolean redirectsEnabled;
+    private final boolean redirectsEnabled;
 
-private final boolean relativeRedirectsAllowed;
+    private final boolean relativeRedirectsAllowed;
 
-private final boolean circularRedirectsAllowed;
+    private final boolean circularRedirectsAllowed;
 
-private final int maxRedirects;
+    private final int maxRedirects;
 
-private final boolean authenticationEnabled;
+    private final boolean authenticationEnabled;
 
-private final Collection<String> targetPreferredAuthSchemes;
+    private final Collection<String> targetPreferredAuthSchemes;
 
-private final Collection<String> proxyPreferredAuthSchemes;
+    private final Collection<String> proxyPreferredAuthSchemes;
 
-private final int connectionRequestTimeout;
+    private final int connectionRequestTimeout;
 
-private final int connectTimeout;
+    private final int connectTimeout;
 
-private final int socketTimeout;
+    private final int socketTimeout;
 
-private final boolean decompressionEnabled;
+    private final boolean decompressionEnabled;
 
-RequestConfig(boolean expectContinueEnabled, HttpHost proxy, InetAddress localAddress, boolean staleConnectionCheckEnabled, String cookieSpec, boolean redirectsEnabled, boolean relativeRedirectsAllowed, boolean circularRedirectsAllowed, int maxRedirects, boolean authenticationEnabled, Collection<String> targetPreferredAuthSchemes, Collection<String> proxyPreferredAuthSchemes, int connectionRequestTimeout, int connectTimeout, int socketTimeout, boolean decompressionEnabled) {
-this.expectContinueEnabled = expectContinueEnabled;
-this.proxy = proxy;
-this.localAddress = localAddress;
-this.staleConnectionCheckEnabled = staleConnectionCheckEnabled;
-this.cookieSpec = cookieSpec;
-this.redirectsEnabled = redirectsEnabled;
-this.relativeRedirectsAllowed = relativeRedirectsAllowed;
-this.circularRedirectsAllowed = circularRedirectsAllowed;
-this.maxRedirects = maxRedirects;
-this.authenticationEnabled = authenticationEnabled;
-this.targetPreferredAuthSchemes = targetPreferredAuthSchemes;
-this.proxyPreferredAuthSchemes = proxyPreferredAuthSchemes;
-this.connectionRequestTimeout = connectionRequestTimeout;
-this.connectTimeout = connectTimeout;
-this.socketTimeout = socketTimeout;
-this.decompressionEnabled = decompressionEnabled;
-}
+    RequestConfig(boolean expectContinueEnabled, HttpHost proxy, InetAddress localAddress, boolean staleConnectionCheckEnabled, String cookieSpec, boolean redirectsEnabled, boolean relativeRedirectsAllowed, boolean circularRedirectsAllowed, int maxRedirects, boolean authenticationEnabled, Collection<String> targetPreferredAuthSchemes, Collection<String> proxyPreferredAuthSchemes, int connectionRequestTimeout, int connectTimeout, int socketTimeout, boolean decompressionEnabled) {
+        this.expectContinueEnabled = expectContinueEnabled;
+        this.proxy = proxy;
+        this.localAddress = localAddress;
+        this.staleConnectionCheckEnabled = staleConnectionCheckEnabled;
+        this.cookieSpec = cookieSpec;
+        this.redirectsEnabled = redirectsEnabled;
+        this.relativeRedirectsAllowed = relativeRedirectsAllowed;
+        this.circularRedirectsAllowed = circularRedirectsAllowed;
+        this.maxRedirects = maxRedirects;
+        this.authenticationEnabled = authenticationEnabled;
+        this.targetPreferredAuthSchemes = targetPreferredAuthSchemes;
+        this.proxyPreferredAuthSchemes = proxyPreferredAuthSchemes;
+        this.connectionRequestTimeout = connectionRequestTimeout;
+        this.connectTimeout = connectTimeout;
+        this.socketTimeout = socketTimeout;
+        this.decompressionEnabled = decompressionEnabled;
+    }
 
-public boolean isExpectContinueEnabled() {
-return this.expectContinueEnabled;
-}
+    public static Builder custom() {
+        return new Builder();
+    }
 
-public HttpHost getProxy() {
-return this.proxy;
-}
+    public static Builder copy(RequestConfig config) {
+        return (new Builder()).setExpectContinueEnabled(config.isExpectContinueEnabled()).setProxy(config.getProxy()).setLocalAddress(config.getLocalAddress()).setStaleConnectionCheckEnabled(config.isStaleConnectionCheckEnabled()).setCookieSpec(config.getCookieSpec()).setRedirectsEnabled(config.isRedirectsEnabled()).setRelativeRedirectsAllowed(config.isRelativeRedirectsAllowed()).setCircularRedirectsAllowed(config.isCircularRedirectsAllowed()).setMaxRedirects(config.getMaxRedirects()).setAuthenticationEnabled(config.isAuthenticationEnabled()).setTargetPreferredAuthSchemes(config.getTargetPreferredAuthSchemes()).setProxyPreferredAuthSchemes(config.getProxyPreferredAuthSchemes()).setConnectionRequestTimeout(config.getConnectionRequestTimeout()).setConnectTimeout(config.getConnectTimeout()).setSocketTimeout(config.getSocketTimeout()).setDecompressionEnabled(config.isDecompressionEnabled());
+    }
 
-public InetAddress getLocalAddress() {
-return this.localAddress;
-}
+    public boolean isExpectContinueEnabled() {
+        return this.expectContinueEnabled;
+    }
 
-@Deprecated
-public boolean isStaleConnectionCheckEnabled() {
-return this.staleConnectionCheckEnabled;
-}
+    public HttpHost getProxy() {
+        return this.proxy;
+    }
 
-public String getCookieSpec() {
-return this.cookieSpec;
-}
+    public InetAddress getLocalAddress() {
+        return this.localAddress;
+    }
 
-public boolean isRedirectsEnabled() {
-return this.redirectsEnabled;
-}
+    @Deprecated
+    public boolean isStaleConnectionCheckEnabled() {
+        return this.staleConnectionCheckEnabled;
+    }
 
-public boolean isRelativeRedirectsAllowed() {
-return this.relativeRedirectsAllowed;
-}
+    public String getCookieSpec() {
+        return this.cookieSpec;
+    }
 
-public boolean isCircularRedirectsAllowed() {
-return this.circularRedirectsAllowed;
-}
+    public boolean isRedirectsEnabled() {
+        return this.redirectsEnabled;
+    }
 
-public int getMaxRedirects() {
-return this.maxRedirects;
-}
+    public boolean isRelativeRedirectsAllowed() {
+        return this.relativeRedirectsAllowed;
+    }
 
-public boolean isAuthenticationEnabled() {
-return this.authenticationEnabled;
-}
+    public boolean isCircularRedirectsAllowed() {
+        return this.circularRedirectsAllowed;
+    }
 
-public Collection<String> getTargetPreferredAuthSchemes() {
-return this.targetPreferredAuthSchemes;
-}
+    public int getMaxRedirects() {
+        return this.maxRedirects;
+    }
 
-public Collection<String> getProxyPreferredAuthSchemes() {
-return this.proxyPreferredAuthSchemes;
-}
+    public boolean isAuthenticationEnabled() {
+        return this.authenticationEnabled;
+    }
 
-public int getConnectionRequestTimeout() {
-return this.connectionRequestTimeout;
-}
+    public Collection<String> getTargetPreferredAuthSchemes() {
+        return this.targetPreferredAuthSchemes;
+    }
 
-public int getConnectTimeout() {
-return this.connectTimeout;
-}
+    public Collection<String> getProxyPreferredAuthSchemes() {
+        return this.proxyPreferredAuthSchemes;
+    }
 
-public int getSocketTimeout() {
-return this.socketTimeout;
-}
+    public int getConnectionRequestTimeout() {
+        return this.connectionRequestTimeout;
+    }
 
-public boolean isDecompressionEnabled() {
-return this.decompressionEnabled;
-}
+    public int getConnectTimeout() {
+        return this.connectTimeout;
+    }
 
-protected RequestConfig clone() throws CloneNotSupportedException {
-return (RequestConfig)super.clone();
-}
+    public int getSocketTimeout() {
+        return this.socketTimeout;
+    }
 
-public String toString() {
-StringBuilder builder = new StringBuilder();
-builder.append("[");
-builder.append("expectContinueEnabled=").append(this.expectContinueEnabled);
-builder.append(", proxy=").append(this.proxy);
-builder.append(", localAddress=").append(this.localAddress);
-builder.append(", cookieSpec=").append(this.cookieSpec);
-builder.append(", redirectsEnabled=").append(this.redirectsEnabled);
-builder.append(", relativeRedirectsAllowed=").append(this.relativeRedirectsAllowed);
-builder.append(", maxRedirects=").append(this.maxRedirects);
-builder.append(", circularRedirectsAllowed=").append(this.circularRedirectsAllowed);
-builder.append(", authenticationEnabled=").append(this.authenticationEnabled);
-builder.append(", targetPreferredAuthSchemes=").append(this.targetPreferredAuthSchemes);
-builder.append(", proxyPreferredAuthSchemes=").append(this.proxyPreferredAuthSchemes);
-builder.append(", connectionRequestTimeout=").append(this.connectionRequestTimeout);
-builder.append(", connectTimeout=").append(this.connectTimeout);
-builder.append(", socketTimeout=").append(this.socketTimeout);
-builder.append(", decompressionEnabled=").append(this.decompressionEnabled);
-builder.append("]");
-return builder.toString();
-}
+    public boolean isDecompressionEnabled() {
+        return this.decompressionEnabled;
+    }
 
-public static Builder custom() {
-return new Builder();
-}
+    protected RequestConfig clone() throws CloneNotSupportedException {
+        return (RequestConfig) super.clone();
+    }
 
-public static Builder copy(RequestConfig config) {
-return (new Builder()).setExpectContinueEnabled(config.isExpectContinueEnabled()).setProxy(config.getProxy()).setLocalAddress(config.getLocalAddress()).setStaleConnectionCheckEnabled(config.isStaleConnectionCheckEnabled()).setCookieSpec(config.getCookieSpec()).setRedirectsEnabled(config.isRedirectsEnabled()).setRelativeRedirectsAllowed(config.isRelativeRedirectsAllowed()).setCircularRedirectsAllowed(config.isCircularRedirectsAllowed()).setMaxRedirects(config.getMaxRedirects()).setAuthenticationEnabled(config.isAuthenticationEnabled()).setTargetPreferredAuthSchemes(config.getTargetPreferredAuthSchemes()).setProxyPreferredAuthSchemes(config.getProxyPreferredAuthSchemes()).setConnectionRequestTimeout(config.getConnectionRequestTimeout()).setConnectTimeout(config.getConnectTimeout()).setSocketTimeout(config.getSocketTimeout()).setDecompressionEnabled(config.isDecompressionEnabled());
-}
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        builder.append("expectContinueEnabled=").append(this.expectContinueEnabled);
+        builder.append(", proxy=").append(this.proxy);
+        builder.append(", localAddress=").append(this.localAddress);
+        builder.append(", cookieSpec=").append(this.cookieSpec);
+        builder.append(", redirectsEnabled=").append(this.redirectsEnabled);
+        builder.append(", relativeRedirectsAllowed=").append(this.relativeRedirectsAllowed);
+        builder.append(", maxRedirects=").append(this.maxRedirects);
+        builder.append(", circularRedirectsAllowed=").append(this.circularRedirectsAllowed);
+        builder.append(", authenticationEnabled=").append(this.authenticationEnabled);
+        builder.append(", targetPreferredAuthSchemes=").append(this.targetPreferredAuthSchemes);
+        builder.append(", proxyPreferredAuthSchemes=").append(this.proxyPreferredAuthSchemes);
+        builder.append(", connectionRequestTimeout=").append(this.connectionRequestTimeout);
+        builder.append(", connectTimeout=").append(this.connectTimeout);
+        builder.append(", socketTimeout=").append(this.socketTimeout);
+        builder.append(", decompressionEnabled=").append(this.decompressionEnabled);
+        builder.append("]");
+        return builder.toString();
+    }
 
-public static class Builder
-{
-private boolean staleConnectionCheckEnabled = false;
+    public static class Builder {
+        private boolean staleConnectionCheckEnabled = false;
 
-private boolean redirectsEnabled = true;
+        private boolean redirectsEnabled = true;
 
-private int maxRedirects = 50;
-private boolean relativeRedirectsAllowed = true;
-private boolean authenticationEnabled = true;
-private int connectionRequestTimeout = -1;
-private int connectTimeout = -1;
-private int socketTimeout = -1; private boolean decompressionEnabled = true; private boolean expectContinueEnabled;
-private HttpHost proxy;
-private InetAddress localAddress;
+        private int maxRedirects = 50;
+        private boolean relativeRedirectsAllowed = true;
+        private boolean authenticationEnabled = true;
+        private int connectionRequestTimeout = -1;
+        private int connectTimeout = -1;
+        private int socketTimeout = -1;
+        private boolean decompressionEnabled = true;
+        private boolean expectContinueEnabled;
+        private HttpHost proxy;
+        private InetAddress localAddress;
+        private String cookieSpec;
+        private boolean circularRedirectsAllowed;
+        private Collection<String> targetPreferredAuthSchemes;
+        private Collection<String> proxyPreferredAuthSchemes;
 
-public Builder setExpectContinueEnabled(boolean expectContinueEnabled) {
-this.expectContinueEnabled = expectContinueEnabled;
-return this;
-}
-private String cookieSpec; private boolean circularRedirectsAllowed; private Collection<String> targetPreferredAuthSchemes; private Collection<String> proxyPreferredAuthSchemes;
-public Builder setProxy(HttpHost proxy) {
-this.proxy = proxy;
-return this;
-}
+        public Builder setExpectContinueEnabled(boolean expectContinueEnabled) {
+            this.expectContinueEnabled = expectContinueEnabled;
+            return this;
+        }
 
-public Builder setLocalAddress(InetAddress localAddress) {
-this.localAddress = localAddress;
-return this;
-}
+        public Builder setProxy(HttpHost proxy) {
+            this.proxy = proxy;
+            return this;
+        }
 
-@Deprecated
-public Builder setStaleConnectionCheckEnabled(boolean staleConnectionCheckEnabled) {
-this.staleConnectionCheckEnabled = staleConnectionCheckEnabled;
-return this;
-}
+        public Builder setLocalAddress(InetAddress localAddress) {
+            this.localAddress = localAddress;
+            return this;
+        }
 
-public Builder setCookieSpec(String cookieSpec) {
-this.cookieSpec = cookieSpec;
-return this;
-}
+        @Deprecated
+        public Builder setStaleConnectionCheckEnabled(boolean staleConnectionCheckEnabled) {
+            this.staleConnectionCheckEnabled = staleConnectionCheckEnabled;
+            return this;
+        }
 
-public Builder setRedirectsEnabled(boolean redirectsEnabled) {
-this.redirectsEnabled = redirectsEnabled;
-return this;
-}
+        public Builder setCookieSpec(String cookieSpec) {
+            this.cookieSpec = cookieSpec;
+            return this;
+        }
 
-public Builder setRelativeRedirectsAllowed(boolean relativeRedirectsAllowed) {
-this.relativeRedirectsAllowed = relativeRedirectsAllowed;
-return this;
-}
+        public Builder setRedirectsEnabled(boolean redirectsEnabled) {
+            this.redirectsEnabled = redirectsEnabled;
+            return this;
+        }
 
-public Builder setCircularRedirectsAllowed(boolean circularRedirectsAllowed) {
-this.circularRedirectsAllowed = circularRedirectsAllowed;
-return this;
-}
+        public Builder setRelativeRedirectsAllowed(boolean relativeRedirectsAllowed) {
+            this.relativeRedirectsAllowed = relativeRedirectsAllowed;
+            return this;
+        }
 
-public Builder setMaxRedirects(int maxRedirects) {
-this.maxRedirects = maxRedirects;
-return this;
-}
+        public Builder setCircularRedirectsAllowed(boolean circularRedirectsAllowed) {
+            this.circularRedirectsAllowed = circularRedirectsAllowed;
+            return this;
+        }
 
-public Builder setAuthenticationEnabled(boolean authenticationEnabled) {
-this.authenticationEnabled = authenticationEnabled;
-return this;
-}
+        public Builder setMaxRedirects(int maxRedirects) {
+            this.maxRedirects = maxRedirects;
+            return this;
+        }
 
-public Builder setTargetPreferredAuthSchemes(Collection<String> targetPreferredAuthSchemes) {
-this.targetPreferredAuthSchemes = targetPreferredAuthSchemes;
-return this;
-}
+        public Builder setAuthenticationEnabled(boolean authenticationEnabled) {
+            this.authenticationEnabled = authenticationEnabled;
+            return this;
+        }
 
-public Builder setProxyPreferredAuthSchemes(Collection<String> proxyPreferredAuthSchemes) {
-this.proxyPreferredAuthSchemes = proxyPreferredAuthSchemes;
-return this;
-}
+        public Builder setTargetPreferredAuthSchemes(Collection<String> targetPreferredAuthSchemes) {
+            this.targetPreferredAuthSchemes = targetPreferredAuthSchemes;
+            return this;
+        }
 
-public Builder setConnectionRequestTimeout(int connectionRequestTimeout) {
-this.connectionRequestTimeout = connectionRequestTimeout;
-return this;
-}
+        public Builder setProxyPreferredAuthSchemes(Collection<String> proxyPreferredAuthSchemes) {
+            this.proxyPreferredAuthSchemes = proxyPreferredAuthSchemes;
+            return this;
+        }
 
-public Builder setConnectTimeout(int connectTimeout) {
-this.connectTimeout = connectTimeout;
-return this;
-}
+        public Builder setConnectionRequestTimeout(int connectionRequestTimeout) {
+            this.connectionRequestTimeout = connectionRequestTimeout;
+            return this;
+        }
 
-public Builder setSocketTimeout(int socketTimeout) {
-this.socketTimeout = socketTimeout;
-return this;
-}
+        public Builder setConnectTimeout(int connectTimeout) {
+            this.connectTimeout = connectTimeout;
+            return this;
+        }
 
-public Builder setDecompressionEnabled(boolean decompressionEnabled) {
-this.decompressionEnabled = decompressionEnabled;
-return this;
-}
+        public Builder setSocketTimeout(int socketTimeout) {
+            this.socketTimeout = socketTimeout;
+            return this;
+        }
 
-public RequestConfig build() {
-return new RequestConfig(this.expectContinueEnabled, this.proxy, this.localAddress, this.staleConnectionCheckEnabled, this.cookieSpec, this.redirectsEnabled, this.relativeRedirectsAllowed, this.circularRedirectsAllowed, this.maxRedirects, this.authenticationEnabled, this.targetPreferredAuthSchemes, this.proxyPreferredAuthSchemes, this.connectionRequestTimeout, this.connectTimeout, this.socketTimeout, this.decompressionEnabled);
-}
-}
+        public Builder setDecompressionEnabled(boolean decompressionEnabled) {
+            this.decompressionEnabled = decompressionEnabled;
+            return this;
+        }
+
+        public RequestConfig build() {
+            return new RequestConfig(this.expectContinueEnabled, this.proxy, this.localAddress, this.staleConnectionCheckEnabled, this.cookieSpec, this.redirectsEnabled, this.relativeRedirectsAllowed, this.circularRedirectsAllowed, this.maxRedirects, this.authenticationEnabled, this.targetPreferredAuthSchemes, this.proxyPreferredAuthSchemes, this.connectionRequestTimeout, this.connectTimeout, this.socketTimeout, this.decompressionEnabled);
+        }
+    }
 }
 

@@ -1,6 +1,5 @@
 package org.apache.http.client.methods;
 
-import java.net.URI;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
 import org.apache.http.annotation.NotThreadSafe;
@@ -8,63 +7,65 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.message.BasicRequestLine;
 import org.apache.http.params.HttpProtocolParams;
 
+import java.net.URI;
+
 @NotThreadSafe
 public abstract class HttpRequestBase
-extends AbstractExecutionAwareRequest
-implements HttpUriRequest, Configurable
-{
-private ProtocolVersion version;
-private URI uri;
-private RequestConfig config;
+        extends AbstractExecutionAwareRequest
+        implements HttpUriRequest, Configurable {
+    private ProtocolVersion version;
+    private URI uri;
+    private RequestConfig config;
 
-public abstract String getMethod();
+    public abstract String getMethod();
 
-public void setProtocolVersion(ProtocolVersion version) {
-this.version = version;
-}
+    public ProtocolVersion getProtocolVersion() {
+        return (this.version != null) ? this.version : HttpProtocolParams.getVersion(getParams());
+    }
 
-public ProtocolVersion getProtocolVersion() {
-return (this.version != null) ? this.version : HttpProtocolParams.getVersion(getParams());
-}
+    public void setProtocolVersion(ProtocolVersion version) {
+        this.version = version;
+    }
 
-public URI getURI() {
-return this.uri;
-}
+    public URI getURI() {
+        return this.uri;
+    }
 
-public RequestLine getRequestLine() {
-String method = getMethod();
-ProtocolVersion ver = getProtocolVersion();
-URI uriCopy = getURI();
-String uritext = null;
-if (uriCopy != null) {
-uritext = uriCopy.toASCIIString();
-}
-if (uritext == null || uritext.isEmpty()) {
-uritext = "/";
-}
-return (RequestLine)new BasicRequestLine(method, uritext, ver);
-}
+    public void setURI(URI uri) {
+        this.uri = uri;
+    }
 
-public RequestConfig getConfig() {
-return this.config;
-}
+    public RequestLine getRequestLine() {
+        String method = getMethod();
+        ProtocolVersion ver = getProtocolVersion();
+        URI uriCopy = getURI();
+        String uritext = null;
+        if (uriCopy != null) {
+            uritext = uriCopy.toASCIIString();
+        }
+        if (uritext == null || uritext.isEmpty()) {
+            uritext = "/";
+        }
+        return (RequestLine) new BasicRequestLine(method, uritext, ver);
+    }
 
-public void setConfig(RequestConfig config) {
-this.config = config;
-}
+    public RequestConfig getConfig() {
+        return this.config;
+    }
 
-public void setURI(URI uri) {
-this.uri = uri;
-}
+    public void setConfig(RequestConfig config) {
+        this.config = config;
+    }
 
-public void started() {}
+    public void started() {
+    }
 
-public void releaseConnection() {
-reset();
-}
+    public void releaseConnection() {
+        reset();
+    }
 
-public String toString() {
-return getMethod() + " " + getURI() + " " + getProtocolVersion();
-}
+    public String toString() {
+        return getMethod() + " " + getURI() + " " + getProtocolVersion();
+    }
 }
 

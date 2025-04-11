@@ -1,178 +1,177 @@
 package javolution.util.internal.table;
 
+import javolution.util.FastCollection;
+import javolution.util.function.Equality;
+import javolution.util.service.TableService;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import javolution.util.FastCollection;
-import javolution.util.function.Equality;
-import javolution.util.internal.collection.CollectionView;
-import javolution.util.service.CollectionService;
-import javolution.util.service.TableService;
 
 public class FastTableImpl<E>
-extends TableView<E>
-{
-private static final long serialVersionUID = 1536L;
-private transient int capacity;
-private final Equality<? super E> comparator;
-private transient FractalTableImpl fractal;
-private transient int size;
+        extends TableView<E> {
+    private static final long serialVersionUID = 1536L;
+    private final Equality<? super E> comparator;
+    private transient int capacity;
+    private transient FractalTableImpl fractal;
+    private transient int size;
 
-private class IteratorImpl
-implements Iterator<E> {
-private int currentIndex = -1;
+    public FastTableImpl(Equality<? super E> comparator) {
+        super((TableService<E>) null);
+        this.comparator = comparator;
+    }
 
-private int nextIndex;
+    public boolean add(E element) {
+        addLast(element);
+        return true;
+    }
 
-public boolean hasNext() {
-return (this.nextIndex < FastTableImpl.this.size);
-}
+    public void add(int index, E element) {
+        if (index < 0 || index > this.size) indexError(index);
+        checkUpsize();
+        if (index >= this.size >> 1) {
+            this.fractal.shiftRight(element, index, this.size - index);
+        } else {
+            this.fractal.shiftLeft(element, index - 1, index);
+            this.fractal.offset--;
+        }
+        this.size++;
+    }
 
-public E next() {
-if (this.nextIndex >= FastTableImpl.this.size) throw new NoSuchElementException(); 
-this.currentIndex = this.nextIndex++;
-return (E)FastTableImpl.this.fractal.get(this.currentIndex);
-}
+    public void addFirst(E element) {
+        checkUpsize();
+        this.fractal.offset--;
+        this.fractal.set(0, element);
+        this.size++;
+    }
 
-public void remove() {
-if (this.currentIndex < 0) throw new IllegalStateException(); 
-FastTableImpl.this.remove(this.currentIndex);
-this.nextIndex--;
-this.currentIndex = -1;
-}
+    public void addLast(E element) {
+        checkUpsize();
+        this.fractal.set(this.size++, element);
+    }
 
-private IteratorImpl() {}
-}
+    public void clear() {
+        this.fractal = null;
+        this.capacity = 0;
+        this.size = 0;
+    }
 
-public FastTableImpl(Equality<? super E> comparator) {
-super((TableService<E>)null);
-this.comparator = comparator;
-}
+    public FastTableImpl<E> clone() {
+        FastTableImpl<E> copy = new FastTableImpl(comparator());
+        copy.addAll((FastCollection) this);
+        return copy;
+    }
 
-public boolean add(E element) {
-addLast(element);
-return true;
-}
+    public Equality<? super E> comparator() {
+        return this.comparator;
+    }
 
-public void add(int index, E element) {
-if (index < 0 || index > this.size) indexError(index); 
-checkUpsize();
-if (index >= this.size >> 1) {
-this.fractal.shiftRight(element, index, this.size - index);
-} else {
-this.fractal.shiftLeft(element, index - 1, index);
-this.fractal.offset--;
-} 
-this.size++;
-}
+    public E get(int index) {
+        if (index < 0 && index >= this.size) indexError(index);
+        return (E) this.fractal.get(index);
+    }
 
-public void addFirst(E element) {
-checkUpsize();
-this.fractal.offset--;
-this.fractal.set(0, element);
-this.size++;
-}
+    public E getFirst() {
+        if (this.size == 0) emptyError();
+        return get(0);
+    }
 
-public void addLast(E element) {
-checkUpsize();
-this.fractal.set(this.size++, element);
-}
+    public E getLast() {
+        if (this.size == 0) emptyError();
+        return get(this.size - 1);
+    }
 
-public void clear() {
-this.fractal = null;
-this.capacity = 0;
-this.size = 0;
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl();
+    }
 
-public FastTableImpl<E> clone() {
-FastTableImpl<E> copy = new FastTableImpl(comparator());
-copy.addAll((FastCollection)this);
-return copy;
-}
+    public E remove(int index) {
+        if (index < 0 || index >= this.size) indexError(index);
+        E removed = (E) this.fractal.get(index);
+        if (index >= this.size >> 1) {
+            this.fractal.shiftLeft(null, this.size - 1, this.size - index - 1);
+        } else {
+            this.fractal.shiftRight(null, 0, index);
+            this.fractal.offset++;
+        }
+        this.size--;
+        return removed;
+    }
 
-public Equality<? super E> comparator() {
-return this.comparator;
-}
+    public E removeFirst() {
+        if (this.size == 0) emptyError();
+        E first = (E) this.fractal.set(0, null);
+        this.fractal.offset++;
+        this.size--;
+        return first;
+    }
 
-public E get(int index) {
-if (index < 0 && index >= this.size) indexError(index); 
-return (E)this.fractal.get(index);
-}
+    public E removeLast() {
+        if (this.size == 0) emptyError();
+        E last = (E) this.fractal.set(--this.size, null);
+        return last;
+    }
 
-public E getFirst() {
-if (this.size == 0) emptyError(); 
-return get(0);
-}
+    public E set(int index, E element) {
+        if (index < 0 && index >= this.size) indexError(index);
+        return (E) this.fractal.set(index, element);
+    }
 
-public E getLast() {
-if (this.size == 0) emptyError(); 
-return get(this.size - 1);
-}
+    public int size() {
+        return this.size;
+    }
 
-public Iterator<E> iterator() {
-return new IteratorImpl();
-}
+    private void checkUpsize() {
+        if (this.size >= this.capacity) upsize();
 
-public E remove(int index) {
-if (index < 0 || index >= this.size) indexError(index); 
-E removed = (E)this.fractal.get(index);
-if (index >= this.size >> 1) {
-this.fractal.shiftLeft(null, this.size - 1, this.size - index - 1);
-} else {
-this.fractal.shiftRight(null, 0, index);
-this.fractal.offset++;
-} 
-this.size--;
-return removed;
-}
+    }
 
-public E removeFirst() {
-if (this.size == 0) emptyError(); 
-E first = (E)this.fractal.set(0, null);
-this.fractal.offset++;
-this.size--;
-return first;
-}
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        int n = s.readInt();
+        for (int i = 0; i < n; i++)
+            addLast((E) s.readObject());
+    }
 
-public E removeLast() {
-if (this.size == 0) emptyError(); 
-E last = (E)this.fractal.set(--this.size, null);
-return last;
-}
+    private void upsize() {
+        this.fractal = (this.fractal == null) ? new FractalTableImpl() : this.fractal.upsize();
+        this.capacity = this.fractal.capacity();
+    }
 
-public E set(int index, E element) {
-if (index < 0 && index >= this.size) indexError(index); 
-return (E)this.fractal.set(index, element);
-}
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        s.writeInt(this.size);
+        for (int i = 0; i < this.size; i++)
+            s.writeObject(this.fractal.get(i));
+    }
 
-public int size() {
-return this.size;
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private int currentIndex = -1;
 
-private void checkUpsize() {
-if (this.size >= this.capacity) upsize();
+        private int nextIndex;
 
-}
+        private IteratorImpl() {
+        }
 
-private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
-s.defaultReadObject();
-int n = s.readInt();
-for (int i = 0; i < n; i++)
-addLast((E)s.readObject()); 
-}
+        public boolean hasNext() {
+            return (this.nextIndex < FastTableImpl.this.size);
+        }
 
-private void upsize() {
-this.fractal = (this.fractal == null) ? new FractalTableImpl() : this.fractal.upsize();
-this.capacity = this.fractal.capacity();
-}
+        public E next() {
+            if (this.nextIndex >= FastTableImpl.this.size) throw new NoSuchElementException();
+            this.currentIndex = this.nextIndex++;
+            return (E) FastTableImpl.this.fractal.get(this.currentIndex);
+        }
 
-private void writeObject(ObjectOutputStream s) throws IOException {
-s.defaultWriteObject();
-s.writeInt(this.size);
-for (int i = 0; i < this.size; i++)
-s.writeObject(this.fractal.get(i)); 
-}
+        public void remove() {
+            if (this.currentIndex < 0) throw new IllegalStateException();
+            FastTableImpl.this.remove(this.currentIndex);
+            this.nextIndex--;
+            this.currentIndex = -1;
+        }
+    }
 }
 

@@ -9,32 +9,30 @@ import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
 import core.network.proto.TeamInfo;
+
 import java.io.IOException;
 
 public class Simulate
-extends PlayerHandler
-{
-private static class Request
-{
-long targetPid;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request begin = (Request) (new Gson()).fromJson(message, Request.class);
+        Player target = PlayerMgr.getInstance().getPlayer(begin.targetPid);
+        if (target == null) {
+            throw new WSException(ErrorCode.Player_NotFound, "玩家%s不存在", new Object[]{Long.valueOf(begin.targetPid)});
+        }
 
-private static class Response
-{
-long fightid;
-TeamInfo team;
-}
+        SimulatBattle battle = new SimulatBattle(player, target);
+        battle.fight();
+        request.response(battle.proto());
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request begin = (Request)(new Gson()).fromJson(message, Request.class);
-Player target = PlayerMgr.getInstance().getPlayer(begin.targetPid);
-if (target == null) {
-throw new WSException(ErrorCode.Player_NotFound, "玩家%s不存在", new Object[] { Long.valueOf(begin.targetPid) });
-}
+    private static class Request {
+        long targetPid;
+    }
 
-SimulatBattle battle = new SimulatBattle(player, target);
-battle.fight();
-request.response(battle.proto());
-}
+    private static class Response {
+        long fightid;
+        TeamInfo team;
+    }
 }
 

@@ -1,94 +1,93 @@
 package bsh;
 
 class BSHLiteral
-extends SimpleNode
-{
-public Object value;
+        extends SimpleNode {
+    public Object value;
 
-BSHLiteral(int id) {
-super(id);
-}
+    BSHLiteral(int id) {
+        super(id);
+    }
 
-public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
-if (this.value == null) {
-throw new InterpreterError("Null in bsh literal: " + this.value);
-}
-return this.value;
-}
+    public Object eval(CallStack callstack, Interpreter interpreter) throws EvalError {
+        if (this.value == null) {
+            throw new InterpreterError("Null in bsh literal: " + this.value);
+        }
+        return this.value;
+    }
 
-private char getEscapeChar(char ch) {
-switch (ch) {
+    private char getEscapeChar(char ch) {
+        switch (ch) {
 
-case 'b':
-ch = '\b';
-break;
+            case 'b':
+                ch = '\b';
+                break;
 
-case 't':
-ch = '\t';
-break;
+            case 't':
+                ch = '\t';
+                break;
 
-case 'n':
-ch = '\n';
-break;
+            case 'n':
+                ch = '\n';
+                break;
 
-case 'f':
-ch = '\f';
-break;
+            case 'f':
+                ch = '\f';
+                break;
 
-case 'r':
-ch = '\r';
-break;
-} 
+            case 'r':
+                ch = '\r';
+                break;
+        }
 
-return ch;
-}
+        return ch;
+    }
 
-public void charSetup(String str) {
-char ch = str.charAt(0);
-if (ch == '\\') {
+    public void charSetup(String str) {
+        char ch = str.charAt(0);
+        if (ch == '\\') {
 
-ch = str.charAt(1);
+            ch = str.charAt(1);
 
-if (Character.isDigit(ch)) {
-ch = (char)Integer.parseInt(str.substring(1), 8);
-} else {
-ch = getEscapeChar(ch);
-} 
-} 
-this.value = new Primitive((new Character(ch)).charValue());
-}
+            if (Character.isDigit(ch)) {
+                ch = (char) Integer.parseInt(str.substring(1), 8);
+            } else {
+                ch = getEscapeChar(ch);
+            }
+        }
+        this.value = new Primitive((new Character(ch)).charValue());
+    }
 
-void stringSetup(String str) {
-StringBuffer buffer = new StringBuffer();
-for (int i = 0; i < str.length(); i++) {
+    void stringSetup(String str) {
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < str.length(); i++) {
 
-char ch = str.charAt(i);
-if (ch == '\\') {
+            char ch = str.charAt(i);
+            if (ch == '\\') {
 
-ch = str.charAt(++i);
+                ch = str.charAt(++i);
 
-if (Character.isDigit(ch)) {
+                if (Character.isDigit(ch)) {
 
-int endPos = i;
+                    int endPos = i;
 
-while (endPos < i + 2) {
+                    while (endPos < i + 2) {
 
-if (Character.isDigit(str.charAt(endPos + 1))) {
-endPos++;
-}
-} 
+                        if (Character.isDigit(str.charAt(endPos + 1))) {
+                            endPos++;
+                        }
+                    }
 
-ch = (char)Integer.parseInt(str.substring(i, endPos + 1), 8);
-i = endPos;
-} else {
+                    ch = (char) Integer.parseInt(str.substring(i, endPos + 1), 8);
+                    i = endPos;
+                } else {
 
-ch = getEscapeChar(ch);
-} 
-} 
-buffer.append(ch);
-} 
+                    ch = getEscapeChar(ch);
+                }
+            }
+            buffer.append(ch);
+        }
 
-this.value = buffer.toString().intern();
-}
+        this.value = buffer.toString().intern();
+    }
 }
 

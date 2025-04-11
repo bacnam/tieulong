@@ -1,260 +1,247 @@
 package com.mchange.v2.sql.filter;
 
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
+import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public abstract class FilterConnection
-implements Connection
-{
-protected Connection inner;
+        implements Connection {
+    protected Connection inner;
 
-private void __setInner(Connection paramConnection) {
-this.inner = paramConnection;
-}
+    public FilterConnection(Connection paramConnection) {
+        __setInner(paramConnection);
+    }
 
-public FilterConnection(Connection paramConnection) {
-__setInner(paramConnection);
-}
+    public FilterConnection() {
+    }
 
-public FilterConnection() {}
+    private void __setInner(Connection paramConnection) {
+        this.inner = paramConnection;
+    }
 
-public void setInner(Connection paramConnection) {
-__setInner(paramConnection);
-}
-public Connection getInner() {
-return this.inner;
-}
+    public Connection getInner() {
+        return this.inner;
+    }
 
-public void commit() throws SQLException {
-this.inner.commit();
-}
+    public void setInner(Connection paramConnection) {
+        __setInner(paramConnection);
+    }
 
-public void clearWarnings() throws SQLException {
-this.inner.clearWarnings();
-}
+    public void commit() throws SQLException {
+        this.inner.commit();
+    }
 
-public Array createArrayOf(String paramString, Object[] paramArrayOfObject) throws SQLException {
-return this.inner.createArrayOf(paramString, paramArrayOfObject);
-}
+    public void clearWarnings() throws SQLException {
+        this.inner.clearWarnings();
+    }
 
-public Blob createBlob() throws SQLException {
-return this.inner.createBlob();
-}
+    public Array createArrayOf(String paramString, Object[] paramArrayOfObject) throws SQLException {
+        return this.inner.createArrayOf(paramString, paramArrayOfObject);
+    }
 
-public Clob createClob() throws SQLException {
-return this.inner.createClob();
-}
+    public Blob createBlob() throws SQLException {
+        return this.inner.createBlob();
+    }
 
-public NClob createNClob() throws SQLException {
-return this.inner.createNClob();
-}
+    public Clob createClob() throws SQLException {
+        return this.inner.createClob();
+    }
 
-public SQLXML createSQLXML() throws SQLException {
-return this.inner.createSQLXML();
-}
+    public NClob createNClob() throws SQLException {
+        return this.inner.createNClob();
+    }
 
-public Statement createStatement(int paramInt1, int paramInt2, int paramInt3) throws SQLException {
-return this.inner.createStatement(paramInt1, paramInt2, paramInt3);
-}
+    public SQLXML createSQLXML() throws SQLException {
+        return this.inner.createSQLXML();
+    }
 
-public Statement createStatement(int paramInt1, int paramInt2) throws SQLException {
-return this.inner.createStatement(paramInt1, paramInt2);
-}
+    public Statement createStatement(int paramInt1, int paramInt2, int paramInt3) throws SQLException {
+        return this.inner.createStatement(paramInt1, paramInt2, paramInt3);
+    }
 
-public Statement createStatement() throws SQLException {
-return this.inner.createStatement();
-}
+    public Statement createStatement(int paramInt1, int paramInt2) throws SQLException {
+        return this.inner.createStatement(paramInt1, paramInt2);
+    }
 
-public Struct createStruct(String paramString, Object[] paramArrayOfObject) throws SQLException {
-return this.inner.createStruct(paramString, paramArrayOfObject);
-}
+    public Statement createStatement() throws SQLException {
+        return this.inner.createStatement();
+    }
 
-public boolean getAutoCommit() throws SQLException {
-return this.inner.getAutoCommit();
-}
+    public Struct createStruct(String paramString, Object[] paramArrayOfObject) throws SQLException {
+        return this.inner.createStruct(paramString, paramArrayOfObject);
+    }
 
-public String getCatalog() throws SQLException {
-return this.inner.getCatalog();
-}
+    public boolean getAutoCommit() throws SQLException {
+        return this.inner.getAutoCommit();
+    }
 
-public String getClientInfo(String paramString) throws SQLException {
-return this.inner.getClientInfo(paramString);
-}
+    public void setAutoCommit(boolean paramBoolean) throws SQLException {
+        this.inner.setAutoCommit(paramBoolean);
+    }
 
-public Properties getClientInfo() throws SQLException {
-return this.inner.getClientInfo();
-}
+    public String getCatalog() throws SQLException {
+        return this.inner.getCatalog();
+    }
 
-public int getHoldability() throws SQLException {
-return this.inner.getHoldability();
-}
+    public void setCatalog(String paramString) throws SQLException {
+        this.inner.setCatalog(paramString);
+    }
 
-public DatabaseMetaData getMetaData() throws SQLException {
-return this.inner.getMetaData();
-}
+    public String getClientInfo(String paramString) throws SQLException {
+        return this.inner.getClientInfo(paramString);
+    }
 
-public int getNetworkTimeout() throws SQLException {
-return this.inner.getNetworkTimeout();
-}
+    public Properties getClientInfo() throws SQLException {
+        return this.inner.getClientInfo();
+    }
 
-public String getSchema() throws SQLException {
-return this.inner.getSchema();
-}
+    public void setClientInfo(Properties paramProperties) throws SQLClientInfoException {
+        this.inner.setClientInfo(paramProperties);
+    }
 
-public int getTransactionIsolation() throws SQLException {
-return this.inner.getTransactionIsolation();
-}
+    public int getHoldability() throws SQLException {
+        return this.inner.getHoldability();
+    }
 
-public Map getTypeMap() throws SQLException {
-return this.inner.getTypeMap();
-}
+    public void setHoldability(int paramInt) throws SQLException {
+        this.inner.setHoldability(paramInt);
+    }
 
-public SQLWarning getWarnings() throws SQLException {
-return this.inner.getWarnings();
-}
+    public DatabaseMetaData getMetaData() throws SQLException {
+        return this.inner.getMetaData();
+    }
 
-public boolean isClosed() throws SQLException {
-return this.inner.isClosed();
-}
+    public int getNetworkTimeout() throws SQLException {
+        return this.inner.getNetworkTimeout();
+    }
 
-public String nativeSQL(String paramString) throws SQLException {
-return this.inner.nativeSQL(paramString);
-}
+    public String getSchema() throws SQLException {
+        return this.inner.getSchema();
+    }
 
-public CallableStatement prepareCall(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException {
-return this.inner.prepareCall(paramString, paramInt1, paramInt2, paramInt3);
-}
+    public void setSchema(String paramString) throws SQLException {
+        this.inner.setSchema(paramString);
+    }
 
-public CallableStatement prepareCall(String paramString, int paramInt1, int paramInt2) throws SQLException {
-return this.inner.prepareCall(paramString, paramInt1, paramInt2);
-}
+    public int getTransactionIsolation() throws SQLException {
+        return this.inner.getTransactionIsolation();
+    }
 
-public CallableStatement prepareCall(String paramString) throws SQLException {
-return this.inner.prepareCall(paramString);
-}
+    public void setTransactionIsolation(int paramInt) throws SQLException {
+        this.inner.setTransactionIsolation(paramInt);
+    }
 
-public PreparedStatement prepareStatement(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException {
-return this.inner.prepareStatement(paramString, paramInt1, paramInt2, paramInt3);
-}
+    public Map getTypeMap() throws SQLException {
+        return this.inner.getTypeMap();
+    }
 
-public PreparedStatement prepareStatement(String paramString, int paramInt) throws SQLException {
-return this.inner.prepareStatement(paramString, paramInt);
-}
+    public void setTypeMap(Map<String, Class<?>> paramMap) throws SQLException {
+        this.inner.setTypeMap(paramMap);
+    }
 
-public PreparedStatement prepareStatement(String paramString, int[] paramArrayOfint) throws SQLException {
-return this.inner.prepareStatement(paramString, paramArrayOfint);
-}
+    public SQLWarning getWarnings() throws SQLException {
+        return this.inner.getWarnings();
+    }
 
-public PreparedStatement prepareStatement(String paramString, String[] paramArrayOfString) throws SQLException {
-return this.inner.prepareStatement(paramString, paramArrayOfString);
-}
+    public boolean isClosed() throws SQLException {
+        return this.inner.isClosed();
+    }
 
-public PreparedStatement prepareStatement(String paramString) throws SQLException {
-return this.inner.prepareStatement(paramString);
-}
+    public String nativeSQL(String paramString) throws SQLException {
+        return this.inner.nativeSQL(paramString);
+    }
 
-public PreparedStatement prepareStatement(String paramString, int paramInt1, int paramInt2) throws SQLException {
-return this.inner.prepareStatement(paramString, paramInt1, paramInt2);
-}
+    public CallableStatement prepareCall(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException {
+        return this.inner.prepareCall(paramString, paramInt1, paramInt2, paramInt3);
+    }
 
-public void releaseSavepoint(Savepoint paramSavepoint) throws SQLException {
-this.inner.releaseSavepoint(paramSavepoint);
-}
+    public CallableStatement prepareCall(String paramString, int paramInt1, int paramInt2) throws SQLException {
+        return this.inner.prepareCall(paramString, paramInt1, paramInt2);
+    }
 
-public void rollback() throws SQLException {
-this.inner.rollback();
-}
+    public CallableStatement prepareCall(String paramString) throws SQLException {
+        return this.inner.prepareCall(paramString);
+    }
 
-public void rollback(Savepoint paramSavepoint) throws SQLException {
-this.inner.rollback(paramSavepoint);
-}
+    public PreparedStatement prepareStatement(String paramString, int paramInt1, int paramInt2, int paramInt3) throws SQLException {
+        return this.inner.prepareStatement(paramString, paramInt1, paramInt2, paramInt3);
+    }
 
-public void setAutoCommit(boolean paramBoolean) throws SQLException {
-this.inner.setAutoCommit(paramBoolean);
-}
+    public PreparedStatement prepareStatement(String paramString, int paramInt) throws SQLException {
+        return this.inner.prepareStatement(paramString, paramInt);
+    }
 
-public void setCatalog(String paramString) throws SQLException {
-this.inner.setCatalog(paramString);
-}
+    public PreparedStatement prepareStatement(String paramString, int[] paramArrayOfint) throws SQLException {
+        return this.inner.prepareStatement(paramString, paramArrayOfint);
+    }
 
-public void setClientInfo(String paramString1, String paramString2) throws SQLClientInfoException {
-this.inner.setClientInfo(paramString1, paramString2);
-}
+    public PreparedStatement prepareStatement(String paramString, String[] paramArrayOfString) throws SQLException {
+        return this.inner.prepareStatement(paramString, paramArrayOfString);
+    }
 
-public void setClientInfo(Properties paramProperties) throws SQLClientInfoException {
-this.inner.setClientInfo(paramProperties);
-}
+    public PreparedStatement prepareStatement(String paramString) throws SQLException {
+        return this.inner.prepareStatement(paramString);
+    }
 
-public void setHoldability(int paramInt) throws SQLException {
-this.inner.setHoldability(paramInt);
-}
+    public PreparedStatement prepareStatement(String paramString, int paramInt1, int paramInt2) throws SQLException {
+        return this.inner.prepareStatement(paramString, paramInt1, paramInt2);
+    }
 
-public void setNetworkTimeout(Executor paramExecutor, int paramInt) throws SQLException {
-this.inner.setNetworkTimeout(paramExecutor, paramInt);
-}
+    public void releaseSavepoint(Savepoint paramSavepoint) throws SQLException {
+        this.inner.releaseSavepoint(paramSavepoint);
+    }
 
-public Savepoint setSavepoint() throws SQLException {
-return this.inner.setSavepoint();
-}
+    public void rollback() throws SQLException {
+        this.inner.rollback();
+    }
 
-public Savepoint setSavepoint(String paramString) throws SQLException {
-return this.inner.setSavepoint(paramString);
-}
+    public void rollback(Savepoint paramSavepoint) throws SQLException {
+        this.inner.rollback(paramSavepoint);
+    }
 
-public void setSchema(String paramString) throws SQLException {
-this.inner.setSchema(paramString);
-}
+    public void setClientInfo(String paramString1, String paramString2) throws SQLClientInfoException {
+        this.inner.setClientInfo(paramString1, paramString2);
+    }
 
-public void setTransactionIsolation(int paramInt) throws SQLException {
-this.inner.setTransactionIsolation(paramInt);
-}
+    public void setNetworkTimeout(Executor paramExecutor, int paramInt) throws SQLException {
+        this.inner.setNetworkTimeout(paramExecutor, paramInt);
+    }
 
-public void setTypeMap(Map<String, Class<?>> paramMap) throws SQLException {
-this.inner.setTypeMap(paramMap);
-}
+    public Savepoint setSavepoint() throws SQLException {
+        return this.inner.setSavepoint();
+    }
 
-public void setReadOnly(boolean paramBoolean) throws SQLException {
-this.inner.setReadOnly(paramBoolean);
-}
+    public Savepoint setSavepoint(String paramString) throws SQLException {
+        return this.inner.setSavepoint(paramString);
+    }
 
-public void close() throws SQLException {
-this.inner.close();
-}
+    public void close() throws SQLException {
+        this.inner.close();
+    }
 
-public boolean isValid(int paramInt) throws SQLException {
-return this.inner.isValid(paramInt);
-}
+    public boolean isValid(int paramInt) throws SQLException {
+        return this.inner.isValid(paramInt);
+    }
 
-public boolean isReadOnly() throws SQLException {
-return this.inner.isReadOnly();
-}
+    public boolean isReadOnly() throws SQLException {
+        return this.inner.isReadOnly();
+    }
 
-public void abort(Executor paramExecutor) throws SQLException {
-this.inner.abort(paramExecutor);
-}
+    public void setReadOnly(boolean paramBoolean) throws SQLException {
+        this.inner.setReadOnly(paramBoolean);
+    }
 
-public boolean isWrapperFor(Class<?> paramClass) throws SQLException {
-return this.inner.isWrapperFor(paramClass);
-}
+    public void abort(Executor paramExecutor) throws SQLException {
+        this.inner.abort(paramExecutor);
+    }
 
-public Object unwrap(Class<?> paramClass) throws SQLException {
-return this.inner.unwrap(paramClass);
-}
+    public boolean isWrapperFor(Class<?> paramClass) throws SQLException {
+        return this.inner.isWrapperFor(paramClass);
+    }
+
+    public Object unwrap(Class<?> paramClass) throws SQLException {
+        return this.inner.unwrap(paramClass);
+    }
 }
 

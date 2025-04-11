@@ -6,14 +6,14 @@ import com.zhonglian.server.common.enums.Achievement;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class ShareMicro
-extends PlayerHandler
-{
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.MicroPhone);
-request.response();
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.MicroPhone);
+        request.response();
+    }
 }
 

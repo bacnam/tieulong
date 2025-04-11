@@ -7,6 +7,53 @@ import java.io.Reader;
 
 public class JavaCharStream {
     public static final boolean staticFlag = false;
+    public int bufpos = -1;
+    protected int[] bufline;
+    protected int[] bufcolumn;
+    protected int column = 0;
+    protected int line = 1;
+    protected boolean prevCharIsCR = false;
+    protected boolean prevCharIsLF = false;
+    protected Reader inputStream;
+    protected char[] nextCharBuf;
+    protected char[] buffer;
+    protected int maxNextCharInd = 0;
+    protected int nextCharInd = -1;
+    protected int inBuf = 0;
+    int bufsize;
+    int available;
+    int tokenBegin;
+    public JavaCharStream(Reader dstream, int startline, int startcolumn, int buffersize) {
+        this.inputStream = dstream;
+        this.line = startline;
+        this.column = startcolumn - 1;
+
+        this.available = this.bufsize = buffersize;
+        this.buffer = new char[buffersize];
+        this.bufline = new int[buffersize];
+        this.bufcolumn = new int[buffersize];
+        this.nextCharBuf = new char[4096];
+    }
+
+    public JavaCharStream(Reader dstream, int startline, int startcolumn) {
+        this(dstream, startline, startcolumn, 4096);
+    }
+
+    public JavaCharStream(Reader dstream) {
+        this(dstream, 1, 1, 4096);
+    }
+
+    public JavaCharStream(InputStream dstream, int startline, int startcolumn, int buffersize) {
+        this(new InputStreamReader(dstream), startline, startcolumn, 4096);
+    }
+
+    public JavaCharStream(InputStream dstream, int startline, int startcolumn) {
+        this(dstream, startline, startcolumn, 4096);
+    }
+
+    public JavaCharStream(InputStream dstream) {
+        this(dstream, 1, 1, 4096);
+    }
 
     static final int hexval(char c) throws IOException {
         switch (c) {
@@ -54,27 +101,6 @@ public class JavaCharStream {
 
         throw new IOException();
     }
-
-    public int bufpos = -1;
-
-    int bufsize;
-    int available;
-    int tokenBegin;
-    protected int[] bufline;
-    protected int[] bufcolumn;
-    protected int column = 0;
-    protected int line = 1;
-
-    protected boolean prevCharIsCR = false;
-
-    protected boolean prevCharIsLF = false;
-
-    protected Reader inputStream;
-    protected char[] nextCharBuf;
-    protected char[] buffer;
-    protected int maxNextCharInd = 0;
-    protected int nextCharInd = -1;
-    protected int inBuf = 0;
 
     protected void ExpandBuff(boolean wrapAround) {
         char[] newbuffer = new char[this.bufsize + 2048];
@@ -336,26 +362,6 @@ public class JavaCharStream {
         }
     }
 
-    public JavaCharStream(Reader dstream, int startline, int startcolumn, int buffersize) {
-        this.inputStream = dstream;
-        this.line = startline;
-        this.column = startcolumn - 1;
-
-        this.available = this.bufsize = buffersize;
-        this.buffer = new char[buffersize];
-        this.bufline = new int[buffersize];
-        this.bufcolumn = new int[buffersize];
-        this.nextCharBuf = new char[4096];
-    }
-
-    public JavaCharStream(Reader dstream, int startline, int startcolumn) {
-        this(dstream, startline, startcolumn, 4096);
-    }
-
-    public JavaCharStream(Reader dstream) {
-        this(dstream, 1, 1, 4096);
-    }
-
     public void ReInit(Reader dstream, int startline, int startcolumn, int buffersize) {
         this.inputStream = dstream;
         this.line = startline;
@@ -380,18 +386,6 @@ public class JavaCharStream {
 
     public void ReInit(Reader dstream) {
         ReInit(dstream, 1, 1, 4096);
-    }
-
-    public JavaCharStream(InputStream dstream, int startline, int startcolumn, int buffersize) {
-        this(new InputStreamReader(dstream), startline, startcolumn, 4096);
-    }
-
-    public JavaCharStream(InputStream dstream, int startline, int startcolumn) {
-        this(dstream, startline, startcolumn, 4096);
-    }
-
-    public JavaCharStream(InputStream dstream) {
-        this(dstream, 1, 1, 4096);
     }
 
     public void ReInit(InputStream dstream, int startline, int startcolumn, int buffersize) {

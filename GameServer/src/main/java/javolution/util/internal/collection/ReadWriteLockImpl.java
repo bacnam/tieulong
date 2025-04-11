@@ -7,108 +7,107 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
 public final class ReadWriteLockImpl
-implements ReadWriteLock, Serializable
-{
-private static final long serialVersionUID = 1536L;
+        implements ReadWriteLock, Serializable {
+    private static final long serialVersionUID = 1536L;
+    public final ReadLock readLock = new ReadLock();
+    public final WriteLock writeLock = new WriteLock();
+    private transient int givenLocks;
+    private transient int waitingWriters;
+    private transient Thread writerThread;
 
-public final class ReadLock
-implements Lock, Serializable
-{
-private static final long serialVersionUID = 1536L;
+    public ReadLock readLock() {
+        return this.readLock;
+    }
 
-public void lock() {
-try {
-lockInterruptibly();
-} catch (InterruptedException e) {}
-}
+    public WriteLock writeLock() {
+        return this.writeLock;
+    }
 
-public void lockInterruptibly() throws InterruptedException {
-synchronized (ReadWriteLockImpl.this) {
-if (ReadWriteLockImpl.this.writerThread == Thread.currentThread())
-return;  while (ReadWriteLockImpl.this.writerThread != null || ReadWriteLockImpl.this.waitingWriters != 0) {
-ReadWriteLockImpl.this.wait();
-}
-ReadWriteLockImpl.this.givenLocks++;
-} 
-}
+    public final class ReadLock
+            implements Lock, Serializable {
+        private static final long serialVersionUID = 1536L;
 
-public Condition newCondition() {
-throw new UnsupportedOperationException();
-}
+        public void lock() {
+            try {
+                lockInterruptibly();
+            } catch (InterruptedException e) {
+            }
+        }
 
-public boolean tryLock() {
-throw new UnsupportedOperationException();
-}
+        public void lockInterruptibly() throws InterruptedException {
+            synchronized (ReadWriteLockImpl.this) {
+                if (ReadWriteLockImpl.this.writerThread == Thread.currentThread())
+                    return;
+                while (ReadWriteLockImpl.this.writerThread != null || ReadWriteLockImpl.this.waitingWriters != 0) {
+                    ReadWriteLockImpl.this.wait();
+                }
+                ReadWriteLockImpl.this.givenLocks++;
+            }
+        }
 
-public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-throw new UnsupportedOperationException();
-}
+        public Condition newCondition() {
+            throw new UnsupportedOperationException();
+        }
 
-public void unlock() {
-synchronized (ReadWriteLockImpl.this) {
-if (ReadWriteLockImpl.this.writerThread == Thread.currentThread())
-return;  assert ReadWriteLockImpl.this.givenLocks > 0;
-ReadWriteLockImpl.this.givenLocks--;
-ReadWriteLockImpl.this.notifyAll();
-} 
-}
-}
+        public boolean tryLock() {
+            throw new UnsupportedOperationException();
+        }
 
-public final class WriteLock
-implements Lock, Serializable
-{
-private static final long serialVersionUID = 1536L;
+        public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+            throw new UnsupportedOperationException();
+        }
 
-public void lock() {
-try {
-lockInterruptibly();
-} catch (InterruptedException e) {}
-}
+        public void unlock() {
+            synchronized (ReadWriteLockImpl.this) {
+                if (ReadWriteLockImpl.this.writerThread == Thread.currentThread())
+                    return;
+                assert ReadWriteLockImpl.this.givenLocks > 0;
+                ReadWriteLockImpl.this.givenLocks--;
+                ReadWriteLockImpl.this.notifyAll();
+            }
+        }
+    }
 
-public void lockInterruptibly() throws InterruptedException {
-synchronized (ReadWriteLockImpl.this) {
-ReadWriteLockImpl.this.waitingWriters++;
-while (ReadWriteLockImpl.this.givenLocks != 0) {
-ReadWriteLockImpl.this.wait();
-}
-ReadWriteLockImpl.this.waitingWriters--;
-ReadWriteLockImpl.this.writerThread = Thread.currentThread();
-} 
-}
+    public final class WriteLock
+            implements Lock, Serializable {
+        private static final long serialVersionUID = 1536L;
 
-public Condition newCondition() {
-throw new UnsupportedOperationException();
-}
+        public void lock() {
+            try {
+                lockInterruptibly();
+            } catch (InterruptedException e) {
+            }
+        }
 
-public boolean tryLock() {
-throw new UnsupportedOperationException();
-}
+        public void lockInterruptibly() throws InterruptedException {
+            synchronized (ReadWriteLockImpl.this) {
+                ReadWriteLockImpl.this.waitingWriters++;
+                while (ReadWriteLockImpl.this.givenLocks != 0) {
+                    ReadWriteLockImpl.this.wait();
+                }
+                ReadWriteLockImpl.this.waitingWriters--;
+                ReadWriteLockImpl.this.writerThread = Thread.currentThread();
+            }
+        }
 
-public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-throw new UnsupportedOperationException();
-}
+        public Condition newCondition() {
+            throw new UnsupportedOperationException();
+        }
 
-public void unlock() {
-synchronized (ReadWriteLockImpl.this) {
-ReadWriteLockImpl.this.writerThread = null;
-ReadWriteLockImpl.this.notifyAll();
-} 
-}
-}
+        public boolean tryLock() {
+            throw new UnsupportedOperationException();
+        }
 
-public final ReadLock readLock = new ReadLock();
-public final WriteLock writeLock = new WriteLock();
+        public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+            throw new UnsupportedOperationException();
+        }
 
-private transient int givenLocks;
-private transient int waitingWriters;
-private transient Thread writerThread;
-
-public ReadLock readLock() {
-return this.readLock;
-}
-
-public WriteLock writeLock() {
-return this.writeLock;
-}
+        public void unlock() {
+            synchronized (ReadWriteLockImpl.this) {
+                ReadWriteLockImpl.this.writerThread = null;
+                ReadWriteLockImpl.this.notifyAll();
+            }
+        }
+    }
 }
 

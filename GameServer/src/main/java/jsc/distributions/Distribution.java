@@ -1,20 +1,20 @@
 package jsc.distributions;
 
 public interface Distribution {
-  double cdf(double paramDouble);
+    double cdf(double paramDouble);
 
-  double inverseCdf(double paramDouble);
+    double inverseCdf(double paramDouble);
 
-  boolean isDiscrete();
+    boolean isDiscrete();
 
-  double mean();
+    double mean();
 
-  double pdf(double paramDouble);
+    double pdf(double paramDouble);
 
-  double random();
+    double random();
 
-  void setSeed(long paramLong);
+    void setSeed(long paramLong);
 
-  double variance();
+    double variance();
 }
 

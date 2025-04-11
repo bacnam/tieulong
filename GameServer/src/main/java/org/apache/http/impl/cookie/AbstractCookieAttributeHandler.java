@@ -8,12 +8,12 @@ import org.apache.http.cookie.MalformedCookieException;
 
 @Immutable
 public abstract class AbstractCookieAttributeHandler
-implements CookieAttributeHandler
-{
-public void validate(Cookie cookie, CookieOrigin origin) throws MalformedCookieException {}
+        implements CookieAttributeHandler {
+    public void validate(Cookie cookie, CookieOrigin origin) throws MalformedCookieException {
+    }
 
-public boolean match(Cookie cookie, CookieOrigin origin) {
-return true;
-}
+    public boolean match(Cookie cookie, CookieOrigin origin) {
+        return true;
+    }
 }
 

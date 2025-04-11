@@ -1,175 +1,172 @@
 package com.mysql.jdbc;
 
 import com.mysql.jdbc.log.Log;
+
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.TimeZone;
-import java.util.Timer;
+import java.util.*;
 
 public interface MySQLConnection extends Connection, ConnectionProperties {
-  boolean isProxySet();
+    boolean isProxySet();
 
-  void abortInternal() throws SQLException;
+    void abortInternal() throws SQLException;
 
-  void checkClosed() throws SQLException;
+    void checkClosed() throws SQLException;
 
-  void createNewIO(boolean paramBoolean) throws SQLException;
+    void createNewIO(boolean paramBoolean) throws SQLException;
 
-  void dumpTestcaseQuery(String paramString);
+    void dumpTestcaseQuery(String paramString);
 
-  Connection duplicate() throws SQLException;
+    Connection duplicate() throws SQLException;
 
-  ResultSetInternalMethods execSQL(StatementImpl paramStatementImpl, String paramString1, int paramInt1, Buffer paramBuffer, int paramInt2, int paramInt3, boolean paramBoolean, String paramString2, Field[] paramArrayOfField) throws SQLException;
+    ResultSetInternalMethods execSQL(StatementImpl paramStatementImpl, String paramString1, int paramInt1, Buffer paramBuffer, int paramInt2, int paramInt3, boolean paramBoolean, String paramString2, Field[] paramArrayOfField) throws SQLException;
 
-  ResultSetInternalMethods execSQL(StatementImpl paramStatementImpl, String paramString1, int paramInt1, Buffer paramBuffer, int paramInt2, int paramInt3, boolean paramBoolean1, String paramString2, Field[] paramArrayOfField, boolean paramBoolean2) throws SQLException;
+    ResultSetInternalMethods execSQL(StatementImpl paramStatementImpl, String paramString1, int paramInt1, Buffer paramBuffer, int paramInt2, int paramInt3, boolean paramBoolean1, String paramString2, Field[] paramArrayOfField, boolean paramBoolean2) throws SQLException;
 
-  String extractSqlFromPacket(String paramString, Buffer paramBuffer, int paramInt) throws SQLException;
+    String extractSqlFromPacket(String paramString, Buffer paramBuffer, int paramInt) throws SQLException;
 
-  StringBuffer generateConnectionCommentBlock(StringBuffer paramStringBuffer);
+    StringBuffer generateConnectionCommentBlock(StringBuffer paramStringBuffer);
 
-  int getActiveStatementCount();
+    int getActiveStatementCount();
 
-  int getAutoIncrementIncrement();
+    int getAutoIncrementIncrement();
 
-  CachedResultSetMetaData getCachedMetaData(String paramString);
+    CachedResultSetMetaData getCachedMetaData(String paramString);
 
-  Calendar getCalendarInstanceForSessionOrNew();
+    Calendar getCalendarInstanceForSessionOrNew();
 
-  Timer getCancelTimer();
+    Timer getCancelTimer();
 
-  String getCharacterSetMetadata();
+    String getCharacterSetMetadata();
 
-  SingleByteCharsetConverter getCharsetConverter(String paramString) throws SQLException;
+    SingleByteCharsetConverter getCharsetConverter(String paramString) throws SQLException;
 
-  String getCharsetNameForIndex(int paramInt) throws SQLException;
+    String getCharsetNameForIndex(int paramInt) throws SQLException;
 
-  TimeZone getDefaultTimeZone();
+    TimeZone getDefaultTimeZone();
 
-  String getErrorMessageEncoding();
+    String getErrorMessageEncoding();
 
-  ExceptionInterceptor getExceptionInterceptor();
+    ExceptionInterceptor getExceptionInterceptor();
 
-  String getHost();
+    String getHost();
 
-  long getId();
+    long getId();
 
-  long getIdleFor();
+    long getIdleFor();
 
-  MysqlIO getIO() throws SQLException;
+    MysqlIO getIO() throws SQLException;
 
-  Log getLog() throws SQLException;
+    Log getLog() throws SQLException;
 
-  int getMaxBytesPerChar(String paramString) throws SQLException;
+    int getMaxBytesPerChar(String paramString) throws SQLException;
 
-  int getMaxBytesPerChar(Integer paramInteger, String paramString) throws SQLException;
+    int getMaxBytesPerChar(Integer paramInteger, String paramString) throws SQLException;
 
-  Statement getMetadataSafeStatement() throws SQLException;
+    Statement getMetadataSafeStatement() throws SQLException;
 
-  int getNetBufferLength();
+    int getNetBufferLength();
 
-  Properties getProperties();
+    Properties getProperties();
 
-  boolean getRequiresEscapingEncoder();
+    boolean getRequiresEscapingEncoder();
 
-  String getServerCharacterEncoding();
+    String getServerCharacterEncoding();
 
-  int getServerMajorVersion();
+    int getServerMajorVersion();
 
-  int getServerMinorVersion();
+    int getServerMinorVersion();
 
-  int getServerSubMinorVersion();
+    int getServerSubMinorVersion();
 
-  TimeZone getServerTimezoneTZ();
+    TimeZone getServerTimezoneTZ();
 
-  String getServerVariable(String paramString);
+    String getServerVariable(String paramString);
 
-  String getServerVersion();
+    String getServerVersion();
 
-  Calendar getSessionLockedCalendar();
+    Calendar getSessionLockedCalendar();
 
-  String getStatementComment();
+    String getStatementComment();
 
-  List<StatementInterceptorV2> getStatementInterceptorsInstances();
+    List<StatementInterceptorV2> getStatementInterceptorsInstances();
 
-  String getURL();
+    String getURL();
 
-  String getUser();
+    String getUser();
 
-  Calendar getUtcCalendar();
+    Calendar getUtcCalendar();
 
-  void incrementNumberOfPreparedExecutes();
+    void incrementNumberOfPreparedExecutes();
 
-  void incrementNumberOfPrepares();
+    void incrementNumberOfPrepares();
 
-  void incrementNumberOfResultSetsCreated();
+    void incrementNumberOfResultSetsCreated();
 
-  void initializeResultsMetadataFromCache(String paramString, CachedResultSetMetaData paramCachedResultSetMetaData, ResultSetInternalMethods paramResultSetInternalMethods) throws SQLException;
+    void initializeResultsMetadataFromCache(String paramString, CachedResultSetMetaData paramCachedResultSetMetaData, ResultSetInternalMethods paramResultSetInternalMethods) throws SQLException;
 
-  void initializeSafeStatementInterceptors() throws SQLException;
+    void initializeSafeStatementInterceptors() throws SQLException;
 
-  boolean isAbonormallyLongQuery(long paramLong);
+    boolean isAbonormallyLongQuery(long paramLong);
 
-  boolean isClientTzUTC();
+    boolean isClientTzUTC();
 
-  boolean isCursorFetchEnabled() throws SQLException;
+    boolean isCursorFetchEnabled() throws SQLException;
 
-  boolean isReadInfoMsgEnabled();
+    boolean isReadInfoMsgEnabled();
 
-  boolean isReadOnly() throws SQLException;
+    void setReadInfoMsgEnabled(boolean paramBoolean);
 
-  boolean isReadOnly(boolean paramBoolean) throws SQLException;
+    boolean isReadOnly() throws SQLException;
 
-  boolean isRunningOnJDK13();
+    boolean isReadOnly(boolean paramBoolean) throws SQLException;
 
-  boolean isServerTzUTC();
+    boolean isRunningOnJDK13();
 
-  boolean lowerCaseTableNames();
+    boolean isServerTzUTC();
 
-  void maxRowsChanged(Statement paramStatement);
+    boolean lowerCaseTableNames();
 
-  void pingInternal(boolean paramBoolean, int paramInt) throws SQLException;
+    void maxRowsChanged(Statement paramStatement);
 
-  void realClose(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3, Throwable paramThrowable) throws SQLException;
+    void pingInternal(boolean paramBoolean, int paramInt) throws SQLException;
 
-  void recachePreparedStatement(ServerPreparedStatement paramServerPreparedStatement) throws SQLException;
+    void realClose(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3, Throwable paramThrowable) throws SQLException;
 
-  void registerQueryExecutionTime(long paramLong);
+    void recachePreparedStatement(ServerPreparedStatement paramServerPreparedStatement) throws SQLException;
 
-  void registerStatement(Statement paramStatement);
+    void registerQueryExecutionTime(long paramLong);
 
-  void reportNumberOfTablesAccessed(int paramInt);
+    void registerStatement(Statement paramStatement);
 
-  boolean serverSupportsConvertFn() throws SQLException;
+    void reportNumberOfTablesAccessed(int paramInt);
 
-  void setProxy(MySQLConnection paramMySQLConnection);
+    boolean serverSupportsConvertFn() throws SQLException;
 
-  void setReadInfoMsgEnabled(boolean paramBoolean);
+    void setProxy(MySQLConnection paramMySQLConnection);
 
-  void setReadOnlyInternal(boolean paramBoolean) throws SQLException;
+    void setReadOnlyInternal(boolean paramBoolean) throws SQLException;
 
-  void shutdownServer() throws SQLException;
+    void shutdownServer() throws SQLException;
 
-  boolean storesLowerCaseTableName();
+    boolean storesLowerCaseTableName();
 
-  void throwConnectionClosedException() throws SQLException;
+    void throwConnectionClosedException() throws SQLException;
 
-  void transactionBegun() throws SQLException;
+    void transactionBegun() throws SQLException;
 
-  void transactionCompleted() throws SQLException;
+    void transactionCompleted() throws SQLException;
 
-  void unregisterStatement(Statement paramStatement);
+    void unregisterStatement(Statement paramStatement);
 
-  void unSafeStatementInterceptors() throws SQLException;
+    void unSafeStatementInterceptors() throws SQLException;
 
-  void unsetMaxRows(Statement paramStatement) throws SQLException;
+    void unsetMaxRows(Statement paramStatement) throws SQLException;
 
-  boolean useAnsiQuotedIdentifiers();
+    boolean useAnsiQuotedIdentifiers();
 
-  boolean useMaxRows();
+    boolean useMaxRows();
 
-  MySQLConnection getLoadBalanceSafeProxy();
+    MySQLConnection getLoadBalanceSafeProxy();
 }
 

@@ -5,34 +5,34 @@ import java.util.Iterator;
 import java.util.Map;
 
 class AbstractWeakCoalescer
-implements Coalescer
-{
-Map wcoalesced;
+        implements Coalescer {
+    Map wcoalesced;
 
-AbstractWeakCoalescer(Map paramMap) {
-this.wcoalesced = paramMap;
-}
+    AbstractWeakCoalescer(Map paramMap) {
+        this.wcoalesced = paramMap;
+    }
 
-public Object coalesce(Object paramObject) {
-Object object = null;
+    public Object coalesce(Object paramObject) {
+        Object object = null;
 
-WeakReference<Object> weakReference = (WeakReference)this.wcoalesced.get(paramObject);
-if (weakReference != null) {
-object = weakReference.get();
-}
-if (object == null) {
+        WeakReference<Object> weakReference = (WeakReference) this.wcoalesced.get(paramObject);
+        if (weakReference != null) {
+            object = weakReference.get();
+        }
+        if (object == null) {
 
-this.wcoalesced.put(paramObject, new WeakReference(paramObject));
-object = paramObject;
-} 
-return object;
-}
+            this.wcoalesced.put(paramObject, new WeakReference(paramObject));
+            object = paramObject;
+        }
+        return object;
+    }
 
-public int countCoalesced() {
-return this.wcoalesced.size();
-}
-public Iterator iterator() {
-return new CoalescerIterator(this.wcoalesced.keySet().iterator());
-}
+    public int countCoalesced() {
+        return this.wcoalesced.size();
+    }
+
+    public Iterator iterator() {
+        return new CoalescerIterator(this.wcoalesced.keySet().iterator());
+    }
 }
 

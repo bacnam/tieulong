@@ -12,33 +12,32 @@ import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
 import core.network.proto.RedPacketInfo;
+
 import java.io.IOException;
 import java.util.List;
 
 public class RedPacketListHandler
-extends PlayerHandler
-{
-private static class Response
-{
-int pickTimes;
-int maxPickTimes;
-List<RedPacketInfo> packetList;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        RedPacket packet = (RedPacket) ActivityMgr.getActivity(RedPacket.class);
+        if (packet.getStatus() == ActivityStatus.Close) {
+            throw new WSException(ErrorCode.Activity_Close, "活动[%s]已经关闭", new Object[]{packet.getType()});
+        }
+        int pickTimes = ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.RedPacket);
+        int maxTimes = RedPacketMgr.getInstance().getMaxTime();
+        request.response(new Response(pickTimes, maxTimes, packet.getPacketList(player)));
+    }
 
-public Response(int pickTimes, int maxPickTimes, List<RedPacketInfo> packetList) {
-this.pickTimes = pickTimes;
-this.maxPickTimes = maxPickTimes;
-this.packetList = packetList;
-}
-}
+    private static class Response {
+        int pickTimes;
+        int maxPickTimes;
+        List<RedPacketInfo> packetList;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-RedPacket packet = (RedPacket)ActivityMgr.getActivity(RedPacket.class);
-if (packet.getStatus() == ActivityStatus.Close) {
-throw new WSException(ErrorCode.Activity_Close, "活动[%s]已经关闭", new Object[] { packet.getType() });
-}
-int pickTimes = ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.RedPacket);
-int maxTimes = RedPacketMgr.getInstance().getMaxTime();
-request.response(new Response(pickTimes, maxTimes, packet.getPacketList(player)));
-}
+        public Response(int pickTimes, int maxPickTimes, List<RedPacketInfo> packetList) {
+            this.pickTimes = pickTimes;
+            this.maxPickTimes = maxPickTimes;
+            this.packetList = packetList;
+        }
+    }
 }
 

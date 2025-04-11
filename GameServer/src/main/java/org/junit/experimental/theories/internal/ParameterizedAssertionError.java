@@ -5,45 +5,45 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class ParameterizedAssertionError
-extends AssertionError {
-private static final long serialVersionUID = 1L;
+        extends AssertionError {
+    private static final long serialVersionUID = 1L;
 
-public ParameterizedAssertionError(Throwable targetException, String methodName, Object... params) {
-super(String.format("%s(%s)", new Object[] { methodName, join(", ", params) }));
-initCause(targetException);
-}
+    public ParameterizedAssertionError(Throwable targetException, String methodName, Object... params) {
+        super(String.format("%s(%s)", new Object[]{methodName, join(", ", params)}));
+        initCause(targetException);
+    }
 
-public boolean equals(Object obj) {
-return (obj instanceof ParameterizedAssertionError && toString().equals(obj.toString()));
-}
+    public static String join(String delimiter, Object... params) {
+        return join(delimiter, Arrays.asList(params));
+    }
 
-public int hashCode() {
-return toString().hashCode();
-}
+    public static String join(String delimiter, Collection<Object> values) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Object> iter = values.iterator();
+        while (iter.hasNext()) {
+            Object next = iter.next();
+            sb.append(stringValueOf(next));
+            if (iter.hasNext()) {
+                sb.append(delimiter);
+            }
+        }
+        return sb.toString();
+    }
 
-public static String join(String delimiter, Object... params) {
-return join(delimiter, Arrays.asList(params));
-}
+    private static String stringValueOf(Object next) {
+        try {
+            return String.valueOf(next);
+        } catch (Throwable e) {
+            return "[toString failed]";
+        }
+    }
 
-public static String join(String delimiter, Collection<Object> values) {
-StringBuilder sb = new StringBuilder();
-Iterator<Object> iter = values.iterator();
-while (iter.hasNext()) {
-Object next = iter.next();
-sb.append(stringValueOf(next));
-if (iter.hasNext()) {
-sb.append(delimiter);
-}
-} 
-return sb.toString();
-}
+    public boolean equals(Object obj) {
+        return (obj instanceof ParameterizedAssertionError && toString().equals(obj.toString()));
+    }
 
-private static String stringValueOf(Object next) {
-try {
-return String.valueOf(next);
-} catch (Throwable e) {
-return "[toString failed]";
-} 
-}
+    public int hashCode() {
+        return toString().hashCode();
+    }
 }
 

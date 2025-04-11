@@ -3,18 +3,9 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.SortedMap;
 import javax.annotation.Nullable;
+import java.io.Serializable;
+import java.util.*;
 
 @GwtCompatible(serializable = true, emulated = true)
 public class ImmutableSortedMap<K, V>
@@ -23,14 +14,17 @@ public class ImmutableSortedMap<K, V>
     private static final Comparator<Comparable> NATURAL_ORDER = Ordering.natural();
 
     private static final ImmutableSortedMap<Comparable, Object> NATURAL_EMPTY_MAP = new ImmutableSortedMap(ImmutableList.of(), (Comparator) NATURAL_ORDER);
-
+    private static final long serialVersionUID = 0L;
     final transient ImmutableList<Map.Entry<K, V>> entries;
-
     private final transient Comparator<? super K> comparator;
     private transient ImmutableSet<Map.Entry<K, V>> entrySet;
     private transient ImmutableSortedSet<K> keySet;
     private transient ImmutableCollection<V> values;
-    private static final long serialVersionUID = 0L;
+
+    ImmutableSortedMap(ImmutableList<Map.Entry<K, V>> entries, Comparator<? super K> comparator) {
+        this.entries = entries;
+        this.comparator = comparator;
+    }
 
     public static <K, V> ImmutableSortedMap<K, V> of() {
         return (ImmutableSortedMap) NATURAL_EMPTY_MAP;
@@ -145,38 +139,6 @@ public class ImmutableSortedMap<K, V>
         return new Builder<K, V>(Ordering.<Comparable>natural().reverse());
     }
 
-    public static class Builder<K, V>
-            extends ImmutableMap.Builder<K, V> {
-        private final Comparator<? super K> comparator;
-
-        public Builder(Comparator<? super K> comparator) {
-            this.comparator = (Comparator<? super K>) Preconditions.checkNotNull(comparator);
-        }
-
-        public Builder<K, V> put(K key, V value) {
-            this.entries.add(ImmutableMap.entryOf(key, value));
-            return this;
-        }
-
-        public Builder<K, V> putAll(Map<? extends K, ? extends V> map) {
-            for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-                put(entry.getKey(), entry.getValue());
-            }
-            return this;
-        }
-
-        public ImmutableSortedMap<K, V> build() {
-            ImmutableSortedMap.sortEntries(this.entries, this.comparator);
-            ImmutableSortedMap.validateEntries(this.entries, this.comparator);
-            return new ImmutableSortedMap<K, V>(ImmutableList.copyOf(this.entries), this.comparator);
-        }
-    }
-
-    ImmutableSortedMap(ImmutableList<Map.Entry<K, V>> entries, Comparator<? super K> comparator) {
-        this.entries = entries;
-        this.comparator = comparator;
-    }
-
     public int size() {
         return this.entries.size();
     }
@@ -219,54 +181,6 @@ public class ImmutableSortedMap<K, V>
         return isEmpty() ? ImmutableSet.<Map.Entry<K, V>>of() : new EntrySet<K, V>(this);
     }
 
-    private static class EntrySet<K, V>
-            extends ImmutableSet<Map.Entry<K, V>> {
-        final transient ImmutableSortedMap<K, V> map;
-
-        EntrySet(ImmutableSortedMap<K, V> map) {
-            this.map = map;
-        }
-
-        boolean isPartialView() {
-            return this.map.isPartialView();
-        }
-
-        public int size() {
-            return this.map.size();
-        }
-
-        public UnmodifiableIterator<Map.Entry<K, V>> iterator() {
-            return this.map.entries.iterator();
-        }
-
-        public boolean contains(Object target) {
-            if (target instanceof Map.Entry) {
-                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) target;
-                V mappedValue = this.map.get(entry.getKey());
-                return (mappedValue != null && mappedValue.equals(entry.getValue()));
-            }
-            return false;
-        }
-
-        Object writeReplace() {
-            return new ImmutableSortedMap.EntrySetSerializedForm<K, V>(this.map);
-        }
-    }
-
-    private static class EntrySetSerializedForm<K, V> implements Serializable {
-        final ImmutableSortedMap<K, V> map;
-
-        EntrySetSerializedForm(ImmutableSortedMap<K, V> map) {
-            this.map = map;
-        }
-
-        private static final long serialVersionUID = 0L;
-
-        Object readResolve() {
-            return this.map.entrySet();
-        }
-    }
-
     public ImmutableSortedSet<K> keySet() {
         ImmutableSortedSet<K> ks = this.keySet;
         return (ks == null) ? (this.keySet = createKeySet()) : ks;
@@ -300,48 +214,6 @@ public class ImmutableSortedMap<K, V>
                 return (V) ((Map.Entry) entryIterator.next()).getValue();
             }
         };
-    }
-
-    private static class Values<V>
-            extends ImmutableCollection<V> {
-        private final ImmutableSortedMap<?, V> map;
-
-        Values(ImmutableSortedMap<?, V> map) {
-            this.map = map;
-        }
-
-        public int size() {
-            return this.map.size();
-        }
-
-        public UnmodifiableIterator<V> iterator() {
-            return this.map.valueIterator();
-        }
-
-        public boolean contains(Object target) {
-            return this.map.containsValue(target);
-        }
-
-        boolean isPartialView() {
-            return true;
-        }
-
-        Object writeReplace() {
-            return new ImmutableSortedMap.ValuesSerializedForm<V>(this.map);
-        }
-    }
-
-    private static class ValuesSerializedForm<V> implements Serializable {
-        final ImmutableSortedMap<?, V> map;
-        private static final long serialVersionUID = 0L;
-
-        ValuesSerializedForm(ImmutableSortedMap<?, V> map) {
-            this.map = map;
-        }
-
-        Object readResolve() {
-            return this.map.values();
-        }
     }
 
     public Comparator<? super K> comparator() {
@@ -421,11 +293,130 @@ public class ImmutableSortedMap<K, V>
         return emptyMap(this.comparator);
     }
 
+    Object writeReplace() {
+        return new SerializedForm(this);
+    }
+
+    public static class Builder<K, V>
+            extends ImmutableMap.Builder<K, V> {
+        private final Comparator<? super K> comparator;
+
+        public Builder(Comparator<? super K> comparator) {
+            this.comparator = (Comparator<? super K>) Preconditions.checkNotNull(comparator);
+        }
+
+        public Builder<K, V> put(K key, V value) {
+            this.entries.add(ImmutableMap.entryOf(key, value));
+            return this;
+        }
+
+        public Builder<K, V> putAll(Map<? extends K, ? extends V> map) {
+            for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+                put(entry.getKey(), entry.getValue());
+            }
+            return this;
+        }
+
+        public ImmutableSortedMap<K, V> build() {
+            ImmutableSortedMap.sortEntries(this.entries, this.comparator);
+            ImmutableSortedMap.validateEntries(this.entries, this.comparator);
+            return new ImmutableSortedMap<K, V>(ImmutableList.copyOf(this.entries), this.comparator);
+        }
+    }
+
+    private static class EntrySet<K, V>
+            extends ImmutableSet<Map.Entry<K, V>> {
+        final transient ImmutableSortedMap<K, V> map;
+
+        EntrySet(ImmutableSortedMap<K, V> map) {
+            this.map = map;
+        }
+
+        boolean isPartialView() {
+            return this.map.isPartialView();
+        }
+
+        public int size() {
+            return this.map.size();
+        }
+
+        public UnmodifiableIterator<Map.Entry<K, V>> iterator() {
+            return this.map.entries.iterator();
+        }
+
+        public boolean contains(Object target) {
+            if (target instanceof Map.Entry) {
+                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) target;
+                V mappedValue = this.map.get(entry.getKey());
+                return (mappedValue != null && mappedValue.equals(entry.getValue()));
+            }
+            return false;
+        }
+
+        Object writeReplace() {
+            return new ImmutableSortedMap.EntrySetSerializedForm<K, V>(this.map);
+        }
+    }
+
+    private static class EntrySetSerializedForm<K, V> implements Serializable {
+        private static final long serialVersionUID = 0L;
+        final ImmutableSortedMap<K, V> map;
+
+        EntrySetSerializedForm(ImmutableSortedMap<K, V> map) {
+            this.map = map;
+        }
+
+        Object readResolve() {
+            return this.map.entrySet();
+        }
+    }
+
+    private static class Values<V>
+            extends ImmutableCollection<V> {
+        private final ImmutableSortedMap<?, V> map;
+
+        Values(ImmutableSortedMap<?, V> map) {
+            this.map = map;
+        }
+
+        public int size() {
+            return this.map.size();
+        }
+
+        public UnmodifiableIterator<V> iterator() {
+            return this.map.valueIterator();
+        }
+
+        public boolean contains(Object target) {
+            return this.map.containsValue(target);
+        }
+
+        boolean isPartialView() {
+            return true;
+        }
+
+        Object writeReplace() {
+            return new ImmutableSortedMap.ValuesSerializedForm<V>(this.map);
+        }
+    }
+
+    private static class ValuesSerializedForm<V> implements Serializable {
+        private static final long serialVersionUID = 0L;
+        final ImmutableSortedMap<?, V> map;
+
+        ValuesSerializedForm(ImmutableSortedMap<?, V> map) {
+            this.map = map;
+        }
+
+        Object readResolve() {
+            return this.map.values();
+        }
+    }
+
     private static class SerializedForm
             extends ImmutableMap.SerializedForm {
-        private final Comparator<Object> comparator;
-
         private static final long serialVersionUID = 0L;
+        private final Comparator<Object> comparator;
 
         SerializedForm(ImmutableSortedMap<?, ?> sortedMap) {
             super(sortedMap);
@@ -436,10 +427,6 @@ public class ImmutableSortedMap<K, V>
             ImmutableSortedMap.Builder<Object, Object> builder = new ImmutableSortedMap.Builder<Object, Object>(this.comparator);
             return createMap(builder);
         }
-    }
-
-    Object writeReplace() {
-        return new SerializedForm(this);
     }
 }
 

@@ -11,35 +11,34 @@ import org.apache.http.protocol.HttpContext;
 @Obsolete
 @Immutable
 public class RFC2109SpecProvider
-implements CookieSpecProvider
-{
-private final PublicSuffixMatcher publicSuffixMatcher;
-private final boolean oneHeader;
-private volatile CookieSpec cookieSpec;
+        implements CookieSpecProvider {
+    private final PublicSuffixMatcher publicSuffixMatcher;
+    private final boolean oneHeader;
+    private volatile CookieSpec cookieSpec;
 
-public RFC2109SpecProvider(PublicSuffixMatcher publicSuffixMatcher, boolean oneHeader) {
-this.oneHeader = oneHeader;
-this.publicSuffixMatcher = publicSuffixMatcher;
-}
+    public RFC2109SpecProvider(PublicSuffixMatcher publicSuffixMatcher, boolean oneHeader) {
+        this.oneHeader = oneHeader;
+        this.publicSuffixMatcher = publicSuffixMatcher;
+    }
 
-public RFC2109SpecProvider(PublicSuffixMatcher publicSuffixMatcher) {
-this(publicSuffixMatcher, false);
-}
+    public RFC2109SpecProvider(PublicSuffixMatcher publicSuffixMatcher) {
+        this(publicSuffixMatcher, false);
+    }
 
-public RFC2109SpecProvider() {
-this(null, false);
-}
+    public RFC2109SpecProvider() {
+        this(null, false);
+    }
 
-public CookieSpec create(HttpContext context) {
-if (this.cookieSpec == null) {
-synchronized (this) {
-if (this.cookieSpec == null) {
-this.cookieSpec = new RFC2109Spec(this.oneHeader, new CommonCookieAttributeHandler[] { new RFC2109VersionHandler(), new BasicPathHandler(), PublicSuffixDomainFilter.decorate(new RFC2109DomainHandler(), this.publicSuffixMatcher), new BasicMaxAgeHandler(), new BasicSecureHandler(), new BasicCommentHandler() });
-}
-} 
-}
+    public CookieSpec create(HttpContext context) {
+        if (this.cookieSpec == null) {
+            synchronized (this) {
+                if (this.cookieSpec == null) {
+                    this.cookieSpec = new RFC2109Spec(this.oneHeader, new CommonCookieAttributeHandler[]{new RFC2109VersionHandler(), new BasicPathHandler(), PublicSuffixDomainFilter.decorate(new RFC2109DomainHandler(), this.publicSuffixMatcher), new BasicMaxAgeHandler(), new BasicSecureHandler(), new BasicCommentHandler()});
+                }
+            }
+        }
 
-return this.cookieSpec;
-}
+        return this.cookieSpec;
+    }
 }
 

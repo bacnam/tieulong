@@ -4,160 +4,150 @@ import com.mchange.v1.db.sql.ConnectionUtils;
 import com.mchange.v1.db.sql.ResultSetUtils;
 import com.mchange.v1.db.sql.StatementUtils;
 import com.mchange.v2.c3p0.DataSources;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Random;
+
 import javax.sql.DataSource;
+import java.sql.*;
+import java.util.Random;
 
-public final class PSLoadPoolBackedDataSource
-{
-static final String INSERT_STMT = "INSERT INTO testpbds VALUES ( ? , ? )";
-static final String SELECT_STMT = "SELECT count(*) FROM testpbds";
-static final String DELETE_STMT = "DELETE FROM testpbds";
-static DataSource ds;
+public final class PSLoadPoolBackedDataSource {
+    static final String INSERT_STMT = "INSERT INTO testpbds VALUES ( ? , ? )";
+    static final String SELECT_STMT = "SELECT count(*) FROM testpbds";
+    static final String DELETE_STMT = "DELETE FROM testpbds";
+    static DataSource ds;
 
-public static void main(String[] argv) {
-if (argv.length > 0) {
+    public static void main(String[] argv) {
+        if (argv.length > 0) {
 
-System.err.println(PSLoadPoolBackedDataSource.class.getName() + " now requires no args. Please set everything in standard c3p0 config files.");
+            System.err.println(PSLoadPoolBackedDataSource.class.getName() + " now requires no args. Please set everything in standard c3p0 config files.");
 
-return;
-} 
+            return;
+        }
 
-String jdbc_url = null;
-String username = null;
-String password = null;
+        String jdbc_url = null;
+        String username = null;
+        String password = null;
 
-try {
-DataSource ds_unpooled = DataSources.unpooledDataSource();
-ds = DataSources.pooledDataSource(ds_unpooled);
+        try {
+            DataSource ds_unpooled = DataSources.unpooledDataSource();
+            ds = DataSources.pooledDataSource(ds_unpooled);
 
-Connection con = null;
-Statement stmt = null;
+            Connection con = null;
+            Statement stmt = null;
 
-try {
-con = ds_unpooled.getConnection();
-stmt = con.createStatement();
-stmt.executeUpdate("CREATE TABLE testpbds ( a varchar(16), b varchar(16) )");
-}
-catch (SQLException e) {
+            try {
+                con = ds_unpooled.getConnection();
+                stmt = con.createStatement();
+                stmt.executeUpdate("CREATE TABLE testpbds ( a varchar(16), b varchar(16) )");
+            } catch (SQLException e) {
 
-e.printStackTrace();
-System.err.println("relation testpbds already exists, or something bad happened.");
+                e.printStackTrace();
+                System.err.println("relation testpbds already exists, or something bad happened.");
 
-}
-finally {
+            } finally {
 
-StatementUtils.attemptClose(stmt);
-ConnectionUtils.attemptClose(con);
-} 
+                StatementUtils.attemptClose(stmt);
+                ConnectionUtils.attemptClose(con);
+            }
 
-for (int i = 0; i < 100; i++)
-{
-Thread t = new ChurnThread();
-t.start();
-System.out.println("THREAD MADE [" + i + "]");
-Thread.sleep(500L);
-}
+            for (int i = 0; i < 100; i++) {
+                Thread t = new ChurnThread();
+                t.start();
+                System.out.println("THREAD MADE [" + i + "]");
+                Thread.sleep(500L);
+            }
 
-}
-catch (Exception e) {
-e.printStackTrace();
-} 
-}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-static class ChurnThread extends Thread {
-Random random = new Random();
+    static void executeInsert(Connection con, Random random) throws SQLException {
+        PreparedStatement pstmt = null;
 
-public void run() {
-try {
-while (true) {
-Connection con = null;
+        try {
+            pstmt = con.prepareStatement("INSERT INTO testpbds VALUES ( ? , ? )");
+            pstmt.setInt(1, random.nextInt());
+            pstmt.setInt(2, random.nextInt());
+            pstmt.executeUpdate();
+            System.out.println("INSERTION");
 
-try {
-con = PSLoadPoolBackedDataSource.ds.getConnection();
-int select = this.random.nextInt(3);
-switch (select) {
+        } finally {
 
-case 0:
-PSLoadPoolBackedDataSource.executeSelect(con, this.random);
-break;
-case 1:
-PSLoadPoolBackedDataSource.executeInsert(con, this.random);
-break;
-case 2:
-PSLoadPoolBackedDataSource.executeDelete(con, this.random);
-break;
-} 
+            StatementUtils.attemptClose(pstmt);
+        }
+    }
 
-} catch (Exception e) {
-e.printStackTrace();
-} finally {
-ConnectionUtils.attemptClose(con);
-} 
+    static void executeSelect(Connection con, Random random) throws SQLException {
+        long l = System.currentTimeMillis();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-Thread.sleep(1L);
-}
+        try {
+            pstmt = con.prepareStatement("SELECT count(*) FROM testpbds");
+            rs = pstmt.executeQuery();
+            rs.next();
+            System.out.println("SELECT [count=" + rs.getInt(1) + ", time=" + (System.currentTimeMillis() - l) + " msecs]");
 
-} catch (Exception e) {
-e.printStackTrace();
-return;
-} 
-} }
+        } finally {
 
-static void executeInsert(Connection con, Random random) throws SQLException {
-PreparedStatement pstmt = null;
+            ResultSetUtils.attemptClose(rs);
+            StatementUtils.attemptClose(pstmt);
+        }
+    }
 
-try {
-pstmt = con.prepareStatement("INSERT INTO testpbds VALUES ( ? , ? )");
-pstmt.setInt(1, random.nextInt());
-pstmt.setInt(2, random.nextInt());
-pstmt.executeUpdate();
-System.out.println("INSERTION");
+    static void executeDelete(Connection con, Random random) throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-}
-finally {
+        try {
+            pstmt = con.prepareStatement("DELETE FROM testpbds");
+            int deleted = pstmt.executeUpdate();
+            System.out.println("DELETE [" + deleted + " rows]");
+        } finally {
 
-StatementUtils.attemptClose(pstmt);
-} 
-}
+            ResultSetUtils.attemptClose(rs);
+            StatementUtils.attemptClose(pstmt);
+        }
+    }
 
-static void executeSelect(Connection con, Random random) throws SQLException {
-long l = System.currentTimeMillis();
-PreparedStatement pstmt = null;
-ResultSet rs = null;
+    static class ChurnThread extends Thread {
+        Random random = new Random();
 
-try {
-pstmt = con.prepareStatement("SELECT count(*) FROM testpbds");
-rs = pstmt.executeQuery();
-rs.next();
-System.out.println("SELECT [count=" + rs.getInt(1) + ", time=" + (System.currentTimeMillis() - l) + " msecs]");
+        public void run() {
+            try {
+                while (true) {
+                    Connection con = null;
 
-}
-finally {
+                    try {
+                        con = PSLoadPoolBackedDataSource.ds.getConnection();
+                        int select = this.random.nextInt(3);
+                        switch (select) {
 
-ResultSetUtils.attemptClose(rs);
-StatementUtils.attemptClose(pstmt);
-} 
-}
+                            case 0:
+                                PSLoadPoolBackedDataSource.executeSelect(con, this.random);
+                                break;
+                            case 1:
+                                PSLoadPoolBackedDataSource.executeInsert(con, this.random);
+                                break;
+                            case 2:
+                                PSLoadPoolBackedDataSource.executeDelete(con, this.random);
+                                break;
+                        }
 
-static void executeDelete(Connection con, Random random) throws SQLException {
-PreparedStatement pstmt = null;
-ResultSet rs = null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        ConnectionUtils.attemptClose(con);
+                    }
 
-try {
-pstmt = con.prepareStatement("DELETE FROM testpbds");
-int deleted = pstmt.executeUpdate();
-System.out.println("DELETE [" + deleted + " rows]");
-}
-finally {
+                    Thread.sleep(1L);
+                }
 
-ResultSetUtils.attemptClose(rs);
-StatementUtils.attemptClose(pstmt);
-} 
-}
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+    }
 }
 

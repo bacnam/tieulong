@@ -3,8 +3,8 @@ package com.zhonglian.server.websocket;
 import java.nio.ByteBuffer;
 
 public interface IMessageDispatcher<Session extends BaseSession> {
-  void init();
+    void init();
 
-  int handleRawMessage(Session paramSession, ByteBuffer paramByteBuffer);
+    int handleRawMessage(Session paramSession, ByteBuffer paramByteBuffer);
 }
 

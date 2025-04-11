@@ -4,18 +4,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LRUCache
-extends LinkedHashMap<Object, Object>
-{
-private static final long serialVersionUID = 1L;
-protected int maxElements;
+        extends LinkedHashMap<Object, Object> {
+    private static final long serialVersionUID = 1L;
+    protected int maxElements;
 
-public LRUCache(int maxSize) {
-super(maxSize, 0.75F, true);
-this.maxElements = maxSize;
-}
+    public LRUCache(int maxSize) {
+        super(maxSize, 0.75F, true);
+        this.maxElements = maxSize;
+    }
 
-protected boolean removeEldestEntry(Map.Entry<Object, Object> eldest) {
-return (size() > this.maxElements);
-}
+    protected boolean removeEldestEntry(Map.Entry<Object, Object> eldest) {
+        return (size() > this.maxElements);
+    }
 }
 

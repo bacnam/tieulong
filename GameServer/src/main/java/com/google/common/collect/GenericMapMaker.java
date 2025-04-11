@@ -1,61 +1,71 @@
-package com.google.common.collect;@Beta
-@GwtCompatible(emulated = true)
-public abstract class GenericMapMaker<K0, V0> { @GwtIncompatible("To be supported")
-MapMaker.RemovalListener<K0, V0> removalListener;
-@GwtIncompatible("To be supported")
-abstract GenericMapMaker<K0, V0> keyEquivalence(Equivalence<Object> paramEquivalence);
-@GwtIncompatible("To be supported")
-abstract GenericMapMaker<K0, V0> valueEquivalence(Equivalence<Object> paramEquivalence);
-public abstract GenericMapMaker<K0, V0> initialCapacity(int paramInt);
+package com.google.common.collect;
 
-@Deprecated
 @Beta
-public abstract GenericMapMaker<K0, V0> maximumSize(int paramInt);
+@GwtCompatible(emulated = true)
+public abstract class GenericMapMaker<K0, V0> {
+    @GwtIncompatible("To be supported")
+    MapMaker.RemovalListener<K0, V0> removalListener;
 
-abstract GenericMapMaker<K0, V0> strongKeys();
+    @GwtIncompatible("To be supported")
+    abstract GenericMapMaker<K0, V0> keyEquivalence(Equivalence<Object> paramEquivalence);
 
-public abstract GenericMapMaker<K0, V0> concurrencyLevel(int paramInt);
+    @GwtIncompatible("To be supported")
+    abstract GenericMapMaker<K0, V0> valueEquivalence(Equivalence<Object> paramEquivalence);
 
-@GwtIncompatible("java.lang.ref.WeakReference")
-public abstract GenericMapMaker<K0, V0> weakKeys();
+    public abstract GenericMapMaker<K0, V0> initialCapacity(int paramInt);
 
-abstract GenericMapMaker<K0, V0> strongValues();
+    @Deprecated
+    @Beta
+    public abstract GenericMapMaker<K0, V0> maximumSize(int paramInt);
 
-@Deprecated
-@GwtIncompatible("java.lang.ref.SoftReference")
-public abstract GenericMapMaker<K0, V0> softKeys();
+    abstract GenericMapMaker<K0, V0> strongKeys();
 
-@GwtIncompatible("java.lang.ref.WeakReference")
-public abstract GenericMapMaker<K0, V0> weakValues();
+    public abstract GenericMapMaker<K0, V0> concurrencyLevel(int paramInt);
 
-@GwtIncompatible("java.lang.ref.SoftReference")
-public abstract GenericMapMaker<K0, V0> softValues();
+    @GwtIncompatible("java.lang.ref.WeakReference")
+    public abstract GenericMapMaker<K0, V0> weakKeys();
 
-@Deprecated
-public abstract GenericMapMaker<K0, V0> expiration(long paramLong, TimeUnit paramTimeUnit);
+    abstract GenericMapMaker<K0, V0> strongValues();
 
-@Deprecated
-public abstract GenericMapMaker<K0, V0> expireAfterWrite(long paramLong, TimeUnit paramTimeUnit);
+    @Deprecated
+    @GwtIncompatible("java.lang.ref.SoftReference")
+    public abstract GenericMapMaker<K0, V0> softKeys();
 
-@Deprecated
-@GwtIncompatible("To be supported")
-public abstract GenericMapMaker<K0, V0> expireAfterAccess(long paramLong, TimeUnit paramTimeUnit);
+    @GwtIncompatible("java.lang.ref.WeakReference")
+    public abstract GenericMapMaker<K0, V0> weakValues();
 
-@GwtIncompatible("To be supported")
-enum NullListener implements MapMaker.RemovalListener<Object, Object> { INSTANCE;
+    @GwtIncompatible("java.lang.ref.SoftReference")
+    public abstract GenericMapMaker<K0, V0> softValues();
 
-public void onRemoval(MapMaker.RemovalNotification<Object, Object> notification) {} }
+    @Deprecated
+    public abstract GenericMapMaker<K0, V0> expiration(long paramLong, TimeUnit paramTimeUnit);
 
-@GwtIncompatible("To be supported")
-<K extends K0, V extends V0> MapMaker.RemovalListener<K, V> getRemovalListener() {
-return (MapMaker.RemovalListener<K, V>)Objects.firstNonNull(this.removalListener, NullListener.INSTANCE);
+    @Deprecated
+    public abstract GenericMapMaker<K0, V0> expireAfterWrite(long paramLong, TimeUnit paramTimeUnit);
+
+    @Deprecated
+    @GwtIncompatible("To be supported")
+    public abstract GenericMapMaker<K0, V0> expireAfterAccess(long paramLong, TimeUnit paramTimeUnit);
+
+    @GwtIncompatible("To be supported")
+    <K extends K0, V extends V0> MapMaker.RemovalListener<K, V> getRemovalListener() {
+        return (MapMaker.RemovalListener<K, V>) Objects.firstNonNull(this.removalListener, NullListener.INSTANCE);
+    }
+
+    public abstract <K extends K0, V extends V0> ConcurrentMap<K, V> makeMap();
+
+    @GwtIncompatible("CustomConcurrentHashMap")
+    abstract <K, V> CustomConcurrentHashMap<K, V> makeCustomMap();
+
+    @Deprecated
+    public abstract <K extends K0, V extends V0> ConcurrentMap<K, V> makeComputingMap(Function<? super K, ? extends V> paramFunction);
+
+    @GwtIncompatible("To be supported")
+    enum NullListener implements MapMaker.RemovalListener<Object, Object> {
+        INSTANCE;
+
+        public void onRemoval(MapMaker.RemovalNotification<Object, Object> notification) {
+        }
+    }
 }
-
-public abstract <K extends K0, V extends V0> ConcurrentMap<K, V> makeMap();
-
-@GwtIncompatible("CustomConcurrentHashMap")
-abstract <K, V> CustomConcurrentHashMap<K, V> makeCustomMap();
-
-@Deprecated
-public abstract <K extends K0, V extends V0> ConcurrentMap<K, V> makeComputingMap(Function<? super K, ? extends V> paramFunction); }
 

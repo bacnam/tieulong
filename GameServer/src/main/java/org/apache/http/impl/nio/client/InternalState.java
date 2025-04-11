@@ -1,7 +1,5 @@
 package org.apache.http.impl.nio.client;
 
-import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicLong;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestWrapper;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -11,176 +9,178 @@ import org.apache.http.conn.routing.RouteTracker;
 import org.apache.http.nio.protocol.HttpAsyncRequestProducer;
 import org.apache.http.nio.protocol.HttpAsyncResponseConsumer;
 
-class InternalState
-{
-private static final AtomicLong COUNTER = new AtomicLong(1L);
+import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicLong;
 
-private final long id;
+class InternalState {
+    private static final AtomicLong COUNTER = new AtomicLong(1L);
 
-private final HttpAsyncRequestProducer requestProducer;
+    private final long id;
 
-private final HttpAsyncResponseConsumer<?> responseConsumer;
+    private final HttpAsyncRequestProducer requestProducer;
 
-private final HttpClientContext localContext;
+    private final HttpAsyncResponseConsumer<?> responseConsumer;
 
-private boolean routeEstablished;
+    private final HttpClientContext localContext;
 
-private RouteTracker routeTracker;
+    private boolean routeEstablished;
 
-private boolean reusable;
+    private RouteTracker routeTracker;
 
-private long validDuration;
-private HttpRoute route;
-private HttpRequestWrapper mainRequest;
-private HttpResponse finalResponse;
-private HttpRequestWrapper currentRequest;
-private HttpResponse currentResponse;
-private ByteBuffer tmpbuf;
-private boolean requestContentProduced;
-private int execCount;
-private int redirectCount;
-private HttpUriRequest redirect;
+    private boolean reusable;
 
-public InternalState(HttpAsyncRequestProducer requestProducer, HttpAsyncResponseConsumer<?> responseConsumer, HttpClientContext localContext) {
-this.id = COUNTER.getAndIncrement();
-this.requestProducer = requestProducer;
-this.responseConsumer = responseConsumer;
-this.localContext = localContext;
-}
+    private long validDuration;
+    private HttpRoute route;
+    private HttpRequestWrapper mainRequest;
+    private HttpResponse finalResponse;
+    private HttpRequestWrapper currentRequest;
+    private HttpResponse currentResponse;
+    private ByteBuffer tmpbuf;
+    private boolean requestContentProduced;
+    private int execCount;
+    private int redirectCount;
+    private HttpUriRequest redirect;
 
-public long getId() {
-return this.id;
-}
+    public InternalState(HttpAsyncRequestProducer requestProducer, HttpAsyncResponseConsumer<?> responseConsumer, HttpClientContext localContext) {
+        this.id = COUNTER.getAndIncrement();
+        this.requestProducer = requestProducer;
+        this.responseConsumer = responseConsumer;
+        this.localContext = localContext;
+    }
 
-public HttpAsyncRequestProducer getRequestProducer() {
-return this.requestProducer;
-}
+    public long getId() {
+        return this.id;
+    }
 
-public HttpAsyncResponseConsumer<?> getResponseConsumer() {
-return this.responseConsumer;
-}
+    public HttpAsyncRequestProducer getRequestProducer() {
+        return this.requestProducer;
+    }
 
-public HttpClientContext getLocalContext() {
-return this.localContext;
-}
+    public HttpAsyncResponseConsumer<?> getResponseConsumer() {
+        return this.responseConsumer;
+    }
 
-public boolean isRouteEstablished() {
-return this.routeEstablished;
-}
+    public HttpClientContext getLocalContext() {
+        return this.localContext;
+    }
 
-public void setRouteEstablished(boolean b) {
-this.routeEstablished = b;
-}
+    public boolean isRouteEstablished() {
+        return this.routeEstablished;
+    }
 
-public RouteTracker getRouteTracker() {
-return this.routeTracker;
-}
+    public void setRouteEstablished(boolean b) {
+        this.routeEstablished = b;
+    }
 
-public void setRouteTracker(RouteTracker routeTracker) {
-this.routeTracker = routeTracker;
-}
+    public RouteTracker getRouteTracker() {
+        return this.routeTracker;
+    }
 
-public boolean isReusable() {
-return this.reusable;
-}
+    public void setRouteTracker(RouteTracker routeTracker) {
+        this.routeTracker = routeTracker;
+    }
 
-public void setReusable() {
-this.reusable = true;
-}
+    public boolean isReusable() {
+        return this.reusable;
+    }
 
-public void setNonReusable() {
-this.reusable = false;
-}
+    public void setReusable() {
+        this.reusable = true;
+    }
 
-public long getValidDuration() {
-return this.validDuration;
-}
+    public void setNonReusable() {
+        this.reusable = false;
+    }
 
-public void setValidDuration(long validDuration) {
-this.validDuration = validDuration;
-}
+    public long getValidDuration() {
+        return this.validDuration;
+    }
 
-public HttpRoute getRoute() {
-return this.route;
-}
+    public void setValidDuration(long validDuration) {
+        this.validDuration = validDuration;
+    }
 
-public void setRoute(HttpRoute route) {
-this.route = route;
-}
+    public HttpRoute getRoute() {
+        return this.route;
+    }
 
-public HttpRequestWrapper getMainRequest() {
-return this.mainRequest;
-}
+    public void setRoute(HttpRoute route) {
+        this.route = route;
+    }
 
-public void setMainRequest(HttpRequestWrapper mainRequest) {
-this.mainRequest = mainRequest;
-}
+    public HttpRequestWrapper getMainRequest() {
+        return this.mainRequest;
+    }
 
-public HttpResponse getFinalResponse() {
-return this.finalResponse;
-}
+    public void setMainRequest(HttpRequestWrapper mainRequest) {
+        this.mainRequest = mainRequest;
+    }
 
-public void setFinalResponse(HttpResponse finalResponse) {
-this.finalResponse = finalResponse;
-}
+    public HttpResponse getFinalResponse() {
+        return this.finalResponse;
+    }
 
-public HttpRequestWrapper getCurrentRequest() {
-return this.currentRequest;
-}
+    public void setFinalResponse(HttpResponse finalResponse) {
+        this.finalResponse = finalResponse;
+    }
 
-public void setCurrentRequest(HttpRequestWrapper currentRequest) {
-this.currentRequest = currentRequest;
-}
+    public HttpRequestWrapper getCurrentRequest() {
+        return this.currentRequest;
+    }
 
-public HttpResponse getCurrentResponse() {
-return this.currentResponse;
-}
+    public void setCurrentRequest(HttpRequestWrapper currentRequest) {
+        this.currentRequest = currentRequest;
+    }
 
-public void setCurrentResponse(HttpResponse currentResponse) {
-this.currentResponse = currentResponse;
-}
+    public HttpResponse getCurrentResponse() {
+        return this.currentResponse;
+    }
 
-public ByteBuffer getTmpbuf() {
-if (this.tmpbuf == null) {
-this.tmpbuf = ByteBuffer.allocate(4096);
-}
-return this.tmpbuf;
-}
+    public void setCurrentResponse(HttpResponse currentResponse) {
+        this.currentResponse = currentResponse;
+    }
 
-public boolean isRequestContentProduced() {
-return this.requestContentProduced;
-}
+    public ByteBuffer getTmpbuf() {
+        if (this.tmpbuf == null) {
+            this.tmpbuf = ByteBuffer.allocate(4096);
+        }
+        return this.tmpbuf;
+    }
 
-public void setRequestContentProduced() {
-this.requestContentProduced = true;
-}
+    public boolean isRequestContentProduced() {
+        return this.requestContentProduced;
+    }
 
-public int getExecCount() {
-return this.execCount;
-}
+    public void setRequestContentProduced() {
+        this.requestContentProduced = true;
+    }
 
-public void incrementExecCount() {
-this.execCount++;
-}
+    public int getExecCount() {
+        return this.execCount;
+    }
 
-public int getRedirectCount() {
-return this.redirectCount;
-}
+    public void incrementExecCount() {
+        this.execCount++;
+    }
 
-public void incrementRedirectCount() {
-this.redirectCount++;
-}
+    public int getRedirectCount() {
+        return this.redirectCount;
+    }
 
-public HttpUriRequest getRedirect() {
-return this.redirect;
-}
+    public void incrementRedirectCount() {
+        this.redirectCount++;
+    }
 
-public void setRedirect(HttpUriRequest redirect) {
-this.redirect = redirect;
-}
+    public HttpUriRequest getRedirect() {
+        return this.redirect;
+    }
 
-public String toString() {
-return Long.toString(this.id);
-}
+    public void setRedirect(HttpUriRequest redirect) {
+        this.redirect = redirect;
+    }
+
+    public String toString() {
+        return Long.toString(this.id);
+    }
 }
 

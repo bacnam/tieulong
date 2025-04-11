@@ -1,8 +1,8 @@
 package com.mchange.v2.holders;
 
 public interface ThreadSafeCharHolder {
-  char getValue();
+    char getValue();
 
-  void setValue(char paramChar);
+    void setValue(char paramChar);
 }
 

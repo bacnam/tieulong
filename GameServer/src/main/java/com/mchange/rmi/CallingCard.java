@@ -4,12 +4,12 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface CallingCard {
-  Remote findRemote() throws ServiceUnavailableException, RemoteException;
+    Remote findRemote() throws ServiceUnavailableException, RemoteException;
 
-  boolean equals(Object paramObject);
+    boolean equals(Object paramObject);
 
-  int hashCode();
+    int hashCode();
 
-  String toString();
+    String toString();
 }
 

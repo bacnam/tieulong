@@ -6,95 +6,94 @@ import java.util.HashSet;
 import java.util.Set;
 
 class SimpleWritableCachedStore
-implements WritableCachedStore
-{
-private static final Object REMOVE_TOKEN = new Object();
+        implements WritableCachedStore {
+    private static final Object REMOVE_TOKEN = new Object();
 
-TweakableCachedStore readOnlyCache;
+    TweakableCachedStore readOnlyCache;
 
-WritableCachedStore.Manager manager;
-HashMap writeCache = new HashMap<Object, Object>();
+    WritableCachedStore.Manager manager;
+    HashMap writeCache = new HashMap<Object, Object>();
 
-Set failedWrites = null;
+    Set failedWrites = null;
 
-SimpleWritableCachedStore(TweakableCachedStore paramTweakableCachedStore, WritableCachedStore.Manager paramManager) {
-this.readOnlyCache = paramTweakableCachedStore;
-this.manager = paramManager;
-}
+    SimpleWritableCachedStore(TweakableCachedStore paramTweakableCachedStore, WritableCachedStore.Manager paramManager) {
+        this.readOnlyCache = paramTweakableCachedStore;
+        this.manager = paramManager;
+    }
 
-public Object find(Object paramObject) throws CachedStoreException {
-Object object = this.writeCache.get(paramObject);
-if (object == null)
-object = this.readOnlyCache.find(paramObject); 
-return (object == REMOVE_TOKEN) ? null : object;
-}
+    public Object find(Object paramObject) throws CachedStoreException {
+        Object object = this.writeCache.get(paramObject);
+        if (object == null)
+            object = this.readOnlyCache.find(paramObject);
+        return (object == REMOVE_TOKEN) ? null : object;
+    }
 
-public void write(Object paramObject1, Object paramObject2) {
-this.writeCache.put(paramObject1, paramObject2);
-}
-public void remove(Object paramObject) {
-write(paramObject, REMOVE_TOKEN);
-}
+    public void write(Object paramObject1, Object paramObject2) {
+        this.writeCache.put(paramObject1, paramObject2);
+    }
 
-public void flushWrites() throws CacheFlushException {
-HashMap hashMap = (HashMap)this.writeCache.clone();
-for (Object object : hashMap.keySet()) {
+    public void remove(Object paramObject) {
+        write(paramObject, REMOVE_TOKEN);
+    }
 
-Object object1 = hashMap.get(object);
+    public void flushWrites() throws CacheFlushException {
+        HashMap hashMap = (HashMap) this.writeCache.clone();
+        for (Object object : hashMap.keySet()) {
 
-try {
-if (object1 == REMOVE_TOKEN) {
-this.manager.removeFromStorage(object);
-} else {
-this.manager.writeToStorage(object, object1);
-} 
+            Object object1 = hashMap.get(object);
 
-try {
-this.readOnlyCache.setCachedValue(object, object1);
-this.writeCache.remove(object);
-if (this.failedWrites != null) {
+            try {
+                if (object1 == REMOVE_TOKEN) {
+                    this.manager.removeFromStorage(object);
+                } else {
+                    this.manager.writeToStorage(object, object1);
+                }
 
-this.failedWrites.remove(object);
-if (this.failedWrites.size() == 0) {
-this.failedWrites = null;
-}
-} 
-} catch (CachedStoreException cachedStoreException) {
+                try {
+                    this.readOnlyCache.setCachedValue(object, object1);
+                    this.writeCache.remove(object);
+                    if (this.failedWrites != null) {
 
-throw new CachedStoreError("SimpleWritableCachedStore: Internal cache is broken!");
-}
+                        this.failedWrites.remove(object);
+                        if (this.failedWrites.size() == 0) {
+                            this.failedWrites = null;
+                        }
+                    }
+                } catch (CachedStoreException cachedStoreException) {
 
-}
-catch (Exception exception) {
+                    throw new CachedStoreError("SimpleWritableCachedStore: Internal cache is broken!");
+                }
 
-if (this.failedWrites == null)
-this.failedWrites = new HashSet(); 
-this.failedWrites.add(object);
-} 
-} 
+            } catch (Exception exception) {
 
-if (this.failedWrites != null)
-throw new CacheFlushException("Some keys failed to write!"); 
-}
+                if (this.failedWrites == null)
+                    this.failedWrites = new HashSet();
+                this.failedWrites.add(object);
+            }
+        }
 
-public Set getFailedWrites() {
-return (this.failedWrites == null) ? null : Collections.unmodifiableSet(this.failedWrites);
-}
+        if (this.failedWrites != null)
+            throw new CacheFlushException("Some keys failed to write!");
+    }
 
-public void clearPendingWrites() {
-this.writeCache.clear();
-this.failedWrites = null;
-}
+    public Set getFailedWrites() {
+        return (this.failedWrites == null) ? null : Collections.unmodifiableSet(this.failedWrites);
+    }
 
-public void reset() throws CachedStoreException {
-this.writeCache.clear();
-this.readOnlyCache.reset();
-this.failedWrites = null;
-}
+    public void clearPendingWrites() {
+        this.writeCache.clear();
+        this.failedWrites = null;
+    }
 
-public void sync() throws CachedStoreException {
-flushWrites();
-reset();
-}
+    public void reset() throws CachedStoreException {
+        this.writeCache.clear();
+        this.readOnlyCache.reset();
+        this.failedWrites = null;
+    }
+
+    public void sync() throws CachedStoreException {
+        flushWrites();
+        reset();
+    }
 }
 

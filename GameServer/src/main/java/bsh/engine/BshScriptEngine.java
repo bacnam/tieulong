@@ -1,33 +1,38 @@
 package bsh.engine;
 
-import javax.script.AbstractScriptEngine;
-import javax.script.Bindings;
-import javax.script.Compilable;
-import javax.script.Invocable;
-import javax.script.ScriptEngineFactory;
-import javax.script.SimpleBindings;
-import java.io.OutputStream;
-import java.io.StringReader;
+import bsh.*;
 
-import bsh.EvalError;
-import bsh.ExternalNameSpace;
-import bsh.Interpreter;
-import bsh.InterpreterError;
-import bsh.NameSpace;
-import bsh.ParseException;
-import bsh.TargetError;
-import bsh.This;
-import bsh.UtilEvalError;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.Writer;
+import javax.script.*;
+import java.io.*;
 import java.util.Map;
-import javax.script.CompiledScript;
-import javax.script.ScriptContext;
-import javax.script.ScriptException;
 
 public class BshScriptEngine extends AbstractScriptEngine implements Compilable, Invocable {
+    static final String engineNameSpaceKey = "org_beanshell_engine_namespace";
+    private BshScriptEngineFactory factory;
+    private Interpreter interpreter;
+
+    public BshScriptEngine() {
+        this(null);
+    }
+
+    public BshScriptEngine(BshScriptEngineFactory factory) {
+        this.factory = factory;
+        getInterpreter();
+    }
+
+    private static NameSpace getEngineNameSpace(ScriptContext scriptContext) {
+        NameSpace ns = (NameSpace) scriptContext.getAttribute("org_beanshell_engine_namespace", 100);
+
+        if (ns == null) {
+            Map engineView = new ScriptContextEngineView(scriptContext);
+            ns = new ExternalNameSpace(null, "javax_script_context", engineView);
+
+            scriptContext.setAttribute("org_beanshell_engine_namespace", ns, 100);
+        }
+
+        return ns;
+    }
+
     @Override
     public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
         // TODO: Implement logic to invoke method on script object
@@ -38,20 +43,6 @@ public class BshScriptEngine extends AbstractScriptEngine implements Compilable,
     public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
         // TODO: Implement logic to invoke global function from script
         throw new UnsupportedOperationException("invokeFunction is not implemented yet.");
-    }
-
-    static final String engineNameSpaceKey = "org_beanshell_engine_namespace";
-
-    public BshScriptEngine() {
-        this(null);
-    }
-
-    private BshScriptEngineFactory factory;
-    private Interpreter interpreter;
-
-    public BshScriptEngine(BshScriptEngineFactory factory) {
-        this.factory = factory;
-        getInterpreter();
     }
 
     protected Interpreter getInterpreter() {
@@ -102,19 +93,6 @@ public class BshScriptEngine extends AbstractScriptEngine implements Compilable,
             throw new ScriptException(e.toString());
         }
     }
-
-    private static NameSpace getEngineNameSpace(ScriptContext scriptContext) {
-        NameSpace ns = (NameSpace) scriptContext.getAttribute("org_beanshell_engine_namespace", 100);
-    
-        if (ns == null) {
-            Map engineView = new ScriptContextEngineView(scriptContext);
-            ns = new ExternalNameSpace(null, "javax_script_context", engineView);
-    
-            scriptContext.setAttribute("org_beanshell_engine_namespace", ns, 100);
-        }
-    
-        return ns;
-    }    
 
     public Bindings createBindings() {
         return new SimpleBindings();

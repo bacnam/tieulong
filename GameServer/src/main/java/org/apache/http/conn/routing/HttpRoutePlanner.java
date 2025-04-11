@@ -6,6 +6,6 @@ import org.apache.http.HttpRequest;
 import org.apache.http.protocol.HttpContext;
 
 public interface HttpRoutePlanner {
-  HttpRoute determineRoute(HttpHost paramHttpHost, HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws HttpException;
+    HttpRoute determineRoute(HttpHost paramHttpHost, HttpRequest paramHttpRequest, HttpContext paramHttpContext) throws HttpException;
 }
 

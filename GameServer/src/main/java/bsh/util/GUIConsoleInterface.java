@@ -1,13 +1,14 @@
 package bsh.util;
 
 import bsh.ConsoleInterface;
-import java.awt.Color;
+
+import java.awt.*;
 
 public interface GUIConsoleInterface extends ConsoleInterface {
-  void print(Object paramObject, Color paramColor);
+    void print(Object paramObject, Color paramColor);
 
-  void setNameCompletion(NameCompletion paramNameCompletion);
+    void setNameCompletion(NameCompletion paramNameCompletion);
 
-  void setWaitFeedback(boolean paramBoolean);
+    void setWaitFeedback(boolean paramBoolean);
 }
 

@@ -1,16 +1,16 @@
 package jsc.combinatorics;
 
 public interface Enumerator {
-  double countSelections();
+    double countSelections();
 
-  boolean hasNext();
+    boolean hasNext();
 
-  Selection nextSelection();
+    Selection nextSelection();
 
-  Selection randomSelection();
+    Selection randomSelection();
 
-  void reset();
+    void reset();
 
-  void setSeed(long paramLong);
+    void setSeed(long paramLong);
 }
 

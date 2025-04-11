@@ -1,196 +1,196 @@
 package com.mchange.v2.c3p0.jboss;
 
+import javax.naming.NamingException;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
-import javax.naming.NamingException;
 
 public interface C3P0PooledDataSourceMBean {
-  void setJndiName(String paramString) throws NamingException;
+    String getJndiName();
 
-  String getJndiName();
+    void setJndiName(String paramString) throws NamingException;
 
-  String getDescription();
+    String getDescription();
 
-  void setDescription(String paramString) throws NamingException;
+    void setDescription(String paramString) throws NamingException;
 
-  String getDriverClass();
+    String getDriverClass();
 
-  void setDriverClass(String paramString) throws PropertyVetoException, NamingException;
+    void setDriverClass(String paramString) throws PropertyVetoException, NamingException;
 
-  String getJdbcUrl();
+    String getJdbcUrl();
 
-  void setJdbcUrl(String paramString) throws NamingException;
+    void setJdbcUrl(String paramString) throws NamingException;
 
-  String getUser();
+    String getUser();
 
-  void setUser(String paramString) throws NamingException;
+    void setUser(String paramString) throws NamingException;
 
-  String getPassword();
+    String getPassword();
 
-  void setPassword(String paramString) throws NamingException;
+    void setPassword(String paramString) throws NamingException;
 
-  int getUnreturnedConnectionTimeout();
+    int getUnreturnedConnectionTimeout();
 
-  void setUnreturnedConnectionTimeout(int paramInt) throws NamingException;
+    void setUnreturnedConnectionTimeout(int paramInt) throws NamingException;
 
-  boolean isDebugUnreturnedConnectionStackTraces();
+    boolean isDebugUnreturnedConnectionStackTraces();
 
-  void setDebugUnreturnedConnectionStackTraces(boolean paramBoolean) throws NamingException;
+    void setDebugUnreturnedConnectionStackTraces(boolean paramBoolean) throws NamingException;
 
-  String getConnectionCustomizerClassName();
+    String getConnectionCustomizerClassName();
 
-  void setConnectionCustomizerClassName(String paramString) throws NamingException;
+    void setConnectionCustomizerClassName(String paramString) throws NamingException;
 
-  int getMaxConnectionAge();
+    int getMaxConnectionAge();
 
-  void setMaxConnectionAge(int paramInt) throws NamingException;
+    void setMaxConnectionAge(int paramInt) throws NamingException;
 
-  int getMaxIdleTimeExcessConnections();
+    int getMaxIdleTimeExcessConnections();
 
-  void setMaxIdleTimeExcessConnections(int paramInt) throws NamingException;
+    void setMaxIdleTimeExcessConnections(int paramInt) throws NamingException;
 
-  int getMaxAdministrativeTaskTime();
+    int getMaxAdministrativeTaskTime();
 
-  void setMaxAdministrativeTaskTime(int paramInt) throws NamingException;
+    void setMaxAdministrativeTaskTime(int paramInt) throws NamingException;
 
-  int getCheckoutTimeout();
+    int getCheckoutTimeout();
 
-  void setCheckoutTimeout(int paramInt) throws NamingException;
+    void setCheckoutTimeout(int paramInt) throws NamingException;
 
-  int getAcquireIncrement();
+    int getAcquireIncrement();
 
-  void setAcquireIncrement(int paramInt) throws NamingException;
+    void setAcquireIncrement(int paramInt) throws NamingException;
 
-  int getAcquireRetryAttempts();
+    int getAcquireRetryAttempts();
 
-  void setAcquireRetryAttempts(int paramInt) throws NamingException;
+    void setAcquireRetryAttempts(int paramInt) throws NamingException;
 
-  int getAcquireRetryDelay();
+    int getAcquireRetryDelay();
 
-  void setAcquireRetryDelay(int paramInt) throws NamingException;
+    void setAcquireRetryDelay(int paramInt) throws NamingException;
 
-  boolean isAutoCommitOnClose();
+    boolean isAutoCommitOnClose();
 
-  void setAutoCommitOnClose(boolean paramBoolean) throws NamingException;
+    void setAutoCommitOnClose(boolean paramBoolean) throws NamingException;
 
-  String getConnectionTesterClassName();
+    String getConnectionTesterClassName();
 
-  void setConnectionTesterClassName(String paramString) throws PropertyVetoException, NamingException;
+    void setConnectionTesterClassName(String paramString) throws PropertyVetoException, NamingException;
 
-  String getAutomaticTestTable();
+    String getAutomaticTestTable();
 
-  void setAutomaticTestTable(String paramString) throws NamingException;
+    void setAutomaticTestTable(String paramString) throws NamingException;
 
-  boolean isForceIgnoreUnresolvedTransactions();
+    boolean isForceIgnoreUnresolvedTransactions();
 
-  void setForceIgnoreUnresolvedTransactions(boolean paramBoolean) throws NamingException;
+    void setForceIgnoreUnresolvedTransactions(boolean paramBoolean) throws NamingException;
 
-  int getIdleConnectionTestPeriod();
+    int getIdleConnectionTestPeriod();
 
-  void setIdleConnectionTestPeriod(int paramInt) throws NamingException;
+    void setIdleConnectionTestPeriod(int paramInt) throws NamingException;
 
-  int getInitialPoolSize();
+    int getInitialPoolSize();
 
-  void setInitialPoolSize(int paramInt) throws NamingException;
+    void setInitialPoolSize(int paramInt) throws NamingException;
 
-  int getMaxIdleTime();
+    int getMaxIdleTime();
 
-  void setMaxIdleTime(int paramInt) throws NamingException;
+    void setMaxIdleTime(int paramInt) throws NamingException;
 
-  int getMaxPoolSize();
+    int getMaxPoolSize();
 
-  void setMaxPoolSize(int paramInt) throws NamingException;
+    void setMaxPoolSize(int paramInt) throws NamingException;
 
-  int getMaxStatements();
+    int getMaxStatements();
 
-  void setMaxStatements(int paramInt) throws NamingException;
+    void setMaxStatements(int paramInt) throws NamingException;
 
-  int getMaxStatementsPerConnection();
+    int getMaxStatementsPerConnection();
 
-  void setMaxStatementsPerConnection(int paramInt) throws NamingException;
+    void setMaxStatementsPerConnection(int paramInt) throws NamingException;
 
-  int getMinPoolSize();
+    int getMinPoolSize();
 
-  void setMinPoolSize(int paramInt) throws NamingException;
+    void setMinPoolSize(int paramInt) throws NamingException;
 
-  int getPropertyCycle();
+    int getPropertyCycle();
 
-  void setPropertyCycle(int paramInt) throws NamingException;
+    void setPropertyCycle(int paramInt) throws NamingException;
 
-  boolean isBreakAfterAcquireFailure();
+    boolean isBreakAfterAcquireFailure();
 
-  void setBreakAfterAcquireFailure(boolean paramBoolean) throws NamingException;
+    void setBreakAfterAcquireFailure(boolean paramBoolean) throws NamingException;
 
-  boolean isTestConnectionOnCheckout();
+    boolean isTestConnectionOnCheckout();
 
-  void setTestConnectionOnCheckout(boolean paramBoolean) throws NamingException;
+    void setTestConnectionOnCheckout(boolean paramBoolean) throws NamingException;
 
-  boolean isTestConnectionOnCheckin();
+    boolean isTestConnectionOnCheckin();
 
-  void setTestConnectionOnCheckin(boolean paramBoolean) throws NamingException;
+    void setTestConnectionOnCheckin(boolean paramBoolean) throws NamingException;
 
-  boolean isUsesTraditionalReflectiveProxies();
+    boolean isUsesTraditionalReflectiveProxies();
 
-  void setUsesTraditionalReflectiveProxies(boolean paramBoolean) throws NamingException;
+    void setUsesTraditionalReflectiveProxies(boolean paramBoolean) throws NamingException;
 
-  String getPreferredTestQuery();
+    String getPreferredTestQuery();
 
-  void setPreferredTestQuery(String paramString) throws NamingException;
+    void setPreferredTestQuery(String paramString) throws NamingException;
 
-  int getNumHelperThreads();
+    int getNumHelperThreads();
 
-  void setNumHelperThreads(int paramInt) throws NamingException;
+    void setNumHelperThreads(int paramInt) throws NamingException;
 
-  String getFactoryClassLocation();
+    String getFactoryClassLocation();
 
-  void setFactoryClassLocation(String paramString) throws NamingException;
+    void setFactoryClassLocation(String paramString) throws NamingException;
 
-  int getNumUserPools() throws SQLException;
+    int getNumUserPools() throws SQLException;
 
-  int getNumConnectionsDefaultUser() throws SQLException;
+    int getNumConnectionsDefaultUser() throws SQLException;
 
-  int getNumIdleConnectionsDefaultUser() throws SQLException;
+    int getNumIdleConnectionsDefaultUser() throws SQLException;
 
-  int getNumBusyConnectionsDefaultUser() throws SQLException;
+    int getNumBusyConnectionsDefaultUser() throws SQLException;
 
-  int getNumUnclosedOrphanedConnectionsDefaultUser() throws SQLException;
+    int getNumUnclosedOrphanedConnectionsDefaultUser() throws SQLException;
 
-  int getNumConnections(String paramString1, String paramString2) throws SQLException;
+    int getNumConnections(String paramString1, String paramString2) throws SQLException;
 
-  int getNumIdleConnections(String paramString1, String paramString2) throws SQLException;
+    int getNumIdleConnections(String paramString1, String paramString2) throws SQLException;
 
-  int getNumBusyConnections(String paramString1, String paramString2) throws SQLException;
+    int getNumBusyConnections(String paramString1, String paramString2) throws SQLException;
 
-  int getNumUnclosedOrphanedConnections(String paramString1, String paramString2) throws SQLException;
+    int getNumUnclosedOrphanedConnections(String paramString1, String paramString2) throws SQLException;
 
-  float getEffectivePropertyCycle(String paramString1, String paramString2) throws SQLException;
+    float getEffectivePropertyCycle(String paramString1, String paramString2) throws SQLException;
 
-  int getNumBusyConnectionsAllUsers() throws SQLException;
+    int getNumBusyConnectionsAllUsers() throws SQLException;
 
-  int getNumIdleConnectionsAllUsers() throws SQLException;
+    int getNumIdleConnectionsAllUsers() throws SQLException;
 
-  int getNumConnectionsAllUsers() throws SQLException;
+    int getNumConnectionsAllUsers() throws SQLException;
 
-  int getNumUnclosedOrphanedConnectionsAllUsers() throws SQLException;
+    int getNumUnclosedOrphanedConnectionsAllUsers() throws SQLException;
 
-  float getEffectivePropertyCycleDefaultUser() throws SQLException;
+    float getEffectivePropertyCycleDefaultUser() throws SQLException;
 
-  void softResetDefaultUser() throws SQLException;
+    void softResetDefaultUser() throws SQLException;
 
-  void softReset(String paramString1, String paramString2) throws SQLException;
+    void softReset(String paramString1, String paramString2) throws SQLException;
 
-  void softResetAllUsers() throws SQLException;
+    void softResetAllUsers() throws SQLException;
 
-  void hardReset() throws SQLException;
+    void hardReset() throws SQLException;
 
-  void close() throws SQLException;
+    void close() throws SQLException;
 
-  void create() throws Exception;
+    void create() throws Exception;
 
-  void start() throws Exception;
+    void start() throws Exception;
 
-  void stop();
+    void stop();
 
-  void destroy();
+    void destroy();
 }
 

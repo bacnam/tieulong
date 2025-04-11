@@ -1,6 +1,5 @@
 package org.apache.http.impl.client;
 
-import java.net.ProxySelector;
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.annotation.ThreadSafe;
 import org.apache.http.conn.ClientConnectionManager;
@@ -12,42 +11,43 @@ import org.apache.http.impl.conn.ProxySelectorRoutePlanner;
 import org.apache.http.impl.conn.SchemeRegistryFactory;
 import org.apache.http.params.HttpParams;
 
+import java.net.ProxySelector;
+
 @Deprecated
 @ThreadSafe
 public class SystemDefaultHttpClient
-extends DefaultHttpClient
-{
-public SystemDefaultHttpClient(HttpParams params) {
-super((ClientConnectionManager)null, params);
-}
+        extends DefaultHttpClient {
+    public SystemDefaultHttpClient(HttpParams params) {
+        super((ClientConnectionManager) null, params);
+    }
 
-public SystemDefaultHttpClient() {
-super((ClientConnectionManager)null, (HttpParams)null);
-}
+    public SystemDefaultHttpClient() {
+        super((ClientConnectionManager) null, (HttpParams) null);
+    }
 
-protected ClientConnectionManager createClientConnectionManager() {
-PoolingClientConnectionManager connmgr = new PoolingClientConnectionManager(SchemeRegistryFactory.createSystemDefault());
+    protected ClientConnectionManager createClientConnectionManager() {
+        PoolingClientConnectionManager connmgr = new PoolingClientConnectionManager(SchemeRegistryFactory.createSystemDefault());
 
-String s = System.getProperty("http.keepAlive", "true");
-if ("true".equalsIgnoreCase(s)) {
-s = System.getProperty("http.maxConnections", "5");
-int max = Integer.parseInt(s);
-connmgr.setDefaultMaxPerRoute(max);
-connmgr.setMaxTotal(2 * max);
-} 
-return (ClientConnectionManager)connmgr;
-}
+        String s = System.getProperty("http.keepAlive", "true");
+        if ("true".equalsIgnoreCase(s)) {
+            s = System.getProperty("http.maxConnections", "5");
+            int max = Integer.parseInt(s);
+            connmgr.setDefaultMaxPerRoute(max);
+            connmgr.setMaxTotal(2 * max);
+        }
+        return (ClientConnectionManager) connmgr;
+    }
 
-protected HttpRoutePlanner createHttpRoutePlanner() {
-return (HttpRoutePlanner)new ProxySelectorRoutePlanner(getConnectionManager().getSchemeRegistry(), ProxySelector.getDefault());
-}
+    protected HttpRoutePlanner createHttpRoutePlanner() {
+        return (HttpRoutePlanner) new ProxySelectorRoutePlanner(getConnectionManager().getSchemeRegistry(), ProxySelector.getDefault());
+    }
 
-protected ConnectionReuseStrategy createConnectionReuseStrategy() {
-String s = System.getProperty("http.keepAlive", "true");
-if ("true".equalsIgnoreCase(s)) {
-return (ConnectionReuseStrategy)new DefaultConnectionReuseStrategy();
-}
-return (ConnectionReuseStrategy)new NoConnectionReuseStrategy();
-}
+    protected ConnectionReuseStrategy createConnectionReuseStrategy() {
+        String s = System.getProperty("http.keepAlive", "true");
+        if ("true".equalsIgnoreCase(s)) {
+            return (ConnectionReuseStrategy) new DefaultConnectionReuseStrategy();
+        }
+        return (ConnectionReuseStrategy) new NoConnectionReuseStrategy();
+    }
 }
 

@@ -5,105 +5,99 @@ import java.io.FileInputStream;
 import java.net.URL;
 import java.util.Date;
 
-public class PatternOptionBuilder
-{
-public static final Class STRING_VALUE = String.class;
+public class PatternOptionBuilder {
+    public static final Class STRING_VALUE = String.class;
 
-public static final Class OBJECT_VALUE = Object.class;
+    public static final Class OBJECT_VALUE = Object.class;
 
-public static final Class NUMBER_VALUE = Number.class;
+    public static final Class NUMBER_VALUE = Number.class;
 
-public static final Class DATE_VALUE = Date.class;
+    public static final Class DATE_VALUE = Date.class;
 
-public static final Class CLASS_VALUE = Class.class;
+    public static final Class CLASS_VALUE = Class.class;
 
-public static final Class EXISTING_FILE_VALUE = FileInputStream.class;
+    public static final Class EXISTING_FILE_VALUE = FileInputStream.class;
 
-public static final Class FILE_VALUE = File.class;
+    public static final Class FILE_VALUE = File.class;
+    public static final Class URL_VALUE = URL.class;
+    static Class array$Ljava$io$File;
+    public static final Class FILES_VALUE = (array$Ljava$io$File == null) ? (array$Ljava$io$File = class$("[Ljava.io.File;")) : array$Ljava$io$File;
 
-public static final Class FILES_VALUE = (array$Ljava$io$File == null) ? (array$Ljava$io$File = class$("[Ljava.io.File;")) : array$Ljava$io$File;
+    public static Object getValueClass(char ch) {
+        switch (ch) {
 
-public static final Class URL_VALUE = URL.class;
+            case '@':
+                return OBJECT_VALUE;
+            case ':':
+                return STRING_VALUE;
+            case '%':
+                return NUMBER_VALUE;
+            case '+':
+                return CLASS_VALUE;
+            case '#':
+                return DATE_VALUE;
+            case '<':
+                return EXISTING_FILE_VALUE;
+            case '>':
+                return FILE_VALUE;
+            case '*':
+                return FILES_VALUE;
+            case '/':
+                return URL_VALUE;
+        }
 
-static Class array$Ljava$io$File;
+        return null;
+    }
 
-public static Object getValueClass(char ch) {
-switch (ch) {
+    public static boolean isValueCode(char ch) {
+        return (ch == '@' || ch == ':' || ch == '%' || ch == '+' || ch == '#' || ch == '<' || ch == '>' || ch == '*' || ch == '/' || ch == '!');
+    }
 
-case '@':
-return OBJECT_VALUE;
-case ':':
-return STRING_VALUE;
-case '%':
-return NUMBER_VALUE;
-case '+':
-return CLASS_VALUE;
-case '#':
-return DATE_VALUE;
-case '<':
-return EXISTING_FILE_VALUE;
-case '>':
-return FILE_VALUE;
-case '*':
-return FILES_VALUE;
-case '/':
-return URL_VALUE;
-} 
+    public static Options parsePattern(String pattern) {
+        char opt = ' ';
+        boolean required = false;
+        Object type = null;
 
-return null;
-}
+        Options options = new Options();
 
-public static boolean isValueCode(char ch) {
-return (ch == '@' || ch == ':' || ch == '%' || ch == '+' || ch == '#' || ch == '<' || ch == '>' || ch == '*' || ch == '/' || ch == '!');
-}
+        for (int i = 0; i < pattern.length(); i++) {
 
-public static Options parsePattern(String pattern) {
-char opt = ' ';
-boolean required = false;
-Object type = null;
+            char ch = pattern.charAt(i);
 
-Options options = new Options();
+            if (!isValueCode(ch)) {
 
-for (int i = 0; i < pattern.length(); i++) {
+                if (opt != ' ') {
 
-char ch = pattern.charAt(i);
+                    OptionBuilder.hasArg((type != null));
+                    OptionBuilder.isRequired(required);
+                    OptionBuilder.withType(type);
 
-if (!isValueCode(ch)) {
+                    options.addOption(OptionBuilder.create(opt));
+                    required = false;
+                    type = null;
+                    opt = ' ';
+                }
 
-if (opt != ' ') {
+                opt = ch;
+            } else if (ch == '!') {
 
-OptionBuilder.hasArg((type != null));
-OptionBuilder.isRequired(required);
-OptionBuilder.withType(type);
+                required = true;
+            } else {
 
-options.addOption(OptionBuilder.create(opt));
-required = false;
-type = null;
-opt = ' ';
-} 
+                type = getValueClass(ch);
+            }
+        }
 
-opt = ch;
-}
-else if (ch == '!') {
+        if (opt != ' ') {
 
-required = true;
-}
-else {
+            OptionBuilder.hasArg((type != null));
+            OptionBuilder.isRequired(required);
+            OptionBuilder.withType(type);
 
-type = getValueClass(ch);
-} 
-} 
+            options.addOption(OptionBuilder.create(opt));
+        }
 
-if (opt != ' ') {
-
-OptionBuilder.hasArg((type != null));
-OptionBuilder.isRequired(required);
-OptionBuilder.withType(type);
-
-options.addOption(OptionBuilder.create(opt));
-} 
-
-return options;
-}
+        return options;
+    }
 }
 

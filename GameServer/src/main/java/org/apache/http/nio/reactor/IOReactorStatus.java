@@ -1,15 +1,14 @@
 package org.apache.http.nio.reactor;
 
-public enum IOReactorStatus
-{
-INACTIVE,
+public enum IOReactorStatus {
+    INACTIVE,
 
-ACTIVE,
+    ACTIVE,
 
-SHUTDOWN_REQUEST,
+    SHUTDOWN_REQUEST,
 
-SHUTTING_DOWN,
+    SHUTTING_DOWN,
 
-SHUT_DOWN;
+    SHUT_DOWN;
 }
 

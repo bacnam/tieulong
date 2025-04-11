@@ -1,21 +1,20 @@
 package org.apache.mina.filter.codec.demux;
 
-public class MessageDecoderResult
-{
-public static final MessageDecoderResult OK = new MessageDecoderResult("OK");
+public class MessageDecoderResult {
+    public static final MessageDecoderResult OK = new MessageDecoderResult("OK");
 
-public static final MessageDecoderResult NEED_DATA = new MessageDecoderResult("NEED_DATA");
+    public static final MessageDecoderResult NEED_DATA = new MessageDecoderResult("NEED_DATA");
 
-public static final MessageDecoderResult NOT_OK = new MessageDecoderResult("NOT_OK");
+    public static final MessageDecoderResult NOT_OK = new MessageDecoderResult("NOT_OK");
 
-private final String name;
+    private final String name;
 
-private MessageDecoderResult(String name) {
-this.name = name;
-}
+    private MessageDecoderResult(String name) {
+        this.name = name;
+    }
 
-public String toString() {
-return this.name;
-}
+    public String toString() {
+        return this.name;
+    }
 }
 

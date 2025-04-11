@@ -10,26 +10,26 @@ import org.apache.http.util.Args;
 
 @Immutable
 public class DefaultConnectionKeepAliveStrategy
-implements ConnectionKeepAliveStrategy
-{
-public static final DefaultConnectionKeepAliveStrategy INSTANCE = new DefaultConnectionKeepAliveStrategy();
+        implements ConnectionKeepAliveStrategy {
+    public static final DefaultConnectionKeepAliveStrategy INSTANCE = new DefaultConnectionKeepAliveStrategy();
 
-public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
-Args.notNull(response, "HTTP response");
-BasicHeaderElementIterator basicHeaderElementIterator = new BasicHeaderElementIterator(response.headerIterator("Keep-Alive"));
+    public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
+        Args.notNull(response, "HTTP response");
+        BasicHeaderElementIterator basicHeaderElementIterator = new BasicHeaderElementIterator(response.headerIterator("Keep-Alive"));
 
-while (basicHeaderElementIterator.hasNext()) {
-HeaderElement he = basicHeaderElementIterator.nextElement();
-String param = he.getName();
-String value = he.getValue();
-if (value != null && param.equalsIgnoreCase("timeout")) {
-try {
-return Long.parseLong(value) * 1000L;
-} catch (NumberFormatException ignore) {}
-}
-} 
+        while (basicHeaderElementIterator.hasNext()) {
+            HeaderElement he = basicHeaderElementIterator.nextElement();
+            String param = he.getName();
+            String value = he.getValue();
+            if (value != null && param.equalsIgnoreCase("timeout")) {
+                try {
+                    return Long.parseLong(value) * 1000L;
+                } catch (NumberFormatException ignore) {
+                }
+            }
+        }
 
-return -1L;
-}
+        return -1L;
+    }
 }
 

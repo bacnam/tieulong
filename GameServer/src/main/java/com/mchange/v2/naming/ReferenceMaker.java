@@ -4,6 +4,6 @@ import javax.naming.NamingException;
 import javax.naming.Reference;
 
 public interface ReferenceMaker {
-  Reference createReference(Object paramObject) throws NamingException;
+    Reference createReference(Object paramObject) throws NamingException;
 }
 

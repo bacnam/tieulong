@@ -5,44 +5,45 @@ import ch.qos.logback.core.joran.util.PropertySetter;
 import org.xml.sax.Attributes;
 
 public class ParamAction
-extends Action
-{
-static String NO_NAME = "No name attribute in <param> element";
-static String NO_VALUE = "No name attribute in <param> element";
+        extends Action {
+    static String NO_NAME = "No name attribute in <param> element";
+    static String NO_VALUE = "No name attribute in <param> element";
 
-boolean inError = false;
+    boolean inError = false;
 
-public void begin(InterpretationContext ec, String localName, Attributes attributes) {
-String name = attributes.getValue("name");
-String value = attributes.getValue("value");
+    public void begin(InterpretationContext ec, String localName, Attributes attributes) {
+        String name = attributes.getValue("name");
+        String value = attributes.getValue("value");
 
-if (name == null) {
-this.inError = true;
-addError(NO_NAME);
+        if (name == null) {
+            this.inError = true;
+            addError(NO_NAME);
 
-return;
-} 
-if (value == null) {
-this.inError = true;
-addError(NO_VALUE);
+            return;
+        }
+        if (value == null) {
+            this.inError = true;
+            addError(NO_VALUE);
 
-return;
-} 
+            return;
+        }
 
-value = value.trim();
+        value = value.trim();
 
-Object o = ec.peekObject();
-PropertySetter propSetter = new PropertySetter(o);
-propSetter.setContext(this.context);
-value = ec.subst(value);
+        Object o = ec.peekObject();
+        PropertySetter propSetter = new PropertySetter(o);
+        propSetter.setContext(this.context);
+        value = ec.subst(value);
 
-name = ec.subst(name);
+        name = ec.subst(name);
 
-propSetter.setProperty(name, value);
-}
+        propSetter.setProperty(name, value);
+    }
 
-public void end(InterpretationContext ec, String localName) {}
+    public void end(InterpretationContext ec, String localName) {
+    }
 
-public void finish(InterpretationContext ec) {}
+    public void finish(InterpretationContext ec) {
+    }
 }
 

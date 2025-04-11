@@ -6,27 +6,26 @@ import business.player.Player;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class ActivityInstanceBuyTimes
-extends PlayerHandler
-{
-private static class Response
-{
-int leftTimes;
-int leftBuyTimes;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        ActivityInstance instance = (ActivityInstance) ActivityMgr.getActivity(ActivityInstance.class);
 
-private Response(int leftTimes, int leftBuyTimes) {
-this.leftTimes = leftTimes;
-this.leftBuyTimes = leftBuyTimes;
-}
-}
+        instance.buyTimes(player);
+        request.response(new Response(instance.getLeftTimes(player), instance.getBuyTimes() - instance.getBuyTimes(player), null));
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-ActivityInstance instance = (ActivityInstance)ActivityMgr.getActivity(ActivityInstance.class);
+    private static class Response {
+        int leftTimes;
+        int leftBuyTimes;
 
-instance.buyTimes(player);
-request.response(new Response(instance.getLeftTimes(player), instance.getBuyTimes() - instance.getBuyTimes(player), null));
-}
+        private Response(int leftTimes, int leftBuyTimes) {
+            this.leftTimes = leftTimes;
+            this.leftBuyTimes = leftBuyTimes;
+        }
+    }
 }
 

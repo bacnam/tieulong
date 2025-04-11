@@ -4,78 +4,75 @@ import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.StringEncoder;
 
 public class RefinedSoundex
-implements StringEncoder
-{
-public static final String US_ENGLISH_MAPPING_STRING = "01360240043788015936020505";
-private static final char[] US_ENGLISH_MAPPING = "01360240043788015936020505".toCharArray();
+        implements StringEncoder {
+    public static final String US_ENGLISH_MAPPING_STRING = "01360240043788015936020505";
+    public static final RefinedSoundex US_ENGLISH = new RefinedSoundex();
+    private static final char[] US_ENGLISH_MAPPING = "01360240043788015936020505".toCharArray();
+    private final char[] soundexMapping;
 
-private final char[] soundexMapping;
+    public RefinedSoundex() {
+        this.soundexMapping = US_ENGLISH_MAPPING;
+    }
 
-public static final RefinedSoundex US_ENGLISH = new RefinedSoundex();
+    public RefinedSoundex(char[] mapping) {
+        this.soundexMapping = new char[mapping.length];
+        System.arraycopy(mapping, 0, this.soundexMapping, 0, mapping.length);
+    }
 
-public RefinedSoundex() {
-this.soundexMapping = US_ENGLISH_MAPPING;
-}
+    public RefinedSoundex(String mapping) {
+        this.soundexMapping = mapping.toCharArray();
+    }
 
-public RefinedSoundex(char[] mapping) {
-this.soundexMapping = new char[mapping.length];
-System.arraycopy(mapping, 0, this.soundexMapping, 0, mapping.length);
-}
+    public int difference(String s1, String s2) throws EncoderException {
+        return SoundexUtils.difference(this, s1, s2);
+    }
 
-public RefinedSoundex(String mapping) {
-this.soundexMapping = mapping.toCharArray();
-}
+    public Object encode(Object obj) throws EncoderException {
+        if (!(obj instanceof String)) {
+            throw new EncoderException("Parameter supplied to RefinedSoundex encode is not of type java.lang.String");
+        }
+        return soundex((String) obj);
+    }
 
-public int difference(String s1, String s2) throws EncoderException {
-return SoundexUtils.difference(this, s1, s2);
-}
+    public String encode(String str) {
+        return soundex(str);
+    }
 
-public Object encode(Object obj) throws EncoderException {
-if (!(obj instanceof String)) {
-throw new EncoderException("Parameter supplied to RefinedSoundex encode is not of type java.lang.String");
-}
-return soundex((String)obj);
-}
+    char getMappingCode(char c) {
+        if (!Character.isLetter(c)) {
+            return Character.MIN_VALUE;
+        }
+        return this.soundexMapping[Character.toUpperCase(c) - 65];
+    }
 
-public String encode(String str) {
-return soundex(str);
-}
+    public String soundex(String str) {
+        if (str == null) {
+            return null;
+        }
+        str = SoundexUtils.clean(str);
+        if (str.length() == 0) {
+            return str;
+        }
 
-char getMappingCode(char c) {
-if (!Character.isLetter(c)) {
-return Character.MIN_VALUE;
-}
-return this.soundexMapping[Character.toUpperCase(c) - 65];
-}
+        StringBuilder sBuf = new StringBuilder();
+        sBuf.append(str.charAt(0));
 
-public String soundex(String str) {
-if (str == null) {
-return null;
-}
-str = SoundexUtils.clean(str);
-if (str.length() == 0) {
-return str;
-}
+        char last = '*';
 
-StringBuilder sBuf = new StringBuilder();
-sBuf.append(str.charAt(0));
+        for (int i = 0; i < str.length(); i++) {
 
-char last = '*';
+            char current = getMappingCode(str.charAt(i));
+            if (current != last) {
 
-for (int i = 0; i < str.length(); i++) {
+                if (current != '\000') {
+                    sBuf.append(current);
+                }
 
-char current = getMappingCode(str.charAt(i));
-if (current != last) {
+                last = current;
+            }
+        }
 
-if (current != '\000') {
-sBuf.append(current);
-}
-
-last = current;
-} 
-} 
-
-return sBuf.toString();
-}
+        return sBuf.toString();
+    }
 }
 

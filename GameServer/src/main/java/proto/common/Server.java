@@ -1,14 +1,14 @@
 package proto.common;
 
 public class Server {
-  public static class ServerInfo {
-    public int serverId;
+    public static class ServerInfo {
+        public int serverId;
 
-    public int ip;
+        public int ip;
 
-    public int port;
+        public int port;
 
-    public int status;
-  }
+        public int status;
+    }
 }
 

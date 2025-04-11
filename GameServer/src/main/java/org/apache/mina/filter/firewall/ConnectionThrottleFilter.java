@@ -1,5 +1,11 @@
 package org.apache.mina.filter.firewall;
 
+import org.apache.mina.core.filterchain.IoFilter;
+import org.apache.mina.core.filterchain.IoFilterAdapter;
+import org.apache.mina.core.session.IoSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Iterator;
@@ -7,126 +13,117 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import org.apache.mina.core.filterchain.IoFilter;
-import org.apache.mina.core.filterchain.IoFilterAdapter;
-import org.apache.mina.core.session.IoSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ConnectionThrottleFilter
-extends IoFilterAdapter
-{
-private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionThrottleFilter.class);
+        extends IoFilterAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionThrottleFilter.class);
 
-private static final long DEFAULT_TIME = 1000L;
+    private static final long DEFAULT_TIME = 1000L;
+    private final Map<String, Long> clients;
+    private long allowedInterval;
+    private Lock lock = new ReentrantLock();
 
-private long allowedInterval;
+    public ConnectionThrottleFilter() {
+        this(1000L);
+    }
 
-private final Map<String, Long> clients;
+    public ConnectionThrottleFilter(long allowedInterval) {
+        this.allowedInterval = allowedInterval;
+        this.clients = new ConcurrentHashMap<String, Long>();
 
-private Lock lock = new ReentrantLock();
+        ExpiredSessionThread cleanupThread = new ExpiredSessionThread();
 
-private class ExpiredSessionThread
-extends Thread
-{
-private ExpiredSessionThread() {}
+        cleanupThread.setDaemon(true);
 
-public void run() {
-try {
-Thread.sleep(ConnectionThrottleFilter.this.allowedInterval);
-} catch (InterruptedException e) {
-return;
-} 
+        cleanupThread.start();
+    }
 
-long currentTime = System.currentTimeMillis();
+    public void setAllowedInterval(long allowedInterval) {
+        this.lock.lock();
 
-ConnectionThrottleFilter.this.lock.lock();
+        try {
+            this.allowedInterval = allowedInterval;
+        } finally {
+            this.lock.unlock();
+        }
+    }
 
-try {
-Iterator<String> sessions = ConnectionThrottleFilter.this.clients.keySet().iterator();
+    protected boolean isConnectionOk(IoSession session) {
+        SocketAddress remoteAddress = session.getRemoteAddress();
 
-while (sessions.hasNext()) {
-String session = sessions.next();
-long creationTime = ((Long)ConnectionThrottleFilter.this.clients.get(session)).longValue();
+        if (remoteAddress instanceof InetSocketAddress) {
+            InetSocketAddress addr = (InetSocketAddress) remoteAddress;
+            long now = System.currentTimeMillis();
 
-if (creationTime + ConnectionThrottleFilter.this.allowedInterval < currentTime) {
-ConnectionThrottleFilter.this.clients.remove(session);
-}
-} 
-} finally {
-ConnectionThrottleFilter.this.lock.unlock();
-} 
-}
-}
+            this.lock.lock();
 
-public ConnectionThrottleFilter() {
-this(1000L);
-}
+            try {
+                if (this.clients.containsKey(addr.getAddress().getHostAddress())) {
 
-public ConnectionThrottleFilter(long allowedInterval) {
-this.allowedInterval = allowedInterval;
-this.clients = new ConcurrentHashMap<String, Long>();
+                    LOGGER.debug("This is not a new client");
+                    Long lastConnTime = this.clients.get(addr.getAddress().getHostAddress());
 
-ExpiredSessionThread cleanupThread = new ExpiredSessionThread();
+                    this.clients.put(addr.getAddress().getHostAddress(), Long.valueOf(now));
 
-cleanupThread.setDaemon(true);
+                    if (now - lastConnTime.longValue() < this.allowedInterval) {
+                        LOGGER.warn("Session connection interval too short");
+                        return false;
+                    }
 
-cleanupThread.start();
-}
+                    return true;
+                }
 
-public void setAllowedInterval(long allowedInterval) {
-this.lock.lock();
+                this.clients.put(addr.getAddress().getHostAddress(), Long.valueOf(now));
+            } finally {
+                this.lock.unlock();
+            }
 
-try {
-this.allowedInterval = allowedInterval;
-} finally {
-this.lock.unlock();
-} 
-}
+            return true;
+        }
 
-protected boolean isConnectionOk(IoSession session) {
-SocketAddress remoteAddress = session.getRemoteAddress();
+        return false;
+    }
 
-if (remoteAddress instanceof InetSocketAddress) {
-InetSocketAddress addr = (InetSocketAddress)remoteAddress;
-long now = System.currentTimeMillis();
+    public void sessionCreated(IoFilter.NextFilter nextFilter, IoSession session) throws Exception {
+        if (!isConnectionOk(session)) {
+            LOGGER.warn("Connections coming in too fast; closing.");
+            session.close(true);
+        }
 
-this.lock.lock();
+        nextFilter.sessionCreated(session);
+    }
 
-try {
-if (this.clients.containsKey(addr.getAddress().getHostAddress())) {
+    private class ExpiredSessionThread
+            extends Thread {
+        private ExpiredSessionThread() {
+        }
 
-LOGGER.debug("This is not a new client");
-Long lastConnTime = this.clients.get(addr.getAddress().getHostAddress());
+        public void run() {
+            try {
+                Thread.sleep(ConnectionThrottleFilter.this.allowedInterval);
+            } catch (InterruptedException e) {
+                return;
+            }
 
-this.clients.put(addr.getAddress().getHostAddress(), Long.valueOf(now));
+            long currentTime = System.currentTimeMillis();
 
-if (now - lastConnTime.longValue() < this.allowedInterval) {
-LOGGER.warn("Session connection interval too short");
-return false;
-} 
+            ConnectionThrottleFilter.this.lock.lock();
 
-return true;
-} 
+            try {
+                Iterator<String> sessions = ConnectionThrottleFilter.this.clients.keySet().iterator();
 
-this.clients.put(addr.getAddress().getHostAddress(), Long.valueOf(now));
-} finally {
-this.lock.unlock();
-} 
+                while (sessions.hasNext()) {
+                    String session = sessions.next();
+                    long creationTime = ((Long) ConnectionThrottleFilter.this.clients.get(session)).longValue();
 
-return true;
-} 
-
-return false;
-}
-
-public void sessionCreated(IoFilter.NextFilter nextFilter, IoSession session) throws Exception {
-if (!isConnectionOk(session)) {
-LOGGER.warn("Connections coming in too fast; closing.");
-session.close(true);
-} 
-
-nextFilter.sessionCreated(session);
-}
+                    if (creationTime + ConnectionThrottleFilter.this.allowedInterval < currentTime) {
+                        ConnectionThrottleFilter.this.clients.remove(session);
+                    }
+                }
+            } finally {
+                ConnectionThrottleFilter.this.lock.unlock();
+            }
+        }
+    }
 }
 

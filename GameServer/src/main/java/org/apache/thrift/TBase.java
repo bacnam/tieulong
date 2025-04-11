@@ -1,26 +1,24 @@
-
-
 package org.apache.thrift;
-
-import java.io.Serializable;
 
 import org.apache.thrift.protocol.TProtocol;
 
-public interface TBase<T extends TBase, F extends TFieldIdEnum> extends Comparable<T>,  Serializable {
+import java.io.Serializable;
 
-  public void read(TProtocol iprot) throws TException;
+public interface TBase<T extends TBase, F extends TFieldIdEnum> extends Comparable<T>, Serializable {
 
-  public void write(TProtocol oprot) throws TException;
+    public void read(TProtocol iprot) throws TException;
 
-  public F fieldForId(int fieldId);
+    public void write(TProtocol oprot) throws TException;
 
-  public boolean isSet(F field);
+    public F fieldForId(int fieldId);
 
-  public Object getFieldValue(F field);
+    public boolean isSet(F field);
 
-  public void setFieldValue(F field, Object value);
+    public Object getFieldValue(F field);
 
-  public TBase<T, F> deepCopy();
+    public void setFieldValue(F field, Object value);
 
-  public void clear();
+    public TBase<T, F> deepCopy();
+
+    public void clear();
 }

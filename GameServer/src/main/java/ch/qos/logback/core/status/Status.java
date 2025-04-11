@@ -3,30 +3,30 @@ package ch.qos.logback.core.status;
 import java.util.Iterator;
 
 public interface Status {
-  public static final int INFO = 0;
+    public static final int INFO = 0;
 
-  public static final int WARN = 1;
+    public static final int WARN = 1;
 
-  public static final int ERROR = 2;
+    public static final int ERROR = 2;
 
-  int getLevel();
+    int getLevel();
 
-  int getEffectiveLevel();
+    int getEffectiveLevel();
 
-  Object getOrigin();
+    Object getOrigin();
 
-  String getMessage();
+    String getMessage();
 
-  Throwable getThrowable();
+    Throwable getThrowable();
 
-  Long getDate();
+    Long getDate();
 
-  boolean hasChildren();
+    boolean hasChildren();
 
-  void add(Status paramStatus);
+    void add(Status paramStatus);
 
-  boolean remove(Status paramStatus);
+    boolean remove(Status paramStatus);
 
-  Iterator<Status> iterator();
+    Iterator<Status> iterator();
 }
 

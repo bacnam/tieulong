@@ -6,15 +6,15 @@ import org.junit.runner.Runner;
 import org.junit.runners.model.RunnerBuilder;
 
 public class JUnit3Builder extends RunnerBuilder {
-public Runner runnerForClass(Class<?> testClass) throws Throwable {
-if (isPre4Test(testClass)) {
-return (Runner)new JUnit38ClassRunner(testClass);
-}
-return null;
-}
+    public Runner runnerForClass(Class<?> testClass) throws Throwable {
+        if (isPre4Test(testClass)) {
+            return (Runner) new JUnit38ClassRunner(testClass);
+        }
+        return null;
+    }
 
-boolean isPre4Test(Class<?> testClass) {
-return TestCase.class.isAssignableFrom(testClass);
-}
+    boolean isPre4Test(Class<?> testClass) {
+        return TestCase.class.isAssignableFrom(testClass);
+    }
 }
 

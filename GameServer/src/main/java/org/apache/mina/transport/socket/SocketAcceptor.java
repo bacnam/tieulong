@@ -1,23 +1,24 @@
 package org.apache.mina.transport.socket;
 
-import java.net.InetSocketAddress;
 import org.apache.mina.core.service.IoAcceptor;
 
+import java.net.InetSocketAddress;
+
 public interface SocketAcceptor extends IoAcceptor {
-  InetSocketAddress getLocalAddress();
+    InetSocketAddress getLocalAddress();
 
-  InetSocketAddress getDefaultLocalAddress();
+    InetSocketAddress getDefaultLocalAddress();
 
-  void setDefaultLocalAddress(InetSocketAddress paramInetSocketAddress);
+    void setDefaultLocalAddress(InetSocketAddress paramInetSocketAddress);
 
-  boolean isReuseAddress();
+    boolean isReuseAddress();
 
-  void setReuseAddress(boolean paramBoolean);
+    void setReuseAddress(boolean paramBoolean);
 
-  int getBacklog();
+    int getBacklog();
 
-  void setBacklog(int paramInt);
+    void setBacklog(int paramInt);
 
-  SocketSessionConfig getSessionConfig();
+    SocketSessionConfig getSessionConfig();
 }
 

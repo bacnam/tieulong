@@ -1,12 +1,12 @@
 package jsc.ci;
 
 public interface ConfidenceInterval {
-  double getConfidenceCoeff();
+    double getConfidenceCoeff();
 
-  void setConfidenceCoeff(double paramDouble);
+    void setConfidenceCoeff(double paramDouble);
 
-  double getLowerLimit();
+    double getLowerLimit();
 
-  double getUpperLimit();
+    double getUpperLimit();
 }
 

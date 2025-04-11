@@ -5,6 +5,6 @@ import org.apache.http.params.HttpParams;
 
 @Deprecated
 public interface ClientConnectionManagerFactory {
-  ClientConnectionManager newInstance(HttpParams paramHttpParams, SchemeRegistry paramSchemeRegistry);
+    ClientConnectionManager newInstance(HttpParams paramHttpParams, SchemeRegistry paramSchemeRegistry);
 }
 

@@ -1,49 +1,49 @@
 package org.junit.internal.matchers;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class StacktracePrintingMatcher<T extends Throwable>
-extends TypeSafeMatcher<T>
-{
-private final Matcher<T> throwableMatcher;
+        extends TypeSafeMatcher<T> {
+    private final Matcher<T> throwableMatcher;
 
-public StacktracePrintingMatcher(Matcher<T> throwableMatcher) {
-this.throwableMatcher = throwableMatcher;
-}
+    public StacktracePrintingMatcher(Matcher<T> throwableMatcher) {
+        this.throwableMatcher = throwableMatcher;
+    }
 
-public void describeTo(Description description) {
-this.throwableMatcher.describeTo(description);
-}
+    @Factory
+    public static <T extends Throwable> Matcher<T> isThrowable(Matcher<T> throwableMatcher) {
+        return (Matcher<T>) new StacktracePrintingMatcher<T>(throwableMatcher);
+    }
 
-protected boolean matchesSafely(T item) {
-return this.throwableMatcher.matches(item);
-}
+    @Factory
+    public static <T extends Exception> Matcher<T> isException(Matcher<T> exceptionMatcher) {
+        return (Matcher) new StacktracePrintingMatcher<Throwable>((Matcher) exceptionMatcher);
+    }
 
-protected void describeMismatchSafely(T item, Description description) {
-this.throwableMatcher.describeMismatch(item, description);
-description.appendText("\nStacktrace was: ");
-description.appendText(readStacktrace((Throwable)item));
-}
+    public void describeTo(Description description) {
+        this.throwableMatcher.describeTo(description);
+    }
 
-private String readStacktrace(Throwable throwable) {
-StringWriter stringWriter = new StringWriter();
-throwable.printStackTrace(new PrintWriter(stringWriter));
-return stringWriter.toString();
-}
+    protected boolean matchesSafely(T item) {
+        return this.throwableMatcher.matches(item);
+    }
 
-@Factory
-public static <T extends Throwable> Matcher<T> isThrowable(Matcher<T> throwableMatcher) {
-return (Matcher<T>)new StacktracePrintingMatcher<T>(throwableMatcher);
-}
+    protected void describeMismatchSafely(T item, Description description) {
+        this.throwableMatcher.describeMismatch(item, description);
+        description.appendText("\nStacktrace was: ");
+        description.appendText(readStacktrace((Throwable) item));
+    }
 
-@Factory
-public static <T extends Exception> Matcher<T> isException(Matcher<T> exceptionMatcher) {
-return (Matcher)new StacktracePrintingMatcher<Throwable>((Matcher)exceptionMatcher);
-}
+    private String readStacktrace(Throwable throwable) {
+        StringWriter stringWriter = new StringWriter();
+        throwable.printStackTrace(new PrintWriter(stringWriter));
+        return stringWriter.toString();
+    }
 }
 

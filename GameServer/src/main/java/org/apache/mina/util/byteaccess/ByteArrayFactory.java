@@ -1,6 +1,6 @@
 package org.apache.mina.util.byteaccess;
 
 public interface ByteArrayFactory {
-  ByteArray create(int paramInt);
+    ByteArray create(int paramInt);
 }
 

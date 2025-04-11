@@ -8,192 +8,189 @@ import org.apache.mina.filter.codec.ProtocolDecoderException;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
 public class DemuxingProtocolDecoder
-extends CumulativeProtocolDecoder
-{
-private final AttributeKey STATE = new AttributeKey(getClass(), "state");
+        extends CumulativeProtocolDecoder {
+    private static final Class<?>[] EMPTY_PARAMS = new Class[0];
+    private final AttributeKey STATE = new AttributeKey(getClass(), "state");
+    private MessageDecoderFactory[] decoderFactories = new MessageDecoderFactory[0];
 
-private MessageDecoderFactory[] decoderFactories = new MessageDecoderFactory[0];
+    public void addMessageDecoder(Class<? extends MessageDecoder> decoderClass) {
+        if (decoderClass == null) {
+            throw new IllegalArgumentException("decoderClass");
+        }
 
-private static final Class<?>[] EMPTY_PARAMS = new Class[0];
+        try {
+            decoderClass.getConstructor(EMPTY_PARAMS);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException("The specified class doesn't have a public default constructor.");
+        }
 
-public void addMessageDecoder(Class<? extends MessageDecoder> decoderClass) {
-if (decoderClass == null) {
-throw new IllegalArgumentException("decoderClass");
-}
+        boolean registered = false;
+        if (MessageDecoder.class.isAssignableFrom(decoderClass)) {
+            addMessageDecoder(new DefaultConstructorMessageDecoderFactory(decoderClass));
+            registered = true;
+        }
 
-try {
-decoderClass.getConstructor(EMPTY_PARAMS);
-} catch (NoSuchMethodException e) {
-throw new IllegalArgumentException("The specified class doesn't have a public default constructor.");
-} 
+        if (!registered) {
+            throw new IllegalArgumentException("Unregisterable type: " + decoderClass);
+        }
+    }
 
-boolean registered = false;
-if (MessageDecoder.class.isAssignableFrom(decoderClass)) {
-addMessageDecoder(new DefaultConstructorMessageDecoderFactory(decoderClass));
-registered = true;
-} 
+    public void addMessageDecoder(MessageDecoder decoder) {
+        addMessageDecoder(new SingletonMessageDecoderFactory(decoder));
+    }
 
-if (!registered) {
-throw new IllegalArgumentException("Unregisterable type: " + decoderClass);
-}
-}
+    public void addMessageDecoder(MessageDecoderFactory factory) {
+        if (factory == null) {
+            throw new IllegalArgumentException("factory");
+        }
+        MessageDecoderFactory[] decoderFactories = this.decoderFactories;
+        MessageDecoderFactory[] newDecoderFactories = new MessageDecoderFactory[decoderFactories.length + 1];
+        System.arraycopy(decoderFactories, 0, newDecoderFactories, 0, decoderFactories.length);
+        newDecoderFactories[decoderFactories.length] = factory;
+        this.decoderFactories = newDecoderFactories;
+    }
 
-public void addMessageDecoder(MessageDecoder decoder) {
-addMessageDecoder(new SingletonMessageDecoderFactory(decoder));
-}
+    protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
+        State state = getState(session);
 
-public void addMessageDecoder(MessageDecoderFactory factory) {
-if (factory == null) {
-throw new IllegalArgumentException("factory");
-}
-MessageDecoderFactory[] decoderFactories = this.decoderFactories;
-MessageDecoderFactory[] newDecoderFactories = new MessageDecoderFactory[decoderFactories.length + 1];
-System.arraycopy(decoderFactories, 0, newDecoderFactories, 0, decoderFactories.length);
-newDecoderFactories[decoderFactories.length] = factory;
-this.decoderFactories = newDecoderFactories;
-}
+        if (state.currentDecoder == null) {
+            MessageDecoder[] decoders = state.decoders;
+            int undecodables = 0;
 
-protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
-State state = getState(session);
+            for (int i = decoders.length - 1; i >= 0; i--) {
+                MessageDecoderResult result;
+                MessageDecoder decoder = decoders[i];
+                int limit = in.limit();
+                int pos = in.position();
 
-if (state.currentDecoder == null) {
-MessageDecoder[] decoders = state.decoders;
-int undecodables = 0;
+                try {
+                    result = decoder.decodable(session, in);
+                } finally {
+                    in.position(pos);
+                    in.limit(limit);
+                }
 
-for (int i = decoders.length - 1; i >= 0; i--) {
-MessageDecoderResult result; MessageDecoder decoder = decoders[i];
-int limit = in.limit();
-int pos = in.position();
+                if (result == MessageDecoder.OK) {
+                    state.currentDecoder = decoder;
+                    break;
+                }
+                if (result == MessageDecoder.NOT_OK) {
+                    undecodables++;
+                } else if (result != MessageDecoder.NEED_DATA) {
+                    throw new IllegalStateException("Unexpected decode result (see your decodable()): " + result);
+                }
+            }
 
-try {
-result = decoder.decodable(session, in);
-} finally {
-in.position(pos);
-in.limit(limit);
-} 
+            if (undecodables == decoders.length) {
 
-if (result == MessageDecoder.OK) {
-state.currentDecoder = decoder; break;
-} 
-if (result == MessageDecoder.NOT_OK) {
-undecodables++;
-} else if (result != MessageDecoder.NEED_DATA) {
-throw new IllegalStateException("Unexpected decode result (see your decodable()): " + result);
-} 
-} 
+                String dump = in.getHexDump();
+                in.position(in.limit());
+                ProtocolDecoderException e = new ProtocolDecoderException("No appropriate message decoder: " + dump);
+                e.setHexdump(dump);
+                throw e;
+            }
 
-if (undecodables == decoders.length) {
+            if (state.currentDecoder == null) {
+                return false;
+            }
+        }
 
-String dump = in.getHexDump();
-in.position(in.limit());
-ProtocolDecoderException e = new ProtocolDecoderException("No appropriate message decoder: " + dump);
-e.setHexdump(dump);
-throw e;
-} 
+        try {
+            MessageDecoderResult result = state.currentDecoder.decode(session, in, out);
+            if (result == MessageDecoder.OK) {
+                state.currentDecoder = null;
+                return true;
+            }
+            if (result == MessageDecoder.NEED_DATA)
+                return false;
+            if (result == MessageDecoder.NOT_OK) {
+                state.currentDecoder = null;
+                throw new ProtocolDecoderException("Message decoder returned NOT_OK.");
+            }
+            state.currentDecoder = null;
+            throw new IllegalStateException("Unexpected decode result (see your decode()): " + result);
+        } catch (Exception e) {
+            state.currentDecoder = null;
+            throw e;
+        }
+    }
 
-if (state.currentDecoder == null)
-{
-return false;
-}
-} 
+    public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {
+        super.finishDecode(session, out);
+        State state = getState(session);
+        MessageDecoder currentDecoder = state.currentDecoder;
+        if (currentDecoder == null) {
+            return;
+        }
 
-try {
-MessageDecoderResult result = state.currentDecoder.decode(session, in, out);
-if (result == MessageDecoder.OK) {
-state.currentDecoder = null;
-return true;
-}  if (result == MessageDecoder.NEED_DATA)
-return false; 
-if (result == MessageDecoder.NOT_OK) {
-state.currentDecoder = null;
-throw new ProtocolDecoderException("Message decoder returned NOT_OK.");
-} 
-state.currentDecoder = null;
-throw new IllegalStateException("Unexpected decode result (see your decode()): " + result);
-}
-catch (Exception e) {
-state.currentDecoder = null;
-throw e;
-} 
-}
+        currentDecoder.finishDecode(session, out);
+    }
 
-public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {
-super.finishDecode(session, out);
-State state = getState(session);
-MessageDecoder currentDecoder = state.currentDecoder;
-if (currentDecoder == null) {
-return;
-}
+    public void dispose(IoSession session) throws Exception {
+        super.dispose(session);
+        session.removeAttribute(this.STATE);
+    }
 
-currentDecoder.finishDecode(session, out);
-}
+    private State getState(IoSession session) throws Exception {
+        State state = (State) session.getAttribute(this.STATE);
 
-public void dispose(IoSession session) throws Exception {
-super.dispose(session);
-session.removeAttribute(this.STATE);
-}
+        if (state == null) {
+            state = new State();
+            State oldState = (State) session.setAttributeIfAbsent(this.STATE, state);
 
-private State getState(IoSession session) throws Exception {
-State state = (State)session.getAttribute(this.STATE);
+            if (oldState != null) {
+                state = oldState;
+            }
+        }
 
-if (state == null) {
-state = new State();
-State oldState = (State)session.setAttributeIfAbsent(this.STATE, state);
+        return state;
+    }
 
-if (oldState != null) {
-state = oldState;
-}
-} 
+    private static class SingletonMessageDecoderFactory
+            implements MessageDecoderFactory {
+        private final MessageDecoder decoder;
 
-return state;
-}
+        private SingletonMessageDecoderFactory(MessageDecoder decoder) {
+            if (decoder == null) {
+                throw new IllegalArgumentException("decoder");
+            }
+            this.decoder = decoder;
+        }
 
-private class State
-{
-private final MessageDecoder[] decoders;
-private MessageDecoder currentDecoder;
+        public MessageDecoder getDecoder() {
+            return this.decoder;
+        }
+    }
 
-private State() throws Exception {
-MessageDecoderFactory[] decoderFactories = DemuxingProtocolDecoder.this.decoderFactories;
-this.decoders = new MessageDecoder[decoderFactories.length];
-for (int i = decoderFactories.length - 1; i >= 0; i--)
-this.decoders[i] = decoderFactories[i].getDecoder(); 
-}
-}
+    private static class DefaultConstructorMessageDecoderFactory implements MessageDecoderFactory {
+        private final Class<?> decoderClass;
 
-private static class SingletonMessageDecoderFactory
-implements MessageDecoderFactory {
-private final MessageDecoder decoder;
+        private DefaultConstructorMessageDecoderFactory(Class<?> decoderClass) {
+            if (decoderClass == null) {
+                throw new IllegalArgumentException("decoderClass");
+            }
 
-private SingletonMessageDecoderFactory(MessageDecoder decoder) {
-if (decoder == null) {
-throw new IllegalArgumentException("decoder");
-}
-this.decoder = decoder;
-}
+            if (!MessageDecoder.class.isAssignableFrom(decoderClass)) {
+                throw new IllegalArgumentException("decoderClass is not assignable to MessageDecoder");
+            }
+            this.decoderClass = decoderClass;
+        }
 
-public MessageDecoder getDecoder() {
-return this.decoder;
-}
-}
+        public MessageDecoder getDecoder() throws Exception {
+            return (MessageDecoder) this.decoderClass.newInstance();
+        }
+    }
 
-private static class DefaultConstructorMessageDecoderFactory implements MessageDecoderFactory {
-private final Class<?> decoderClass;
+    private class State {
+        private final MessageDecoder[] decoders;
+        private MessageDecoder currentDecoder;
 
-private DefaultConstructorMessageDecoderFactory(Class<?> decoderClass) {
-if (decoderClass == null) {
-throw new IllegalArgumentException("decoderClass");
-}
-
-if (!MessageDecoder.class.isAssignableFrom(decoderClass)) {
-throw new IllegalArgumentException("decoderClass is not assignable to MessageDecoder");
-}
-this.decoderClass = decoderClass;
-}
-
-public MessageDecoder getDecoder() throws Exception {
-return (MessageDecoder)this.decoderClass.newInstance();
-}
-}
+        private State() throws Exception {
+            MessageDecoderFactory[] decoderFactories = DemuxingProtocolDecoder.this.decoderFactories;
+            this.decoders = new MessageDecoder[decoderFactories.length];
+            for (int i = decoderFactories.length - 1; i >= 0; i--)
+                this.decoders[i] = decoderFactories[i].getDecoder();
+        }
+    }
 }
 

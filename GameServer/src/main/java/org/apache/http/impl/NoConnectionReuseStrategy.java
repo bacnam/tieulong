@@ -7,12 +7,11 @@ import org.apache.http.protocol.HttpContext;
 
 @Immutable
 public class NoConnectionReuseStrategy
-implements ConnectionReuseStrategy
-{
-public static final NoConnectionReuseStrategy INSTANCE = new NoConnectionReuseStrategy();
+        implements ConnectionReuseStrategy {
+    public static final NoConnectionReuseStrategy INSTANCE = new NoConnectionReuseStrategy();
 
-public boolean keepAlive(HttpResponse response, HttpContext context) {
-return false;
-}
+    public boolean keepAlive(HttpResponse response, HttpContext context) {
+        return false;
+    }
 }
 

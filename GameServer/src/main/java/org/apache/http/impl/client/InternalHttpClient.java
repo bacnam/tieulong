@@ -1,9 +1,5 @@
 package org.apache.http.impl.client;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpException;
@@ -38,161 +34,163 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 @ThreadSafe
 class InternalHttpClient
-extends CloseableHttpClient
-implements Configurable
-{
-private final Log log = LogFactory.getLog(getClass());
+        extends CloseableHttpClient
+        implements Configurable {
+    private final Log log = LogFactory.getLog(getClass());
 
-private final ClientExecChain execChain;
+    private final ClientExecChain execChain;
 
-private final HttpClientConnectionManager connManager;
+    private final HttpClientConnectionManager connManager;
 
-private final HttpRoutePlanner routePlanner;
+    private final HttpRoutePlanner routePlanner;
 
-private final Lookup<CookieSpecProvider> cookieSpecRegistry;
+    private final Lookup<CookieSpecProvider> cookieSpecRegistry;
 
-private final Lookup<AuthSchemeProvider> authSchemeRegistry;
+    private final Lookup<AuthSchemeProvider> authSchemeRegistry;
 
-private final CookieStore cookieStore;
+    private final CookieStore cookieStore;
 
-private final CredentialsProvider credentialsProvider;
+    private final CredentialsProvider credentialsProvider;
 
-private final RequestConfig defaultConfig;
+    private final RequestConfig defaultConfig;
 
-private final List<Closeable> closeables;
+    private final List<Closeable> closeables;
 
-public InternalHttpClient(ClientExecChain execChain, HttpClientConnectionManager connManager, HttpRoutePlanner routePlanner, Lookup<CookieSpecProvider> cookieSpecRegistry, Lookup<AuthSchemeProvider> authSchemeRegistry, CookieStore cookieStore, CredentialsProvider credentialsProvider, RequestConfig defaultConfig, List<Closeable> closeables) {
-Args.notNull(execChain, "HTTP client exec chain");
-Args.notNull(connManager, "HTTP connection manager");
-Args.notNull(routePlanner, "HTTP route planner");
-this.execChain = execChain;
-this.connManager = connManager;
-this.routePlanner = routePlanner;
-this.cookieSpecRegistry = cookieSpecRegistry;
-this.authSchemeRegistry = authSchemeRegistry;
-this.cookieStore = cookieStore;
-this.credentialsProvider = credentialsProvider;
-this.defaultConfig = defaultConfig;
-this.closeables = closeables;
-}
+    public InternalHttpClient(ClientExecChain execChain, HttpClientConnectionManager connManager, HttpRoutePlanner routePlanner, Lookup<CookieSpecProvider> cookieSpecRegistry, Lookup<AuthSchemeProvider> authSchemeRegistry, CookieStore cookieStore, CredentialsProvider credentialsProvider, RequestConfig defaultConfig, List<Closeable> closeables) {
+        Args.notNull(execChain, "HTTP client exec chain");
+        Args.notNull(connManager, "HTTP connection manager");
+        Args.notNull(routePlanner, "HTTP route planner");
+        this.execChain = execChain;
+        this.connManager = connManager;
+        this.routePlanner = routePlanner;
+        this.cookieSpecRegistry = cookieSpecRegistry;
+        this.authSchemeRegistry = authSchemeRegistry;
+        this.cookieStore = cookieStore;
+        this.credentialsProvider = credentialsProvider;
+        this.defaultConfig = defaultConfig;
+        this.closeables = closeables;
+    }
 
-private HttpRoute determineRoute(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
-HttpHost host = target;
-if (host == null) {
-host = (HttpHost)request.getParams().getParameter("http.default-host");
-}
-return this.routePlanner.determineRoute(host, request, context);
-}
+    private HttpRoute determineRoute(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
+        HttpHost host = target;
+        if (host == null) {
+            host = (HttpHost) request.getParams().getParameter("http.default-host");
+        }
+        return this.routePlanner.determineRoute(host, request, context);
+    }
 
-private void setupContext(HttpClientContext context) {
-if (context.getAttribute("http.auth.target-scope") == null) {
-context.setAttribute("http.auth.target-scope", new AuthState());
-}
-if (context.getAttribute("http.auth.proxy-scope") == null) {
-context.setAttribute("http.auth.proxy-scope", new AuthState());
-}
-if (context.getAttribute("http.authscheme-registry") == null) {
-context.setAttribute("http.authscheme-registry", this.authSchemeRegistry);
-}
-if (context.getAttribute("http.cookiespec-registry") == null) {
-context.setAttribute("http.cookiespec-registry", this.cookieSpecRegistry);
-}
-if (context.getAttribute("http.cookie-store") == null) {
-context.setAttribute("http.cookie-store", this.cookieStore);
-}
-if (context.getAttribute("http.auth.credentials-provider") == null) {
-context.setAttribute("http.auth.credentials-provider", this.credentialsProvider);
-}
-if (context.getAttribute("http.request-config") == null) {
-context.setAttribute("http.request-config", this.defaultConfig);
-}
-}
+    private void setupContext(HttpClientContext context) {
+        if (context.getAttribute("http.auth.target-scope") == null) {
+            context.setAttribute("http.auth.target-scope", new AuthState());
+        }
+        if (context.getAttribute("http.auth.proxy-scope") == null) {
+            context.setAttribute("http.auth.proxy-scope", new AuthState());
+        }
+        if (context.getAttribute("http.authscheme-registry") == null) {
+            context.setAttribute("http.authscheme-registry", this.authSchemeRegistry);
+        }
+        if (context.getAttribute("http.cookiespec-registry") == null) {
+            context.setAttribute("http.cookiespec-registry", this.cookieSpecRegistry);
+        }
+        if (context.getAttribute("http.cookie-store") == null) {
+            context.setAttribute("http.cookie-store", this.cookieStore);
+        }
+        if (context.getAttribute("http.auth.credentials-provider") == null) {
+            context.setAttribute("http.auth.credentials-provider", this.credentialsProvider);
+        }
+        if (context.getAttribute("http.request-config") == null) {
+            context.setAttribute("http.request-config", this.defaultConfig);
+        }
+    }
 
-protected CloseableHttpResponse doExecute(HttpHost target, HttpRequest request, HttpContext context) throws IOException, ClientProtocolException {
-Args.notNull(request, "HTTP request");
-HttpExecutionAware execAware = null;
-if (request instanceof HttpExecutionAware) {
-execAware = (HttpExecutionAware)request;
-}
-try {
-HttpRequestWrapper wrapper = HttpRequestWrapper.wrap(request, target);
-HttpClientContext localcontext = HttpClientContext.adapt((context != null) ? context : (HttpContext)new BasicHttpContext());
+    protected CloseableHttpResponse doExecute(HttpHost target, HttpRequest request, HttpContext context) throws IOException, ClientProtocolException {
+        Args.notNull(request, "HTTP request");
+        HttpExecutionAware execAware = null;
+        if (request instanceof HttpExecutionAware) {
+            execAware = (HttpExecutionAware) request;
+        }
+        try {
+            HttpRequestWrapper wrapper = HttpRequestWrapper.wrap(request, target);
+            HttpClientContext localcontext = HttpClientContext.adapt((context != null) ? context : (HttpContext) new BasicHttpContext());
 
-RequestConfig config = null;
-if (request instanceof Configurable) {
-config = ((Configurable)request).getConfig();
-}
-if (config == null) {
-HttpParams params = request.getParams();
-if (params instanceof HttpParamsNames) {
-if (!((HttpParamsNames)params).getNames().isEmpty()) {
-config = HttpClientParamConfig.getRequestConfig(params);
-}
-} else {
-config = HttpClientParamConfig.getRequestConfig(params);
-} 
-} 
-if (config != null) {
-localcontext.setRequestConfig(config);
-}
-setupContext(localcontext);
-HttpRoute route = determineRoute(target, (HttpRequest)wrapper, (HttpContext)localcontext);
-return this.execChain.execute(route, wrapper, localcontext, execAware);
-} catch (HttpException httpException) {
-throw new ClientProtocolException(httpException);
-} 
-}
+            RequestConfig config = null;
+            if (request instanceof Configurable) {
+                config = ((Configurable) request).getConfig();
+            }
+            if (config == null) {
+                HttpParams params = request.getParams();
+                if (params instanceof HttpParamsNames) {
+                    if (!((HttpParamsNames) params).getNames().isEmpty()) {
+                        config = HttpClientParamConfig.getRequestConfig(params);
+                    }
+                } else {
+                    config = HttpClientParamConfig.getRequestConfig(params);
+                }
+            }
+            if (config != null) {
+                localcontext.setRequestConfig(config);
+            }
+            setupContext(localcontext);
+            HttpRoute route = determineRoute(target, (HttpRequest) wrapper, (HttpContext) localcontext);
+            return this.execChain.execute(route, wrapper, localcontext, execAware);
+        } catch (HttpException httpException) {
+            throw new ClientProtocolException(httpException);
+        }
+    }
 
-public RequestConfig getConfig() {
-return this.defaultConfig;
-}
+    public RequestConfig getConfig() {
+        return this.defaultConfig;
+    }
 
-public void close() {
-if (this.closeables != null) {
-for (Closeable closeable : this.closeables) {
-try {
-closeable.close();
-} catch (IOException ex) {
-this.log.error(ex.getMessage(), ex);
-} 
-} 
-}
-}
+    public void close() {
+        if (this.closeables != null) {
+            for (Closeable closeable : this.closeables) {
+                try {
+                    closeable.close();
+                } catch (IOException ex) {
+                    this.log.error(ex.getMessage(), ex);
+                }
+            }
+        }
+    }
 
-public HttpParams getParams() {
-throw new UnsupportedOperationException();
-}
+    public HttpParams getParams() {
+        throw new UnsupportedOperationException();
+    }
 
-public ClientConnectionManager getConnectionManager() {
-return new ClientConnectionManager()
-{
-public void shutdown()
-{
-InternalHttpClient.this.connManager.shutdown();
-}
+    public ClientConnectionManager getConnectionManager() {
+        return new ClientConnectionManager() {
+            public void shutdown() {
+                InternalHttpClient.this.connManager.shutdown();
+            }
 
-public ClientConnectionRequest requestConnection(HttpRoute route, Object state) {
-throw new UnsupportedOperationException();
-}
+            public ClientConnectionRequest requestConnection(HttpRoute route, Object state) {
+                throw new UnsupportedOperationException();
+            }
 
-public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
-throw new UnsupportedOperationException();
-}
+            public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
+                throw new UnsupportedOperationException();
+            }
 
-public SchemeRegistry getSchemeRegistry() {
-throw new UnsupportedOperationException();
-}
+            public SchemeRegistry getSchemeRegistry() {
+                throw new UnsupportedOperationException();
+            }
 
-public void closeIdleConnections(long idletime, TimeUnit tunit) {
-InternalHttpClient.this.connManager.closeIdleConnections(idletime, tunit);
-}
+            public void closeIdleConnections(long idletime, TimeUnit tunit) {
+                InternalHttpClient.this.connManager.closeIdleConnections(idletime, tunit);
+            }
 
-public void closeExpiredConnections() {
-InternalHttpClient.this.connManager.closeExpiredConnections();
-}
-};
-}
+            public void closeExpiredConnections() {
+                InternalHttpClient.this.connManager.closeExpiredConnections();
+            }
+        };
+    }
 }
 

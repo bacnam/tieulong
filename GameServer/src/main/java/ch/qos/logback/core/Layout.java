@@ -4,16 +4,16 @@ import ch.qos.logback.core.spi.ContextAware;
 import ch.qos.logback.core.spi.LifeCycle;
 
 public interface Layout<E> extends ContextAware, LifeCycle {
-  String doLayout(E paramE);
+    String doLayout(E paramE);
 
-  String getFileHeader();
+    String getFileHeader();
 
-  String getPresentationHeader();
+    String getPresentationHeader();
 
-  String getPresentationFooter();
+    String getPresentationFooter();
 
-  String getFileFooter();
+    String getFileFooter();
 
-  String getContentType();
+    String getContentType();
 }
 

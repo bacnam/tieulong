@@ -6,12 +6,11 @@ import org.apache.http.protocol.HttpContext;
 
 @Immutable
 public class NoopUserTokenHandler
-implements UserTokenHandler
-{
-public static final NoopUserTokenHandler INSTANCE = new NoopUserTokenHandler();
+        implements UserTokenHandler {
+    public static final NoopUserTokenHandler INSTANCE = new NoopUserTokenHandler();
 
-public Object getUserToken(HttpContext context) {
-return null;
-}
+    public Object getUserToken(HttpContext context) {
+        return null;
+    }
 }
 

@@ -5,13 +5,41 @@ import java.lang.reflect.Array;
 class BSHType
         extends SimpleNode
         implements BshClassManager.Listener {
+    String descriptor;
     private Class baseType;
     private int arrayDims;
     private Class type;
-    String descriptor;
 
     BSHType(int id) {
         super(id);
+    }
+
+    public static String getTypeDescriptor(Class<?> clas) {
+        if (clas == boolean.class)
+            return "Z";
+        if (clas == char.class)
+            return "C";
+        if (clas == byte.class)
+            return "B";
+        if (clas == short.class)
+            return "S";
+        if (clas == int.class)
+            return "I";
+        if (clas == long.class)
+            return "J";
+        if (clas == float.class)
+            return "F";
+        if (clas == double.class)
+            return "D";
+        if (clas == void.class)
+            return "V";
+
+        String name = clas.getName().replace('.', '/');
+
+        if (name.startsWith("[") || name.endsWith(";")) {
+            return name;
+        }
+        return "L" + name.replace('.', '/') + ";";
     }
 
     public void addArrayDimension() {
@@ -111,33 +139,5 @@ class BSHType
     public void classLoaderChanged() {
         this.type = null;
         this.baseType = null;
-    }
-
-    public static String getTypeDescriptor(Class<?> clas) {
-        if (clas == boolean.class)
-            return "Z";
-        if (clas == char.class)
-            return "C";
-        if (clas == byte.class)
-            return "B";
-        if (clas == short.class)
-            return "S";
-        if (clas == int.class)
-            return "I";
-        if (clas == long.class)
-            return "J";
-        if (clas == float.class)
-            return "F";
-        if (clas == double.class)
-            return "D";
-        if (clas == void.class)
-            return "V";
-
-        String name = clas.getName().replace('.', '/');
-
-        if (name.startsWith("[") || name.endsWith(";")) {
-            return name;
-        }
-        return "L" + name.replace('.', '/') + ";";
     }
 }

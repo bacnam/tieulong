@@ -5,231 +5,225 @@ import com.mchange.v2.c3p0.impl.DriverManagerDataSourceBase;
 import com.mchange.v2.log.MLevel;
 import com.mchange.v2.log.MLog;
 import com.mchange.v2.log.MLogger;
+
+import javax.sql.DataSource;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import javax.sql.DataSource;
 
 public final class FreezableDriverManagerDataSource
-extends DriverManagerDataSourceBase
-implements DataSource
-{
-static final MLogger logger = MLog.getLogger(FreezableDriverManagerDataSource.class);
+        extends DriverManagerDataSourceBase
+        implements DataSource {
+    static final MLogger logger = MLog.getLogger(FreezableDriverManagerDataSource.class);
 
-static final File FREEZE_FILE = new File("/tmp/c3p0_freeze_file");
+    static final File FREEZE_FILE = new File("/tmp/c3p0_freeze_file");
+    private static final long serialVersionUID = 1L;
+    private static final short VERSION = 1;
+    Driver driver;
+    boolean driver_class_loaded = false;
 
-Driver driver;
+    public FreezableDriverManagerDataSource() {
+        this(true);
+    }
 
-boolean driver_class_loaded = false;
-private static final long serialVersionUID = 1L;
-private static final short VERSION = 1;
+    public FreezableDriverManagerDataSource(boolean autoregister) {
+        super(autoregister);
 
-public FreezableDriverManagerDataSource() {
-this(true);
-}
+        setUpPropertyListeners();
 
-public FreezableDriverManagerDataSource(boolean autoregister) {
-super(autoregister);
+        String user = C3P0Config.initializeStringPropertyVar("user", null);
+        String password = C3P0Config.initializeStringPropertyVar("password", null);
 
-setUpPropertyListeners();
+        if (user != null) {
+            setUser(user);
+        }
+        if (password != null) {
+            setPassword(password);
+        }
+    }
 
-String user = C3P0Config.initializeStringPropertyVar("user", null);
-String password = C3P0Config.initializeStringPropertyVar("password", null);
+    private static boolean eqOrBothNull(Object a, Object b) {
+        return (a == b || (a != null && a.equals(b)));
+    }
 
-if (user != null) {
-setUser(user);
-}
-if (password != null) {
-setPassword(password);
-}
-}
+    private void waitNoFreezeFile() throws SQLException {
+        try {
+            while (FREEZE_FILE.exists()) {
+                Thread.sleep(1000L);
+            }
+        } catch (InterruptedException e) {
 
-private void waitNoFreezeFile() throws SQLException {
-try {
-while (FREEZE_FILE.exists())
-{
-Thread.sleep(1000L);
-}
-}
-catch (InterruptedException e) {
+            logger.log(MLevel.WARNING, "Frozen cxn acquire interrupted.", e);
+            throw new SQLException(e.toString());
+        }
+    }
 
-logger.log(MLevel.WARNING, "Frozen cxn acquire interrupted.", e);
-throw new SQLException(e.toString());
-} 
-}
+    private void setUpPropertyListeners() {
+        PropertyChangeListener driverClassListener = new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                Object val = evt.getNewValue();
+                if ("driverClass".equals(evt.getPropertyName()))
+                    FreezableDriverManagerDataSource.this.setDriverClassLoaded(false);
+            }
+        };
+        addPropertyChangeListener(driverClassListener);
+    }
 
-private void setUpPropertyListeners() {
-PropertyChangeListener driverClassListener = new PropertyChangeListener()
-{
-public void propertyChange(PropertyChangeEvent evt)
-{
-Object val = evt.getNewValue();
-if ("driverClass".equals(evt.getPropertyName()))
-FreezableDriverManagerDataSource.this.setDriverClassLoaded(false); 
-}
-};
-addPropertyChangeListener(driverClassListener);
-}
+    private synchronized boolean isDriverClassLoaded() {
+        return this.driver_class_loaded;
+    }
 
-private synchronized boolean isDriverClassLoaded() {
-return this.driver_class_loaded;
-}
-private synchronized void setDriverClassLoaded(boolean dcl) {
-this.driver_class_loaded = dcl;
-}
+    private synchronized void setDriverClassLoaded(boolean dcl) {
+        this.driver_class_loaded = dcl;
+    }
 
-private void ensureDriverLoaded() throws SQLException {
-try {
-if (!isDriverClassLoaded())
-{
-if (this.driverClass != null)
-Class.forName(this.driverClass); 
-setDriverClassLoaded(true);
-}
+    private void ensureDriverLoaded() throws SQLException {
+        try {
+            if (!isDriverClassLoaded()) {
+                if (this.driverClass != null)
+                    Class.forName(this.driverClass);
+                setDriverClassLoaded(true);
+            }
 
-} catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
 
-if (logger.isLoggable(MLevel.WARNING)) {
-logger.log(MLevel.WARNING, "Could not load driverClass " + this.driverClass, e);
-}
-} 
-}
+            if (logger.isLoggable(MLevel.WARNING)) {
+                logger.log(MLevel.WARNING, "Could not load driverClass " + this.driverClass, e);
+            }
+        }
+    }
 
-public Connection getConnection() throws SQLException {
-ensureDriverLoaded();
+    public Connection getConnection() throws SQLException {
+        ensureDriverLoaded();
 
-waitNoFreezeFile();
+        waitNoFreezeFile();
 
-Connection out = driver().connect(this.jdbcUrl, this.properties);
-if (out == null) {
-throw new SQLException("Apparently, jdbc URL '" + this.jdbcUrl + "' is not valid for the underlying " + "driver [" + driver() + "].");
-}
-return out;
-}
+        Connection out = driver().connect(this.jdbcUrl, this.properties);
+        if (out == null) {
+            throw new SQLException("Apparently, jdbc URL '" + this.jdbcUrl + "' is not valid for the underlying " + "driver [" + driver() + "].");
+        }
+        return out;
+    }
 
-public Connection getConnection(String username, String password) throws SQLException {
-ensureDriverLoaded();
+    public Connection getConnection(String username, String password) throws SQLException {
+        ensureDriverLoaded();
 
-waitNoFreezeFile();
+        waitNoFreezeFile();
 
-Connection out = driver().connect(this.jdbcUrl, overrideProps(username, password));
-if (out == null) {
-throw new SQLException("Apparently, jdbc URL '" + this.jdbcUrl + "' is not valid for the underlying " + "driver [" + driver() + "].");
-}
-return out;
-}
+        Connection out = driver().connect(this.jdbcUrl, overrideProps(username, password));
+        if (out == null) {
+            throw new SQLException("Apparently, jdbc URL '" + this.jdbcUrl + "' is not valid for the underlying " + "driver [" + driver() + "].");
+        }
+        return out;
+    }
 
-public PrintWriter getLogWriter() throws SQLException {
-return DriverManager.getLogWriter();
-}
-public void setLogWriter(PrintWriter out) throws SQLException {
-DriverManager.setLogWriter(out);
-}
-public int getLoginTimeout() throws SQLException {
-return DriverManager.getLoginTimeout();
-}
-public void setLoginTimeout(int seconds) throws SQLException {
-DriverManager.setLoginTimeout(seconds);
-}
+    public PrintWriter getLogWriter() throws SQLException {
+        return DriverManager.getLogWriter();
+    }
 
-public synchronized void setJdbcUrl(String jdbcUrl) {
-super.setJdbcUrl(jdbcUrl);
-clearDriver();
-}
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        DriverManager.setLogWriter(out);
+    }
 
-public synchronized void setUser(String user) {
-String oldUser = getUser();
-if (!eqOrBothNull(user, oldUser)) {
+    public int getLoginTimeout() throws SQLException {
+        return DriverManager.getLoginTimeout();
+    }
 
-if (user != null) {
-this.properties.put("user", user);
-} else {
-this.properties.remove("user");
-} 
-this.pcs.firePropertyChange("user", oldUser, user);
-} 
-}
+    public void setLoginTimeout(int seconds) throws SQLException {
+        DriverManager.setLoginTimeout(seconds);
+    }
 
-public synchronized String getUser() {
-return this.properties.getProperty("user");
-}
+    public synchronized void setJdbcUrl(String jdbcUrl) {
+        super.setJdbcUrl(jdbcUrl);
+        clearDriver();
+    }
 
-public synchronized void setPassword(String password) {
-String oldPass = getPassword();
-if (!eqOrBothNull(password, oldPass)) {
+    public synchronized String getUser() {
+        return this.properties.getProperty("user");
+    }
 
-if (password != null) {
-this.properties.put("password", password);
-} else {
-this.properties.remove("password");
-} 
-this.pcs.firePropertyChange("password", oldPass, password);
-} 
-}
+    public synchronized void setUser(String user) {
+        String oldUser = getUser();
+        if (!eqOrBothNull(user, oldUser)) {
 
-public synchronized String getPassword() {
-return this.properties.getProperty("password");
-}
+            if (user != null) {
+                this.properties.put("user", user);
+            } else {
+                this.properties.remove("user");
+            }
+            this.pcs.firePropertyChange("user", oldUser, user);
+        }
+    }
 
-private final Properties overrideProps(String user, String password) {
-Properties overriding = (Properties)this.properties.clone();
+    public synchronized String getPassword() {
+        return this.properties.getProperty("password");
+    }
 
-if (user != null) {
-overriding.put("user", user);
-} else {
-overriding.remove("user");
-} 
-if (password != null) {
-overriding.put("password", password);
-} else {
-overriding.remove("password");
-} 
-return overriding;
-}
+    public synchronized void setPassword(String password) {
+        String oldPass = getPassword();
+        if (!eqOrBothNull(password, oldPass)) {
 
-private synchronized Driver driver() throws SQLException {
-if (this.driver == null)
-this.driver = DriverManager.getDriver(this.jdbcUrl); 
-return this.driver;
-}
+            if (password != null) {
+                this.properties.put("password", password);
+            } else {
+                this.properties.remove("password");
+            }
+            this.pcs.firePropertyChange("password", oldPass, password);
+        }
+    }
 
-private synchronized void clearDriver() {
-this.driver = null;
-}
-private static boolean eqOrBothNull(Object a, Object b) {
-return (a == b || (a != null && a.equals(b)));
-}
+    private final Properties overrideProps(String user, String password) {
+        Properties overriding = (Properties) this.properties.clone();
 
-private void writeObject(ObjectOutputStream oos) throws IOException {
-oos.writeShort(1);
-}
+        if (user != null) {
+            overriding.put("user", user);
+        } else {
+            overriding.remove("user");
+        }
+        if (password != null) {
+            overriding.put("password", password);
+        } else {
+            overriding.remove("password");
+        }
+        return overriding;
+    }
 
-private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-short version = ois.readShort();
-switch (version) {
+    private synchronized Driver driver() throws SQLException {
+        if (this.driver == null)
+            this.driver = DriverManager.getDriver(this.jdbcUrl);
+        return this.driver;
+    }
 
-case 1:
-setUpPropertyListeners();
-return;
-} 
-throw new IOException("Unsupported Serialized Version: " + version);
-}
+    private synchronized void clearDriver() {
+        this.driver = null;
+    }
 
-public boolean isWrapperFor(Class<?> iface) throws SQLException {
-return false;
-}
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeShort(1);
+    }
 
-public <T> T unwrap(Class<T> iface) throws SQLException {
-throw new SQLException(this + " is not a Wrapper for " + iface.getName());
-}
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        short version = ois.readShort();
+        switch (version) {
+
+            case 1:
+                setUpPropertyListeners();
+                return;
+        }
+        throw new IOException("Unsupported Serialized Version: " + version);
+    }
+
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return false;
+    }
+
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        throw new SQLException(this + " is not a Wrapper for " + iface.getName());
+    }
 }
 

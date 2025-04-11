@@ -12,47 +12,47 @@ import org.ietf.jgss.Oid;
 
 @NotThreadSafe
 public class KerberosScheme
-extends GGSSchemeBase
-{
-private static final String KERBEROS_OID = "1.2.840.113554.1.2.2";
+        extends GGSSchemeBase {
+    private static final String KERBEROS_OID = "1.2.840.113554.1.2.2";
 
-public KerberosScheme(boolean stripPort, boolean useCanonicalHostname) {
-super(stripPort, useCanonicalHostname);
-}
+    public KerberosScheme(boolean stripPort, boolean useCanonicalHostname) {
+        super(stripPort, useCanonicalHostname);
+    }
 
-public KerberosScheme(boolean stripPort) {
-super(stripPort);
-}
+    public KerberosScheme(boolean stripPort) {
+        super(stripPort);
+    }
 
-public KerberosScheme() {}
+    public KerberosScheme() {
+    }
 
-public String getSchemeName() {
-return "Kerberos";
-}
+    public String getSchemeName() {
+        return "Kerberos";
+    }
 
-public Header authenticate(Credentials credentials, HttpRequest request, HttpContext context) throws AuthenticationException {
-return super.authenticate(credentials, request, context);
-}
+    public Header authenticate(Credentials credentials, HttpRequest request, HttpContext context) throws AuthenticationException {
+        return super.authenticate(credentials, request, context);
+    }
 
-protected byte[] generateToken(byte[] input, String authServer) throws GSSException {
-return super.generateToken(input, authServer);
-}
+    protected byte[] generateToken(byte[] input, String authServer) throws GSSException {
+        return super.generateToken(input, authServer);
+    }
 
-protected byte[] generateToken(byte[] input, String authServer, Credentials credentials) throws GSSException {
-return generateGSSToken(input, new Oid("1.2.840.113554.1.2.2"), authServer, credentials);
-}
+    protected byte[] generateToken(byte[] input, String authServer, Credentials credentials) throws GSSException {
+        return generateGSSToken(input, new Oid("1.2.840.113554.1.2.2"), authServer, credentials);
+    }
 
-public String getParameter(String name) {
-Args.notNull(name, "Parameter name");
-return null;
-}
+    public String getParameter(String name) {
+        Args.notNull(name, "Parameter name");
+        return null;
+    }
 
-public String getRealm() {
-return null;
-}
+    public String getRealm() {
+        return null;
+    }
 
-public boolean isConnectionBased() {
-return true;
-}
+    public boolean isConnectionBased() {
+        return true;
+    }
 }
 

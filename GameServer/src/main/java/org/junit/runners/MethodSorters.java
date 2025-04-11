@@ -1,25 +1,25 @@
 package org.junit.runners;
 
-import java.lang.reflect.Method;
-import java.util.Comparator;
 import org.junit.internal.MethodSorter;
 
-public enum MethodSorters
-{
-NAME_ASCENDING(MethodSorter.NAME_ASCENDING),
+import java.lang.reflect.Method;
+import java.util.Comparator;
 
-JVM(null),
+public enum MethodSorters {
+    NAME_ASCENDING(MethodSorter.NAME_ASCENDING),
 
-DEFAULT(MethodSorter.DEFAULT);
+    JVM(null),
 
-private final Comparator<Method> comparator;
+    DEFAULT(MethodSorter.DEFAULT);
 
-MethodSorters(Comparator<Method> comparator) {
-this.comparator = comparator;
-}
+    private final Comparator<Method> comparator;
 
-public Comparator<Method> getComparator() {
-return this.comparator;
-}
+    MethodSorters(Comparator<Method> comparator) {
+        this.comparator = comparator;
+    }
+
+    public Comparator<Method> getComparator() {
+        return this.comparator;
+    }
 }
 

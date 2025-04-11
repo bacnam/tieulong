@@ -2,82 +2,83 @@ package com.google.common.net;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
+
+import javax.annotation.Nullable;
 import java.net.InetAddress;
 import java.text.ParseException;
-import javax.annotation.Nullable;
 
 @Beta
-public final class HostSpecifier
-{
-private final String canonicalForm;
+public final class HostSpecifier {
+    private final String canonicalForm;
 
-private HostSpecifier(String canonicalForm) {
-this.canonicalForm = canonicalForm;
-}
+    private HostSpecifier(String canonicalForm) {
+        this.canonicalForm = canonicalForm;
+    }
 
-public static HostSpecifier fromValid(String specifier) {
-HostAndPort parsedHost = HostAndPort.fromString(specifier);
-Preconditions.checkArgument(!parsedHost.hasPort());
-String host = parsedHost.getHostText();
+    public static HostSpecifier fromValid(String specifier) {
+        HostAndPort parsedHost = HostAndPort.fromString(specifier);
+        Preconditions.checkArgument(!parsedHost.hasPort());
+        String host = parsedHost.getHostText();
 
-InetAddress addr = null;
-try {
-addr = InetAddresses.forString(host);
-} catch (IllegalArgumentException e) {}
+        InetAddress addr = null;
+        try {
+            addr = InetAddresses.forString(host);
+        } catch (IllegalArgumentException e) {
+        }
 
-if (addr != null) {
-return new HostSpecifier(InetAddresses.toUriString(addr));
-}
+        if (addr != null) {
+            return new HostSpecifier(InetAddresses.toUriString(addr));
+        }
 
-InternetDomainName domain = InternetDomainName.from(host);
+        InternetDomainName domain = InternetDomainName.from(host);
 
-if (domain.hasPublicSuffix()) {
-return new HostSpecifier(domain.name());
-}
+        if (domain.hasPublicSuffix()) {
+            return new HostSpecifier(domain.name());
+        }
 
-throw new IllegalArgumentException("Domain name does not have a recognized public suffix: " + host);
-}
+        throw new IllegalArgumentException("Domain name does not have a recognized public suffix: " + host);
+    }
 
-public static HostSpecifier from(String specifier) throws ParseException {
-try {
-return fromValid(specifier);
-} catch (IllegalArgumentException e) {
+    public static HostSpecifier from(String specifier) throws ParseException {
+        try {
+            return fromValid(specifier);
+        } catch (IllegalArgumentException e) {
 
-ParseException parseException = new ParseException("Invalid host specifier: " + specifier, 0);
+            ParseException parseException = new ParseException("Invalid host specifier: " + specifier, 0);
 
-parseException.initCause(e);
-throw parseException;
-} 
-}
+            parseException.initCause(e);
+            throw parseException;
+        }
+    }
 
-public static boolean isValid(String specifier) {
-try {
-fromValid(specifier);
-return true;
-} catch (IllegalArgumentException e) {
-return false;
-} 
-}
+    public static boolean isValid(String specifier) {
+        try {
+            fromValid(specifier);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 
-public boolean equals(@Nullable Object other) {
-if (this == other) {
-return true;
-}
+    public boolean equals(@Nullable Object other) {
+        if (this == other) {
+            return true;
+        }
 
-if (other instanceof HostSpecifier) {
-HostSpecifier that = (HostSpecifier)other;
-return this.canonicalForm.equals(that.canonicalForm);
-} 
+        if (other instanceof HostSpecifier) {
+            HostSpecifier that = (HostSpecifier) other;
+            return this.canonicalForm.equals(that.canonicalForm);
+        }
 
-return false;
-}
+        return false;
+    }
 
-public int hashCode() {
-return this.canonicalForm.hashCode();
-}
+    public int hashCode() {
+        return this.canonicalForm.hashCode();
+    }
 
-public String toString() {
-return this.canonicalForm;
-}
+    public String toString() {
+        return this.canonicalForm;
+    }
 }
 

@@ -4,19 +4,19 @@ import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 
 public interface AuthScheme {
-  void processChallenge(Header paramHeader) throws MalformedChallengeException;
+    void processChallenge(Header paramHeader) throws MalformedChallengeException;
 
-  String getSchemeName();
+    String getSchemeName();
 
-  String getParameter(String paramString);
+    String getParameter(String paramString);
 
-  String getRealm();
+    String getRealm();
 
-  boolean isConnectionBased();
+    boolean isConnectionBased();
 
-  boolean isComplete();
+    boolean isComplete();
 
-  @Deprecated
-  Header authenticate(Credentials paramCredentials, HttpRequest paramHttpRequest) throws AuthenticationException;
+    @Deprecated
+    Header authenticate(Credentials paramCredentials, HttpRequest paramHttpRequest) throws AuthenticationException;
 }
 

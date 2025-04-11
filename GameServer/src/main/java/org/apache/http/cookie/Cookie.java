@@ -1,35 +1,36 @@
 package org.apache.http.cookie;
 
-import java.util.Date;
 import org.apache.http.annotation.Obsolete;
 
+import java.util.Date;
+
 public interface Cookie {
-  String getName();
+    String getName();
 
-  String getValue();
+    String getValue();
 
-  @Obsolete
-  String getComment();
+    @Obsolete
+    String getComment();
 
-  @Obsolete
-  String getCommentURL();
+    @Obsolete
+    String getCommentURL();
 
-  Date getExpiryDate();
+    Date getExpiryDate();
 
-  boolean isPersistent();
+    boolean isPersistent();
 
-  String getDomain();
+    String getDomain();
 
-  String getPath();
+    String getPath();
 
-  @Obsolete
-  int[] getPorts();
+    @Obsolete
+    int[] getPorts();
 
-  boolean isSecure();
+    boolean isSecure();
 
-  @Obsolete
-  int getVersion();
+    @Obsolete
+    int getVersion();
 
-  boolean isExpired(Date paramDate);
+    boolean isExpired(Date paramDate);
 }
 

@@ -10,22 +10,21 @@ import org.apache.http.nio.reactor.SessionOutputBuffer;
 
 @Immutable
 public class DefaultHttpRequestWriterFactory
-implements NHttpMessageWriterFactory<HttpRequest>
-{
-public static final DefaultHttpRequestWriterFactory INSTANCE = new DefaultHttpRequestWriterFactory();
+        implements NHttpMessageWriterFactory<HttpRequest> {
+    public static final DefaultHttpRequestWriterFactory INSTANCE = new DefaultHttpRequestWriterFactory();
 
-private final LineFormatter lineFormatter;
+    private final LineFormatter lineFormatter;
 
-public DefaultHttpRequestWriterFactory(LineFormatter lineFormatter) {
-this.lineFormatter = (lineFormatter != null) ? lineFormatter : (LineFormatter)BasicLineFormatter.INSTANCE;
-}
+    public DefaultHttpRequestWriterFactory(LineFormatter lineFormatter) {
+        this.lineFormatter = (lineFormatter != null) ? lineFormatter : (LineFormatter) BasicLineFormatter.INSTANCE;
+    }
 
-public DefaultHttpRequestWriterFactory() {
-this(null);
-}
+    public DefaultHttpRequestWriterFactory() {
+        this(null);
+    }
 
-public NHttpMessageWriter<HttpRequest> create(SessionOutputBuffer buffer) {
-return new DefaultHttpRequestWriter(buffer, this.lineFormatter);
-}
+    public NHttpMessageWriter<HttpRequest> create(SessionOutputBuffer buffer) {
+        return new DefaultHttpRequestWriter(buffer, this.lineFormatter);
+    }
 }
 

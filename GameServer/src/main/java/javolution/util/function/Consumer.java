@@ -1,6 +1,6 @@
 package javolution.util.function;
 
 public interface Consumer<T> {
-  void accept(T paramT);
+    void accept(T paramT);
 }
 

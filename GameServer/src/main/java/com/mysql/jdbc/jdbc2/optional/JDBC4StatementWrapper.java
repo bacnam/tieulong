@@ -1,103 +1,101 @@
 package com.mysql.jdbc.jdbc2.optional;
 
 import com.mysql.jdbc.SQLError;
+
 import java.lang.reflect.Proxy;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
 public class JDBC4StatementWrapper
-extends StatementWrapper
-{
-public JDBC4StatementWrapper(ConnectionWrapper c, MysqlPooledConnection conn, Statement toWrap) {
-super(c, conn, toWrap);
-}
+        extends StatementWrapper {
+    public JDBC4StatementWrapper(ConnectionWrapper c, MysqlPooledConnection conn, Statement toWrap) {
+        super(c, conn, toWrap);
+    }
 
-public void close() throws SQLException {
-try {
-super.close();
-} finally {
-this.unwrappedInterfaces = null;
-} 
-}
+    public void close() throws SQLException {
+        try {
+            super.close();
+        } finally {
+            this.unwrappedInterfaces = null;
+        }
+    }
 
-public boolean isClosed() throws SQLException {
-try {
-if (this.wrappedStmt != null) {
-return this.wrappedStmt.isClosed();
-}
-throw SQLError.createSQLException("Statement already closed", "S1009", this.exceptionInterceptor);
+    public boolean isClosed() throws SQLException {
+        try {
+            if (this.wrappedStmt != null) {
+                return this.wrappedStmt.isClosed();
+            }
+            throw SQLError.createSQLException("Statement already closed", "S1009", this.exceptionInterceptor);
 
-}
-catch (SQLException sqlEx) {
-checkAndFireConnectionError(sqlEx);
+        } catch (SQLException sqlEx) {
+            checkAndFireConnectionError(sqlEx);
 
-return false;
-} 
-}
-public void setPoolable(boolean poolable) throws SQLException {
-try {
-if (this.wrappedStmt != null) {
-this.wrappedStmt.setPoolable(poolable);
-} else {
-throw SQLError.createSQLException("Statement already closed", "S1009", this.exceptionInterceptor);
-}
+            return false;
+        }
+    }
 
-} catch (SQLException sqlEx) {
-checkAndFireConnectionError(sqlEx);
-} 
-}
+    public boolean isPoolable() throws SQLException {
+        try {
+            if (this.wrappedStmt != null) {
+                return this.wrappedStmt.isPoolable();
+            }
+            throw SQLError.createSQLException("Statement already closed", "S1009", this.exceptionInterceptor);
 
-public boolean isPoolable() throws SQLException {
-try {
-if (this.wrappedStmt != null) {
-return this.wrappedStmt.isPoolable();
-}
-throw SQLError.createSQLException("Statement already closed", "S1009", this.exceptionInterceptor);
+        } catch (SQLException sqlEx) {
+            checkAndFireConnectionError(sqlEx);
 
-}
-catch (SQLException sqlEx) {
-checkAndFireConnectionError(sqlEx);
+            return false;
+        }
+    }
 
-return false;
-} 
-}
+    public void setPoolable(boolean poolable) throws SQLException {
+        try {
+            if (this.wrappedStmt != null) {
+                this.wrappedStmt.setPoolable(poolable);
+            } else {
+                throw SQLError.createSQLException("Statement already closed", "S1009", this.exceptionInterceptor);
+            }
 
-public boolean isWrapperFor(Class<?> iface) throws SQLException {
-boolean isInstance = iface.isInstance(this);
+        } catch (SQLException sqlEx) {
+            checkAndFireConnectionError(sqlEx);
+        }
+    }
 
-if (isInstance) {
-return true;
-}
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        boolean isInstance = iface.isInstance(this);
 
-String interfaceClassName = iface.getName();
+        if (isInstance) {
+            return true;
+        }
 
-return (interfaceClassName.equals("com.mysql.jdbc.Statement") || interfaceClassName.equals("java.sql.Statement") || interfaceClassName.equals("java.sql.Wrapper"));
-}
+        String interfaceClassName = iface.getName();
 
-public synchronized <T> T unwrap(Class<T> iface) throws SQLException {
-try {
-if ("java.sql.Statement".equals(iface.getName()) || "java.sql.Wrapper.class".equals(iface.getName()))
-{
-return iface.cast(this);
-}
+        return (interfaceClassName.equals("com.mysql.jdbc.Statement") || interfaceClassName.equals("java.sql.Statement") || interfaceClassName.equals("java.sql.Wrapper"));
+    }
 
-if (this.unwrappedInterfaces == null) {
-this.unwrappedInterfaces = new HashMap<Object, Object>();
-}
+    public synchronized <T> T unwrap(Class<T> iface) throws SQLException {
+        try {
+            if ("java.sql.Statement".equals(iface.getName()) || "java.sql.Wrapper.class".equals(iface.getName())) {
+                return iface.cast(this);
+            }
 
-Object cachedUnwrapped = this.unwrappedInterfaces.get(iface);
+            if (this.unwrappedInterfaces == null) {
+                this.unwrappedInterfaces = new HashMap<Object, Object>();
+            }
 
-if (cachedUnwrapped == null) {
-cachedUnwrapped = Proxy.newProxyInstance(this.wrappedStmt.getClass().getClassLoader(), new Class[] { iface }, new WrapperBase.ConnectionErrorFiringInvocationHandler(this, this.wrappedStmt));
+            Object cachedUnwrapped = this.unwrappedInterfaces.get(iface);
 
-this.unwrappedInterfaces.put(iface, cachedUnwrapped);
-} 
+            if (cachedUnwrapped == null) {
+                cachedUnwrapped = Proxy.newProxyInstance(this.wrappedStmt.getClass().getClassLoader(), new Class[]{iface}, new WrapperBase.ConnectionErrorFiringInvocationHandler(this, this.wrappedStmt));
 
-return iface.cast(cachedUnwrapped);
-} catch (ClassCastException cce) {
-throw SQLError.createSQLException("Unable to unwrap to " + iface.toString(), "S1009", this.exceptionInterceptor);
-} 
-}
+                this.unwrappedInterfaces.put(iface, cachedUnwrapped);
+            }
+
+            return iface.cast(cachedUnwrapped);
+        } catch (ClassCastException cce) {
+            throw SQLError.createSQLException("Unable to unwrap to " + iface.toString(), "S1009", this.exceptionInterceptor);
+        }
+    }
 }
 

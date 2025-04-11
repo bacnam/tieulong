@@ -4,558 +4,547 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-import java.util.TimeZone;
-
-class EscapeProcessor
-{
-private static Map<String, String> JDBC_CONVERT_TO_MYSQL_TYPE_MAP;
-private static Map<String, String> JDBC_NO_CONVERT_TO_MYSQL_EXPRESSION_MAP;
-
-static {
-Map<String, String> tempMap = new HashMap<String, String>();
-
-tempMap.put("BIGINT", "0 + ?");
-tempMap.put("BINARY", "BINARY");
-tempMap.put("BIT", "0 + ?");
-tempMap.put("CHAR", "CHAR");
-tempMap.put("DATE", "DATE");
-tempMap.put("DECIMAL", "0.0 + ?");
-tempMap.put("DOUBLE", "0.0 + ?");
-tempMap.put("FLOAT", "0.0 + ?");
-tempMap.put("INTEGER", "0 + ?");
-tempMap.put("LONGVARBINARY", "BINARY");
-tempMap.put("LONGVARCHAR", "CONCAT(?)");
-tempMap.put("REAL", "0.0 + ?");
-tempMap.put("SMALLINT", "CONCAT(?)");
-tempMap.put("TIME", "TIME");
-tempMap.put("TIMESTAMP", "DATETIME");
-tempMap.put("TINYINT", "CONCAT(?)");
-tempMap.put("VARBINARY", "BINARY");
-tempMap.put("VARCHAR", "CONCAT(?)");
+import java.util.*;
 
-JDBC_CONVERT_TO_MYSQL_TYPE_MAP = Collections.unmodifiableMap(tempMap);
+class EscapeProcessor {
+    private static Map<String, String> JDBC_CONVERT_TO_MYSQL_TYPE_MAP;
+    private static Map<String, String> JDBC_NO_CONVERT_TO_MYSQL_EXPRESSION_MAP;
 
-tempMap = new HashMap<String, String>(JDBC_CONVERT_TO_MYSQL_TYPE_MAP);
+    static {
+        Map<String, String> tempMap = new HashMap<String, String>();
 
-tempMap.put("BINARY", "CONCAT(?)");
-tempMap.put("CHAR", "CONCAT(?)");
-tempMap.remove("DATE");
-tempMap.put("LONGVARBINARY", "CONCAT(?)");
-tempMap.remove("TIME");
-tempMap.remove("TIMESTAMP");
-tempMap.put("VARBINARY", "CONCAT(?)");
+        tempMap.put("BIGINT", "0 + ?");
+        tempMap.put("BINARY", "BINARY");
+        tempMap.put("BIT", "0 + ?");
+        tempMap.put("CHAR", "CHAR");
+        tempMap.put("DATE", "DATE");
+        tempMap.put("DECIMAL", "0.0 + ?");
+        tempMap.put("DOUBLE", "0.0 + ?");
+        tempMap.put("FLOAT", "0.0 + ?");
+        tempMap.put("INTEGER", "0 + ?");
+        tempMap.put("LONGVARBINARY", "BINARY");
+        tempMap.put("LONGVARCHAR", "CONCAT(?)");
+        tempMap.put("REAL", "0.0 + ?");
+        tempMap.put("SMALLINT", "CONCAT(?)");
+        tempMap.put("TIME", "TIME");
+        tempMap.put("TIMESTAMP", "DATETIME");
+        tempMap.put("TINYINT", "CONCAT(?)");
+        tempMap.put("VARBINARY", "BINARY");
+        tempMap.put("VARCHAR", "CONCAT(?)");
 
-JDBC_NO_CONVERT_TO_MYSQL_EXPRESSION_MAP = Collections.unmodifiableMap(tempMap);
-}
+        JDBC_CONVERT_TO_MYSQL_TYPE_MAP = Collections.unmodifiableMap(tempMap);
 
-public static final Object escapeSQL(String sql, boolean serverSupportsConvertFn, MySQLConnection conn) throws SQLException {
-boolean replaceEscapeSequence = false;
-String escapeSequence = null;
+        tempMap = new HashMap<String, String>(JDBC_CONVERT_TO_MYSQL_TYPE_MAP);
 
-if (sql == null) {
-return null;
-}
+        tempMap.put("BINARY", "CONCAT(?)");
+        tempMap.put("CHAR", "CONCAT(?)");
+        tempMap.remove("DATE");
+        tempMap.put("LONGVARBINARY", "CONCAT(?)");
+        tempMap.remove("TIME");
+        tempMap.remove("TIMESTAMP");
+        tempMap.put("VARBINARY", "CONCAT(?)");
 
-int beginBrace = sql.indexOf('{');
-int nextEndBrace = (beginBrace == -1) ? -1 : sql.indexOf('}', beginBrace);
+        JDBC_NO_CONVERT_TO_MYSQL_EXPRESSION_MAP = Collections.unmodifiableMap(tempMap);
+    }
 
-if (nextEndBrace == -1) {
-return sql;
-}
+    public static final Object escapeSQL(String sql, boolean serverSupportsConvertFn, MySQLConnection conn) throws SQLException {
+        boolean replaceEscapeSequence = false;
+        String escapeSequence = null;
 
-StringBuffer newSql = new StringBuffer();
+        if (sql == null) {
+            return null;
+        }
 
-EscapeTokenizer escapeTokenizer = new EscapeTokenizer(sql);
+        int beginBrace = sql.indexOf('{');
+        int nextEndBrace = (beginBrace == -1) ? -1 : sql.indexOf('}', beginBrace);
 
-byte usesVariables = 0;
-boolean callingStoredFunction = false;
+        if (nextEndBrace == -1) {
+            return sql;
+        }
 
-while (escapeTokenizer.hasMoreTokens()) {
-String token = escapeTokenizer.nextToken();
+        StringBuffer newSql = new StringBuffer();
 
-if (token.length() != 0) {
-if (token.charAt(0) == '{') {
+        EscapeTokenizer escapeTokenizer = new EscapeTokenizer(sql);
 
-if (!token.endsWith("}")) {
-throw SQLError.createSQLException("Not a valid escape sequence: " + token, conn.getExceptionInterceptor());
-}
+        byte usesVariables = 0;
+        boolean callingStoredFunction = false;
 
-if (token.length() > 2) {
-int nestedBrace = token.indexOf('{', 2);
+        while (escapeTokenizer.hasMoreTokens()) {
+            String token = escapeTokenizer.nextToken();
 
-if (nestedBrace != -1) {
-StringBuffer buf = new StringBuffer(token.substring(0, 1));
+            if (token.length() != 0) {
+                if (token.charAt(0) == '{') {
 
-Object remainingResults = escapeSQL(token.substring(1, token.length() - 1), serverSupportsConvertFn, conn);
+                    if (!token.endsWith("}")) {
+                        throw SQLError.createSQLException("Not a valid escape sequence: " + token, conn.getExceptionInterceptor());
+                    }
 
-String remaining = null;
+                    if (token.length() > 2) {
+                        int nestedBrace = token.indexOf('{', 2);
 
-if (remainingResults instanceof String) {
-remaining = (String)remainingResults;
-} else {
-remaining = ((EscapeProcessorResult)remainingResults).escapedSql;
+                        if (nestedBrace != -1) {
+                            StringBuffer buf = new StringBuffer(token.substring(0, 1));
 
-if (usesVariables != 1) {
-usesVariables = ((EscapeProcessorResult)remainingResults).usesVariables;
-}
-} 
+                            Object remainingResults = escapeSQL(token.substring(1, token.length() - 1), serverSupportsConvertFn, conn);
 
-buf.append(remaining);
+                            String remaining = null;
 
-buf.append('}');
+                            if (remainingResults instanceof String) {
+                                remaining = (String) remainingResults;
+                            } else {
+                                remaining = ((EscapeProcessorResult) remainingResults).escapedSql;
 
-token = buf.toString();
-} 
-} 
+                                if (usesVariables != 1) {
+                                    usesVariables = ((EscapeProcessorResult) remainingResults).usesVariables;
+                                }
+                            }
 
-String collapsedToken = removeWhitespace(token);
+                            buf.append(remaining);
 
-if (StringUtils.startsWithIgnoreCase(collapsedToken, "{escape")) {
+                            buf.append('}');
 
-try {
-StringTokenizer st = new StringTokenizer(token, " '");
+                            token = buf.toString();
+                        }
+                    }
 
-st.nextToken();
-escapeSequence = st.nextToken();
+                    String collapsedToken = removeWhitespace(token);
 
-if (escapeSequence.length() < 3) {
-newSql.append(token);
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{escape")) {
 
-continue;
-} 
+                        try {
+                            StringTokenizer st = new StringTokenizer(token, " '");
 
-escapeSequence = escapeSequence.substring(1, escapeSequence.length() - 1);
+                            st.nextToken();
+                            escapeSequence = st.nextToken();
 
-replaceEscapeSequence = true;
-}
-catch (NoSuchElementException e) {
-newSql.append(token);
-} 
+                            if (escapeSequence.length() < 3) {
+                                newSql.append(token);
 
-continue;
-} 
-if (StringUtils.startsWithIgnoreCase(collapsedToken, "{fn")) {
+                                continue;
+                            }
 
-int startPos = token.toLowerCase().indexOf("fn ") + 3;
-int endPos = token.length() - 1;
+                            escapeSequence = escapeSequence.substring(1, escapeSequence.length() - 1);
 
-String fnToken = token.substring(startPos, endPos);
+                            replaceEscapeSequence = true;
+                        } catch (NoSuchElementException e) {
+                            newSql.append(token);
+                        }
 
-if (StringUtils.startsWithIgnoreCaseAndWs(fnToken, "convert")) {
+                        continue;
+                    }
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{fn")) {
 
-newSql.append(processConvertToken(fnToken, serverSupportsConvertFn, conn));
+                        int startPos = token.toLowerCase().indexOf("fn ") + 3;
+                        int endPos = token.length() - 1;
 
-continue;
-} 
-newSql.append(fnToken); continue;
-} 
-if (StringUtils.startsWithIgnoreCase(collapsedToken, "{d")) {
+                        String fnToken = token.substring(startPos, endPos);
 
-int startPos = token.indexOf('\'') + 1;
-int endPos = token.lastIndexOf('\'');
+                        if (StringUtils.startsWithIgnoreCaseAndWs(fnToken, "convert")) {
 
-if (startPos == -1 || endPos == -1) {
-newSql.append(token);
+                            newSql.append(processConvertToken(fnToken, serverSupportsConvertFn, conn));
 
-continue;
-} 
+                            continue;
+                        }
+                        newSql.append(fnToken);
+                        continue;
+                    }
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{d")) {
 
-String argument = token.substring(startPos, endPos);
+                        int startPos = token.indexOf('\'') + 1;
+                        int endPos = token.lastIndexOf('\'');
 
-try {
-StringTokenizer st = new StringTokenizer(argument, " -");
+                        if (startPos == -1 || endPos == -1) {
+                            newSql.append(token);
 
-String year4 = st.nextToken();
-String month2 = st.nextToken();
-String day2 = st.nextToken();
-String dateString = "'" + year4 + "-" + month2 + "-" + day2 + "'";
+                            continue;
+                        }
 
-newSql.append(dateString);
-} catch (NoSuchElementException e) {
-throw SQLError.createSQLException("Syntax error for DATE escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
-} 
+                        String argument = token.substring(startPos, endPos);
 
-continue;
-} 
-if (StringUtils.startsWithIgnoreCase(collapsedToken, "{ts")) {
+                        try {
+                            StringTokenizer st = new StringTokenizer(argument, " -");
 
-processTimestampToken(conn, newSql, token); continue;
-}  if (StringUtils.startsWithIgnoreCase(collapsedToken, "{t")) {
+                            String year4 = st.nextToken();
+                            String month2 = st.nextToken();
+                            String day2 = st.nextToken();
+                            String dateString = "'" + year4 + "-" + month2 + "-" + day2 + "'";
 
-processTimeToken(conn, newSql, token); continue;
-}  if (StringUtils.startsWithIgnoreCase(collapsedToken, "{call") || StringUtils.startsWithIgnoreCase(collapsedToken, "{?=call")) {
+                            newSql.append(dateString);
+                        } catch (NoSuchElementException e) {
+                            throw SQLError.createSQLException("Syntax error for DATE escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
+                        }
 
-int startPos = StringUtils.indexOfIgnoreCase(token, "CALL") + 5;
+                        continue;
+                    }
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{ts")) {
 
-int endPos = token.length() - 1;
+                        processTimestampToken(conn, newSql, token);
+                        continue;
+                    }
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{t")) {
 
-if (StringUtils.startsWithIgnoreCase(collapsedToken, "{?=call")) {
+                        processTimeToken(conn, newSql, token);
+                        continue;
+                    }
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{call") || StringUtils.startsWithIgnoreCase(collapsedToken, "{?=call")) {
 
-callingStoredFunction = true;
-newSql.append("SELECT ");
-newSql.append(token.substring(startPos, endPos));
-} else {
-callingStoredFunction = false;
-newSql.append("CALL ");
-newSql.append(token.substring(startPos, endPos));
-} 
+                        int startPos = StringUtils.indexOfIgnoreCase(token, "CALL") + 5;
 
-for (int i = endPos - 1; i >= startPos; ) {
-char c = token.charAt(i);
+                        int endPos = token.length() - 1;
 
-if (Character.isWhitespace(c)) {
-i--;
-continue;
-} 
-if (c != ')') {
-newSql.append("()");
-}
-} 
+                        if (StringUtils.startsWithIgnoreCase(collapsedToken, "{?=call")) {
 
-continue;
-} 
+                            callingStoredFunction = true;
+                            newSql.append("SELECT ");
+                            newSql.append(token.substring(startPos, endPos));
+                        } else {
+                            callingStoredFunction = false;
+                            newSql.append("CALL ");
+                            newSql.append(token.substring(startPos, endPos));
+                        }
 
-if (StringUtils.startsWithIgnoreCase(collapsedToken, "{oj")) {
+                        for (int i = endPos - 1; i >= startPos; ) {
+                            char c = token.charAt(i);
 
-newSql.append(token);
-continue;
-} 
-newSql.append(token);
-continue;
-} 
-newSql.append(token);
-} 
-} 
+                            if (Character.isWhitespace(c)) {
+                                i--;
+                                continue;
+                            }
+                            if (c != ')') {
+                                newSql.append("()");
+                            }
+                        }
 
-String escapedSql = newSql.toString();
+                        continue;
+                    }
 
-if (replaceEscapeSequence) {
-String currentSql = escapedSql;
+                    if (StringUtils.startsWithIgnoreCase(collapsedToken, "{oj")) {
 
-while (currentSql.indexOf(escapeSequence) != -1) {
-int escapePos = currentSql.indexOf(escapeSequence);
-String lhs = currentSql.substring(0, escapePos);
-String rhs = currentSql.substring(escapePos + 1, currentSql.length());
+                        newSql.append(token);
+                        continue;
+                    }
+                    newSql.append(token);
+                    continue;
+                }
+                newSql.append(token);
+            }
+        }
 
-currentSql = lhs + "\\" + rhs;
-} 
+        String escapedSql = newSql.toString();
 
-escapedSql = currentSql;
-} 
+        if (replaceEscapeSequence) {
+            String currentSql = escapedSql;
 
-EscapeProcessorResult epr = new EscapeProcessorResult();
-epr.escapedSql = escapedSql;
-epr.callingStoredFunction = callingStoredFunction;
+            while (currentSql.indexOf(escapeSequence) != -1) {
+                int escapePos = currentSql.indexOf(escapeSequence);
+                String lhs = currentSql.substring(0, escapePos);
+                String rhs = currentSql.substring(escapePos + 1, currentSql.length());
 
-if (usesVariables != 1) {
-if (escapeTokenizer.sawVariableUse()) {
-epr.usesVariables = 1;
-} else {
-epr.usesVariables = 0;
-} 
-}
+                currentSql = lhs + "\\" + rhs;
+            }
 
-return epr;
-}
+            escapedSql = currentSql;
+        }
 
-private static void processTimeToken(MySQLConnection conn, StringBuffer newSql, String token) throws SQLException {
-int startPos = token.indexOf('\'') + 1;
-int endPos = token.lastIndexOf('\'');
+        EscapeProcessorResult epr = new EscapeProcessorResult();
+        epr.escapedSql = escapedSql;
+        epr.callingStoredFunction = callingStoredFunction;
 
-if (startPos == -1 || endPos == -1) {
-newSql.append(token);
+        if (usesVariables != 1) {
+            if (escapeTokenizer.sawVariableUse()) {
+                epr.usesVariables = 1;
+            } else {
+                epr.usesVariables = 0;
+            }
+        }
 
-}
-else {
+        return epr;
+    }
 
-String argument = token.substring(startPos, endPos);
+    private static void processTimeToken(MySQLConnection conn, StringBuffer newSql, String token) throws SQLException {
+        int startPos = token.indexOf('\'') + 1;
+        int endPos = token.lastIndexOf('\'');
 
-try {
-StringTokenizer st = new StringTokenizer(argument, " :.");
+        if (startPos == -1 || endPos == -1) {
+            newSql.append(token);
 
-String hour = st.nextToken();
-String minute = st.nextToken();
-String second = st.nextToken();
+        } else {
 
-boolean serverSupportsFractionalSecond = false;
-String fractionalSecond = "";
+            String argument = token.substring(startPos, endPos);
 
-if (st.hasMoreTokens() && 
-conn.versionMeetsMinimum(5, 6, 4)) {
-serverSupportsFractionalSecond = true;
-fractionalSecond = "." + st.nextToken();
-} 
+            try {
+                StringTokenizer st = new StringTokenizer(argument, " :.");
 
-if (conn != null && (!conn.getUseTimezone() || !conn.getUseLegacyDatetimeCode())) {
-newSql.append("'");
-newSql.append(hour);
-newSql.append(":");
-newSql.append(minute);
-newSql.append(":");
-newSql.append(second);
-newSql.append(fractionalSecond);
-newSql.append("'");
-} else {
-Calendar sessionCalendar = null;
+                String hour = st.nextToken();
+                String minute = st.nextToken();
+                String second = st.nextToken();
 
-if (conn != null) {
-sessionCalendar = conn.getCalendarInstanceForSessionOrNew();
-} else {
+                boolean serverSupportsFractionalSecond = false;
+                String fractionalSecond = "";
 
-sessionCalendar = new GregorianCalendar();
-} 
+                if (st.hasMoreTokens() &&
+                        conn.versionMeetsMinimum(5, 6, 4)) {
+                    serverSupportsFractionalSecond = true;
+                    fractionalSecond = "." + st.nextToken();
+                }
 
-try {
-int hourInt = Integer.parseInt(hour);
-int minuteInt = Integer.parseInt(minute);
+                if (conn != null && (!conn.getUseTimezone() || !conn.getUseLegacyDatetimeCode())) {
+                    newSql.append("'");
+                    newSql.append(hour);
+                    newSql.append(":");
+                    newSql.append(minute);
+                    newSql.append(":");
+                    newSql.append(second);
+                    newSql.append(fractionalSecond);
+                    newSql.append("'");
+                } else {
+                    Calendar sessionCalendar = null;
 
-int secondInt = Integer.parseInt(second);
+                    if (conn != null) {
+                        sessionCalendar = conn.getCalendarInstanceForSessionOrNew();
+                    } else {
 
-synchronized (sessionCalendar) {
-Time toBeAdjusted = TimeUtil.fastTimeCreate(sessionCalendar, hourInt, minuteInt, secondInt, conn.getExceptionInterceptor());
+                        sessionCalendar = new GregorianCalendar();
+                    }
 
-Time inServerTimezone = TimeUtil.changeTimezone(conn, sessionCalendar, (Calendar)null, toBeAdjusted, sessionCalendar.getTimeZone(), conn.getServerTimezoneTZ(), false);
+                    try {
+                        int hourInt = Integer.parseInt(hour);
+                        int minuteInt = Integer.parseInt(minute);
 
-newSql.append("'");
-newSql.append(inServerTimezone.toString());
+                        int secondInt = Integer.parseInt(second);
 
-if (serverSupportsFractionalSecond) {
-newSql.append(fractionalSecond);
-}
+                        synchronized (sessionCalendar) {
+                            Time toBeAdjusted = TimeUtil.fastTimeCreate(sessionCalendar, hourInt, minuteInt, secondInt, conn.getExceptionInterceptor());
 
-newSql.append("'");
-}
+                            Time inServerTimezone = TimeUtil.changeTimezone(conn, sessionCalendar, (Calendar) null, toBeAdjusted, sessionCalendar.getTimeZone(), conn.getServerTimezoneTZ(), false);
 
-} catch (NumberFormatException nfe) {
-throw SQLError.createSQLException("Syntax error in TIMESTAMP escape sequence '" + token + "'.", "S1009", conn.getExceptionInterceptor());
+                            newSql.append("'");
+                            newSql.append(inServerTimezone.toString());
 
-}
+                            if (serverSupportsFractionalSecond) {
+                                newSql.append(fractionalSecond);
+                            }
 
-}
+                            newSql.append("'");
+                        }
 
-}
-catch (NoSuchElementException e) {
-throw SQLError.createSQLException("Syntax error for escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
-} 
-} 
-}
+                    } catch (NumberFormatException nfe) {
+                        throw SQLError.createSQLException("Syntax error in TIMESTAMP escape sequence '" + token + "'.", "S1009", conn.getExceptionInterceptor());
 
-private static void processTimestampToken(MySQLConnection conn, StringBuffer newSql, String token) throws SQLException {
-int startPos = token.indexOf('\'') + 1;
-int endPos = token.lastIndexOf('\'');
+                    }
 
-if (startPos == -1 || endPos == -1) {
-newSql.append(token);
+                }
 
-}
-else {
+            } catch (NoSuchElementException e) {
+                throw SQLError.createSQLException("Syntax error for escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
+            }
+        }
+    }
 
-String argument = token.substring(startPos, endPos);
+    private static void processTimestampToken(MySQLConnection conn, StringBuffer newSql, String token) throws SQLException {
+        int startPos = token.indexOf('\'') + 1;
+        int endPos = token.lastIndexOf('\'');
 
-try {
-if (conn != null && !conn.getUseLegacyDatetimeCode()) {
-Timestamp ts = Timestamp.valueOf(argument);
-SimpleDateFormat tsdf = new SimpleDateFormat("''yyyy-MM-dd HH:mm:ss", Locale.US);
+        if (startPos == -1 || endPos == -1) {
+            newSql.append(token);
 
-tsdf.setTimeZone(conn.getServerTimezoneTZ());
+        } else {
 
-newSql.append(tsdf.format(ts));
+            String argument = token.substring(startPos, endPos);
 
-if (ts.getNanos() > 0 && conn.versionMeetsMinimum(5, 6, 4)) {
-newSql.append('.');
-newSql.append(TimeUtil.formatNanos(ts.getNanos(), true));
-} 
+            try {
+                if (conn != null && !conn.getUseLegacyDatetimeCode()) {
+                    Timestamp ts = Timestamp.valueOf(argument);
+                    SimpleDateFormat tsdf = new SimpleDateFormat("''yyyy-MM-dd HH:mm:ss", Locale.US);
 
-newSql.append('\'');
-} else {
+                    tsdf.setTimeZone(conn.getServerTimezoneTZ());
 
-StringTokenizer st = new StringTokenizer(argument, " .-:");
+                    newSql.append(tsdf.format(ts));
 
-try {
-String year4 = st.nextToken();
-String month2 = st.nextToken();
-String day2 = st.nextToken();
-String hour = st.nextToken();
-String minute = st.nextToken();
-String second = st.nextToken();
+                    if (ts.getNanos() > 0 && conn.versionMeetsMinimum(5, 6, 4)) {
+                        newSql.append('.');
+                        newSql.append(TimeUtil.formatNanos(ts.getNanos(), true));
+                    }
 
-boolean serverSupportsFractionalSecond = false;
-String fractionalSecond = "";
-if (st.hasMoreTokens() && 
-conn.versionMeetsMinimum(5, 6, 4)) {
-serverSupportsFractionalSecond = true;
-fractionalSecond = "." + st.nextToken();
-} 
+                    newSql.append('\'');
+                } else {
 
-if (conn != null && !conn.getUseTimezone() && !conn.getUseJDBCCompliantTimezoneShift()) {
+                    StringTokenizer st = new StringTokenizer(argument, " .-:");
 
-newSql.append("'").append(year4).append("-").append(month2).append("-").append(day2).append(" ").append(hour).append(":").append(minute).append(":").append(second).append(fractionalSecond).append("'");
-} else {
-Calendar sessionCalendar;
+                    try {
+                        String year4 = st.nextToken();
+                        String month2 = st.nextToken();
+                        String day2 = st.nextToken();
+                        String hour = st.nextToken();
+                        String minute = st.nextToken();
+                        String second = st.nextToken();
 
-if (conn != null) {
-sessionCalendar = conn.getCalendarInstanceForSessionOrNew();
-} else {
+                        boolean serverSupportsFractionalSecond = false;
+                        String fractionalSecond = "";
+                        if (st.hasMoreTokens() &&
+                                conn.versionMeetsMinimum(5, 6, 4)) {
+                            serverSupportsFractionalSecond = true;
+                            fractionalSecond = "." + st.nextToken();
+                        }
 
-sessionCalendar = new GregorianCalendar();
-sessionCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-} 
+                        if (conn != null && !conn.getUseTimezone() && !conn.getUseJDBCCompliantTimezoneShift()) {
 
-try {
-int year4Int = Integer.parseInt(year4);
+                            newSql.append("'").append(year4).append("-").append(month2).append("-").append(day2).append(" ").append(hour).append(":").append(minute).append(":").append(second).append(fractionalSecond).append("'");
+                        } else {
+                            Calendar sessionCalendar;
 
-int month2Int = Integer.parseInt(month2);
+                            if (conn != null) {
+                                sessionCalendar = conn.getCalendarInstanceForSessionOrNew();
+                            } else {
 
-int day2Int = Integer.parseInt(day2);
+                                sessionCalendar = new GregorianCalendar();
+                                sessionCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            }
 
-int hourInt = Integer.parseInt(hour);
+                            try {
+                                int year4Int = Integer.parseInt(year4);
 
-int minuteInt = Integer.parseInt(minute);
+                                int month2Int = Integer.parseInt(month2);
 
-int secondInt = Integer.parseInt(second);
+                                int day2Int = Integer.parseInt(day2);
 
-synchronized (sessionCalendar) {
-boolean useGmtMillis = conn.getUseGmtMillisForDatetimes();
+                                int hourInt = Integer.parseInt(hour);
 
-Timestamp toBeAdjusted = TimeUtil.fastTimestampCreate(useGmtMillis, useGmtMillis ? Calendar.getInstance(TimeZone.getTimeZone("GMT")) : null, sessionCalendar, year4Int, month2Int, day2Int, hourInt, minuteInt, secondInt, 0);
+                                int minuteInt = Integer.parseInt(minute);
 
-Timestamp inServerTimezone = TimeUtil.changeTimezone(conn, sessionCalendar, (Calendar)null, toBeAdjusted, sessionCalendar.getTimeZone(), conn.getServerTimezoneTZ(), false);
+                                int secondInt = Integer.parseInt(second);
 
-newSql.append("'");
+                                synchronized (sessionCalendar) {
+                                    boolean useGmtMillis = conn.getUseGmtMillisForDatetimes();
 
-String timezoneLiteral = inServerTimezone.toString();
+                                    Timestamp toBeAdjusted = TimeUtil.fastTimestampCreate(useGmtMillis, useGmtMillis ? Calendar.getInstance(TimeZone.getTimeZone("GMT")) : null, sessionCalendar, year4Int, month2Int, day2Int, hourInt, minuteInt, secondInt, 0);
 
-int indexOfDot = timezoneLiteral.indexOf(".");
+                                    Timestamp inServerTimezone = TimeUtil.changeTimezone(conn, sessionCalendar, (Calendar) null, toBeAdjusted, sessionCalendar.getTimeZone(), conn.getServerTimezoneTZ(), false);
 
-if (indexOfDot != -1) {
-timezoneLiteral = timezoneLiteral.substring(0, indexOfDot);
-}
+                                    newSql.append("'");
 
-newSql.append(timezoneLiteral);
-} 
+                                    String timezoneLiteral = inServerTimezone.toString();
 
-if (serverSupportsFractionalSecond) {
-newSql.append(fractionalSecond);
-}
-newSql.append("'");
-}
-catch (NumberFormatException nfe) {
-throw SQLError.createSQLException("Syntax error in TIMESTAMP escape sequence '" + token + "'.", "S1009", conn.getExceptionInterceptor());
+                                    int indexOfDot = timezoneLiteral.indexOf(".");
 
-}
+                                    if (indexOfDot != -1) {
+                                        timezoneLiteral = timezoneLiteral.substring(0, indexOfDot);
+                                    }
 
-}
+                                    newSql.append(timezoneLiteral);
+                                }
 
-}
-catch (NoSuchElementException e) {
-throw SQLError.createSQLException("Syntax error for TIMESTAMP escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
-}
+                                if (serverSupportsFractionalSecond) {
+                                    newSql.append(fractionalSecond);
+                                }
+                                newSql.append("'");
+                            } catch (NumberFormatException nfe) {
+                                throw SQLError.createSQLException("Syntax error in TIMESTAMP escape sequence '" + token + "'.", "S1009", conn.getExceptionInterceptor());
 
-}
+                            }
 
-}
-catch (IllegalArgumentException illegalArgumentException) {
-SQLException sqlEx = SQLError.createSQLException("Syntax error for TIMESTAMP escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
+                        }
 
-sqlEx.initCause(illegalArgumentException);
+                    } catch (NoSuchElementException e) {
+                        throw SQLError.createSQLException("Syntax error for TIMESTAMP escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
+                    }
 
-throw sqlEx;
-} 
-} 
-}
+                }
 
-private static String processConvertToken(String functionToken, boolean serverSupportsConvertFn, MySQLConnection conn) throws SQLException {
-int firstIndexOfParen = functionToken.indexOf("(");
+            } catch (IllegalArgumentException illegalArgumentException) {
+                SQLException sqlEx = SQLError.createSQLException("Syntax error for TIMESTAMP escape sequence '" + argument + "'", "42000", conn.getExceptionInterceptor());
 
-if (firstIndexOfParen == -1) {
-throw SQLError.createSQLException("Syntax error while processing {fn convert (... , ...)} token, missing opening parenthesis in token '" + functionToken + "'.", "42000", conn.getExceptionInterceptor());
-}
+                sqlEx.initCause(illegalArgumentException);
 
-int indexOfComma = functionToken.lastIndexOf(",");
+                throw sqlEx;
+            }
+        }
+    }
 
-if (indexOfComma == -1) {
-throw SQLError.createSQLException("Syntax error while processing {fn convert (... , ...)} token, missing comma in token '" + functionToken + "'.", "42000", conn.getExceptionInterceptor());
-}
+    private static String processConvertToken(String functionToken, boolean serverSupportsConvertFn, MySQLConnection conn) throws SQLException {
+        int firstIndexOfParen = functionToken.indexOf("(");
 
-int indexOfCloseParen = functionToken.indexOf(')', indexOfComma);
+        if (firstIndexOfParen == -1) {
+            throw SQLError.createSQLException("Syntax error while processing {fn convert (... , ...)} token, missing opening parenthesis in token '" + functionToken + "'.", "42000", conn.getExceptionInterceptor());
+        }
 
-if (indexOfCloseParen == -1) {
-throw SQLError.createSQLException("Syntax error while processing {fn convert (... , ...)} token, missing closing parenthesis in token '" + functionToken + "'.", "42000", conn.getExceptionInterceptor());
-}
+        int indexOfComma = functionToken.lastIndexOf(",");
 
-String expression = functionToken.substring(firstIndexOfParen + 1, indexOfComma);
+        if (indexOfComma == -1) {
+            throw SQLError.createSQLException("Syntax error while processing {fn convert (... , ...)} token, missing comma in token '" + functionToken + "'.", "42000", conn.getExceptionInterceptor());
+        }
 
-String type = functionToken.substring(indexOfComma + 1, indexOfCloseParen);
+        int indexOfCloseParen = functionToken.indexOf(')', indexOfComma);
 
-String newType = null;
+        if (indexOfCloseParen == -1) {
+            throw SQLError.createSQLException("Syntax error while processing {fn convert (... , ...)} token, missing closing parenthesis in token '" + functionToken + "'.", "42000", conn.getExceptionInterceptor());
+        }
 
-String trimmedType = type.trim();
+        String expression = functionToken.substring(firstIndexOfParen + 1, indexOfComma);
 
-if (StringUtils.startsWithIgnoreCase(trimmedType, "SQL_")) {
-trimmedType = trimmedType.substring(4, trimmedType.length());
-}
+        String type = functionToken.substring(indexOfComma + 1, indexOfCloseParen);
 
-if (serverSupportsConvertFn) {
-newType = JDBC_CONVERT_TO_MYSQL_TYPE_MAP.get(trimmedType.toUpperCase(Locale.ENGLISH));
-} else {
+        String newType = null;
 
-newType = JDBC_NO_CONVERT_TO_MYSQL_EXPRESSION_MAP.get(trimmedType.toUpperCase(Locale.ENGLISH));
+        String trimmedType = type.trim();
 
-if (newType == null) {
-throw SQLError.createSQLException("Can't find conversion re-write for type '" + type + "' that is applicable for this server version while processing escape tokens.", "S1000", conn.getExceptionInterceptor());
-}
-} 
+        if (StringUtils.startsWithIgnoreCase(trimmedType, "SQL_")) {
+            trimmedType = trimmedType.substring(4, trimmedType.length());
+        }
 
-if (newType == null) {
-throw SQLError.createSQLException("Unsupported conversion type '" + type.trim() + "' found while processing escape token.", "S1000", conn.getExceptionInterceptor());
-}
+        if (serverSupportsConvertFn) {
+            newType = JDBC_CONVERT_TO_MYSQL_TYPE_MAP.get(trimmedType.toUpperCase(Locale.ENGLISH));
+        } else {
 
-int replaceIndex = newType.indexOf("?");
+            newType = JDBC_NO_CONVERT_TO_MYSQL_EXPRESSION_MAP.get(trimmedType.toUpperCase(Locale.ENGLISH));
 
-if (replaceIndex != -1) {
-StringBuffer convertRewrite = new StringBuffer(newType.substring(0, replaceIndex));
+            if (newType == null) {
+                throw SQLError.createSQLException("Can't find conversion re-write for type '" + type + "' that is applicable for this server version while processing escape tokens.", "S1000", conn.getExceptionInterceptor());
+            }
+        }
 
-convertRewrite.append(expression);
-convertRewrite.append(newType.substring(replaceIndex + 1, newType.length()));
+        if (newType == null) {
+            throw SQLError.createSQLException("Unsupported conversion type '" + type.trim() + "' found while processing escape token.", "S1000", conn.getExceptionInterceptor());
+        }
 
-return convertRewrite.toString();
-} 
+        int replaceIndex = newType.indexOf("?");
 
-StringBuffer castRewrite = new StringBuffer("CAST(");
-castRewrite.append(expression);
-castRewrite.append(" AS ");
-castRewrite.append(newType);
-castRewrite.append(")");
+        if (replaceIndex != -1) {
+            StringBuffer convertRewrite = new StringBuffer(newType.substring(0, replaceIndex));
 
-return castRewrite.toString();
-}
+            convertRewrite.append(expression);
+            convertRewrite.append(newType.substring(replaceIndex + 1, newType.length()));
 
-private static String removeWhitespace(String toCollapse) {
-if (toCollapse == null) {
-return null;
-}
+            return convertRewrite.toString();
+        }
 
-int length = toCollapse.length();
+        StringBuffer castRewrite = new StringBuffer("CAST(");
+        castRewrite.append(expression);
+        castRewrite.append(" AS ");
+        castRewrite.append(newType);
+        castRewrite.append(")");
 
-StringBuffer collapsed = new StringBuffer(length);
+        return castRewrite.toString();
+    }
 
-for (int i = 0; i < length; i++) {
-char c = toCollapse.charAt(i);
+    private static String removeWhitespace(String toCollapse) {
+        if (toCollapse == null) {
+            return null;
+        }
 
-if (!Character.isWhitespace(c)) {
-collapsed.append(c);
-}
-} 
+        int length = toCollapse.length();
 
-return collapsed.toString();
-}
+        StringBuffer collapsed = new StringBuffer(length);
+
+        for (int i = 0; i < length; i++) {
+            char c = toCollapse.charAt(i);
+
+            if (!Character.isWhitespace(c)) {
+                collapsed.append(c);
+            }
+        }
+
+        return collapsed.toString();
+    }
 }
 

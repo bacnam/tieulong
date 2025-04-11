@@ -1,37 +1,30 @@
 package javolution.lang;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Documented
 @Inherited
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Realtime
-{
-boolean value() default true;
+public @interface Realtime {
+    boolean value() default true;
 
-Limit limit() default Limit.CONSTANT;
+    Limit limit() default Limit.CONSTANT;
 
-String comment() default "";
+    String comment() default "";
 
-public enum Limit
-{
-CONSTANT,
+    public enum Limit {
+        CONSTANT,
 
-LOG_N,
+        LOG_N,
 
-LINEAR,
+        LINEAR,
 
-N_LOG_N,
+        N_LOG_N,
 
-N_SQUARE,
+        N_SQUARE,
 
-UNKNOWN;
-}
+        UNKNOWN;
+    }
 }
 

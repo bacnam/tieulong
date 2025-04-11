@@ -1,16 +1,16 @@
 package jsc.ci;
 
 public interface ConfidenceBand {
-  double getConfidenceCoeff();
+    double getConfidenceCoeff();
 
-  void setConfidenceCoeff(double paramDouble);
+    void setConfidenceCoeff(double paramDouble);
 
-  int getN();
+    int getN();
 
-  double getLowerLimit(int paramInt);
+    double getLowerLimit(int paramInt);
 
-  double getUpperLimit(int paramInt);
+    double getUpperLimit(int paramInt);
 
-  double getX(int paramInt);
+    double getX(int paramInt);
 }
 

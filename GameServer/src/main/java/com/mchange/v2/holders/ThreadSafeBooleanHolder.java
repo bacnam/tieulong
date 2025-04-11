@@ -1,8 +1,8 @@
 package com.mchange.v2.holders;
 
 public interface ThreadSafeBooleanHolder {
-  boolean getValue();
+    boolean getValue();
 
-  void setValue(boolean paramBoolean);
+    void setValue(boolean paramBoolean);
 }
 

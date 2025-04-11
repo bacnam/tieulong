@@ -1,7 +1,5 @@
 package org.apache.http.impl.client;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import org.apache.http.ConnectionReuseStrategy;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -29,82 +27,82 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestExecutor;
 import org.apache.http.util.Args;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 @ThreadSafe
 class MinimalHttpClient
-extends CloseableHttpClient
-{
-private final HttpClientConnectionManager connManager;
-private final MinimalClientExec requestExecutor;
-private final HttpParams params;
+        extends CloseableHttpClient {
+    private final HttpClientConnectionManager connManager;
+    private final MinimalClientExec requestExecutor;
+    private final HttpParams params;
 
-public MinimalHttpClient(HttpClientConnectionManager connManager) {
-this.connManager = (HttpClientConnectionManager)Args.notNull(connManager, "HTTP connection manager");
-this.requestExecutor = new MinimalClientExec(new HttpRequestExecutor(), connManager, (ConnectionReuseStrategy)DefaultConnectionReuseStrategy.INSTANCE, DefaultConnectionKeepAliveStrategy.INSTANCE);
+    public MinimalHttpClient(HttpClientConnectionManager connManager) {
+        this.connManager = (HttpClientConnectionManager) Args.notNull(connManager, "HTTP connection manager");
+        this.requestExecutor = new MinimalClientExec(new HttpRequestExecutor(), connManager, (ConnectionReuseStrategy) DefaultConnectionReuseStrategy.INSTANCE, DefaultConnectionKeepAliveStrategy.INSTANCE);
 
-this.params = (HttpParams)new BasicHttpParams();
-}
+        this.params = (HttpParams) new BasicHttpParams();
+    }
 
-protected CloseableHttpResponse doExecute(HttpHost target, HttpRequest request, HttpContext context) throws IOException, ClientProtocolException {
-Args.notNull(target, "Target host");
-Args.notNull(request, "HTTP request");
-HttpExecutionAware execAware = null;
-if (request instanceof HttpExecutionAware) {
-execAware = (HttpExecutionAware)request;
-}
-try {
-HttpRequestWrapper wrapper = HttpRequestWrapper.wrap(request);
-HttpClientContext localcontext = HttpClientContext.adapt((context != null) ? context : (HttpContext)new BasicHttpContext());
+    protected CloseableHttpResponse doExecute(HttpHost target, HttpRequest request, HttpContext context) throws IOException, ClientProtocolException {
+        Args.notNull(target, "Target host");
+        Args.notNull(request, "HTTP request");
+        HttpExecutionAware execAware = null;
+        if (request instanceof HttpExecutionAware) {
+            execAware = (HttpExecutionAware) request;
+        }
+        try {
+            HttpRequestWrapper wrapper = HttpRequestWrapper.wrap(request);
+            HttpClientContext localcontext = HttpClientContext.adapt((context != null) ? context : (HttpContext) new BasicHttpContext());
 
-HttpRoute route = new HttpRoute(target);
-RequestConfig config = null;
-if (request instanceof Configurable) {
-config = ((Configurable)request).getConfig();
-}
-if (config != null) {
-localcontext.setRequestConfig(config);
-}
-return this.requestExecutor.execute(route, wrapper, localcontext, execAware);
-} catch (HttpException httpException) {
-throw new ClientProtocolException(httpException);
-} 
-}
+            HttpRoute route = new HttpRoute(target);
+            RequestConfig config = null;
+            if (request instanceof Configurable) {
+                config = ((Configurable) request).getConfig();
+            }
+            if (config != null) {
+                localcontext.setRequestConfig(config);
+            }
+            return this.requestExecutor.execute(route, wrapper, localcontext, execAware);
+        } catch (HttpException httpException) {
+            throw new ClientProtocolException(httpException);
+        }
+    }
 
-public HttpParams getParams() {
-return this.params;
-}
+    public HttpParams getParams() {
+        return this.params;
+    }
 
-public void close() {
-this.connManager.shutdown();
-}
+    public void close() {
+        this.connManager.shutdown();
+    }
 
-public ClientConnectionManager getConnectionManager() {
-return new ClientConnectionManager()
-{
-public void shutdown()
-{
-MinimalHttpClient.this.connManager.shutdown();
-}
+    public ClientConnectionManager getConnectionManager() {
+        return new ClientConnectionManager() {
+            public void shutdown() {
+                MinimalHttpClient.this.connManager.shutdown();
+            }
 
-public ClientConnectionRequest requestConnection(HttpRoute route, Object state) {
-throw new UnsupportedOperationException();
-}
+            public ClientConnectionRequest requestConnection(HttpRoute route, Object state) {
+                throw new UnsupportedOperationException();
+            }
 
-public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
-throw new UnsupportedOperationException();
-}
+            public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
+                throw new UnsupportedOperationException();
+            }
 
-public SchemeRegistry getSchemeRegistry() {
-throw new UnsupportedOperationException();
-}
+            public SchemeRegistry getSchemeRegistry() {
+                throw new UnsupportedOperationException();
+            }
 
-public void closeIdleConnections(long idletime, TimeUnit tunit) {
-MinimalHttpClient.this.connManager.closeIdleConnections(idletime, tunit);
-}
+            public void closeIdleConnections(long idletime, TimeUnit tunit) {
+                MinimalHttpClient.this.connManager.closeIdleConnections(idletime, tunit);
+            }
 
-public void closeExpiredConnections() {
-MinimalHttpClient.this.connManager.closeExpiredConnections();
-}
-};
-}
+            public void closeExpiredConnections() {
+                MinimalHttpClient.this.connManager.closeExpiredConnections();
+            }
+        };
+    }
 }
 

@@ -1,43 +1,20 @@
 package com.facebook.fb303;
 
-import java.io.Serializable;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.thrift.TApplicationException;
-import org.apache.thrift.TBase;
-import org.apache.thrift.TBaseHelper;
-import org.apache.thrift.TException;
-import org.apache.thrift.TFieldIdEnum;
-import org.apache.thrift.TProcessor;
-import org.apache.thrift.TServiceClient;
-import org.apache.thrift.TServiceClientFactory;
-import org.apache.thrift.async.AsyncMethodCallback;
-import org.apache.thrift.async.TAsyncClient;
-import org.apache.thrift.async.TAsyncClientFactory;
-import org.apache.thrift.async.TAsyncClientManager;
-import org.apache.thrift.async.TAsyncMethodCall;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
 import org.apache.thrift.meta_data.EnumMetaData;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import org.apache.thrift.meta_data.MapMetaData;
-import org.apache.thrift.protocol.TField;
-import org.apache.thrift.protocol.TMap;
-import org.apache.thrift.protocol.TMessage;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.protocol.TProtocolUtil;
-import org.apache.thrift.protocol.TStruct;
+import org.apache.thrift.protocol.*;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TNonblockingTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.util.*;
 
 public class FacebookService {
     public static interface Iface {
@@ -101,17 +78,6 @@ public class FacebookService {
         protected TProtocol iprot_;
         protected TProtocol oprot_;
         protected int seqid_;
-
-        public static class Factory
-                implements TServiceClientFactory<Client> {
-            public FacebookService.Client getClient(TProtocol prot) {
-                return new FacebookService.Client(prot);
-            }
-
-            public FacebookService.Client getClient(TProtocol iprot, TProtocol oprot) {
-                return new FacebookService.Client(iprot, oprot);
-            }
-        }
 
         public Client(TProtocol prot) {
             this(prot, prot);
@@ -506,9 +472,102 @@ public class FacebookService {
             this.oprot_.writeMessageEnd();
             this.oprot_.getTransport().flush();
         }
+
+        public static class Factory
+                implements TServiceClientFactory<Client> {
+            public FacebookService.Client getClient(TProtocol prot) {
+                return new FacebookService.Client(prot);
+            }
+
+            public FacebookService.Client getClient(TProtocol iprot, TProtocol oprot) {
+                return new FacebookService.Client(iprot, oprot);
+            }
+        }
     }
 
     public static class AsyncClient extends TAsyncClient implements AsyncIface {
+        public AsyncClient(TProtocolFactory protocolFactory, TAsyncClientManager clientManager, TNonblockingTransport transport) {
+            super(protocolFactory, clientManager, transport);
+        }
+
+        public void getName(AsyncMethodCallback<getName_call> resultHandler) throws TException {
+            checkReady();
+            getName_call method_call = new getName_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getVersion(AsyncMethodCallback<getVersion_call> resultHandler) throws TException {
+            checkReady();
+            getVersion_call method_call = new getVersion_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getStatus(AsyncMethodCallback<getStatus_call> resultHandler) throws TException {
+            checkReady();
+            getStatus_call method_call = new getStatus_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getStatusDetails(AsyncMethodCallback<getStatusDetails_call> resultHandler) throws TException {
+            checkReady();
+            getStatusDetails_call method_call = new getStatusDetails_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getCounters(AsyncMethodCallback<getCounters_call> resultHandler) throws TException {
+            checkReady();
+            getCounters_call method_call = new getCounters_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getCounter(String key, AsyncMethodCallback<getCounter_call> resultHandler) throws TException {
+            checkReady();
+            getCounter_call method_call = new getCounter_call(key, resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void setOption(String key, String value, AsyncMethodCallback<setOption_call> resultHandler) throws TException {
+            checkReady();
+            setOption_call method_call = new setOption_call(key, value, resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getOption(String key, AsyncMethodCallback<getOption_call> resultHandler) throws TException {
+            checkReady();
+            getOption_call method_call = new getOption_call(key, resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getOptions(AsyncMethodCallback<getOptions_call> resultHandler) throws TException {
+            checkReady();
+            getOptions_call method_call = new getOptions_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void getCpuProfile(int profileDurationInSec, AsyncMethodCallback<getCpuProfile_call> resultHandler) throws TException {
+            checkReady();
+            getCpuProfile_call method_call = new getCpuProfile_call(profileDurationInSec, resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void aliveSince(AsyncMethodCallback<aliveSince_call> resultHandler) throws TException {
+            checkReady();
+            aliveSince_call method_call = new aliveSince_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void reinitialize(AsyncMethodCallback<reinitialize_call> resultHandler) throws TException {
+            checkReady();
+            reinitialize_call method_call = new reinitialize_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
+        public void shutdown(AsyncMethodCallback<shutdown_call> resultHandler) throws TException {
+            checkReady();
+            shutdown_call method_call = new shutdown_call(resultHandler, this, this.protocolFactory, this.transport);
+            this.manager.call(method_call);
+        }
+
         public static class Factory implements TAsyncClientFactory<AsyncClient> {
             private TAsyncClientManager clientManager;
             private TProtocolFactory protocolFactory;
@@ -521,16 +580,6 @@ public class FacebookService {
             public FacebookService.AsyncClient getAsyncClient(TNonblockingTransport transport) {
                 return new FacebookService.AsyncClient(this.protocolFactory, this.clientManager, transport);
             }
-        }
-
-        public AsyncClient(TProtocolFactory protocolFactory, TAsyncClientManager clientManager, TNonblockingTransport transport) {
-            super(protocolFactory, clientManager, transport);
-        }
-
-        public void getName(AsyncMethodCallback<getName_call> resultHandler) throws TException {
-            checkReady();
-            getName_call method_call = new getName_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
         }
 
         public static class getName_call extends TAsyncMethodCall {
@@ -555,12 +604,6 @@ public class FacebookService {
             }
         }
 
-        public void getVersion(AsyncMethodCallback<getVersion_call> resultHandler) throws TException {
-            checkReady();
-            getVersion_call method_call = new getVersion_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class getVersion_call extends TAsyncMethodCall {
             public getVersion_call(AsyncMethodCallback<getVersion_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
                 super(client, protocolFactory, transport, resultHandler, false);
@@ -581,12 +624,6 @@ public class FacebookService {
                 TProtocol prot = this.client.getProtocolFactory().getProtocol((TTransport) memoryTransport);
                 return (new FacebookService.Client(prot)).recv_getVersion();
             }
-        }
-
-        public void getStatus(AsyncMethodCallback<getStatus_call> resultHandler) throws TException {
-            checkReady();
-            getStatus_call method_call = new getStatus_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
         }
 
         public static class getStatus_call extends TAsyncMethodCall {
@@ -611,12 +648,6 @@ public class FacebookService {
             }
         }
 
-        public void getStatusDetails(AsyncMethodCallback<getStatusDetails_call> resultHandler) throws TException {
-            checkReady();
-            getStatusDetails_call method_call = new getStatusDetails_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class getStatusDetails_call extends TAsyncMethodCall {
             public getStatusDetails_call(AsyncMethodCallback<getStatusDetails_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
                 super(client, protocolFactory, transport, resultHandler, false);
@@ -639,12 +670,6 @@ public class FacebookService {
             }
         }
 
-        public void getCounters(AsyncMethodCallback<getCounters_call> resultHandler) throws TException {
-            checkReady();
-            getCounters_call method_call = new getCounters_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class getCounters_call extends TAsyncMethodCall {
             public getCounters_call(AsyncMethodCallback<getCounters_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
                 super(client, protocolFactory, transport, resultHandler, false);
@@ -665,12 +690,6 @@ public class FacebookService {
                 TProtocol prot = this.client.getProtocolFactory().getProtocol((TTransport) memoryTransport);
                 return (new FacebookService.Client(prot)).recv_getCounters();
             }
-        }
-
-        public void getCounter(String key, AsyncMethodCallback<getCounter_call> resultHandler) throws TException {
-            checkReady();
-            getCounter_call method_call = new getCounter_call(key, resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
         }
 
         public static class getCounter_call extends TAsyncMethodCall {
@@ -697,12 +716,6 @@ public class FacebookService {
                 TProtocol prot = this.client.getProtocolFactory().getProtocol((TTransport) memoryTransport);
                 return (new FacebookService.Client(prot)).recv_getCounter();
             }
-        }
-
-        public void setOption(String key, String value, AsyncMethodCallback<setOption_call> resultHandler) throws TException {
-            checkReady();
-            setOption_call method_call = new setOption_call(key, value, resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
         }
 
         public static class setOption_call extends TAsyncMethodCall {
@@ -734,12 +747,6 @@ public class FacebookService {
             }
         }
 
-        public void getOption(String key, AsyncMethodCallback<getOption_call> resultHandler) throws TException {
-            checkReady();
-            getOption_call method_call = new getOption_call(key, resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class getOption_call extends TAsyncMethodCall {
             private String key;
 
@@ -766,12 +773,6 @@ public class FacebookService {
             }
         }
 
-        public void getOptions(AsyncMethodCallback<getOptions_call> resultHandler) throws TException {
-            checkReady();
-            getOptions_call method_call = new getOptions_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class getOptions_call extends TAsyncMethodCall {
             public getOptions_call(AsyncMethodCallback<getOptions_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
                 super(client, protocolFactory, transport, resultHandler, false);
@@ -792,12 +793,6 @@ public class FacebookService {
                 TProtocol prot = this.client.getProtocolFactory().getProtocol((TTransport) memoryTransport);
                 return (new FacebookService.Client(prot)).recv_getOptions();
             }
-        }
-
-        public void getCpuProfile(int profileDurationInSec, AsyncMethodCallback<getCpuProfile_call> resultHandler) throws TException {
-            checkReady();
-            getCpuProfile_call method_call = new getCpuProfile_call(profileDurationInSec, resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
         }
 
         public static class getCpuProfile_call extends TAsyncMethodCall {
@@ -826,12 +821,6 @@ public class FacebookService {
             }
         }
 
-        public void aliveSince(AsyncMethodCallback<aliveSince_call> resultHandler) throws TException {
-            checkReady();
-            aliveSince_call method_call = new aliveSince_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class aliveSince_call extends TAsyncMethodCall {
             public aliveSince_call(AsyncMethodCallback<aliveSince_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
                 super(client, protocolFactory, transport, resultHandler, false);
@@ -854,12 +843,6 @@ public class FacebookService {
             }
         }
 
-        public void reinitialize(AsyncMethodCallback<reinitialize_call> resultHandler) throws TException {
-            checkReady();
-            reinitialize_call method_call = new reinitialize_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
-        }
-
         public static class reinitialize_call extends TAsyncMethodCall {
             public reinitialize_call(AsyncMethodCallback<reinitialize_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
                 super(client, protocolFactory, transport, resultHandler, true);
@@ -879,12 +862,6 @@ public class FacebookService {
                 TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
                 TProtocol prot = this.client.getProtocolFactory().getProtocol((TTransport) memoryTransport);
             }
-        }
-
-        public void shutdown(AsyncMethodCallback<shutdown_call> resultHandler) throws TException {
-            checkReady();
-            shutdown_call method_call = new shutdown_call(resultHandler, this, this.protocolFactory, this.transport);
-            this.manager.call(method_call);
         }
 
         public static class shutdown_call extends TAsyncMethodCall {
@@ -912,10 +889,8 @@ public class FacebookService {
     public static class Processor
             implements TProcessor {
         private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class.getName());
-
-        private FacebookService.Iface iface_;
-
         protected final HashMap<String, ProcessFunction> processMap_;
+        private FacebookService.Iface iface_;
 
         public Processor(FacebookService.Iface iface) {
             this.processMap_ = new HashMap<String, ProcessFunction>();
@@ -1302,52 +1277,8 @@ public class FacebookService {
 
     public static class getName_args
             implements TBase<getName_args, getName_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getName_args");
-
         public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
-            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
-
-            static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
-                    byName.put(field.getFieldName(), field);
-                }
-            }
-
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
-            public short getThriftFieldId() {
-                return _thriftId;
-            }
-
-            public String getFieldName() {
-                return _fieldName;
-            }
-
-            public static _Fields findByThriftId(int fieldId) {
-                switch(fieldId) {
-                    case 1: return FIELD1;
-                    case 2: return FIELD2;
-                    default: return null;
-                }
-            }
-
-            public static _Fields findByThriftIdOrThrow(int fieldId) {
-                _Fields fields = findByThriftId(fieldId);
-                if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-                return fields;
-            }
-
-            public static _Fields findByName(String name) {
-                return byName.get(name);
-            }
-        }
+        private static final TStruct STRUCT_DESC = new TStruct("getName_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -1368,16 +1299,6 @@ public class FacebookService {
         public void clear() {
         }
 
-//        public void setFieldValue(_Fields field, Object value) {
-//            FacebookService.null.$SwitchMap$com$facebook$fb303$FacebookService$getName_args$_Fields[field.ordinal()];
-//        }
-
-//        public Object getFieldValue(_Fields field) {
-//            FacebookService. null.$SwitchMap$com$facebook$fb303$FacebookService$getName_args$_Fields[field.ordinal()];
-//
-//            throw new IllegalStateException();
-//        }
-
         public boolean isSet(_Fields field) {
             if (field == null) {
                 throw new IllegalArgumentException();
@@ -1387,6 +1308,16 @@ public class FacebookService {
 
             throw new IllegalStateException();
         }
+
+//        public void setFieldValue(_Fields field, Object value) {
+//            FacebookService.null.$SwitchMap$com$facebook$fb303$FacebookService$getName_args$_Fields[field.ordinal()];
+//        }
+
+//        public Object getFieldValue(_Fields field) {
+//            FacebookService. null.$SwitchMap$com$facebook$fb303$FacebookService$getName_args$_Fields[field.ordinal()];
+//
+//            throw new IllegalStateException();
+//        }
 
         public boolean equals(Object that) {
             if (that == null)
@@ -1460,35 +1391,34 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class getName_result
-            implements TBase<getName_result, getName_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getName_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
-        public String success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields
-                implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+        public enum _Fields implements TFieldIdEnum {
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return FIELD1;
+                    case 2:
+                        return FIELD2;
+                    default:
+                        return null;
                 }
-                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -1501,19 +1431,21 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
-                return this._thriftId;
+                return _thriftId;
             }
 
             public String getFieldName() {
-                return this._fieldName;
+                return _fieldName;
             }
         }
+    }
+
+    public static class getName_result
+            implements TBase<getName_result, getName_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getName_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -1522,6 +1454,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getName_result.class, metaDataMap);
         }
+
+        public String success;
 
         public getName_result() {
         }
@@ -1574,7 +1508,7 @@ public class FacebookService {
                     if (value == null) {
                         unsetSuccess();
                     } else {
-                        setSuccess((String)value);
+                        setSuccess((String) value);
                     }
                     break;
                 default:
@@ -1714,44 +1648,32 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class getVersion_args
-            implements TBase<getVersion_args, getVersion_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getVersion_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields
+                implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
+
+            private final String _fieldName;
+            private final short _thriftId;
 
             _Fields(short thriftId, String fieldName) {
                 this._thriftId = thriftId;
                 this._fieldName = fieldName;
             }
 
-            public short getThriftFieldId() {
-                return _thriftId;
-            }
-
-            public String getFieldName() {
-                return _fieldName;
-            }
-
             public static _Fields findByThriftId(int fieldId) {
-                switch(fieldId) {
-                    case 1: return FIELD1;
-                    case 2: return FIELD2;
-                    default: return null;
+                switch (fieldId) {
+                    case 0:
+                        return SUCCESS;
                 }
+                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -1763,7 +1685,21 @@ public class FacebookService {
             public static _Fields findByName(String name) {
                 return byName.get(name);
             }
+
+            public short getThriftFieldId() {
+                return this._thriftId;
+            }
+
+            public String getFieldName() {
+                return this._fieldName;
+            }
         }
+    }
+
+    public static class getVersion_args
+            implements TBase<getVersion_args, getVersion_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getVersion_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -1876,34 +1812,34 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getVersion_result
-            implements TBase<getVersion_result, getVersion_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getVersion_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
-        public String success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return FIELD1;
+                    case 2:
+                        return FIELD2;
+                    default:
+                        return null;
                 }
-                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -1916,19 +1852,21 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
-                return this._thriftId;
+                return _thriftId;
             }
 
             public String getFieldName() {
-                return this._fieldName;
+                return _fieldName;
             }
         }
+    }
+
+    public static class getVersion_result
+            implements TBase<getVersion_result, getVersion_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getVersion_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -1937,6 +1875,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getVersion_result.class, metaDataMap);
         }
+
+        public String success;
 
         public getVersion_result() {
         }
@@ -1989,7 +1929,7 @@ public class FacebookService {
                     if (value == null) {
                         unsetSuccess();
                     } else {
-                        setSuccess((String)value);
+                        setSuccess((String) value);
                     }
                     break;
                 default:
@@ -2129,44 +2069,31 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class getStatus_args
-            implements TBase<getStatus_args, getStatus_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getStatus_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
+
+            private final String _fieldName;
+            private final short _thriftId;
 
             _Fields(short thriftId, String fieldName) {
                 this._thriftId = thriftId;
                 this._fieldName = fieldName;
             }
 
-            public short getThriftFieldId() {
-                return _thriftId;
-            }
-
-            public String getFieldName() {
-                return _fieldName;
-            }
-
             public static _Fields findByThriftId(int fieldId) {
-                switch(fieldId) {
-                    case 1: return FIELD1;
-                    case 2: return FIELD2;
-                    default: return null;
+                switch (fieldId) {
+                    case 0:
+                        return SUCCESS;
                 }
+                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -2178,7 +2105,21 @@ public class FacebookService {
             public static _Fields findByName(String name) {
                 return byName.get(name);
             }
+
+            public short getThriftFieldId() {
+                return this._thriftId;
+            }
+
+            public String getFieldName() {
+                return this._fieldName;
+            }
         }
+    }
+
+    public static class getStatus_args
+            implements TBase<getStatus_args, getStatus_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getStatus_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -2291,36 +2232,34 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getStatus_result
-            implements TBase<getStatus_result, getStatus_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getStatus_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 8, (short) 0);
-
-        public fb_status success;
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return FIELD1;
+                    case 2:
+                        return FIELD2;
+                    default:
+                        return null;
                 }
-                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -2333,19 +2272,21 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
-                return this._thriftId;
+                return _thriftId;
             }
 
             public String getFieldName() {
-                return this._fieldName;
+                return _fieldName;
             }
         }
+    }
+
+    public static class getStatus_result
+            implements TBase<getStatus_result, getStatus_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getStatus_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 8, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -2354,6 +2295,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getStatus_result.class, metaDataMap);
         }
+
+        public fb_status success;
 
         public getStatus_result() {
         }
@@ -2546,44 +2489,31 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class getStatusDetails_args
-            implements TBase<getStatusDetails_args, getStatusDetails_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getStatusDetails_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
+
+            private final String _fieldName;
+            private final short _thriftId;
 
             _Fields(short thriftId, String fieldName) {
                 this._thriftId = thriftId;
                 this._fieldName = fieldName;
             }
 
-            public short getThriftFieldId() {
-                return _thriftId;
-            }
-
-            public String getFieldName() {
-                return _fieldName;
-            }
-
             public static _Fields findByThriftId(int fieldId) {
-                switch(fieldId) {
-                    case 1: return FIELD1;
-                    case 2: return FIELD2;
-                    default: return null;
+                switch (fieldId) {
+                    case 0:
+                        return SUCCESS;
                 }
+                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -2595,7 +2525,21 @@ public class FacebookService {
             public static _Fields findByName(String name) {
                 return byName.get(name);
             }
+
+            public short getThriftFieldId() {
+                return this._thriftId;
+            }
+
+            public String getFieldName() {
+                return this._fieldName;
+            }
         }
+    }
+
+    public static class getStatusDetails_args
+            implements TBase<getStatusDetails_args, getStatusDetails_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getStatusDetails_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -2708,34 +2652,34 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getStatusDetails_result
-            implements TBase<getStatusDetails_result, getStatusDetails_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getStatusDetails_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
-        public String success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return FIELD1;
+                    case 2:
+                        return FIELD2;
+                    default:
+                        return null;
                 }
-                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -2748,19 +2692,21 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
-                return this._thriftId;
+                return _thriftId;
             }
 
             public String getFieldName() {
-                return this._fieldName;
+                return _fieldName;
             }
         }
+    }
+
+    public static class getStatusDetails_result
+            implements TBase<getStatusDetails_result, getStatusDetails_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getStatusDetails_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -2769,6 +2715,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getStatusDetails_result.class, metaDataMap);
         }
+
+        public String success;
 
         public getStatusDetails_result() {
         }
@@ -2821,7 +2769,7 @@ public class FacebookService {
                     if (value == null) {
                         unsetSuccess();
                     } else {
-                        setSuccess((String)value);
+                        setSuccess((String) value);
                     }
                     break;
                 default:
@@ -2961,44 +2909,31 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class getCounters_args
-            implements TBase<getCounters_args, getCounters_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getCounters_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
+
+            private final String _fieldName;
+            private final short _thriftId;
 
             _Fields(short thriftId, String fieldName) {
                 this._thriftId = thriftId;
                 this._fieldName = fieldName;
             }
 
-            public short getThriftFieldId() {
-                return _thriftId;
-            }
-
-            public String getFieldName() {
-                return _fieldName;
-            }
-
             public static _Fields findByThriftId(int fieldId) {
-                switch(fieldId) {
-                    case 1: return FIELD1;
-                    case 2: return FIELD2;
-                    default: return null;
+                switch (fieldId) {
+                    case 0:
+                        return SUCCESS;
                 }
+                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -3010,7 +2945,21 @@ public class FacebookService {
             public static _Fields findByName(String name) {
                 return byName.get(name);
             }
+
+            public short getThriftFieldId() {
+                return this._thriftId;
+            }
+
+            public String getFieldName() {
+                return this._fieldName;
+            }
         }
+    }
+
+    public static class getCounters_args
+            implements TBase<getCounters_args, getCounters_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getCounters_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -3123,34 +3072,34 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getCounters_result
-            implements TBase<getCounters_result, getCounters_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getCounters_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 13, (short) 0);
-        public Map<String, Long> success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return FIELD1;
+                    case 2:
+                        return FIELD2;
+                    default:
+                        return null;
                 }
-                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -3163,19 +3112,21 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
-                return this._thriftId;
+                return _thriftId;
             }
 
             public String getFieldName() {
-                return this._fieldName;
+                return _fieldName;
             }
         }
+    }
+
+    public static class getCounters_result
+            implements TBase<getCounters_result, getCounters_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getCounters_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 13, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -3184,6 +3135,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getCounters_result.class, metaDataMap);
         }
+
+        public Map<String, Long> success;
 
         public getCounters_result() {
         }
@@ -3416,20 +3369,9 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getCounter_args
-            implements TBase<getCounter_args, getCounter_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getCounter_args");
-
-        private static final TField KEY_FIELD_DESC = new TField("key", (byte) 11, (short) 1);
-        public String key;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            KEY((short) 1, "key");
-            private final String _fieldName;
-            private final short _thriftId;
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -3438,10 +3380,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 1:
-                        return KEY;
+                    case 0:
+                        return SUCCESS;
                 }
                 return null;
             }
@@ -3456,11 +3406,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -3469,6 +3414,13 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class getCounter_args
+            implements TBase<getCounter_args, getCounter_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getCounter_args");
+        private static final TField KEY_FIELD_DESC = new TField("key", (byte) 11, (short) 1);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -3477,6 +3429,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getCounter_args.class, metaDataMap);
         }
+
+        public String key;
 
         public getCounter_args() {
         }
@@ -3670,20 +3624,9 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getCounter_result
-            implements TBase<getCounter_result, getCounter_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getCounter_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 10, (short) 0);
-        public long success;
-        private static final int __SUCCESS_ISSET_ID = 0;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            KEY((short) 1, "key");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -3692,10 +3635,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return KEY;
                 }
                 return null;
             }
@@ -3710,11 +3661,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -3723,9 +3669,14 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
 
-        private BitSet __isset_bit_vector = new BitSet(1);
+    public static class getCounter_result
+            implements TBase<getCounter_result, getCounter_result._Fields>, Serializable, Cloneable {
         public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getCounter_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 10, (short) 0);
+        private static final int __SUCCESS_ISSET_ID = 0;
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -3734,6 +3685,9 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getCounter_result.class, metaDataMap);
         }
+
+        public long success;
+        private BitSet __isset_bit_vector = new BitSet(1);
 
         public getCounter_result(long success) {
             this();
@@ -3745,6 +3699,9 @@ public class FacebookService {
             this.__isset_bit_vector.clear();
             this.__isset_bit_vector.or(other.__isset_bit_vector);
             this.success = other.success;
+        }
+
+        public getCounter_result() {
         }
 
         public getCounter_result deepCopy() {
@@ -3922,27 +3879,9 @@ public class FacebookService {
         public void validate() throws TException {
         }
 
-        public getCounter_result() {
-        }
-    }
-
-    public static class setOption_args
-            implements TBase<setOption_args, setOption_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("setOption_args");
-
-        private static final TField KEY_FIELD_DESC = new TField("key", (byte) 11, (short) 1);
-        private static final TField VALUE_FIELD_DESC = new TField("value", (byte) 11, (short) 2);
-        public String key;
-        public String value;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
         public enum _Fields implements TFieldIdEnum {
-            KEY((short) 1, "key"),
-            VALUE((short) 2, "value");
-
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
                 for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
@@ -3950,12 +3889,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 1:
-                        return KEY;
-                    case 2:
-                        return VALUE;
+                    case 0:
+                        return SUCCESS;
                 }
                 return null;
             }
@@ -3970,11 +3915,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -3983,6 +3923,14 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class setOption_args
+            implements TBase<setOption_args, setOption_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("setOption_args");
+        private static final TField KEY_FIELD_DESC = new TField("key", (byte) 11, (short) 1);
+        private static final TField VALUE_FIELD_DESC = new TField("value", (byte) 11, (short) 2);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -3993,6 +3941,9 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(setOption_args.class, metaDataMap);
         }
+
+        public String key;
+        public String value;
 
         public setOption_args() {
         }
@@ -4265,18 +4216,12 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class setOption_result
-            implements TBase<setOption_result, setOption_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("setOption_result");
+        public enum _Fields implements TFieldIdEnum {
+            KEY((short) 1, "key"),
+            VALUE((short) 2, "value");
 
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
                 for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
@@ -4284,9 +4229,20 @@ public class FacebookService {
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-
+                    case 1:
+                        return KEY;
+                    case 2:
+                        return VALUE;
                 }
                 return null;
             }
@@ -4301,11 +4257,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -4314,6 +4265,12 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class setOption_result
+            implements TBase<setOption_result, setOption_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("setOption_result");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -4425,20 +4382,9 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getOption_args
-            implements TBase<getOption_args, getOption_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getOption_args");
-
-        private static final TField KEY_FIELD_DESC = new TField("key", (byte) 11, (short) 1);
-        public String key;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            KEY((short) 1, "key");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -4447,10 +4393,17 @@ public class FacebookService {
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 1:
-                        return KEY;
+
                 }
                 return null;
             }
@@ -4465,11 +4418,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -4478,6 +4426,13 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class getOption_args
+            implements TBase<getOption_args, getOption_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getOption_args");
+        private static final TField KEY_FIELD_DESC = new TField("key", (byte) 11, (short) 1);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -4486,6 +4441,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getOption_args.class, metaDataMap);
         }
+
+        public String key;
 
         public getOption_args() {
         }
@@ -4679,20 +4636,9 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getOption_result
-            implements TBase<getOption_result, getOption_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getOption_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
-        public String success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            KEY((short) 1, "key");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -4701,10 +4647,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return KEY;
                 }
                 return null;
             }
@@ -4719,11 +4673,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -4732,6 +4681,13 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class getOption_result
+            implements TBase<getOption_result, getOption_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getOption_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -4740,6 +4696,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getOption_result.class, metaDataMap);
         }
+
+        public String success;
 
         public getOption_result() {
         }
@@ -4792,7 +4750,7 @@ public class FacebookService {
                     if (value == null) {
                         unsetSuccess();
                     } else {
-                        setSuccess((String)value);
+                        setSuccess((String) value);
                     }
                     break;
                 default:
@@ -4932,44 +4890,31 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class getOptions_args
-            implements TBase<getOptions_args, getOptions_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getOptions_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
-                for (_Fields field : EnumSet.allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
+
+            private final String _fieldName;
+            private final short _thriftId;
 
             _Fields(short thriftId, String fieldName) {
                 this._thriftId = thriftId;
                 this._fieldName = fieldName;
             }
 
-            public short getThriftFieldId() {
-                return _thriftId;
-            }
-
-            public String getFieldName() {
-                return _fieldName;
-            }
-
             public static _Fields findByThriftId(int fieldId) {
-                switch(fieldId) {
-                    case 1: return FIELD1;
-                    case 2: return FIELD2;
-                    default: return null;
+                switch (fieldId) {
+                    case 0:
+                        return SUCCESS;
                 }
+                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -4981,7 +4926,21 @@ public class FacebookService {
             public static _Fields findByName(String name) {
                 return byName.get(name);
             }
+
+            public short getThriftFieldId() {
+                return this._thriftId;
+            }
+
+            public String getFieldName() {
+                return this._fieldName;
+            }
         }
+    }
+
+    public static class getOptions_args
+            implements TBase<getOptions_args, getOptions_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getOptions_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -5094,34 +5053,34 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getOptions_result
-            implements TBase<getOptions_result, getOptions_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getOptions_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 13, (short) 0);
-        public Map<String, String> success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
-                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                for (_Fields field : EnumSet.allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return FIELD1;
+                    case 2:
+                        return FIELD2;
+                    default:
+                        return null;
                 }
-                return null;
             }
 
             public static _Fields findByThriftIdOrThrow(int fieldId) {
@@ -5134,19 +5093,21 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
-                return this._thriftId;
+                return _thriftId;
             }
 
             public String getFieldName() {
-                return this._fieldName;
+                return _fieldName;
             }
         }
+    }
+
+    public static class getOptions_result
+            implements TBase<getOptions_result, getOptions_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getOptions_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 13, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -5155,6 +5116,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getOptions_result.class, metaDataMap);
         }
+
+        public Map<String, String> success;
 
         public getOptions_result() {
         }
@@ -5387,20 +5350,9 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class getCpuProfile_args
-            implements TBase<getCpuProfile_args, getCpuProfile_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getCpuProfile_args");
-
-        private static final TField PROFILE_DURATION_IN_SEC_FIELD_DESC = new TField("profileDurationInSec", (byte) 8, (short) 1);
-        public int profileDurationInSec;
-        private static final int __PROFILEDURATIONINSEC_ISSET_ID = 0;
 
         public enum _Fields implements TFieldIdEnum {
-            PROFILE_DURATION_IN_SEC((short) 1, "profileDurationInSec");
-            private final String _fieldName;
-            private final short _thriftId;
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -5409,10 +5361,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 1:
-                        return PROFILE_DURATION_IN_SEC;
+                    case 0:
+                        return SUCCESS;
                 }
                 return null;
             }
@@ -5427,11 +5387,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -5440,9 +5395,14 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
 
-        private BitSet __isset_bit_vector = new BitSet(1);
+    public static class getCpuProfile_args
+            implements TBase<getCpuProfile_args, getCpuProfile_args._Fields>, Serializable, Cloneable {
         public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getCpuProfile_args");
+        private static final TField PROFILE_DURATION_IN_SEC_FIELD_DESC = new TField("profileDurationInSec", (byte) 8, (short) 1);
+        private static final int __PROFILEDURATIONINSEC_ISSET_ID = 0;
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -5451,6 +5411,9 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getCpuProfile_args.class, metaDataMap);
         }
+
+        public int profileDurationInSec;
+        private BitSet __isset_bit_vector = new BitSet(1);
 
         public getCpuProfile_args(int profileDurationInSec) {
             this();
@@ -5462,6 +5425,9 @@ public class FacebookService {
             this.__isset_bit_vector.clear();
             this.__isset_bit_vector.or(other.__isset_bit_vector);
             this.profileDurationInSec = other.profileDurationInSec;
+        }
+
+        public getCpuProfile_args() {
         }
 
         public getCpuProfile_args deepCopy() {
@@ -5638,22 +5604,8 @@ public class FacebookService {
         public void validate() throws TException {
         }
 
-        public getCpuProfile_args() {
-        }
-    }
-
-    public static class getCpuProfile_result
-            implements TBase<getCpuProfile_result, getCpuProfile_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("getCpuProfile_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
-        public String success;
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            PROFILE_DURATION_IN_SEC((short) 1, "profileDurationInSec");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -5662,10 +5614,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+                    case 1:
+                        return PROFILE_DURATION_IN_SEC;
                 }
                 return null;
             }
@@ -5680,11 +5640,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -5693,6 +5648,13 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class getCpuProfile_result
+            implements TBase<getCpuProfile_result, getCpuProfile_result._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("getCpuProfile_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 11, (short) 0);
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -5701,6 +5663,8 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(getCpuProfile_result.class, metaDataMap);
         }
+
+        public String success;
 
         public getCpuProfile_result() {
         }
@@ -5753,7 +5717,7 @@ public class FacebookService {
                     if (value == null) {
                         unsetSuccess();
                     } else {
-                        setSuccess((String)value);
+                        setSuccess((String) value);
                     }
                     break;
                 default:
@@ -5893,18 +5857,10 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class aliveSince_args
-            implements TBase<aliveSince_args, aliveSince_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("aliveSince_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
                 for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
@@ -5912,9 +5868,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-
+                    case 0:
+                        return SUCCESS;
                 }
                 return null;
             }
@@ -5929,11 +5894,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -5942,6 +5902,12 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class aliveSince_args
+            implements TBase<aliveSince_args, aliveSince_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("aliveSince_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -6054,20 +6020,9 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
-
-    public static class aliveSince_result
-            implements TBase<aliveSince_result, aliveSince_result._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("aliveSince_result");
-
-        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 10, (short) 0);
-        public long success;
-        private static final int __SUCCESS_ISSET_ID = 0;
 
         public enum _Fields implements TFieldIdEnum {
-            SUCCESS((short) 0, "success");
-            private final String _fieldName;
-            private final short _thriftId;
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
             static {
@@ -6076,10 +6031,17 @@ public class FacebookService {
                 }
             }
 
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-                    case 0:
-                        return SUCCESS;
+
                 }
                 return null;
             }
@@ -6094,11 +6056,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -6107,9 +6064,14 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
 
-        private BitSet __isset_bit_vector = new BitSet(1);
+    public static class aliveSince_result
+            implements TBase<aliveSince_result, aliveSince_result._Fields>, Serializable, Cloneable {
         public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("aliveSince_result");
+        private static final TField SUCCESS_FIELD_DESC = new TField("success", (byte) 10, (short) 0);
+        private static final int __SUCCESS_ISSET_ID = 0;
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -6118,6 +6080,9 @@ public class FacebookService {
             metaDataMap = Collections.unmodifiableMap(tmpMap);
             FieldMetaData.addStructMetaDataMap(aliveSince_result.class, metaDataMap);
         }
+
+        public long success;
+        private BitSet __isset_bit_vector = new BitSet(1);
 
         public aliveSince_result(long success) {
             this();
@@ -6129,6 +6094,9 @@ public class FacebookService {
             this.__isset_bit_vector.clear();
             this.__isset_bit_vector.or(other.__isset_bit_vector);
             this.success = other.success;
+        }
+
+        public aliveSince_result() {
         }
 
         public aliveSince_result deepCopy() {
@@ -6306,20 +6274,9 @@ public class FacebookService {
         public void validate() throws TException {
         }
 
-        public aliveSince_result() {
-        }
-    }
-
-    public static class reinitialize_args
-            implements TBase<reinitialize_args, reinitialize_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("reinitialize_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            SUCCESS((short) 0, "success");
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
                 for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
@@ -6327,9 +6284,18 @@ public class FacebookService {
                 }
             }
 
+            private final String _fieldName;
+            private final short _thriftId;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
             public static _Fields findByThriftId(int fieldId) {
                 switch (fieldId) {
-
+                    case 0:
+                        return SUCCESS;
                 }
                 return null;
             }
@@ -6344,11 +6310,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -6357,6 +6318,12 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class reinitialize_args
+            implements TBase<reinitialize_args, reinitialize_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("reinitialize_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -6469,23 +6436,23 @@ public class FacebookService {
 
         public void validate() throws TException {
         }
-    }
 
-    public static class shutdown_args
-            implements TBase<shutdown_args, shutdown_args._Fields>, Serializable, Cloneable {
-        private static final TStruct STRUCT_DESC = new TStruct("shutdown_args");
-
-        public static final Map<_Fields, FieldMetaData> metaDataMap;
-
-        public enum _Fields implements TFieldIdEnum {;
+        public enum _Fields implements TFieldIdEnum {
+            ;
             private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-            private final short _thriftId;
-            private final String _fieldName;
 
             static {
                 for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
                     byName.put(field.getFieldName(), field);
                 }
+            }
+
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
             }
 
             public static _Fields findByThriftId(int fieldId) {
@@ -6505,11 +6472,6 @@ public class FacebookService {
                 return byName.get(name);
             }
 
-            _Fields(short thriftId, String fieldName) {
-                this._thriftId = thriftId;
-                this._fieldName = fieldName;
-            }
-
             public short getThriftFieldId() {
                 return this._thriftId;
             }
@@ -6518,6 +6480,12 @@ public class FacebookService {
                 return this._fieldName;
             }
         }
+    }
+
+    public static class shutdown_args
+            implements TBase<shutdown_args, shutdown_args._Fields>, Serializable, Cloneable {
+        public static final Map<_Fields, FieldMetaData> metaDataMap;
+        private static final TStruct STRUCT_DESC = new TStruct("shutdown_args");
 
         static {
             Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
@@ -6629,6 +6597,50 @@ public class FacebookService {
         }
 
         public void validate() throws TException {
+        }
+
+        public enum _Fields implements TFieldIdEnum {
+            ;
+            private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+            static {
+                for (_Fields field : EnumSet.<_Fields>allOf(_Fields.class)) {
+                    byName.put(field.getFieldName(), field);
+                }
+            }
+
+            private final short _thriftId;
+            private final String _fieldName;
+
+            _Fields(short thriftId, String fieldName) {
+                this._thriftId = thriftId;
+                this._fieldName = fieldName;
+            }
+
+            public static _Fields findByThriftId(int fieldId) {
+                switch (fieldId) {
+
+                }
+                return null;
+            }
+
+            public static _Fields findByThriftIdOrThrow(int fieldId) {
+                _Fields fields = findByThriftId(fieldId);
+                if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+                return fields;
+            }
+
+            public static _Fields findByName(String name) {
+                return byName.get(name);
+            }
+
+            public short getThriftFieldId() {
+                return this._thriftId;
+            }
+
+            public String getFieldName() {
+                return this._fieldName;
+            }
         }
     }
 }

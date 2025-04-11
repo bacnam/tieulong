@@ -9,161 +9,157 @@ import jsc.independentsamples.MannWhitneyTest;
 import jsc.statistics.PermutableStatistic;
 
 public class PermutationTest
-implements SignificanceTest
-{
-private long critCount = 0L;
-private double totalRepCount = 0.0D;
-private final double tObs;
-private double SP = 0.0D;
+        implements SignificanceTest {
+    private final double tObs;
+    private final Tail tail;
+    private final int N;
+    private final double permCount;
+    private long critCount = 0L;
+    private double totalRepCount = 0.0D;
+    private double SP = 0.0D;
+    private Enumerator perm;
 
-private final Tail tail;
+    private PermutableStatistic permutableStatistic;
 
-private final int N;
+    private StatisticListener statisticListener;
 
-private final double permCount;
+    public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail, boolean paramBoolean, int paramInt, double paramDouble, StatisticListener paramStatisticListener) {
+        this.tail = paramTail;
+        this.permutableStatistic = paramPermutableStatistic;
+        this.tObs = paramPermutableStatistic.getStatistic();
 
-private Enumerator perm;
+        if (paramStatisticListener != null) this.statisticListener = paramStatisticListener;
 
-private PermutableStatistic permutableStatistic;
+        this.N = paramPermutableStatistic.getN();
 
-private StatisticListener statisticListener;
+        this.perm = paramPermutableStatistic.getEnumerator();
+        this.permCount = this.perm.countSelections();
 
-public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail, boolean paramBoolean, int paramInt, double paramDouble, StatisticListener paramStatisticListener) {
-this.tail = paramTail;
-this.permutableStatistic = paramPermutableStatistic;
-this.tObs = paramPermutableStatistic.getStatistic();
+        if (paramBoolean && paramInt < this.permCount) {
 
-if (paramStatisticListener != null) this.statisticListener = paramStatisticListener;
+            if (paramDouble <= 0.0D) {
+                calculateSP(paramInt);
+            } else {
+                calculateSP(paramInt, paramDouble);
+            }
+        } else {
 
-this.N = paramPermutableStatistic.getN();
+            calculateSP();
+        }
+    }
 
-this.perm = paramPermutableStatistic.getEnumerator();
-this.permCount = this.perm.countSelections();
+    public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail, boolean paramBoolean, int paramInt, double paramDouble) {
+        this(paramPermutableStatistic, paramTail, paramBoolean, paramInt, paramDouble, null);
+    }
 
-if (paramBoolean && paramInt < this.permCount) {
+    public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail, boolean paramBoolean, int paramInt) {
+        this(paramPermutableStatistic, paramTail, paramBoolean, paramInt, -1.0D, null);
+    }
 
-if (paramDouble <= 0.0D) {
-calculateSP(paramInt);
-} else {
-calculateSP(paramInt, paramDouble);
-} 
-} else {
+    public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail) {
+        this(paramPermutableStatistic, paramTail, false, 0, 0.0D, null);
+    }
 
-calculateSP();
-} 
-}
+    public PermutationTest(PermutableStatistic paramPermutableStatistic) {
+        this(paramPermutableStatistic, Tail.UPPER, false, 0, 0.0D, null);
+    }
 
-public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail, boolean paramBoolean, int paramInt, double paramDouble) {
-this(paramPermutableStatistic, paramTail, paramBoolean, paramInt, paramDouble, null);
-}
+    public double calculateSP() {
+        this.critCount = 0L;
 
-public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail, boolean paramBoolean, int paramInt) {
-this(paramPermutableStatistic, paramTail, paramBoolean, paramInt, -1.0D, null);
-}
+        while (this.perm.hasNext()) {
+            Selection selection = this.perm.nextSelection();
+            processPermutation(selection);
+        }
 
-public PermutationTest(PermutableStatistic paramPermutableStatistic, Tail paramTail) {
-this(paramPermutableStatistic, paramTail, false, 0, 0.0D, null);
-}
+        this.totalRepCount = this.permCount;
+        this.SP = this.critCount / this.permCount;
+        return this.SP;
+    }
 
-public PermutationTest(PermutableStatistic paramPermutableStatistic) {
-this(paramPermutableStatistic, Tail.UPPER, false, 0, 0.0D, null);
-}
+    public double calculateSP(int paramInt) {
+        if (this.totalRepCount >= this.permCount) return this.SP;
 
-public double calculateSP() {
-this.critCount = 0L;
+        for (byte b = 0; b < paramInt; b++) {
 
-while (this.perm.hasNext()) { Selection selection = this.perm.nextSelection(); processPermutation(selection); }
+            Selection selection = this.perm.randomSelection();
+            if (selection == null)
+                break;
+            processPermutation(selection);
+            this.totalRepCount++;
+        }
+        this.SP = this.critCount / this.totalRepCount;
+        return this.SP;
+    }
 
-this.totalRepCount = this.permCount;
-this.SP = this.critCount / this.permCount;
-return this.SP;
-}
+    public double calculateSP(int paramInt, double paramDouble) {
+        while (true) {
+            double d = this.SP;
+            calculateSP(paramInt);
+            if (Math.abs(this.SP - d) < paramDouble) {
+                return this.SP;
+            }
+        }
+    }
 
-public double calculateSP(int paramInt) {
-if (this.totalRepCount >= this.permCount) return this.SP;
+    public double getPermutationCount() {
+        return this.permCount;
+    }
 
-for (byte b = 0; b < paramInt; b++) {
+    public double getSP() {
+        return this.SP;
+    }
 
-Selection selection = this.perm.randomSelection();
-if (selection == null)
-break;  processPermutation(selection);
-this.totalRepCount++;
-} 
-this.SP = this.critCount / this.totalRepCount;
-return this.SP;
-}
+    public double getTestStatistic() {
+        return this.tObs;
+    }
 
-public double calculateSP(int paramInt, double paramDouble) {
-while (true) {
-double d = this.SP;
-calculateSP(paramInt);
-if (Math.abs(this.SP - d) < paramDouble) {
-return this.SP;
-}
-} 
-}
+    public double getTotalRepCount() {
+        return this.totalRepCount;
+    }
 
-public double getPermutationCount() {
-return this.permCount;
-}
+    private void processPermutation(Selection paramSelection) {
+        double d = this.permutableStatistic.permuteStatistic(paramSelection);
 
-public double getSP() {
-return this.SP;
-}
+        if (this.statisticListener != null) {
+            this.statisticListener.statisticCreated(new StatisticEvent(this, d));
+        }
 
-public double getTestStatistic() {
-return this.tObs;
-}
+        if (this.tail == Tail.UPPER) {
+            if (d >= this.tObs) this.critCount++;
+        } else if (this.tail == Tail.LOWER) {
+            if (d <= this.tObs) this.critCount++;
+        } else if (Math.abs(d) >= Math.abs(this.tObs)) {
+            this.critCount++;
+        }
 
-public double getTotalRepCount() {
-return this.totalRepCount;
-}
+    }
 
-private void processPermutation(Selection paramSelection) {
-double d = this.permutableStatistic.permuteStatistic(paramSelection);
+    public void setSeed(long paramLong) {
+        this.perm.setSeed(paramLong);
+    }
 
-if (this.statisticListener != null) {
-this.statisticListener.statisticCreated(new StatisticEvent(this, d));
-}
+    static class Test {
+        public static void main(String[] param1ArrayOfString) {
+            double[] arrayOfDouble1 = {78.0D, 64.0D, 75.0D, 45.0D, 82.0D};
+            double[] arrayOfDouble2 = {110.0D, 70.0D, 53.0D, 51.0D};
 
-if (this.tail == Tail.UPPER)
-{ if (d >= this.tObs) this.critCount++;
-}
-else if (this.tail == Tail.LOWER)
-{ if (d <= this.tObs) this.critCount++;
-}
+            MannWhitneyTest mannWhitneyTest = new MannWhitneyTest(arrayOfDouble1, arrayOfDouble2, H1.LESS_THAN, 0.0D, false);
+            System.out.println("SP = " + mannWhitneyTest.getSP() + " U = " + mannWhitneyTest.getTestStatistic());
+            PermutationTest permutationTest = new PermutationTest((PermutableStatistic) mannWhitneyTest, Tail.LOWER, false, 0, 0.0D, null);
+            System.out.println("SP = " + permutationTest.getSP() + " tObs = " + permutationTest.getTestStatistic());
+            mannWhitneyTest = new MannWhitneyTest(arrayOfDouble1, arrayOfDouble2, H1.GREATER_THAN, 0.0D, false);
+            System.out.println("SP = " + mannWhitneyTest.getSP() + " U = " + mannWhitneyTest.getTestStatistic());
+            permutationTest = new PermutationTest((PermutableStatistic) mannWhitneyTest, Tail.LOWER, false, 0, 0.0D, null);
+            System.out.println("SP = " + permutationTest.getSP() + " tObs = " + permutationTest.getTestStatistic());
+        }
 
-else if (Math.abs(d) >= Math.abs(this.tObs)) { this.critCount++; }
-
-}
-
-public void setSeed(long paramLong) {
-this.perm.setSeed(paramLong);
-}
-
-static class Test
-{
-static class StatListener
-implements StatisticListener
-{
-public void statisticCreated(StatisticEvent param2StatisticEvent) {
-System.out.print(" " + param2StatisticEvent.getStatistic());
-}
-}
-
-public static void main(String[] param1ArrayOfString) {
-double[] arrayOfDouble1 = { 78.0D, 64.0D, 75.0D, 45.0D, 82.0D };
-double[] arrayOfDouble2 = { 110.0D, 70.0D, 53.0D, 51.0D };
-
-MannWhitneyTest mannWhitneyTest = new MannWhitneyTest(arrayOfDouble1, arrayOfDouble2, H1.LESS_THAN, 0.0D, false);
-System.out.println("SP = " + mannWhitneyTest.getSP() + " U = " + mannWhitneyTest.getTestStatistic());
-PermutationTest permutationTest = new PermutationTest((PermutableStatistic)mannWhitneyTest, Tail.LOWER, false, 0, 0.0D, null);
-System.out.println("SP = " + permutationTest.getSP() + " tObs = " + permutationTest.getTestStatistic());
-mannWhitneyTest = new MannWhitneyTest(arrayOfDouble1, arrayOfDouble2, H1.GREATER_THAN, 0.0D, false);
-System.out.println("SP = " + mannWhitneyTest.getSP() + " U = " + mannWhitneyTest.getTestStatistic());
-permutationTest = new PermutationTest((PermutableStatistic)mannWhitneyTest, Tail.LOWER, false, 0, 0.0D, null);
-System.out.println("SP = " + permutationTest.getSP() + " tObs = " + permutationTest.getTestStatistic());
-}
-}
+        static class StatListener
+                implements StatisticListener {
+            public void statisticCreated(StatisticEvent param2StatisticEvent) {
+                System.out.print(" " + param2StatisticEvent.getStatistic());
+            }
+        }
+    }
 }
 

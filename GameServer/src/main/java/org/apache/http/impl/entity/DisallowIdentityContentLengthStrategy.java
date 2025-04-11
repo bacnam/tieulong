@@ -8,22 +8,21 @@ import org.apache.http.entity.ContentLengthStrategy;
 
 @Immutable
 public class DisallowIdentityContentLengthStrategy
-implements ContentLengthStrategy
-{
-public static final DisallowIdentityContentLengthStrategy INSTANCE = new DisallowIdentityContentLengthStrategy(new LaxContentLengthStrategy(0));
+        implements ContentLengthStrategy {
+    public static final DisallowIdentityContentLengthStrategy INSTANCE = new DisallowIdentityContentLengthStrategy(new LaxContentLengthStrategy(0));
 
-private final ContentLengthStrategy contentLengthStrategy;
+    private final ContentLengthStrategy contentLengthStrategy;
 
-public DisallowIdentityContentLengthStrategy(ContentLengthStrategy contentLengthStrategy) {
-this.contentLengthStrategy = contentLengthStrategy;
-}
+    public DisallowIdentityContentLengthStrategy(ContentLengthStrategy contentLengthStrategy) {
+        this.contentLengthStrategy = contentLengthStrategy;
+    }
 
-public long determineLength(HttpMessage message) throws HttpException {
-long result = this.contentLengthStrategy.determineLength(message);
-if (result == -1L) {
-throw new ProtocolException("Identity transfer encoding cannot be used");
-}
-return result;
-}
+    public long determineLength(HttpMessage message) throws HttpException {
+        long result = this.contentLengthStrategy.determineLength(message);
+        if (result == -1L) {
+            throw new ProtocolException("Identity transfer encoding cannot be used");
+        }
+        return result;
+    }
 }
 

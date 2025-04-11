@@ -4,6 +4,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public interface DnsResolver {
-  InetAddress[] resolve(String paramString) throws UnknownHostException;
+    InetAddress[] resolve(String paramString) throws UnknownHostException;
 }
 

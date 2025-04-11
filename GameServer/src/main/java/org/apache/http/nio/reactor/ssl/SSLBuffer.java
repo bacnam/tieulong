@@ -3,12 +3,12 @@ package org.apache.http.nio.reactor.ssl;
 import java.nio.ByteBuffer;
 
 public interface SSLBuffer {
-  ByteBuffer acquire();
+    ByteBuffer acquire();
 
-  void release();
+    void release();
 
-  boolean isAcquired();
+    boolean isAcquired();
 
-  boolean hasData();
+    boolean hasData();
 }
 

@@ -2,240 +2,234 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
+import java.util.Map;
 
 @GwtCompatible(serializable = true, emulated = true)
 final class RegularImmutableMap<K, V>
-extends ImmutableMap<K, V>
-{
-private final transient LinkedEntry<K, V>[] entries;
-private final transient LinkedEntry<K, V>[] table;
-private final transient int mask;
-private final transient int keySetHashCode;
-private transient ImmutableSet<Map.Entry<K, V>> entrySet;
-private transient ImmutableSet<K> keySet;
-private transient ImmutableCollection<V> values;
-private static final long serialVersionUID = 0L;
+        extends ImmutableMap<K, V> {
+    private static final long serialVersionUID = 0L;
+    private final transient LinkedEntry<K, V>[] entries;
+    private final transient LinkedEntry<K, V>[] table;
+    private final transient int mask;
+    private final transient int keySetHashCode;
+    private transient ImmutableSet<Map.Entry<K, V>> entrySet;
+    private transient ImmutableSet<K> keySet;
+    private transient ImmutableCollection<V> values;
 
-RegularImmutableMap(Map.Entry<?, ?>... immutableEntries) {
-int size = immutableEntries.length;
-this.entries = createEntryArray(size);
+    RegularImmutableMap(Map.Entry<?, ?>... immutableEntries) {
+        int size = immutableEntries.length;
+        this.entries = createEntryArray(size);
 
-int tableSize = chooseTableSize(size);
-this.table = createEntryArray(tableSize);
-this.mask = tableSize - 1;
+        int tableSize = chooseTableSize(size);
+        this.table = createEntryArray(tableSize);
+        this.mask = tableSize - 1;
 
-int keySetHashCodeMutable = 0;
-for (int entryIndex = 0; entryIndex < size; entryIndex++) {
+        int keySetHashCodeMutable = 0;
+        for (int entryIndex = 0; entryIndex < size; entryIndex++) {
 
-Map.Entry<?, ?> entry = immutableEntries[entryIndex];
-K key = (K)entry.getKey();
-int keyHashCode = key.hashCode();
-keySetHashCodeMutable += keyHashCode;
-int tableIndex = Hashing.smear(keyHashCode) & this.mask;
-LinkedEntry<K, V> existing = this.table[tableIndex];
+            Map.Entry<?, ?> entry = immutableEntries[entryIndex];
+            K key = (K) entry.getKey();
+            int keyHashCode = key.hashCode();
+            keySetHashCodeMutable += keyHashCode;
+            int tableIndex = Hashing.smear(keyHashCode) & this.mask;
+            LinkedEntry<K, V> existing = this.table[tableIndex];
 
-LinkedEntry<K, V> linkedEntry = newLinkedEntry(key, (V)entry.getValue(), existing);
+            LinkedEntry<K, V> linkedEntry = newLinkedEntry(key, (V) entry.getValue(), existing);
 
-this.table[tableIndex] = linkedEntry;
-this.entries[entryIndex] = linkedEntry;
-while (existing != null) {
-Preconditions.checkArgument(!key.equals(existing.getKey()), "duplicate key: %s", new Object[] { key });
-existing = existing.next();
-} 
-} 
-this.keySetHashCode = keySetHashCodeMutable;
-}
+            this.table[tableIndex] = linkedEntry;
+            this.entries[entryIndex] = linkedEntry;
+            while (existing != null) {
+                Preconditions.checkArgument(!key.equals(existing.getKey()), "duplicate key: %s", new Object[]{key});
+                existing = existing.next();
+            }
+        }
+        this.keySetHashCode = keySetHashCodeMutable;
+    }
 
-private static int chooseTableSize(int size) {
-int tableSize = Integer.highestOneBit(size) << 1;
-Preconditions.checkArgument((tableSize > 0), "table too large: %s", new Object[] { Integer.valueOf(size) });
-return tableSize;
-}
+    private static int chooseTableSize(int size) {
+        int tableSize = Integer.highestOneBit(size) << 1;
+        Preconditions.checkArgument((tableSize > 0), "table too large: %s", new Object[]{Integer.valueOf(size)});
+        return tableSize;
+    }
 
-private LinkedEntry<K, V>[] createEntryArray(int size) {
-return (LinkedEntry<K, V>[])new LinkedEntry[size];
-}
+    private static <K, V> LinkedEntry<K, V> newLinkedEntry(K key, V value, @Nullable LinkedEntry<K, V> next) {
+        return (next == null) ? new TerminalEntry<K, V>(key, value) : new NonTerminalEntry<K, V>(key, value, next);
+    }
 
-private static <K, V> LinkedEntry<K, V> newLinkedEntry(K key, V value, @Nullable LinkedEntry<K, V> next) {
-return (next == null) ? new TerminalEntry<K, V>(key, value) : new NonTerminalEntry<K, V>(key, value, next);
-}
+    private LinkedEntry<K, V>[] createEntryArray(int size) {
+        return (LinkedEntry<K, V>[]) new LinkedEntry[size];
+    }
 
-private static interface LinkedEntry<K, V>
-extends Map.Entry<K, V>
-{
-@Nullable
-LinkedEntry<K, V> next();
-}
+    public V get(@Nullable Object key) {
+        if (key == null) {
+            return null;
+        }
+        int index = Hashing.smear(key.hashCode()) & this.mask;
+        LinkedEntry<K, V> entry = this.table[index];
+        for (; entry != null;
+             entry = entry.next()) {
+            K candidateKey = entry.getKey();
 
-@Immutable
-private static final class NonTerminalEntry<K, V>
-extends ImmutableEntry<K, V>
-implements LinkedEntry<K, V>
-{
-final RegularImmutableMap.LinkedEntry<K, V> next;
+            if (key.equals(candidateKey)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
 
-NonTerminalEntry(K key, V value, RegularImmutableMap.LinkedEntry<K, V> next) {
-super(key, value);
-this.next = next;
-}
+    public int size() {
+        return this.entries.length;
+    }
 
-public RegularImmutableMap.LinkedEntry<K, V> next() {
-return this.next;
-}
-}
+    public boolean isEmpty() {
+        return false;
+    }
 
-@Immutable
-private static final class TerminalEntry<K, V>
-extends ImmutableEntry<K, V>
-implements LinkedEntry<K, V>
-{
-TerminalEntry(K key, V value) {
-super(key, value);
-}
-@Nullable
-public RegularImmutableMap.LinkedEntry<K, V> next() {
-return null;
-}
-}
+    public boolean containsValue(@Nullable Object value) {
+        if (value == null) {
+            return false;
+        }
+        for (Map.Entry<K, V> entry : this.entries) {
+            if (entry.getValue().equals(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-public V get(@Nullable Object key) {
-if (key == null) {
-return null;
-}
-int index = Hashing.smear(key.hashCode()) & this.mask;
-LinkedEntry<K, V> entry = this.table[index];
-for (; entry != null; 
-entry = entry.next()) {
-K candidateKey = entry.getKey();
+    boolean isPartialView() {
+        return false;
+    }
 
-if (key.equals(candidateKey)) {
-return entry.getValue();
-}
-} 
-return null;
-}
+    public ImmutableSet<Map.Entry<K, V>> entrySet() {
+        ImmutableSet<Map.Entry<K, V>> es = this.entrySet;
+        return (es == null) ? (this.entrySet = new EntrySet<K, V>(this)) : es;
+    }
 
-public int size() {
-return this.entries.length;
-}
+    public ImmutableSet<K> keySet() {
+        ImmutableSet<K> ks = this.keySet;
+        return (ks == null) ? (this.keySet = new KeySet<K, V>(this)) : ks;
+    }
 
-public boolean isEmpty() {
-return false;
-}
+    public ImmutableCollection<V> values() {
+        ImmutableCollection<V> v = this.values;
+        return (v == null) ? (this.values = new Values<V>(this)) : v;
+    }
 
-public boolean containsValue(@Nullable Object value) {
-if (value == null) {
-return false;
-}
-for (Map.Entry<K, V> entry : this.entries) {
-if (entry.getValue().equals(value)) {
-return true;
-}
-} 
-return false;
-}
+    public String toString() {
+        StringBuilder result = Collections2.newStringBuilderForCollection(size()).append('{');
 
-boolean isPartialView() {
-return false;
-}
+        Collections2.STANDARD_JOINER.appendTo(result, (Object[]) this.entries);
+        return result.append('}').toString();
+    }
 
-public ImmutableSet<Map.Entry<K, V>> entrySet() {
-ImmutableSet<Map.Entry<K, V>> es = this.entrySet;
-return (es == null) ? (this.entrySet = new EntrySet<K, V>(this)) : es;
-}
+    private static interface LinkedEntry<K, V>
+            extends Map.Entry<K, V> {
+        @Nullable
+        LinkedEntry<K, V> next();
+    }
 
-private static class EntrySet<K, V>
-extends ImmutableSet.ArrayImmutableSet<Map.Entry<K, V>> {
-final transient RegularImmutableMap<K, V> map;
+    @Immutable
+    private static final class NonTerminalEntry<K, V>
+            extends ImmutableEntry<K, V>
+            implements LinkedEntry<K, V> {
+        final RegularImmutableMap.LinkedEntry<K, V> next;
 
-EntrySet(RegularImmutableMap<K, V> map) {
-super((Object[])map.entries);
-this.map = map;
-}
+        NonTerminalEntry(K key, V value, RegularImmutableMap.LinkedEntry<K, V> next) {
+            super(key, value);
+            this.next = next;
+        }
 
-public boolean contains(Object target) {
-if (target instanceof Map.Entry) {
-Map.Entry<?, ?> entry = (Map.Entry<?, ?>)target;
-V mappedValue = this.map.get(entry.getKey());
-return (mappedValue != null && mappedValue.equals(entry.getValue()));
-} 
-return false;
-}
-}
+        public RegularImmutableMap.LinkedEntry<K, V> next() {
+            return this.next;
+        }
+    }
 
-public ImmutableSet<K> keySet() {
-ImmutableSet<K> ks = this.keySet;
-return (ks == null) ? (this.keySet = new KeySet<K, V>(this)) : ks;
-}
+    @Immutable
+    private static final class TerminalEntry<K, V>
+            extends ImmutableEntry<K, V>
+            implements LinkedEntry<K, V> {
+        TerminalEntry(K key, V value) {
+            super(key, value);
+        }
 
-private static class KeySet<K, V>
-extends ImmutableSet.TransformedImmutableSet<Map.Entry<K, V>, K>
-{
-final RegularImmutableMap<K, V> map;
+        @Nullable
+        public RegularImmutableMap.LinkedEntry<K, V> next() {
+            return null;
+        }
+    }
 
-KeySet(RegularImmutableMap<K, V> map) {
-super((Map.Entry<K, V>[])map.entries, map.keySetHashCode);
-this.map = map;
-}
+    private static class EntrySet<K, V>
+            extends ImmutableSet.ArrayImmutableSet<Map.Entry<K, V>> {
+        final transient RegularImmutableMap<K, V> map;
 
-K transform(Map.Entry<K, V> element) {
-return element.getKey();
-}
+        EntrySet(RegularImmutableMap<K, V> map) {
+            super((Object[]) map.entries);
+            this.map = map;
+        }
 
-public boolean contains(Object target) {
-return this.map.containsKey(target);
-}
+        public boolean contains(Object target) {
+            if (target instanceof Map.Entry) {
+                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) target;
+                V mappedValue = this.map.get(entry.getKey());
+                return (mappedValue != null && mappedValue.equals(entry.getValue()));
+            }
+            return false;
+        }
+    }
 
-boolean isPartialView() {
-return true;
-}
-}
+    private static class KeySet<K, V>
+            extends ImmutableSet.TransformedImmutableSet<Map.Entry<K, V>, K> {
+        final RegularImmutableMap<K, V> map;
 
-public ImmutableCollection<V> values() {
-ImmutableCollection<V> v = this.values;
-return (v == null) ? (this.values = new Values<V>(this)) : v;
-}
+        KeySet(RegularImmutableMap<K, V> map) {
+            super((Map.Entry<K, V>[]) map.entries, map.keySetHashCode);
+            this.map = map;
+        }
 
-private static class Values<V>
-extends ImmutableCollection<V> {
-final RegularImmutableMap<?, V> map;
+        K transform(Map.Entry<K, V> element) {
+            return element.getKey();
+        }
 
-Values(RegularImmutableMap<?, V> map) {
-this.map = map;
-}
+        public boolean contains(Object target) {
+            return this.map.containsKey(target);
+        }
 
-public int size() {
-return this.map.entries.length;
-}
+        boolean isPartialView() {
+            return true;
+        }
+    }
 
-public UnmodifiableIterator<V> iterator() {
-return new AbstractIndexedListIterator<V>(this.map.entries.length) {
-protected V get(int index) {
-return RegularImmutableMap.Values.this.map.entries[index].getValue();
-}
-};
-}
+    private static class Values<V>
+            extends ImmutableCollection<V> {
+        final RegularImmutableMap<?, V> map;
 
-public boolean contains(Object target) {
-return this.map.containsValue(target);
-}
+        Values(RegularImmutableMap<?, V> map) {
+            this.map = map;
+        }
 
-boolean isPartialView() {
-return true;
-}
-}
+        public int size() {
+            return this.map.entries.length;
+        }
 
-public String toString() {
-StringBuilder result = Collections2.newStringBuilderForCollection(size()).append('{');
+        public UnmodifiableIterator<V> iterator() {
+            return new AbstractIndexedListIterator<V>(this.map.entries.length) {
+                protected V get(int index) {
+                    return RegularImmutableMap.Values.this.map.entries[index].getValue();
+                }
+            };
+        }
 
-Collections2.STANDARD_JOINER.appendTo(result, (Object[])this.entries);
-return result.append('}').toString();
-}
+        public boolean contains(Object target) {
+            return this.map.containsValue(target);
+        }
+
+        boolean isPartialView() {
+            return true;
+        }
+    }
 }
 

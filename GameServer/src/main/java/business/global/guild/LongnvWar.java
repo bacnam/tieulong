@@ -25,11 +25,7 @@ import com.zhonglian.server.logger.flow.ItemFlow;
 import com.zhonglian.server.websocket.def.ErrorCode;
 import com.zhonglian.server.websocket.exception.WSException;
 import core.config.refdata.RefDataMgr;
-import core.config.refdata.ref.RefCrystalPrice;
-import core.config.refdata.ref.RefLongnvLevel;
-import core.config.refdata.ref.RefLongnvWarLevel;
-import core.config.refdata.ref.RefLongnvWarPersonReward;
-import core.config.refdata.ref.RefReward;
+import core.config.refdata.ref.*;
 import core.database.game.bo.LongnvApplyBO;
 import core.database.game.bo.LongnvResultBO;
 import core.database.game.bo.LongnvWarResultBO;
@@ -38,27 +34,22 @@ import core.network.proto.Fight;
 import core.network.proto.LongnvWarFightProtol;
 import core.network.proto.LongnvWarInfo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class LongnvWar {
-    Guild guild;
-    LongnvWarResultBO bo;
-    List<GuildWarMgr.Road> warRoad;
-    private int road;
-    int fightTime;
+    public final Map<Long, List<LongnvwarpuppetBO>> puppets;
     public Map<Long, List<Double>> playersHP;
     public List<LongnvResultBO> fightResult;
     public Map<Long, Fight.Battle> fightBattle;
-    public final Map<Long, List<LongnvwarpuppetBO>> puppets;
     public List<Player> joinPlayers;
+    Guild guild;
+    LongnvWarResultBO bo;
+    List<GuildWarMgr.Road> warRoad;
+    int fightTime;
     int total;
     int enemyTotal;
     Map<Long, Integer> playerPuppet;
+    private int road;
 
     public LongnvWar(Guild guild) {
         this.warRoad = new ArrayList<>();

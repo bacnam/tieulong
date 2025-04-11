@@ -6,58 +6,58 @@ import com.zhonglian.server.common.data.RefContainer;
 import com.zhonglian.server.common.data.RefField;
 import com.zhonglian.server.common.data.ref.matcher.NumberRange;
 import core.config.refdata.RefDataMgr;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class RefTreasureWarspirit
-extends RefBaseGame
-{
-@RefField(iskey = true)
-public int id;
-public NumberRange LevelRange;
-public ArrayList<Integer> NormalIdList;
-public ArrayList<Integer> NormalCountList;
-public ArrayList<Integer> NormalWeightList;
-public ArrayList<Integer> FixedTenIdList;
-public ArrayList<Integer> FixedTenCountList;
-public ArrayList<Integer> FixedTenWeightList;
-public ArrayList<Integer> LeastIdList;
-public ArrayList<Integer> LeastTenCountList;
-public ArrayList<Integer> LeastTenWeightList;
-public int UniformId;
-public int UniformCount;
-public int Price;
-public int TenPrice;
+        extends RefBaseGame {
+    @RefField(iskey = true)
+    public int id;
+    public NumberRange LevelRange;
+    public ArrayList<Integer> NormalIdList;
+    public ArrayList<Integer> NormalCountList;
+    public ArrayList<Integer> NormalWeightList;
+    public ArrayList<Integer> FixedTenIdList;
+    public ArrayList<Integer> FixedTenCountList;
+    public ArrayList<Integer> FixedTenWeightList;
+    public ArrayList<Integer> LeastIdList;
+    public ArrayList<Integer> LeastTenCountList;
+    public ArrayList<Integer> LeastTenWeightList;
+    public int UniformId;
+    public int UniformCount;
+    public int Price;
+    public int TenPrice;
 
-public boolean Assert() {
-if (!RefAssert.listSize(this.NormalIdList, this.NormalCountList, new List[] { this.NormalWeightList })) {
-CommLog.error("normal");
-return false;
-} 
+    public static RefTreasureWarspirit getByLevel(int level) {
+        for (RefTreasureWarspirit ref : RefDataMgr.getAll(RefTreasureWarspirit.class).values()) {
+            if (ref.LevelRange.within(level)) {
+                return ref;
+            }
+        }
 
-if (!RefAssert.listSize(this.FixedTenIdList, this.FixedTenCountList, new List[] { this.FixedTenWeightList })) {
-CommLog.error("fix");
-return false;
-} 
-if (!RefAssert.listSize(this.LeastIdList, this.LeastTenCountList, new List[] { this.LeastTenWeightList })) {
-CommLog.error("least");
-return false;
-} 
-return true;
-}
+        return null;
+    }
 
-public boolean AssertAll(RefContainer<?> all) {
-return true;
-}
+    public boolean Assert() {
+        if (!RefAssert.listSize(this.NormalIdList, this.NormalCountList, new List[]{this.NormalWeightList})) {
+            CommLog.error("normal");
+            return false;
+        }
 
-public static RefTreasureWarspirit getByLevel(int level) {
-for (RefTreasureWarspirit ref : RefDataMgr.getAll(RefTreasureWarspirit.class).values()) {
-if (ref.LevelRange.within(level)) {
-return ref;
-}
-} 
+        if (!RefAssert.listSize(this.FixedTenIdList, this.FixedTenCountList, new List[]{this.FixedTenWeightList})) {
+            CommLog.error("fix");
+            return false;
+        }
+        if (!RefAssert.listSize(this.LeastIdList, this.LeastTenCountList, new List[]{this.LeastTenWeightList})) {
+            CommLog.error("least");
+            return false;
+        }
+        return true;
+    }
 
-return null;
-}
+    public boolean AssertAll(RefContainer<?> all) {
+        return true;
+    }
 }
 

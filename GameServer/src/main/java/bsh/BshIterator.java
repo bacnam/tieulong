@@ -1,8 +1,8 @@
 package bsh;
 
 public interface BshIterator {
-  Object next();
+    Object next();
 
-  boolean hasNext();
+    boolean hasNext();
 }
 

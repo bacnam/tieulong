@@ -1,22 +1,23 @@
 package org.apache.mina.core.service;
 
-import java.net.SocketAddress;
-import java.util.Set;
 import org.apache.mina.core.session.IoSessionConfig;
 
+import java.net.SocketAddress;
+import java.util.Set;
+
 public interface TransportMetadata {
-  String getProviderName();
+    String getProviderName();
 
-  String getName();
+    String getName();
 
-  boolean isConnectionless();
+    boolean isConnectionless();
 
-  boolean hasFragmentation();
+    boolean hasFragmentation();
 
-  Class<? extends SocketAddress> getAddressType();
+    Class<? extends SocketAddress> getAddressType();
 
-  Set<Class<? extends Object>> getEnvelopeTypes();
+    Set<Class<? extends Object>> getEnvelopeTypes();
 
-  Class<? extends IoSessionConfig> getSessionConfigType();
+    Class<? extends IoSessionConfig> getSessionConfigType();
 }
 

@@ -4,23 +4,22 @@ import BaseCommon.CommLog;
 import BaseThread.ThreadManager;
 import ConsoleTask.ConsoleTaskDealThread;
 
-public class BaseServerInit
-{
-private static boolean g_inited = false;
+public class BaseServerInit {
+    private static boolean g_inited = false;
 
-public static void initBaseServer() {
-if (g_inited) {
-CommLog.error("Try to init Cos Server twice!!");
-return;
-} 
-g_inited = true;
+    public static void initBaseServer() {
+        if (g_inited) {
+            CommLog.error("Try to init Cos Server twice!!");
+            return;
+        }
+        g_inited = true;
 
-ThreadManager.getInstance().regThread();
+        ThreadManager.getInstance().regThread();
 
-ConsoleTaskDealThread cosCmdTaskThread = new ConsoleTaskDealThread();
-cosCmdTaskThread.start();
+        ConsoleTaskDealThread cosCmdTaskThread = new ConsoleTaskDealThread();
+        cosCmdTaskThread.start();
 
-Monitor.getInstance().start();
-}
+        Monitor.getInstance().start();
+    }
 }
 

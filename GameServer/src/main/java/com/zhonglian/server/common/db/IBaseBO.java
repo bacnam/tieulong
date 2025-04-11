@@ -4,18 +4,18 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public interface IBaseBO {
-  void getFromResultSet(ResultSet paramResultSet, List paramList) throws Exception;
+    void getFromResultSet(ResultSet paramResultSet, List paramList) throws Exception;
 
-  String getItemsName();
+    String getItemsName();
 
-  String getTableName();
+    String getTableName();
 
-  String getItemsValue();
+    String getItemsValue();
 
-  void setId(long paramLong);
+    long getId();
 
-  long getId();
+    void setId(long paramLong);
 
-  IDBConnectionFactory getConnectionFactory();
+    IDBConnectionFactory getConnectionFactory();
 }
 

@@ -4,6 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 public interface PropertyBeanGenerator {
-  void generate(ClassInfo paramClassInfo, Property[] paramArrayOfProperty, Writer paramWriter) throws IOException;
+    void generate(ClassInfo paramClassInfo, Property[] paramArrayOfProperty, Writer paramWriter) throws IOException;
 }
 

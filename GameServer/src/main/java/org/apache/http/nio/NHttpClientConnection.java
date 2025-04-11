@@ -1,16 +1,17 @@
 package org.apache.http.nio;
 
-import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 
+import java.io.IOException;
+
 public interface NHttpClientConnection extends NHttpConnection {
-  void submitRequest(HttpRequest paramHttpRequest) throws IOException, HttpException;
+    void submitRequest(HttpRequest paramHttpRequest) throws IOException, HttpException;
 
-  boolean isRequestSubmitted();
+    boolean isRequestSubmitted();
 
-  void resetOutput();
+    void resetOutput();
 
-  void resetInput();
+    void resetInput();
 }
 

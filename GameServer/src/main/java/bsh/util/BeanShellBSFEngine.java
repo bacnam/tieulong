@@ -1,21 +1,17 @@
 package bsh.util;
 
-import bsh.EvalError;
-import bsh.Interpreter;
-import bsh.InterpreterError;
-import bsh.Primitive;
-import bsh.TargetError;
-import bsh.This;
-import java.util.Vector;
+import bsh.*;
 import org.apache.bsf.BSFDeclaredBean;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.bsf.util.BSFEngineImpl;
 
+import java.util.Vector;
+
 public class BeanShellBSFEngine extends BSFEngineImpl {
+    static final String bsfApplyMethod = "_bsfApply( _bsfNames, _bsfArgs, _bsfText ) {for(i=0;i<_bsfNames.length;i++)this.namespace.setVariable(_bsfNames[i], _bsfArgs[i],false);return this.interpreter.eval(_bsfText, this.namespace);}";
     Interpreter interpreter;
     boolean installedApplyMethod;
-    static final String bsfApplyMethod = "_bsfApply( _bsfNames, _bsfArgs, _bsfText ) {for(i=0;i<_bsfNames.length;i++)this.namespace.setVariable(_bsfNames[i], _bsfArgs[i],false);return this.interpreter.eval(_bsfText, this.namespace);}";
 
     public void initialize(BSFManager mgr, String lang, Vector<BSFDeclaredBean> declaredBeans) throws BSFException {
         super.initialize(mgr, lang, declaredBeans);
@@ -89,7 +85,7 @@ public class BeanShellBSFEngine extends BSFEngineImpl {
             }
 
             This global = (This) this.interpreter.get("global");
-            Object value = global.invokeMethod("_bsfApply", new Object[] { names, args, funcBody });
+            Object value = global.invokeMethod("_bsfApply", new Object[]{names, args, funcBody});
 
             return Primitive.unwrap(value);
         } catch (InterpreterError e) {

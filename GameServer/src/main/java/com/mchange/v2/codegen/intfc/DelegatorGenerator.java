@@ -7,114 +7,105 @@ import com.mchange.v2.codegen.IndentedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class DelegatorGenerator {
+    static final Comparator classComp = new Comparator() {
+        public int compare(Object param1Object1, Object param1Object2) {
+            return ((Class) param1Object1).getName().compareTo(((Class) param1Object2).getName());
+        }
+    };
     int class_modifiers = 1025;
     int method_modifiers = 1;
     int wrapping_ctor_modifiers = 1;
     int default_ctor_modifiers = 1;
-
     boolean wrapping_constructor = true;
     boolean default_constructor = true;
     boolean inner_getter = true;
     boolean inner_setter = true;
     Class superclass = null;
     Class[] extraInterfaces = null;
-
     Method[] reflectiveDelegateMethods = null;
     ReflectiveDelegationPolicy reflectiveDelegationPolicy = ReflectiveDelegationPolicy.USE_MAIN_DELEGATE_INTERFACE;
-
-    static final Comparator classComp = new Comparator() {
-        public int compare(Object param1Object1, Object param1Object2) {
-            return ((Class) param1Object1).getName().compareTo(((Class) param1Object2).getName());
-        }
-    };
-
-    public void setGenerateInnerSetter(boolean paramBoolean) {
-        this.inner_setter = paramBoolean;
-    }
 
     public boolean isGenerateInnerSetter() {
         return this.inner_setter;
     }
 
-    public void setGenerateInnerGetter(boolean paramBoolean) {
-        this.inner_getter = paramBoolean;
+    public void setGenerateInnerSetter(boolean paramBoolean) {
+        this.inner_setter = paramBoolean;
     }
 
     public boolean isGenerateInnerGetter() {
         return this.inner_getter;
     }
 
-    public void setGenerateNoArgConstructor(boolean paramBoolean) {
-        this.default_constructor = paramBoolean;
+    public void setGenerateInnerGetter(boolean paramBoolean) {
+        this.inner_getter = paramBoolean;
     }
 
     public boolean isGenerateNoArgConstructor() {
         return this.default_constructor;
     }
 
-    public void setGenerateWrappingConstructor(boolean paramBoolean) {
-        this.wrapping_constructor = paramBoolean;
+    public void setGenerateNoArgConstructor(boolean paramBoolean) {
+        this.default_constructor = paramBoolean;
     }
 
     public boolean isGenerateWrappingConstructor() {
         return this.wrapping_constructor;
     }
 
-    public void setWrappingConstructorModifiers(int paramInt) {
-        this.wrapping_ctor_modifiers = paramInt;
+    public void setGenerateWrappingConstructor(boolean paramBoolean) {
+        this.wrapping_constructor = paramBoolean;
     }
 
     public int getWrappingConstructorModifiers() {
         return this.wrapping_ctor_modifiers;
     }
 
-    public void setNoArgConstructorModifiers(int paramInt) {
-        this.default_ctor_modifiers = paramInt;
+    public void setWrappingConstructorModifiers(int paramInt) {
+        this.wrapping_ctor_modifiers = paramInt;
     }
 
     public int getNoArgConstructorModifiers() {
         return this.default_ctor_modifiers;
     }
 
-    public void setMethodModifiers(int paramInt) {
-        this.method_modifiers = paramInt;
+    public void setNoArgConstructorModifiers(int paramInt) {
+        this.default_ctor_modifiers = paramInt;
     }
 
     public int getMethodModifiers() {
         return this.method_modifiers;
     }
 
-    public void setClassModifiers(int paramInt) {
-        this.class_modifiers = paramInt;
+    public void setMethodModifiers(int paramInt) {
+        this.method_modifiers = paramInt;
     }
 
     public int getClassModifiers() {
         return this.class_modifiers;
     }
 
-    public void setSuperclass(Class paramClass) {
-        this.superclass = paramClass;
+    public void setClassModifiers(int paramInt) {
+        this.class_modifiers = paramInt;
     }
 
     public Class getSuperclass() {
         return this.superclass;
     }
 
-    public void setExtraInterfaces(Class[] paramArrayOfClass) {
-        this.extraInterfaces = paramArrayOfClass;
+    public void setSuperclass(Class paramClass) {
+        this.superclass = paramClass;
     }
 
     public Class[] getExtraInterfaces() {
         return this.extraInterfaces;
+    }
+
+    public void setExtraInterfaces(Class[] paramArrayOfClass) {
+        this.extraInterfaces = paramArrayOfClass;
     }
 
     public Method[] getReflectiveDelegateMethods() {

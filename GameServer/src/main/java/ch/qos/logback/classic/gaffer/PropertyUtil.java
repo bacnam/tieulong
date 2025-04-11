@@ -3,19 +3,15 @@ package ch.qos.logback.classic.gaffer;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.lang.MetaClass;
-
-import java.beans.Introspector;
-import java.lang.ref.SoftReference;
-
-import org.codehaus.groovy.reflection.ClassInfo;
 import org.codehaus.groovy.runtime.BytecodeInterface8;
 import org.codehaus.groovy.runtime.GStringImpl;
 import org.codehaus.groovy.runtime.GeneratedClosure;
 import org.codehaus.groovy.runtime.ScriptBytecodeAdapter;
 import org.codehaus.groovy.runtime.callsite.CallSite;
-import org.codehaus.groovy.runtime.callsite.CallSiteArray;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 import org.codehaus.groovy.runtime.typehandling.ShortTypeHandling;
+
+import java.beans.Introspector;
 
 public class PropertyUtil implements GroovyObject {
     public PropertyUtil() {
@@ -89,13 +85,13 @@ public class PropertyUtil implements GroovyObject {
     }
 
     class _upperCaseFirstLetter_closure1 extends Closure implements GeneratedClosure {
+        public _upperCaseFirstLetter_closure1(Object _outerInstance, Object _thisObject) {
+            super(_outerInstance, _thisObject);
+        }
+
         public Object doCall(String it) {
             CallSite[] arrayOfCallSite = $getCallSiteArray();
             return arrayOfCallSite[0].call(it);
-        }
-
-        public _upperCaseFirstLetter_closure1(Object _outerInstance, Object _thisObject) {
-            super(_outerInstance, _thisObject);
         }
 
         public Object call(String it) {

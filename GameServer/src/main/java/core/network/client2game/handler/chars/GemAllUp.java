@@ -16,84 +16,83 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefGem;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.List;
 
 public class GemAllUp
-extends PlayerHandler
-{
-public static class Request
-{
-int charId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public static class SkillNotify {
-int charId;
-List<Integer> GemLevel;
+        int Size = (EquipPos.values()).length - 1;
+        int Num = 0;
+        int totalMaterial = 0;
+        for (int i = 0; i < Size * RefDataMgr.size(RefGem.class); i++) {
+            int index = 1;
+            for (int j = index; j < Size; j++) {
+                if (character.getBo().getGem(index) > character.getBo().getGem(j + 1)) {
+                    index = j + 1;
+                }
+            }
 
-public SkillNotify(int charId, List<Integer> GemLevel) {
-this.charId = charId;
-this.GemLevel = GemLevel;
-}
-}
+            int Level = character.getBo().getGem(index);
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+            if (Level >= RefDataMgr.size(RefGem.class)) {
+                break;
+            }
 
-int Size = (EquipPos.values()).length - 1;
-int Num = 0;
-int totalMaterial = 0;
-for (int i = 0; i < Size * RefDataMgr.size(RefGem.class); i++) {
-int index = 1;
-for (int j = index; j < Size; j++) {
-if (character.getBo().getGem(index) > character.getBo().getGem(j + 1)) {
-index = j + 1;
-}
-} 
+            RefGem ref = (RefGem) RefDataMgr.get(RefGem.class, Integer.valueOf(Level + 1));
 
-int Level = character.getBo().getGem(index);
+            int material = ref.Material;
 
-if (Level >= RefDataMgr.size(RefGem.class)) {
-break;
-}
+            totalMaterial += material;
 
-RefGem ref = (RefGem)RefDataMgr.get(RefGem.class, Integer.valueOf(Level + 1));
+            if (player.getPlayerBO().getGemMaterial() < totalMaterial) {
+                totalMaterial -= material;
 
-int material = ref.Material;
+                break;
+            }
 
-totalMaterial += material;
+            character.getBo().setGem(index, Level + 1);
+            Num++;
+        }
 
-if (player.getPlayerBO().getGemMaterial() < totalMaterial) {
-totalMaterial -= material;
+        PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
 
-break;
-} 
+        if (!playerCurrency.check(PrizeType.GemMaterial, totalMaterial)) {
+            throw new WSException(ErrorCode.NotEnough_GemMaterial, "玩家材料:%s<强化需要材料:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getGemMaterial()), Integer.valueOf(totalMaterial)});
+        }
 
-character.getBo().setGem(index, Level + 1);
-Num++;
-} 
+        playerCurrency.consume(PrizeType.GemMaterial, totalMaterial, ItemFlow.GemLevelUp);
+        character.getBo().saveAll();
 
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
+        character.onAttrChanged();
 
-if (!playerCurrency.check(PrizeType.GemMaterial, totalMaterial)) {
-throw new WSException(ErrorCode.NotEnough_GemMaterial, "玩家材料:%s<强化需要材料:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getGemMaterial()), Integer.valueOf(totalMaterial) });
-}
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateMax(Achievement.AchievementType.GemMax, Integer.valueOf(character.getBo().getGem(1)));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M1, Integer.valueOf(Num));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M2, Integer.valueOf(Num));
 
-playerCurrency.consume(PrizeType.GemMaterial, totalMaterial, ItemFlow.GemLevelUp);
-character.getBo().saveAll();
+        SkillNotify notify = new SkillNotify(character.getCharId(), character.getBo().getGemAll());
+        request.response(notify);
+    }
 
-character.onAttrChanged();
+    public static class Request {
+        int charId;
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateMax(Achievement.AchievementType.GemMax, Integer.valueOf(character.getBo().getGem(1)));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M1, Integer.valueOf(Num));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M2, Integer.valueOf(Num));
+    public static class SkillNotify {
+        int charId;
+        List<Integer> GemLevel;
 
-SkillNotify notify = new SkillNotify(character.getCharId(), character.getBo().getGemAll());
-request.response(notify);
-}
+        public SkillNotify(int charId, List<Integer> GemLevel) {
+            this.charId = charId;
+            this.GemLevel = GemLevel;
+        }
+    }
 }
 

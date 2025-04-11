@@ -1,20 +1,20 @@
 package org.apache.http.pool;
 
 public interface ConnPoolControl<T> {
-  void setMaxTotal(int paramInt);
+    int getMaxTotal();
 
-  int getMaxTotal();
+    void setMaxTotal(int paramInt);
 
-  void setDefaultMaxPerRoute(int paramInt);
+    int getDefaultMaxPerRoute();
 
-  int getDefaultMaxPerRoute();
+    void setDefaultMaxPerRoute(int paramInt);
 
-  void setMaxPerRoute(T paramT, int paramInt);
+    void setMaxPerRoute(T paramT, int paramInt);
 
-  int getMaxPerRoute(T paramT);
+    int getMaxPerRoute(T paramT);
 
-  PoolStats getTotalStats();
+    PoolStats getTotalStats();
 
-  PoolStats getStats(T paramT);
+    PoolStats getStats(T paramT);
 }
 

@@ -4,50 +4,50 @@ import java.net.SocketAddress;
 import java.nio.channels.ByteChannel;
 
 public interface IOSession {
-  public static final String ATTACHMENT_KEY = "http.session.attachment";
+    public static final String ATTACHMENT_KEY = "http.session.attachment";
 
-  public static final int ACTIVE = 0;
+    public static final int ACTIVE = 0;
 
-  public static final int CLOSING = 1;
+    public static final int CLOSING = 1;
 
-  public static final int CLOSED = 2147483647;
+    public static final int CLOSED = 2147483647;
 
-  ByteChannel channel();
+    ByteChannel channel();
 
-  SocketAddress getRemoteAddress();
+    SocketAddress getRemoteAddress();
 
-  SocketAddress getLocalAddress();
+    SocketAddress getLocalAddress();
 
-  int getEventMask();
+    int getEventMask();
 
-  void setEventMask(int paramInt);
+    void setEventMask(int paramInt);
 
-  void setEvent(int paramInt);
+    void setEvent(int paramInt);
 
-  void clearEvent(int paramInt);
+    void clearEvent(int paramInt);
 
-  void close();
+    void close();
 
-  void shutdown();
+    void shutdown();
 
-  int getStatus();
+    int getStatus();
 
-  boolean isClosed();
+    boolean isClosed();
 
-  int getSocketTimeout();
+    int getSocketTimeout();
 
-  void setSocketTimeout(int paramInt);
+    void setSocketTimeout(int paramInt);
 
-  void setBufferStatus(SessionBufferStatus paramSessionBufferStatus);
+    void setBufferStatus(SessionBufferStatus paramSessionBufferStatus);
 
-  boolean hasBufferedInput();
+    boolean hasBufferedInput();
 
-  boolean hasBufferedOutput();
+    boolean hasBufferedOutput();
 
-  void setAttribute(String paramString, Object paramObject);
+    void setAttribute(String paramString, Object paramObject);
 
-  Object getAttribute(String paramString);
+    Object getAttribute(String paramString);
 
-  Object removeAttribute(String paramString);
+    Object removeAttribute(String paramString);
 }
 

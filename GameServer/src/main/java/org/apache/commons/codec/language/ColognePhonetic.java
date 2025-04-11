@@ -1,223 +1,221 @@
 package org.apache.commons.codec.language;
 
-import java.util.Locale;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.StringEncoder;
 
+import java.util.Locale;
+
 public class ColognePhonetic
-implements StringEncoder
-{
-private static final char[] AEIJOUY = new char[] { 'A', 'E', 'I', 'J', 'O', 'U', 'Y' };
-private static final char[] SCZ = new char[] { 'S', 'C', 'Z' };
-private static final char[] WFPV = new char[] { 'W', 'F', 'P', 'V' };
-private static final char[] GKQ = new char[] { 'G', 'K', 'Q' };
-private static final char[] CKQ = new char[] { 'C', 'K', 'Q' };
-private static final char[] AHKLOQRUX = new char[] { 'A', 'H', 'K', 'L', 'O', 'Q', 'R', 'U', 'X' };
-private static final char[] SZ = new char[] { 'S', 'Z' };
-private static final char[] AHOUKQX = new char[] { 'A', 'H', 'O', 'U', 'K', 'Q', 'X' };
-private static final char[] TDX = new char[] { 'T', 'D', 'X' };
+        implements StringEncoder {
+    private static final char[] AEIJOUY = new char[]{'A', 'E', 'I', 'J', 'O', 'U', 'Y'};
+    private static final char[] SCZ = new char[]{'S', 'C', 'Z'};
+    private static final char[] WFPV = new char[]{'W', 'F', 'P', 'V'};
+    private static final char[] GKQ = new char[]{'G', 'K', 'Q'};
+    private static final char[] CKQ = new char[]{'C', 'K', 'Q'};
+    private static final char[] AHKLOQRUX = new char[]{'A', 'H', 'K', 'L', 'O', 'Q', 'R', 'U', 'X'};
+    private static final char[] SZ = new char[]{'S', 'Z'};
+    private static final char[] AHOUKQX = new char[]{'A', 'H', 'O', 'U', 'K', 'Q', 'X'};
+    private static final char[] TDX = new char[]{'T', 'D', 'X'};
+    private static final char[][] PREPROCESS_MAP = new char[][]{{'Ä', 'A'}, {'Ü', 'U'}, {'Ö', 'O'}, {'ß', 'S'}};
 
-private abstract class CologneBuffer
-{
-protected final char[] data;
+    private static boolean arrayContains(char[] arr, char key) {
+        for (char element : arr) {
+            if (element == key) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-protected int length = 0;
+    public String colognePhonetic(String text) {
+        if (text == null) {
+            return null;
+        }
 
-public CologneBuffer(char[] data) {
-this.data = data;
-this.length = data.length;
-}
+        text = preprocess(text);
 
-public CologneBuffer(int buffSize) {
-this.data = new char[buffSize];
-this.length = 0;
-}
+        CologneOutputBuffer output = new CologneOutputBuffer(text.length() * 2);
+        CologneInputBuffer input = new CologneInputBuffer(text.toCharArray());
 
-protected abstract char[] copyData(int param1Int1, int param1Int2);
+        char lastChar = '-';
+        char lastCode = '/';
 
-public int length() {
-return this.length;
-}
+        int rightLength = input.length();
 
-public String toString() {
-return new String(copyData(0, this.length));
-}
-}
+        while (rightLength > 0) {
+            char nextChar, code, chr = input.removeNext();
 
-private class CologneOutputBuffer
-extends CologneBuffer {
-public CologneOutputBuffer(int buffSize) {
-super(buffSize);
-}
+            if ((rightLength = input.length()) > 0) {
+                nextChar = input.getNextChar();
+            } else {
+                nextChar = '-';
+            }
 
-public void addRight(char chr) {
-this.data[this.length] = chr;
-this.length++;
-}
+            if (arrayContains(AEIJOUY, chr)) {
+                code = '0';
+            } else if (chr == 'H' || chr < 'A' || chr > 'Z') {
+                if (lastCode == '/') {
+                    continue;
+                }
+                code = '-';
+            } else if (chr == 'B' || (chr == 'P' && nextChar != 'H')) {
+                code = '1';
+            } else if ((chr == 'D' || chr == 'T') && !arrayContains(SCZ, nextChar)) {
+                code = '2';
+            } else if (arrayContains(WFPV, chr)) {
+                code = '3';
+            } else if (arrayContains(GKQ, chr)) {
+                code = '4';
+            } else if (chr == 'X' && !arrayContains(CKQ, lastChar)) {
+                code = '4';
+                input.addLeft('S');
+                rightLength++;
+            } else if (chr == 'S' || chr == 'Z') {
+                code = '8';
+            } else if (chr == 'C') {
+                if (lastCode == '/') {
+                    if (arrayContains(AHKLOQRUX, nextChar)) {
+                        code = '4';
+                    } else {
+                        code = '8';
+                    }
 
-protected char[] copyData(int start, int length) {
-char[] newData = new char[length];
-System.arraycopy(this.data, start, newData, 0, length);
-return newData;
-}
-}
+                } else if (arrayContains(SZ, lastChar) || !arrayContains(AHOUKQX, nextChar)) {
+                    code = '8';
+                } else {
+                    code = '4';
+                }
 
-private class CologneInputBuffer
-extends CologneBuffer {
-public CologneInputBuffer(char[] data) {
-super(data);
-}
+            } else if (arrayContains(TDX, chr)) {
+                code = '8';
+            } else if (chr == 'R') {
+                code = '7';
+            } else if (chr == 'L') {
+                code = '5';
+            } else if (chr == 'M' || chr == 'N') {
+                code = '6';
+            } else {
+                code = chr;
+            }
 
-public void addLeft(char ch) {
-this.length++;
-this.data[getNextPos()] = ch;
-}
+            if (code != '-' && ((lastCode != code && (code != '0' || lastCode == '/')) || code < '0' || code > '8')) {
+                output.addRight(code);
+            }
 
-protected char[] copyData(int start, int length) {
-char[] newData = new char[length];
-System.arraycopy(this.data, this.data.length - this.length + start, newData, 0, length);
-return newData;
-}
+            lastChar = chr;
+            lastCode = code;
+        }
+        return output.toString();
+    }
 
-public char getNextChar() {
-return this.data[getNextPos()];
-}
+    public Object encode(Object object) throws EncoderException {
+        if (!(object instanceof String)) {
+            throw new EncoderException("This method's parameter was expected to be of the type " + String.class.getName() + ". But actually it was of the type " + object.getClass().getName() + ".");
+        }
 
-protected int getNextPos() {
-return this.data.length - this.length;
-}
+        return encode((String) object);
+    }
 
-public char removeNext() {
-char ch = getNextChar();
-this.length--;
-return ch;
-}
-}
+    public String encode(String text) {
+        return colognePhonetic(text);
+    }
 
-private static final char[][] PREPROCESS_MAP = new char[][] { { 'Ä', 'A' }, { 'Ü', 'U' }, { 'Ö', 'O' }, { 'ß', 'S' } };
+    public boolean isEncodeEqual(String text1, String text2) {
+        return colognePhonetic(text1).equals(colognePhonetic(text2));
+    }
 
-private static boolean arrayContains(char[] arr, char key) {
-for (char element : arr) {
-if (element == key) {
-return true;
-}
-} 
-return false;
-}
+    private String preprocess(String text) {
+        text = text.toUpperCase(Locale.GERMAN);
 
-public String colognePhonetic(String text) {
-if (text == null) {
-return null;
-}
+        char[] chrs = text.toCharArray();
 
-text = preprocess(text);
+        for (int index = 0; index < chrs.length; index++) {
+            if (chrs[index] > 'Z') {
+                for (char[] element : PREPROCESS_MAP) {
+                    if (chrs[index] == element[0]) {
+                        chrs[index] = element[1];
+                        break;
+                    }
+                }
+            }
+        }
+        return new String(chrs);
+    }
 
-CologneOutputBuffer output = new CologneOutputBuffer(text.length() * 2);
-CologneInputBuffer input = new CologneInputBuffer(text.toCharArray());
+    private abstract class CologneBuffer {
+        protected final char[] data;
 
-char lastChar = '-';
-char lastCode = '/';
+        protected int length = 0;
 
-int rightLength = input.length();
+        public CologneBuffer(char[] data) {
+            this.data = data;
+            this.length = data.length;
+        }
 
-while (rightLength > 0) {
-char nextChar, code, chr = input.removeNext();
+        public CologneBuffer(int buffSize) {
+            this.data = new char[buffSize];
+            this.length = 0;
+        }
 
-if ((rightLength = input.length()) > 0) {
-nextChar = input.getNextChar();
-} else {
-nextChar = '-';
-} 
+        protected abstract char[] copyData(int param1Int1, int param1Int2);
 
-if (arrayContains(AEIJOUY, chr)) {
-code = '0';
-} else if (chr == 'H' || chr < 'A' || chr > 'Z') {
-if (lastCode == '/') {
-continue;
-}
-code = '-';
-} else if (chr == 'B' || (chr == 'P' && nextChar != 'H')) {
-code = '1';
-} else if ((chr == 'D' || chr == 'T') && !arrayContains(SCZ, nextChar)) {
-code = '2';
-} else if (arrayContains(WFPV, chr)) {
-code = '3';
-} else if (arrayContains(GKQ, chr)) {
-code = '4';
-} else if (chr == 'X' && !arrayContains(CKQ, lastChar)) {
-code = '4';
-input.addLeft('S');
-rightLength++;
-} else if (chr == 'S' || chr == 'Z') {
-code = '8';
-} else if (chr == 'C') {
-if (lastCode == '/') {
-if (arrayContains(AHKLOQRUX, nextChar)) {
-code = '4';
-} else {
-code = '8';
-}
+        public int length() {
+            return this.length;
+        }
 
-} else if (arrayContains(SZ, lastChar) || !arrayContains(AHOUKQX, nextChar)) {
-code = '8';
-} else {
-code = '4';
-}
+        public String toString() {
+            return new String(copyData(0, this.length));
+        }
+    }
 
-} else if (arrayContains(TDX, chr)) {
-code = '8';
-} else if (chr == 'R') {
-code = '7';
-} else if (chr == 'L') {
-code = '5';
-} else if (chr == 'M' || chr == 'N') {
-code = '6';
-} else {
-code = chr;
-} 
+    private class CologneOutputBuffer
+            extends CologneBuffer {
+        public CologneOutputBuffer(int buffSize) {
+            super(buffSize);
+        }
 
-if (code != '-' && ((lastCode != code && (code != '0' || lastCode == '/')) || code < '0' || code > '8')) {
-output.addRight(code);
-}
+        public void addRight(char chr) {
+            this.data[this.length] = chr;
+            this.length++;
+        }
 
-lastChar = chr;
-lastCode = code;
-} 
-return output.toString();
-}
+        protected char[] copyData(int start, int length) {
+            char[] newData = new char[length];
+            System.arraycopy(this.data, start, newData, 0, length);
+            return newData;
+        }
+    }
 
-public Object encode(Object object) throws EncoderException {
-if (!(object instanceof String)) {
-throw new EncoderException("This method's parameter was expected to be of the type " + String.class.getName() + ". But actually it was of the type " + object.getClass().getName() + ".");
-}
+    private class CologneInputBuffer
+            extends CologneBuffer {
+        public CologneInputBuffer(char[] data) {
+            super(data);
+        }
 
-return encode((String)object);
-}
+        public void addLeft(char ch) {
+            this.length++;
+            this.data[getNextPos()] = ch;
+        }
 
-public String encode(String text) {
-return colognePhonetic(text);
-}
+        protected char[] copyData(int start, int length) {
+            char[] newData = new char[length];
+            System.arraycopy(this.data, this.data.length - this.length + start, newData, 0, length);
+            return newData;
+        }
 
-public boolean isEncodeEqual(String text1, String text2) {
-return colognePhonetic(text1).equals(colognePhonetic(text2));
-}
+        public char getNextChar() {
+            return this.data[getNextPos()];
+        }
 
-private String preprocess(String text) {
-text = text.toUpperCase(Locale.GERMAN);
+        protected int getNextPos() {
+            return this.data.length - this.length;
+        }
 
-char[] chrs = text.toCharArray();
-
-for (int index = 0; index < chrs.length; index++) {
-if (chrs[index] > 'Z') {
-for (char[] element : PREPROCESS_MAP) {
-if (chrs[index] == element[0]) {
-chrs[index] = element[1];
-break;
-} 
-} 
-}
-} 
-return new String(chrs);
-}
+        public char removeNext() {
+            char ch = getNextChar();
+            this.length--;
+            return ch;
+        }
+    }
 }
 

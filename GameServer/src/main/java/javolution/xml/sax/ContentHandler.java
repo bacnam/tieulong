@@ -5,26 +5,26 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 public interface ContentHandler {
-  void setDocumentLocator(Locator paramLocator);
+    void setDocumentLocator(Locator paramLocator);
 
-  void startDocument() throws SAXException;
+    void startDocument() throws SAXException;
 
-  void endDocument() throws SAXException;
+    void endDocument() throws SAXException;
 
-  void startPrefixMapping(CharArray paramCharArray1, CharArray paramCharArray2) throws SAXException;
+    void startPrefixMapping(CharArray paramCharArray1, CharArray paramCharArray2) throws SAXException;
 
-  void endPrefixMapping(CharArray paramCharArray) throws SAXException;
+    void endPrefixMapping(CharArray paramCharArray) throws SAXException;
 
-  void startElement(CharArray paramCharArray1, CharArray paramCharArray2, CharArray paramCharArray3, Attributes paramAttributes) throws SAXException;
+    void startElement(CharArray paramCharArray1, CharArray paramCharArray2, CharArray paramCharArray3, Attributes paramAttributes) throws SAXException;
 
-  void endElement(CharArray paramCharArray1, CharArray paramCharArray2, CharArray paramCharArray3) throws SAXException;
+    void endElement(CharArray paramCharArray1, CharArray paramCharArray2, CharArray paramCharArray3) throws SAXException;
 
-  void characters(char[] paramArrayOfchar, int paramInt1, int paramInt2) throws SAXException;
+    void characters(char[] paramArrayOfchar, int paramInt1, int paramInt2) throws SAXException;
 
-  void ignorableWhitespace(char[] paramArrayOfchar, int paramInt1, int paramInt2) throws SAXException;
+    void ignorableWhitespace(char[] paramArrayOfchar, int paramInt1, int paramInt2) throws SAXException;
 
-  void processingInstruction(CharArray paramCharArray1, CharArray paramCharArray2) throws SAXException;
+    void processingInstruction(CharArray paramCharArray1, CharArray paramCharArray2) throws SAXException;
 
-  void skippedEntity(CharArray paramCharArray) throws SAXException;
+    void skippedEntity(CharArray paramCharArray) throws SAXException;
 }
 

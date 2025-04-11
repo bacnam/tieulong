@@ -4,24 +4,24 @@ import java.io.IOException;
 import java.net.SocketAddress;
 
 public interface SessionRequest {
-  SocketAddress getRemoteAddress();
+    SocketAddress getRemoteAddress();
 
-  SocketAddress getLocalAddress();
+    SocketAddress getLocalAddress();
 
-  Object getAttachment();
+    Object getAttachment();
 
-  boolean isCompleted();
+    boolean isCompleted();
 
-  IOSession getSession();
+    IOSession getSession();
 
-  IOException getException();
+    IOException getException();
 
-  void waitFor() throws InterruptedException;
+    void waitFor() throws InterruptedException;
 
-  void setConnectTimeout(int paramInt);
+    int getConnectTimeout();
 
-  int getConnectTimeout();
+    void setConnectTimeout(int paramInt);
 
-  void cancel();
+    void cancel();
 }
 

@@ -1,17 +1,22 @@
-package com.zhonglian.server.common.db.annotation;@Target({ElementType.FIELD})
+package com.zhonglian.server.common.db.annotation;
+
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DataBaseField { String type();
+public @interface DataBaseField {
+    String type();
 
-int size() default 0;
+    int size() default 0;
 
-String fieldname() default "";
+    String fieldname() default "";
 
-String comment();
+    String comment();
 
-IndexType indextype() default IndexType.None;
+    IndexType indextype() default IndexType.None;
 
-public enum IndexType { None,
-Unique,
-Normal; }
+    public enum IndexType {
+        None,
+        Unique,
+        Normal;
+    }
 }
 

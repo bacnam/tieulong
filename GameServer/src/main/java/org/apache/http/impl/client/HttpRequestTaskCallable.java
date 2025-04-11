@@ -1,72 +1,68 @@
 package org.apache.http.impl.client;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.protocol.HttpContext;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 class HttpRequestTaskCallable<V>
-implements Callable<V>
-{
-private final HttpUriRequest request;
-private final HttpClient httpclient;
-private final AtomicBoolean cancelled = new AtomicBoolean(false);
+        implements Callable<V> {
+    private final HttpUriRequest request;
+    private final HttpClient httpclient;
+    private final AtomicBoolean cancelled = new AtomicBoolean(false);
 
-private final long scheduled = System.currentTimeMillis();
-private long started = -1L;
-private long ended = -1L;
+    private final long scheduled = System.currentTimeMillis();
+    private final HttpContext context;
+    private final ResponseHandler<V> responseHandler;
+    private final FutureCallback<V> callback;
+    private final FutureRequestExecutionMetrics metrics;
+    private long started = -1L;
+    private long ended = -1L;
 
-private final HttpContext context;
+    HttpRequestTaskCallable(HttpClient httpClient, HttpUriRequest request, HttpContext context, ResponseHandler<V> responseHandler, FutureCallback<V> callback, FutureRequestExecutionMetrics metrics) {
+        this.httpclient = httpClient;
+        this.responseHandler = responseHandler;
+        this.request = request;
+        this.context = context;
+        this.callback = callback;
+        this.metrics = metrics;
+    }
 
-private final ResponseHandler<V> responseHandler;
+    public long getScheduled() {
+        return this.scheduled;
+    }
 
-private final FutureCallback<V> callback;
+    public long getStarted() {
+        return this.started;
+    }
 
-private final FutureRequestExecutionMetrics metrics;
+    public long getEnded() {
+        return this.ended;
+    }
 
-HttpRequestTaskCallable(HttpClient httpClient, HttpUriRequest request, HttpContext context, ResponseHandler<V> responseHandler, FutureCallback<V> callback, FutureRequestExecutionMetrics metrics) {
-this.httpclient = httpClient;
-this.responseHandler = responseHandler;
-this.request = request;
-this.context = context;
-this.callback = callback;
-this.metrics = metrics;
-}
+    public V call() throws Exception {
+        if (!this.cancelled.get()) {
 
-public long getScheduled() {
-return this.scheduled;
-}
+            try {
 
-public long getStarted() {
-return this.started;
-}
+            } finally {
 
-public long getEnded() {
-return this.ended;
-}
+                this.metrics.getRequests().increment(this.started);
+                this.metrics.getTasks().increment(this.started);
+                this.metrics.getActiveConnections().decrementAndGet();
+            }
+        }
+        throw new IllegalStateException("call has been cancelled for request " + this.request.getURI());
+    }
 
-public V call() throws Exception {
-if (!this.cancelled.get()) {
-
-try {
-
-} finally {
-
-this.metrics.getRequests().increment(this.started);
-this.metrics.getTasks().increment(this.started);
-this.metrics.getActiveConnections().decrementAndGet();
-} 
-}
-throw new IllegalStateException("call has been cancelled for request " + this.request.getURI());
-}
-
-public void cancel() {
-this.cancelled.set(true);
-if (this.callback != null)
-this.callback.cancelled(); 
-}
+    public void cancel() {
+        this.cancelled.set(true);
+        if (this.callback != null)
+            this.callback.cancelled();
+    }
 }
 

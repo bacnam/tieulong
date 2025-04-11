@@ -1,31 +1,32 @@
 package org.apache.http.nio.reactor;
 
+import org.apache.http.util.CharArrayBuffer;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.CharacterCodingException;
-import org.apache.http.util.CharArrayBuffer;
 
 public interface SessionInputBuffer {
-  boolean hasData();
+    boolean hasData();
 
-  int length();
+    int length();
 
-  int fill(ReadableByteChannel paramReadableByteChannel) throws IOException;
+    int fill(ReadableByteChannel paramReadableByteChannel) throws IOException;
 
-  int read();
+    int read();
 
-  int read(ByteBuffer paramByteBuffer, int paramInt);
+    int read(ByteBuffer paramByteBuffer, int paramInt);
 
-  int read(ByteBuffer paramByteBuffer);
+    int read(ByteBuffer paramByteBuffer);
 
-  int read(WritableByteChannel paramWritableByteChannel, int paramInt) throws IOException;
+    int read(WritableByteChannel paramWritableByteChannel, int paramInt) throws IOException;
 
-  int read(WritableByteChannel paramWritableByteChannel) throws IOException;
+    int read(WritableByteChannel paramWritableByteChannel) throws IOException;
 
-  boolean readLine(CharArrayBuffer paramCharArrayBuffer, boolean paramBoolean) throws CharacterCodingException;
+    boolean readLine(CharArrayBuffer paramCharArrayBuffer, boolean paramBoolean) throws CharacterCodingException;
 
-  String readLine(boolean paramBoolean) throws CharacterCodingException;
+    String readLine(boolean paramBoolean) throws CharacterCodingException;
 }
 

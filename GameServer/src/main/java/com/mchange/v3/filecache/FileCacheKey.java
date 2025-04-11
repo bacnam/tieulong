@@ -3,12 +3,12 @@ package com.mchange.v3.filecache;
 import java.net.URL;
 
 public interface FileCacheKey {
-  URL getURL();
+    URL getURL();
 
-  String getCacheFilePath();
+    String getCacheFilePath();
 
-  boolean equals(Object paramObject);
+    boolean equals(Object paramObject);
 
-  int hashCode();
+    int hashCode();
 }
 

@@ -8,251 +8,249 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassGeneratorImpl
-extends ClassGenerator
-{
-public Class generateClass(String name, Modifiers modifiers, Class[] interfaces, Class superClass, BSHBlock block, boolean isInterface, CallStack callstack, Interpreter interpreter) throws EvalError {
-return generateClassImpl(name, modifiers, interfaces, superClass, block, isInterface, callstack, interpreter);
-}
+        extends ClassGenerator {
+    public static Class generateClassImpl(String name, Modifiers modifiers, Class[] interfaces, Class superClass, BSHBlock block, boolean isInterface, CallStack callstack, Interpreter interpreter) throws EvalError {
+        try {
+            Capabilities.setAccessibility(true);
+        } catch (Exception Unavailable) {
 
-public Object invokeSuperclassMethod(BshClassManager bcm, Object instance, String methodName, Object[] args) throws UtilEvalError, ReflectError, InvocationTargetException {
-return invokeSuperclassMethodImpl(bcm, instance, methodName, args);
-}
+            throw new EvalError("Defining classes currently requires reflective Accessibility.", block, callstack);
+        }
 
-public void setInstanceNameSpaceParent(Object instance, String className, NameSpace parent) {
-This ithis = ClassGeneratorUtil.getClassInstanceThis(instance, className);
+        NameSpace enclosingNameSpace = callstack.top();
+        String packageName = enclosingNameSpace.getPackage();
+        String className = enclosingNameSpace.isClass ? (enclosingNameSpace.getName() + "$" + name) : name;
 
-ithis.getNameSpace().setParent(parent);
-}
+        String fqClassName = (packageName == null) ? className : (packageName + "." + className);
 
-public static Class generateClassImpl(String name, Modifiers modifiers, Class[] interfaces, Class superClass, BSHBlock block, boolean isInterface, CallStack callstack, Interpreter interpreter) throws EvalError {
-try {
-Capabilities.setAccessibility(true);
-} catch (Exception Unavailable) {
+        String bshStaticFieldName = "_bshStatic" + className;
 
-throw new EvalError("Defining classes currently requires reflective Accessibility.", block, callstack);
-} 
+        BshClassManager bcm = interpreter.getClassManager();
 
-NameSpace enclosingNameSpace = callstack.top();
-String packageName = enclosingNameSpace.getPackage();
-String className = enclosingNameSpace.isClass ? (enclosingNameSpace.getName() + "$" + name) : name;
+        bcm.definingClass(fqClassName);
 
-String fqClassName = (packageName == null) ? className : (packageName + "." + className);
+        NameSpace classStaticNameSpace = new NameSpace(enclosingNameSpace, className);
 
-String bshStaticFieldName = "_bshStatic" + className;
+        classStaticNameSpace.isClass = true;
 
-BshClassManager bcm = interpreter.getClassManager();
+        callstack.push(classStaticNameSpace);
 
-bcm.definingClass(fqClassName);
+        block.evalBlock(callstack, interpreter, true, ClassNodeFilter.CLASSCLASSES);
 
-NameSpace classStaticNameSpace = new NameSpace(enclosingNameSpace, className);
+        Variable[] variables = getDeclaredVariables(block, callstack, interpreter, packageName);
 
-classStaticNameSpace.isClass = true;
+        DelayedEvalBshMethod[] methods = getDeclaredMethods(block, callstack, interpreter, packageName);
 
-callstack.push(classStaticNameSpace);
+        Class genClass = null;
 
-block.evalBlock(callstack, interpreter, true, ClassNodeFilter.CLASSCLASSES);
+        if (genClass == null) {
 
-Variable[] variables = getDeclaredVariables(block, callstack, interpreter, packageName);
+            Interpreter.debug("generating class: " + fqClassName);
+            ClassGeneratorUtil classGenerator = new ClassGeneratorUtil(modifiers, className, packageName, superClass, interfaces, variables, methods, classStaticNameSpace, isInterface);
 
-DelayedEvalBshMethod[] methods = getDeclaredMethods(block, callstack, interpreter, packageName);
+            byte[] code = classGenerator.generateClass();
 
-Class genClass = null;
+            debugClasses(className, code);
 
-if (genClass == null) {
+            genClass = bcm.defineClass(fqClassName, code);
+        } else {
 
-Interpreter.debug("generating class: " + fqClassName);
-ClassGeneratorUtil classGenerator = new ClassGeneratorUtil(modifiers, className, packageName, superClass, interfaces, variables, methods, classStaticNameSpace, isInterface);
+            Interpreter.debug("Found existing generated class: " + fqClassName);
+        }
 
-byte[] code = classGenerator.generateClass();
+        enclosingNameSpace.importClass(fqClassName.replace('$', '.'));
 
-debugClasses(className, code);
+        try {
+            classStaticNameSpace.setLocalVariable("_bshInstanceInitializer", block, false);
+        } catch (UtilEvalError e) {
+            throw new InterpreterError("unable to init static: " + e);
+        }
 
-genClass = bcm.defineClass(fqClassName, code);
-} else {
+        classStaticNameSpace.setClassStatic(genClass);
 
-Interpreter.debug("Found existing generated class: " + fqClassName);
-} 
+        block.evalBlock(callstack, interpreter, true, ClassNodeFilter.CLASSSTATIC);
 
-enclosingNameSpace.importClass(fqClassName.replace('$', '.'));
+        callstack.pop();
 
-try {
-classStaticNameSpace.setLocalVariable("_bshInstanceInitializer", block, false);
-}
-catch (UtilEvalError e) {
-throw new InterpreterError("unable to init static: " + e);
-} 
+        if (!genClass.isInterface()) {
 
-classStaticNameSpace.setClassStatic(genClass);
+            try {
 
-block.evalBlock(callstack, interpreter, true, ClassNodeFilter.CLASSSTATIC);
+                LHS lhs = Reflect.getLHSStaticField(genClass, bshStaticFieldName);
+                lhs.assign(classStaticNameSpace.getThis(interpreter), false);
+            } catch (Exception e) {
+                throw new InterpreterError("Error in class gen setup: " + e);
+            }
+        }
 
-callstack.pop();
+        bcm.doneDefiningClass(fqClassName);
+        return genClass;
+    }
 
-if (!genClass.isInterface()) {
+    private static void debugClasses(String className, byte[] code) {
+        String dir = System.getProperty("debugClasses");
+        if (dir != null) {
+            try {
+                FileOutputStream out = new FileOutputStream(dir + "/" + className + ".class");
 
-try {
+                out.write(code);
+                out.close();
+            } catch (IOException e) {
+            }
+        }
+    }
 
-LHS lhs = Reflect.getLHSStaticField(genClass, bshStaticFieldName);
-lhs.assign(classStaticNameSpace.getThis(interpreter), false);
-}
-catch (Exception e) {
-throw new InterpreterError("Error in class gen setup: " + e);
-} 
-}
+    static Variable[] getDeclaredVariables(BSHBlock body, CallStack callstack, Interpreter interpreter, String defaultPackage) {
+        List<Variable> vars = new ArrayList();
+        for (int child = 0; child < body.jjtGetNumChildren(); child++) {
 
-bcm.doneDefiningClass(fqClassName);
-return genClass;
-}
+            SimpleNode node = (SimpleNode) body.jjtGetChild(child);
+            if (node instanceof BSHTypedVariableDeclaration) {
 
-private static void debugClasses(String className, byte[] code) {
-String dir = System.getProperty("debugClasses");
-if (dir != null) {
-try {
-FileOutputStream out = new FileOutputStream(dir + "/" + className + ".class");
+                BSHTypedVariableDeclaration tvd = (BSHTypedVariableDeclaration) node;
 
-out.write(code);
-out.close();
-} catch (IOException e) {}
-}
-}
+                Modifiers modifiers = tvd.modifiers;
 
-static Variable[] getDeclaredVariables(BSHBlock body, CallStack callstack, Interpreter interpreter, String defaultPackage) {
-List<Variable> vars = new ArrayList();
-for (int child = 0; child < body.jjtGetNumChildren(); child++) {
+                String type = tvd.getTypeDescriptor(callstack, interpreter, defaultPackage);
 
-SimpleNode node = (SimpleNode)body.jjtGetChild(child);
-if (node instanceof BSHTypedVariableDeclaration) {
+                BSHVariableDeclarator[] vardec = tvd.getDeclarators();
+                for (int i = 0; i < vardec.length; i++) {
 
-BSHTypedVariableDeclaration tvd = (BSHTypedVariableDeclaration)node;
+                    String name = (vardec[i]).name;
+                    try {
+                        Variable var = new Variable(name, type, null, modifiers);
 
-Modifiers modifiers = tvd.modifiers;
+                        vars.add(var);
+                    } catch (UtilEvalError e) {
+                    }
+                }
+            }
+        }
 
-String type = tvd.getTypeDescriptor(callstack, interpreter, defaultPackage);
+        return vars.<Variable>toArray(new Variable[0]);
+    }
 
-BSHVariableDeclarator[] vardec = tvd.getDeclarators();
-for (int i = 0; i < vardec.length; i++) {
+    static DelayedEvalBshMethod[] getDeclaredMethods(BSHBlock body, CallStack callstack, Interpreter interpreter, String defaultPackage) throws EvalError {
+        List<DelayedEvalBshMethod> methods = new ArrayList();
+        for (int child = 0; child < body.jjtGetNumChildren(); child++) {
 
-String name = (vardec[i]).name;
-try {
-Variable var = new Variable(name, type, null, modifiers);
+            SimpleNode node = (SimpleNode) body.jjtGetChild(child);
+            if (node instanceof BSHMethodDeclaration) {
 
-vars.add(var);
-} catch (UtilEvalError e) {}
-} 
-} 
-} 
+                BSHMethodDeclaration md = (BSHMethodDeclaration) node;
+                md.insureNodesParsed();
+                Modifiers modifiers = md.modifiers;
+                String name = md.name;
+                String returnType = md.getReturnTypeDescriptor(callstack, interpreter, defaultPackage);
 
-return vars.<Variable>toArray(new Variable[0]);
-}
+                BSHReturnType returnTypeNode = md.getReturnTypeNode();
+                BSHFormalParameters paramTypesNode = md.paramsNode;
+                String[] paramTypes = paramTypesNode.getTypeDescriptors(callstack, interpreter, defaultPackage);
 
-static DelayedEvalBshMethod[] getDeclaredMethods(BSHBlock body, CallStack callstack, Interpreter interpreter, String defaultPackage) throws EvalError {
-List<DelayedEvalBshMethod> methods = new ArrayList();
-for (int child = 0; child < body.jjtGetNumChildren(); child++) {
+                DelayedEvalBshMethod bm = new DelayedEvalBshMethod(name, returnType, returnTypeNode, md.paramsNode.getParamNames(), paramTypes, paramTypesNode, md.blockNode, null, modifiers, callstack, interpreter);
 
-SimpleNode node = (SimpleNode)body.jjtGetChild(child);
-if (node instanceof BSHMethodDeclaration) {
+                methods.add(bm);
+            }
+        }
 
-BSHMethodDeclaration md = (BSHMethodDeclaration)node;
-md.insureNodesParsed();
-Modifiers modifiers = md.modifiers;
-String name = md.name;
-String returnType = md.getReturnTypeDescriptor(callstack, interpreter, defaultPackage);
+        return methods.<DelayedEvalBshMethod>toArray(new DelayedEvalBshMethod[0]);
+    }
 
-BSHReturnType returnTypeNode = md.getReturnTypeNode();
-BSHFormalParameters paramTypesNode = md.paramsNode;
-String[] paramTypes = paramTypesNode.getTypeDescriptors(callstack, interpreter, defaultPackage);
+    public static Object invokeSuperclassMethodImpl(BshClassManager bcm, Object instance, String methodName, Object[] args) throws UtilEvalError, ReflectError, InvocationTargetException {
+        String superName = "_bshSuper" + methodName;
 
-DelayedEvalBshMethod bm = new DelayedEvalBshMethod(name, returnType, returnTypeNode, md.paramsNode.getParamNames(), paramTypes, paramTypesNode, md.blockNode, null, modifiers, callstack, interpreter);
+        Class<?> clas = instance.getClass();
+        Method superMethod = Reflect.resolveJavaMethod(bcm, clas, superName, Types.getTypes(args), false);
 
-methods.add(bm);
-} 
-} 
+        if (superMethod != null) {
+            return Reflect.invokeMethod(superMethod, instance, args);
+        }
 
-return methods.<DelayedEvalBshMethod>toArray(new DelayedEvalBshMethod[0]);
-}
+        Class<?> superClass = clas.getSuperclass();
+        superMethod = Reflect.resolveExpectedJavaMethod(bcm, superClass, instance, methodName, args, false);
 
-static class ClassNodeFilter
-implements BSHBlock.NodeFilter
-{
-public static final int STATIC = 0;
+        return Reflect.invokeMethod(superMethod, instance, args);
+    }
 
-public static final int INSTANCE = 1;
+    private static Class getExistingGeneratedClass(BshClassManager bcm, String fqClassName, String bshStaticFieldName) {
+        Class genClass = bcm.classForName(fqClassName);
 
-public static final int CLASSES = 2;
+        boolean isGenClass = false;
+        if (genClass != null) {
+            try {
+                isGenClass = (Reflect.resolveJavaField(genClass, bshStaticFieldName, true) != null);
+            } catch (Exception e) {
+            }
+        }
+        return isGenClass ? genClass : null;
+    }
 
-public static ClassNodeFilter CLASSSTATIC = new ClassNodeFilter(0);
+    public Class generateClass(String name, Modifiers modifiers, Class[] interfaces, Class superClass, BSHBlock block, boolean isInterface, CallStack callstack, Interpreter interpreter) throws EvalError {
+        return generateClassImpl(name, modifiers, interfaces, superClass, block, isInterface, callstack, interpreter);
+    }
 
-public static ClassNodeFilter CLASSINSTANCE = new ClassNodeFilter(1);
+    public Object invokeSuperclassMethod(BshClassManager bcm, Object instance, String methodName, Object[] args) throws UtilEvalError, ReflectError, InvocationTargetException {
+        return invokeSuperclassMethodImpl(bcm, instance, methodName, args);
+    }
 
-public static ClassNodeFilter CLASSCLASSES = new ClassNodeFilter(2);
+    public void setInstanceNameSpaceParent(Object instance, String className, NameSpace parent) {
+        This ithis = ClassGeneratorUtil.getClassInstanceThis(instance, className);
 
-int context;
+        ithis.getNameSpace().setParent(parent);
+    }
 
-private ClassNodeFilter(int context) {
-this.context = context;
-}
+    static class ClassNodeFilter
+            implements BSHBlock.NodeFilter {
+        public static final int STATIC = 0;
 
-public boolean isVisible(SimpleNode node) {
-if (this.context == 2) {
-return node instanceof BSHClassDeclaration;
-}
+        public static final int INSTANCE = 1;
 
-if (node instanceof BSHClassDeclaration) {
-return false;
-}
-if (this.context == 0) {
-return isStatic(node);
-}
-if (this.context == 1) {
-return !isStatic(node);
-}
+        public static final int CLASSES = 2;
 
-return true;
-}
+        public static ClassNodeFilter CLASSSTATIC = new ClassNodeFilter(0);
 
-boolean isStatic(SimpleNode node) {
-if (node instanceof BSHTypedVariableDeclaration) {
-return (((BSHTypedVariableDeclaration)node).modifiers != null && ((BSHTypedVariableDeclaration)node).modifiers.hasModifier("static"));
-}
+        public static ClassNodeFilter CLASSINSTANCE = new ClassNodeFilter(1);
 
-if (node instanceof BSHMethodDeclaration) {
-return (((BSHMethodDeclaration)node).modifiers != null && ((BSHMethodDeclaration)node).modifiers.hasModifier("static"));
-}
+        public static ClassNodeFilter CLASSCLASSES = new ClassNodeFilter(2);
 
-if (node instanceof BSHBlock) {
-return false;
-}
-return false;
-}
-}
+        int context;
 
-public static Object invokeSuperclassMethodImpl(BshClassManager bcm, Object instance, String methodName, Object[] args) throws UtilEvalError, ReflectError, InvocationTargetException {
-String superName = "_bshSuper" + methodName;
+        private ClassNodeFilter(int context) {
+            this.context = context;
+        }
 
-Class<?> clas = instance.getClass();
-Method superMethod = Reflect.resolveJavaMethod(bcm, clas, superName, Types.getTypes(args), false);
+        public boolean isVisible(SimpleNode node) {
+            if (this.context == 2) {
+                return node instanceof BSHClassDeclaration;
+            }
 
-if (superMethod != null) {
-return Reflect.invokeMethod(superMethod, instance, args);
-}
+            if (node instanceof BSHClassDeclaration) {
+                return false;
+            }
+            if (this.context == 0) {
+                return isStatic(node);
+            }
+            if (this.context == 1) {
+                return !isStatic(node);
+            }
 
-Class<?> superClass = clas.getSuperclass();
-superMethod = Reflect.resolveExpectedJavaMethod(bcm, superClass, instance, methodName, args, false);
+            return true;
+        }
 
-return Reflect.invokeMethod(superMethod, instance, args);
-}
+        boolean isStatic(SimpleNode node) {
+            if (node instanceof BSHTypedVariableDeclaration) {
+                return (((BSHTypedVariableDeclaration) node).modifiers != null && ((BSHTypedVariableDeclaration) node).modifiers.hasModifier("static"));
+            }
 
-private static Class getExistingGeneratedClass(BshClassManager bcm, String fqClassName, String bshStaticFieldName) {
-Class genClass = bcm.classForName(fqClassName);
+            if (node instanceof BSHMethodDeclaration) {
+                return (((BSHMethodDeclaration) node).modifiers != null && ((BSHMethodDeclaration) node).modifiers.hasModifier("static"));
+            }
 
-boolean isGenClass = false;
-if (genClass != null) {
-try {
-isGenClass = (Reflect.resolveJavaField(genClass, bshStaticFieldName, true) != null);
-}
-catch (Exception e) {}
-}
-return isGenClass ? genClass : null;
-}
+            if (node instanceof BSHBlock) {
+                return false;
+            }
+            return false;
+        }
+    }
 }
 

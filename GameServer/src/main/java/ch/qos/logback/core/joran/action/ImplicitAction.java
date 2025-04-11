@@ -5,6 +5,6 @@ import ch.qos.logback.core.joran.spi.InterpretationContext;
 import org.xml.sax.Attributes;
 
 public abstract class ImplicitAction extends Action {
-  public abstract boolean isApplicable(ElementPath paramElementPath, Attributes paramAttributes, InterpretationContext paramInterpretationContext);
+    public abstract boolean isApplicable(ElementPath paramElementPath, Attributes paramAttributes, InterpretationContext paramInterpretationContext);
 }
 

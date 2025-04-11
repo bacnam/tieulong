@@ -1,21 +1,12 @@
 package bsh.classpath;
 
 import bsh.BshClassManager;
+
 import java.util.HashMap;
 
 public class DiscreteFilesClassLoader
         extends BshClassLoader {
     ClassSourceMap map;
-
-    public static class ClassSourceMap extends HashMap<String, Object> {
-        public void put(String name, BshClassPath.ClassSource source) {
-            put(name, source);
-        }
-
-        public BshClassPath.ClassSource get(String name) {
-            return (BshClassPath.ClassSource) get(name);
-        }
-    }
 
     public DiscreteFilesClassLoader(BshClassManager classManager, ClassSourceMap map) {
         super(classManager);
@@ -36,5 +27,15 @@ public class DiscreteFilesClassLoader
 
     public String toString() {
         return super.toString() + "for files: " + this.map;
+    }
+
+    public static class ClassSourceMap extends HashMap<String, Object> {
+        public void put(String name, BshClassPath.ClassSource source) {
+            put(name, source);
+        }
+
+        public BshClassPath.ClassSource get(String name) {
+            return (BshClassPath.ClassSource) get(name);
+        }
     }
 }

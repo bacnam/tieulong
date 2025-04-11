@@ -7,203 +7,195 @@ import com.mchange.v2.io.FileIterator;
 import com.mchange.v2.log.MLevel;
 import com.mchange.v2.log.MLog;
 import com.mchange.v2.log.MLogger;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class FileCache
-{
-static final MLogger logger = MLog.getLogger(FileCache.class);
+public final class FileCache {
+    static final MLogger logger = MLog.getLogger(FileCache.class);
+    static final FileFilter NOT_DIR_FF = new FileFilter() {
+        public boolean accept(File param1File) {
+            return !param1File.isDirectory();
+        }
+    };
+    final File cacheDir;
+    final int buffer_size;
+    final boolean read_only;
+    final List<URLFetcher> fetchers;
 
-final File cacheDir;
+    public FileCache(File paramFile, int paramInt, boolean paramBoolean) throws IOException {
+        this(paramFile, paramInt, paramBoolean, Collections.singletonList(URLFetchers.DEFAULT));
+    }
 
-final int buffer_size;
+    public FileCache(File paramFile, int paramInt, boolean paramBoolean, URLFetcher... paramVarArgs) throws IOException {
+        this(paramFile, paramInt, paramBoolean, Arrays.asList(paramVarArgs));
+    }
 
-final boolean read_only;
-final List<URLFetcher> fetchers;
+    public FileCache(File paramFile, int paramInt, boolean paramBoolean, List<URLFetcher> paramList) throws IOException {
+        this.cacheDir = paramFile;
+        this.buffer_size = paramInt;
+        this.read_only = paramBoolean;
 
-private InputStream fetchURL(URL paramURL) throws IOException {
-LinkedList<IOException> linkedList = null;
-for (URLFetcher uRLFetcher : this.fetchers) {
-try {
-return uRLFetcher.openStream(paramURL, logger);
-} catch (FileNotFoundException fileNotFoundException) {
-throw fileNotFoundException;
-} catch (IOException iOException) {
+        this.fetchers = Collections.unmodifiableList(paramList);
 
-if (logger.isLoggable(MLevel.FINE))
-logger.log(MLevel.FINE, "URLFetcher " + uRLFetcher + " failed on Exception. Will try next fetcher, if any.", iOException); 
-if (linkedList == null)
-linkedList = new LinkedList(); 
-linkedList.add(iOException);
-} 
-} 
-if (logger.isLoggable(MLevel.WARNING)) {
+        if (paramFile.exists()) {
 
-logger.log(MLevel.WARNING, "All URLFetchers failed on URL " + paramURL); byte b; int i;
-for (b = 0, i = linkedList.size(); b < i; b++) {
-logger.log(MLevel.WARNING, "URLFetcher Exception #" + (b + 1), linkedList.get(b));
-}
-} 
+            if (!paramFile.isDirectory()) {
+                loggedIOException(MLevel.SEVERE, paramFile + "exists and is not a directory. Can't use as cacheDir.");
+            } else if (!paramFile.canRead()) {
+                loggedIOException(MLevel.SEVERE, paramFile + "must be readable.");
+            } else if (!paramFile.canWrite() && !paramBoolean) {
+                loggedIOException(MLevel.SEVERE, paramFile + "not writable, and not read only.");
+            }
+        } else if (!paramFile.mkdir()) {
+            loggedIOException(MLevel.SEVERE, paramFile + "does not exist and could not be created.");
+        }
+    }
 
-throw new IOException("Failed to fetch URL '" + paramURL + "'.");
-}
+    private InputStream fetchURL(URL paramURL) throws IOException {
+        LinkedList<IOException> linkedList = null;
+        for (URLFetcher uRLFetcher : this.fetchers) {
+            try {
+                return uRLFetcher.openStream(paramURL, logger);
+            } catch (FileNotFoundException fileNotFoundException) {
+                throw fileNotFoundException;
+            } catch (IOException iOException) {
 
-public FileCache(File paramFile, int paramInt, boolean paramBoolean) throws IOException {
-this(paramFile, paramInt, paramBoolean, Collections.singletonList(URLFetchers.DEFAULT));
-}
-public FileCache(File paramFile, int paramInt, boolean paramBoolean, URLFetcher... paramVarArgs) throws IOException {
-this(paramFile, paramInt, paramBoolean, Arrays.asList(paramVarArgs));
-}
+                if (logger.isLoggable(MLevel.FINE))
+                    logger.log(MLevel.FINE, "URLFetcher " + uRLFetcher + " failed on Exception. Will try next fetcher, if any.", iOException);
+                if (linkedList == null)
+                    linkedList = new LinkedList();
+                linkedList.add(iOException);
+            }
+        }
+        if (logger.isLoggable(MLevel.WARNING)) {
 
-public FileCache(File paramFile, int paramInt, boolean paramBoolean, List<URLFetcher> paramList) throws IOException {
-this.cacheDir = paramFile;
-this.buffer_size = paramInt;
-this.read_only = paramBoolean;
+            logger.log(MLevel.WARNING, "All URLFetchers failed on URL " + paramURL);
+            byte b;
+            int i;
+            for (b = 0, i = linkedList.size(); b < i; b++) {
+                logger.log(MLevel.WARNING, "URLFetcher Exception #" + (b + 1), linkedList.get(b));
+            }
+        }
 
-this.fetchers = Collections.unmodifiableList(paramList);
+        throw new IOException("Failed to fetch URL '" + paramURL + "'.");
+    }
 
-if (paramFile.exists()) {
+    public void ensureCached(FileCacheKey paramFileCacheKey, boolean paramBoolean) throws IOException {
+        File file = file(paramFileCacheKey);
 
-if (!paramFile.isDirectory()) {
-loggedIOException(MLevel.SEVERE, paramFile + "exists and is not a directory. Can't use as cacheDir.");
-} else if (!paramFile.canRead()) {
-loggedIOException(MLevel.SEVERE, paramFile + "must be readable.");
-} else if (!paramFile.canWrite() && !paramBoolean) {
-loggedIOException(MLevel.SEVERE, paramFile + "not writable, and not read only.");
-} 
-} else if (!paramFile.mkdir()) {
-loggedIOException(MLevel.SEVERE, paramFile + "does not exist and could not be created.");
-} 
-}
+        if (!this.read_only) {
 
-public void ensureCached(FileCacheKey paramFileCacheKey, boolean paramBoolean) throws IOException {
-File file = file(paramFileCacheKey);
+            if (paramBoolean || !file.exists()) {
 
-if (!this.read_only) {
+                BufferedInputStream bufferedInputStream = null;
+                BufferedOutputStream bufferedOutputStream = null;
 
-if (paramBoolean || !file.exists()) {
+                try {
+                    if (logger.isLoggable(MLevel.FINE))
+                        logger.log(MLevel.FINE, "Caching file for " + paramFileCacheKey + " to " + file.getAbsolutePath() + "...");
+                    File file1 = file.getParentFile();
+                    if (!file1.exists()) file1.mkdirs();
 
-BufferedInputStream bufferedInputStream = null;
-BufferedOutputStream bufferedOutputStream = null;
+                    bufferedInputStream = new BufferedInputStream(fetchURL(paramFileCacheKey.getURL()), this.buffer_size);
+                    bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file), this.buffer_size);
+                    int i;
+                    for (i = bufferedInputStream.read(); i >= 0; i = bufferedInputStream.read()) {
+                        bufferedOutputStream.write(i);
+                    }
+                    if (logger.isLoggable(MLevel.INFO)) {
+                        logger.log(MLevel.INFO, "Cached file for " + paramFileCacheKey + ".");
+                    }
+                } catch (IOException iOException) {
 
-try {
-if (logger.isLoggable(MLevel.FINE))
-logger.log(MLevel.FINE, "Caching file for " + paramFileCacheKey + " to " + file.getAbsolutePath() + "..."); 
-File file1 = file.getParentFile();
-if (!file1.exists()) file1.mkdirs();
+                    logger.log(MLevel.WARNING, "An exception occurred while caching file for " + paramFileCacheKey + ". Deleting questionable cached file.", iOException);
+                    file.delete();
+                    throw iOException;
+                } finally {
 
-bufferedInputStream = new BufferedInputStream(fetchURL(paramFileCacheKey.getURL()), this.buffer_size);
-bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file), this.buffer_size); int i;
-for (i = bufferedInputStream.read(); i >= 0; i = bufferedInputStream.read()) {
-bufferedOutputStream.write(i);
-}
-if (logger.isLoggable(MLevel.INFO)) {
-logger.log(MLevel.INFO, "Cached file for " + paramFileCacheKey + ".");
-}
-} catch (IOException iOException) {
+                    InputStreamUtils.attemptClose(bufferedInputStream);
+                    OutputStreamUtils.attemptClose(bufferedOutputStream);
 
-logger.log(MLevel.WARNING, "An exception occurred while caching file for " + paramFileCacheKey + ". Deleting questionable cached file.", iOException);
-file.delete();
-throw iOException;
-}
-finally {
+                }
 
-InputStreamUtils.attemptClose(bufferedInputStream);
-OutputStreamUtils.attemptClose(bufferedOutputStream);
+            } else if (logger.isLoggable(MLevel.FINE)) {
+                logger.log(MLevel.FINE, "File for " + paramFileCacheKey + " already exists and force_reacquire is not set.");
+            }
+        } else {
+            if (paramBoolean) {
 
-}
+                String str = "force_reacquire canot be set on a read_only FileCache.";
+                IllegalArgumentException illegalArgumentException = new IllegalArgumentException(str);
+                logger.log(MLevel.WARNING, str, illegalArgumentException);
+                throw illegalArgumentException;
+            }
+            if (!file.exists()) {
 
-}
-else if (logger.isLoggable(MLevel.FINE)) {
-logger.log(MLevel.FINE, "File for " + paramFileCacheKey + " already exists and force_reacquire is not set.");
-} 
-} else {
-if (paramBoolean) {
+                String str = "Cache is read only, and file for key '" + paramFileCacheKey + "' does not exist.";
+                FileNotCachedException fileNotCachedException = new FileNotCachedException(str);
+                logger.log(MLevel.FINE, str, fileNotCachedException);
+                throw fileNotCachedException;
+            }
+        }
+    }
 
-String str = "force_reacquire canot be set on a read_only FileCache.";
-IllegalArgumentException illegalArgumentException = new IllegalArgumentException(str);
-logger.log(MLevel.WARNING, str, illegalArgumentException);
-throw illegalArgumentException;
-} 
-if (!file.exists()) {
+    public InputStream fetch(FileCacheKey paramFileCacheKey, boolean paramBoolean) throws IOException {
+        ensureCached(paramFileCacheKey, paramBoolean);
+        return new FileInputStream(file(paramFileCacheKey));
+    }
 
-String str = "Cache is read only, and file for key '" + paramFileCacheKey + "' does not exist.";
-FileNotCachedException fileNotCachedException = new FileNotCachedException(str);
-logger.log(MLevel.FINE, str, fileNotCachedException);
-throw fileNotCachedException;
-} 
-} 
-}
+    public boolean isCached(FileCacheKey paramFileCacheKey) throws IOException {
+        return file(paramFileCacheKey).exists();
+    }
 
-public InputStream fetch(FileCacheKey paramFileCacheKey, boolean paramBoolean) throws IOException {
-ensureCached(paramFileCacheKey, paramBoolean);
-return new FileInputStream(file(paramFileCacheKey));
-}
+    public int countCached() throws IOException {
+        byte b = 0;
+        for (FileIterator fileIterator = DirectoryDescentUtils.depthFirstEagerDescent(this.cacheDir, NOT_DIR_FF, false); fileIterator.hasNext(); ) {
 
-public boolean isCached(FileCacheKey paramFileCacheKey) throws IOException {
-return file(paramFileCacheKey).exists();
-}
-static final FileFilter NOT_DIR_FF = new FileFilter()
-{
-public boolean accept(File param1File) {
-return !param1File.isDirectory();
-}
-};
+            fileIterator.next();
+            b++;
+        }
+        return b;
+    }
 
-static class NotDirAndFileFilter implements FileFilter {
-FileFilter ff;
+    public int countCached(FileFilter paramFileFilter) throws IOException {
+        byte b = 0;
+        for (FileIterator fileIterator = DirectoryDescentUtils.depthFirstEagerDescent(this.cacheDir, new NotDirAndFileFilter(paramFileFilter), false); fileIterator.hasNext(); ) {
 
-NotDirAndFileFilter(FileFilter param1FileFilter) {
-this.ff = param1FileFilter;
-}
-public boolean accept(File param1File) {
-return (!param1File.isDirectory() && this.ff.accept(param1File));
-}
-}
+            fileIterator.next();
+            b++;
+        }
+        return b;
+    }
 
-public int countCached() throws IOException {
-byte b = 0;
-for (FileIterator fileIterator = DirectoryDescentUtils.depthFirstEagerDescent(this.cacheDir, NOT_DIR_FF, false); fileIterator.hasNext(); ) {
+    public File fileForKey(FileCacheKey paramFileCacheKey) {
+        return file(paramFileCacheKey);
+    }
 
-fileIterator.next();
-b++;
-} 
-return b;
-}
+    private File file(FileCacheKey paramFileCacheKey) {
+        return new File(this.cacheDir, paramFileCacheKey.getCacheFilePath());
+    }
 
-public int countCached(FileFilter paramFileFilter) throws IOException {
-byte b = 0;
-for (FileIterator fileIterator = DirectoryDescentUtils.depthFirstEagerDescent(this.cacheDir, new NotDirAndFileFilter(paramFileFilter), false); fileIterator.hasNext(); ) {
+    private void loggedIOException(MLevel paramMLevel, String paramString) throws IOException {
+        IOException iOException = new IOException(paramString);
+        logger.log(paramMLevel, paramString, iOException);
+        throw iOException;
+    }
 
-fileIterator.next();
-b++;
-} 
-return b;
-}
+    static class NotDirAndFileFilter implements FileFilter {
+        FileFilter ff;
 
-public File fileForKey(FileCacheKey paramFileCacheKey) {
-return file(paramFileCacheKey);
-}
-private File file(FileCacheKey paramFileCacheKey) {
-return new File(this.cacheDir, paramFileCacheKey.getCacheFilePath());
-}
+        NotDirAndFileFilter(FileFilter param1FileFilter) {
+            this.ff = param1FileFilter;
+        }
 
-private void loggedIOException(MLevel paramMLevel, String paramString) throws IOException {
-IOException iOException = new IOException(paramString);
-logger.log(paramMLevel, paramString, iOException);
-throw iOException;
-}
+        public boolean accept(File param1File) {
+            return (!param1File.isDirectory() && this.ff.accept(param1File));
+        }
+    }
 }
 

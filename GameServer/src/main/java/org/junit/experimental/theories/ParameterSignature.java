@@ -3,121 +3,117 @@ package org.junit.experimental.theories;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class ParameterSignature
-{
-private static final Map<Class<?>, Class<?>> CONVERTABLE_TYPES_MAP = buildConvertableTypesMap(); private final Class<?> type;
+public class ParameterSignature {
+    private static final Map<Class<?>, Class<?>> CONVERTABLE_TYPES_MAP = buildConvertableTypesMap();
+    private final Class<?> type;
+    private final Annotation[] annotations;
 
-private static Map<Class<?>, Class<?>> buildConvertableTypesMap() {
-Map<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
+    private ParameterSignature(Class<?> type, Annotation[] annotations) {
+        this.type = type;
+        this.annotations = annotations;
+    }
 
-putSymmetrically(map, boolean.class, Boolean.class);
-putSymmetrically(map, byte.class, Byte.class);
-putSymmetrically(map, short.class, Short.class);
-putSymmetrically(map, char.class, Character.class);
-putSymmetrically(map, int.class, Integer.class);
-putSymmetrically(map, long.class, Long.class);
-putSymmetrically(map, float.class, Float.class);
-putSymmetrically(map, double.class, Double.class);
+    private static Map<Class<?>, Class<?>> buildConvertableTypesMap() {
+        Map<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
 
-return Collections.unmodifiableMap(map);
-}
-private final Annotation[] annotations;
-private static <T> void putSymmetrically(Map<T, T> map, T a, T b) {
-map.put(a, b);
-map.put(b, a);
-}
+        putSymmetrically(map, boolean.class, Boolean.class);
+        putSymmetrically(map, byte.class, Byte.class);
+        putSymmetrically(map, short.class, Short.class);
+        putSymmetrically(map, char.class, Character.class);
+        putSymmetrically(map, int.class, Integer.class);
+        putSymmetrically(map, long.class, Long.class);
+        putSymmetrically(map, float.class, Float.class);
+        putSymmetrically(map, double.class, Double.class);
 
-public static ArrayList<ParameterSignature> signatures(Method method) {
-return signatures(method.getParameterTypes(), method.getParameterAnnotations());
-}
+        return Collections.unmodifiableMap(map);
+    }
 
-public static List<ParameterSignature> signatures(Constructor<?> constructor) {
-return signatures(constructor.getParameterTypes(), constructor.getParameterAnnotations());
-}
+    private static <T> void putSymmetrically(Map<T, T> map, T a, T b) {
+        map.put(a, b);
+        map.put(b, a);
+    }
 
-private static ArrayList<ParameterSignature> signatures(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations) {
-ArrayList<ParameterSignature> sigs = new ArrayList<ParameterSignature>();
-for (int i = 0; i < parameterTypes.length; i++) {
-sigs.add(new ParameterSignature(parameterTypes[i], parameterAnnotations[i]));
-}
+    public static ArrayList<ParameterSignature> signatures(Method method) {
+        return signatures(method.getParameterTypes(), method.getParameterAnnotations());
+    }
 
-return sigs;
-}
+    public static List<ParameterSignature> signatures(Constructor<?> constructor) {
+        return signatures(constructor.getParameterTypes(), constructor.getParameterAnnotations());
+    }
 
-private ParameterSignature(Class<?> type, Annotation[] annotations) {
-this.type = type;
-this.annotations = annotations;
-}
+    private static ArrayList<ParameterSignature> signatures(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations) {
+        ArrayList<ParameterSignature> sigs = new ArrayList<ParameterSignature>();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            sigs.add(new ParameterSignature(parameterTypes[i], parameterAnnotations[i]));
+        }
 
-public boolean canAcceptValue(Object candidate) {
-return (candidate == null) ? (!this.type.isPrimitive()) : canAcceptType(candidate.getClass());
-}
+        return sigs;
+    }
 
-public boolean canAcceptType(Class<?> candidate) {
-return (this.type.isAssignableFrom(candidate) || isAssignableViaTypeConversion(this.type, candidate));
-}
+    public boolean canAcceptValue(Object candidate) {
+        return (candidate == null) ? (!this.type.isPrimitive()) : canAcceptType(candidate.getClass());
+    }
 
-public boolean canPotentiallyAcceptType(Class<?> candidate) {
-return (candidate.isAssignableFrom(this.type) || isAssignableViaTypeConversion(candidate, this.type) || canAcceptType(candidate));
-}
+    public boolean canAcceptType(Class<?> candidate) {
+        return (this.type.isAssignableFrom(candidate) || isAssignableViaTypeConversion(this.type, candidate));
+    }
 
-private boolean isAssignableViaTypeConversion(Class<?> targetType, Class<?> candidate) {
-if (CONVERTABLE_TYPES_MAP.containsKey(candidate)) {
-Class<?> wrapperClass = CONVERTABLE_TYPES_MAP.get(candidate);
-return targetType.isAssignableFrom(wrapperClass);
-} 
-return false;
-}
+    public boolean canPotentiallyAcceptType(Class<?> candidate) {
+        return (candidate.isAssignableFrom(this.type) || isAssignableViaTypeConversion(candidate, this.type) || canAcceptType(candidate));
+    }
 
-public Class<?> getType() {
-return this.type;
-}
+    private boolean isAssignableViaTypeConversion(Class<?> targetType, Class<?> candidate) {
+        if (CONVERTABLE_TYPES_MAP.containsKey(candidate)) {
+            Class<?> wrapperClass = CONVERTABLE_TYPES_MAP.get(candidate);
+            return targetType.isAssignableFrom(wrapperClass);
+        }
+        return false;
+    }
 
-public List<Annotation> getAnnotations() {
-return Arrays.asList(this.annotations);
-}
+    public Class<?> getType() {
+        return this.type;
+    }
 
-public boolean hasAnnotation(Class<? extends Annotation> type) {
-return (getAnnotation(type) != null);
-}
+    public List<Annotation> getAnnotations() {
+        return Arrays.asList(this.annotations);
+    }
 
-public <T extends Annotation> T findDeepAnnotation(Class<T> annotationType) {
-Annotation[] annotations2 = this.annotations;
-return findDeepAnnotation(annotations2, annotationType, 3);
-}
+    public boolean hasAnnotation(Class<? extends Annotation> type) {
+        return (getAnnotation(type) != null);
+    }
 
-private <T extends Annotation> T findDeepAnnotation(Annotation[] annotations, Class<T> annotationType, int depth) {
-if (depth == 0) {
-return null;
-}
-for (Annotation each : annotations) {
-if (annotationType.isInstance(each)) {
-return annotationType.cast(each);
-}
-Annotation candidate = findDeepAnnotation(each.annotationType().getAnnotations(), annotationType, depth - 1);
+    public <T extends Annotation> T findDeepAnnotation(Class<T> annotationType) {
+        Annotation[] annotations2 = this.annotations;
+        return findDeepAnnotation(annotations2, annotationType, 3);
+    }
 
-if (candidate != null) {
-return annotationType.cast(candidate);
-}
-} 
+    private <T extends Annotation> T findDeepAnnotation(Annotation[] annotations, Class<T> annotationType, int depth) {
+        if (depth == 0) {
+            return null;
+        }
+        for (Annotation each : annotations) {
+            if (annotationType.isInstance(each)) {
+                return annotationType.cast(each);
+            }
+            Annotation candidate = findDeepAnnotation(each.annotationType().getAnnotations(), annotationType, depth - 1);
 
-return null;
-}
+            if (candidate != null) {
+                return annotationType.cast(candidate);
+            }
+        }
 
-public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-for (Annotation each : getAnnotations()) {
-if (annotationType.isInstance(each)) {
-return annotationType.cast(each);
-}
-} 
-return null;
-}
+        return null;
+    }
+
+    public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+        for (Annotation each : getAnnotations()) {
+            if (annotationType.isInstance(each)) {
+                return annotationType.cast(each);
+            }
+        }
+        return null;
+    }
 }
 

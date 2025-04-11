@@ -9,36 +9,38 @@ import core.database.game.bo.ActivityBO;
 import core.server.OpenSeverTime;
 
 public class MysteryStore
-extends Activity
-{
-private int begin;
+        extends Activity {
+    private int begin;
 
-public MysteryStore(ActivityBO data) {
-super(data);
+    public MysteryStore(ActivityBO data) {
+        super(data);
 
-this.begin = 0;
-}
+        this.begin = 0;
+    }
 
-public void load(JsonObject json) throws WSException {
-this.begin = json.get("begin").getAsInt();
-}
+    public void load(JsonObject json) throws WSException {
+        this.begin = json.get("begin").getAsInt();
+    }
 
-public String check(JsonObject json) throws RequestException {
-return "ok";
-}
+    public String check(JsonObject json) throws RequestException {
+        return "ok";
+    }
 
-public ActivityType getType() {
-return ActivityType.MysteryStore;
-}
+    public ActivityType getType() {
+        return ActivityType.MysteryStore;
+    }
 
-public void onOpen() {}
+    public void onOpen() {
+    }
 
-public void onEnd() {}
+    public void onEnd() {
+    }
 
-public void onClosed() {}
+    public void onClosed() {
+    }
 
-public int getBeginTime() {
-return OpenSeverTime.getInstance().getOpenZeroTime() + this.begin;
-}
+    public int getBeginTime() {
+        return OpenSeverTime.getInstance().getOpenZeroTime() + this.begin;
+    }
 }
 

@@ -5,12 +5,12 @@ import java.net.SocketAddress;
 import java.util.Set;
 
 public interface ListeningIOReactor extends IOReactor {
-  ListenerEndpoint listen(SocketAddress paramSocketAddress);
+    ListenerEndpoint listen(SocketAddress paramSocketAddress);
 
-  void pause() throws IOException;
+    void pause() throws IOException;
 
-  void resume() throws IOException;
+    void resume() throws IOException;
 
-  Set<ListenerEndpoint> getEndpoints();
+    Set<ListenerEndpoint> getEndpoints();
 }
 

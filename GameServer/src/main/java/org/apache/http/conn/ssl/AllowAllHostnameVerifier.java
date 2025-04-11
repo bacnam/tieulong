@@ -5,14 +5,14 @@ import org.apache.http.annotation.Immutable;
 @Deprecated
 @Immutable
 public class AllowAllHostnameVerifier
-extends AbstractVerifier
-{
-public static final AllowAllHostnameVerifier INSTANCE = new AllowAllHostnameVerifier();
+        extends AbstractVerifier {
+    public static final AllowAllHostnameVerifier INSTANCE = new AllowAllHostnameVerifier();
 
-public final void verify(String host, String[] cns, String[] subjectAlts) {}
+    public final void verify(String host, String[] cns, String[] subjectAlts) {
+    }
 
-public final String toString() {
-return "ALLOW_ALL";
-}
+    public final String toString() {
+        return "ALLOW_ALL";
+    }
 }
 

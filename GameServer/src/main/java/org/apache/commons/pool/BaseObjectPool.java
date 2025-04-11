@@ -1,47 +1,46 @@
 package org.apache.commons.pool;
 
 public abstract class BaseObjectPool
-implements ObjectPool
-{
-public abstract Object borrowObject() throws Exception;
+        implements ObjectPool {
+    private volatile boolean closed = false;
 
-public abstract void returnObject(Object paramObject) throws Exception;
+    public abstract Object borrowObject() throws Exception;
 
-public abstract void invalidateObject(Object paramObject) throws Exception;
+    public abstract void returnObject(Object paramObject) throws Exception;
 
-public int getNumIdle() throws UnsupportedOperationException {
-return -1;
-}
+    public abstract void invalidateObject(Object paramObject) throws Exception;
 
-public int getNumActive() throws UnsupportedOperationException {
-return -1;
-}
+    public int getNumIdle() throws UnsupportedOperationException {
+        return -1;
+    }
 
-public void clear() throws Exception, UnsupportedOperationException {
-throw new UnsupportedOperationException();
-}
+    public int getNumActive() throws UnsupportedOperationException {
+        return -1;
+    }
 
-public void addObject() throws Exception, UnsupportedOperationException {
-throw new UnsupportedOperationException();
-}
+    public void clear() throws Exception, UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 
-public void close() throws Exception {
-this.closed = true;
-}
+    public void addObject() throws Exception, UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 
-public void setFactory(PoolableObjectFactory factory) throws IllegalStateException, UnsupportedOperationException {
-throw new UnsupportedOperationException();
-}
+    public void close() throws Exception {
+        this.closed = true;
+    }
 
-protected final boolean isClosed() {
-return this.closed;
-}
+    public void setFactory(PoolableObjectFactory factory) throws IllegalStateException, UnsupportedOperationException {
+        throw new UnsupportedOperationException();
+    }
 
-protected final void assertOpen() throws IllegalStateException {
-if (isClosed())
-throw new IllegalStateException("Pool not open"); 
-}
+    protected final boolean isClosed() {
+        return this.closed;
+    }
 
-private volatile boolean closed = false;
+    protected final void assertOpen() throws IllegalStateException {
+        if (isClosed())
+            throw new IllegalStateException("Pool not open");
+    }
 }
 

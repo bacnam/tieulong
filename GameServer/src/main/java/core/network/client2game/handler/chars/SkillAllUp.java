@@ -16,100 +16,98 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefCharacter;
 import core.config.refdata.ref.RefSkill;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.List;
 
 public class SkillAllUp
-extends PlayerHandler
-{
-public static class Request
-{
-int charId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public static class SkillNotify {
-int charId;
-List<Integer> skill;
+        int skillSize = character.getBo().getSkillSize();
+        int skillNum = 0;
+        int totalMoney = 0;
+        for (int i = 0; i < skillSize * player.getLv(); i++) {
+            int index = 0;
+            for (int j = 0; j < skillSize - 1; j++) {
+                RefCharacter refCharacter1 = (RefCharacter) RefDataMgr.get(RefCharacter.class, Integer.valueOf(req.charId));
+                RefSkill refSkill1 = (RefSkill) RefDataMgr.get(RefSkill.class, refCharacter1.SkillList.get(j + 1));
+                if (refSkill1 == null) {
+                    throw new WSException(ErrorCode.Skill_NotFound, "技能没找到");
+                }
+                if (refSkill1.Require <= player.getLv()) {
+                    if (character.getBo().getSkill(index) > character.getBo().getSkill(j + 1))
+                        index = j + 1;
+                }
+            }
+            int skillLevel = character.getBo().getSkill(index);
 
-public SkillNotify(int charId, List<Integer> skill) {
-this.charId = charId;
-this.skill = skill;
-}
-}
+            if (skillLevel + 1 >= player.getLv()) {
+                break;
+            }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+            if (skillLevel + 1 >= RefDataMgr.getFactor("MaxSkillLevel", 100)) {
+                break;
+            }
 
-int skillSize = character.getBo().getSkillSize();
-int skillNum = 0;
-int totalMoney = 0;
-for (int i = 0; i < skillSize * player.getLv(); i++) {
-int index = 0;
-for (int j = 0; j < skillSize - 1; j++) {
-RefCharacter refCharacter1 = (RefCharacter)RefDataMgr.get(RefCharacter.class, Integer.valueOf(req.charId));
-RefSkill refSkill1 = (RefSkill)RefDataMgr.get(RefSkill.class, refCharacter1.SkillList.get(j + 1));
-if (refSkill1 == null) {
-throw new WSException(ErrorCode.Skill_NotFound, "技能没找到");
-}
-if (refSkill1.Require <= player.getLv())
-{
-if (character.getBo().getSkill(index) > character.getBo().getSkill(j + 1))
-index = j + 1; 
-}
-} 
-int skillLevel = character.getBo().getSkill(index);
+            RefCharacter refCharacter = (RefCharacter) RefDataMgr.get(RefCharacter.class, Integer.valueOf(req.charId));
+            RefSkill refSkill = (RefSkill) RefDataMgr.get(RefSkill.class, refCharacter.SkillList.get(index));
+            if (refSkill == null) {
+                throw new WSException(ErrorCode.Skill_NotFound, "技能没找到");
+            }
 
-if (skillLevel + 1 >= player.getLv()) {
-break;
-}
+            int goldRequired = refSkill.GoldAdd * (skillLevel + 1 - 1) + refSkill.Gold;
 
-if (skillLevel + 1 >= RefDataMgr.getFactor("MaxSkillLevel", 100)) {
-break;
-}
+            totalMoney += goldRequired;
 
-RefCharacter refCharacter = (RefCharacter)RefDataMgr.get(RefCharacter.class, Integer.valueOf(req.charId));
-RefSkill refSkill = (RefSkill)RefDataMgr.get(RefSkill.class, refCharacter.SkillList.get(index));
-if (refSkill == null) {
-throw new WSException(ErrorCode.Skill_NotFound, "技能没找到");
-}
+            if (player.getPlayerBO().getGold() < totalMoney) {
+                totalMoney -= goldRequired;
 
-int goldRequired = refSkill.GoldAdd * (skillLevel + 1 - 1) + refSkill.Gold;
+                break;
+            }
 
-totalMoney += goldRequired;
+            character.getBo().setSkill(index, skillLevel + 1);
+            skillNum++;
+        }
 
-if (player.getPlayerBO().getGold() < totalMoney) {
-totalMoney -= goldRequired;
+        PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        if (!playerCurrency.check(PrizeType.Gold, totalMoney)) {
+            throw new WSException(ErrorCode.NotEnough_Money, "玩家金币:%s<升级金币:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getGold()), Integer.valueOf(totalMoney)});
+        }
 
-break;
-} 
+        playerCurrency.consume(PrizeType.Gold, totalMoney, ItemFlow.SkillLevelUp);
+        character.getBo().saveAll();
 
-character.getBo().setSkill(index, skillLevel + 1);
-skillNum++;
-} 
+        character.onAttrChanged();
 
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-if (!playerCurrency.check(PrizeType.Gold, totalMoney)) {
-throw new WSException(ErrorCode.NotEnough_Money, "玩家金币:%s<升级金币:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getGold()), Integer.valueOf(totalMoney) });
-}
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp, Integer.valueOf(skillNum));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp_M1, Integer.valueOf(skillNum));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp_M2, Integer.valueOf(skillNum));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp_M3, Integer.valueOf(skillNum));
 
-playerCurrency.consume(PrizeType.Gold, totalMoney, ItemFlow.SkillLevelUp);
-character.getBo().saveAll();
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillTotal, Integer.valueOf(skillNum));
 
-character.onAttrChanged();
+        SkillNotify notify = new SkillNotify(character.getCharId(), character.getBo().getSkillAll());
+        request.response(notify);
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp, Integer.valueOf(skillNum));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp_M1, Integer.valueOf(skillNum));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp_M2, Integer.valueOf(skillNum));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillUp_M3, Integer.valueOf(skillNum));
+    public static class Request {
+        int charId;
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.SkillTotal, Integer.valueOf(skillNum));
+    public static class SkillNotify {
+        int charId;
+        List<Integer> skill;
 
-SkillNotify notify = new SkillNotify(character.getCharId(), character.getBo().getSkillAll());
-request.response(notify);
-}
+        public SkillNotify(int charId, List<Integer> skill) {
+            this.charId = charId;
+            this.skill = skill;
+        }
+    }
 }
 

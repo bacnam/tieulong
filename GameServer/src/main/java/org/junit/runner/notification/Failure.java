@@ -1,47 +1,47 @@
 package org.junit.runner.notification;
 
+import org.junit.runner.Description;
+
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
-import org.junit.runner.Description;
 
 public class Failure
-implements Serializable
-{
-private static final long serialVersionUID = 1L;
-private final Description fDescription;
-private final Throwable fThrownException;
+        implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private final Description fDescription;
+    private final Throwable fThrownException;
 
-public Failure(Description description, Throwable thrownException) {
-this.fThrownException = thrownException;
-this.fDescription = description;
-}
+    public Failure(Description description, Throwable thrownException) {
+        this.fThrownException = thrownException;
+        this.fDescription = description;
+    }
 
-public String getTestHeader() {
-return this.fDescription.getDisplayName();
-}
+    public String getTestHeader() {
+        return this.fDescription.getDisplayName();
+    }
 
-public Description getDescription() {
-return this.fDescription;
-}
+    public Description getDescription() {
+        return this.fDescription;
+    }
 
-public Throwable getException() {
-return this.fThrownException;
-}
+    public Throwable getException() {
+        return this.fThrownException;
+    }
 
-public String toString() {
-return getTestHeader() + ": " + this.fThrownException.getMessage();
-}
+    public String toString() {
+        return getTestHeader() + ": " + this.fThrownException.getMessage();
+    }
 
-public String getTrace() {
-StringWriter stringWriter = new StringWriter();
-PrintWriter writer = new PrintWriter(stringWriter);
-getException().printStackTrace(writer);
-return stringWriter.toString();
-}
+    public String getTrace() {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        getException().printStackTrace(writer);
+        return stringWriter.toString();
+    }
 
-public String getMessage() {
-return getException().getMessage();
-}
+    public String getMessage() {
+        return getException().getMessage();
+    }
 }
 

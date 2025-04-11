@@ -1,12 +1,12 @@
 package com.mchange.v1.jvm;
 
 public class TypeFormatException
-extends Exception
-{
-TypeFormatException() {}
+        extends Exception {
+    TypeFormatException() {
+    }
 
-TypeFormatException(String paramString) {
-super(paramString);
-}
+    TypeFormatException(String paramString) {
+        super(paramString);
+    }
 }
 

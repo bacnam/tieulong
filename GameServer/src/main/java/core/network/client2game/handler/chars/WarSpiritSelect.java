@@ -9,27 +9,26 @@ import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
 import core.network.proto.WarSpiritInfo;
+
 import java.io.IOException;
 
 public class WarSpiritSelect
-extends PlayerHandler
-{
-public static class Request
-{
-int spiritId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        WarSpirit warSpirit = ((WarSpiritFeature) player.getFeature(WarSpiritFeature.class)).getWarSpirit(req.spiritId);
+        if (warSpirit == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "战灵[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.spiritId)});
+        }
+        ((WarSpiritFeature) player.getFeature(WarSpiritFeature.class)).setWarSpiritNow(warSpirit);
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-WarSpirit warSpirit = ((WarSpiritFeature)player.getFeature(WarSpiritFeature.class)).getWarSpirit(req.spiritId);
-if (warSpirit == null) {
-throw new WSException(ErrorCode.Char_NotFound, "战灵[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.spiritId) });
-}
-((WarSpiritFeature)player.getFeature(WarSpiritFeature.class)).setWarSpiritNow(warSpirit);
+        warSpirit.onAttrChanged();
 
-warSpirit.onAttrChanged();
+        request.response(new WarSpiritInfo(warSpirit));
+    }
 
-request.response(new WarSpiritInfo(warSpirit));
-}
+    public static class Request {
+        int spiritId;
+    }
 }
 

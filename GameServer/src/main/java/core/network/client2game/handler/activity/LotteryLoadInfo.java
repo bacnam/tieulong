@@ -8,20 +8,19 @@ import com.zhonglian.server.common.enums.ConstEnum;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class LotteryLoadInfo
-extends PlayerHandler
-{
-class Request
-{
-ConstEnum.LotteryType type;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Lottery Lottery = (Lottery) ActivityMgr.getActivity(Lottery.class);
+        request.response(Lottery.loadLotteryInfo(player, req.type));
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Lottery Lottery = (Lottery)ActivityMgr.getActivity(Lottery.class);
-request.response(Lottery.loadLotteryInfo(player, req.type));
-}
+    class Request {
+        ConstEnum.LotteryType type;
+    }
 }
 

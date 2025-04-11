@@ -1,12 +1,12 @@
 package bsh.org.objectweb.asm;
 
 class Edge {
-  int stackSize;
+    int stackSize;
 
-  Label successor;
+    Label successor;
 
-  Edge next;
+    Edge next;
 
-  Edge poolNext;
+    Edge poolNext;
 }
 

@@ -2,19 +2,20 @@ package com.notnoop.apns.internal;
 
 import com.notnoop.apns.ApnsNotification;
 import com.notnoop.exceptions.NetworkIOException;
+
 import java.io.Closeable;
 
 public interface ApnsConnection extends Closeable {
-  public static final int DEFAULT_CACHE_LENGTH = 100;
+    public static final int DEFAULT_CACHE_LENGTH = 100;
 
-  void sendMessage(ApnsNotification paramApnsNotification) throws NetworkIOException;
+    void sendMessage(ApnsNotification paramApnsNotification) throws NetworkIOException;
 
-  void testConnection() throws NetworkIOException;
+    void testConnection() throws NetworkIOException;
 
-  ApnsConnection copy();
+    ApnsConnection copy();
 
-  void setCacheLength(int paramInt);
+    int getCacheLength();
 
-  int getCacheLength();
+    void setCacheLength(int paramInt);
 }
 

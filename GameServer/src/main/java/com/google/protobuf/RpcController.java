@@ -1,20 +1,18 @@
-
-
 package com.google.protobuf;
 
 public interface RpcController {
 
-  void reset();
+    void reset();
 
-  boolean failed();
+    boolean failed();
 
-  String errorText();
+    String errorText();
 
-  void startCancel();
+    void startCancel();
 
-  void setFailed(String reason);
+    void setFailed(String reason);
 
-  boolean isCanceled();
+    boolean isCanceled();
 
-  void notifyOnCancel(RpcCallback<Object> callback);
+    void notifyOnCancel(RpcCallback<Object> callback);
 }

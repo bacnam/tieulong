@@ -1,83 +1,83 @@
 package javolution.util.internal.collection;
 
-import java.util.Iterator;
 import javolution.util.FastSet;
 import javolution.util.function.Equality;
 import javolution.util.service.CollectionService;
 
+import java.util.Iterator;
+
 public class DistinctCollectionImpl<E>
-extends CollectionView<E>
-{
-private static final long serialVersionUID = 1536L;
+        extends CollectionView<E> {
+    private static final long serialVersionUID = 1536L;
 
-private class IteratorImpl
-implements Iterator<E>
-{
-private boolean ahead;
-private final FastSet<E> iterated = new FastSet(DistinctCollectionImpl.this.comparator());
-private E next;
-private final Iterator<E> targetIterator = DistinctCollectionImpl.this.target().iterator();
+    public DistinctCollectionImpl(CollectionService<E> target) {
+        super(target);
+    }
 
-public boolean hasNext() {
-if (this.ahead) return true; 
-while (this.targetIterator.hasNext()) {
-this.next = this.targetIterator.next();
-if (!this.iterated.contains(this.next)) {
-this.ahead = true;
-return true;
-} 
-} 
-return false;
-}
+    public boolean add(E element) {
+        if (target().contains(element)) return false;
+        return target().add(element);
+    }
 
-public E next() {
-hasNext();
-this.ahead = false;
-return this.next;
-}
+    public void clear() {
+        target().clear();
+    }
 
-public void remove() {
-this.targetIterator.remove();
-}
+    public Equality<? super E> comparator() {
+        return target().comparator();
+    }
 
-private IteratorImpl() {}
-}
+    public boolean contains(Object o) {
+        return target().contains(o);
+    }
 
-public DistinctCollectionImpl(CollectionService<E> target) {
-super(target);
-}
+    public boolean isEmpty() {
+        return target().isEmpty();
+    }
 
-public boolean add(E element) {
-if (target().contains(element)) return false; 
-return target().add(element);
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl();
+    }
 
-public void clear() {
-target().clear();
-}
+    public boolean remove(Object o) {
+        boolean changed = false;
+        while (true) {
+            if (!remove(o)) return changed;
+            changed = true;
+        }
+    }
 
-public Equality<? super E> comparator() {
-return target().comparator();
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private final FastSet<E> iterated = new FastSet(DistinctCollectionImpl.this.comparator());
+        private final Iterator<E> targetIterator = DistinctCollectionImpl.this.target().iterator();
+        private boolean ahead;
+        private E next;
 
-public boolean contains(Object o) {
-return target().contains(o);
-}
+        private IteratorImpl() {
+        }
 
-public boolean isEmpty() {
-return target().isEmpty();
-}
+        public boolean hasNext() {
+            if (this.ahead) return true;
+            while (this.targetIterator.hasNext()) {
+                this.next = this.targetIterator.next();
+                if (!this.iterated.contains(this.next)) {
+                    this.ahead = true;
+                    return true;
+                }
+            }
+            return false;
+        }
 
-public Iterator<E> iterator() {
-return new IteratorImpl();
-}
+        public E next() {
+            hasNext();
+            this.ahead = false;
+            return this.next;
+        }
 
-public boolean remove(Object o) {
-boolean changed = false;
-while (true) {
-if (!remove(o)) return changed; 
-changed = true;
-} 
-}
+        public void remove() {
+            this.targetIterator.remove();
+        }
+    }
 }
 

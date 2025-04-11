@@ -54,7 +54,7 @@ class BSHTryStatement
         if (thrown != null) {
 
             int n = catchParams.size();
-            for (i = 0; i < n;) {
+            for (i = 0; i < n; ) {
 
                 BSHFormalParameter fp = (BSHFormalParameter) catchParams.elementAt(i);
 

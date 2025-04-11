@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RefField {
-  boolean iskey() default false;
+    boolean iskey() default false;
 
-  boolean isrequird() default true;
+    boolean isrequird() default true;
 
-  boolean isfield() default true;
+    boolean isfield() default true;
 }
 

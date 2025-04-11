@@ -3,8 +3,8 @@ package org.slf4j.spi;
 import org.slf4j.IMarkerFactory;
 
 public interface MarkerFactoryBinder {
-  IMarkerFactory getMarkerFactory();
+    IMarkerFactory getMarkerFactory();
 
-  String getMarkerFactoryClassStr();
+    String getMarkerFactoryClassStr();
 }
 

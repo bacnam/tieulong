@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
 public @interface ParametersSuppliedBy {
-  Class<? extends ParameterSupplier> value();
+    Class<? extends ParameterSupplier> value();
 }
 

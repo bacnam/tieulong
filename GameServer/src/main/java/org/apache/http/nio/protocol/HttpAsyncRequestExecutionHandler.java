@@ -6,10 +6,10 @@ import org.apache.http.protocol.HttpProcessor;
 
 @Deprecated
 public interface HttpAsyncRequestExecutionHandler<T> extends HttpAsyncRequestProducer, HttpAsyncResponseConsumer<T> {
-  HttpContext getContext();
+    HttpContext getContext();
 
-  HttpProcessor getHttpProcessor();
+    HttpProcessor getHttpProcessor();
 
-  ConnectionReuseStrategy getConnectionReuseStrategy();
+    ConnectionReuseStrategy getConnectionReuseStrategy();
 }
 

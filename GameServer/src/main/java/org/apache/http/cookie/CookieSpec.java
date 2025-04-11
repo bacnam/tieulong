@@ -1,22 +1,23 @@
 package org.apache.http.cookie;
 
-import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.annotation.Obsolete;
 
+import java.util.List;
+
 public interface CookieSpec {
-  @Obsolete
-  int getVersion();
+    @Obsolete
+    int getVersion();
 
-  List<Cookie> parse(Header paramHeader, CookieOrigin paramCookieOrigin) throws MalformedCookieException;
+    List<Cookie> parse(Header paramHeader, CookieOrigin paramCookieOrigin) throws MalformedCookieException;
 
-  void validate(Cookie paramCookie, CookieOrigin paramCookieOrigin) throws MalformedCookieException;
+    void validate(Cookie paramCookie, CookieOrigin paramCookieOrigin) throws MalformedCookieException;
 
-  boolean match(Cookie paramCookie, CookieOrigin paramCookieOrigin);
+    boolean match(Cookie paramCookie, CookieOrigin paramCookieOrigin);
 
-  List<Header> formatCookies(List<Cookie> paramList);
+    List<Header> formatCookies(List<Cookie> paramList);
 
-  @Obsolete
-  Header getVersionHeader();
+    @Obsolete
+    Header getVersionHeader();
 }
 

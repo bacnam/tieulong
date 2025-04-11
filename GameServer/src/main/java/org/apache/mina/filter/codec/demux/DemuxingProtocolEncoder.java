@@ -1,8 +1,5 @@
 package org.apache.mina.filter.codec.demux;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.mina.core.session.AttributeKey;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.session.UnknownMessageTypeException;
@@ -11,204 +8,206 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.apache.mina.util.CopyOnWriteMap;
 import org.apache.mina.util.IdentityHashSet;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class DemuxingProtocolEncoder
-implements ProtocolEncoder
-{
-private final AttributeKey STATE = new AttributeKey(getClass(), "state");
+        implements ProtocolEncoder {
+    private static final Class<?>[] EMPTY_PARAMS = new Class[0];
+    private final AttributeKey STATE = new AttributeKey(getClass(), "state");
+    private final Map<Class<?>, MessageEncoderFactory> type2encoderFactory = (Map<Class<?>, MessageEncoderFactory>) new CopyOnWriteMap();
 
-private final Map<Class<?>, MessageEncoderFactory> type2encoderFactory = (Map<Class<?>, MessageEncoderFactory>)new CopyOnWriteMap();
+    public void addMessageEncoder(Class<?> messageType, Class<? extends MessageEncoder> encoderClass) {
+        if (encoderClass == null) {
+            throw new IllegalArgumentException("encoderClass");
+        }
 
-private static final Class<?>[] EMPTY_PARAMS = new Class[0];
+        try {
+            encoderClass.getConstructor(EMPTY_PARAMS);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException("The specified class doesn't have a public default constructor.");
+        }
 
-public void addMessageEncoder(Class<?> messageType, Class<? extends MessageEncoder> encoderClass) {
-if (encoderClass == null) {
-throw new IllegalArgumentException("encoderClass");
-}
+        boolean registered = false;
+        if (MessageEncoder.class.isAssignableFrom(encoderClass)) {
+            addMessageEncoder(messageType, new DefaultConstructorMessageEncoderFactory(encoderClass));
+            registered = true;
+        }
 
-try {
-encoderClass.getConstructor(EMPTY_PARAMS);
-} catch (NoSuchMethodException e) {
-throw new IllegalArgumentException("The specified class doesn't have a public default constructor.");
-} 
+        if (!registered) {
+            throw new IllegalArgumentException("Unregisterable type: " + encoderClass);
+        }
+    }
 
-boolean registered = false;
-if (MessageEncoder.class.isAssignableFrom(encoderClass)) {
-addMessageEncoder(messageType, new DefaultConstructorMessageEncoderFactory(encoderClass));
-registered = true;
-} 
+    public <T> void addMessageEncoder(Class<T> messageType, MessageEncoder<? super T> encoder) {
+        addMessageEncoder(messageType, new SingletonMessageEncoderFactory<T>(encoder));
+    }
 
-if (!registered) {
-throw new IllegalArgumentException("Unregisterable type: " + encoderClass);
-}
-}
+    public <T> void addMessageEncoder(Class<T> messageType, MessageEncoderFactory<? super T> factory) {
+        if (messageType == null) {
+            throw new IllegalArgumentException("messageType");
+        }
 
-public <T> void addMessageEncoder(Class<T> messageType, MessageEncoder<? super T> encoder) {
-addMessageEncoder(messageType, new SingletonMessageEncoderFactory<T>(encoder));
-}
+        if (factory == null) {
+            throw new IllegalArgumentException("factory");
+        }
 
-public <T> void addMessageEncoder(Class<T> messageType, MessageEncoderFactory<? super T> factory) {
-if (messageType == null) {
-throw new IllegalArgumentException("messageType");
-}
+        synchronized (this.type2encoderFactory) {
+            if (this.type2encoderFactory.containsKey(messageType)) {
+                throw new IllegalStateException("The specified message type (" + messageType.getName() + ") is registered already.");
+            }
 
-if (factory == null) {
-throw new IllegalArgumentException("factory");
-}
+            this.type2encoderFactory.put(messageType, factory);
+        }
+    }
 
-synchronized (this.type2encoderFactory) {
-if (this.type2encoderFactory.containsKey(messageType)) {
-throw new IllegalStateException("The specified message type (" + messageType.getName() + ") is registered already.");
-}
+    public void addMessageEncoder(Iterable<Class<?>> messageTypes, Class<? extends MessageEncoder> encoderClass) {
+        for (Class<?> messageType : messageTypes) {
+            addMessageEncoder(messageType, encoderClass);
+        }
+    }
 
-this.type2encoderFactory.put(messageType, factory);
-} 
-}
+    public <T> void addMessageEncoder(Iterable<Class<? extends T>> messageTypes, MessageEncoder<? super T> encoder) {
+        for (Class<? extends T> messageType : messageTypes) {
+            addMessageEncoder(messageType, encoder);
+        }
+    }
 
-public void addMessageEncoder(Iterable<Class<?>> messageTypes, Class<? extends MessageEncoder> encoderClass) {
-for (Class<?> messageType : messageTypes) {
-addMessageEncoder(messageType, encoderClass);
-}
-}
+    public <T> void addMessageEncoder(Iterable<Class<? extends T>> messageTypes, MessageEncoderFactory<? super T> factory) {
+        for (Class<? extends T> messageType : messageTypes) {
+            addMessageEncoder(messageType, factory);
+        }
+    }
 
-public <T> void addMessageEncoder(Iterable<Class<? extends T>> messageTypes, MessageEncoder<? super T> encoder) {
-for (Class<? extends T> messageType : messageTypes) {
-addMessageEncoder(messageType, encoder);
-}
-}
+    public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
+        State state = getState(session);
+        MessageEncoder<Object> encoder = findEncoder(state, message.getClass());
+        if (encoder != null) {
+            encoder.encode(session, message, out);
+        } else {
+            throw new UnknownMessageTypeException("No message encoder found for message: " + message);
+        }
+    }
 
-public <T> void addMessageEncoder(Iterable<Class<? extends T>> messageTypes, MessageEncoderFactory<? super T> factory) {
-for (Class<? extends T> messageType : messageTypes) {
-addMessageEncoder(messageType, factory);
-}
-}
+    protected MessageEncoder<Object> findEncoder(State state, Class<?> type) {
+        return findEncoder(state, type, null);
+    }
 
-public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
-State state = getState(session);
-MessageEncoder<Object> encoder = findEncoder(state, message.getClass());
-if (encoder != null) {
-encoder.encode(session, message, out);
-} else {
-throw new UnknownMessageTypeException("No message encoder found for message: " + message);
-} 
-}
+    private MessageEncoder<Object> findEncoder(State state, Class<?> type, Set<Class<?>> triedClasses) {
+        MessageEncoder<Object> encoder = null;
 
-protected MessageEncoder<Object> findEncoder(State state, Class<?> type) {
-return findEncoder(state, type, null);
-}
+        if (triedClasses != null && triedClasses.contains(type)) {
+            return null;
+        }
 
-private MessageEncoder<Object> findEncoder(State state, Class<?> type, Set<Class<?>> triedClasses) {
-MessageEncoder<Object> encoder = null;
+        encoder = (MessageEncoder) state.findEncoderCache.get(type);
 
-if (triedClasses != null && triedClasses.contains(type)) {
-return null;
-}
+        if (encoder != null) {
+            return encoder;
+        }
 
-encoder = (MessageEncoder)state.findEncoderCache.get(type);
+        encoder = (MessageEncoder<Object>) state.type2encoder.get(type);
 
-if (encoder != null) {
-return encoder;
-}
+        if (encoder == null) {
+            IdentityHashSet<Class<?>> identityHashSet;
 
-encoder = (MessageEncoder<Object>)state.type2encoder.get(type);
+            if (triedClasses == null) {
+                identityHashSet = new IdentityHashSet();
+            }
 
-if (encoder == null) {
-IdentityHashSet<Class<?>> identityHashSet;
+            identityHashSet.add(type);
 
-if (triedClasses == null) {
-identityHashSet = new IdentityHashSet();
-}
+            Class<?>[] interfaces = type.getInterfaces();
 
-identityHashSet.add(type);
+            for (Class<?> element : interfaces) {
+                encoder = findEncoder(state, element, (Set<Class<?>>) identityHashSet);
 
-Class<?>[] interfaces = type.getInterfaces();
+                if (encoder != null) {
+                    break;
+                }
+            }
+        }
 
-for (Class<?> element : interfaces) {
-encoder = findEncoder(state, element, (Set<Class<?>>)identityHashSet);
+        if (encoder == null) {
 
-if (encoder != null) {
-break;
-}
-} 
-} 
+            Class<?> superclass = type.getSuperclass();
 
-if (encoder == null) {
+            if (superclass != null) {
+                encoder = findEncoder(state, superclass);
+            }
+        }
 
-Class<?> superclass = type.getSuperclass();
+        if (encoder != null) {
+            state.findEncoderCache.put(type, encoder);
+            MessageEncoder<Object> tmpEncoder = state.findEncoderCache.putIfAbsent(type, encoder);
 
-if (superclass != null) {
-encoder = findEncoder(state, superclass);
-}
-} 
+            if (tmpEncoder != null) {
+                encoder = tmpEncoder;
+            }
+        }
 
-if (encoder != null) {
-state.findEncoderCache.put(type, encoder);
-MessageEncoder<Object> tmpEncoder = state.findEncoderCache.putIfAbsent(type, encoder);
+        return encoder;
+    }
 
-if (tmpEncoder != null) {
-encoder = tmpEncoder;
-}
-} 
+    public void dispose(IoSession session) throws Exception {
+        session.removeAttribute(this.STATE);
+    }
 
-return encoder;
-}
+    private State getState(IoSession session) throws Exception {
+        State state = (State) session.getAttribute(this.STATE);
+        if (state == null) {
+            state = new State();
+            State oldState = (State) session.setAttributeIfAbsent(this.STATE, state);
+            if (oldState != null) {
+                state = oldState;
+            }
+        }
+        return state;
+    }
 
-public void dispose(IoSession session) throws Exception {
-session.removeAttribute(this.STATE);
-}
+    private static class SingletonMessageEncoderFactory<T> implements MessageEncoderFactory<T> {
+        private final MessageEncoder<T> encoder;
 
-private State getState(IoSession session) throws Exception {
-State state = (State)session.getAttribute(this.STATE);
-if (state == null) {
-state = new State();
-State oldState = (State)session.setAttributeIfAbsent(this.STATE, state);
-if (oldState != null) {
-state = oldState;
-}
-} 
-return state;
-}
+        private SingletonMessageEncoderFactory(MessageEncoder<T> encoder) {
+            if (encoder == null) {
+                throw new IllegalArgumentException("encoder");
+            }
+            this.encoder = encoder;
+        }
 
-private class State
-{
-private State() throws Exception {
-for (Map.Entry<Class<?>, MessageEncoderFactory> e : (Iterable<Map.Entry<Class<?>, MessageEncoderFactory>>)DemuxingProtocolEncoder.this.type2encoderFactory.entrySet())
-this.type2encoder.put(e.getKey(), ((MessageEncoderFactory)e.getValue()).getEncoder()); 
-}
+        public MessageEncoder<T> getEncoder() {
+            return this.encoder;
+        }
+    }
 
-private final ConcurrentHashMap<Class<?>, MessageEncoder> findEncoderCache = new ConcurrentHashMap<Class<?>, MessageEncoder>();
-private final Map<Class<?>, MessageEncoder> type2encoder = new ConcurrentHashMap<Class<?>, MessageEncoder>();
-}
+    private static class DefaultConstructorMessageEncoderFactory<T> implements MessageEncoderFactory<T> {
+        private final Class<MessageEncoder<T>> encoderClass;
 
-private static class SingletonMessageEncoderFactory<T> implements MessageEncoderFactory<T> {
-private SingletonMessageEncoderFactory(MessageEncoder<T> encoder) {
-if (encoder == null) {
-throw new IllegalArgumentException("encoder");
-}
-this.encoder = encoder;
-}
+        private DefaultConstructorMessageEncoderFactory(Class<MessageEncoder<T>> encoderClass) {
+            if (encoderClass == null) {
+                throw new IllegalArgumentException("encoderClass");
+            }
 
-public MessageEncoder<T> getEncoder() {
-return this.encoder;
-}
+            if (!MessageEncoder.class.isAssignableFrom(encoderClass)) {
+                throw new IllegalArgumentException("encoderClass is not assignable to MessageEncoder");
+            }
+            this.encoderClass = encoderClass;
+        }
 
-private final MessageEncoder<T> encoder; }
+        public MessageEncoder<T> getEncoder() throws Exception {
+            return this.encoderClass.newInstance();
+        }
+    }
 
-private static class DefaultConstructorMessageEncoderFactory<T> implements MessageEncoderFactory<T> { private final Class<MessageEncoder<T>> encoderClass;
-
-private DefaultConstructorMessageEncoderFactory(Class<MessageEncoder<T>> encoderClass) {
-if (encoderClass == null) {
-throw new IllegalArgumentException("encoderClass");
-}
-
-if (!MessageEncoder.class.isAssignableFrom(encoderClass)) {
-throw new IllegalArgumentException("encoderClass is not assignable to MessageEncoder");
-}
-this.encoderClass = encoderClass;
-}
-
-public MessageEncoder<T> getEncoder() throws Exception {
-return this.encoderClass.newInstance();
-} }
+    private class State {
+        private final ConcurrentHashMap<Class<?>, MessageEncoder> findEncoderCache = new ConcurrentHashMap<Class<?>, MessageEncoder>();
+        private final Map<Class<?>, MessageEncoder> type2encoder = new ConcurrentHashMap<Class<?>, MessageEncoder>();
+        private State() throws Exception {
+            for (Map.Entry<Class<?>, MessageEncoderFactory> e : (Iterable<Map.Entry<Class<?>, MessageEncoderFactory>>) DemuxingProtocolEncoder.this.type2encoderFactory.entrySet())
+                this.type2encoder.put(e.getKey(), ((MessageEncoderFactory) e.getValue()).getEncoder());
+        }
+    }
 
 }
 

@@ -5,20 +5,20 @@ import org.apache.http.HttpResponse;
 import org.apache.http.concurrent.Cancellable;
 
 public interface HttpAsyncExchange {
-  HttpRequest getRequest();
+    HttpRequest getRequest();
 
-  HttpResponse getResponse();
+    HttpResponse getResponse();
 
-  void submitResponse();
+    void submitResponse();
 
-  void submitResponse(HttpAsyncResponseProducer paramHttpAsyncResponseProducer);
+    void submitResponse(HttpAsyncResponseProducer paramHttpAsyncResponseProducer);
 
-  boolean isCompleted();
+    boolean isCompleted();
 
-  void setCallback(Cancellable paramCancellable);
+    void setCallback(Cancellable paramCancellable);
 
-  void setTimeout(int paramInt);
+    int getTimeout();
 
-  int getTimeout();
+    void setTimeout(int paramInt);
 }
 

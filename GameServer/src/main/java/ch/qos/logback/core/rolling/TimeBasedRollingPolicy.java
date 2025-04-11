@@ -1,12 +1,6 @@
 package ch.qos.logback.core.rolling;
 
-import ch.qos.logback.core.rolling.helper.ArchiveRemover;
-import ch.qos.logback.core.rolling.helper.AsynchronousCompressor;
-import ch.qos.logback.core.rolling.helper.CompressionMode;
-import ch.qos.logback.core.rolling.helper.Compressor;
-import ch.qos.logback.core.rolling.helper.FileFilterUtil;
-import ch.qos.logback.core.rolling.helper.FileNamePattern;
-import ch.qos.logback.core.rolling.helper.RenameUtil;
+import ch.qos.logback.core.rolling.helper.*;
 
 import java.io.File;
 import java.util.Date;
@@ -20,17 +14,13 @@ public class TimeBasedRollingPolicy<E>
     static final String FNP_NOT_SET = "The FileNamePattern option must be set before using TimeBasedRollingPolicy. ";
     static final int INFINITE_HISTORY = 0;
     FileNamePattern fileNamePatternWCS;
+    Future<?> future;
+    TimeBasedFileNamingAndTriggeringPolicy<E> timeBasedFileNamingAndTriggeringPolicy;
+    boolean cleanHistoryOnStart = false;
     private Compressor compressor;
     private RenameUtil renameUtil = new RenameUtil();
-
-    Future<?> future;
     private int maxHistory = 0;
-
     private ArchiveRemover archiveRemover;
-
-    TimeBasedFileNamingAndTriggeringPolicy<E> timeBasedFileNamingAndTriggeringPolicy;
-
-    boolean cleanHistoryOnStart = false;
 
     public void start() {
         this.renameUtil.setContext(this.context);
@@ -98,12 +88,12 @@ public class TimeBasedRollingPolicy<E>
         return FileFilterUtil.afterLastSlash(slashified);
     }
 
-    public void setTimeBasedFileNamingAndTriggeringPolicy(TimeBasedFileNamingAndTriggeringPolicy<E> timeBasedTriggering) {
-        this.timeBasedFileNamingAndTriggeringPolicy = timeBasedTriggering;
-    }
-
     public TimeBasedFileNamingAndTriggeringPolicy<E> getTimeBasedFileNamingAndTriggeringPolicy() {
         return this.timeBasedFileNamingAndTriggeringPolicy;
+    }
+
+    public void setTimeBasedFileNamingAndTriggeringPolicy(TimeBasedFileNamingAndTriggeringPolicy<E> timeBasedTriggering) {
+        this.timeBasedFileNamingAndTriggeringPolicy = timeBasedTriggering;
     }
 
     public void rollover() throws RolloverFailure {

@@ -4,5 +4,6 @@ import com.google.common.annotations.Beta;
 
 @Deprecated
 @Beta
-public abstract class AbstractListenableFuture<V> extends AbstractFuture<V> {}
+public abstract class AbstractListenableFuture<V> extends AbstractFuture<V> {
+}
 

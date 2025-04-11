@@ -10,33 +10,31 @@ import com.zhonglian.server.common.enums.ConstEnum;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
-import core.network.proto.Fight;
+
 import java.io.IOException;
 
 public class DungeonBossBegin
-extends PlayerHandler
-{
-public static class DungeonBossBeginInfo
-{
-Fight.Begin fight;
-int rebirthTime;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        BossFight fight = FightFactory.createFight(player, 0);
+        FightManager.getInstance().pushFight((Fight) fight);
 
-public DungeonBossBeginInfo(Fight.Begin fight, int rebirthTime) {
-this.fight = fight;
-this.rebirthTime = rebirthTime;
-}
-}
+        PlayerRecord recorder = (PlayerRecord) player.getFeature(PlayerRecord.class);
+        recorder.setValue(ConstEnum.DailyRefresh.DungeonRebirth, 0);
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-BossFight fight = FightFactory.createFight(player, 0);
-FightManager.getInstance().pushFight((Fight)fight);
+        int curTimes = recorder.getValue(ConstEnum.DailyRefresh.DungeonRebirth);
 
-PlayerRecord recorder = (PlayerRecord)player.getFeature(PlayerRecord.class);
-recorder.setValue(ConstEnum.DailyRefresh.DungeonRebirth, 0);
+        request.response(new DungeonBossBeginInfo(new Fight.Begin(fight.getId()), curTimes));
+    }
 
-int curTimes = recorder.getValue(ConstEnum.DailyRefresh.DungeonRebirth);
+    public static class DungeonBossBeginInfo {
+        Fight.Begin fight;
+        int rebirthTime;
 
-request.response(new DungeonBossBeginInfo(new Fight.Begin(fight.getId()), curTimes));
-}
+        public DungeonBossBeginInfo(Fight.Begin fight, int rebirthTime) {
+            this.fight = fight;
+            this.rebirthTime = rebirthTime;
+        }
+    }
 }
 

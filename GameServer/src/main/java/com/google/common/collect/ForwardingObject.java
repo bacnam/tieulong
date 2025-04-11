@@ -3,12 +3,11 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtCompatible;
 
 @GwtCompatible
-public abstract class ForwardingObject
-{
-protected abstract Object delegate();
+public abstract class ForwardingObject {
+    protected abstract Object delegate();
 
-public String toString() {
-return delegate().toString();
-}
+    public String toString() {
+        return delegate().toString();
+    }
 }
 

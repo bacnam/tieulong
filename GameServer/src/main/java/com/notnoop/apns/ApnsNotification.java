@@ -1,14 +1,14 @@
 package com.notnoop.apns;
 
 public interface ApnsNotification {
-  byte[] getDeviceToken();
+    byte[] getDeviceToken();
 
-  byte[] getPayload();
+    byte[] getPayload();
 
-  int getIdentifier();
+    int getIdentifier();
 
-  int getExpiry();
+    int getExpiry();
 
-  byte[] marshall();
+    byte[] marshall();
 }
 

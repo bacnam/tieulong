@@ -1,8 +1,8 @@
 package com.mchange.v2.holders;
 
 public interface ThreadSafeIntHolder {
-  int getValue();
+    int getValue();
 
-  void setValue(int paramInt);
+    void setValue(int paramInt);
 }
 

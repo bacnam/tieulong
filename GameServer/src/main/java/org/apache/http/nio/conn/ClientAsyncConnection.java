@@ -6,8 +6,8 @@ import org.apache.http.nio.reactor.IOSession;
 
 @Deprecated
 public interface ClientAsyncConnection extends NHttpClientConnection, HttpInetConnection {
-  void upgrade(IOSession paramIOSession);
+    void upgrade(IOSession paramIOSession);
 
-  IOSession getIOSession();
+    IOSession getIOSession();
 }
 

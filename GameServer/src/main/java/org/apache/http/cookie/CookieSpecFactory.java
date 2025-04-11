@@ -4,6 +4,6 @@ import org.apache.http.params.HttpParams;
 
 @Deprecated
 public interface CookieSpecFactory {
-  CookieSpec newInstance(HttpParams paramHttpParams);
+    CookieSpec newInstance(HttpParams paramHttpParams);
 }
 

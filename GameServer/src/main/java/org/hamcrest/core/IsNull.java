@@ -6,34 +6,33 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 public class IsNull<T>
-extends BaseMatcher<T>
-{
-public boolean matches(Object o) {
-return (o == null);
-}
+        extends BaseMatcher<T> {
+    @Factory
+    public static Matcher<Object> nullValue() {
+        return (Matcher<Object>) new IsNull();
+    }
 
-public void describeTo(Description description) {
-description.appendText("null");
-}
+    @Factory
+    public static Matcher<Object> notNullValue() {
+        return IsNot.not(nullValue());
+    }
 
-@Factory
-public static Matcher<Object> nullValue() {
-return (Matcher<Object>)new IsNull();
-}
+    @Factory
+    public static <T> Matcher<T> nullValue(Class<T> type) {
+        return (Matcher<T>) new IsNull();
+    }
 
-@Factory
-public static Matcher<Object> notNullValue() {
-return IsNot.not(nullValue());
-}
+    @Factory
+    public static <T> Matcher<T> notNullValue(Class<T> type) {
+        return IsNot.not(nullValue(type));
+    }
 
-@Factory
-public static <T> Matcher<T> nullValue(Class<T> type) {
-return (Matcher<T>)new IsNull();
-}
+    public boolean matches(Object o) {
+        return (o == null);
+    }
 
-@Factory
-public static <T> Matcher<T> notNullValue(Class<T> type) {
-return IsNot.not(nullValue(type));
-}
+    public void describeTo(Description description) {
+        description.appendText("null");
+    }
 }
 

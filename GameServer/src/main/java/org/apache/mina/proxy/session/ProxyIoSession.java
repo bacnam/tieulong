@@ -1,8 +1,5 @@
 package org.apache.mina.proxy.session;
 
-import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
-import java.util.List;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.proxy.ProxyConnector;
 import org.apache.mina.proxy.ProxyLogicHandler;
@@ -11,137 +8,140 @@ import org.apache.mina.proxy.filter.ProxyFilter;
 import org.apache.mina.proxy.handlers.ProxyRequest;
 import org.apache.mina.proxy.handlers.http.HttpAuthenticationMethods;
 
-public class ProxyIoSession
-{
-public static final String PROXY_SESSION = ProxyConnector.class.getName() + ".ProxySession";
+import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
+import java.util.List;
 
-private static final String DEFAULT_ENCODING = "ISO-8859-1";
+public class ProxyIoSession {
+    public static final String PROXY_SESSION = ProxyConnector.class.getName() + ".ProxySession";
 
-private List<HttpAuthenticationMethods> preferedOrder;
+    private static final String DEFAULT_ENCODING = "ISO-8859-1";
 
-private ProxyRequest request;
+    private List<HttpAuthenticationMethods> preferedOrder;
 
-private ProxyLogicHandler handler;
+    private ProxyRequest request;
 
-private ProxyFilter proxyFilter;
+    private ProxyLogicHandler handler;
 
-private IoSession session;
+    private ProxyFilter proxyFilter;
 
-private ProxyConnector connector;
+    private IoSession session;
 
-private InetSocketAddress proxyAddress = null;
+    private ProxyConnector connector;
 
-private boolean reconnectionNeeded = false;
+    private InetSocketAddress proxyAddress = null;
 
-private String charsetName;
+    private boolean reconnectionNeeded = false;
 
-private IoSessionEventQueue eventQueue = new IoSessionEventQueue(this);
+    private String charsetName;
 
-private boolean authenticationFailed;
+    private IoSessionEventQueue eventQueue = new IoSessionEventQueue(this);
 
-public ProxyIoSession(InetSocketAddress proxyAddress, ProxyRequest request) {
-setProxyAddress(proxyAddress);
-setRequest(request);
-}
+    private boolean authenticationFailed;
 
-public IoSessionEventQueue getEventQueue() {
-return this.eventQueue;
-}
+    public ProxyIoSession(InetSocketAddress proxyAddress, ProxyRequest request) {
+        setProxyAddress(proxyAddress);
+        setRequest(request);
+    }
 
-public List<HttpAuthenticationMethods> getPreferedOrder() {
-return this.preferedOrder;
-}
+    public IoSessionEventQueue getEventQueue() {
+        return this.eventQueue;
+    }
 
-public void setPreferedOrder(List<HttpAuthenticationMethods> preferedOrder) {
-this.preferedOrder = preferedOrder;
-}
+    public List<HttpAuthenticationMethods> getPreferedOrder() {
+        return this.preferedOrder;
+    }
 
-public ProxyLogicHandler getHandler() {
-return this.handler;
-}
+    public void setPreferedOrder(List<HttpAuthenticationMethods> preferedOrder) {
+        this.preferedOrder = preferedOrder;
+    }
 
-public void setHandler(ProxyLogicHandler handler) {
-this.handler = handler;
-}
+    public ProxyLogicHandler getHandler() {
+        return this.handler;
+    }
 
-public ProxyFilter getProxyFilter() {
-return this.proxyFilter;
-}
+    public void setHandler(ProxyLogicHandler handler) {
+        this.handler = handler;
+    }
 
-public void setProxyFilter(ProxyFilter proxyFilter) {
-this.proxyFilter = proxyFilter;
-}
+    public ProxyFilter getProxyFilter() {
+        return this.proxyFilter;
+    }
 
-public ProxyRequest getRequest() {
-return this.request;
-}
+    public void setProxyFilter(ProxyFilter proxyFilter) {
+        this.proxyFilter = proxyFilter;
+    }
 
-private void setRequest(ProxyRequest request) {
-if (request == null) {
-throw new IllegalArgumentException("request cannot be null");
-}
+    public ProxyRequest getRequest() {
+        return this.request;
+    }
 
-this.request = request;
-}
+    private void setRequest(ProxyRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("request cannot be null");
+        }
 
-public IoSession getSession() {
-return this.session;
-}
+        this.request = request;
+    }
 
-public void setSession(IoSession session) {
-this.session = session;
-}
+    public IoSession getSession() {
+        return this.session;
+    }
 
-public ProxyConnector getConnector() {
-return this.connector;
-}
+    public void setSession(IoSession session) {
+        this.session = session;
+    }
 
-public void setConnector(ProxyConnector connector) {
-this.connector = connector;
-}
+    public ProxyConnector getConnector() {
+        return this.connector;
+    }
 
-public InetSocketAddress getProxyAddress() {
-return this.proxyAddress;
-}
+    public void setConnector(ProxyConnector connector) {
+        this.connector = connector;
+    }
 
-private void setProxyAddress(InetSocketAddress proxyAddress) {
-if (proxyAddress == null) {
-throw new IllegalArgumentException("proxyAddress object cannot be null");
-}
+    public InetSocketAddress getProxyAddress() {
+        return this.proxyAddress;
+    }
 
-this.proxyAddress = proxyAddress;
-}
+    private void setProxyAddress(InetSocketAddress proxyAddress) {
+        if (proxyAddress == null) {
+            throw new IllegalArgumentException("proxyAddress object cannot be null");
+        }
 
-public boolean isReconnectionNeeded() {
-return this.reconnectionNeeded;
-}
+        this.proxyAddress = proxyAddress;
+    }
 
-public void setReconnectionNeeded(boolean reconnectionNeeded) {
-this.reconnectionNeeded = reconnectionNeeded;
-}
+    public boolean isReconnectionNeeded() {
+        return this.reconnectionNeeded;
+    }
 
-public Charset getCharset() {
-return Charset.forName(getCharsetName());
-}
+    public void setReconnectionNeeded(boolean reconnectionNeeded) {
+        this.reconnectionNeeded = reconnectionNeeded;
+    }
 
-public String getCharsetName() {
-if (this.charsetName == null) {
-this.charsetName = "ISO-8859-1";
-}
+    public Charset getCharset() {
+        return Charset.forName(getCharsetName());
+    }
 
-return this.charsetName;
-}
+    public String getCharsetName() {
+        if (this.charsetName == null) {
+            this.charsetName = "ISO-8859-1";
+        }
 
-public void setCharsetName(String charsetName) {
-this.charsetName = charsetName;
-}
+        return this.charsetName;
+    }
 
-public boolean isAuthenticationFailed() {
-return this.authenticationFailed;
-}
+    public void setCharsetName(String charsetName) {
+        this.charsetName = charsetName;
+    }
 
-public void setAuthenticationFailed(boolean authenticationFailed) {
-this.authenticationFailed = authenticationFailed;
-}
+    public boolean isAuthenticationFailed() {
+        return this.authenticationFailed;
+    }
+
+    public void setAuthenticationFailed(boolean authenticationFailed) {
+        this.authenticationFailed = authenticationFailed;
+    }
 }
 

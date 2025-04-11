@@ -5,22 +5,22 @@ import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
 public class ContentEncoderChannel
-implements WritableByteChannel
-{
-private final ContentEncoder contentEncoder;
+        implements WritableByteChannel {
+    private final ContentEncoder contentEncoder;
 
-public ContentEncoderChannel(ContentEncoder contentEncoder) {
-this.contentEncoder = contentEncoder;
-}
+    public ContentEncoderChannel(ContentEncoder contentEncoder) {
+        this.contentEncoder = contentEncoder;
+    }
 
-public int write(ByteBuffer src) throws IOException {
-return this.contentEncoder.write(src);
-}
+    public int write(ByteBuffer src) throws IOException {
+        return this.contentEncoder.write(src);
+    }
 
-public void close() {}
+    public void close() {
+    }
 
-public boolean isOpen() {
-return true;
-}
+    public boolean isOpen() {
+        return true;
+    }
 }
 

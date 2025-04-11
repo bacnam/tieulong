@@ -5,12 +5,12 @@ import ch.qos.logback.core.joran.spi.InterpretationContext;
 import org.xml.sax.Attributes;
 
 public class ContextPropertyAction
-extends Action
-{
-public void begin(InterpretationContext ec, String name, Attributes attributes) throws ActionException {
-addError("The [contextProperty] element has been removed. Please use [substitutionProperty] element instead");
-}
+        extends Action {
+    public void begin(InterpretationContext ec, String name, Attributes attributes) throws ActionException {
+        addError("The [contextProperty] element has been removed. Please use [substitutionProperty] element instead");
+    }
 
-public void end(InterpretationContext ec, String name) throws ActionException {}
+    public void end(InterpretationContext ec, String name) throws ActionException {
+    }
 }
 

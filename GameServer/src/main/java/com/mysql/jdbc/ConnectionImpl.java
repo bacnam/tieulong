@@ -18,188 +18,39 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.UnsupportedCharsetException;
+import java.sql.*;
 import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLPermission;
-import java.sql.SQLWarning;
-import java.sql.Savepoint;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Stack;
-import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.Executor;
 
 public class ConnectionImpl
         extends ConnectionPropertiesImpl
         implements MySQLConnection {
+    protected static final String DEFAULT_LOGGER_CLASS = "com.mysql.jdbc.log.StandardLogger";
     private static final long serialVersionUID = 2877471301981509474L;
     private static final SQLPermission SET_NETWORK_TIMEOUT_PERM = new SQLPermission("setNetworkTimeout");
-
     private static final SQLPermission ABORT_PERM = new SQLPermission("abort");
-
     private static final String JDBC_LOCAL_CHARACTER_SET_RESULTS = "jdbc.local.character_set_results";
-
-    public String getHost() {
-        return this.host;
-    }
-
-    private MySQLConnection proxy = null;
-
-    public boolean isProxySet() {
-        return (this.proxy != null);
-    }
-
-    public void setProxy(MySQLConnection proxy) {
-        this.proxy = proxy;
-    }
-
-    private MySQLConnection getProxy() {
-        return (this.proxy != null) ? this.proxy : this;
-    }
-
-    public MySQLConnection getLoadBalanceSafeProxy() {
-        return getProxy();
-    }
-
-    class ExceptionInterceptorChain
-            implements ExceptionInterceptor {
-        List<Extension> interceptors;
-
-        ExceptionInterceptorChain(String interceptorClasses) throws SQLException {
-            this.interceptors = Util.loadExtensions(ConnectionImpl.this, ConnectionImpl.this.props, interceptorClasses, "Connection.BadExceptionInterceptor", this);
-        }
-
-        void addRingZero(ExceptionInterceptor interceptor) throws SQLException {
-            this.interceptors.add(0, interceptor);
-        }
-
-        public SQLException interceptException(SQLException sqlEx, Connection conn) {
-            if (this.interceptors != null) {
-                Iterator<Extension> iter = this.interceptors.iterator();
-
-                while (iter.hasNext()) {
-                    sqlEx = ((ExceptionInterceptor) iter.next()).interceptException(sqlEx, ConnectionImpl.this);
-                }
-            }
-
-            return sqlEx;
-        }
-
-        public void destroy() {
-            if (this.interceptors != null) {
-                Iterator<Extension> iter = this.interceptors.iterator();
-
-                while (iter.hasNext()) {
-                    ((ExceptionInterceptor) iter.next()).destroy();
-                }
-            }
-        }
-
-        public void init(Connection conn, Properties properties) throws SQLException {
-            if (this.interceptors != null) {
-                Iterator<Extension> iter = this.interceptors.iterator();
-
-                while (iter.hasNext()) {
-                    ((ExceptionInterceptor) iter.next()).init(conn, properties);
-                }
-            }
-        }
-    }
-
-    static class CompoundCacheKey {
-        String componentOne;
-
-        String componentTwo;
-
-        int hashCode;
-
-        CompoundCacheKey(String partOne, String partTwo) {
-            this.componentOne = partOne;
-            this.componentTwo = partTwo;
-
-            this.hashCode = (((this.componentOne != null) ? this.componentOne : "") + this.componentTwo).hashCode();
-        }
-
-        public boolean equals(Object obj) {
-            if (obj instanceof CompoundCacheKey) {
-                CompoundCacheKey another = (CompoundCacheKey) obj;
-
-                boolean firstPartEqual = false;
-
-                if (this.componentOne == null) {
-                    firstPartEqual = (another.componentOne == null);
-                } else {
-                    firstPartEqual = this.componentOne.equals(another.componentOne);
-                }
-
-                return (firstPartEqual && this.componentTwo.equals(another.componentTwo));
-            }
-
-            return false;
-        }
-
-        public int hashCode() {
-            return this.hashCode;
-        }
-    }
-
     private static final Object CHARSET_CONVERTER_NOT_AVAILABLE_MARKER = new Object();
-
-    public static Map<?, ?> charsetMap;
-
-    protected static final String DEFAULT_LOGGER_CLASS = "com.mysql.jdbc.log.StandardLogger";
-
     private static final int HISTOGRAM_BUCKETS = 20;
-
     private static final String LOGGER_INSTANCE_NAME = "MySQL";
-
-    private static Map<String, Integer> mapTransIsolationNameToValue = null;
-
     private static final Log NULL_LOGGER = (Log) new NullLogger("MySQL");
-
-    protected static Map<?, ?> roundRobinStatsMap;
-
     private static final Map<String, Map<Long, String>> serverCollationByUrl = new HashMap<String, Map<Long, String>>();
-
     private static final Map<String, Map<Integer, String>> serverJavaCharsetByUrl = new HashMap<String, Map<Integer, String>>();
-
     private static final Map<String, Map<Integer, String>> serverCustomCharsetByUrl = new HashMap<String, Map<Integer, String>>();
-
     private static final Map<String, Map<String, Integer>> serverCustomMblenByUrl = new HashMap<String, Map<String, Integer>>();
-
-    private CacheAdapter<String, Map<String, String>> serverConfigCache;
-
-    private long queryTimeCount;
-
-    private double queryTimeSum;
-
-    private double queryTimeSumSquares;
-
-    private double queryTimeMean;
-
-    private transient Timer cancelTimer;
-    private List<Extension> connectionLifecycleInterceptors;
     private static final Constructor<?> JDBC_4_CONNECTION_CTOR;
     private static final int DEFAULT_RESULT_SET_TYPE = 1003;
     private static final int DEFAULT_RESULT_SET_CONCURRENCY = 1007;
     private static final Random random;
+    private static final String SERVER_VERSION_STRING_VAR_NAME = "server_version_string";
+    public static Map<?, ?> charsetMap;
+    protected static Map<?, ?> roundRobinStatsMap;
+    private static Map<String, Integer> mapTransIsolationNameToValue = null;
 
     static {
         mapTransIsolationNameToValue = new HashMap<String, Integer>(8);
@@ -225,6 +76,200 @@ public class ConnectionImpl
         }
 
         random = new Random();
+    }
+
+    public Map<Integer, String> indexToJavaCharset = new HashMap<Integer, String>();
+    public Map<Integer, String> indexToCustomMysqlCharset = new HashMap<Integer, String>();
+    protected Properties props = null;
+    protected LRUCache resultSetMetadataCache;
+    private MySQLConnection proxy = null;
+    private CacheAdapter<String, Map<String, String>> serverConfigCache;
+    private long queryTimeCount;
+    private double queryTimeSum;
+    private double queryTimeSumSquares;
+    private double queryTimeMean;
+    private transient Timer cancelTimer;
+    private List<Extension> connectionLifecycleInterceptors;
+    private boolean autoCommit = true;
+    private CacheAdapter<String, PreparedStatement.ParseInfo> cachedPreparedStatementParams;
+    private String characterSetMetadata = null;
+    private String characterSetResultsOnServer = null;
+    private Map<String, Object> charsetConverterMap = new HashMap<String, Object>(CharsetMapping.getNumberOfCharsetsConfigured());
+    private long connectionCreationTimeMillis = 0L;
+    private long connectionId;
+    private String database = null;
+    private DatabaseMetaData dbmd = null;
+    private TimeZone defaultTimeZone;
+    private ProfilerEventHandler eventSink;
+    private Throwable forceClosedReason;
+    private boolean hasIsolationLevels = false;
+    private boolean hasQuotedIdentifiers = false;
+    private String host = null;
+    private Map<String, Integer> mysqlCharsetToCustomMblen = new HashMap<String, Integer>();
+    private transient MysqlIO io = null;
+    private boolean isClientTzUTC = false;
+    private boolean isClosed = true;
+    private boolean isInGlobalTx = false;
+    private boolean isRunningOnJDK13 = false;
+    private int isolationLevel = 2;
+    private boolean isServerTzUTC = false;
+    private long lastQueryFinishedTime = 0L;
+    private transient Log log = NULL_LOGGER;
+    private long longestQueryTimeMs = 0L;
+    private boolean lowerCaseTableNames = false;
+    private long maximumNumberTablesAccessed = 0L;
+    private boolean maxRowsChanged = false;
+    private long metricsLastReportedMs;
+    private long minimumNumberTablesAccessed = Long.MAX_VALUE;
+    private String myURL = null;
+    private boolean needsPing = false;
+    private int netBufferLength = 16384;
+    private boolean noBackslashEscapes = false;
+    private long numberOfPreparedExecutes = 0L;
+    private long numberOfPrepares = 0L;
+    private long numberOfQueriesIssued = 0L;
+    private long numberOfResultSetsCreated = 0L;
+    private long[] numTablesMetricsHistBreakpoints;
+    private int[] numTablesMetricsHistCounts;
+    private long[] oldHistBreakpoints = null;
+    private int[] oldHistCounts = null;
+    private Map<Statement, Statement> openStatements;
+    private LRUCache parsedCallableStatementCache;
+    private boolean parserKnowsUnicode = false;
+    private String password = null;
+    private long[] perfMetricsHistBreakpoints;
+    private int[] perfMetricsHistCounts;
+    private String pointOfOrigin;
+    private int port = 3306;
+    private boolean readInfoMsg = false;
+    private boolean readOnly = false;
+    private TimeZone serverTimezoneTZ = null;
+    private Map<String, String> serverVariables = null;
+    private long shortestQueryTimeMs = Long.MAX_VALUE;
+    private Map<Statement, Statement> statementsUsingMaxRows;
+    private double totalQueryTimeMs = 0.0D;
+    private boolean transactionsSupported = false;
+    private Map<String, Class<?>> typeMap;
+    private boolean useAnsiQuotes = false;
+    private String user = null;
+    private boolean useServerPreparedStmts = false;
+    private LRUCache serverSideStatementCheckCache;
+    private LRUCache serverSideStatementCache;
+    private Calendar sessionCalendar;
+    private Calendar utcCalendar;
+    private String origHostToConnectTo;
+    private int origPortToConnectTo;
+    private String origDatabaseToConnectTo;
+    private String errorMessageEncoding = "Cp1252";
+    private boolean usePlatformCharsetConverters;
+    private boolean hasTriedMasterFlag = false;
+    private String statementComment = null;
+    private boolean storesLowerCaseTableName;
+    private List<StatementInterceptorV2> statementInterceptors;
+    private boolean requiresEscapingEncoder;
+    private String hostPortPair;
+    private boolean usingCachedConfig;
+    private int autoIncrementIncrement;
+    private ExceptionInterceptor exceptionInterceptor;
+
+    protected ConnectionImpl() {
+        this.usingCachedConfig = false;
+
+        this.autoIncrementIncrement = 0;
+    }
+
+    protected ConnectionImpl(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException {
+        this.usingCachedConfig = false;
+        this.autoIncrementIncrement = 0;
+        this.connectionCreationTimeMillis = System.currentTimeMillis();
+        if (databaseToConnectTo == null)
+            databaseToConnectTo = "";
+        this.origHostToConnectTo = hostToConnectTo;
+        this.origPortToConnectTo = portToConnectTo;
+        this.origDatabaseToConnectTo = databaseToConnectTo;
+        try {
+            Blob.class.getMethod("truncate", new Class[]{long.class});
+            this.isRunningOnJDK13 = false;
+        } catch (NoSuchMethodException nsme) {
+            this.isRunningOnJDK13 = true;
+        }
+        this.sessionCalendar = new GregorianCalendar();
+        this.utcCalendar = new GregorianCalendar();
+        this.utcCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
+        this.log = LogFactory.getLogger(getLogger(), "MySQL", getExceptionInterceptor());
+        this.defaultTimeZone = Util.getDefaultTimeZone();
+        if ("GMT".equalsIgnoreCase(this.defaultTimeZone.getID())) {
+            this.isClientTzUTC = true;
+        } else {
+            this.isClientTzUTC = false;
+        }
+        this.openStatements = new HashMap<Statement, Statement>();
+        if (NonRegisteringDriver.isHostPropertiesList(hostToConnectTo)) {
+            Properties hostSpecificProps = NonRegisteringDriver.expandHostKeyValues(hostToConnectTo);
+            Enumeration<?> propertyNames = hostSpecificProps.propertyNames();
+            while (propertyNames.hasMoreElements()) {
+                String propertyName = propertyNames.nextElement().toString();
+                String propertyValue = hostSpecificProps.getProperty(propertyName);
+                info.setProperty(propertyName, propertyValue);
+            }
+        } else if (hostToConnectTo == null) {
+            this.host = "localhost";
+            this.hostPortPair = this.host + ":" + portToConnectTo;
+        } else {
+            this.host = hostToConnectTo;
+            if (hostToConnectTo.indexOf(":") == -1) {
+                this.hostPortPair = this.host + ":" + portToConnectTo;
+            } else {
+                this.hostPortPair = this.host;
+            }
+        }
+        this.port = portToConnectTo;
+        this.database = databaseToConnectTo;
+        this.myURL = url;
+        this.user = info.getProperty("user");
+        this.password = info.getProperty("password");
+        if (this.user == null || this.user.equals(""))
+            this.user = "";
+        if (this.password == null)
+            this.password = "";
+        this.props = info;
+        initializeDriverProperties(info);
+        if (getUseUsageAdvisor()) {
+            this.pointOfOrigin = LogUtils.findCallingClassAndMethod(new Throwable());
+        } else {
+            this.pointOfOrigin = "";
+        }
+        try {
+            this.dbmd = getMetaData(false, false);
+            initializeSafeStatementInterceptors();
+            createNewIO(false);
+            unSafeStatementInterceptors();
+        } catch (SQLException ex) {
+            cleanup(ex);
+            throw ex;
+        } catch (Exception ex) {
+            cleanup(ex);
+            StringBuffer mesg = new StringBuffer(128);
+            if (!getParanoid()) {
+                mesg.append("Cannot connect to MySQL server on ");
+                mesg.append(this.host);
+                mesg.append(":");
+                mesg.append(this.port);
+                mesg.append(".\n\n");
+                mesg.append("Make sure that there is a MySQL server ");
+                mesg.append("running on the machine/port you are trying ");
+                mesg.append("to connect to and that the machine this software is running on ");
+                mesg.append("is able to connect to this host/port (i.e. not firewalled). ");
+                mesg.append("Also make sure that the server has not been started with the --skip-networking ");
+                mesg.append("flag.\n\n");
+            } else {
+                mesg.append("Unable to connect to database.");
+            }
+            SQLException sqlEx = SQLError.createSQLException(mesg.toString(), "08S01", getExceptionInterceptor());
+            sqlEx.initCause(ex);
+            throw sqlEx;
+        }
+        NonRegisteringDriver.trackConnection(this);
     }
 
     protected static SQLException appendMessageToException(SQLException sqlEx, String messageToAppend, ExceptionInterceptor interceptor) {
@@ -254,22 +299,6 @@ public class ConnectionImpl
         return sqlExceptionWithNewMessage;
     }
 
-    public synchronized Timer getCancelTimer() {
-        if (this.cancelTimer == null) {
-            boolean createdNamedTimer = false;
-            try {
-                Constructor<Timer> ctr = Timer.class.getConstructor(new Class[]{String.class, boolean.class});
-                this.cancelTimer = ctr.newInstance(new Object[]{"MySQL Statement Cancellation Timer", Boolean.TRUE});
-                createdNamedTimer = true;
-            } catch (Throwable t) {
-                createdNamedTimer = false;
-            }
-            if (!createdNamedTimer)
-                this.cancelTimer = new Timer(true);
-        }
-        return this.cancelTimer;
-    }
-
     protected static Connection getInstance(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException {
         if (!Util.isJdbc4())
             return new ConnectionImpl(hostToConnectTo, portToConnectTo, info, databaseToConnectTo, url);
@@ -296,177 +325,41 @@ public class ConnectionImpl
         return (s1 != null && s1.equals(s2));
     }
 
-    private boolean autoCommit = true;
-
-    private CacheAdapter<String, PreparedStatement.ParseInfo> cachedPreparedStatementParams;
-
-    private String characterSetMetadata = null;
-
-    private String characterSetResultsOnServer = null;
-
-    private Map<String, Object> charsetConverterMap = new HashMap<String, Object>(CharsetMapping.getNumberOfCharsetsConfigured());
-
-    private long connectionCreationTimeMillis = 0L;
-
-    private long connectionId;
-
-    private String database = null;
-
-    private DatabaseMetaData dbmd = null;
-
-    private TimeZone defaultTimeZone;
-
-    private ProfilerEventHandler eventSink;
-
-    private Throwable forceClosedReason;
-
-    private boolean hasIsolationLevels = false;
-
-    private boolean hasQuotedIdentifiers = false;
-
-    private String host = null;
-
-    public Map<Integer, String> indexToJavaCharset = new HashMap<Integer, String>();
-
-    public Map<Integer, String> indexToCustomMysqlCharset = new HashMap<Integer, String>();
-
-    private Map<String, Integer> mysqlCharsetToCustomMblen = new HashMap<String, Integer>();
-
-    private transient MysqlIO io = null;
-
-    private boolean isClientTzUTC = false;
-
-    private boolean isClosed = true;
-
-    private boolean isInGlobalTx = false;
-
-    private boolean isRunningOnJDK13 = false;
-
-    private int isolationLevel = 2;
-
-    private boolean isServerTzUTC = false;
-
-    private long lastQueryFinishedTime = 0L;
-
-    private transient Log log = NULL_LOGGER;
-
-    private long longestQueryTimeMs = 0L;
-
-    private boolean lowerCaseTableNames = false;
-
-    private long maximumNumberTablesAccessed = 0L;
-
-    private boolean maxRowsChanged = false;
-
-    private long metricsLastReportedMs;
-
-    private long minimumNumberTablesAccessed = Long.MAX_VALUE;
-
-    private String myURL = null;
-
-    private boolean needsPing = false;
-
-    private int netBufferLength = 16384;
-
-    private boolean noBackslashEscapes = false;
-
-    private long numberOfPreparedExecutes = 0L;
-
-    private long numberOfPrepares = 0L;
-
-    private long numberOfQueriesIssued = 0L;
-
-    private long numberOfResultSetsCreated = 0L;
-
-    private long[] numTablesMetricsHistBreakpoints;
-
-    private int[] numTablesMetricsHistCounts;
-
-    private long[] oldHistBreakpoints = null;
-
-    private int[] oldHistCounts = null;
-
-    private Map<Statement, Statement> openStatements;
-
-    private LRUCache parsedCallableStatementCache;
-
-    private boolean parserKnowsUnicode = false;
-
-    private String password = null;
-
-    private long[] perfMetricsHistBreakpoints;
-
-    private int[] perfMetricsHistCounts;
-
-    private String pointOfOrigin;
-
-    private int port = 3306;
-
-    protected Properties props = null;
-
-    private boolean readInfoMsg = false;
-
-    private boolean readOnly = false;
-
-    protected LRUCache resultSetMetadataCache;
-
-    private TimeZone serverTimezoneTZ = null;
-
-    private Map<String, String> serverVariables = null;
-
-    private long shortestQueryTimeMs = Long.MAX_VALUE;
-
-    private Map<Statement, Statement> statementsUsingMaxRows;
-
-    private double totalQueryTimeMs = 0.0D;
-
-    private boolean transactionsSupported = false;
-
-    private Map<String, Class<?>> typeMap;
-
-    private boolean useAnsiQuotes = false;
-
-    private String user = null;
-
-    private boolean useServerPreparedStmts = false;
-
-    private LRUCache serverSideStatementCheckCache;
-
-    private LRUCache serverSideStatementCache;
-
-    private Calendar sessionCalendar;
-
-    private Calendar utcCalendar;
-
-    private String origHostToConnectTo;
-
-    private int origPortToConnectTo;
-
-    private String origDatabaseToConnectTo;
-
-    private String errorMessageEncoding = "Cp1252";
-
-    private boolean usePlatformCharsetConverters;
-
-    private boolean hasTriedMasterFlag = false;
-
-    private String statementComment = null;
-
-    private boolean storesLowerCaseTableName;
-
-    private List<StatementInterceptorV2> statementInterceptors;
-
-    private boolean requiresEscapingEncoder;
-
-    private String hostPortPair;
-
-    private boolean usingCachedConfig;
-
-    private static final String SERVER_VERSION_STRING_VAR_NAME = "server_version_string";
-
-    private int autoIncrementIncrement;
-
-    private ExceptionInterceptor exceptionInterceptor;
+    public String getHost() {
+        return this.host;
+    }
+
+    public boolean isProxySet() {
+        return (this.proxy != null);
+    }
+
+    private MySQLConnection getProxy() {
+        return (this.proxy != null) ? this.proxy : this;
+    }
+
+    public void setProxy(MySQLConnection proxy) {
+        this.proxy = proxy;
+    }
+
+    public MySQLConnection getLoadBalanceSafeProxy() {
+        return getProxy();
+    }
+
+    public synchronized Timer getCancelTimer() {
+        if (this.cancelTimer == null) {
+            boolean createdNamedTimer = false;
+            try {
+                Constructor<Timer> ctr = Timer.class.getConstructor(new Class[]{String.class, boolean.class});
+                this.cancelTimer = ctr.newInstance(new Object[]{"MySQL Statement Cancellation Timer", Boolean.TRUE});
+                createdNamedTimer = true;
+            } catch (Throwable t) {
+                createdNamedTimer = false;
+            }
+            if (!createdNamedTimer)
+                this.cancelTimer = new Timer(true);
+        }
+        return this.cancelTimer;
+    }
 
     public void unSafeStatementInterceptors() throws SQLException {
         ArrayList<StatementInterceptorV2> unSafedStatementInterceptors = new ArrayList<StatementInterceptorV2>(this.statementInterceptors.size());
@@ -1941,6 +1834,63 @@ public class ConnectionImpl
         return this.autoCommit;
     }
 
+    public synchronized void setAutoCommit(final boolean autoCommitFlag) throws SQLException {
+        checkClosed();
+
+        if (this.connectionLifecycleInterceptors != null) {
+            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    if (!((ConnectionLifecycleInterceptor) each).setAutoCommit(autoCommitFlag)) {
+                        this.stopIterating = true;
+                    }
+                }
+            };
+
+            iter.doForAll();
+
+            if (!iter.fullIteration()) {
+                return;
+            }
+        }
+
+        if (getAutoReconnectForPools()) {
+            setHighAvailability(true);
+        }
+
+        try {
+            if (this.transactionsSupported) {
+
+                boolean needsSetOnServer = true;
+
+                if (getUseLocalSessionState() && this.autoCommit == autoCommitFlag) {
+
+                    needsSetOnServer = false;
+                } else if (!getHighAvailability()) {
+                    needsSetOnServer = getIO().isSetNeededForAutoCommitMode(autoCommitFlag);
+                }
+
+                this.autoCommit = autoCommitFlag;
+
+                if (needsSetOnServer) {
+                    execSQL((StatementImpl) null, autoCommitFlag ? "SET autocommit=1" : "SET autocommit=0", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+
+                }
+
+            } else {
+
+                if (!autoCommitFlag && !getRelaxAutoCommit()) {
+                    throw SQLError.createSQLException("MySQL Versions Older than 3.23.15 do not support transactions", "08003", getExceptionInterceptor());
+                }
+
+                this.autoCommit = autoCommitFlag;
+            }
+        } finally {
+            if (getAutoReconnectForPools()) {
+                setHighAvailability(false);
+            }
+        }
+    }
+
     public Calendar getCalendarInstanceForSessionOrNew() {
         if (getDynamicCalendars()) {
             return Calendar.getInstance();
@@ -1951,6 +1901,55 @@ public class ConnectionImpl
 
     public synchronized String getCatalog() throws SQLException {
         return this.database;
+    }
+
+    public synchronized void setCatalog(final String catalog) throws SQLException {
+        checkClosed();
+
+        if (catalog == null) {
+            throw SQLError.createSQLException("Catalog can not be null", "S1009", getExceptionInterceptor());
+        }
+
+        if (this.connectionLifecycleInterceptors != null) {
+            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
+                void forEach(Extension each) throws SQLException {
+                    if (!((ConnectionLifecycleInterceptor) each).setCatalog(catalog)) {
+                        this.stopIterating = true;
+                    }
+                }
+            };
+
+            iter.doForAll();
+
+            if (!iter.fullIteration()) {
+                return;
+            }
+        }
+
+        if (getUseLocalSessionState()) {
+            if (this.lowerCaseTableNames) {
+                if (this.database.equalsIgnoreCase(catalog)) {
+                    return;
+                }
+            } else if (this.database.equals(catalog)) {
+                return;
+            }
+        }
+
+        String quotedId = this.dbmd.getIdentifierQuoteString();
+
+        if (quotedId == null || quotedId.equals(" ")) {
+            quotedId = "";
+        }
+
+        StringBuffer query = new StringBuffer("USE ");
+        query.append(quotedId);
+        query.append(catalog);
+        query.append(quotedId);
+
+        execSQL((StatementImpl) null, query.toString(), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+
+        this.database = catalog;
     }
 
     public synchronized String getCharacterSetMetadata() {
@@ -2045,6 +2044,9 @@ public class ConnectionImpl
 
     public int getHoldability() throws SQLException {
         return 2;
+    }
+
+    public void setHoldability(int arg0) throws SQLException {
     }
 
     public long getId() {
@@ -2247,12 +2249,68 @@ public class ConnectionImpl
         return this.isolationLevel;
     }
 
+    public synchronized void setTransactionIsolation(int level) throws SQLException {
+        checkClosed();
+
+        if (this.hasIsolationLevels) {
+            String sql = null;
+
+            boolean shouldSendSet = false;
+
+            if (getAlwaysSendSetIsolation()) {
+                shouldSendSet = true;
+            } else if (level != this.isolationLevel) {
+                shouldSendSet = true;
+            }
+
+            if (getUseLocalSessionState()) {
+                shouldSendSet = (this.isolationLevel != level);
+            }
+
+            if (shouldSendSet) {
+                switch (level) {
+                    case 0:
+                        throw SQLError.createSQLException("Transaction isolation level NONE not supported by MySQL", getExceptionInterceptor());
+
+                    case 2:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED";
+                        break;
+
+                    case 1:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED";
+                        break;
+
+                    case 4:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ";
+                        break;
+
+                    case 8:
+                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE";
+                        break;
+
+                    default:
+                        throw SQLError.createSQLException("Unsupported transaction isolation level '" + level + "'", "S1C00", getExceptionInterceptor());
+                }
+
+                execSQL((StatementImpl) null, sql, -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
+
+                this.isolationLevel = level;
+            }
+        } else {
+            throw SQLError.createSQLException("Transaction Isolation Levels are not supported on MySQL versions older than 3.23.36.", "S1C00", getExceptionInterceptor());
+        }
+    }
+
     public synchronized Map<String, Class<?>> getTypeMap() throws SQLException {
         if (this.typeMap == null) {
             this.typeMap = new HashMap<String, Class<?>>();
         }
 
         return this.typeMap;
+    }
+
+    public synchronized void setTypeMap(Map<String, Class<?>> map) throws SQLException {
+        this.typeMap = map;
     }
 
     public String getURL() {
@@ -2605,6 +2663,10 @@ public class ConnectionImpl
         return this.isInGlobalTx;
     }
 
+    public void setInGlobalTx(boolean flag) {
+        this.isInGlobalTx = flag;
+    }
+
     public synchronized boolean isMasterConnection() {
         return false;
     }
@@ -2617,8 +2679,18 @@ public class ConnectionImpl
         return this.readInfoMsg;
     }
 
+    public void setReadInfoMsgEnabled(boolean flag) {
+        this.readInfoMsg = flag;
+    }
+
     public boolean isReadOnly() throws SQLException {
         return isReadOnly(true);
+    }
+
+    public void setReadOnly(boolean readOnlyFlag) throws SQLException {
+        checkClosed();
+
+        setReadOnlyInternal(readOnlyFlag);
     }
 
     public boolean isReadOnly(boolean useSessionStatus) throws SQLException {
@@ -2718,12 +2790,6 @@ public class ConnectionImpl
         return this.isServerTzUTC;
     }
 
-    protected ConnectionImpl() {
-        this.usingCachedConfig = false;
-
-        this.autoIncrementIncrement = 0;
-    }
-
     private synchronized void createConfigCacheIfNeeded() throws SQLException {
         if (this.serverConfigCache != null) return;
         try {
@@ -2761,100 +2827,6 @@ public class ConnectionImpl
             sqlEx.initCause(e);
             throw sqlEx;
         }
-    }
-
-    protected ConnectionImpl(String hostToConnectTo, int portToConnectTo, Properties info, String databaseToConnectTo, String url) throws SQLException {
-        this.usingCachedConfig = false;
-        this.autoIncrementIncrement = 0;
-        this.connectionCreationTimeMillis = System.currentTimeMillis();
-        if (databaseToConnectTo == null)
-            databaseToConnectTo = "";
-        this.origHostToConnectTo = hostToConnectTo;
-        this.origPortToConnectTo = portToConnectTo;
-        this.origDatabaseToConnectTo = databaseToConnectTo;
-        try {
-            Blob.class.getMethod("truncate", new Class[]{long.class});
-            this.isRunningOnJDK13 = false;
-        } catch (NoSuchMethodException nsme) {
-            this.isRunningOnJDK13 = true;
-        }
-        this.sessionCalendar = new GregorianCalendar();
-        this.utcCalendar = new GregorianCalendar();
-        this.utcCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-        this.log = LogFactory.getLogger(getLogger(), "MySQL", getExceptionInterceptor());
-        this.defaultTimeZone = Util.getDefaultTimeZone();
-        if ("GMT".equalsIgnoreCase(this.defaultTimeZone.getID())) {
-            this.isClientTzUTC = true;
-        } else {
-            this.isClientTzUTC = false;
-        }
-        this.openStatements = new HashMap<Statement, Statement>();
-        if (NonRegisteringDriver.isHostPropertiesList(hostToConnectTo)) {
-            Properties hostSpecificProps = NonRegisteringDriver.expandHostKeyValues(hostToConnectTo);
-            Enumeration<?> propertyNames = hostSpecificProps.propertyNames();
-            while (propertyNames.hasMoreElements()) {
-                String propertyName = propertyNames.nextElement().toString();
-                String propertyValue = hostSpecificProps.getProperty(propertyName);
-                info.setProperty(propertyName, propertyValue);
-            }
-        } else if (hostToConnectTo == null) {
-            this.host = "localhost";
-            this.hostPortPair = this.host + ":" + portToConnectTo;
-        } else {
-            this.host = hostToConnectTo;
-            if (hostToConnectTo.indexOf(":") == -1) {
-                this.hostPortPair = this.host + ":" + portToConnectTo;
-            } else {
-                this.hostPortPair = this.host;
-            }
-        }
-        this.port = portToConnectTo;
-        this.database = databaseToConnectTo;
-        this.myURL = url;
-        this.user = info.getProperty("user");
-        this.password = info.getProperty("password");
-        if (this.user == null || this.user.equals(""))
-            this.user = "";
-        if (this.password == null)
-            this.password = "";
-        this.props = info;
-        initializeDriverProperties(info);
-        if (getUseUsageAdvisor()) {
-            this.pointOfOrigin = LogUtils.findCallingClassAndMethod(new Throwable());
-        } else {
-            this.pointOfOrigin = "";
-        }
-        try {
-            this.dbmd = getMetaData(false, false);
-            initializeSafeStatementInterceptors();
-            createNewIO(false);
-            unSafeStatementInterceptors();
-        } catch (SQLException ex) {
-            cleanup(ex);
-            throw ex;
-        } catch (Exception ex) {
-            cleanup(ex);
-            StringBuffer mesg = new StringBuffer(128);
-            if (!getParanoid()) {
-                mesg.append("Cannot connect to MySQL server on ");
-                mesg.append(this.host);
-                mesg.append(":");
-                mesg.append(this.port);
-                mesg.append(".\n\n");
-                mesg.append("Make sure that there is a MySQL server ");
-                mesg.append("running on the machine/port you are trying ");
-                mesg.append("to connect to and that the machine this software is running on ");
-                mesg.append("is able to connect to this host/port (i.e. not firewalled). ");
-                mesg.append("Also make sure that the server has not been started with the --skip-networking ");
-                mesg.append("flag.\n\n");
-            } else {
-                mesg.append("Unable to connect to database.");
-            }
-            SQLException sqlEx = SQLError.createSQLException(mesg.toString(), "08S01", getExceptionInterceptor());
-            sqlEx.initCause(ex);
-            throw sqlEx;
-        }
-        NonRegisteringDriver.trackConnection(this);
     }
 
     public int getAutoIncrementIncrement() {
@@ -3641,133 +3613,10 @@ public class ConnectionImpl
         return versionMeetsMinimum(4, 0, 2);
     }
 
-    public synchronized void setAutoCommit(final boolean autoCommitFlag) throws SQLException {
-        checkClosed();
-
-        if (this.connectionLifecycleInterceptors != null) {
-            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
-                void forEach(Extension each) throws SQLException {
-                    if (!((ConnectionLifecycleInterceptor) each).setAutoCommit(autoCommitFlag)) {
-                        this.stopIterating = true;
-                    }
-                }
-            };
-
-            iter.doForAll();
-
-            if (!iter.fullIteration()) {
-                return;
-            }
-        }
-
-        if (getAutoReconnectForPools()) {
-            setHighAvailability(true);
-        }
-
-        try {
-            if (this.transactionsSupported) {
-
-                boolean needsSetOnServer = true;
-
-                if (getUseLocalSessionState() && this.autoCommit == autoCommitFlag) {
-
-                    needsSetOnServer = false;
-                } else if (!getHighAvailability()) {
-                    needsSetOnServer = getIO().isSetNeededForAutoCommitMode(autoCommitFlag);
-                }
-
-                this.autoCommit = autoCommitFlag;
-
-                if (needsSetOnServer) {
-                    execSQL((StatementImpl) null, autoCommitFlag ? "SET autocommit=1" : "SET autocommit=0", -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
-
-                }
-
-            } else {
-
-                if (!autoCommitFlag && !getRelaxAutoCommit()) {
-                    throw SQLError.createSQLException("MySQL Versions Older than 3.23.15 do not support transactions", "08003", getExceptionInterceptor());
-                }
-
-                this.autoCommit = autoCommitFlag;
-            }
-        } finally {
-            if (getAutoReconnectForPools()) {
-                setHighAvailability(false);
-            }
-        }
-    }
-
-    public synchronized void setCatalog(final String catalog) throws SQLException {
-        checkClosed();
-
-        if (catalog == null) {
-            throw SQLError.createSQLException("Catalog can not be null", "S1009", getExceptionInterceptor());
-        }
-
-        if (this.connectionLifecycleInterceptors != null) {
-            IterateBlock<Extension> iter = new IterateBlock<Extension>(this.connectionLifecycleInterceptors.iterator()) {
-                void forEach(Extension each) throws SQLException {
-                    if (!((ConnectionLifecycleInterceptor) each).setCatalog(catalog)) {
-                        this.stopIterating = true;
-                    }
-                }
-            };
-
-            iter.doForAll();
-
-            if (!iter.fullIteration()) {
-                return;
-            }
-        }
-
-        if (getUseLocalSessionState()) {
-            if (this.lowerCaseTableNames) {
-                if (this.database.equalsIgnoreCase(catalog)) {
-                    return;
-                }
-            } else if (this.database.equals(catalog)) {
-                return;
-            }
-        }
-
-        String quotedId = this.dbmd.getIdentifierQuoteString();
-
-        if (quotedId == null || quotedId.equals(" ")) {
-            quotedId = "";
-        }
-
-        StringBuffer query = new StringBuffer("USE ");
-        query.append(quotedId);
-        query.append(catalog);
-        query.append(quotedId);
-
-        execSQL((StatementImpl) null, query.toString(), -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
-
-        this.database = catalog;
-    }
-
     public synchronized void setFailedOver(boolean flag) {
     }
 
-    public void setHoldability(int arg0) throws SQLException {
-    }
-
-    public void setInGlobalTx(boolean flag) {
-        this.isInGlobalTx = flag;
-    }
-
     public void setPreferSlaveDuringFailover(boolean flag) {
-    }
-
-    public void setReadInfoMsgEnabled(boolean flag) {
-        this.readInfoMsg = flag;
-    }
-
-    public void setReadOnly(boolean readOnlyFlag) throws SQLException {
-        checkClosed();
-
-        setReadOnlyInternal(readOnlyFlag);
     }
 
     public void setReadOnlyInternal(boolean readOnlyFlag) throws SQLException {
@@ -3844,62 +3693,6 @@ public class ConnectionImpl
                 }
             }
         }
-    }
-
-    public synchronized void setTransactionIsolation(int level) throws SQLException {
-        checkClosed();
-
-        if (this.hasIsolationLevels) {
-            String sql = null;
-
-            boolean shouldSendSet = false;
-
-            if (getAlwaysSendSetIsolation()) {
-                shouldSendSet = true;
-            } else if (level != this.isolationLevel) {
-                shouldSendSet = true;
-            }
-
-            if (getUseLocalSessionState()) {
-                shouldSendSet = (this.isolationLevel != level);
-            }
-
-            if (shouldSendSet) {
-                switch (level) {
-                    case 0:
-                        throw SQLError.createSQLException("Transaction isolation level NONE not supported by MySQL", getExceptionInterceptor());
-
-                    case 2:
-                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED";
-                        break;
-
-                    case 1:
-                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED";
-                        break;
-
-                    case 4:
-                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ";
-                        break;
-
-                    case 8:
-                        sql = "SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE";
-                        break;
-
-                    default:
-                        throw SQLError.createSQLException("Unsupported transaction isolation level '" + level + "'", "S1C00", getExceptionInterceptor());
-                }
-
-                execSQL((StatementImpl) null, sql, -1, (Buffer) null, 1003, 1007, false, this.database, (Field[]) null, false);
-
-                this.isolationLevel = level;
-            }
-        } else {
-            throw SQLError.createSQLException("Transaction Isolation Levels are not supported on MySQL versions older than 3.23.36.", "S1C00", getExceptionInterceptor());
-        }
-    }
-
-    public synchronized void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-        this.typeMap = map;
     }
 
     private void setupServerForTruncationChecks() throws SQLException {
@@ -4099,14 +3892,14 @@ public class ConnectionImpl
         return false;
     }
 
-    public synchronized void setSchema(String schema) throws SQLException {
-        checkClosed();
-    }
-
     public synchronized String getSchema() throws SQLException {
         checkClosed();
 
         return null;
+    }
+
+    public synchronized void setSchema(String schema) throws SQLException {
+        checkClosed();
     }
 
     public void abort(Executor executor) throws SQLException {
@@ -4160,6 +3953,88 @@ public class ConnectionImpl
     public synchronized int getNetworkTimeout() throws SQLException {
         checkClosed();
         return getSocketTimeout();
+    }
+
+    static class CompoundCacheKey {
+        String componentOne;
+
+        String componentTwo;
+
+        int hashCode;
+
+        CompoundCacheKey(String partOne, String partTwo) {
+            this.componentOne = partOne;
+            this.componentTwo = partTwo;
+
+            this.hashCode = (((this.componentOne != null) ? this.componentOne : "") + this.componentTwo).hashCode();
+        }
+
+        public boolean equals(Object obj) {
+            if (obj instanceof CompoundCacheKey) {
+                CompoundCacheKey another = (CompoundCacheKey) obj;
+
+                boolean firstPartEqual = false;
+
+                if (this.componentOne == null) {
+                    firstPartEqual = (another.componentOne == null);
+                } else {
+                    firstPartEqual = this.componentOne.equals(another.componentOne);
+                }
+
+                return (firstPartEqual && this.componentTwo.equals(another.componentTwo));
+            }
+
+            return false;
+        }
+
+        public int hashCode() {
+            return this.hashCode;
+        }
+    }
+
+    class ExceptionInterceptorChain
+            implements ExceptionInterceptor {
+        List<Extension> interceptors;
+
+        ExceptionInterceptorChain(String interceptorClasses) throws SQLException {
+            this.interceptors = Util.loadExtensions(ConnectionImpl.this, ConnectionImpl.this.props, interceptorClasses, "Connection.BadExceptionInterceptor", this);
+        }
+
+        void addRingZero(ExceptionInterceptor interceptor) throws SQLException {
+            this.interceptors.add(0, interceptor);
+        }
+
+        public SQLException interceptException(SQLException sqlEx, Connection conn) {
+            if (this.interceptors != null) {
+                Iterator<Extension> iter = this.interceptors.iterator();
+
+                while (iter.hasNext()) {
+                    sqlEx = ((ExceptionInterceptor) iter.next()).interceptException(sqlEx, ConnectionImpl.this);
+                }
+            }
+
+            return sqlEx;
+        }
+
+        public void destroy() {
+            if (this.interceptors != null) {
+                Iterator<Extension> iter = this.interceptors.iterator();
+
+                while (iter.hasNext()) {
+                    ((ExceptionInterceptor) iter.next()).destroy();
+                }
+            }
+        }
+
+        public void init(Connection conn, Properties properties) throws SQLException {
+            if (this.interceptors != null) {
+                Iterator<Extension> iter = this.interceptors.iterator();
+
+                while (iter.hasNext()) {
+                    ((ExceptionInterceptor) iter.next()).init(conn, properties);
+                }
+            }
+        }
     }
 }
 

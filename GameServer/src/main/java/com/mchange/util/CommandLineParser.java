@@ -1,14 +1,14 @@
 package com.mchange.util;
 
 public interface CommandLineParser {
-  boolean checkSwitch(String paramString);
+    boolean checkSwitch(String paramString);
 
-  String findSwitchArg(String paramString);
+    String findSwitchArg(String paramString);
 
-  boolean checkArgv();
+    boolean checkArgv();
 
-  int findLastSwitched();
+    int findLastSwitched();
 
-  String[] findUnswitchedArgs();
+    String[] findUnswitchedArgs();
 }
 

@@ -6,54 +6,54 @@ import com.google.common.collect.Lists;
 import com.zhonglian.server.common.db.BM;
 import com.zhonglian.server.common.utils.CommTime;
 import core.database.game.bo.VipRecordBO;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class VipRecord
-extends Feature
-{
-public VipRecordBO record;
+        extends Feature {
+    public VipRecordBO record;
 
-public VipRecord(Player owner) {
-super(owner);
-}
+    public VipRecord(Player owner) {
+        super(owner);
+    }
 
-public void loadDB() {
-this.record = (VipRecordBO)BM.getBM(VipRecordBO.class).findOne("pid", Long.valueOf(this.player.getPid()));
-}
+    public void loadDB() {
+        this.record = (VipRecordBO) BM.getBM(VipRecordBO.class).findOne("pid", Long.valueOf(this.player.getPid()));
+    }
 
-public VipRecordBO getOrCreate() {
-VipRecordBO bo = this.record;
-if (bo != null) {
-return bo;
-}
-synchronized (this) {
-bo = this.record;
-if (bo != null) {
-return bo;
-}
-bo = new VipRecordBO();
-bo.setPid(this.player.getPid());
-bo.insert();
-this.record = bo;
-} 
-return bo;
-}
+    public VipRecordBO getOrCreate() {
+        VipRecordBO bo = this.record;
+        if (bo != null) {
+            return bo;
+        }
+        synchronized (this) {
+            bo = this.record;
+            if (bo != null) {
+                return bo;
+            }
+            bo = new VipRecordBO();
+            bo.setPid(this.player.getPid());
+            bo.insert();
+            this.record = bo;
+        }
+        return bo;
+    }
 
-public List<Boolean> getFetchGiftStatusList() {
-List<Integer> fetchList = Lists.newArrayList(getOrCreate().getLastFetchPrivateTimeAll());
-return (List<Boolean>)fetchList.stream().map(x -> (x.intValue() > 0) ? Boolean.valueOf(true) : Boolean.valueOf(false))
+    public List<Boolean> getFetchGiftStatusList() {
+        List<Integer> fetchList = Lists.newArrayList(getOrCreate().getLastFetchPrivateTimeAll());
+        return (List<Boolean>) fetchList.stream().map(x -> (x.intValue() > 0) ? Boolean.valueOf(true) : Boolean.valueOf(false))
 
-.collect(Collectors.toList());
-}
+                .collect(Collectors.toList());
+    }
 
-public void setLastFetchPrivateTime(int level) {
-VipRecordBO bo = getOrCreate();
-bo.saveLastFetchPrivateTime(level, CommTime.nowSecond());
-}
+    public void setLastFetchPrivateTime(int level) {
+        VipRecordBO bo = getOrCreate();
+        bo.saveLastFetchPrivateTime(level, CommTime.nowSecond());
+    }
 
-public int getLastFetchPrivateTime(int level) {
-return getOrCreate().getLastFetchPrivateTime(level);
-}
+    public int getLastFetchPrivateTime(int level) {
+        return getOrCreate().getLastFetchPrivateTime(level);
+    }
 }
 

@@ -1,15 +1,16 @@
 package ch.qos.logback.core.spi;
 
 import ch.qos.logback.core.filter.Filter;
+
 import java.util.List;
 
 public interface FilterAttachable<E> {
-  void addFilter(Filter<E> paramFilter);
+    void addFilter(Filter<E> paramFilter);
 
-  void clearAllFilters();
+    void clearAllFilters();
 
-  List<Filter<E>> getCopyOfAttachedFiltersList();
+    List<Filter<E>> getCopyOfAttachedFiltersList();
 
-  FilterReply getFilterChainDecision(E paramE);
+    FilterReply getFilterChainDecision(E paramE);
 }
 

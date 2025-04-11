@@ -10,21 +10,20 @@ import org.apache.http.util.Args;
 
 @Immutable
 public class DefaultProxyRoutePlanner
-extends DefaultRoutePlanner
-{
-private final HttpHost proxy;
+        extends DefaultRoutePlanner {
+    private final HttpHost proxy;
 
-public DefaultProxyRoutePlanner(HttpHost proxy, SchemePortResolver schemePortResolver) {
-super(schemePortResolver);
-this.proxy = (HttpHost)Args.notNull(proxy, "Proxy host");
-}
+    public DefaultProxyRoutePlanner(HttpHost proxy, SchemePortResolver schemePortResolver) {
+        super(schemePortResolver);
+        this.proxy = (HttpHost) Args.notNull(proxy, "Proxy host");
+    }
 
-public DefaultProxyRoutePlanner(HttpHost proxy) {
-this(proxy, null);
-}
+    public DefaultProxyRoutePlanner(HttpHost proxy) {
+        this(proxy, null);
+    }
 
-protected HttpHost determineProxy(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
-return this.proxy;
-}
+    protected HttpHost determineProxy(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
+        return this.proxy;
+    }
 }
 

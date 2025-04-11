@@ -6,10 +6,9 @@ import com.zhonglian.server.common.enums.StoreType;
 
 @Store({StoreType.ArenaStore, StoreType.NormalStore})
 public class NormalStore
-extends PlayerStore
-{
-public NormalStore(StoreType storeType, Player player) {
-super(storeType, player);
-}
+        extends PlayerStore {
+    public NormalStore(StoreType storeType, Player player) {
+        super(storeType, player);
+    }
 }
 

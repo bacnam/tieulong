@@ -10,23 +10,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HttpNoAuthLogicHandler
-extends AbstractAuthLogicHandler
-{
-private static final Logger logger = LoggerFactory.getLogger(HttpNoAuthLogicHandler.class);
+        extends AbstractAuthLogicHandler {
+    private static final Logger logger = LoggerFactory.getLogger(HttpNoAuthLogicHandler.class);
 
-public HttpNoAuthLogicHandler(ProxyIoSession proxyIoSession) throws ProxyAuthException {
-super(proxyIoSession);
-}
+    public HttpNoAuthLogicHandler(ProxyIoSession proxyIoSession) throws ProxyAuthException {
+        super(proxyIoSession);
+    }
 
-public void doHandshake(IoFilter.NextFilter nextFilter) throws ProxyAuthException {
-logger.debug(" doHandshake()");
+    public void doHandshake(IoFilter.NextFilter nextFilter) throws ProxyAuthException {
+        logger.debug(" doHandshake()");
 
-writeRequest(nextFilter, (HttpProxyRequest)this.request);
-this.step++;
-}
+        writeRequest(nextFilter, (HttpProxyRequest) this.request);
+        this.step++;
+    }
 
-public void handleResponse(HttpProxyResponse response) throws ProxyAuthException {
-throw new ProxyAuthException("Received error response code (" + response.getStatusLine() + ").");
-}
+    public void handleResponse(HttpProxyResponse response) throws ProxyAuthException {
+        throw new ProxyAuthException("Received error response code (" + response.getStatusLine() + ").");
+    }
 }
 

@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Commander {
-  String name();
+    String name();
 
-  String comment();
+    String comment();
 }
 

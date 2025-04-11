@@ -4,6 +4,6 @@ import org.apache.http.conn.routing.HttpRoute;
 
 @Deprecated
 public interface ConnPerRoute {
-  int getMaxForRoute(HttpRoute paramHttpRoute);
+    int getMaxForRoute(HttpRoute paramHttpRoute);
 }
 

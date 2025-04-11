@@ -50,6 +50,12 @@ public class GameServer extends IApp {
         app.start();
     }
 
+    public static void reload() {
+        RefDataMgr.getInstance().reload();
+        SensitiveWordMgr.getInstance().reload();
+        RefreshMgr.getInstance().reload();
+    }
+
     protected void beforeInit(String configdit) {
         loadBasicConfig(configdit, "logback_game.xml");
         loadRemoteConfig("server_id", System.getProperty("game_sid"), configdit, "game.properties");
@@ -157,12 +163,6 @@ public class GameServer extends IApp {
             CommLog.error("启动Http错误", e);
             System.exit(-1);
         }
-    }
-
-    public static void reload() {
-        RefDataMgr.getInstance().reload();
-        SensitiveWordMgr.getInstance().reload();
-        RefreshMgr.getInstance().reload();
     }
 }
 

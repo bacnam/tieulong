@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MethodAdapater {
-private Map<String, HttpAdaperter> requests = new HashMap<>();
+    private Map<String, HttpAdaperter> requests = new HashMap<>();
 
-public HttpAdaperter getAdaperter(String path) {
-return this.requests.get(path);
-}
+    public HttpAdaperter getAdaperter(String path) {
+        return this.requests.get(path);
+    }
 
-public void addAdapter(String path, HttpAdaperter httpAdaperter) {
-this.requests.put(path, httpAdaperter);
-}
+    public void addAdapter(String path, HttpAdaperter httpAdaperter) {
+        this.requests.put(path, httpAdaperter);
+    }
 }
 

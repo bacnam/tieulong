@@ -1,166 +1,166 @@
 package javolution.util.internal.map;
 
-import java.util.Iterator;
-import java.util.Map;
 import javolution.util.function.Consumer;
 import javolution.util.function.Equality;
 import javolution.util.service.MapService;
 
+import java.util.Iterator;
+import java.util.Map;
+
 public class AtomicMapImpl<K, V>
-extends MapView<K, V>
-{
-private static final long serialVersionUID = 1536L;
-protected volatile MapService<K, V> immutable;
-protected transient Thread updatingThread;
+        extends MapView<K, V> {
+    private static final long serialVersionUID = 1536L;
+    protected volatile MapService<K, V> immutable;
+    protected transient Thread updatingThread;
 
-private class IteratorImpl
-implements Iterator<Map.Entry<K, V>>
-{
-private Map.Entry<K, V> current;
-private final Iterator<Map.Entry<K, V>> targetIterator = AtomicMapImpl.this.targetView().iterator();
+    public AtomicMapImpl(MapService<K, V> target) {
+        super(target);
+        this.immutable = cloneTarget();
+    }
 
-public boolean hasNext() {
-return this.targetIterator.hasNext();
-}
+    public synchronized void clear() {
+        clear();
+        if (!updateInProgress()) {
+            this.immutable = cloneTarget();
+        }
+    }
 
-public Map.Entry<K, V> next() {
-this.current = this.targetIterator.next();
-return this.current;
-}
+    public synchronized AtomicMapImpl<K, V> clone() {
+        AtomicMapImpl<K, V> copy = (AtomicMapImpl<K, V>) super.clone();
+        copy.updatingThread = null;
+        return copy;
+    }
 
-public void remove() {
-if (this.current == null) throw new IllegalStateException(); 
-AtomicMapImpl.this.remove(this.current.getKey());
-this.current = null;
-}
+    public boolean containsKey(Object key) {
+        return targetView().containsKey(key);
+    }
 
-private IteratorImpl() {}
-}
+    public boolean containsValue(Object value) {
+        return targetView().containsValue(value);
+    }
 
-public AtomicMapImpl(MapService<K, V> target) {
-super(target);
-this.immutable = cloneTarget();
-}
+    public V get(Object key) {
+        return (V) targetView().get(key);
+    }
 
-public synchronized void clear() {
-clear();
-if (!updateInProgress()) {
-this.immutable = cloneTarget();
-}
-}
+    public boolean isEmpty() {
+        return targetView().isEmpty();
+    }
 
-public synchronized AtomicMapImpl<K, V> clone() {
-AtomicMapImpl<K, V> copy = (AtomicMapImpl<K, V>)super.clone();
-copy.updatingThread = null;
-return copy;
-}
+    public Iterator<Map.Entry<K, V>> iterator() {
+        return new IteratorImpl();
+    }
 
-public boolean containsKey(Object key) {
-return targetView().containsKey(key);
-}
+    public Equality<? super K> keyComparator() {
+        return targetView().keyComparator();
+    }
 
-public boolean containsValue(Object value) {
-return targetView().containsValue(value);
-}
+    public synchronized V put(K key, V value) {
+        V v = (V) target().put(key, value);
+        if (!updateInProgress()) this.immutable = cloneTarget();
+        return v;
+    }
 
-public V get(Object key) {
-return (V)targetView().get(key);
-}
+    public synchronized void putAll(Map<? extends K, ? extends V> m) {
+        target().putAll(m);
+        if (!updateInProgress()) this.immutable = cloneTarget();
 
-public boolean isEmpty() {
-return targetView().isEmpty();
-}
+    }
 
-public Iterator<Map.Entry<K, V>> iterator() {
-return new IteratorImpl();
-}
+    public synchronized V putIfAbsent(K key, V value) {
+        V v = (V) target().putIfAbsent(key, value);
+        if (!updateInProgress()) this.immutable = cloneTarget();
+        return v;
+    }
 
-public Equality<? super K> keyComparator() {
-return targetView().keyComparator();
-}
+    public synchronized V remove(Object key) {
+        V v = (V) target().remove(key);
+        if (!updateInProgress()) this.immutable = cloneTarget();
+        return v;
+    }
 
-public synchronized V put(K key, V value) {
-V v = (V)target().put(key, value);
-if (!updateInProgress()) this.immutable = cloneTarget(); 
-return v;
-}
+    public synchronized boolean remove(Object key, Object value) {
+        boolean changed = target().remove(key, value);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public synchronized void putAll(Map<? extends K, ? extends V> m) {
-target().putAll(m);
-if (!updateInProgress()) this.immutable = cloneTarget();
+    public synchronized V replace(K key, V value) {
+        V v = (V) target().replace(key, value);
+        if (!updateInProgress()) this.immutable = cloneTarget();
+        return v;
+    }
 
-}
+    public synchronized boolean replace(K key, V oldValue, V newValue) {
+        boolean changed = target().replace(key, oldValue, newValue);
+        if (changed && !updateInProgress()) this.immutable = cloneTarget();
+        return changed;
+    }
 
-public synchronized V putIfAbsent(K key, V value) {
-V v = (V)target().putIfAbsent(key, value);
-if (!updateInProgress()) this.immutable = cloneTarget(); 
-return v;
-}
+    public int size() {
+        return targetView().size();
+    }
 
-public synchronized V remove(Object key) {
-V v = (V)target().remove(key);
-if (!updateInProgress()) this.immutable = cloneTarget(); 
-return v;
-}
+    public MapService<K, V>[] split(int n) {
+        return (MapService<K, V>[]) new MapService[]{this};
+    }
 
-public synchronized boolean remove(Object key, Object value) {
-boolean changed = target().remove(key, value);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public MapService<K, V> threadSafe() {
+        return this;
+    }
 
-public synchronized V replace(K key, V value) {
-V v = (V)target().replace(key, value);
-if (!updateInProgress()) this.immutable = cloneTarget(); 
-return v;
-}
+    public synchronized void update(Consumer<MapService<K, V>> action, MapService<K, V> view) {
+        this.updatingThread = Thread.currentThread();
+        try {
+            target().update(action, view);
+        } finally {
+            this.updatingThread = null;
+            this.immutable = cloneTarget();
+        }
+    }
 
-public synchronized boolean replace(K key, V oldValue, V newValue) {
-boolean changed = target().replace(key, oldValue, newValue);
-if (changed && !updateInProgress()) this.immutable = cloneTarget(); 
-return changed;
-}
+    public Equality<? super V> valueComparator() {
+        return targetView().valueComparator();
+    }
 
-public int size() {
-return targetView().size();
-}
+    protected MapService<K, V> cloneTarget() {
+        try {
+            return target().clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error("Cannot happen since target is Cloneable.");
+        }
+    }
 
-public MapService<K, V>[] split(int n) {
-return (MapService<K, V>[])new MapService[] { this };
-}
+    protected MapService<K, V> targetView() {
+        return (this.updatingThread == null || this.updatingThread != Thread.currentThread()) ? this.immutable : target();
+    }
 
-public MapService<K, V> threadSafe() {
-return this;
-}
+    protected final boolean updateInProgress() {
+        return (this.updatingThread == Thread.currentThread());
+    }
 
-public synchronized void update(Consumer<MapService<K, V>> action, MapService<K, V> view) {
-this.updatingThread = Thread.currentThread();
-try {
-target().update(action, view);
-} finally {
-this.updatingThread = null;
-this.immutable = cloneTarget();
-} 
-}
+    private class IteratorImpl
+            implements Iterator<Map.Entry<K, V>> {
+        private final Iterator<Map.Entry<K, V>> targetIterator = AtomicMapImpl.this.targetView().iterator();
+        private Map.Entry<K, V> current;
 
-public Equality<? super V> valueComparator() {
-return targetView().valueComparator();
-}
+        private IteratorImpl() {
+        }
 
-protected MapService<K, V> cloneTarget() {
-try {
-return target().clone();
-} catch (CloneNotSupportedException e) {
-throw new Error("Cannot happen since target is Cloneable.");
-} 
-}
+        public boolean hasNext() {
+            return this.targetIterator.hasNext();
+        }
 
-protected MapService<K, V> targetView() {
-return (this.updatingThread == null || this.updatingThread != Thread.currentThread()) ? this.immutable : target();
-}
+        public Map.Entry<K, V> next() {
+            this.current = this.targetIterator.next();
+            return this.current;
+        }
 
-protected final boolean updateInProgress() {
-return (this.updatingThread == Thread.currentThread());
-}
+        public void remove() {
+            if (this.current == null) throw new IllegalStateException();
+            AtomicMapImpl.this.remove(this.current.getKey());
+            this.current = null;
+        }
+    }
 }
 

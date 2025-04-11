@@ -1,85 +1,84 @@
 package javolution.util.internal.collection;
 
-import java.util.Comparator;
-import java.util.Iterator;
 import javolution.util.FastTable;
 import javolution.util.function.Equality;
 import javolution.util.internal.comparator.WrapperComparatorImpl;
 import javolution.util.service.CollectionService;
 
+import java.util.Comparator;
+import java.util.Iterator;
+
 public class SortedCollectionImpl<E>
-extends CollectionView<E>
-{
-private static final long serialVersionUID = 1536L;
-protected final Equality<E> comparator;
+        extends CollectionView<E> {
+    private static final long serialVersionUID = 1536L;
+    protected final Equality<E> comparator;
 
-private class IteratorImpl
-implements Iterator<E>
-{
-private final Iterator<E> iterator;
-private E next;
+    public SortedCollectionImpl(CollectionService<E> target, Comparator<? super E> comparator) {
+        super(target);
+        this.comparator = (comparator instanceof Equality) ? (Equality) comparator : (Equality<E>) new WrapperComparatorImpl(comparator);
+    }
 
-public IteratorImpl() {
-FastTable<E> sorted = new FastTable(SortedCollectionImpl.this.comparator);
-Iterator<E> it = SortedCollectionImpl.this.target().iterator();
-while (it.hasNext()) {
-sorted.add(it.next());
-}
-sorted.sort();
-this.iterator = sorted.iterator();
-}
+    public boolean add(E e) {
+        return target().add(e);
+    }
 
-public boolean hasNext() {
-return this.iterator.hasNext();
-}
+    public void clear() {
+        target().clear();
+    }
 
-public E next() {
-this.next = this.iterator.next();
-return this.next;
-}
+    public Equality<? super E> comparator() {
+        return this.comparator;
+    }
 
-public void remove() {
-if (this.next == null) throw new IllegalStateException(); 
-SortedCollectionImpl.this.target().remove(this.next);
-this.next = null;
-}
-}
+    public boolean contains(Object obj) {
+        return target().contains(obj);
+    }
 
-public SortedCollectionImpl(CollectionService<E> target, Comparator<? super E> comparator) {
-super(target);
-this.comparator = (comparator instanceof Equality) ? (Equality)comparator : (Equality<E>)new WrapperComparatorImpl(comparator);
-}
+    public boolean isEmpty() {
+        return target().isEmpty();
+    }
 
-public boolean add(E e) {
-return target().add(e);
-}
+    public Iterator<E> iterator() {
+        return new IteratorImpl();
+    }
 
-public void clear() {
-target().clear();
-}
+    public boolean remove(Object obj) {
+        return target().remove(obj);
+    }
 
-public Equality<? super E> comparator() {
-return this.comparator;
-}
+    public int size() {
+        return target().size();
+    }
 
-public boolean contains(Object obj) {
-return target().contains(obj);
-}
+    private class IteratorImpl
+            implements Iterator<E> {
+        private final Iterator<E> iterator;
+        private E next;
 
-public boolean isEmpty() {
-return target().isEmpty();
-}
+        public IteratorImpl() {
+            FastTable<E> sorted = new FastTable(SortedCollectionImpl.this.comparator);
+            Iterator<E> it = SortedCollectionImpl.this.target().iterator();
+            while (it.hasNext()) {
+                sorted.add(it.next());
+            }
+            sorted.sort();
+            this.iterator = sorted.iterator();
+        }
 
-public Iterator<E> iterator() {
-return new IteratorImpl();
-}
+        public boolean hasNext() {
+            return this.iterator.hasNext();
+        }
 
-public boolean remove(Object obj) {
-return target().remove(obj);
-}
+        public E next() {
+            this.next = this.iterator.next();
+            return this.next;
+        }
 
-public int size() {
-return target().size();
-}
+        public void remove() {
+            if (this.next == null) throw new IllegalStateException();
+            SortedCollectionImpl.this.target().remove(this.next);
+            this.next = null;
+        }
+    }
 }
 

@@ -5,7 +5,7 @@ import java.util.Stack;
 class JJTParserState {
     private Stack<Node> nodes = new Stack<>();
     private Stack<Integer> marks = new Stack<>();
-    
+
     private int sp = 0;
     private int mk = 0;
 

@@ -2,210 +2,190 @@ package com.mchange.v2.c3p0.codegen;
 
 import com.mchange.v1.xml.DomParseUtils;
 import com.mchange.v2.codegen.IndentedWriter;
-import com.mchange.v2.codegen.bean.BeanExtractingGeneratorExtension;
-import com.mchange.v2.codegen.bean.BeangenUtils;
-import com.mchange.v2.codegen.bean.ClassInfo;
-import com.mchange.v2.codegen.bean.CompleteConstructorGeneratorExtension;
-import com.mchange.v2.codegen.bean.GeneratorExtension;
-import com.mchange.v2.codegen.bean.IndirectingSerializableExtension;
-import com.mchange.v2.codegen.bean.ParsedPropertyBeanDocument;
-import com.mchange.v2.codegen.bean.Property;
-import com.mchange.v2.codegen.bean.PropertyReferenceableExtension;
-import com.mchange.v2.codegen.bean.PropsToStringGeneratorExtension;
-import com.mchange.v2.codegen.bean.SimpleClassInfo;
-import com.mchange.v2.codegen.bean.SimplePropertyBeanGenerator;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import com.mchange.v2.codegen.bean.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class BeangenDataSourceGenerator
-{
-public static void main(String[] argv) {
-try {
-if (argv.length != 2) {
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
+import java.util.*;
 
-System.err.println("java " + BeangenDataSourceGenerator.class.getName() + " <infile.xml> <OutputFile.java>");
+public class BeangenDataSourceGenerator {
+    public static void main(String[] argv) {
+        try {
+            if (argv.length != 2) {
 
-return;
-} 
+                System.err.println("java " + BeangenDataSourceGenerator.class.getName() + " <infile.xml> <OutputFile.java>");
 
-File outFile = new File(argv[1]);
-File parentDir = outFile.getParentFile();
-if (!parentDir.exists()) {
+                return;
+            }
 
-System.err.println("Warning: making parent directory: " + parentDir);
-parentDir.mkdirs();
-} 
+            File outFile = new File(argv[1]);
+            File parentDir = outFile.getParentFile();
+            if (!parentDir.exists()) {
 
-DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
-DocumentBuilder db = fact.newDocumentBuilder();
-Document doc = db.parse(new File(argv[0]));
-ParsedPropertyBeanDocument parsed = new ParsedPropertyBeanDocument(doc);
-Writer w = new BufferedWriter(new FileWriter(outFile));
+                System.err.println("Warning: making parent directory: " + parentDir);
+                parentDir.mkdirs();
+            }
 
-SimplePropertyBeanGenerator gen = new SimplePropertyBeanGenerator();
-gen.setGeneratorName(BeangenDataSourceGenerator.class.getName());
+            DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = fact.newDocumentBuilder();
+            Document doc = db.parse(new File(argv[0]));
+            ParsedPropertyBeanDocument parsed = new ParsedPropertyBeanDocument(doc);
+            Writer w = new BufferedWriter(new FileWriter(outFile));
 
-IndirectingSerializableExtension idse = new IndirectingSerializableExtension("com.mchange.v2.naming.ReferenceIndirector")
-{
+            SimplePropertyBeanGenerator gen = new SimplePropertyBeanGenerator();
+            gen.setGeneratorName(BeangenDataSourceGenerator.class.getName());
 
-protected void generateExtraSerInitializers(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException
-{
-if (BeangenUtils.hasBoundProperties(props))
-iw.println("this.pcs = new PropertyChangeSupport( this );"); 
-if (BeangenUtils.hasConstrainedProperties(props))
-iw.println("this.vcs = new VetoableChangeSupport( this );"); 
-}
-};
-gen.addExtension((GeneratorExtension)idse);
+            IndirectingSerializableExtension idse = new IndirectingSerializableExtension("com.mchange.v2.naming.ReferenceIndirector") {
 
-gen.addExtension(new C3P0ImplUtilsParentLoggerGeneratorExtension());
+                protected void generateExtraSerInitializers(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
+                    if (BeangenUtils.hasBoundProperties(props))
+                        iw.println("this.pcs = new PropertyChangeSupport( this );");
+                    if (BeangenUtils.hasConstrainedProperties(props))
+                        iw.println("this.vcs = new VetoableChangeSupport( this );");
+                }
+            };
+            gen.addExtension((GeneratorExtension) idse);
 
-PropsToStringGeneratorExtension tsge = new PropsToStringGeneratorExtension();
-tsge.setExcludePropertyNames(Arrays.asList(new String[] { "userOverridesAsString", "overrideDefaultUser", "overrideDefaultPassword" }));
-gen.addExtension((GeneratorExtension)tsge);
+            gen.addExtension(new C3P0ImplUtilsParentLoggerGeneratorExtension());
 
-PropertyReferenceableExtension prex = new PropertyReferenceableExtension();
-prex.setUseExplicitReferenceProperties(true);
+            PropsToStringGeneratorExtension tsge = new PropsToStringGeneratorExtension();
+            tsge.setExcludePropertyNames(Arrays.asList(new String[]{"userOverridesAsString", "overrideDefaultUser", "overrideDefaultPassword"}));
+            gen.addExtension((GeneratorExtension) tsge);
 
-prex.setFactoryClassName("com.mchange.v2.c3p0.impl.C3P0JavaBeanObjectFactory");
-gen.addExtension((GeneratorExtension)prex);
+            PropertyReferenceableExtension prex = new PropertyReferenceableExtension();
+            prex.setUseExplicitReferenceProperties(true);
 
-BooleanInitIdentityTokenConstructortorGeneratorExtension biitcge = new BooleanInitIdentityTokenConstructortorGeneratorExtension();
-gen.addExtension(biitcge);
+            prex.setFactoryClassName("com.mchange.v2.c3p0.impl.C3P0JavaBeanObjectFactory");
+            gen.addExtension((GeneratorExtension) prex);
 
-if (parsed.getClassInfo().getClassName().equals("WrapperConnectionPoolDataSourceBase")) {
-gen.addExtension(new WcpdsExtrasGeneratorExtension());
-}
-if (unmodifiableShadow(doc)) {
-gen.addExtension(new UnmodifiableShadowGeneratorExtension());
-}
+            BooleanInitIdentityTokenConstructortorGeneratorExtension biitcge = new BooleanInitIdentityTokenConstructortorGeneratorExtension();
+            gen.addExtension(biitcge);
 
-gen.generate(parsed.getClassInfo(), parsed.getProperties(), w);
+            if (parsed.getClassInfo().getClassName().equals("WrapperConnectionPoolDataSourceBase")) {
+                gen.addExtension(new WcpdsExtrasGeneratorExtension());
+            }
+            if (unmodifiableShadow(doc)) {
+                gen.addExtension(new UnmodifiableShadowGeneratorExtension());
+            }
 
-w.flush();
-w.close();
+            gen.generate(parsed.getClassInfo(), parsed.getProperties(), w);
 
-System.err.println("Processed: " + argv[0]);
-}
-catch (Exception e) {
-e.printStackTrace();
-} 
-}
+            w.flush();
+            w.close();
 
-private static boolean unmodifiableShadow(Document doc) {
-Element docElem = doc.getDocumentElement();
-return (DomParseUtils.uniqueChild(docElem, "unmodifiable-shadow") != null);
-}
+            System.err.println("Processed: " + argv[0]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-static class BooleanInitIdentityTokenConstructortorGeneratorExtension implements GeneratorExtension {
-public Collection extraGeneralImports() {
-return Collections.EMPTY_SET;
-}
+    private static boolean unmodifiableShadow(Document doc) {
+        Element docElem = doc.getDocumentElement();
+        return (DomParseUtils.uniqueChild(docElem, "unmodifiable-shadow") != null);
+    }
 
-public Collection extraSpecificImports() {
-Set<String> out = new HashSet();
-out.add("com.mchange.v2.c3p0.C3P0Registry");
-return out;
-}
-public Collection extraInterfaceNames() {
-return Collections.EMPTY_SET;
-}
+    static class BooleanInitIdentityTokenConstructortorGeneratorExtension implements GeneratorExtension {
+        public Collection extraGeneralImports() {
+            return Collections.EMPTY_SET;
+        }
 
-public void generate(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
-BeangenUtils.writeExplicitDefaultConstructor(2, info, iw);
-iw.println();
-iw.println("public " + info.getClassName() + "( boolean autoregister )");
-iw.println("{");
-iw.upIndent();
-iw.println("if (autoregister)");
-iw.println("{");
-iw.upIndent();
-iw.println("this.identityToken = C3P0ImplUtils.allocateIdentityToken( this );");
-iw.println("C3P0Registry.reregister( this );");
-iw.downIndent();
-iw.println("}");
+        public Collection extraSpecificImports() {
+            Set<String> out = new HashSet();
+            out.add("com.mchange.v2.c3p0.C3P0Registry");
+            return out;
+        }
 
-iw.downIndent();
-iw.println("}");
-}
-}
+        public Collection extraInterfaceNames() {
+            return Collections.EMPTY_SET;
+        }
 
-static class WcpdsExtrasGeneratorExtension implements GeneratorExtension {
-public Collection extraGeneralImports() {
-return Collections.EMPTY_SET;
-}
+        public void generate(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
+            BeangenUtils.writeExplicitDefaultConstructor(2, info, iw);
+            iw.println();
+            iw.println("public " + info.getClassName() + "( boolean autoregister )");
+            iw.println("{");
+            iw.upIndent();
+            iw.println("if (autoregister)");
+            iw.println("{");
+            iw.upIndent();
+            iw.println("this.identityToken = C3P0ImplUtils.allocateIdentityToken( this );");
+            iw.println("C3P0Registry.reregister( this );");
+            iw.downIndent();
+            iw.println("}");
 
-public Collection extraSpecificImports() {
-Set<String> out = new HashSet();
-out.add("com.mchange.v2.c3p0.ConnectionCustomizer");
-out.add("javax.sql.PooledConnection");
-out.add("java.sql.SQLException");
-return out;
-}
-public Collection extraInterfaceNames() {
-return Collections.EMPTY_SET;
-}
+            iw.downIndent();
+            iw.println("}");
+        }
+    }
 
-public void generate(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
-iw.println("protected abstract PooledConnection getPooledConnection( ConnectionCustomizer cc, String idt) throws SQLException;");
+    static class WcpdsExtrasGeneratorExtension implements GeneratorExtension {
+        public Collection extraGeneralImports() {
+            return Collections.EMPTY_SET;
+        }
 
-iw.println("protected abstract PooledConnection getPooledConnection(String user, String password, ConnectionCustomizer cc, String idt) throws SQLException;");
-}
-}
+        public Collection extraSpecificImports() {
+            Set<String> out = new HashSet();
+            out.add("com.mchange.v2.c3p0.ConnectionCustomizer");
+            out.add("javax.sql.PooledConnection");
+            out.add("java.sql.SQLException");
+            return out;
+        }
 
-static class UnmodifiableShadowGeneratorExtension
-implements GeneratorExtension
-{
-BeanExtractingGeneratorExtension bege;
-CompleteConstructorGeneratorExtension ccge;
+        public Collection extraInterfaceNames() {
+            return Collections.EMPTY_SET;
+        }
 
-UnmodifiableShadowGeneratorExtension() {
-this.bege = new BeanExtractingGeneratorExtension();
-this.bege.setExtractMethodModifiers(2);
-this.bege.setConstructorModifiers(1);
+        public void generate(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
+            iw.println("protected abstract PooledConnection getPooledConnection( ConnectionCustomizer cc, String idt) throws SQLException;");
 
-this.ccge = new CompleteConstructorGeneratorExtension();
-}
+            iw.println("protected abstract PooledConnection getPooledConnection(String user, String password, ConnectionCustomizer cc, String idt) throws SQLException;");
+        }
+    }
 
-public Collection extraGeneralImports() {
-Set out = new HashSet();
-out.addAll(this.bege.extraGeneralImports());
-out.addAll(this.ccge.extraGeneralImports());
-return out;
-}
+    static class UnmodifiableShadowGeneratorExtension
+            implements GeneratorExtension {
+        BeanExtractingGeneratorExtension bege;
+        CompleteConstructorGeneratorExtension ccge;
 
-public Collection extraSpecificImports() {
-Set out = new HashSet();
-out.addAll(this.bege.extraSpecificImports());
-out.addAll(this.ccge.extraSpecificImports());
-return out;
-}
-public Collection extraInterfaceNames() {
-return Collections.EMPTY_SET;
-}
+        UnmodifiableShadowGeneratorExtension() {
+            this.bege = new BeanExtractingGeneratorExtension();
+            this.bege.setExtractMethodModifiers(2);
+            this.bege.setConstructorModifiers(1);
 
-public void generate(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
-SimpleClassInfo simpleClassInfo = new SimpleClassInfo(info.getPackageName(), 9, "UnmodifiableShadow", info.getSuperclassName(), info.getInterfaceNames(), info.getGeneralImports(), info.getSpecificImports());
+            this.ccge = new CompleteConstructorGeneratorExtension();
+        }
 
-SimplePropertyBeanGenerator innerGen = new SimplePropertyBeanGenerator();
-innerGen.setInner(true);
-innerGen.setForceUnmodifiable(true);
-innerGen.addExtension((GeneratorExtension)this.bege);
-innerGen.addExtension((GeneratorExtension)this.ccge);
-innerGen.generate((ClassInfo)simpleClassInfo, props, (Writer)iw);
-}
-}
+        public Collection extraGeneralImports() {
+            Set out = new HashSet();
+            out.addAll(this.bege.extraGeneralImports());
+            out.addAll(this.ccge.extraGeneralImports());
+            return out;
+        }
+
+        public Collection extraSpecificImports() {
+            Set out = new HashSet();
+            out.addAll(this.bege.extraSpecificImports());
+            out.addAll(this.ccge.extraSpecificImports());
+            return out;
+        }
+
+        public Collection extraInterfaceNames() {
+            return Collections.EMPTY_SET;
+        }
+
+        public void generate(ClassInfo info, Class superclassType, Property[] props, Class[] propTypes, IndentedWriter iw) throws IOException {
+            SimpleClassInfo simpleClassInfo = new SimpleClassInfo(info.getPackageName(), 9, "UnmodifiableShadow", info.getSuperclassName(), info.getInterfaceNames(), info.getGeneralImports(), info.getSpecificImports());
+
+            SimplePropertyBeanGenerator innerGen = new SimplePropertyBeanGenerator();
+            innerGen.setInner(true);
+            innerGen.setForceUnmodifiable(true);
+            innerGen.addExtension((GeneratorExtension) this.bege);
+            innerGen.addExtension((GeneratorExtension) this.ccge);
+            innerGen.generate((ClassInfo) simpleClassInfo, props, (Writer) iw);
+        }
+    }
 }
 

@@ -23,276 +23,287 @@ import com.zhonglian.server.websocket.def.ErrorCode;
 import com.zhonglian.server.websocket.exception.WSException;
 import core.database.game.bo.ActivityBO;
 import core.database.game.bo.ActivityRecordBO;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DrawPrize
-extends Activity
-{
-public int price;
-public int tenPrice;
-int point;
-List<Integer> NormalIdList;
-List<Integer> NormalCountList;
-List<Integer> NormalWeightList;
-List<Integer> LeastIdList;
-List<Integer> LeastCountList;
-List<Integer> LeastWeightList;
-public List<DrawTaskInfo> arList;
-List<Reward> RewardList = new ArrayList<>();
-List<RankReward> rankList = new ArrayList<>(); private static class RankReward {
-NumberRange rank; Reward reward;
-private RankReward() {} } public int maxRank = 0;
+        extends Activity {
+    public int price;
+    public int tenPrice;
+    public List<DrawTaskInfo> arList;
+    public int maxRank = 0;
+    int point;
+    List<Integer> NormalIdList;
+    List<Integer> NormalCountList;
+    List<Integer> NormalWeightList;
+    List<Integer> LeastIdList;
+    List<Integer> LeastCountList;
+    List<Integer> LeastWeightList;
+    List<Reward> RewardList = new ArrayList<>();
+    List<RankReward> rankList = new ArrayList<>();
 
-public DrawPrize(ActivityBO bo) {
-super(bo);
-}
+    public DrawPrize(ActivityBO bo) {
+        super(bo);
+    }
 
-private static class DrawTaskInfo { private int awardId;
-private int status;
-private int condition;
-private Reward prize;
+    public void load(JsonObject json) throws WSException {
+        JsonObject draw = json.get("DrawList").getAsJsonObject();
+        this.price = draw.get("price").getAsInt();
+        this.tenPrice = draw.get("tenprice").getAsInt();
+        this.point = draw.get("point").getAsInt();
+        this.NormalIdList = StringUtils.string2Integer(draw.get("NormalIdList").getAsString());
+        this.NormalCountList = StringUtils.string2Integer(draw.get("NormalCountList").getAsString());
+        this.NormalWeightList = StringUtils.string2Integer(draw.get("NormalWeightList").getAsString());
+        this.LeastIdList = StringUtils.string2Integer(draw.get("LeastIdList").getAsString());
+        this.LeastCountList = StringUtils.string2Integer(draw.get("LeastCountList").getAsString());
+        this.LeastWeightList = StringUtils.string2Integer(draw.get("LeastWeightList").getAsString());
 
-private DrawTaskInfo() {}
+        this.arList = Lists.newArrayList();
+        for (JsonElement element : json.get("ExtReward").getAsJsonArray()) {
+            JsonObject obj = element.getAsJsonObject();
+            DrawTaskInfo builder = new DrawTaskInfo(null);
+            builder.awardId = obj.get("aid").getAsInt();
+            builder.condition = obj.get("condition").getAsInt();
+            builder.prize = new Reward(obj.get("items").getAsJsonArray());
+            this.arList.add(builder);
+        }
 
-public int getAwardId() {
-return this.awardId;
-}
+        for (JsonElement ele : json.get("RankReward").getAsJsonArray()) {
+            JsonObject obj = ele.getAsJsonObject();
+            RankReward rankreward = new RankReward(null);
+            rankreward.rank = NumberRange.parse(obj.get("rank").getAsString());
+            rankreward.reward = new Reward(obj.get("reward").getAsJsonArray());
+            this.rankList.add(rankreward);
+            if (rankreward.rank.getTop() > this.maxRank) {
+                this.maxRank = rankreward.rank.getTop();
+            }
+        }
+    }
 
-public void setAwardId(int awardId) {
-this.awardId = awardId;
-}
+    public void onOpen() {
+        clearActRecord();
+        RankManager.getInstance().clear(RankType.DrawPoint);
+    }
 
-public int getStatus() {
-return this.status;
-}
+    public void onEnd() {
+        settle();
+    }
 
-public void setStatus(int status) {
-this.status = status;
-}
+    public void onClosed() {
+    }
 
-public int getCondition() {
-return this.condition;
-}
+    public ActivityType getType() {
+        return ActivityType.DrawPrize;
+    }
 
-public void setCondition(int condition) {
-this.condition = condition;
-}
+    public void settle() {
+        List<Record> records = RankManager.getInstance().getRankList(RankType.DrawPoint, this.maxRank);
+        for (Record record : records) {
+            if (record == null)
+                continue;
+            Reward reward = getReward(record.getRank());
+            if (reward != null)
+                MailCenter.getInstance().sendMail(record.getPid(), this.ref.MailSender, this.ref.MailTitle, this.ref.MailContent, reward, new String[0]);
+        }
+    }
 
-public Reward getPrize() {
-return this.prize;
-}
+    private Reward getReward(int rank) {
+        for (RankReward reward : this.rankList) {
+            if (reward.rank.within(rank))
+                return reward.reward;
+        }
+        return null;
+    }
 
-public void setPrize(Reward prize) {
-this.prize = prize;
-} }
+    public Reward find(Player player, int times) {
+        Reward reward = new Reward();
 
-public void load(JsonObject json) throws WSException {
-JsonObject draw = json.get("DrawList").getAsJsonObject();
-this.price = draw.get("price").getAsInt();
-this.tenPrice = draw.get("tenprice").getAsInt();
-this.point = draw.get("point").getAsInt();
-this.NormalIdList = StringUtils.string2Integer(draw.get("NormalIdList").getAsString());
-this.NormalCountList = StringUtils.string2Integer(draw.get("NormalCountList").getAsString());
-this.NormalWeightList = StringUtils.string2Integer(draw.get("NormalWeightList").getAsString());
-this.LeastIdList = StringUtils.string2Integer(draw.get("LeastIdList").getAsString());
-this.LeastCountList = StringUtils.string2Integer(draw.get("LeastCountList").getAsString());
-this.LeastWeightList = StringUtils.string2Integer(draw.get("LeastWeightList").getAsString());
+        for (int i = 0; i < times; i++) {
+            if (times > 1 && times - i <= 1) {
+                int index = CommMath.getRandomIndexByRate(this.LeastWeightList);
+                int uniformID = ((Integer) this.LeastIdList.get(index)).intValue();
+                int count = ((Integer) this.LeastCountList.get(index)).intValue();
+                reward.combine(new Reward(uniformID, count));
+            } else {
 
-this.arList = Lists.newArrayList();
-for (JsonElement element : json.get("ExtReward").getAsJsonArray()) {
-JsonObject obj = element.getAsJsonObject();
-DrawTaskInfo builder = new DrawTaskInfo(null);
-builder.awardId = obj.get("aid").getAsInt();
-builder.condition = obj.get("condition").getAsInt();
-builder.prize = new Reward(obj.get("items").getAsJsonArray());
-this.arList.add(builder);
-} 
+                int index = CommMath.getRandomIndexByRate(this.NormalWeightList);
+                int uniformID = ((Integer) this.NormalIdList.get(index)).intValue();
+                int count = ((Integer) this.NormalCountList.get(index)).intValue();
+                reward.combine(new Reward(uniformID, count));
+            }
+        }
+        getExtReward(player, times);
 
-for (JsonElement ele : json.get("RankReward").getAsJsonArray()) {
-JsonObject obj = ele.getAsJsonObject();
-RankReward rankreward = new RankReward(null);
-rankreward.rank = NumberRange.parse(obj.get("rank").getAsString());
-rankreward.reward = new Reward(obj.get("reward").getAsJsonArray());
-this.rankList.add(rankreward);
-if (rankreward.rank.getTop() > this.maxRank) {
-this.maxRank = rankreward.rank.getTop();
-}
-} 
-}
+        return reward;
+    }
 
-public void onOpen() {
-clearActRecord();
-RankManager.getInstance().clear(RankType.DrawPoint);
-}
+    public void getExtReward(Player player, int times) {
+        if (getStatus() != ActivityStatus.Open) {
+            return;
+        }
+        ActivityRecordBO bo = getOrCreateRecord(player);
+        bo.setExtInt(0, bo.getExtInt(0) + this.point * times);
 
-public void onEnd() {
-settle();
-}
+        List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
 
-public void onClosed() {}
+        List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
 
-public ActivityType getType() {
-return ActivityType.DrawPrize;
-}
+        this.arList.forEach(x -> {
+            if (!paramList1.contains(Integer.valueOf(x.awardId)) && paramActivityRecordBO.getExtInt(0) >= x.condition) {
+                paramList1.add(Integer.valueOf(x.awardId));
+                paramList2.add(Integer.valueOf(FetchStatus.Can.ordinal()));
+            }
+        });
+        bo.setExtStr(0, StringUtils.list2String(awardList));
+        bo.setExtStr(1, StringUtils.list2String(stateList));
+        bo.saveAll();
+        RankManager.getInstance().update(RankType.DrawPoint, player.getPid(), bo.getExtInt(0));
 
-public void settle() {
-List<Record> records = RankManager.getInstance().getRankList(RankType.DrawPoint, this.maxRank);
-for (Record record : records) {
-if (record == null)
-continue; 
-Reward reward = getReward(record.getRank());
-if (reward != null)
-MailCenter.getInstance().sendMail(record.getPid(), this.ref.MailSender, this.ref.MailTitle, this.ref.MailContent, reward, new String[0]); 
-} 
-}
+        player.pushProto("DrawPrize", accumRechargeProto(player));
+    }
 
-private Reward getReward(int rank) {
-for (RankReward reward : this.rankList) {
-if (reward.rank.within(rank))
-return reward.reward; 
-} 
-return null;
-}
+    public accumRechargeInfoP accumRechargeProto(Player player) {
+        ActivityRecordBO bo = getRecord(player);
 
-public Reward find(Player player, int times) {
-Reward reward = new Reward();
+        int recharge = 0;
+        if (bo != null) {
+            recharge = bo.getExtInt(0);
+        }
 
-for (int i = 0; i < times; i++) {
-if (times > 1 && times - i <= 1) {
-int index = CommMath.getRandomIndexByRate(this.LeastWeightList);
-int uniformID = ((Integer)this.LeastIdList.get(index)).intValue();
-int count = ((Integer)this.LeastCountList.get(index)).intValue();
-reward.combine(new Reward(uniformID, count));
-} else {
+        List<Integer> awardList = null, stateList = null;
+        if (bo != null) {
+            awardList = StringUtils.string2Integer(bo.getExtStr(0));
+            stateList = StringUtils.string2Integer(bo.getExtStr(1));
+        }
+        List<DrawTaskInfo> accumerecharges = Lists.newArrayList();
 
-int index = CommMath.getRandomIndexByRate(this.NormalWeightList);
-int uniformID = ((Integer)this.NormalIdList.get(index)).intValue();
-int count = ((Integer)this.NormalCountList.get(index)).intValue();
-reward.combine(new Reward(uniformID, count));
-} 
-}  getExtReward(player, times);
+        for (DrawTaskInfo ar : this.arList) {
+            DrawTaskInfo builder = new DrawTaskInfo(null);
+            builder.setAwardId(ar.getAwardId());
+            builder.setCondition(ar.getCondition());
+            builder.setPrize(ar.getPrize());
+            int index = (awardList == null) ? -1 : awardList.indexOf(Integer.valueOf(ar.getAwardId()));
+            if (index != -1) {
+                builder.setStatus(((Integer) stateList.get(index)).intValue());
+            } else {
+                builder.setStatus(FetchStatus.Cannot.ordinal());
+            }
+            accumerecharges.add(builder);
+        }
 
-return reward;
-}
+        return new accumRechargeInfoP(this.price, this.tenPrice, this.point, RankManager.getInstance().getRank(RankType.DrawPoint, player.getPid()), recharge,
+                accumerecharges, new Reward(this.NormalIdList, this.NormalCountList), this.rankList, null);
+    }
 
-public void getExtReward(Player player, int times) {
-if (getStatus() != ActivityStatus.Open) {
-return;
-}
-ActivityRecordBO bo = getOrCreateRecord(player);
-bo.setExtInt(0, bo.getExtInt(0) + this.point * times);
+    public DrawTaskInfo doReceivePrize(Player player, int awardId) throws WSException {
+        Map<Integer, DrawTaskInfo> arMap = Maps.list2Map(DrawTaskInfo::getAwardId, this.arList);
 
-List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
+        DrawTaskInfo arInfo = arMap.get(Integer.valueOf(awardId));
+        if (arInfo == null) {
+            throw new WSException(ErrorCode.NotFound_ActivityAwardId, "奖励ID[%s]未找到", new Object[]{Integer.valueOf(awardId)});
+        }
 
-List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
+        ActivityRecordBO bo = getOrCreateRecord(player);
 
-this.arList.forEach(x -> {
-if (!paramList1.contains(Integer.valueOf(x.awardId)) && paramActivityRecordBO.getExtInt(0) >= x.condition) {
-paramList1.add(Integer.valueOf(x.awardId));
-paramList2.add(Integer.valueOf(FetchStatus.Can.ordinal()));
-} 
-});
-bo.setExtStr(0, StringUtils.list2String(awardList));
-bo.setExtStr(1, StringUtils.list2String(stateList));
-bo.saveAll();
-RankManager.getInstance().update(RankType.DrawPoint, player.getPid(), bo.getExtInt(0));
+        List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
 
-player.pushProto("DrawPrize", accumRechargeProto(player));
-}
+        List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
 
-public accumRechargeInfoP accumRechargeProto(Player player) {
-ActivityRecordBO bo = getRecord(player);
+        int index = awardList.indexOf(Integer.valueOf(awardId));
+        if (index == -1) {
+            throw new WSException(ErrorCode.AccumRecharge_CanNotReceive, "充值金额:%s<需求金额:%s", new Object[]{Integer.valueOf(bo.getExtInt(0)), Integer.valueOf(arInfo.getCondition())});
+        }
+        int state = ((Integer) stateList.get(index)).intValue();
+        if (state != FetchStatus.Can.ordinal()) {
+            throw new WSException(ErrorCode.AccumRecharge_HasReceive, "奖励ID[%s]已领取", new Object[]{Integer.valueOf(awardId)});
+        }
 
-int recharge = 0;
-if (bo != null) {
-recharge = bo.getExtInt(0);
-}
+        stateList.set(index, Integer.valueOf(FetchStatus.Fetched.ordinal()));
+        bo.saveExtStr(1, StringUtils.list2String(stateList));
 
-List<Integer> awardList = null, stateList = null;
-if (bo != null) {
-awardList = StringUtils.string2Integer(bo.getExtStr(0));
-stateList = StringUtils.string2Integer(bo.getExtStr(1));
-} 
-List<DrawTaskInfo> accumerecharges = Lists.newArrayList();
+        Reward reward = arInfo.getPrize();
 
-for (DrawTaskInfo ar : this.arList) {
-DrawTaskInfo builder = new DrawTaskInfo(null);
-builder.setAwardId(ar.getAwardId());
-builder.setCondition(ar.getCondition());
-builder.setPrize(ar.getPrize());
-int index = (awardList == null) ? -1 : awardList.indexOf(Integer.valueOf(ar.getAwardId()));
-if (index != -1) {
-builder.setStatus(((Integer)stateList.get(index)).intValue());
-} else {
-builder.setStatus(FetchStatus.Cannot.ordinal());
-} 
-accumerecharges.add(builder);
-} 
+        ((PlayerItem) player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.Activity_AccumRecharge);
 
-return new accumRechargeInfoP(this.price, this.tenPrice, this.point, RankManager.getInstance().getRank(RankType.DrawPoint, player.getPid()), recharge, 
-accumerecharges, new Reward(this.NormalIdList, this.NormalCountList), this.rankList, null);
-}
+        DrawTaskInfo builder = new DrawTaskInfo(null);
+        builder.setAwardId(awardId);
+        builder.setStatus(FetchStatus.Fetched.ordinal());
+        builder.setPrize(reward);
+        return builder;
+    }
 
-public DrawTaskInfo doReceivePrize(Player player, int awardId) throws WSException {
-Map<Integer, DrawTaskInfo> arMap = Maps.list2Map(DrawTaskInfo::getAwardId, this.arList);
+    private static class RankReward {
+        NumberRange rank;
+        Reward reward;
 
-DrawTaskInfo arInfo = arMap.get(Integer.valueOf(awardId));
-if (arInfo == null) {
-throw new WSException(ErrorCode.NotFound_ActivityAwardId, "奖励ID[%s]未找到", new Object[] { Integer.valueOf(awardId) });
-}
+        private RankReward() {
+        }
+    }
 
-ActivityRecordBO bo = getOrCreateRecord(player);
+    private static class DrawTaskInfo {
+        private int awardId;
+        private int status;
+        private int condition;
+        private Reward prize;
 
-List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
+        private DrawTaskInfo() {
+        }
 
-List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
+        public int getAwardId() {
+            return this.awardId;
+        }
 
-int index = awardList.indexOf(Integer.valueOf(awardId));
-if (index == -1) {
-throw new WSException(ErrorCode.AccumRecharge_CanNotReceive, "充值金额:%s<需求金额:%s", new Object[] { Integer.valueOf(bo.getExtInt(0)), Integer.valueOf(arInfo.getCondition()) });
-}
-int state = ((Integer)stateList.get(index)).intValue();
-if (state != FetchStatus.Can.ordinal()) {
-throw new WSException(ErrorCode.AccumRecharge_HasReceive, "奖励ID[%s]已领取", new Object[] { Integer.valueOf(awardId) });
-}
+        public void setAwardId(int awardId) {
+            this.awardId = awardId;
+        }
 
-stateList.set(index, Integer.valueOf(FetchStatus.Fetched.ordinal()));
-bo.saveExtStr(1, StringUtils.list2String(stateList));
+        public int getStatus() {
+            return this.status;
+        }
 
-Reward reward = arInfo.getPrize();
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
-((PlayerItem)player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.Activity_AccumRecharge);
+        public int getCondition() {
+            return this.condition;
+        }
 
-DrawTaskInfo builder = new DrawTaskInfo(null);
-builder.setAwardId(awardId);
-builder.setStatus(FetchStatus.Fetched.ordinal());
-builder.setPrize(reward);
-return builder;
-}
+        public void setCondition(int condition) {
+            this.condition = condition;
+        }
 
-private class accumRechargeInfoP
-{
-int price;
-int tenprice;
-int point;
-int rank;
-int condition;
-List<DrawPrize.DrawTaskInfo> accumerecharges;
-Reward reward;
-List<DrawPrize.RankReward> rankList;
+        public Reward getPrize() {
+            return this.prize;
+        }
 
-private accumRechargeInfoP(int price, int tenprice, int point, int rank, int condition, List<DrawPrize.DrawTaskInfo> accumerecharges, Reward reward, List<DrawPrize.RankReward> rankList) {
-this.price = price;
-this.tenprice = tenprice;
-this.point = point;
-this.rank = rank;
-this.condition = condition;
-this.accumerecharges = accumerecharges;
-this.reward = reward;
-this.rankList = rankList;
-}
-}
+        public void setPrize(Reward prize) {
+            this.prize = prize;
+        }
+    }
+
+    private class accumRechargeInfoP {
+        int price;
+        int tenprice;
+        int point;
+        int rank;
+        int condition;
+        List<DrawPrize.DrawTaskInfo> accumerecharges;
+        Reward reward;
+        List<DrawPrize.RankReward> rankList;
+
+        private accumRechargeInfoP(int price, int tenprice, int point, int rank, int condition, List<DrawPrize.DrawTaskInfo> accumerecharges, Reward reward, List<DrawPrize.RankReward> rankList) {
+            this.price = price;
+            this.tenprice = tenprice;
+            this.point = point;
+            this.rank = rank;
+            this.condition = condition;
+            this.accumerecharges = accumerecharges;
+            this.reward = reward;
+            this.rankList = rankList;
+        }
+    }
 }
 

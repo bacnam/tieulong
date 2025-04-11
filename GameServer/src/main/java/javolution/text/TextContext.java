@@ -5,25 +5,24 @@ import javolution.context.FormatContext;
 import javolution.osgi.internal.OSGiServices;
 
 public abstract class TextContext
-extends FormatContext
-{
-public static TextContext enter() {
-return (TextContext)currentTextContext().enterInner();
-}
+        extends FormatContext {
+    public static TextContext enter() {
+        return (TextContext) currentTextContext().enterInner();
+    }
 
-public static <T> TextFormat<T> getFormat(Class<? extends T> type) {
-return currentTextContext().searchFormat(type);
-}
+    public static <T> TextFormat<T> getFormat(Class<? extends T> type) {
+        return currentTextContext().searchFormat(type);
+    }
 
-public abstract <T> void setFormat(Class<? extends T> paramClass, TextFormat<T> paramTextFormat);
+    private static TextContext currentTextContext() {
+        TextContext ctx = (TextContext) AbstractContext.current(TextContext.class);
+        if (ctx != null)
+            return ctx;
+        return OSGiServices.getTextContext();
+    }
 
-protected abstract <T> TextFormat<T> searchFormat(Class<? extends T> paramClass);
+    public abstract <T> void setFormat(Class<? extends T> paramClass, TextFormat<T> paramTextFormat);
 
-private static TextContext currentTextContext() {
-TextContext ctx = (TextContext)AbstractContext.current(TextContext.class);
-if (ctx != null)
-return ctx; 
-return OSGiServices.getTextContext();
-}
+    protected abstract <T> TextFormat<T> searchFormat(Class<? extends T> paramClass);
 }
 

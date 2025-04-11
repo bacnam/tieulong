@@ -6,18 +6,18 @@ import org.apache.http.HttpResponse;
 import org.apache.http.protocol.HttpContext;
 
 public interface NHttpConnection extends HttpConnection, IOControl {
-  public static final int ACTIVE = 0;
+    public static final int ACTIVE = 0;
 
-  public static final int CLOSING = 1;
+    public static final int CLOSING = 1;
 
-  public static final int CLOSED = 2;
+    public static final int CLOSED = 2;
 
-  int getStatus();
+    int getStatus();
 
-  HttpRequest getHttpRequest();
+    HttpRequest getHttpRequest();
 
-  HttpResponse getHttpResponse();
+    HttpResponse getHttpResponse();
 
-  HttpContext getContext();
+    HttpContext getContext();
 }
 

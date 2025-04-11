@@ -1,22 +1,23 @@
 package org.apache.http.protocol;
 
-import java.util.List;
 import org.apache.http.HttpRequestInterceptor;
+
+import java.util.List;
 
 @Deprecated
 public interface HttpRequestInterceptorList {
-  void addRequestInterceptor(HttpRequestInterceptor paramHttpRequestInterceptor);
+    void addRequestInterceptor(HttpRequestInterceptor paramHttpRequestInterceptor);
 
-  void addRequestInterceptor(HttpRequestInterceptor paramHttpRequestInterceptor, int paramInt);
+    void addRequestInterceptor(HttpRequestInterceptor paramHttpRequestInterceptor, int paramInt);
 
-  int getRequestInterceptorCount();
+    int getRequestInterceptorCount();
 
-  HttpRequestInterceptor getRequestInterceptor(int paramInt);
+    HttpRequestInterceptor getRequestInterceptor(int paramInt);
 
-  void clearRequestInterceptors();
+    void clearRequestInterceptors();
 
-  void removeRequestInterceptorByClass(Class<? extends HttpRequestInterceptor> paramClass);
+    void removeRequestInterceptorByClass(Class<? extends HttpRequestInterceptor> paramClass);
 
-  void setInterceptors(List<?> paramList);
+    void setInterceptors(List<?> paramList);
 }
 

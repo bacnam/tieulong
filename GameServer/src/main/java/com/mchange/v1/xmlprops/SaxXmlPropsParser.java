@@ -1,20 +1,12 @@
 package com.mchange.v1.xmlprops;
 
 import com.mchange.v1.xml.StdErrErrorHandler;
+import org.xml.sax.*;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 public class SaxXmlPropsParser {
     static final String DEFAULT_XML_READER = "org.apache.xerces.parsers.SAXParser";
@@ -54,6 +46,22 @@ public class SaxXmlPropsParser {
             }
             exception.printStackTrace();
             throw new XmlPropsException(exception);
+        }
+    }
+
+    public static void main(String[] paramArrayOfString) {
+        try {
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(paramArrayOfString[0]));
+            SaxXmlPropsParser saxXmlPropsParser = new SaxXmlPropsParser();
+            Properties properties = parseXmlProps(bufferedInputStream);
+            for (String str1 : properties.keySet()) {
+
+                String str2 = properties.getProperty(str1);
+                System.err.println(str1 + '=' + str2);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -127,22 +135,6 @@ public class SaxXmlPropsParser {
 
         public Properties getLastProperties() {
             return this.props;
-        }
-    }
-
-    public static void main(String[] paramArrayOfString) {
-        try {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(paramArrayOfString[0]));
-            SaxXmlPropsParser saxXmlPropsParser = new SaxXmlPropsParser();
-            Properties properties = parseXmlProps(bufferedInputStream);
-            for (String str1 : properties.keySet()) {
-
-                String str2 = properties.getProperty(str1);
-                System.err.println(str1 + '=' + str2);
-            }
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
         }
     }
 }

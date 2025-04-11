@@ -1,27 +1,26 @@
 package org.apache.mina.filter.logging;
 
-public enum LogLevel
-{
-TRACE(5),
+public enum LogLevel {
+    TRACE(5),
 
-DEBUG(4),
+    DEBUG(4),
 
-INFO(3),
+    INFO(3),
 
-WARN(2),
+    WARN(2),
 
-ERROR(1),
+    ERROR(1),
 
-NONE(0);
+    NONE(0);
 
-private int level;
+    private int level;
 
-LogLevel(int level) {
-this.level = level;
-}
+    LogLevel(int level) {
+        this.level = level;
+    }
 
-public int getLevel() {
-return this.level;
-}
+    public int getLevel() {
+        return this.level;
+    }
 }
 

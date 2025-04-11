@@ -14,148 +14,151 @@ import com.zhonglian.server.http.server.RequestException;
 import com.zhonglian.server.websocket.exception.WSException;
 import core.database.game.bo.ActivityBO;
 import core.database.game.bo.ActivityRecordBO;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FirstReward
-extends Activity
-{
-public List<DayReward> firstReward;
+        extends Activity {
+    public List<DayReward> firstReward;
 
-public FirstReward(ActivityBO data) {
-super(data);
+    public FirstReward(ActivityBO data) {
+        super(data);
 
-this.firstReward = new ArrayList<>();
-}
+        this.firstReward = new ArrayList<>();
+    }
 
-private static class DayReward {
-int id;
-int value;
-int power;
-Reward reward;
+    public void load(JsonObject json) throws WSException {
+        for (JsonElement element : json.get("rewards").getAsJsonArray()) {
+            JsonObject obj = element.getAsJsonObject();
+            DayReward builder = new DayReward(obj, null);
+            this.firstReward.add(builder);
+        }
+    }
 
-private DayReward(JsonObject json) throws WSException {
-this.id = json.get("aid").getAsInt();
-this.value = json.get("value").getAsInt();
-this.power = json.get("power").getAsInt();
-this.reward = new Reward(json.get("awards").getAsJsonArray());
-}
-}
+    public String check(JsonObject json) throws RequestException {
+        return "ok";
+    }
 
-public void load(JsonObject json) throws WSException {
-for (JsonElement element : json.get("rewards").getAsJsonArray()) {
-JsonObject obj = element.getAsJsonObject();
-DayReward builder = new DayReward(obj, null);
-this.firstReward.add(builder);
-} 
-}
+    public ActivityType getType() {
+        return ActivityType.FirstReward;
+    }
 
-public String check(JsonObject json) throws RequestException {
-return "ok";
-}
+    public boolean needNotify(Player player) {
+        return false;
+    }
 
-public ActivityType getType() {
-return ActivityType.FirstReward;
-}
+    public void clearAllRecharge() {
+        clearActRecord();
+        for (Player player : PlayerMgr.getInstance().getOnlinePlayers()) {
+            player.pushProto("clearFirstReward", this.firstReward);
+        }
+    }
 
-public boolean needNotify(Player player) {
-return false;
-}
+    public boolean isFirstRecharge(Player player) {
+        ActivityRecordBO bo = getRecord(player);
+        if (bo == null) {
+            return true;
+        }
+        return (bo.getExtInt(0) == 0);
+    }
 
-public void clearAllRecharge() {
-clearActRecord();
-for (Player player : PlayerMgr.getInstance().getOnlinePlayers()) {
-player.pushProto("clearFirstReward", this.firstReward);
-}
-}
+    public fristRewardProto fristRechargeProto(Player player) {
+        fristRewardProto proto = new fristRewardProto(null);
+        RechargeFeature rechargeFeature = (RechargeFeature) player.getFeature(RechargeFeature.class);
+        proto.isFirstRecharge = (isFirstRecharge(player) && !rechargeFeature.isRecharged());
+        proto.firstReward = this.firstReward;
+        ActivityRecordBO bo = getOrCreateRecord(player);
+        int times = bo.getExtInt(2);
+        proto.isOver = (times >= this.firstReward.size());
 
-public boolean isFirstRecharge(Player player) {
-ActivityRecordBO bo = getRecord(player);
-if (bo == null) {
-return true;
-}
-return (bo.getExtInt(0) == 0);
-}
+        return proto;
+    }
 
-public fristRewardProto fristRechargeProto(Player player) {
-fristRewardProto proto = new fristRewardProto(null);
-RechargeFeature rechargeFeature = (RechargeFeature)player.getFeature(RechargeFeature.class);
-proto.isFirstRecharge = (isFirstRecharge(player) && !rechargeFeature.isRecharged());
-proto.firstReward = this.firstReward;
-ActivityRecordBO bo = getOrCreateRecord(player);
-int times = bo.getExtInt(2);
-proto.isOver = (times >= this.firstReward.size());
+    public void setFirstReward(Player player) {
+        synchronized (this) {
+            boolean isFirstRecharge = isFirstRecharge(player);
+            if (!isFirstRecharge) {
+                return;
+            }
+            ActivityRecordBO bo = getOrCreateRecord(player);
+            bo.setExtInt(0, 1);
+            bo.setExtInt(1, CommTime.nowSecond());
+            bo.saveAll();
 
-return proto;
-}
+            player.pushProto("firstThreeReward", Boolean.valueOf(isFirstRecharge(player)));
+        }
 
-private static class fristRewardProto
-{
-boolean isFirstRecharge;
+        sendFirstReward(player);
+    }
 
-List<FirstReward.DayReward> firstReward;
-boolean isOver;
+    public void sendFirstReward(Player player) {
+        try {
+            synchronized (this) {
+                boolean isFirstRecharge = isFirstRecharge(player);
+                if (isFirstRecharge) {
+                    return;
+                }
+                ActivityRecordBO bo = getOrCreateRecord(player);
+                int times = bo.getExtInt(2);
 
-private fristRewardProto() {}
-}
+                if (times > this.firstReward.size() - 1) {
+                    return;
+                }
+                Reward reward = getReward(times + 1);
+                if (reward == null)
+                    return;
+                bo.saveExtInt(2, times + 1);
 
-public void setFirstReward(Player player) {
-synchronized (this) {
-boolean isFirstRecharge = isFirstRecharge(player);
-if (!isFirstRecharge) {
-return;
-}
-ActivityRecordBO bo = getOrCreateRecord(player);
-bo.setExtInt(0, 1);
-bo.setExtInt(1, CommTime.nowSecond());
-bo.saveAll();
+                MailCenter.getInstance().sendMail(player.getPid(), this.ref.MailSender, this.ref.MailTitle, this.ref.MailContent, reward.uniformItemIds(),
+                        reward.uniformItemCounts());
+            }
+        } catch (Exception e) {
 
-player.pushProto("firstThreeReward", Boolean.valueOf(isFirstRecharge(player)));
-} 
+            e.printStackTrace();
+        }
+    }
 
-sendFirstReward(player);
-}
+    public Reward getReward(int times) {
+        for (DayReward day : this.firstReward) {
+            if (day.id == times) {
+                return day.reward;
+            }
+        }
+        return null;
+    }
 
-public void sendFirstReward(Player player) {
-try {
-synchronized (this) {
-boolean isFirstRecharge = isFirstRecharge(player);
-if (isFirstRecharge) {
-return;
-}
-ActivityRecordBO bo = getOrCreateRecord(player);
-int times = bo.getExtInt(2);
+    public void onOpen() {
+    }
 
-if (times > this.firstReward.size() - 1) {
-return;
-}
-Reward reward = getReward(times + 1);
-if (reward == null)
-return; 
-bo.saveExtInt(2, times + 1);
+    public void onEnd() {
+    }
 
-MailCenter.getInstance().sendMail(player.getPid(), this.ref.MailSender, this.ref.MailTitle, this.ref.MailContent, reward.uniformItemIds(), 
-reward.uniformItemCounts());
-} 
-} catch (Exception e) {
+    public void onClosed() {
+    }
 
-e.printStackTrace();
-} 
-}
+    private static class DayReward {
+        int id;
+        int value;
+        int power;
+        Reward reward;
 
-public Reward getReward(int times) {
-for (DayReward day : this.firstReward) {
-if (day.id == times) {
-return day.reward;
-}
-} 
-return null;
-}
+        private DayReward(JsonObject json) throws WSException {
+            this.id = json.get("aid").getAsInt();
+            this.value = json.get("value").getAsInt();
+            this.power = json.get("power").getAsInt();
+            this.reward = new Reward(json.get("awards").getAsJsonArray());
+        }
+    }
 
-public void onOpen() {}
+    private static class fristRewardProto {
+        boolean isFirstRecharge;
 
-public void onEnd() {}
+        List<FirstReward.DayReward> firstReward;
+        boolean isOver;
 
-public void onClosed() {}
+        private fristRewardProto() {
+        }
+    }
 }
 

@@ -1,6 +1,5 @@
 package com.google.gson;
 
-import com.google.gson.internal;
 import com.google.gson.internal.LazilyParsedNumber;
 
 import java.math.BigDecimal;
@@ -30,6 +29,29 @@ public final class JsonPrimitive
 
     JsonPrimitive(Object primitive) {
         setValue(primitive);
+    }
+
+    private static boolean isPrimitiveOrString(Object target) {
+        if (target instanceof String) {
+            return true;
+        }
+
+        Class<?> classOfPrimitive = target.getClass();
+        for (Class<?> standardPrimitive : PRIMITIVE_TYPES) {
+            if (standardPrimitive.isAssignableFrom(classOfPrimitive)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isIntegral(JsonPrimitive primitive) {
+        if (primitive.value instanceof Number) {
+            Number number = (Number) primitive.value;
+            return (number instanceof BigInteger || number instanceof Long || number instanceof Integer || number instanceof Short || number instanceof Byte);
+        }
+
+        return false;
     }
 
     JsonPrimitive deepCopy() {
@@ -120,20 +142,6 @@ public final class JsonPrimitive
         return getAsString().charAt(0);
     }
 
-    private static boolean isPrimitiveOrString(Object target) {
-        if (target instanceof String) {
-            return true;
-        }
-
-        Class<?> classOfPrimitive = target.getClass();
-        for (Class<?> standardPrimitive : PRIMITIVE_TYPES) {
-            if (standardPrimitive.isAssignableFrom(classOfPrimitive)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public int hashCode() {
         if (this.value == null) {
             return 31;
@@ -171,15 +179,6 @@ public final class JsonPrimitive
             return (a == b || (Double.isNaN(a) && Double.isNaN(b)));
         }
         return this.value.equals(other.value);
-    }
-
-    private static boolean isIntegral(JsonPrimitive primitive) {
-        if (primitive.value instanceof Number) {
-            Number number = (Number) primitive.value;
-            return (number instanceof BigInteger || number instanceof Long || number instanceof Integer || number instanceof Short || number instanceof Byte);
-        }
-
-        return false;
     }
 }
 

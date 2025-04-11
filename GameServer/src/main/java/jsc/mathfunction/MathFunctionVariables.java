@@ -1,10 +1,10 @@
 package jsc.mathfunction;
 
 public interface MathFunctionVariables {
-  int getNumberOfVariables();
+    int getNumberOfVariables();
 
-  String getVariableName(int paramInt);
+    String getVariableName(int paramInt);
 
-  double getVariableValue(int paramInt);
+    double getVariableValue(int paramInt);
 }
 

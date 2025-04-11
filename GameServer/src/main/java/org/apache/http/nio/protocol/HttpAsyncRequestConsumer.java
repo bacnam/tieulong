@@ -1,26 +1,27 @@
 package org.apache.http.nio.protocol;
 
-import java.io.Closeable;
-import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.nio.ContentDecoder;
 import org.apache.http.nio.IOControl;
 import org.apache.http.protocol.HttpContext;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 public interface HttpAsyncRequestConsumer<T> extends Closeable {
-  void requestReceived(HttpRequest paramHttpRequest) throws HttpException, IOException;
+    void requestReceived(HttpRequest paramHttpRequest) throws HttpException, IOException;
 
-  void consumeContent(ContentDecoder paramContentDecoder, IOControl paramIOControl) throws IOException;
+    void consumeContent(ContentDecoder paramContentDecoder, IOControl paramIOControl) throws IOException;
 
-  void requestCompleted(HttpContext paramHttpContext);
+    void requestCompleted(HttpContext paramHttpContext);
 
-  void failed(Exception paramException);
+    void failed(Exception paramException);
 
-  Exception getException();
+    Exception getException();
 
-  T getResult();
+    T getResult();
 
-  boolean isDone();
+    boolean isDone();
 }
 

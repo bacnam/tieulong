@@ -1,11 +1,10 @@
 package com.jolbox.bonecp.hooks;
 
-public enum ConnectionState
-{
-NOP,
+public enum ConnectionState {
+    NOP,
 
-CONNECTION_POSSIBLY_BROKEN,
+    CONNECTION_POSSIBLY_BROKEN,
 
-TERMINATE_ALL_CONNECTIONS;
+    TERMINATE_ALL_CONNECTIONS;
 }
 

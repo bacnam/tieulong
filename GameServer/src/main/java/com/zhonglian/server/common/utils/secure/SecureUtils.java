@@ -1,120 +1,111 @@
 package com.zhonglian.server.common.utils.secure;
 
 import BaseCommon.CommLog;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 
-public class SecureUtils
-{
-public static final String byteArray2StringHex(byte[] byteArray) {
-StringBuilder buf = new StringBuilder(byteArray.length * 2);
+import java.io.*;
 
-for (int i = 0; i < byteArray.length; i++) {
-if ((byteArray[i] & 0xFF) < 16)
-{
-buf.append("0");
-}
+public class SecureUtils {
+    public static final String byteArray2StringHex(byte[] byteArray) {
+        StringBuilder buf = new StringBuilder(byteArray.length * 2);
 
-buf.append(Long.toString((byteArray[i] & 0xFF), 16));
-} 
-return buf.toString();
-}
+        for (int i = 0; i < byteArray.length; i++) {
+            if ((byteArray[i] & 0xFF) < 16) {
+                buf.append("0");
+            }
 
-public static final byte[] stringHex2ByteArray(String str) {
-if (str == null) {
-return null;
-}
-int iCount = str.length() / 2;
-byte[] byarrRet = new byte[iCount];
-for (int i = 0; i < iCount; i++) {
-byarrRet[i] = (byte)(hex2Int(str.charAt(i * 2)) * 16 + hex2Int(str.charAt(i * 2 + 1)));
-}
+            buf.append(Long.toString((byteArray[i] & 0xFF), 16));
+        }
+        return buf.toString();
+    }
 
-return byarrRet;
-}
+    public static final byte[] stringHex2ByteArray(String str) {
+        if (str == null) {
+            return null;
+        }
+        int iCount = str.length() / 2;
+        byte[] byarrRet = new byte[iCount];
+        for (int i = 0; i < iCount; i++) {
+            byarrRet[i] = (byte) (hex2Int(str.charAt(i * 2)) * 16 + hex2Int(str.charAt(i * 2 + 1)));
+        }
 
-public static final byte[] string2ByteArray(String str) {
-if (str == null) {
-return null;
-}
+        return byarrRet;
+    }
 
-return str.getBytes();
-}
+    public static final byte[] string2ByteArray(String str) {
+        if (str == null) {
+            return null;
+        }
 
-public static final int hex2Int(char ch) {
-if (ch >= 'a' && ch <= 'f')
-return ch - 97 + 10; 
-if (ch >= '0' && ch <= '9') {
-return ch - 48;
-}
+        return str.getBytes();
+    }
 
-return -1;
-}
+    public static final int hex2Int(char ch) {
+        if (ch >= 'a' && ch <= 'f')
+            return ch - 97 + 10;
+        if (ch >= '0' && ch <= '9') {
+            return ch - 48;
+        }
 
-public static final String decryptConfigFile(String strConfigFile) {
-String strConfigFileTmp = null;
+        return -1;
+    }
 
-InputStream isEncrypt = null;
-try {
-isEncrypt = new FileInputStream(strConfigFile);
-} catch (FileNotFoundException e1) {
-CommLog.error(null, e1);
-} 
+    public static final String decryptConfigFile(String strConfigFile) {
+        String strConfigFileTmp = null;
 
-if (isEncrypt == null) {
-return strConfigFileTmp;
-}
+        InputStream isEncrypt = null;
+        try {
+            isEncrypt = new FileInputStream(strConfigFile);
+        } catch (FileNotFoundException e1) {
+            CommLog.error(null, e1);
+        }
 
-InputStreamReader isr = null;
-try {
-isr = new InputStreamReader(isEncrypt, "UTF-8");
-} catch (UnsupportedEncodingException e1) {
-CommLog.error(null, e1);
-} 
+        if (isEncrypt == null) {
+            return strConfigFileTmp;
+        }
 
-if (isr == null) {
-return strConfigFileTmp;
-}
+        InputStreamReader isr = null;
+        try {
+            isr = new InputStreamReader(isEncrypt, "UTF-8");
+        } catch (UnsupportedEncodingException e1) {
+            CommLog.error(null, e1);
+        }
 
-BufferedReader br = null;
+        if (isr == null) {
+            return strConfigFileTmp;
+        }
 
-br = new BufferedReader(isr);
+        BufferedReader br = null;
 
-try {
-StringBuilder sbContent = new StringBuilder();
-String strLine = br.readLine();
-while (strLine != null) {
-sbContent.append(strLine);
-strLine = br.readLine();
-} 
+        br = new BufferedReader(isr);
 
-sbContent.deleteCharAt(0);
+        try {
+            StringBuilder sbContent = new StringBuilder();
+            String strLine = br.readLine();
+            while (strLine != null) {
+                sbContent.append(strLine);
+                strLine = br.readLine();
+            }
 
-CSTea tea = new CSTea();
-String strPlainText = tea.decrypt(stringHex2ByteArray(sbContent.toString()), CSTea.CONFIG_FILE_KEY);
+            sbContent.deleteCharAt(0);
 
-strConfigFileTmp = String.valueOf(strConfigFile) + ".tmp";
+            CSTea tea = new CSTea();
+            String strPlainText = tea.decrypt(stringHex2ByteArray(sbContent.toString()), CSTea.CONFIG_FILE_KEY);
 
-File file = new File(strConfigFileTmp);
-if (file.isFile() && file.exists()) {
-file.delete();
-}
+            strConfigFileTmp = String.valueOf(strConfigFile) + ".tmp";
 
-FileOutputStream fosTemp = new FileOutputStream(strConfigFileTmp);
-fosTemp.write(strPlainText.getBytes());
-fosTemp.close();
-} catch (IOException e) {
-CommLog.error(null, e);
-} 
+            File file = new File(strConfigFileTmp);
+            if (file.isFile() && file.exists()) {
+                file.delete();
+            }
 
-return strConfigFileTmp;
-}
+            FileOutputStream fosTemp = new FileOutputStream(strConfigFileTmp);
+            fosTemp.write(strPlainText.getBytes());
+            fosTemp.close();
+        } catch (IOException e) {
+            CommLog.error(null, e);
+        }
+
+        return strConfigFileTmp;
+    }
 }
 

@@ -7,36 +7,37 @@ import ch.qos.logback.core.joran.spi.InterpretationContext;
 import org.xml.sax.Attributes;
 
 public class LevelAction
-extends Action
-{
-boolean inError = false;
+        extends Action {
+    boolean inError = false;
 
-public void begin(InterpretationContext ec, String name, Attributes attributes) {
-Object o = ec.peekObject();
+    public void begin(InterpretationContext ec, String name, Attributes attributes) {
+        Object o = ec.peekObject();
 
-if (!(o instanceof Logger)) {
-this.inError = true;
-addError("For element <level>, could not find a logger at the top of execution stack.");
+        if (!(o instanceof Logger)) {
+            this.inError = true;
+            addError("For element <level>, could not find a logger at the top of execution stack.");
 
-return;
-} 
-Logger l = (Logger)o;
+            return;
+        }
+        Logger l = (Logger) o;
 
-String loggerName = l.getName();
+        String loggerName = l.getName();
 
-String levelStr = ec.subst(attributes.getValue("value"));
+        String levelStr = ec.subst(attributes.getValue("value"));
 
-if ("INHERITED".equalsIgnoreCase(levelStr) || "NULL".equalsIgnoreCase(levelStr)) {
-l.setLevel(null);
-} else {
-l.setLevel(Level.toLevel(levelStr, Level.DEBUG));
-} 
+        if ("INHERITED".equalsIgnoreCase(levelStr) || "NULL".equalsIgnoreCase(levelStr)) {
+            l.setLevel(null);
+        } else {
+            l.setLevel(Level.toLevel(levelStr, Level.DEBUG));
+        }
 
-addInfo(loggerName + " level set to " + l.getLevel());
-}
+        addInfo(loggerName + " level set to " + l.getLevel());
+    }
 
-public void finish(InterpretationContext ec) {}
+    public void finish(InterpretationContext ec) {
+    }
 
-public void end(InterpretationContext ec, String e) {}
+    public void end(InterpretationContext ec, String e) {
+    }
 }
 

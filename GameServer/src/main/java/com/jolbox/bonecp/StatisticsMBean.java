@@ -1,38 +1,38 @@
 package com.jolbox.bonecp;
 
 public interface StatisticsMBean {
-  double getConnectionWaitTimeAvg();
+    double getConnectionWaitTimeAvg();
 
-  double getStatementExecuteTimeAvg();
+    double getStatementExecuteTimeAvg();
 
-  double getStatementPrepareTimeAvg();
+    double getStatementPrepareTimeAvg();
 
-  int getTotalLeased();
+    int getTotalLeased();
 
-  int getTotalFree();
+    int getTotalFree();
 
-  int getTotalCreatedConnections();
+    int getTotalCreatedConnections();
 
-  long getCacheHits();
+    long getCacheHits();
 
-  long getCacheMiss();
+    long getCacheMiss();
 
-  long getStatementsCached();
+    long getStatementsCached();
 
-  long getStatementsPrepared();
+    long getStatementsPrepared();
 
-  long getConnectionsRequested();
+    long getConnectionsRequested();
 
-  long getCumulativeConnectionWaitTime();
+    long getCumulativeConnectionWaitTime();
 
-  long getCumulativeStatementExecutionTime();
+    long getCumulativeStatementExecutionTime();
 
-  long getCumulativeStatementPrepareTime();
+    long getCumulativeStatementPrepareTime();
 
-  void resetStats();
+    void resetStats();
 
-  double getCacheHitRatio();
+    double getCacheHitRatio();
 
-  long getStatementsExecuted();
+    long getStatementsExecuted();
 }
 

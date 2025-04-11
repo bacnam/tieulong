@@ -10,14 +10,13 @@ import org.apache.http.protocol.HttpContext;
 @Deprecated
 @Immutable
 public class IgnoreSpecFactory
-implements CookieSpecFactory, CookieSpecProvider
-{
-public CookieSpec newInstance(HttpParams params) {
-return new IgnoreSpec();
-}
+        implements CookieSpecFactory, CookieSpecProvider {
+    public CookieSpec newInstance(HttpParams params) {
+        return new IgnoreSpec();
+    }
 
-public CookieSpec create(HttpContext context) {
-return new IgnoreSpec();
-}
+    public CookieSpec create(HttpContext context) {
+        return new IgnoreSpec();
+    }
 }
 

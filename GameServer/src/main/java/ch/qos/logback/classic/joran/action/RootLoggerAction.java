@@ -9,39 +9,39 @@ import ch.qos.logback.core.util.OptionHelper;
 import org.xml.sax.Attributes;
 
 public class RootLoggerAction
-extends Action
-{
-Logger root;
-boolean inError = false;
+        extends Action {
+    Logger root;
+    boolean inError = false;
 
-public void begin(InterpretationContext ec, String name, Attributes attributes) {
-this.inError = false;
+    public void begin(InterpretationContext ec, String name, Attributes attributes) {
+        this.inError = false;
 
-LoggerContext loggerContext = (LoggerContext)this.context;
-this.root = loggerContext.getLogger("ROOT");
+        LoggerContext loggerContext = (LoggerContext) this.context;
+        this.root = loggerContext.getLogger("ROOT");
 
-String levelStr = ec.subst(attributes.getValue("level"));
-if (!OptionHelper.isEmpty(levelStr)) {
-Level level = Level.toLevel(levelStr);
-addInfo("Setting level of ROOT logger to " + level);
-this.root.setLevel(level);
-} 
-ec.pushObject(this.root);
-}
+        String levelStr = ec.subst(attributes.getValue("level"));
+        if (!OptionHelper.isEmpty(levelStr)) {
+            Level level = Level.toLevel(levelStr);
+            addInfo("Setting level of ROOT logger to " + level);
+            this.root.setLevel(level);
+        }
+        ec.pushObject(this.root);
+    }
 
-public void end(InterpretationContext ec, String name) {
-if (this.inError) {
-return;
-}
-Object o = ec.peekObject();
-if (o != this.root) {
-addWarn("The object on the top the of the stack is not the root logger");
-addWarn("It is: " + o);
-} else {
-ec.popObject();
-} 
-}
+    public void end(InterpretationContext ec, String name) {
+        if (this.inError) {
+            return;
+        }
+        Object o = ec.peekObject();
+        if (o != this.root) {
+            addWarn("The object on the top the of the stack is not the root logger");
+            addWarn("It is: " + o);
+        } else {
+            ec.popObject();
+        }
+    }
 
-public void finish(InterpretationContext ec) {}
+    public void finish(InterpretationContext ec) {
+    }
 }
 

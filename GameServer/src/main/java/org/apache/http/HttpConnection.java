@@ -4,18 +4,18 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public interface HttpConnection extends Closeable {
-  void close() throws IOException;
+    void close() throws IOException;
 
-  boolean isOpen();
+    boolean isOpen();
 
-  boolean isStale();
+    boolean isStale();
 
-  void setSocketTimeout(int paramInt);
+    int getSocketTimeout();
 
-  int getSocketTimeout();
+    void setSocketTimeout(int paramInt);
 
-  void shutdown() throws IOException;
+    void shutdown() throws IOException;
 
-  HttpConnectionMetrics getMetrics();
+    HttpConnectionMetrics getMetrics();
 }
 

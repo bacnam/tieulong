@@ -1,157 +1,156 @@
 package org.slf4j.helpers;
 
+import org.slf4j.Marker;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.slf4j.Marker;
 
 public class BasicMarker
-implements Marker
-{
-private static final long serialVersionUID = 1803952589649545191L;
-private final String name;
-private List<Marker> referenceList;
+        implements Marker {
+    private static final long serialVersionUID = 1803952589649545191L;
+    private static String OPEN = "[ ";
+    private static String CLOSE = " ]";
+    private static String SEP = ", ";
+    private final String name;
+    private List<Marker> referenceList;
 
-BasicMarker(String name) {
-if (name == null) {
-throw new IllegalArgumentException("A marker name cannot be null");
-}
-this.name = name;
-}
+    BasicMarker(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("A marker name cannot be null");
+        }
+        this.name = name;
+    }
 
-public String getName() {
-return this.name;
-}
+    public String getName() {
+        return this.name;
+    }
 
-public synchronized void add(Marker reference) {
-if (reference == null) {
-throw new IllegalArgumentException("A null value cannot be added to a Marker as reference.");
-}
+    public synchronized void add(Marker reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException("A null value cannot be added to a Marker as reference.");
+        }
 
-if (contains(reference)) {
-return;
-}
-if (reference.contains(this)) {
-return;
-}
+        if (contains(reference)) {
+            return;
+        }
+        if (reference.contains(this)) {
+            return;
+        }
 
-if (this.referenceList == null) {
-this.referenceList = new Vector<Marker>();
-}
-this.referenceList.add(reference);
-}
+        if (this.referenceList == null) {
+            this.referenceList = new Vector<Marker>();
+        }
+        this.referenceList.add(reference);
+    }
 
-public synchronized boolean hasReferences() {
-return (this.referenceList != null && this.referenceList.size() > 0);
-}
+    public synchronized boolean hasReferences() {
+        return (this.referenceList != null && this.referenceList.size() > 0);
+    }
 
-public boolean hasChildren() {
-return hasReferences();
-}
+    public boolean hasChildren() {
+        return hasReferences();
+    }
 
-public synchronized Iterator<Marker> iterator() {
-if (this.referenceList != null) {
-return this.referenceList.iterator();
-}
-List<Marker> emptyList = Collections.emptyList();
-return emptyList.iterator();
-}
+    public synchronized Iterator<Marker> iterator() {
+        if (this.referenceList != null) {
+            return this.referenceList.iterator();
+        }
+        List<Marker> emptyList = Collections.emptyList();
+        return emptyList.iterator();
+    }
 
-public synchronized boolean remove(Marker referenceToRemove) {
-if (this.referenceList == null) {
-return false;
-}
+    public synchronized boolean remove(Marker referenceToRemove) {
+        if (this.referenceList == null) {
+            return false;
+        }
 
-int size = this.referenceList.size();
-for (int i = 0; i < size; i++) {
-Marker m = this.referenceList.get(i);
-if (referenceToRemove.equals(m)) {
-this.referenceList.remove(i);
-return true;
-} 
-} 
-return false;
-}
+        int size = this.referenceList.size();
+        for (int i = 0; i < size; i++) {
+            Marker m = this.referenceList.get(i);
+            if (referenceToRemove.equals(m)) {
+                this.referenceList.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 
-public boolean contains(Marker other) {
-if (other == null) {
-throw new IllegalArgumentException("Other cannot be null");
-}
+    public boolean contains(Marker other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other cannot be null");
+        }
 
-if (equals(other)) {
-return true;
-}
+        if (equals(other)) {
+            return true;
+        }
 
-if (hasReferences()) {
-for (int i = 0; i < this.referenceList.size(); i++) {
-Marker ref = this.referenceList.get(i);
-if (ref.contains(other)) {
-return true;
-}
-} 
-}
-return false;
-}
+        if (hasReferences()) {
+            for (int i = 0; i < this.referenceList.size(); i++) {
+                Marker ref = this.referenceList.get(i);
+                if (ref.contains(other)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-public boolean contains(String name) {
-if (name == null) {
-throw new IllegalArgumentException("Other cannot be null");
-}
+    public boolean contains(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Other cannot be null");
+        }
 
-if (this.name.equals(name)) {
-return true;
-}
+        if (this.name.equals(name)) {
+            return true;
+        }
 
-if (hasReferences()) {
-for (int i = 0; i < this.referenceList.size(); i++) {
-Marker ref = this.referenceList.get(i);
-if (ref.contains(name)) {
-return true;
-}
-} 
-}
-return false;
-}
+        if (hasReferences()) {
+            for (int i = 0; i < this.referenceList.size(); i++) {
+                Marker ref = this.referenceList.get(i);
+                if (ref.contains(name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-private static String OPEN = "[ ";
-private static String CLOSE = " ]";
-private static String SEP = ", ";
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Marker)) {
+            return false;
+        }
+        Marker other = (Marker) obj;
+        return this.name.equals(other.getName());
+    }
 
-public boolean equals(Object obj) {
-if (this == obj)
-return true; 
-if (obj == null)
-return false; 
-if (!(obj instanceof Marker)) {
-return false;
-}
-Marker other = (Marker)obj;
-return this.name.equals(other.getName());
-}
+    public int hashCode() {
+        return this.name.hashCode();
+    }
 
-public int hashCode() {
-return this.name.hashCode();
-}
+    public String toString() {
+        if (!hasReferences()) {
+            return getName();
+        }
+        Iterator<Marker> it = iterator();
 
-public String toString() {
-if (!hasReferences()) {
-return getName();
-}
-Iterator<Marker> it = iterator();
+        StringBuilder sb = new StringBuilder(getName());
+        sb.append(' ').append(OPEN);
+        while (it.hasNext()) {
+            Marker reference = it.next();
+            sb.append(reference.getName());
+            if (it.hasNext()) {
+                sb.append(SEP);
+            }
+        }
+        sb.append(CLOSE);
 
-StringBuilder sb = new StringBuilder(getName());
-sb.append(' ').append(OPEN);
-while (it.hasNext()) {
-Marker reference = it.next();
-sb.append(reference.getName());
-if (it.hasNext()) {
-sb.append(SEP);
-}
-} 
-sb.append(CLOSE);
-
-return sb.toString();
-}
+        return sb.toString();
+    }
 }
 

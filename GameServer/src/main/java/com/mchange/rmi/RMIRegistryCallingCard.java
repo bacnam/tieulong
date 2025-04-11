@@ -14,11 +14,10 @@ import java.rmi.RemoteException;
 
 public class RMIRegistryCallingCard
         implements CallingCard, Serializable {
-    transient String url;
     static final long serialVersionUID = 1L;
-    transient Remote cached = null;
-
     private static final short VERSION = 1;
+    transient String url;
+    transient Remote cached = null;
 
     public RMIRegistryCallingCard(String paramString1, int paramInt, String paramString2) {
         this.url = "";

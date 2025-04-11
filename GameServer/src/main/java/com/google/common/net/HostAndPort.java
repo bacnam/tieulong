@@ -3,135 +3,134 @@ package com.google.common.net;
 import com.google.common.annotations.Beta;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Beta
-public final class HostAndPort
-{
-private static final int NO_PORT = -1;
-private final String host;
-private final int port;
-private final boolean hasBracketlessColons;
+public final class HostAndPort {
+    private static final int NO_PORT = -1;
+    private static final Pattern BRACKET_PATTERN = Pattern.compile("^\\[(.*:.*)\\](?::(\\d*))?$");
+    private final String host;
+    private final int port;
+    private final boolean hasBracketlessColons;
 
-private HostAndPort(String host, int port, boolean hasBracketlessColons) {
-this.host = host;
-this.port = port;
-this.hasBracketlessColons = hasBracketlessColons;
-}
+    private HostAndPort(String host, int port, boolean hasBracketlessColons) {
+        this.host = host;
+        this.port = port;
+        this.hasBracketlessColons = hasBracketlessColons;
+    }
 
-public String getHostText() {
-return this.host;
-}
+    public static HostAndPort fromParts(String host, int port) {
+        Preconditions.checkArgument(isValidPort(port));
+        HostAndPort parsedHost = fromString(host);
+        Preconditions.checkArgument(!parsedHost.hasPort());
+        return new HostAndPort(parsedHost.host, port, parsedHost.hasBracketlessColons);
+    }
 
-public boolean hasPort() {
-return (this.port >= 0);
-}
+    public static HostAndPort fromString(String hostPortString) {
+        String host;
+        Preconditions.checkNotNull(hostPortString);
 
-public int getPort() {
-Preconditions.checkState(hasPort());
-return this.port;
-}
+        String portString = null;
+        boolean hasBracketlessColons = false;
 
-public int getPortOrDefault(int defaultPort) {
-return hasPort() ? this.port : defaultPort;
-}
+        if (hostPortString.startsWith("[")) {
 
-public static HostAndPort fromParts(String host, int port) {
-Preconditions.checkArgument(isValidPort(port));
-HostAndPort parsedHost = fromString(host);
-Preconditions.checkArgument(!parsedHost.hasPort());
-return new HostAndPort(parsedHost.host, port, parsedHost.hasBracketlessColons);
-}
+            Matcher matcher = BRACKET_PATTERN.matcher(hostPortString);
+            Preconditions.checkArgument(matcher.matches(), "Invalid bracketed host/port: %s", new Object[]{hostPortString});
 
-private static final Pattern BRACKET_PATTERN = Pattern.compile("^\\[(.*:.*)\\](?::(\\d*))?$");
+            host = matcher.group(1);
+            portString = matcher.group(2);
+        } else {
+            int colonPos = hostPortString.indexOf(':');
+            if (colonPos >= 0 && hostPortString.indexOf(':', colonPos + 1) == -1) {
 
-public static HostAndPort fromString(String hostPortString) {
-String host;
-Preconditions.checkNotNull(hostPortString);
+                host = hostPortString.substring(0, colonPos);
+                portString = hostPortString.substring(colonPos + 1);
+            } else {
 
-String portString = null;
-boolean hasBracketlessColons = false;
+                host = hostPortString;
+                hasBracketlessColons = (colonPos >= 0);
+            }
+        }
 
-if (hostPortString.startsWith("[")) {
+        int port = -1;
+        if (portString != null) {
 
-Matcher matcher = BRACKET_PATTERN.matcher(hostPortString);
-Preconditions.checkArgument(matcher.matches(), "Invalid bracketed host/port: %s", new Object[] { hostPortString });
+            try {
+                port = Integer.parseInt(portString);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Unparseable port number: " + hostPortString);
+            }
+            Preconditions.checkArgument(isValidPort(port), "Port number out of range: %s", new Object[]{hostPortString});
+        }
 
-host = matcher.group(1);
-portString = matcher.group(2);
-} else {
-int colonPos = hostPortString.indexOf(':');
-if (colonPos >= 0 && hostPortString.indexOf(':', colonPos + 1) == -1) {
+        return new HostAndPort(host, port, hasBracketlessColons);
+    }
 
-host = hostPortString.substring(0, colonPos);
-portString = hostPortString.substring(colonPos + 1);
-} else {
+    private static boolean isValidPort(int port) {
+        return (port >= 0 && port <= 65535);
+    }
 
-host = hostPortString;
-hasBracketlessColons = (colonPos >= 0);
-} 
-} 
+    public String getHostText() {
+        return this.host;
+    }
 
-int port = -1;
-if (portString != null) {
+    public boolean hasPort() {
+        return (this.port >= 0);
+    }
 
-try {
-port = Integer.parseInt(portString);
-} catch (NumberFormatException e) {
-throw new IllegalArgumentException("Unparseable port number: " + hostPortString);
-} 
-Preconditions.checkArgument(isValidPort(port), "Port number out of range: %s", new Object[] { hostPortString });
-} 
+    public int getPort() {
+        Preconditions.checkState(hasPort());
+        return this.port;
+    }
 
-return new HostAndPort(host, port, hasBracketlessColons);
-}
+    public int getPortOrDefault(int defaultPort) {
+        return hasPort() ? this.port : defaultPort;
+    }
 
-public HostAndPort withDefaultPort(int defaultPort) {
-Preconditions.checkArgument(isValidPort(defaultPort));
-if (hasPort() || this.port == defaultPort) {
-return this;
-}
-return new HostAndPort(this.host, defaultPort, this.hasBracketlessColons);
-}
+    public HostAndPort withDefaultPort(int defaultPort) {
+        Preconditions.checkArgument(isValidPort(defaultPort));
+        if (hasPort() || this.port == defaultPort) {
+            return this;
+        }
+        return new HostAndPort(this.host, defaultPort, this.hasBracketlessColons);
+    }
 
-public HostAndPort requireBracketsForIPv6() {
-Preconditions.checkArgument(!this.hasBracketlessColons, "Possible bracketless IPv6 literal: %s", new Object[] { this.host });
+    public HostAndPort requireBracketsForIPv6() {
+        Preconditions.checkArgument(!this.hasBracketlessColons, "Possible bracketless IPv6 literal: %s", new Object[]{this.host});
 
-return this;
-}
+        return this;
+    }
 
-public boolean equals(Object other) {
-if (this == other) {
-return true;
-}
-if (other instanceof HostAndPort) {
-HostAndPort that = (HostAndPort)other;
-return (Objects.equal(this.host, that.host) && this.port == that.port && this.hasBracketlessColons == that.hasBracketlessColons);
-} 
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other instanceof HostAndPort) {
+            HostAndPort that = (HostAndPort) other;
+            return (Objects.equal(this.host, that.host) && this.port == that.port && this.hasBracketlessColons == that.hasBracketlessColons);
+        }
 
-return false;
-}
+        return false;
+    }
 
-public int hashCode() {
-return Objects.hashCode(new Object[] { this.host, Integer.valueOf(this.port), Boolean.valueOf(this.hasBracketlessColons) });
-}
+    public int hashCode() {
+        return Objects.hashCode(new Object[]{this.host, Integer.valueOf(this.port), Boolean.valueOf(this.hasBracketlessColons)});
+    }
 
-public String toString() {
-StringBuilder builder = new StringBuilder(this.host.length() + 7);
-if (this.host.indexOf(':') >= 0) {
-builder.append('[').append(this.host).append(']');
-} else {
-builder.append(this.host);
-} 
-if (hasPort()) {
-builder.append(':').append(this.port);
-}
-return builder.toString();
-}
-
-private static boolean isValidPort(int port) {
-return (port >= 0 && port <= 65535);
-}
+    public String toString() {
+        StringBuilder builder = new StringBuilder(this.host.length() + 7);
+        if (this.host.indexOf(':') >= 0) {
+            builder.append('[').append(this.host).append(']');
+        } else {
+            builder.append(this.host);
+        }
+        if (hasPort()) {
+            builder.append(':').append(this.port);
+        }
+        return builder.toString();
+    }
 }
 

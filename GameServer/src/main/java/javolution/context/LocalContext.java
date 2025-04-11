@@ -4,35 +4,33 @@ import javolution.lang.Configurable;
 import javolution.osgi.internal.OSGiServices;
 
 public abstract class LocalContext
-extends AbstractContext
-{
-public static abstract class Parameter<T>
-extends Configurable<T>
-{
-public static final SecurityContext.Permission<Parameter<?>> SUPERSEDE_PERMISSION = new SecurityContext.Permission<Parameter<?>>((Class)Parameter.class, "supersede");
+        extends AbstractContext {
+    public static LocalContext enter() {
+        LocalContext ctx = current(LocalContext.class);
+        if (ctx == null) {
+            ctx = OSGiServices.getLocalContext();
+        }
+        return (LocalContext) ctx.enterInner();
+    }
 
-private final SecurityContext.Permission<Parameter<T>> supersedePermission = new SecurityContext.Permission<Parameter<T>>((Class)Parameter.class, "supersede", this);
+    public abstract <T> void supersede(Parameter<T> paramParameter, T paramT);
 
-public SecurityContext.Permission<Parameter<T>> getSupersedePermission() {
-return this.supersedePermission;
-}
+    protected abstract <T> T getValue(Parameter<T> paramParameter, T paramT);
 
-public T get() {
-LocalContext ctx = AbstractContext.<LocalContext>current(LocalContext.class);
-return (ctx != null) ? ctx.<T>getValue(this, (T)super.get()) : (T)super.get();
-}
-}
+    public static abstract class Parameter<T>
+            extends Configurable<T> {
+        public static final SecurityContext.Permission<Parameter<?>> SUPERSEDE_PERMISSION = new SecurityContext.Permission<Parameter<?>>((Class) Parameter.class, "supersede");
 
-public static LocalContext enter() {
-LocalContext ctx = current(LocalContext.class);
-if (ctx == null) {
-ctx = OSGiServices.getLocalContext();
-}
-return (LocalContext)ctx.enterInner();
-}
+        private final SecurityContext.Permission<Parameter<T>> supersedePermission = new SecurityContext.Permission<Parameter<T>>((Class) Parameter.class, "supersede", this);
 
-public abstract <T> void supersede(Parameter<T> paramParameter, T paramT);
+        public SecurityContext.Permission<Parameter<T>> getSupersedePermission() {
+            return this.supersedePermission;
+        }
 
-protected abstract <T> T getValue(Parameter<T> paramParameter, T paramT);
+        public T get() {
+            LocalContext ctx = AbstractContext.<LocalContext>current(LocalContext.class);
+            return (ctx != null) ? ctx.<T>getValue(this, (T) super.get()) : (T) super.get();
+        }
+    }
 }
 

@@ -14,55 +14,54 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefUnlockFunction;
 import core.database.game.bo.DressBO;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class DressOn
-extends PlayerHandler
-{
-public static class Request
-{
-long sid;
-int charId;
-DressType type;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
 
-public static class DressNotify {
-int charId;
-DressType type;
-long sid;
+        RefUnlockFunction refunlock = (RefUnlockFunction) RefDataMgr.get(RefUnlockFunction.class, UnlockType.Dress);
+        if (refunlock.UnlockLevel > player.getLv()) {
+            throw new WSException(ErrorCode.NotEnough_UnlockCond, "解锁条件不足");
+        }
+        DressFeature feature = (DressFeature) player.getFeature(DressFeature.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public DressNotify(int charId, DressType type, long sid) {
-this.charId = charId;
-this.type = type;
-this.sid = sid;
-}
-}
+        if (req.sid != 0L) {
+            feature.Active(req.sid, req.type, req.charId, character);
+        } else {
+            DressBO dressbo = character.getDress(req.type);
+            if (dressbo != null) {
+                character.unEquipDress(req.type);
+            }
+        }
+        character.onAttrChanged();
+        DressNotify notify = new DressNotify(character.getCharId(), req.type, req.sid);
+        ((CharFeature) player.getFeature(CharFeature.class)).updateCharPower();
+        request.response(notify);
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
+    public static class Request {
+        long sid;
+        int charId;
+        DressType type;
+    }
 
-RefUnlockFunction refunlock = (RefUnlockFunction)RefDataMgr.get(RefUnlockFunction.class, UnlockType.Dress);
-if (refunlock.UnlockLevel > player.getLv()) {
-throw new WSException(ErrorCode.NotEnough_UnlockCond, "解锁条件不足");
-}
-DressFeature feature = (DressFeature)player.getFeature(DressFeature.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+    public static class DressNotify {
+        int charId;
+        DressType type;
+        long sid;
 
-if (req.sid != 0L) {
-feature.Active(req.sid, req.type, req.charId, character);
-} else {
-DressBO dressbo = character.getDress(req.type);
-if (dressbo != null) {
-character.unEquipDress(req.type);
-}
-} 
-character.onAttrChanged();
-DressNotify notify = new DressNotify(character.getCharId(), req.type, req.sid);
-((CharFeature)player.getFeature(CharFeature.class)).updateCharPower();
-request.response(notify);
-}
+        public DressNotify(int charId, DressType type, long sid) {
+            this.charId = charId;
+            this.type = type;
+            this.sid = sid;
+        }
+    }
 }
 

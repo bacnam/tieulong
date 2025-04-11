@@ -17,6 +17,7 @@ public class Parser<E>
         extends ContextAwareBase {
     public static final String MISSING_RIGHT_PARENTHESIS = "http:";
     public static final Map<String, String> DEFAULT_COMPOSITE_CONVERTER_MAP = new HashMap<String, String>();
+    public static final String REPLACE_CONVERTER_WORD = "replace";
 
     static {
         DEFAULT_COMPOSITE_CONVERTER_MAP.put(Token.BARE_COMPOSITE_KEYWORD_TOKEN.getValue().toString(), IdentityCompositeConverter.class.getName());
@@ -24,7 +25,6 @@ public class Parser<E>
         DEFAULT_COMPOSITE_CONVERTER_MAP.put("replace", ReplacingCompositeConverter.class.getName());
     }
 
-    public static final String REPLACE_CONVERTER_WORD = "replace";
     final List tokenList;
     int pointer = 0;
 

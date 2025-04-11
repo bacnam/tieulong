@@ -8,92 +8,92 @@ import ch.qos.logback.core.helpers.Transform;
 import ch.qos.logback.core.html.HTMLLayoutBase;
 import ch.qos.logback.core.html.IThrowableRenderer;
 import ch.qos.logback.core.pattern.Converter;
+
 import java.util.Map;
 
 public class HTMLLayout
-extends HTMLLayoutBase<ILoggingEvent>
-{
-static final String DEFAULT_CONVERSION_PATTERN = "%date%thread%level%logger%mdc%msg";
-IThrowableRenderer<ILoggingEvent> throwableRenderer = new DefaultThrowableRenderer();
+        extends HTMLLayoutBase<ILoggingEvent> {
+    static final String DEFAULT_CONVERSION_PATTERN = "%date%thread%level%logger%mdc%msg";
+    IThrowableRenderer<ILoggingEvent> throwableRenderer = new DefaultThrowableRenderer();
 
-public void start() {
-int errorCount = 0;
-if (this.throwableRenderer == null) {
-addError("ThrowableRender cannot be null.");
-errorCount++;
-} 
-if (errorCount == 0) {
-super.start();
-}
-}
+    public void start() {
+        int errorCount = 0;
+        if (this.throwableRenderer == null) {
+            addError("ThrowableRender cannot be null.");
+            errorCount++;
+        }
+        if (errorCount == 0) {
+            super.start();
+        }
+    }
 
-protected Map<String, String> getDefaultConverterMap() {
-return PatternLayout.defaultConverterMap;
-}
+    protected Map<String, String> getDefaultConverterMap() {
+        return PatternLayout.defaultConverterMap;
+    }
 
-public String doLayout(ILoggingEvent event) {
-StringBuilder buf = new StringBuilder();
-startNewTableIfLimitReached(buf);
+    public String doLayout(ILoggingEvent event) {
+        StringBuilder buf = new StringBuilder();
+        startNewTableIfLimitReached(buf);
 
-boolean odd = true;
-if ((this.counter++ & 0x1L) == 0L) {
-odd = false;
-}
+        boolean odd = true;
+        if ((this.counter++ & 0x1L) == 0L) {
+            odd = false;
+        }
 
-String level = event.getLevel().toString().toLowerCase();
+        String level = event.getLevel().toString().toLowerCase();
 
-buf.append(CoreConstants.LINE_SEPARATOR);
-buf.append("<tr class=\"");
-buf.append(level);
-if (odd) {
-buf.append(" odd\">");
-} else {
-buf.append(" even\">");
-} 
-buf.append(CoreConstants.LINE_SEPARATOR);
+        buf.append(CoreConstants.LINE_SEPARATOR);
+        buf.append("<tr class=\"");
+        buf.append(level);
+        if (odd) {
+            buf.append(" odd\">");
+        } else {
+            buf.append(" even\">");
+        }
+        buf.append(CoreConstants.LINE_SEPARATOR);
 
-Converter<ILoggingEvent> c = this.head;
-while (c != null) {
-appendEventToBuffer(buf, c, event);
-c = c.getNext();
-} 
-buf.append("</tr>");
-buf.append(CoreConstants.LINE_SEPARATOR);
+        Converter<ILoggingEvent> c = this.head;
+        while (c != null) {
+            appendEventToBuffer(buf, c, event);
+            c = c.getNext();
+        }
+        buf.append("</tr>");
+        buf.append(CoreConstants.LINE_SEPARATOR);
 
-if (event.getThrowableProxy() != null) {
-this.throwableRenderer.render(buf, event);
-}
-return buf.toString();
-}
+        if (event.getThrowableProxy() != null) {
+            this.throwableRenderer.render(buf, event);
+        }
+        return buf.toString();
+    }
 
-private void appendEventToBuffer(StringBuilder buf, Converter<ILoggingEvent> c, ILoggingEvent event) {
-buf.append("<td class=\"");
-buf.append(computeConverterName(c));
-buf.append("\">");
-buf.append(Transform.escapeTags(c.convert(event)));
-buf.append("</td>");
-buf.append(CoreConstants.LINE_SEPARATOR);
-}
+    private void appendEventToBuffer(StringBuilder buf, Converter<ILoggingEvent> c, ILoggingEvent event) {
+        buf.append("<td class=\"");
+        buf.append(computeConverterName(c));
+        buf.append("\">");
+        buf.append(Transform.escapeTags(c.convert(event)));
+        buf.append("</td>");
+        buf.append(CoreConstants.LINE_SEPARATOR);
+    }
 
-public IThrowableRenderer getThrowableRenderer() {
-return this.throwableRenderer;
-}
+    public IThrowableRenderer getThrowableRenderer() {
+        return this.throwableRenderer;
+    }
 
-public void setThrowableRenderer(IThrowableRenderer<ILoggingEvent> throwableRenderer) {
-this.throwableRenderer = throwableRenderer;
-}
+    public void setThrowableRenderer(IThrowableRenderer<ILoggingEvent> throwableRenderer) {
+        this.throwableRenderer = throwableRenderer;
+    }
 
-protected String computeConverterName(Converter c) {
-if (c instanceof MDCConverter) {
-MDCConverter mc = (MDCConverter)c;
-String key = mc.getFirstOption();
-if (key != null) {
-return key;
-}
-return "MDC";
-} 
+    protected String computeConverterName(Converter c) {
+        if (c instanceof MDCConverter) {
+            MDCConverter mc = (MDCConverter) c;
+            String key = mc.getFirstOption();
+            if (key != null) {
+                return key;
+            }
+            return "MDC";
+        }
 
-return super.computeConverterName(c);
-}
+        return super.computeConverterName(c);
+    }
 }
 

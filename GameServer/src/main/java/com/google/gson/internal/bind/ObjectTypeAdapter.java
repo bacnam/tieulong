@@ -8,81 +8,82 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class ObjectTypeAdapter
-extends TypeAdapter<Object>
-{
-public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory()
-{
-public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-if (type.getRawType() == Object.class) {
-return new ObjectTypeAdapter(gson);
-}
-return null;
-}
-};
+        extends TypeAdapter<Object> {
+    public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (type.getRawType() == Object.class) {
+                return new ObjectTypeAdapter(gson);
+            }
+            return null;
+        }
+    };
 
-private final Gson gson;
+    private final Gson gson;
 
-private ObjectTypeAdapter(Gson gson) {
-this.gson = gson;
-} public Object read(JsonReader in) throws IOException {
-List<Object> list;
-LinkedTreeMap<String, Object> linkedTreeMap;
-JsonToken token = in.peek();
-switch (token) {
-case BEGIN_ARRAY:
-list = new ArrayList();
-in.beginArray();
-while (in.hasNext()) {
-list.add(read(in));
-}
-in.endArray();
-return list;
+    private ObjectTypeAdapter(Gson gson) {
+        this.gson = gson;
+    }
 
-case BEGIN_OBJECT:
-linkedTreeMap = new LinkedTreeMap();
-in.beginObject();
-while (in.hasNext()) {
-linkedTreeMap.put(in.nextName(), read(in));
-}
-in.endObject();
-return linkedTreeMap;
+    public Object read(JsonReader in) throws IOException {
+        List<Object> list;
+        LinkedTreeMap<String, Object> linkedTreeMap;
+        JsonToken token = in.peek();
+        switch (token) {
+            case BEGIN_ARRAY:
+                list = new ArrayList();
+                in.beginArray();
+                while (in.hasNext()) {
+                    list.add(read(in));
+                }
+                in.endArray();
+                return list;
 
-case STRING:
-return in.nextString();
+            case BEGIN_OBJECT:
+                linkedTreeMap = new LinkedTreeMap();
+                in.beginObject();
+                while (in.hasNext()) {
+                    linkedTreeMap.put(in.nextName(), read(in));
+                }
+                in.endObject();
+                return linkedTreeMap;
 
-case NUMBER:
-return Double.valueOf(in.nextDouble());
+            case STRING:
+                return in.nextString();
 
-case BOOLEAN:
-return Boolean.valueOf(in.nextBoolean());
+            case NUMBER:
+                return Double.valueOf(in.nextDouble());
 
-case NULL:
-in.nextNull();
-return null;
-} 
+            case BOOLEAN:
+                return Boolean.valueOf(in.nextBoolean());
 
-throw new IllegalStateException();
-}
+            case NULL:
+                in.nextNull();
+                return null;
+        }
 
-public void write(JsonWriter out, Object value) throws IOException {
-if (value == null) {
-out.nullValue();
+        throw new IllegalStateException();
+    }
 
-return;
-} 
-TypeAdapter<Object> typeAdapter = this.gson.getAdapter(value.getClass());
-if (typeAdapter instanceof ObjectTypeAdapter) {
-out.beginObject();
-out.endObject();
+    public void write(JsonWriter out, Object value) throws IOException {
+        if (value == null) {
+            out.nullValue();
 
-return;
-} 
-typeAdapter.write(out, value);
-}
+            return;
+        }
+        TypeAdapter<Object> typeAdapter = this.gson.getAdapter(value.getClass());
+        if (typeAdapter instanceof ObjectTypeAdapter) {
+            out.beginObject();
+            out.endObject();
+
+            return;
+        }
+        typeAdapter.write(out, value);
+    }
 }
 

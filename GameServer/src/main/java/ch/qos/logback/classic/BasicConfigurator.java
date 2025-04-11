@@ -11,32 +11,31 @@ import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.status.StatusManager;
 import org.slf4j.LoggerFactory;
 
-public class BasicConfigurator
-{
-static final BasicConfigurator hiddenSingleton = new BasicConfigurator();
+public class BasicConfigurator {
+    static final BasicConfigurator hiddenSingleton = new BasicConfigurator();
 
-public static void configure(LoggerContext lc) {
-StatusManager sm = lc.getStatusManager();
-if (sm != null) {
-sm.add((Status)new InfoStatus("Setting up default configuration.", lc));
-}
-ConsoleAppender<ILoggingEvent> ca = new ConsoleAppender();
-ca.setContext((Context)lc);
-ca.setName("console");
-PatternLayoutEncoder pl = new PatternLayoutEncoder();
-pl.setContext((Context)lc);
-pl.setPattern("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n");
-pl.start();
+    public static void configure(LoggerContext lc) {
+        StatusManager sm = lc.getStatusManager();
+        if (sm != null) {
+            sm.add((Status) new InfoStatus("Setting up default configuration.", lc));
+        }
+        ConsoleAppender<ILoggingEvent> ca = new ConsoleAppender();
+        ca.setContext((Context) lc);
+        ca.setName("console");
+        PatternLayoutEncoder pl = new PatternLayoutEncoder();
+        pl.setContext((Context) lc);
+        pl.setPattern("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n");
+        pl.start();
 
-ca.setEncoder((Encoder)pl);
-ca.start();
-Logger rootLogger = lc.getLogger("ROOT");
-rootLogger.addAppender((Appender<ILoggingEvent>)ca);
-}
+        ca.setEncoder((Encoder) pl);
+        ca.start();
+        Logger rootLogger = lc.getLogger("ROOT");
+        rootLogger.addAppender((Appender<ILoggingEvent>) ca);
+    }
 
-public static void configureDefaultContext() {
-LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
-configure(lc);
-}
+    public static void configureDefaultContext() {
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        configure(lc);
+    }
 }
 

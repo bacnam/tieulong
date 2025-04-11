@@ -1,17 +1,18 @@
 package proto.gameworld;
 
 import com.zhonglian.server.common.enums.EquipPos;
+
 import java.util.List;
 
 public class EquipMessage {
-  int equipId;
+    int equipId;
 
-  long sid;
+    long sid;
 
-  List<Integer> attrs;
+    List<Integer> attrs;
 
-  int charId;
+    int charId;
 
-  EquipPos pos;
+    EquipPos pos;
 }
 

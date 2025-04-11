@@ -2,7 +2,6 @@ package redis.clients.util;
 
 import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
-
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisException;
 
@@ -10,7 +9,7 @@ public abstract class Pool<T> {
     private final GenericObjectPool internalPool;
 
     public Pool(final GenericObjectPool.Config poolConfig,
-            PoolableObjectFactory factory) {
+                PoolableObjectFactory factory) {
         this.internalPool = new GenericObjectPool(factory, poolConfig);
     }
 
@@ -34,11 +33,11 @@ public abstract class Pool<T> {
     }
 
     public void returnBrokenResource(final T resource) {
-    	returnBrokenResourceObject(resource);
+        returnBrokenResourceObject(resource);
     }
 
     public void returnResource(final T resource) {
-    	returnResourceObject(resource);
+        returnResourceObject(resource);
     }
 
     protected void returnBrokenResourceObject(final Object resource) {

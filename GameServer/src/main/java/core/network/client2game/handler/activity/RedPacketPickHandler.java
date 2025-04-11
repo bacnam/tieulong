@@ -13,37 +13,36 @@ import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
 import core.network.proto.RedPacketInfo;
+
 import java.io.IOException;
 
 public class RedPacketPickHandler
-extends PlayerHandler
-{
-class Request
-{
-long id;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        RedPacket packet = (RedPacket) ActivityMgr.getActivity(RedPacket.class);
+        if (packet.getStatus() == ActivityStatus.Close) {
+            throw new WSException(ErrorCode.Activity_Close, "活动[%s]已经关闭", new Object[]{packet.getType()});
+        }
+        int gain = packet.pick(req.id, player);
+        int pickTimes = ((PlayerRecord) player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.RedPacket);
+        request.response(new Response(pickTimes, gain, RedPacketMgr.getInstance().getPacket(req.id, player)));
+    }
 
-private static class Response {
-int pickTimes;
-int gain;
-RedPacketInfo packetInfo;
+    private static class Response {
+        int pickTimes;
+        int gain;
+        RedPacketInfo packetInfo;
 
-public Response(int pickTimes, int gain, RedPacketInfo packetInfo) {
-this.pickTimes = pickTimes;
-this.gain = gain;
-this.packetInfo = packetInfo;
-}
-}
+        public Response(int pickTimes, int gain, RedPacketInfo packetInfo) {
+            this.pickTimes = pickTimes;
+            this.gain = gain;
+            this.packetInfo = packetInfo;
+        }
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-RedPacket packet = (RedPacket)ActivityMgr.getActivity(RedPacket.class);
-if (packet.getStatus() == ActivityStatus.Close) {
-throw new WSException(ErrorCode.Activity_Close, "活动[%s]已经关闭", new Object[] { packet.getType() });
-}
-int gain = packet.pick(req.id, player);
-int pickTimes = ((PlayerRecord)player.getFeature(PlayerRecord.class)).getValue(ConstEnum.DailyRefresh.RedPacket);
-request.response(new Response(pickTimes, gain, RedPacketMgr.getInstance().getPacket(req.id, player)));
-}
+    class Request {
+        long id;
+    }
 }
 

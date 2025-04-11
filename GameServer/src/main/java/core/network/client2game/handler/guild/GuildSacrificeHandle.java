@@ -14,69 +14,68 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefGuildSacrifice;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class GuildSacrificeHandle
-extends PlayerHandler
-{
-public static class Request
-{
-SacrificeType type;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guild = guildMember.getGuild();
 
-private static class Sacrifice {
-boolean iscritical;
-int donate;
-int exp;
-int totalexp;
-int leftTimes;
+        if (guild == null) {
+            throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[]{Long.valueOf(player.getPid())});
+        }
 
-private Sacrifice(boolean iscritical, int donate, int exp, int totalexp, int leftTimes) {
-this.iscritical = iscritical;
-this.donate = donate;
-this.exp = exp;
-this.totalexp = totalexp;
-this.leftTimes = leftTimes;
-}
-}
+        if (guildMember.getSacrificeLeftTimes() <= 0) {
+            throw new WSException(ErrorCode.Guild_SacrificeAlready, "玩家[%s]祭天次数已满", new Object[]{Long.valueOf(player.getPid())});
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guild = guildMember.getGuild();
+        RefGuildSacrifice ref = (RefGuildSacrifice) RefDataMgr.get(RefGuildSacrifice.class, req.type);
+        PlayerItem playerItem = (PlayerItem) player.getFeature(PlayerItem.class);
+        if (!playerItem.check(ref.CostItemID, ref.CostCount)) {
+            throw new WSException(ErrorCode.NotEnough_GuildSacrificeCost, "玩家[%s]资源不足，不能进行相关类型的祭天", new Object[]{Long.valueOf(player.getPid())});
+        }
+        playerItem.consume(ref.CostItemID, ref.CostCount, ItemFlow.Guild_Sacrifice);
 
-if (guild == null) {
-throw new WSException(ErrorCode.Guild_IndependentMan, "玩家[%s]未参与任何帮会", new Object[] { Long.valueOf(player.getPid()) });
-}
+        boolean critical = (CommMath.randomInt(10000) < ref.Critical);
+        int crivalue = critical ? ref.CriticalValue : 10000;
 
-if (guildMember.getSacrificeLeftTimes() <= 0) {
-throw new WSException(ErrorCode.Guild_SacrificeAlready, "玩家[%s]祭天次数已满", new Object[] { Long.valueOf(player.getPid()) });
-}
+        int exp = ref.GuildExp * crivalue / 10000;
+        int donate = ref.GuildDonate * crivalue / 10000;
 
-RefGuildSacrifice ref = (RefGuildSacrifice)RefDataMgr.get(RefGuildSacrifice.class, req.type);
-PlayerItem playerItem = (PlayerItem)player.getFeature(PlayerItem.class);
-if (!playerItem.check(ref.CostItemID, ref.CostCount)) {
-throw new WSException(ErrorCode.NotEnough_GuildSacrificeCost, "玩家[%s]资源不足，不能进行相关类型的祭天", new Object[] { Long.valueOf(player.getPid()) });
-}
-playerItem.consume(ref.CostItemID, ref.CostCount, ItemFlow.Guild_Sacrifice);
+        guild.gainExp(exp);
+        guild.incSacrificeCount(player.getPid());
 
-boolean critical = (CommMath.randomInt(10000) < ref.Critical);
-int crivalue = critical ? ref.CriticalValue : 10000;
+        guildMember.setSacrificed();
+        guildMember.gainDonate(donate, ItemFlow.Guild_GuildSacrifice);
+        guildMember.gainSacriDonate(donate);
 
-int exp = ref.GuildExp * crivalue / 10000;
-int donate = ref.GuildDonate * crivalue / 10000;
+        Sacrifice sacrifice = new Sacrifice(critical, donate, exp, guild.bo.getExp(), guildMember.getSacrificeLeftTimes(), null);
 
-guild.gainExp(exp);
-guild.incSacrificeCount(player.getPid());
+        guild.broadcast("sacrifice", sacrifice, player.getPid());
+        request.response(sacrifice);
+    }
 
-guildMember.setSacrificed();
-guildMember.gainDonate(donate, ItemFlow.Guild_GuildSacrifice);
-guildMember.gainSacriDonate(donate);
+    public static class Request {
+        SacrificeType type;
+    }
 
-Sacrifice sacrifice = new Sacrifice(critical, donate, exp, guild.bo.getExp(), guildMember.getSacrificeLeftTimes(), null);
+    private static class Sacrifice {
+        boolean iscritical;
+        int donate;
+        int exp;
+        int totalexp;
+        int leftTimes;
 
-guild.broadcast("sacrifice", sacrifice, player.getPid());
-request.response(sacrifice);
-}
+        private Sacrifice(boolean iscritical, int donate, int exp, int totalexp, int leftTimes) {
+            this.iscritical = iscritical;
+            this.donate = donate;
+            this.exp = exp;
+            this.totalexp = totalexp;
+            this.leftTimes = leftTimes;
+        }
+    }
 }
 

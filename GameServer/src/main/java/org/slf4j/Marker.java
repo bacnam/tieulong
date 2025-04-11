@@ -4,28 +4,28 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 public interface Marker extends Serializable {
-  public static final String ANY_MARKER = "*";
+    public static final String ANY_MARKER = "*";
 
-  public static final String ANY_NON_NULL_MARKER = "+";
+    public static final String ANY_NON_NULL_MARKER = "+";
 
-  String getName();
+    String getName();
 
-  void add(Marker paramMarker);
+    void add(Marker paramMarker);
 
-  boolean remove(Marker paramMarker);
+    boolean remove(Marker paramMarker);
 
-  boolean hasChildren();
+    boolean hasChildren();
 
-  boolean hasReferences();
+    boolean hasReferences();
 
-  Iterator<Marker> iterator();
+    Iterator<Marker> iterator();
 
-  boolean contains(Marker paramMarker);
+    boolean contains(Marker paramMarker);
 
-  boolean contains(String paramString);
+    boolean contains(String paramString);
 
-  boolean equals(Object paramObject);
+    boolean equals(Object paramObject);
 
-  int hashCode();
+    int hashCode();
 }
 

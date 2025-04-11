@@ -1,8 +1,8 @@
 package jsc.combinatorics;
 
 public interface Selection {
-  int length();
+    int length();
 
-  int[] toIntArray();
+    int[] toIntArray();
 }
 

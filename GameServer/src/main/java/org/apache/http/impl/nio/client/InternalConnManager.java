@@ -3,10 +3,10 @@ package org.apache.http.impl.nio.client;
 import org.apache.http.nio.NHttpClientConnection;
 
 interface InternalConnManager {
-  void releaseConnection();
+    void releaseConnection();
 
-  void abortConnection();
+    void abortConnection();
 
-  NHttpClientConnection getConnection();
+    NHttpClientConnection getConnection();
 }
 

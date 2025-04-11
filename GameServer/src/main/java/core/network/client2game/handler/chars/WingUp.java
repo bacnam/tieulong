@@ -11,11 +11,7 @@ import business.player.feature.character.CharFeature;
 import business.player.feature.character.Character;
 import business.player.feature.player.TitleFeature;
 import com.google.gson.Gson;
-import com.zhonglian.server.common.enums.Achievement;
-import com.zhonglian.server.common.enums.ConstEnum;
-import com.zhonglian.server.common.enums.PrizeType;
-import com.zhonglian.server.common.enums.RankType;
-import com.zhonglian.server.common.enums.Title;
+import com.zhonglian.server.common.enums.*;
 import com.zhonglian.server.common.utils.Random;
 import com.zhonglian.server.logger.flow.ItemFlow;
 import com.zhonglian.server.websocket.def.ErrorCode;
@@ -25,137 +21,134 @@ import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefCharacter;
 import core.config.refdata.ref.RefWing;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class WingUp
-extends PlayerHandler
-{
-public static class Request
-{
-int charId;
-String way;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public static class WingNotify
-{
-int charId;
-long wingLevel;
-long wingExp;
-long gainExp;
+        int nowLevel = character.getBo().getWing();
+        if (nowLevel >= RefDataMgr.size(RefWing.class) - 1) {
+            throw new WSException(ErrorCode.Wing_LevelFull, "翅膀已满级");
+        }
+        RefWing ref = (RefWing) RefDataMgr.get(RefWing.class, Integer.valueOf(nowLevel + 1));
+        RefWing now_ref = (RefWing) RefDataMgr.get(RefWing.class, Integer.valueOf(nowLevel));
+        int gainExp = 0;
 
-public WingNotify(int charId, long wingLevel, long wingExp, long gainExp) {
-this.charId = charId;
-this.wingLevel = wingLevel;
-this.wingExp = wingExp;
-this.gainExp = gainExp;
-}
-}
+        if (now_ref.Level != ref.Level) {
+            character.getBo().saveWing(nowLevel + 1);
+            if (ref.Level >= RefDataMgr.getFactor("WingMarqueeLevel", 5)) {
+                RefCharacter refc = (RefCharacter) RefDataMgr.get(RefCharacter.class, Integer.valueOf(character.getCharId()));
+                NoticeMgr.getInstance().sendMarquee(ConstEnum.UniverseMessageType.Wing, new String[]{player.getName(), refc.Name, (new StringBuilder(String.valueOf(ref.Level))).toString()});
+            }
+        } else {
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+            int need_count = 0;
+            int player_count = 0;
+            PrizeType prizetype = null;
+            float crit = 0.0F;
+            int exp = 0;
+            ErrorCode error = null;
 
-int nowLevel = character.getBo().getWing();
-if (nowLevel >= RefDataMgr.size(RefWing.class) - 1) {
-throw new WSException(ErrorCode.Wing_LevelFull, "翅膀已满级");
-}
-RefWing ref = (RefWing)RefDataMgr.get(RefWing.class, Integer.valueOf(nowLevel + 1));
-RefWing now_ref = (RefWing)RefDataMgr.get(RefWing.class, Integer.valueOf(nowLevel));
-int gainExp = 0;
+            if (req.way.equalsIgnoreCase("material")) {
+                prizetype = PrizeType.WingMaterial;
+                need_count = ref.Material;
+                player_count = player.getPlayerBO().getWingMaterial();
+                crit = ref.MaterialCrit;
+                exp = ref.MaterialExp;
+                error = ErrorCode.NotEnough_WingMaterial;
+            } else if (req.way.equalsIgnoreCase("gold")) {
+                prizetype = PrizeType.Gold;
+                need_count = ref.Gold;
+                player_count = player.getPlayerBO().getGold();
+                crit = ref.GoldCrit;
+                exp = ref.GoldExp;
+                error = ErrorCode.NotEnough_Money;
+            } else {
+                throw new WSException(ErrorCode.Wing_NotChooseWay, "没有选择翅膀升阶方式");
+            }
 
-if (now_ref.Level != ref.Level) {
-character.getBo().saveWing(nowLevel + 1);
-if (ref.Level >= RefDataMgr.getFactor("WingMarqueeLevel", 5)) {
-RefCharacter refc = (RefCharacter)RefDataMgr.get(RefCharacter.class, Integer.valueOf(character.getCharId()));
-NoticeMgr.getInstance().sendMarquee(ConstEnum.UniverseMessageType.Wing, new String[] { player.getName(), refc.Name, (new StringBuilder(String.valueOf(ref.Level))).toString() });
-} 
-} else {
+            PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+            if (!playerCurrency.check(prizetype, need_count)) {
+                throw new WSException(error, "玩家材料:%s<升级材料:%s", new Object[]{Integer.valueOf(player_count), Integer.valueOf(need_count)});
+            }
+            playerCurrency.consume(prizetype, need_count, ItemFlow.WingLevelUp);
+            if (Random.nextInt(10000) < crit * 10000.0F) {
+                gainExp = exp * 2;
+            } else {
+                gainExp = exp;
+            }
+            int nowExp = character.getBo().getWingExp() + gainExp;
+            int levelUp = 0;
+            for (int i = ref.id; i <= RefDataMgr.size(RefWing.class); i++) {
+                RefWing temp_ref = (RefWing) RefDataMgr.get(RefWing.class, Integer.valueOf(i - 1));
+                RefWing next_ref = (RefWing) RefDataMgr.get(RefWing.class, Integer.valueOf(i));
 
-int need_count = 0;
-int player_count = 0;
-PrizeType prizetype = null;
-float crit = 0.0F;
-int exp = 0;
-ErrorCode error = null;
+                if (next_ref == null)
+                    break;
+                long needExp = next_ref.Exp;
 
-if (req.way.equalsIgnoreCase("material")) {
-prizetype = PrizeType.WingMaterial;
-need_count = ref.Material;
-player_count = player.getPlayerBO().getWingMaterial();
-crit = ref.MaterialCrit;
-exp = ref.MaterialExp;
-error = ErrorCode.NotEnough_WingMaterial;
-}
-else if (req.way.equalsIgnoreCase("gold")) {
-prizetype = PrizeType.Gold;
-need_count = ref.Gold;
-player_count = player.getPlayerBO().getGold();
-crit = ref.GoldCrit;
-exp = ref.GoldExp;
-error = ErrorCode.NotEnough_Money;
-} else {
-throw new WSException(ErrorCode.Wing_NotChooseWay, "没有选择翅膀升阶方式");
-} 
+                if (needExp > nowExp) {
+                    break;
+                }
+                if (temp_ref.Level != next_ref.Level) {
+                    break;
+                }
+                levelUp++;
+                nowExp = (int) (nowExp - needExp);
+            }
 
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-if (!playerCurrency.check(prizetype, need_count)) {
-throw new WSException(error, "玩家材料:%s<升级材料:%s", new Object[] { Integer.valueOf(player_count), Integer.valueOf(need_count) });
-}
-playerCurrency.consume(prizetype, need_count, ItemFlow.WingLevelUp);
-if (Random.nextInt(10000) < crit * 10000.0F) {
-gainExp = exp * 2;
-} else {
-gainExp = exp;
-} 
-int nowExp = character.getBo().getWingExp() + gainExp;
-int levelUp = 0;
-for (int i = ref.id; i <= RefDataMgr.size(RefWing.class); i++) {
-RefWing temp_ref = (RefWing)RefDataMgr.get(RefWing.class, Integer.valueOf(i - 1));
-RefWing next_ref = (RefWing)RefDataMgr.get(RefWing.class, Integer.valueOf(i));
+            character.getBo().saveWingExp(nowExp);
+            character.getBo().saveWing(nowLevel + levelUp);
+        }
 
-if (next_ref == null)
-break; 
-long needExp = next_ref.Exp;
+        int newLevel = character.getBo().getWing();
+        if (newLevel != nowLevel) {
+            int wingLevel = 0;
+            for (Character charac : ((CharFeature) player.getFeature(CharFeature.class)).getAll().values()) {
+                wingLevel += charac.getBo().getWing();
+            }
 
-if (needExp > nowExp) {
-break;
-}
-if (temp_ref.Level != next_ref.Level) {
-break;
-}
-levelUp++;
-nowExp = (int)(nowExp - needExp);
-} 
+            character.onAttrChanged();
 
-character.getBo().saveWingExp(nowExp);
-character.getBo().saveWing(nowLevel + levelUp);
-} 
+            RankManager.getInstance().update(RankType.WingLevel, player.getPid(), wingLevel);
 
-int newLevel = character.getBo().getWing();
-if (newLevel != nowLevel) {
-int wingLevel = 0;
-for (Character charac : ((CharFeature)player.getFeature(CharFeature.class)).getAll().values()) {
-wingLevel += charac.getBo().getWing();
-}
+            ((RankWing) ActivityMgr.getActivity(RankWing.class)).UpdateMaxRequire_cost(player, wingLevel);
 
-character.onAttrChanged();
+            ((TitleFeature) player.getFeature(TitleFeature.class)).updateMax(Title.WingLevel, Integer.valueOf(newLevel));
+        }
 
-RankManager.getInstance().update(RankType.WingLevel, player.getPid(), wingLevel);
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.WingUp);
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.WingUp_M1);
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.WingUp_M2);
 
-((RankWing)ActivityMgr.getActivity(RankWing.class)).UpdateMaxRequire_cost(player, wingLevel);
+        WingNotify notify = new WingNotify(req.charId, character.getBo().getWing(), character.getBo().getWingExp(), gainExp);
+        request.response(notify);
+    }
 
-((TitleFeature)player.getFeature(TitleFeature.class)).updateMax(Title.WingLevel, Integer.valueOf(newLevel));
-} 
+    public static class Request {
+        int charId;
+        String way;
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.WingUp);
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.WingUp_M1);
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.WingUp_M2);
+    public static class WingNotify {
+        int charId;
+        long wingLevel;
+        long wingExp;
+        long gainExp;
 
-WingNotify notify = new WingNotify(req.charId, character.getBo().getWing(), character.getBo().getWingExp(), gainExp);
-request.response(notify);
-}
+        public WingNotify(int charId, long wingLevel, long wingExp, long gainExp) {
+            this.charId = charId;
+            this.wingLevel = wingLevel;
+            this.wingExp = wingExp;
+            this.gainExp = gainExp;
+        }
+    }
 }
 

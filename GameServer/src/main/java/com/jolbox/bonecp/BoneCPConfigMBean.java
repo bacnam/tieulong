@@ -3,68 +3,68 @@ package com.jolbox.bonecp;
 import com.jolbox.bonecp.hooks.ConnectionHook;
 
 public interface BoneCPConfigMBean {
-  String getPoolName();
+    String getPoolName();
 
-  int getMinConnectionsPerPartition();
+    int getMinConnectionsPerPartition();
 
-  int getMaxConnectionsPerPartition();
+    int getMaxConnectionsPerPartition();
 
-  int getAcquireIncrement();
+    int getAcquireIncrement();
 
-  int getPartitionCount();
+    int getPartitionCount();
 
-  String getJdbcUrl();
+    String getJdbcUrl();
 
-  String getUsername();
+    String getUsername();
 
-  long getIdleConnectionTestPeriodInMinutes();
+    long getIdleConnectionTestPeriodInMinutes();
 
-  long getIdleMaxAgeInMinutes();
+    long getIdleMaxAgeInMinutes();
 
-  String getConnectionTestStatement();
+    String getConnectionTestStatement();
 
-  int getStatementsCacheSize();
+    int getStatementsCacheSize();
 
-  int getReleaseHelperThreads();
+    int getReleaseHelperThreads();
 
-  int getStatementsCachedPerConnection();
+    int getStatementsCachedPerConnection();
 
-  ConnectionHook getConnectionHook();
+    ConnectionHook getConnectionHook();
 
-  String getInitSQL();
+    String getInitSQL();
 
-  boolean isLogStatementsEnabled();
+    boolean isLogStatementsEnabled();
 
-  long getAcquireRetryDelayInMs();
+    long getAcquireRetryDelayInMs();
 
-  boolean isLazyInit();
+    boolean isLazyInit();
 
-  boolean isTransactionRecoveryEnabled();
+    boolean isTransactionRecoveryEnabled();
 
-  int getAcquireRetryAttempts();
+    int getAcquireRetryAttempts();
 
-  String getConnectionHookClassName();
+    String getConnectionHookClassName();
 
-  boolean isDisableJMX();
+    boolean isDisableJMX();
 
-  long getQueryExecuteTimeLimitInMs();
+    long getQueryExecuteTimeLimitInMs();
 
-  int getPoolAvailabilityThreshold();
+    int getPoolAvailabilityThreshold();
 
-  boolean isDisableConnectionTracking();
+    boolean isDisableConnectionTracking();
 
-  long getConnectionTimeoutInMs();
+    long getConnectionTimeoutInMs();
 
-  long getCloseConnectionWatchTimeoutInMs();
+    long getCloseConnectionWatchTimeoutInMs();
 
-  int getStatementReleaseHelperThreads();
+    int getStatementReleaseHelperThreads();
 
-  long getMaxConnectionAgeInSeconds();
+    long getMaxConnectionAgeInSeconds();
 
-  String getConfigFile();
+    String getConfigFile();
 
-  String getServiceOrder();
+    String getServiceOrder();
 
-  boolean isStatisticsEnabled();
+    boolean isStatisticsEnabled();
 }
 

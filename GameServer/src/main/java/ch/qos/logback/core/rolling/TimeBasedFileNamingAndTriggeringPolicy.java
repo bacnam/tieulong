@@ -4,16 +4,16 @@ import ch.qos.logback.core.rolling.helper.ArchiveRemover;
 import ch.qos.logback.core.spi.ContextAware;
 
 public interface TimeBasedFileNamingAndTriggeringPolicy<E> extends TriggeringPolicy<E>, ContextAware {
-  void setTimeBasedRollingPolicy(TimeBasedRollingPolicy<E> paramTimeBasedRollingPolicy);
+    void setTimeBasedRollingPolicy(TimeBasedRollingPolicy<E> paramTimeBasedRollingPolicy);
 
-  String getElapsedPeriodsFileName();
+    String getElapsedPeriodsFileName();
 
-  String getCurrentPeriodsFileNameWithoutCompressionSuffix();
+    String getCurrentPeriodsFileNameWithoutCompressionSuffix();
 
-  ArchiveRemover getArchiveRemover();
+    ArchiveRemover getArchiveRemover();
 
-  long getCurrentTime();
+    long getCurrentTime();
 
-  void setCurrentTime(long paramLong);
+    void setCurrentTime(long paramLong);
 }
 

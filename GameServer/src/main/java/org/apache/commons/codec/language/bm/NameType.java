@@ -1,21 +1,20 @@
 package org.apache.commons.codec.language.bm;
 
-public enum NameType
-{
-ASHKENAZI("ash"),
+public enum NameType {
+    ASHKENAZI("ash"),
 
-GENERIC("gen"),
+    GENERIC("gen"),
 
-SEPHARDIC("sep");
+    SEPHARDIC("sep");
 
-private final String name;
+    private final String name;
 
-NameType(String name) {
-this.name = name;
-}
+    NameType(String name) {
+        this.name = name;
+    }
 
-public String getName() {
-return this.name;
-}
+    public String getName() {
+        return this.name;
+    }
 }
 

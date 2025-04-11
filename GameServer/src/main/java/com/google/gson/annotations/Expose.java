@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface Expose {
-  boolean serialize() default true;
+    boolean serialize() default true;
 
-  boolean deserialize() default true;
+    boolean deserialize() default true;
 }
 

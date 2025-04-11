@@ -1,6 +1,6 @@
 package jsc.event;
 
 public interface SampleListener {
-  void sampleCreated(SampleEvent paramSampleEvent);
+    void sampleCreated(SampleEvent paramSampleEvent);
 }
 

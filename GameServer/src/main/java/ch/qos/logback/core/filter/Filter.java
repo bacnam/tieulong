@@ -5,32 +5,31 @@ import ch.qos.logback.core.spi.FilterReply;
 import ch.qos.logback.core.spi.LifeCycle;
 
 public abstract class Filter<E>
-extends ContextAwareBase
-implements LifeCycle
-{
-private String name;
-boolean start = false;
+        extends ContextAwareBase
+        implements LifeCycle {
+    boolean start = false;
+    private String name;
 
-public void start() {
-this.start = true;
-}
+    public void start() {
+        this.start = true;
+    }
 
-public boolean isStarted() {
-return this.start;
-}
+    public boolean isStarted() {
+        return this.start;
+    }
 
-public void stop() {
-this.start = false;
-}
+    public void stop() {
+        this.start = false;
+    }
 
-public abstract FilterReply decide(E paramE);
+    public abstract FilterReply decide(E paramE);
 
-public String getName() {
-return this.name;
-}
+    public String getName() {
+        return this.name;
+    }
 
-public void setName(String name) {
-this.name = name;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 }
 

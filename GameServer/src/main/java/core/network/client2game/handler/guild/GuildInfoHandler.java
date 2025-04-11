@@ -6,34 +6,32 @@ import business.player.feature.guild.GuildMemberFeature;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
-import core.network.proto.Guild;
+
 import java.io.IOException;
 
 public class GuildInfoHandler
-extends PlayerHandler
-{
-public static class GuildBaseInfo
-{
-Guild.guildInfo guildInfo;
-Guild.member myInfo;
-int joinCD;
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        GuildMemberFeature guildMember = (GuildMemberFeature) player.getFeature(GuildMemberFeature.class);
+        Guild guildL = guildMember.getGuild();
+        Guild.guildInfo guildInfo = null;
+        Guild.member member = guildMember.memberInfo();
+        if (guildL != null) {
+            guildInfo = guildL.guildInfo();
+        }
+        request.response(new GuildBaseInfo(guildInfo, member, guildMember.getJoinCD()));
+    }
 
-public GuildBaseInfo(Guild.guildInfo guildInfo1, Guild.member myInfo, int joinCD) {
-this.guildInfo = guildInfo1;
-this.myInfo = myInfo;
-this.joinCD = joinCD;
-}
-}
+    public static class GuildBaseInfo {
+        Guild.guildInfo guildInfo;
+        Guild.member myInfo;
+        int joinCD;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-GuildMemberFeature guildMember = (GuildMemberFeature)player.getFeature(GuildMemberFeature.class);
-Guild guildL = guildMember.getGuild();
-Guild.guildInfo guildInfo = null;
-Guild.member member = guildMember.memberInfo();
-if (guildL != null) {
-guildInfo = guildL.guildInfo();
-}
-request.response(new GuildBaseInfo(guildInfo, member, guildMember.getJoinCD()));
-}
+        public GuildBaseInfo(Guild.guildInfo guildInfo1, Guild.member myInfo, int joinCD) {
+            this.guildInfo = guildInfo1;
+            this.myInfo = myInfo;
+            this.joinCD = joinCD;
+        }
+    }
 }
 

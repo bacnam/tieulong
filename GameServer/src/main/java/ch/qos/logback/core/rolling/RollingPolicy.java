@@ -5,12 +5,12 @@ import ch.qos.logback.core.rolling.helper.CompressionMode;
 import ch.qos.logback.core.spi.LifeCycle;
 
 public interface RollingPolicy extends LifeCycle {
-  void rollover() throws RolloverFailure;
+    void rollover() throws RolloverFailure;
 
-  String getActiveFileName();
+    String getActiveFileName();
 
-  CompressionMode getCompressionMode();
+    CompressionMode getCompressionMode();
 
-  void setParent(FileAppender paramFileAppender);
+    void setParent(FileAppender paramFileAppender);
 }
 

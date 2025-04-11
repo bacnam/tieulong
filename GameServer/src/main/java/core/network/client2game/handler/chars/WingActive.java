@@ -17,71 +17,69 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefWingActive;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class WingActive
-extends PlayerHandler
-{
-public static class Request
-{
-int charId;
-int refId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-private static class WingNotify
-{
-int charId;
-long wingLevel;
-long wingExp;
+        int wingLevel = 0;
+        for (Character charac : ((CharFeature) player.getFeature(CharFeature.class)).getAll().values()) {
+            wingLevel += charac.getBo().getWing();
+        }
 
-private WingNotify(int charId, long wingLevel, long wingExp) {
-this.charId = charId;
-this.wingLevel = wingLevel;
-this.wingExp = wingExp;
-}
-}
+        if (wingLevel != 0) {
+            throw new WSException(ErrorCode.Wing_AlreadyActive, "翅膀已激活");
+        }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+        RefWingActive ref = (RefWingActive) RefDataMgr.get(RefWingActive.class, Integer.valueOf(req.refId));
 
-int wingLevel = 0;
-for (Character charac : ((CharFeature)player.getFeature(CharFeature.class)).getAll().values()) {
-wingLevel += charac.getBo().getWing();
-}
+        if (ref == null) {
+            throw new WSException(ErrorCode.Wing_NotFound, "没有这个档位");
+        }
 
-if (wingLevel != 0) {
-throw new WSException(ErrorCode.Wing_AlreadyActive, "翅膀已激活");
-}
+        if (!((PlayerCurrency) player.getFeature(PlayerCurrency.class)).checkAndConsume(PrizeType.Crystal, ref.Discount, ItemFlow.WingActive)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "元宝不足");
+        }
 
-RefWingActive ref = (RefWingActive)RefDataMgr.get(RefWingActive.class, Integer.valueOf(req.refId));
+        character.getBo().saveWing(ref.Level);
 
-if (ref == null) {
-throw new WSException(ErrorCode.Wing_NotFound, "没有这个档位");
-}
+        int wingLevelnow = 0;
+        for (Character charac : ((CharFeature) player.getFeature(CharFeature.class)).getAll().values()) {
+            wingLevelnow += charac.getBo().getWing();
+        }
 
-if (!((PlayerCurrency)player.getFeature(PlayerCurrency.class)).checkAndConsume(PrizeType.Crystal, ref.Discount, ItemFlow.WingActive)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "元宝不足");
-}
+        character.onAttrChanged();
 
-character.getBo().saveWing(ref.Level);
+        RankManager.getInstance().update(RankType.WingLevel, player.getPid(), wingLevelnow);
 
-int wingLevelnow = 0;
-for (Character charac : ((CharFeature)player.getFeature(CharFeature.class)).getAll().values()) {
-wingLevelnow += charac.getBo().getWing();
-}
+        ((RankWing) ActivityMgr.getActivity(RankWing.class)).UpdateMaxRequire_cost(player, wingLevelnow);
 
-character.onAttrChanged();
+        WingNotify notify = new WingNotify(req.charId, character.getBo().getWing(), character.getBo().getWingExp(), null);
+        request.response(notify);
+    }
 
-RankManager.getInstance().update(RankType.WingLevel, player.getPid(), wingLevelnow);
+    public static class Request {
+        int charId;
+        int refId;
+    }
 
-((RankWing)ActivityMgr.getActivity(RankWing.class)).UpdateMaxRequire_cost(player, wingLevelnow);
+    private static class WingNotify {
+        int charId;
+        long wingLevel;
+        long wingExp;
 
-WingNotify notify = new WingNotify(req.charId, character.getBo().getWing(), character.getBo().getWingExp(), null);
-request.response(notify);
-}
+        private WingNotify(int charId, long wingLevel, long wingExp) {
+            this.charId = charId;
+            this.wingLevel = wingLevel;
+            this.wingExp = wingExp;
+        }
+    }
 }
 

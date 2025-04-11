@@ -1,129 +1,129 @@
 package org.apache.mina.core;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.session.IoSession;
 
-public class IoUtil
-{
-private static final IoSession[] EMPTY_SESSIONS = new IoSession[0];
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public static List<WriteFuture> broadcast(Object message, Collection<IoSession> sessions) {
-List<WriteFuture> answer = new ArrayList<WriteFuture>(sessions.size());
-broadcast(message, sessions.iterator(), answer);
-return answer;
-}
+public class IoUtil {
+    private static final IoSession[] EMPTY_SESSIONS = new IoSession[0];
 
-public static List<WriteFuture> broadcast(Object message, Iterable<IoSession> sessions) {
-List<WriteFuture> answer = new ArrayList<WriteFuture>();
-broadcast(message, sessions.iterator(), answer);
-return answer;
-}
+    public static List<WriteFuture> broadcast(Object message, Collection<IoSession> sessions) {
+        List<WriteFuture> answer = new ArrayList<WriteFuture>(sessions.size());
+        broadcast(message, sessions.iterator(), answer);
+        return answer;
+    }
 
-public static List<WriteFuture> broadcast(Object message, Iterator<IoSession> sessions) {
-List<WriteFuture> answer = new ArrayList<WriteFuture>();
-broadcast(message, sessions, answer);
-return answer;
-}
+    public static List<WriteFuture> broadcast(Object message, Iterable<IoSession> sessions) {
+        List<WriteFuture> answer = new ArrayList<WriteFuture>();
+        broadcast(message, sessions.iterator(), answer);
+        return answer;
+    }
 
-public static List<WriteFuture> broadcast(Object message, IoSession... sessions) {
-if (sessions == null) {
-sessions = EMPTY_SESSIONS;
-}
+    public static List<WriteFuture> broadcast(Object message, Iterator<IoSession> sessions) {
+        List<WriteFuture> answer = new ArrayList<WriteFuture>();
+        broadcast(message, sessions, answer);
+        return answer;
+    }
 
-List<WriteFuture> answer = new ArrayList<WriteFuture>(sessions.length);
-if (message instanceof IoBuffer) {
-for (IoSession s : sessions) {
-answer.add(s.write(((IoBuffer)message).duplicate()));
-}
-} else {
-for (IoSession s : sessions) {
-answer.add(s.write(message));
-}
-} 
-return answer;
-}
+    public static List<WriteFuture> broadcast(Object message, IoSession... sessions) {
+        if (sessions == null) {
+            sessions = EMPTY_SESSIONS;
+        }
 
-private static void broadcast(Object message, Iterator<IoSession> sessions, Collection<WriteFuture> answer) {
-if (message instanceof IoBuffer) {
-while (sessions.hasNext()) {
-IoSession s = sessions.next();
-answer.add(s.write(((IoBuffer)message).duplicate()));
-} 
-} else {
-while (sessions.hasNext()) {
-IoSession s = sessions.next();
-answer.add(s.write(message));
-} 
-} 
-}
+        List<WriteFuture> answer = new ArrayList<WriteFuture>(sessions.length);
+        if (message instanceof IoBuffer) {
+            for (IoSession s : sessions) {
+                answer.add(s.write(((IoBuffer) message).duplicate()));
+            }
+        } else {
+            for (IoSession s : sessions) {
+                answer.add(s.write(message));
+            }
+        }
+        return answer;
+    }
 
-public static void await(Iterable<? extends IoFuture> futures) throws InterruptedException {
-for (IoFuture f : futures) {
-f.await();
-}
-}
+    private static void broadcast(Object message, Iterator<IoSession> sessions, Collection<WriteFuture> answer) {
+        if (message instanceof IoBuffer) {
+            while (sessions.hasNext()) {
+                IoSession s = sessions.next();
+                answer.add(s.write(((IoBuffer) message).duplicate()));
+            }
+        } else {
+            while (sessions.hasNext()) {
+                IoSession s = sessions.next();
+                answer.add(s.write(message));
+            }
+        }
+    }
 
-public static void awaitUninterruptably(Iterable<? extends IoFuture> futures) {
-for (IoFuture f : futures) {
-f.awaitUninterruptibly();
-}
-}
+    public static void await(Iterable<? extends IoFuture> futures) throws InterruptedException {
+        for (IoFuture f : futures) {
+            f.await();
+        }
+    }
 
-public static boolean await(Iterable<? extends IoFuture> futures, long timeout, TimeUnit unit) throws InterruptedException {
-return await(futures, unit.toMillis(timeout));
-}
+    public static void awaitUninterruptably(Iterable<? extends IoFuture> futures) {
+        for (IoFuture f : futures) {
+            f.awaitUninterruptibly();
+        }
+    }
 
-public static boolean await(Iterable<? extends IoFuture> futures, long timeoutMillis) throws InterruptedException {
-return await0(futures, timeoutMillis, true);
-}
+    public static boolean await(Iterable<? extends IoFuture> futures, long timeout, TimeUnit unit) throws InterruptedException {
+        return await(futures, unit.toMillis(timeout));
+    }
 
-public static boolean awaitUninterruptibly(Iterable<? extends IoFuture> futures, long timeout, TimeUnit unit) {
-return awaitUninterruptibly(futures, unit.toMillis(timeout));
-}
+    public static boolean await(Iterable<? extends IoFuture> futures, long timeoutMillis) throws InterruptedException {
+        return await0(futures, timeoutMillis, true);
+    }
 
-public static boolean awaitUninterruptibly(Iterable<? extends IoFuture> futures, long timeoutMillis) {
-try {
-return await0(futures, timeoutMillis, false);
-} catch (InterruptedException e) {
-throw new InternalError();
-} 
-}
+    public static boolean awaitUninterruptibly(Iterable<? extends IoFuture> futures, long timeout, TimeUnit unit) {
+        return awaitUninterruptibly(futures, unit.toMillis(timeout));
+    }
 
-private static boolean await0(Iterable<? extends IoFuture> futures, long timeoutMillis, boolean interruptable) throws InterruptedException {
-long startTime = (timeoutMillis <= 0L) ? 0L : System.currentTimeMillis();
-long waitTime = timeoutMillis;
+    public static boolean awaitUninterruptibly(Iterable<? extends IoFuture> futures, long timeoutMillis) {
+        try {
+            return await0(futures, timeoutMillis, false);
+        } catch (InterruptedException e) {
+            throw new InternalError();
+        }
+    }
 
-boolean lastComplete = true;
-Iterator<? extends IoFuture> i = futures.iterator();
-while (i.hasNext()) {
-IoFuture f = i.next();
-do {
-if (interruptable) {
-lastComplete = f.await(waitTime);
-} else {
-lastComplete = f.awaitUninterruptibly(waitTime);
-} 
+    private static boolean await0(Iterable<? extends IoFuture> futures, long timeoutMillis, boolean interruptable) throws InterruptedException {
+        long startTime = (timeoutMillis <= 0L) ? 0L : System.currentTimeMillis();
+        long waitTime = timeoutMillis;
 
-waitTime = timeoutMillis - System.currentTimeMillis() - startTime;
+        boolean lastComplete = true;
+        Iterator<? extends IoFuture> i = futures.iterator();
+        while (i.hasNext()) {
+            IoFuture f = i.next();
+            do {
+                if (interruptable) {
+                    lastComplete = f.await(waitTime);
+                } else {
+                    lastComplete = f.awaitUninterruptibly(waitTime);
+                }
 
-if (lastComplete || waitTime <= 0L) {
-break;
-}
-} while (!lastComplete);
+                waitTime = timeoutMillis - System.currentTimeMillis() - startTime;
 
-if (waitTime <= 0L) {
-break;
-}
-} 
+                if (lastComplete || waitTime <= 0L) {
+                    break;
+                }
+            } while (!lastComplete);
 
-return (lastComplete && !i.hasNext());
-}
+            if (waitTime <= 0L) {
+                break;
+            }
+        }
+
+        return (lastComplete && !i.hasNext());
+    }
 }
 

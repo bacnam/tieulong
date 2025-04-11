@@ -8,83 +8,82 @@ import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.boolex.EventEvaluator;
 import ch.qos.logback.core.helpers.CyclicBuffer;
 import ch.qos.logback.core.net.SMTPAppenderBase;
-import ch.qos.logback.core.pattern.PatternLayoutBase;
 import org.slf4j.Marker;
 
 public class SMTPAppender
-extends SMTPAppenderBase<ILoggingEvent>
-{
-static final String DEFAULT_SUBJECT_PATTERN = "%logger{20} - %m";
-private int bufferSize = 512;
+        extends SMTPAppenderBase<ILoggingEvent> {
+    static final String DEFAULT_SUBJECT_PATTERN = "%logger{20} - %m";
+    private int bufferSize = 512;
 
-private boolean includeCallerData = false;
+    private boolean includeCallerData = false;
 
-public void start() {
-if (this.eventEvaluator == null) {
-OnErrorEvaluator onError = new OnErrorEvaluator();
-onError.setContext(getContext());
-onError.setName("onError");
-onError.start();
-this.eventEvaluator = (EventEvaluator)onError;
-} 
-super.start();
-}
+    public SMTPAppender(EventEvaluator<ILoggingEvent> eventEvaluator) {
+        this.eventEvaluator = eventEvaluator;
+    }
 
-public SMTPAppender(EventEvaluator<ILoggingEvent> eventEvaluator) {
-this.eventEvaluator = eventEvaluator;
-}
+    public SMTPAppender() {
+    }
 
-protected void subAppend(CyclicBuffer<ILoggingEvent> cb, ILoggingEvent event) {
-if (this.includeCallerData) {
-event.getCallerData();
-}
-event.prepareForDeferredProcessing();
-cb.add(event);
-}
+    public void start() {
+        if (this.eventEvaluator == null) {
+            OnErrorEvaluator onError = new OnErrorEvaluator();
+            onError.setContext(getContext());
+            onError.setName("onError");
+            onError.start();
+            this.eventEvaluator = (EventEvaluator) onError;
+        }
+        super.start();
+    }
 
-protected void fillBuffer(CyclicBuffer<ILoggingEvent> cb, StringBuffer sbuf) {
-int len = cb.length();
-for (int i = 0; i < len; i++) {
-ILoggingEvent event = (ILoggingEvent)cb.get();
-sbuf.append(this.layout.doLayout(event));
-} 
-}
+    protected void subAppend(CyclicBuffer<ILoggingEvent> cb, ILoggingEvent event) {
+        if (this.includeCallerData) {
+            event.getCallerData();
+        }
+        event.prepareForDeferredProcessing();
+        cb.add(event);
+    }
 
-protected boolean eventMarksEndOfLife(ILoggingEvent eventObject) {
-Marker marker = eventObject.getMarker();
-if (marker == null) {
-return false;
-}
-return marker.contains(ClassicConstants.FINALIZE_SESSION_MARKER);
-}
+    protected void fillBuffer(CyclicBuffer<ILoggingEvent> cb, StringBuffer sbuf) {
+        int len = cb.length();
+        for (int i = 0; i < len; i++) {
+            ILoggingEvent event = (ILoggingEvent) cb.get();
+            sbuf.append(this.layout.doLayout(event));
+        }
+    }
 
-protected Layout<ILoggingEvent> makeSubjectLayout(String subjectStr) {
-if (subjectStr == null) {
-subjectStr = "%logger{20} - %m";
-}
-PatternLayout pl = new PatternLayout();
-pl.setContext(getContext());
-pl.setPattern(subjectStr);
+    protected boolean eventMarksEndOfLife(ILoggingEvent eventObject) {
+        Marker marker = eventObject.getMarker();
+        if (marker == null) {
+            return false;
+        }
+        return marker.contains(ClassicConstants.FINALIZE_SESSION_MARKER);
+    }
 
-pl.setPostCompileProcessor(null);
-pl.start();
-return (Layout<ILoggingEvent>)pl;
-}
+    protected Layout<ILoggingEvent> makeSubjectLayout(String subjectStr) {
+        if (subjectStr == null) {
+            subjectStr = "%logger{20} - %m";
+        }
+        PatternLayout pl = new PatternLayout();
+        pl.setContext(getContext());
+        pl.setPattern(subjectStr);
 
-protected PatternLayout makeNewToPatternLayout(String toPattern) {
-PatternLayout pl = new PatternLayout();
-pl.setPattern(toPattern + "%nopex");
-return pl;
-}
+        pl.setPostCompileProcessor(null);
+        pl.start();
+        return (Layout<ILoggingEvent>) pl;
+    }
 
-public boolean isIncludeCallerData() {
-return this.includeCallerData;
-}
+    protected PatternLayout makeNewToPatternLayout(String toPattern) {
+        PatternLayout pl = new PatternLayout();
+        pl.setPattern(toPattern + "%nopex");
+        return pl;
+    }
 
-public void setIncludeCallerData(boolean includeCallerData) {
-this.includeCallerData = includeCallerData;
-}
+    public boolean isIncludeCallerData() {
+        return this.includeCallerData;
+    }
 
-public SMTPAppender() {}
+    public void setIncludeCallerData(boolean includeCallerData) {
+        this.includeCallerData = includeCallerData;
+    }
 }
 

@@ -1,76 +1,78 @@
 package bsh;
 
 public class TokenMgrError
-extends Error
-{
-static final int LEXICAL_ERROR = 0;
-static final int STATIC_LEXER_ERROR = 1;
-static final int INVALID_LEXICAL_STATE = 2;
-static final int LOOP_DETECTED = 3;
-int errorCode;
+        extends Error {
+    static final int LEXICAL_ERROR = 0;
+    static final int STATIC_LEXER_ERROR = 1;
+    static final int INVALID_LEXICAL_STATE = 2;
+    static final int LOOP_DETECTED = 3;
+    int errorCode;
 
-protected static final String addEscapes(String str) {
-StringBuffer retval = new StringBuffer();
+    public TokenMgrError() {
+    }
 
-for (int i = 0; i < str.length(); i++) {
-char ch; switch (str.charAt(i)) {
-case '\000':
-break;
+    public TokenMgrError(String message, int reason) {
+        super(message);
+        this.errorCode = reason;
+    }
 
-case '\b':
-retval.append("\\b");
-break;
-case '\t':
-retval.append("\\t");
-break;
-case '\n':
-retval.append("\\n");
-break;
-case '\f':
-retval.append("\\f");
-break;
-case '\r':
-retval.append("\\r");
-break;
-case '"':
-retval.append("\\\"");
-break;
-case '\'':
-retval.append("\\'");
-break;
-case '\\':
-retval.append("\\\\");
-break;
-default:
-if ((ch = str.charAt(i)) < ' ' || ch > '~') {
-String s = "0000" + Integer.toString(ch, 16);
-retval.append("\\u" + s.substring(s.length() - 4, s.length())); break;
-} 
-retval.append(ch);
-break;
-} 
+    public TokenMgrError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar, int reason) {
+        this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason);
+    }
 
-} 
-return retval.toString();
-}
+    protected static final String addEscapes(String str) {
+        StringBuffer retval = new StringBuffer();
 
-protected static String LexicalError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar) {
-return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: " + (EOFSeen ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar)) + "\"" + " (" + curChar + "), ")) + "after : \"" + addEscapes(errorAfter) + "\"";
-}
+        for (int i = 0; i < str.length(); i++) {
+            char ch;
+            switch (str.charAt(i)) {
+                case '\000':
+                    break;
 
-public String getMessage() {
-return super.getMessage();
-}
+                case '\b':
+                    retval.append("\\b");
+                    break;
+                case '\t':
+                    retval.append("\\t");
+                    break;
+                case '\n':
+                    retval.append("\\n");
+                    break;
+                case '\f':
+                    retval.append("\\f");
+                    break;
+                case '\r':
+                    retval.append("\\r");
+                    break;
+                case '"':
+                    retval.append("\\\"");
+                    break;
+                case '\'':
+                    retval.append("\\'");
+                    break;
+                case '\\':
+                    retval.append("\\\\");
+                    break;
+                default:
+                    if ((ch = str.charAt(i)) < ' ' || ch > '~') {
+                        String s = "0000" + Integer.toString(ch, 16);
+                        retval.append("\\u" + s.substring(s.length() - 4, s.length()));
+                        break;
+                    }
+                    retval.append(ch);
+                    break;
+            }
 
-public TokenMgrError() {}
+        }
+        return retval.toString();
+    }
 
-public TokenMgrError(String message, int reason) {
-super(message);
-this.errorCode = reason;
-}
+    protected static String LexicalError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar) {
+        return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: " + (EOFSeen ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar)) + "\"" + " (" + curChar + "), ")) + "after : \"" + addEscapes(errorAfter) + "\"";
+    }
 
-public TokenMgrError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, char curChar, int reason) {
-this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason);
-}
+    public String getMessage() {
+        return super.getMessage();
+    }
 }
 

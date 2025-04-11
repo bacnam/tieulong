@@ -9,56 +9,56 @@ import com.zhonglian.server.common.enums.InstanceType;
 import com.zhonglian.server.websocket.exception.WSException;
 import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class InstanceCheck
-extends PlayerHandler
-{
-public static class Request {
-InstanceType type;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        int level = 0;
+        int challengTimes = 0;
+        InstanceFeature feature = (InstanceFeature) player.getFeature(InstanceFeature.class);
+        level = feature.getOrCreate().getInstanceMaxLevel(req.type.ordinal());
+        challengTimes = feature.getOrCreate().getChallengTimes(req.type.ordinal());
 
-public static class InstanceInfo {
-int maxLevel;
-int challengTimes;
-int buyTimes;
-InstanceType type;
+        ConstEnum.DailyRefresh dailyType = null;
+        PlayerRecord recorder = (PlayerRecord) player.getFeature(PlayerRecord.class);
+        int times = 0;
+        switch (req.type) {
+            case null:
+                dailyType = ConstEnum.DailyRefresh.EquipInstanceBuyTimes;
+                times = recorder.getValue(dailyType);
+                break;
+            case GemInstance:
+                dailyType = ConstEnum.DailyRefresh.GemInstanceBuyTimes;
+                times = recorder.getValue(dailyType);
+                break;
+            case MeridianInstance:
+                dailyType = ConstEnum.DailyRefresh.MeridianInstanceBuyTimes;
+                times = recorder.getValue(dailyType);
+                break;
+        }
 
-public InstanceInfo(int maxLevel, int challengTimes, int buyTimes, InstanceType type) {
-this.maxLevel = maxLevel;
-this.challengTimes = challengTimes;
-this.buyTimes = buyTimes;
-this.type = type;
-}
-}
+        request.response(new InstanceInfo(level, challengTimes, times, req.type));
+    }
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-int level = 0;
-int challengTimes = 0;
-InstanceFeature feature = (InstanceFeature)player.getFeature(InstanceFeature.class);
-level = feature.getOrCreate().getInstanceMaxLevel(req.type.ordinal());
-challengTimes = feature.getOrCreate().getChallengTimes(req.type.ordinal());
+    public static class Request {
+        InstanceType type;
+    }
 
-ConstEnum.DailyRefresh dailyType = null;
-PlayerRecord recorder = (PlayerRecord)player.getFeature(PlayerRecord.class);
-int times = 0;
-switch (req.type) {
-case null:
-dailyType = ConstEnum.DailyRefresh.EquipInstanceBuyTimes;
-times = recorder.getValue(dailyType);
-break;
-case GemInstance:
-dailyType = ConstEnum.DailyRefresh.GemInstanceBuyTimes;
-times = recorder.getValue(dailyType);
-break;
-case MeridianInstance:
-dailyType = ConstEnum.DailyRefresh.MeridianInstanceBuyTimes;
-times = recorder.getValue(dailyType);
-break;
-} 
+    public static class InstanceInfo {
+        int maxLevel;
+        int challengTimes;
+        int buyTimes;
+        InstanceType type;
 
-request.response(new InstanceInfo(level, challengTimes, times, req.type));
-}
+        public InstanceInfo(int maxLevel, int challengTimes, int buyTimes, InstanceType type) {
+            this.maxLevel = maxLevel;
+            this.challengTimes = challengTimes;
+            this.buyTimes = buyTimes;
+            this.type = type;
+        }
+    }
 }
 

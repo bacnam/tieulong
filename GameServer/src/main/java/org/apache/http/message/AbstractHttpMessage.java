@@ -10,99 +10,98 @@ import org.apache.http.util.Args;
 
 @NotThreadSafe
 public abstract class AbstractHttpMessage
-implements HttpMessage
-{
-protected HeaderGroup headergroup;
-@Deprecated
-protected HttpParams params;
+        implements HttpMessage {
+    protected HeaderGroup headergroup;
+    @Deprecated
+    protected HttpParams params;
 
-@Deprecated
-protected AbstractHttpMessage(HttpParams params) {
-this.headergroup = new HeaderGroup();
-this.params = params;
-}
+    @Deprecated
+    protected AbstractHttpMessage(HttpParams params) {
+        this.headergroup = new HeaderGroup();
+        this.params = params;
+    }
 
-protected AbstractHttpMessage() {
-this(null);
-}
+    protected AbstractHttpMessage() {
+        this(null);
+    }
 
-public boolean containsHeader(String name) {
-return this.headergroup.containsHeader(name);
-}
+    public boolean containsHeader(String name) {
+        return this.headergroup.containsHeader(name);
+    }
 
-public Header[] getHeaders(String name) {
-return this.headergroup.getHeaders(name);
-}
+    public Header[] getHeaders(String name) {
+        return this.headergroup.getHeaders(name);
+    }
 
-public Header getFirstHeader(String name) {
-return this.headergroup.getFirstHeader(name);
-}
+    public Header getFirstHeader(String name) {
+        return this.headergroup.getFirstHeader(name);
+    }
 
-public Header getLastHeader(String name) {
-return this.headergroup.getLastHeader(name);
-}
+    public Header getLastHeader(String name) {
+        return this.headergroup.getLastHeader(name);
+    }
 
-public Header[] getAllHeaders() {
-return this.headergroup.getAllHeaders();
-}
+    public Header[] getAllHeaders() {
+        return this.headergroup.getAllHeaders();
+    }
 
-public void addHeader(Header header) {
-this.headergroup.addHeader(header);
-}
+    public void addHeader(Header header) {
+        this.headergroup.addHeader(header);
+    }
 
-public void addHeader(String name, String value) {
-Args.notNull(name, "Header name");
-this.headergroup.addHeader(new BasicHeader(name, value));
-}
+    public void addHeader(String name, String value) {
+        Args.notNull(name, "Header name");
+        this.headergroup.addHeader(new BasicHeader(name, value));
+    }
 
-public void setHeader(Header header) {
-this.headergroup.updateHeader(header);
-}
+    public void setHeader(Header header) {
+        this.headergroup.updateHeader(header);
+    }
 
-public void setHeader(String name, String value) {
-Args.notNull(name, "Header name");
-this.headergroup.updateHeader(new BasicHeader(name, value));
-}
+    public void setHeader(String name, String value) {
+        Args.notNull(name, "Header name");
+        this.headergroup.updateHeader(new BasicHeader(name, value));
+    }
 
-public void setHeaders(Header[] headers) {
-this.headergroup.setHeaders(headers);
-}
+    public void setHeaders(Header[] headers) {
+        this.headergroup.setHeaders(headers);
+    }
 
-public void removeHeader(Header header) {
-this.headergroup.removeHeader(header);
-}
+    public void removeHeader(Header header) {
+        this.headergroup.removeHeader(header);
+    }
 
-public void removeHeaders(String name) {
-if (name == null) {
-return;
-}
-for (HeaderIterator i = this.headergroup.iterator(); i.hasNext(); ) {
-Header header = i.nextHeader();
-if (name.equalsIgnoreCase(header.getName())) {
-i.remove();
-}
-} 
-}
+    public void removeHeaders(String name) {
+        if (name == null) {
+            return;
+        }
+        for (HeaderIterator i = this.headergroup.iterator(); i.hasNext(); ) {
+            Header header = i.nextHeader();
+            if (name.equalsIgnoreCase(header.getName())) {
+                i.remove();
+            }
+        }
+    }
 
-public HeaderIterator headerIterator() {
-return this.headergroup.iterator();
-}
+    public HeaderIterator headerIterator() {
+        return this.headergroup.iterator();
+    }
 
-public HeaderIterator headerIterator(String name) {
-return this.headergroup.iterator(name);
-}
+    public HeaderIterator headerIterator(String name) {
+        return this.headergroup.iterator(name);
+    }
 
-@Deprecated
-public HttpParams getParams() {
-if (this.params == null) {
-this.params = (HttpParams)new BasicHttpParams();
-}
-return this.params;
-}
+    @Deprecated
+    public HttpParams getParams() {
+        if (this.params == null) {
+            this.params = (HttpParams) new BasicHttpParams();
+        }
+        return this.params;
+    }
 
-@Deprecated
-public void setParams(HttpParams params) {
-this.params = (HttpParams)Args.notNull(params, "HTTP parameters");
-}
+    @Deprecated
+    public void setParams(HttpParams params) {
+        this.params = (HttpParams) Args.notNull(params, "HTTP parameters");
+    }
 }
 

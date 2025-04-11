@@ -12,70 +12,67 @@ import org.slf4j.helpers.Util;
 import org.slf4j.spi.LoggerFactoryBinder;
 
 public class StaticLoggerBinder
-implements LoggerFactoryBinder
-{
-public static String REQUESTED_API_VERSION = "1.6";
+        implements LoggerFactoryBinder {
+    static final String NULL_CS_URL = "http:
+    private static StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
-static final String NULL_CS_URL = "http:
+    public static String REQUESTED_API_VERSION = "1.6";
+    private static Object KEY = new Object();
 
-private static StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+    static {
+        SINGLETON.init();
+    }
 
-private static Object KEY = new Object();
+    private final ContextSelectorStaticBinder contextSelectorBinder = ContextSelectorStaticBinder.getSingleton();
+    private boolean initialized = false;
+    private LoggerContext defaultLoggerContext = new LoggerContext();
 
-static {
-SINGLETON.init();
-}
+    private StaticLoggerBinder() {
+        this.defaultLoggerContext.setName("default");
+    }
 
-private boolean initialized = false;
-private LoggerContext defaultLoggerContext = new LoggerContext();
-private final ContextSelectorStaticBinder contextSelectorBinder = ContextSelectorStaticBinder.getSingleton();
+    public static StaticLoggerBinder getSingleton() {
+        return SINGLETON;
+    }
 
-private StaticLoggerBinder() {
-this.defaultLoggerContext.setName("default");
-}
+    static void reset() {
+        SINGLETON = new StaticLoggerBinder();
+        SINGLETON.init();
+    }
 
-public static StaticLoggerBinder getSingleton() {
-return SINGLETON;
-}
+    void init() {
+        try {
+            try {
+                (new ContextInitializer(this.defaultLoggerContext)).autoConfig();
+            } catch (JoranException je) {
+                Util.report("Failed to auto configure default logger context", (Throwable) je);
+            }
 
-static void reset() {
-SINGLETON = new StaticLoggerBinder();
-SINGLETON.init();
-}
+            if (!StatusUtil.contextHasStatusListener((Context) this.defaultLoggerContext)) {
+                StatusPrinter.printInCaseOfErrorsOrWarnings((Context) this.defaultLoggerContext);
+            }
+            this.contextSelectorBinder.init(this.defaultLoggerContext, KEY);
+            this.initialized = true;
+        } catch (Throwable t) {
 
-void init() {
-try {
-try {
-(new ContextInitializer(this.defaultLoggerContext)).autoConfig();
-} catch (JoranException je) {
-Util.report("Failed to auto configure default logger context", (Throwable)je);
-} 
+            Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
+        }
+    }
 
-if (!StatusUtil.contextHasStatusListener((Context)this.defaultLoggerContext)) {
-StatusPrinter.printInCaseOfErrorsOrWarnings((Context)this.defaultLoggerContext);
-}
-this.contextSelectorBinder.init(this.defaultLoggerContext, KEY);
-this.initialized = true;
-} catch (Throwable t) {
+    public ILoggerFactory getLoggerFactory() {
+        if (!this.initialized) {
+            return (ILoggerFactory) this.defaultLoggerContext;
+        }
 
-Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
-} 
-}
+        if (this.contextSelectorBinder.getContextSelector() == null) {
+            throw new IllegalStateException("contextSelector cannot be null. See also http:
+        }
 
-public ILoggerFactory getLoggerFactory() {
-if (!this.initialized) {
-return (ILoggerFactory)this.defaultLoggerContext;
-}
+        return (ILoggerFactory) this.contextSelectorBinder.getContextSelector().getLoggerContext();
+    }
 
-if (this.contextSelectorBinder.getContextSelector() == null) {
-throw new IllegalStateException("contextSelector cannot be null. See also http:
-}
-
-return (ILoggerFactory)this.contextSelectorBinder.getContextSelector().getLoggerContext();
-}
-
-public String getLoggerFactoryClassStr() {
-return this.contextSelectorBinder.getClass().getName();
-}
+    public String getLoggerFactoryClassStr() {
+        return this.contextSelectorBinder.getClass().getName();
+    }
 }
 

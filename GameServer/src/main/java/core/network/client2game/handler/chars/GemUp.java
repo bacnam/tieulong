@@ -16,60 +16,59 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefGem;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 
 public class GemUp
-extends PlayerHandler
-{
-public static class Request
-{
-int charId;
-EquipPos pos;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public static class GemupNotify {
-int charId;
-EquipPos pos;
-long GemLevel;
+        int GemLevel = character.getBo().getGem(req.pos.ordinal());
+        if (GemLevel >= RefDataMgr.size(RefGem.class)) {
+            throw new WSException(ErrorCode.Gem_LevelFull, "位置[%s]宝石已满级", new Object[]{req.pos});
+        }
 
-public GemupNotify(int charId, EquipPos pos, long GemLevel) {
-this.charId = charId;
-this.pos = pos;
-this.GemLevel = GemLevel;
-}
-}
+        RefGem ref = (RefGem) RefDataMgr.get(RefGem.class, Integer.valueOf(GemLevel + 1));
+        PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+        if (!playerCurrency.check(PrizeType.GemMaterial, ref.Material)) {
+            throw new WSException(ErrorCode.NotEnough_GemMaterial, "玩家材料:%s<宝石升级需要材料:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getGemMaterial()), Integer.valueOf(ref.Material)});
+        }
 
-int GemLevel = character.getBo().getGem(req.pos.ordinal());
-if (GemLevel >= RefDataMgr.size(RefGem.class)) {
-throw new WSException(ErrorCode.Gem_LevelFull, "位置[%s]宝石已满级", new Object[] { req.pos });
-}
+        playerCurrency.consume(PrizeType.GemMaterial, ref.Material, ItemFlow.GemLevelUp);
 
-RefGem ref = (RefGem)RefDataMgr.get(RefGem.class, Integer.valueOf(GemLevel + 1));
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
+        character.getBo().saveGem(req.pos.ordinal(), character.getBo().getGem(req.pos.ordinal()) + 1);
 
-if (!playerCurrency.check(PrizeType.GemMaterial, ref.Material)) {
-throw new WSException(ErrorCode.NotEnough_GemMaterial, "玩家材料:%s<宝石升级需要材料:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getGemMaterial()), Integer.valueOf(ref.Material) });
-}
+        character.onAttrChanged();
 
-playerCurrency.consume(PrizeType.GemMaterial, ref.Material, ItemFlow.GemLevelUp);
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateMax(Achievement.AchievementType.GemMax, Integer.valueOf(character.getBo().getGem(req.pos.ordinal())));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M1);
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M2);
 
-character.getBo().saveGem(req.pos.ordinal(), character.getBo().getGem(req.pos.ordinal()) + 1);
+        GemupNotify notify = new GemupNotify(character.getCharId(), req.pos, character.getBo().getGem(req.pos.ordinal()));
+        request.response(notify);
+    }
 
-character.onAttrChanged();
+    public static class Request {
+        int charId;
+        EquipPos pos;
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateMax(Achievement.AchievementType.GemMax, Integer.valueOf(character.getBo().getGem(req.pos.ordinal())));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M1);
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.GemMax_M2);
+    public static class GemupNotify {
+        int charId;
+        EquipPos pos;
+        long GemLevel;
 
-GemupNotify notify = new GemupNotify(character.getCharId(), req.pos, character.getBo().getGem(req.pos.ordinal()));
-request.response(notify);
-}
+        public GemupNotify(int charId, EquipPos pos, long GemLevel) {
+            this.charId = charId;
+            this.pos = pos;
+            this.GemLevel = GemLevel;
+        }
+    }
 }
 

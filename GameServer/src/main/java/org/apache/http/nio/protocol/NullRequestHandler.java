@@ -8,16 +8,15 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.protocol.HttpContext;
 
 class NullRequestHandler
-implements HttpAsyncRequestHandler<Object>
-{
-public HttpAsyncRequestConsumer<Object> processRequest(HttpRequest request, HttpContext context) {
-return new NullRequestConsumer();
-}
+        implements HttpAsyncRequestHandler<Object> {
+    public HttpAsyncRequestConsumer<Object> processRequest(HttpRequest request, HttpContext context) {
+        return new NullRequestConsumer();
+    }
 
-public void handle(Object obj, HttpAsyncExchange httpexchange, HttpContext context) {
-HttpResponse response = httpexchange.getResponse();
-response.setStatusCode(501);
-httpexchange.submitResponse(new ErrorResponseProducer(response, (HttpEntity)new NStringEntity("Service not implemented", ContentType.TEXT_PLAIN), true));
-}
+    public void handle(Object obj, HttpAsyncExchange httpexchange, HttpContext context) {
+        HttpResponse response = httpexchange.getResponse();
+        response.setStatusCode(501);
+        httpexchange.submitResponse(new ErrorResponseProducer(response, (HttpEntity) new NStringEntity("Service not implemented", ContentType.TEXT_PLAIN), true));
+    }
 }
 

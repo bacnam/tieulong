@@ -1,8 +1,8 @@
 package ch.qos.logback.core.net.ssl;
 
 public interface SSLComponent {
-  SSLConfiguration getSsl();
+    SSLConfiguration getSsl();
 
-  void setSsl(SSLConfiguration paramSSLConfiguration);
+    void setSsl(SSLConfiguration paramSSLConfiguration);
 }
 

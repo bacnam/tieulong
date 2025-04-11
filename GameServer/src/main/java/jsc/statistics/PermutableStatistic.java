@@ -4,8 +4,8 @@ import jsc.combinatorics.Enumerator;
 import jsc.combinatorics.Selection;
 
 public interface PermutableStatistic extends Statistic {
-  Enumerator getEnumerator();
+    Enumerator getEnumerator();
 
-  double permuteStatistic(Selection paramSelection);
+    double permuteStatistic(Selection paramSelection);
 }
 

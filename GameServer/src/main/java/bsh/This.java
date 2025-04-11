@@ -7,6 +7,11 @@ public class This
     NameSpace namespace;
     transient Interpreter declaringInterpreter;
 
+    protected This(NameSpace namespace, Interpreter declaringInterpreter) {
+        this.namespace = namespace;
+        this.declaringInterpreter = declaringInterpreter;
+    }
+
     static This getThis(NameSpace namespace, Interpreter declaringInterpreter) {
         try {
             Class<?> c;
@@ -17,12 +22,22 @@ public class This
             } else {
                 return new This(namespace, declaringInterpreter);
             }
-            return (This) Reflect.constructObject(c, new Object[] { namespace, declaringInterpreter });
+            return (This) Reflect.constructObject(c, new Object[]{namespace, declaringInterpreter});
 
         } catch (Exception e) {
             //Class<String> c;
             throw new InterpreterError("internal error 1 in This: " + e);
         }
+    }
+
+    public static void bind(This ths, NameSpace namespace, Interpreter declaringInterpreter) {
+        ths.namespace.setParent(namespace);
+        ths.declaringInterpreter = declaringInterpreter;
+    }
+
+    static boolean isExposedThisMethod(String name) {
+        return (name.equals("getClass") || name.equals("invokeMethod") || name.equals("getInterface")
+                || name.equals("wait") || name.equals("notify") || name.equals("notifyAll"));
     }
 
     public Object getInterface(Class clas) throws UtilEvalError {
@@ -41,11 +56,6 @@ public class This
         }
 
         return this;
-    }
-
-    protected This(NameSpace namespace, Interpreter declaringInterpreter) {
-        this.namespace = namespace;
-        this.declaringInterpreter = declaringInterpreter;
     }
 
     public NameSpace getNameSpace() {
@@ -69,7 +79,7 @@ public class This
     }
 
     public Object invokeMethod(String methodName, Object[] args, Interpreter interpreter, CallStack callstack,
-            SimpleNode callerInfo, boolean declaredOnly) throws EvalError {
+                               SimpleNode callerInfo, boolean declaredOnly) throws EvalError {
         if (args != null) {
 
             Object[] oa = new Object[args.length];
@@ -111,25 +121,15 @@ public class This
         }
 
         try {
-            bshMethod = this.namespace.getMethod("invoke", new Class[] { null, null });
+            bshMethod = this.namespace.getMethod("invoke", new Class[]{null, null});
         } catch (UtilEvalError e) {
         }
 
         if (bshMethod != null) {
-            return bshMethod.invoke(new Object[] { methodName, args }, interpreter, callstack, callerInfo);
+            return bshMethod.invoke(new Object[]{methodName, args}, interpreter, callstack, callerInfo);
         }
 
         throw new EvalError("Method " + StringUtil.methodString(methodName, types)
                 + " not found in bsh scripted object: " + this.namespace.getName(), callerInfo, callstack);
-    }
-
-    public static void bind(This ths, NameSpace namespace, Interpreter declaringInterpreter) {
-        ths.namespace.setParent(namespace);
-        ths.declaringInterpreter = declaringInterpreter;
-    }
-
-    static boolean isExposedThisMethod(String name) {
-        return (name.equals("getClass") || name.equals("invokeMethod") || name.equals("getInterface")
-                || name.equals("wait") || name.equals("notify") || name.equals("notifyAll"));
     }
 }

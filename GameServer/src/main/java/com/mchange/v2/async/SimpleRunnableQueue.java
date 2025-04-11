@@ -4,91 +4,90 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SimpleRunnableQueue
-implements RunnableQueue, Queuable
-{
-private List taskList = new LinkedList();
-private Thread t = new TaskThread();
+        implements RunnableQueue, Queuable {
+    boolean gentle_close_requested = false;
+    private List taskList = new LinkedList();
+    private Thread t = new TaskThread();
 
-boolean gentle_close_requested = false;
+    public SimpleRunnableQueue(boolean paramBoolean) {
+        this.t.setDaemon(paramBoolean);
+        this.t.start();
+    }
 
-public SimpleRunnableQueue(boolean paramBoolean) {
-this.t.setDaemon(paramBoolean);
-this.t.start();
-}
+    public SimpleRunnableQueue() {
+        this(true);
+    }
 
-public SimpleRunnableQueue() {
-this(true);
-}
-public RunnableQueue asRunnableQueue() {
-return this;
-}
+    public RunnableQueue asRunnableQueue() {
+        return this;
+    }
 
-public synchronized void postRunnable(Runnable paramRunnable) {
-if (this.gentle_close_requested) {
-throw new IllegalStateException("Attempted to post a task to a closed AsynchronousRunner.");
-}
+    public synchronized void postRunnable(Runnable paramRunnable) {
+        if (this.gentle_close_requested) {
+            throw new IllegalStateException("Attempted to post a task to a closed AsynchronousRunner.");
+        }
 
-this.taskList.add(paramRunnable);
-notifyAll();
-}
+        this.taskList.add(paramRunnable);
+        notifyAll();
+    }
 
-public synchronized void close(boolean paramBoolean) {
-if (paramBoolean) {
-this.t.interrupt();
-} else {
-this.gentle_close_requested = true;
-} 
-}
-public synchronized void close() {
-close(true);
-}
+    public synchronized void close(boolean paramBoolean) {
+        if (paramBoolean) {
+            this.t.interrupt();
+        } else {
+            this.gentle_close_requested = true;
+        }
+    }
 
-private synchronized Runnable dequeueRunnable() {
-Runnable runnable = this.taskList.get(0);
-this.taskList.remove(0);
-return runnable;
-}
+    public synchronized void close() {
+        close(true);
+    }
 
-private synchronized void awaitTask() throws InterruptedException {
-while (this.taskList.size() == 0) {
+    private synchronized Runnable dequeueRunnable() {
+        Runnable runnable = this.taskList.get(0);
+        this.taskList.remove(0);
+        return runnable;
+    }
 
-if (this.gentle_close_requested)
-this.t.interrupt(); 
-wait();
-} 
-}
+    private synchronized void awaitTask() throws InterruptedException {
+        while (this.taskList.size() == 0) {
 
-class TaskThread
-extends Thread {
-TaskThread() {
-super("SimpleRunnableQueue.TaskThread");
-}
+            if (this.gentle_close_requested)
+                this.t.interrupt();
+            wait();
+        }
+    }
 
-public void run() {
-try {
-while (!isInterrupted()) {
+    class TaskThread
+            extends Thread {
+        TaskThread() {
+            super("SimpleRunnableQueue.TaskThread");
+        }
 
-SimpleRunnableQueue.this.awaitTask();
-Runnable runnable = SimpleRunnableQueue.this.dequeueRunnable();
-try {
-runnable.run();
-} catch (Exception exception) {
+        public void run() {
+            try {
+                while (!isInterrupted()) {
 
-System.err.println(getClass().getName() + " -- Unexpected exception in task!");
+                    SimpleRunnableQueue.this.awaitTask();
+                    Runnable runnable = SimpleRunnableQueue.this.dequeueRunnable();
+                    try {
+                        runnable.run();
+                    } catch (Exception exception) {
 
-exception.printStackTrace();
-}
+                        System.err.println(getClass().getName() + " -- Unexpected exception in task!");
 
-} 
-} catch (InterruptedException interruptedException) {
+                        exception.printStackTrace();
+                    }
 
-}
-finally {
+                }
+            } catch (InterruptedException interruptedException) {
 
-SimpleRunnableQueue.this.taskList = null;
-SimpleRunnableQueue.this.t = null;
-} 
-}
-}
+            } finally {
+
+                SimpleRunnableQueue.this.taskList = null;
+                SimpleRunnableQueue.this.t = null;
+            }
+        }
+    }
 }
 

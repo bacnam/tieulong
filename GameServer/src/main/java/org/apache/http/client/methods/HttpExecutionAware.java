@@ -3,8 +3,8 @@ package org.apache.http.client.methods;
 import org.apache.http.concurrent.Cancellable;
 
 public interface HttpExecutionAware {
-  boolean isAborted();
+    boolean isAborted();
 
-  void setCancellable(Cancellable paramCancellable);
+    void setCancellable(Cancellable paramCancellable);
 }
 

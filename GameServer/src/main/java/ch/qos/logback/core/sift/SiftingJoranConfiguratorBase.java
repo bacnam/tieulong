@@ -2,13 +2,7 @@ package ch.qos.logback.core.sift;
 
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.joran.GenericConfigurator;
-import ch.qos.logback.core.joran.action.Action;
-import ch.qos.logback.core.joran.action.DefinePropertyAction;
-import ch.qos.logback.core.joran.action.ImplicitAction;
-import ch.qos.logback.core.joran.action.NestedBasicPropertyIA;
-import ch.qos.logback.core.joran.action.NestedComplexPropertyIA;
-import ch.qos.logback.core.joran.action.PropertyAction;
-import ch.qos.logback.core.joran.action.TimestampAction;
+import ch.qos.logback.core.joran.action.*;
 import ch.qos.logback.core.joran.event.SaxEvent;
 import ch.qos.logback.core.joran.spi.ElementSelector;
 import ch.qos.logback.core.joran.spi.Interpreter;
@@ -20,11 +14,18 @@ import java.util.Map;
 
 public abstract class SiftingJoranConfiguratorBase<E>
         extends GenericConfigurator {
+    static final String ONE_AND_ONLY_ONE_URL = "http:";
     protected final String key;
     protected final String value;
     protected final Map<String, String> parentPropertyMap;
-    static final String ONE_AND_ONLY_ONE_URL = "http:";
     int errorEmmissionCount;
+
+    protected SiftingJoranConfiguratorBase(String key, String value, Map<String, String> parentPropertyMap) {
+        this.errorEmmissionCount = 0;
+        this.key = key;
+        this.value = value;
+        this.parentPropertyMap = parentPropertyMap;
+    }
 
     protected void addImplicitRules(Interpreter interpreter) {
         NestedComplexPropertyIA nestedComplexIA = new NestedComplexPropertyIA();
@@ -33,13 +34,6 @@ public abstract class SiftingJoranConfiguratorBase<E>
         NestedBasicPropertyIA nestedSimpleIA = new NestedBasicPropertyIA();
         nestedSimpleIA.setContext(this.context);
         interpreter.addImplicitAction((ImplicitAction) nestedSimpleIA);
-    }
-
-    protected SiftingJoranConfiguratorBase(String key, String value, Map<String, String> parentPropertyMap) {
-        this.errorEmmissionCount = 0;
-        this.key = key;
-        this.value = value;
-        this.parentPropertyMap = parentPropertyMap;
     }
 
     protected void oneAndOnlyOneCheck(Map<?, ?> appenderMap) {

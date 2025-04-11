@@ -3,32 +3,33 @@ package ch.qos.logback.core;
 import ch.qos.logback.core.spi.LifeCycle;
 import ch.qos.logback.core.spi.PropertyContainer;
 import ch.qos.logback.core.status.StatusManager;
+
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 public interface Context extends PropertyContainer {
-  StatusManager getStatusManager();
+    StatusManager getStatusManager();
 
-  Object getObject(String paramString);
+    Object getObject(String paramString);
 
-  void putObject(String paramString, Object paramObject);
+    void putObject(String paramString, Object paramObject);
 
-  String getProperty(String paramString);
+    String getProperty(String paramString);
 
-  void putProperty(String paramString1, String paramString2);
+    void putProperty(String paramString1, String paramString2);
 
-  Map<String, String> getCopyOfPropertyMap();
+    Map<String, String> getCopyOfPropertyMap();
 
-  String getName();
+    String getName();
 
-  void setName(String paramString);
+    void setName(String paramString);
 
-  long getBirthTime();
+    long getBirthTime();
 
-  Object getConfigurationLock();
+    Object getConfigurationLock();
 
-  ExecutorService getExecutorService();
+    ExecutorService getExecutorService();
 
-  void register(LifeCycle paramLifeCycle);
+    void register(LifeCycle paramLifeCycle);
 }
 

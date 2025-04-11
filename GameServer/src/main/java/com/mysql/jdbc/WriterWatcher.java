@@ -1,6 +1,6 @@
 package com.mysql.jdbc;
 
 interface WriterWatcher {
-  void writerClosed(WatchableWriter paramWatchableWriter);
+    void writerClosed(WatchableWriter paramWatchableWriter);
 }
 

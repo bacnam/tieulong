@@ -17,160 +17,162 @@ import com.zhonglian.server.websocket.exception.WSException;
 import core.database.game.bo.ActivityBO;
 import core.database.game.bo.ActivityRecordBO;
 import core.network.proto.VipAwardInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class VipAward
-extends Activity
-{
-private List<VipAwardRef> arList;
+        extends Activity {
+    private List<VipAwardRef> arList;
 
-private static class VipAwardRef
-{
-int aid;
-int vip;
-String icon;
-Reward reward;
-int price;
-int discount;
-List<Integer> buytimes;
+    public VipAward(ActivityBO data) {
+        super(data);
+    }
 
-private VipAwardRef() {}
-}
+    public void load(JsonObject json) throws WSException {
+        this.arList = new ArrayList<>();
+        for (JsonElement element : json.get("awards").getAsJsonArray()) {
+            JsonObject obeject = element.getAsJsonObject();
+            VipAwardRef ref = new VipAwardRef(null);
+            ref.aid = obeject.get("aid").getAsInt();
+            ref.vip = obeject.get("vip").getAsInt();
+            ref.icon = obeject.get("icon").getAsString();
+            ref.reward = new Reward(obeject.get("items").getAsJsonArray());
+            ref.price = obeject.get("price").getAsInt();
+            ref.discount = obeject.get("discount").getAsInt();
+            ref.buytimes = StringUtils.string2Integer(obeject.get("buytimes").getAsString());
+            this.arList.add(ref);
+        }
+    }
 
-public VipAward(ActivityBO data) {
-super(data);
-}
+    public String check(JsonObject json) throws RequestException {
+        return "ok";
+    }
 
-public void load(JsonObject json) throws WSException {
-this.arList = new ArrayList<>();
-for (JsonElement element : json.get("awards").getAsJsonArray()) {
-JsonObject obeject = element.getAsJsonObject();
-VipAwardRef ref = new VipAwardRef(null);
-ref.aid = obeject.get("aid").getAsInt();
-ref.vip = obeject.get("vip").getAsInt();
-ref.icon = obeject.get("icon").getAsString();
-ref.reward = new Reward(obeject.get("items").getAsJsonArray());
-ref.price = obeject.get("price").getAsInt();
-ref.discount = obeject.get("discount").getAsInt();
-ref.buytimes = StringUtils.string2Integer(obeject.get("buytimes").getAsString());
-this.arList.add(ref);
-} 
-}
+    public ActivityType getType() {
+        return ActivityType.VipAward;
+    }
 
-public String check(JsonObject json) throws RequestException {
-return "ok";
-}
+    public List<VipAwardInfo> vipAwardProto(Player player) {
+        ActivityRecordBO bo = getOrCreateRecord(player);
 
-public ActivityType getType() {
-return ActivityType.VipAward;
-}
+        List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
+        List<Integer> hasBuyList = StringUtils.string2Integer(bo.getExtStr(1));
 
-public List<VipAwardInfo> vipAwardProto(Player player) {
-ActivityRecordBO bo = getOrCreateRecord(player);
+        List<VipAwardRef> refList = this.arList;
 
-List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
-List<Integer> hasBuyList = StringUtils.string2Integer(bo.getExtStr(1));
+        List<VipAwardInfo> weeks = (List<VipAwardInfo>) refList.stream().map(x -> {
+            VipAwardInfo builder = new VipAwardInfo();
+            builder.setAwardId(x.aid);
+            builder.setMaxTimes(((Integer) x.buytimes.get(paramPlayer.getVipLevel())).intValue());
+            builder.setReward(x.reward);
+            builder.setIcon(x.icon);
+            builder.setVip(x.vip);
+            builder.setPrice(x.price);
+            builder.setDiscount(x.discount);
+            builder.setTimeslist(StringUtils.list2String(x.buytimes));
+            int index = paramList1.indexOf(Integer.valueOf(x.aid));
+            if (index < 0) {
+                builder.setBuyTimes(0);
+            } else {
+                builder.setBuyTimes(((Integer) paramList2.get(index)).intValue());
+            }
+            return builder;
+        }).collect(Collectors.toList());
+        return weeks;
+    }
 
-List<VipAwardRef> refList = this.arList;
+    public VipAwardRef getVipRef(int rewardId) {
+        for (VipAwardRef ref : this.arList) {
+            if (ref.aid == rewardId) {
+                return ref;
+            }
+        }
 
-List<VipAwardInfo> weeks = (List<VipAwardInfo>)refList.stream().map(x -> {
-VipAwardInfo builder = new VipAwardInfo();
-builder.setAwardId(x.aid);
-builder.setMaxTimes(((Integer)x.buytimes.get(paramPlayer.getVipLevel())).intValue());
-builder.setReward(x.reward);
-builder.setIcon(x.icon);
-builder.setVip(x.vip);
-builder.setPrice(x.price);
-builder.setDiscount(x.discount);
-builder.setTimeslist(StringUtils.list2String(x.buytimes));
-int index = paramList1.indexOf(Integer.valueOf(x.aid));
-if (index < 0) {
-builder.setBuyTimes(0);
-} else {
-builder.setBuyTimes(((Integer)paramList2.get(index)).intValue());
-} 
-return builder;
-}).collect(Collectors.toList());
-return weeks;
-}
+        return null;
+    }
 
-public VipAwardRef getVipRef(int rewardId) {
-for (VipAwardRef ref : this.arList) {
-if (ref.aid == rewardId) {
-return ref;
-}
-} 
+    public VipAwardReceive doWeeklyReceive(Player player, int awardId) throws WSException {
+        ActivityRecordBO bo = getOrCreateRecord(player);
 
-return null;
-}
+        VipAwardRef refVipAward = getVipRef(awardId);
+        if (refVipAward == null) {
+            throw new WSException(ErrorCode.NotFound_RefVipAward, "未找到[%s]的VIP礼包配置", new Object[]{Integer.valueOf(awardId)});
+        }
+        if (refVipAward.vip > player.getVipLevel()) {
+            throw new WSException(ErrorCode.VipAward_WeekNoNowVIPGift, "礼包VIP等级:%s != 玩家VIP等级:%s", new Object[]{Integer.valueOf(refVipAward.vip), Integer.valueOf(player.getVipLevel())});
+        }
 
-public VipAwardReceive doWeeklyReceive(Player player, int awardId) throws WSException {
-ActivityRecordBO bo = getOrCreateRecord(player);
+        int maxTimes = ((Integer) refVipAward.buytimes.get(player.getVipLevel())).intValue();
 
-VipAwardRef refVipAward = getVipRef(awardId);
-if (refVipAward == null) {
-throw new WSException(ErrorCode.NotFound_RefVipAward, "未找到[%s]的VIP礼包配置", new Object[] { Integer.valueOf(awardId) });
-}
-if (refVipAward.vip > player.getVipLevel()) {
-throw new WSException(ErrorCode.VipAward_WeekNoNowVIPGift, "礼包VIP等级:%s != 玩家VIP等级:%s", new Object[] { Integer.valueOf(refVipAward.vip), Integer.valueOf(player.getVipLevel()) });
-}
+        List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
+        List<Integer> hasBuyList = StringUtils.string2Integer(bo.getExtStr(1));
 
-int maxTimes = ((Integer)refVipAward.buytimes.get(player.getVipLevel())).intValue();
+        int buyTimes = 0;
+        int index = awardList.indexOf(Integer.valueOf(refVipAward.aid));
+        if (index >= 0) {
+            buyTimes = ((Integer) hasBuyList.get(index)).intValue();
+        }
+        if (buyTimes >= maxTimes) {
+            throw new WSException(ErrorCode.VipAward_WeekVIPGiftSold, "该礼包已卖光");
+        }
 
-List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
-List<Integer> hasBuyList = StringUtils.string2Integer(bo.getExtStr(1));
+        int cryStal = refVipAward.discount;
+        if (!((PlayerCurrency) player.getFeature(PlayerCurrency.class)).check(PrizeType.Crystal, cryStal)) {
+            throw new WSException(ErrorCode.NotEnough_Crystal, "玩家水晶:%s<购买水晶:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getCrystal()), Integer.valueOf(cryStal)});
+        }
+        Reward reward = refVipAward.reward;
 
-int buyTimes = 0;
-int index = awardList.indexOf(Integer.valueOf(refVipAward.aid));
-if (index >= 0) {
-buyTimes = ((Integer)hasBuyList.get(index)).intValue();
-}
-if (buyTimes >= maxTimes) {
-throw new WSException(ErrorCode.VipAward_WeekVIPGiftSold, "该礼包已卖光");
-}
+        Reward pack = ((PlayerItem) player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.Activity_WeeklyVipAward);
 
-int cryStal = refVipAward.discount;
-if (!((PlayerCurrency)player.getFeature(PlayerCurrency.class)).check(PrizeType.Crystal, cryStal)) {
-throw new WSException(ErrorCode.NotEnough_Crystal, "玩家水晶:%s<购买水晶:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getCrystal()), Integer.valueOf(cryStal) });
-}
-Reward reward = refVipAward.reward;
+        ((PlayerCurrency) player.getFeature(PlayerCurrency.class)).consume(PrizeType.Crystal, cryStal, ItemFlow.Activity_WeeklyVipAward);
 
-Reward pack = ((PlayerItem)player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.Activity_WeeklyVipAward);
+        if (index < 0) {
+            awardList.add(Integer.valueOf(refVipAward.aid));
+            hasBuyList.add(Integer.valueOf(1));
+        } else {
+            hasBuyList.set(index, Integer.valueOf(buyTimes + 1));
+        }
+        bo.saveExtStr(0, StringUtils.list2String(awardList));
+        bo.saveExtStr(1, StringUtils.list2String(hasBuyList));
 
-((PlayerCurrency)player.getFeature(PlayerCurrency.class)).consume(PrizeType.Crystal, cryStal, ItemFlow.Activity_WeeklyVipAward);
+        return new VipAwardReceive(awardId, buyTimes + 1, pack);
+    }
 
-if (index < 0) {
-awardList.add(Integer.valueOf(refVipAward.aid));
-hasBuyList.add(Integer.valueOf(1));
-} else {
-hasBuyList.set(index, Integer.valueOf(buyTimes + 1));
-} 
-bo.saveExtStr(0, StringUtils.list2String(awardList));
-bo.saveExtStr(1, StringUtils.list2String(hasBuyList));
+    public void onOpen() {
+    }
 
-return new VipAwardReceive(awardId, buyTimes + 1, pack);
-}
+    public void onEnd() {
+    }
 
-public static class VipAwardReceive {
-int awardId;
-int buyTimes;
-Reward reward;
+    public void onClosed() {
+        clearActRecord();
+    }
 
-public VipAwardReceive(int awardId, int buyTimes, Reward reward) {
-this.awardId = awardId;
-this.buyTimes = buyTimes;
-this.reward = reward;
-}
-}
+    private static class VipAwardRef {
+        int aid;
+        int vip;
+        String icon;
+        Reward reward;
+        int price;
+        int discount;
+        List<Integer> buytimes;
 
-public void onOpen() {}
+        private VipAwardRef() {
+        }
+    }
 
-public void onEnd() {}
+    public static class VipAwardReceive {
+        int awardId;
+        int buyTimes;
+        Reward reward;
 
-public void onClosed() {
-clearActRecord();
-}
+        public VipAwardReceive(int awardId, int buyTimes, Reward reward) {
+            this.awardId = awardId;
+            this.buyTimes = buyTimes;
+            this.reward = reward;
+        }
+    }
 }
 

@@ -30,160 +30,30 @@ import core.database.game.bo.GuildwarpuppetBO;
 import core.network.proto.Fight;
 import core.network.proto.GuildWarCenterInfo;
 import core.network.proto.GuildWarFightProtol;
-import core.network.proto.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Vector;
+import java.util.*;
 
 public class GuildWarMgr {
     private static GuildWarMgr instance = new GuildWarMgr();
+    public Map<Integer, List<Guild>> guildWarApplyer = Maps.newConcurrentHashMap();
+    public Map<Integer, Guild> guildWarCenterOwner = Maps.newConcurrentHashMap();
+    public Map<Integer, List<Guild>> guildWarAtk = Maps.newConcurrentHashMap();
+    public Map<Long, Fight.Battle> fightBattle = Maps.newConcurrentHashMap();
+    public Map<Long, List<GuildwarResultBO>> guildAllResulet = Maps.newConcurrentHashMap();
+    public Map<Integer, List<Player>> watchPlayers = Maps.newConcurrentHashMap();
+    public Map<Long, List<Double>> playersHP = Maps.newConcurrentHashMap();
+    public Map<Integer, Guild> historyWinner = Maps.newConcurrentHashMap();
+    public Map<Integer, List<Road>> guildWarRoad = Maps.newConcurrentHashMap();
+    Map<Integer, Map<Long, Report>> reports = new HashMap<>();
+    private int road = 3;
+    private Map<Integer, Integer> fightTime = Maps.newConcurrentHashMap();
+    private Map<Integer, List<GuildwarResultBO>> fightResult = Maps.newConcurrentHashMap();
+    private Map<Integer, List<GuildwarGuildResultBO>> guildFightResult = Maps.newConcurrentHashMap();
+    private Map<Integer, Center> fighters = Maps.newConcurrentHashMap();
 
     public static GuildWarMgr getInstance() {
         return instance;
     }
-
-    public Map<Integer, List<Guild>> guildWarApplyer = Maps.newConcurrentHashMap();
-    public Map<Integer, Guild> guildWarCenterOwner = Maps.newConcurrentHashMap();
-
-    public Map<Integer, List<Guild>> guildWarAtk = Maps.newConcurrentHashMap();
-
-    private int road = 3;
-
-    private Map<Integer, Integer> fightTime = Maps.newConcurrentHashMap();
-
-    private Map<Integer, List<GuildwarResultBO>> fightResult = Maps.newConcurrentHashMap();
-
-    public Map<Long, Fight.Battle> fightBattle = Maps.newConcurrentHashMap();
-
-    public Map<Long, List<GuildwarResultBO>> guildAllResulet = Maps.newConcurrentHashMap();
-
-    private Map<Integer, List<GuildwarGuildResultBO>> guildFightResult = Maps.newConcurrentHashMap();
-
-    private Map<Integer, Center> fighters = Maps.newConcurrentHashMap();
-
-    public Map<Integer, List<Player>> watchPlayers = Maps.newConcurrentHashMap();
-
-    public Map<Long, List<Double>> playersHP = Maps.newConcurrentHashMap();
-
-    public Map<Integer, Guild> historyWinner = Maps.newConcurrentHashMap();
-
-    Map<Integer, Map<Long, Report>> reports = new HashMap<>();
-
-    private static class Report {
-        Guild guild;
-        Map<Long, Integer> puppet = new HashMap<>();
-        int total;
-
-        private Report() {
-        }
-    }
-
-    private static class Center {
-        Guild atkGuild;
-        Guild defGuild;
-        List<Player> atkplayers = new ArrayList<>();
-        List<Player> defplayers = new ArrayList<>();
-
-        private Center(List<Player> atkplayers, Guild atkGuild, List<Player> defplayers, Guild defGuild) {
-            this.atkplayers = atkplayers;
-            this.atkGuild = atkGuild;
-            this.defplayers = defplayers;
-            this.defGuild = defGuild;
-        }
-
-        private Center() {
-        }
-    }
-
-    public static class Road {
-        List<Player> atkplayers;
-        List<Player> defplayers;
-        List<Player> deadatkplayers;
-        List<Player> deaddefplayers;
-        long Winner = 0L;
-        int overTime;
-        boolean isOver = false;
-        int begin;
-
-        public Road() {
-            this.atkplayers = new Vector<>();
-            this.defplayers = new Vector<>();
-            this.deadatkplayers = new Vector<>();
-            this.deaddefplayers = new Vector<>();
-        }
-
-        public long getWinner() {
-            return this.Winner;
-        }
-
-        public void setWinner(long winner) {
-            this.Winner = winner;
-        }
-
-        public List<Player> getAtkplayers() {
-            return this.atkplayers;
-        }
-
-        public void setAtkplayers(List<Player> atkplayers) {
-            this.atkplayers = atkplayers;
-        }
-
-        public List<Player> getDefplayers() {
-            return this.defplayers;
-        }
-
-        public void setDefplayers(List<Player> defplayers) {
-            this.defplayers = defplayers;
-        }
-
-        public int getOverTime() {
-            return this.overTime;
-        }
-
-        public void setOverTime(int overTime) {
-            this.overTime = overTime;
-        }
-
-        public List<Player> getDeadatkplayers() {
-            return this.deadatkplayers;
-        }
-
-        public void setDeadatkplayers(List<Player> deadatkplayers) {
-            this.deadatkplayers = deadatkplayers;
-        }
-
-        public List<Player> getDeaddefplayers() {
-            return this.deaddefplayers;
-        }
-
-        public void setDeaddefplayers(List<Player> deaddefplayers) {
-            this.deaddefplayers = deaddefplayers;
-        }
-
-        public boolean isOver() {
-            return this.isOver;
-        }
-
-        public void setOver(boolean isOver) {
-            this.isOver = isOver;
-        }
-
-        public int getBegin() {
-            return this.begin;
-        }
-
-        public void setBegin(int begin) {
-            this.begin = begin;
-        }
-    }
-
-    public Map<Integer, List<Road>> guildWarRoad = Maps.newConcurrentHashMap();
 
     public void dailyRefresh() {
         try {
@@ -1099,6 +969,114 @@ public class GuildWarMgr {
         }
 
         return 0;
+    }
+
+    private static class Report {
+        Guild guild;
+        Map<Long, Integer> puppet = new HashMap<>();
+        int total;
+
+        private Report() {
+        }
+    }
+
+    private static class Center {
+        Guild atkGuild;
+        Guild defGuild;
+        List<Player> atkplayers = new ArrayList<>();
+        List<Player> defplayers = new ArrayList<>();
+
+        private Center(List<Player> atkplayers, Guild atkGuild, List<Player> defplayers, Guild defGuild) {
+            this.atkplayers = atkplayers;
+            this.atkGuild = atkGuild;
+            this.defplayers = defplayers;
+            this.defGuild = defGuild;
+        }
+
+        private Center() {
+        }
+    }
+
+    public static class Road {
+        List<Player> atkplayers;
+        List<Player> defplayers;
+        List<Player> deadatkplayers;
+        List<Player> deaddefplayers;
+        long Winner = 0L;
+        int overTime;
+        boolean isOver = false;
+        int begin;
+
+        public Road() {
+            this.atkplayers = new Vector<>();
+            this.defplayers = new Vector<>();
+            this.deadatkplayers = new Vector<>();
+            this.deaddefplayers = new Vector<>();
+        }
+
+        public long getWinner() {
+            return this.Winner;
+        }
+
+        public void setWinner(long winner) {
+            this.Winner = winner;
+        }
+
+        public List<Player> getAtkplayers() {
+            return this.atkplayers;
+        }
+
+        public void setAtkplayers(List<Player> atkplayers) {
+            this.atkplayers = atkplayers;
+        }
+
+        public List<Player> getDefplayers() {
+            return this.defplayers;
+        }
+
+        public void setDefplayers(List<Player> defplayers) {
+            this.defplayers = defplayers;
+        }
+
+        public int getOverTime() {
+            return this.overTime;
+        }
+
+        public void setOverTime(int overTime) {
+            this.overTime = overTime;
+        }
+
+        public List<Player> getDeadatkplayers() {
+            return this.deadatkplayers;
+        }
+
+        public void setDeadatkplayers(List<Player> deadatkplayers) {
+            this.deadatkplayers = deadatkplayers;
+        }
+
+        public List<Player> getDeaddefplayers() {
+            return this.deaddefplayers;
+        }
+
+        public void setDeaddefplayers(List<Player> deaddefplayers) {
+            this.deaddefplayers = deaddefplayers;
+        }
+
+        public boolean isOver() {
+            return this.isOver;
+        }
+
+        public void setOver(boolean isOver) {
+            this.isOver = isOver;
+        }
+
+        public int getBegin() {
+            return this.begin;
+        }
+
+        public void setBegin(int begin) {
+            this.begin = begin;
+        }
     }
 }
 

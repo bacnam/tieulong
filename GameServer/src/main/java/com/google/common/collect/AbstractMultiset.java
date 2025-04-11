@@ -2,142 +2,142 @@ package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Objects;
+
+import javax.annotation.Nullable;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import javax.annotation.Nullable;
 
 @GwtCompatible
 abstract class AbstractMultiset<E>
-extends AbstractCollection<E>
-implements Multiset<E>
-{
-private transient Set<E> elementSet;
-private transient Set<Multiset.Entry<E>> entrySet;
+        extends AbstractCollection<E>
+        implements Multiset<E> {
+    private transient Set<E> elementSet;
+    private transient Set<Multiset.Entry<E>> entrySet;
 
-public int size() {
-return Multisets.sizeImpl(this);
-}
+    public int size() {
+        return Multisets.sizeImpl(this);
+    }
 
-public boolean isEmpty() {
-return entrySet().isEmpty();
-}
+    public boolean isEmpty() {
+        return entrySet().isEmpty();
+    }
 
-public boolean contains(@Nullable Object element) {
-return (count(element) > 0);
-}
+    public boolean contains(@Nullable Object element) {
+        return (count(element) > 0);
+    }
 
-public Iterator<E> iterator() {
-return Multisets.iteratorImpl(this);
-}
+    public Iterator<E> iterator() {
+        return Multisets.iteratorImpl(this);
+    }
 
-public int count(Object element) {
-for (Multiset.Entry<E> entry : entrySet()) {
-if (Objects.equal(entry.getElement(), element)) {
-return entry.getCount();
-}
-} 
-return 0;
-}
+    public int count(Object element) {
+        for (Multiset.Entry<E> entry : entrySet()) {
+            if (Objects.equal(entry.getElement(), element)) {
+                return entry.getCount();
+            }
+        }
+        return 0;
+    }
 
-public boolean add(@Nullable E element) {
-add(element, 1);
-return true;
-}
+    public boolean add(@Nullable E element) {
+        add(element, 1);
+        return true;
+    }
 
-public int add(E element, int occurrences) {
-throw new UnsupportedOperationException();
-}
+    public int add(E element, int occurrences) {
+        throw new UnsupportedOperationException();
+    }
 
-public boolean remove(Object element) {
-return (remove(element, 1) > 0);
-}
+    public boolean remove(Object element) {
+        return (remove(element, 1) > 0);
+    }
 
-public int remove(Object element, int occurrences) {
-throw new UnsupportedOperationException();
-}
+    public int remove(Object element, int occurrences) {
+        throw new UnsupportedOperationException();
+    }
 
-public int setCount(E element, int count) {
-return Multisets.setCountImpl(this, element, count);
-}
+    public int setCount(E element, int count) {
+        return Multisets.setCountImpl(this, element, count);
+    }
 
-public boolean setCount(E element, int oldCount, int newCount) {
-return Multisets.setCountImpl(this, element, oldCount, newCount);
-}
+    public boolean setCount(E element, int oldCount, int newCount) {
+        return Multisets.setCountImpl(this, element, oldCount, newCount);
+    }
 
-public boolean addAll(Collection<? extends E> elementsToAdd) {
-return Multisets.addAllImpl(this, elementsToAdd);
-}
+    public boolean addAll(Collection<? extends E> elementsToAdd) {
+        return Multisets.addAllImpl(this, elementsToAdd);
+    }
 
-public boolean removeAll(Collection<?> elementsToRemove) {
-return Multisets.removeAllImpl(this, elementsToRemove);
-}
+    public boolean removeAll(Collection<?> elementsToRemove) {
+        return Multisets.removeAllImpl(this, elementsToRemove);
+    }
 
-public boolean retainAll(Collection<?> elementsToRetain) {
-return Multisets.retainAllImpl(this, elementsToRetain);
-}
+    public boolean retainAll(Collection<?> elementsToRetain) {
+        return Multisets.retainAllImpl(this, elementsToRetain);
+    }
 
-public void clear() {
-Iterators.clear(entryIterator());
-}
+    public void clear() {
+        Iterators.clear(entryIterator());
+    }
 
-public Set<E> elementSet() {
-Set<E> result = this.elementSet;
-if (result == null) {
-this.elementSet = result = createElementSet();
-}
-return result;
-}
+    public Set<E> elementSet() {
+        Set<E> result = this.elementSet;
+        if (result == null) {
+            this.elementSet = result = createElementSet();
+        }
+        return result;
+    }
 
-abstract Iterator<Multiset.Entry<E>> entryIterator();
+    abstract Iterator<Multiset.Entry<E>> entryIterator();
 
-abstract int distinctElements();
+    abstract int distinctElements();
 
-Set<E> createElementSet() {
-return new ElementSet();
-}
+    Set<E> createElementSet() {
+        return new ElementSet();
+    }
 
-class ElementSet
-extends Multisets.ElementSet<E> {
-Multiset<E> multiset() {
-return AbstractMultiset.this;
-}
-}
+    public Set<Multiset.Entry<E>> entrySet() {
+        Set<Multiset.Entry<E>> result = this.entrySet;
+        return (result == null) ? (this.entrySet = createEntrySet()) : result;
+    }
 
-public Set<Multiset.Entry<E>> entrySet() {
-Set<Multiset.Entry<E>> result = this.entrySet;
-return (result == null) ? (this.entrySet = createEntrySet()) : result;
-}
+    Set<Multiset.Entry<E>> createEntrySet() {
+        return new EntrySet();
+    }
 
-class EntrySet extends Multisets.EntrySet<E> {
-Multiset<E> multiset() {
-return AbstractMultiset.this;
-}
+    public boolean equals(@Nullable Object object) {
+        return Multisets.equalsImpl(this, object);
+    }
 
-public Iterator<Multiset.Entry<E>> iterator() {
-return AbstractMultiset.this.entryIterator();
-}
+    public int hashCode() {
+        return entrySet().hashCode();
+    }
 
-public int size() {
-return AbstractMultiset.this.distinctElements();
-}
-}
+    public String toString() {
+        return entrySet().toString();
+    }
 
-Set<Multiset.Entry<E>> createEntrySet() {
-return new EntrySet();
-}
+    class ElementSet
+            extends Multisets.ElementSet<E> {
+        Multiset<E> multiset() {
+            return AbstractMultiset.this;
+        }
+    }
 
-public boolean equals(@Nullable Object object) {
-return Multisets.equalsImpl(this, object);
-}
+    class EntrySet extends Multisets.EntrySet<E> {
+        Multiset<E> multiset() {
+            return AbstractMultiset.this;
+        }
 
-public int hashCode() {
-return entrySet().hashCode();
-}
+        public Iterator<Multiset.Entry<E>> iterator() {
+            return AbstractMultiset.this.entryIterator();
+        }
 
-public String toString() {
-return entrySet().toString();
-}
+        public int size() {
+            return AbstractMultiset.this.distinctElements();
+        }
+    }
 }
 

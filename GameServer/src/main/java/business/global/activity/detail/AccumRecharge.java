@@ -21,165 +21,166 @@ import com.zhonglian.server.websocket.exception.WSException;
 import core.database.game.bo.ActivityBO;
 import core.database.game.bo.ActivityRecordBO;
 import core.network.proto.AccumRechargeInfo;
+
 import java.util.List;
 import java.util.Map;
 
 public class AccumRecharge
-extends Activity
-{
-public List<AccumRechargeInfo> arList;
+        extends Activity {
+    public List<AccumRechargeInfo> arList;
 
-public AccumRecharge(ActivityBO data) {
-super(data);
-}
+    public AccumRecharge(ActivityBO data) {
+        super(data);
+    }
 
-public void load(JsonObject json) throws WSException {
-this.arList = Lists.newArrayList();
-for (JsonElement element : json.get("awards").getAsJsonArray()) {
-JsonObject obj = element.getAsJsonObject();
-AccumRechargeInfo builder = new AccumRechargeInfo();
-builder.setAwardId(obj.get("aid").getAsInt());
-builder.setRecharge(obj.get("recharge").getAsInt());
-builder.setPrize(new Reward(obj.get("items").getAsJsonArray()));
-this.arList.add(builder);
-} 
-}
+    public void load(JsonObject json) throws WSException {
+        this.arList = Lists.newArrayList();
+        for (JsonElement element : json.get("awards").getAsJsonArray()) {
+            JsonObject obj = element.getAsJsonObject();
+            AccumRechargeInfo builder = new AccumRechargeInfo();
+            builder.setAwardId(obj.get("aid").getAsInt());
+            builder.setRecharge(obj.get("recharge").getAsInt());
+            builder.setPrize(new Reward(obj.get("items").getAsJsonArray()));
+            this.arList.add(builder);
+        }
+    }
 
-public String check(JsonObject json) throws RequestException {
-JsonArray awardArray = json.get("awards").getAsJsonArray();
-if (awardArray.size() <= 0) {
-throw new RequestException(4000001, "配置的奖励条数要大于0", new Object[0]);
-}
-StringBuilder desc = new StringBuilder("【累充配置】\n");
-for (JsonElement element : awardArray) {
-JsonObject obj = element.getAsJsonObject();
-desc.append("奖励Id:").append(obj.get("aid").getAsInt()).append(",");
-int recharge = obj.get("recharge").getAsInt();
-if (recharge <= 0) {
-throw new RequestException(4000001, "充值金额必须大于0", new Object[0]);
-}
-desc.append("充值金额:").append(recharge).append(",");
-desc.append("奖励信息:").append(checkAndSubscribeItem(obj.get("items").getAsJsonArray())).append("\n");
-} 
-return desc.toString();
-}
+    public String check(JsonObject json) throws RequestException {
+        JsonArray awardArray = json.get("awards").getAsJsonArray();
+        if (awardArray.size() <= 0) {
+            throw new RequestException(4000001, "配置的奖励条数要大于0", new Object[0]);
+        }
+        StringBuilder desc = new StringBuilder("【累充配置】\n");
+        for (JsonElement element : awardArray) {
+            JsonObject obj = element.getAsJsonObject();
+            desc.append("奖励Id:").append(obj.get("aid").getAsInt()).append(",");
+            int recharge = obj.get("recharge").getAsInt();
+            if (recharge <= 0) {
+                throw new RequestException(4000001, "充值金额必须大于0", new Object[0]);
+            }
+            desc.append("充值金额:").append(recharge).append(",");
+            desc.append("奖励信息:").append(checkAndSubscribeItem(obj.get("items").getAsJsonArray())).append("\n");
+        }
+        return desc.toString();
+    }
 
-public ActivityType getType() {
-return ActivityType.AccumRecharge;
-}
+    public ActivityType getType() {
+        return ActivityType.AccumRecharge;
+    }
 
-public void onClosed() {
-clearActRecord();
-CommLog.info("累充活动关闭");
-}
+    public void onClosed() {
+        clearActRecord();
+        CommLog.info("累充活动关闭");
+    }
 
-public void handlePlayerChange(Player player, int money) {
-if (getStatus() != ActivityStatus.Open) {
-return;
-}
-ActivityRecordBO bo = getOrCreateRecord(player);
+    public void handlePlayerChange(Player player, int money) {
+        if (getStatus() != ActivityStatus.Open) {
+            return;
+        }
+        ActivityRecordBO bo = getOrCreateRecord(player);
 
-bo.setExtInt(0, bo.getExtInt(0) + money);
+        bo.setExtInt(0, bo.getExtInt(0) + money);
 
-List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
+        List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
 
-List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
+        List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
 
-this.arList.forEach(x -> {
-if (!paramList1.contains(Integer.valueOf(x.getAwardId())) && paramActivityRecordBO.getExtInt(0) >= x.getRecharge()) {
-paramList1.add(Integer.valueOf(x.getAwardId()));
-paramList2.add(Integer.valueOf(FetchStatus.Can.ordinal()));
-} 
-});
-bo.setExtStr(0, StringUtils.list2String(awardList));
-bo.setExtStr(1, StringUtils.list2String(stateList));
-bo.saveAll();
+        this.arList.forEach(x -> {
+            if (!paramList1.contains(Integer.valueOf(x.getAwardId())) && paramActivityRecordBO.getExtInt(0) >= x.getRecharge()) {
+                paramList1.add(Integer.valueOf(x.getAwardId()));
+                paramList2.add(Integer.valueOf(FetchStatus.Can.ordinal()));
+            }
+        });
+        bo.setExtStr(0, StringUtils.list2String(awardList));
+        bo.setExtStr(1, StringUtils.list2String(stateList));
+        bo.saveAll();
 
-player.pushProto("totalRecharge", accumRechargeProto(player));
-}
+        player.pushProto("totalRecharge", accumRechargeProto(player));
+    }
 
-public accumRechargeInfoP accumRechargeProto(Player player) {
-ActivityRecordBO bo = getRecord(player);
+    public accumRechargeInfoP accumRechargeProto(Player player) {
+        ActivityRecordBO bo = getRecord(player);
 
-int recharge = 0;
-if (bo != null) {
-recharge = bo.getExtInt(0);
-} else {
-handlePlayerChange(player, 0);
-} 
+        int recharge = 0;
+        if (bo != null) {
+            recharge = bo.getExtInt(0);
+        } else {
+            handlePlayerChange(player, 0);
+        }
 
-List<Integer> awardList = null, stateList = null;
-if (bo != null) {
-awardList = StringUtils.string2Integer(bo.getExtStr(0));
-stateList = StringUtils.string2Integer(bo.getExtStr(1));
-} 
-List<AccumRechargeInfo> accumerecharges = Lists.newArrayList();
+        List<Integer> awardList = null, stateList = null;
+        if (bo != null) {
+            awardList = StringUtils.string2Integer(bo.getExtStr(0));
+            stateList = StringUtils.string2Integer(bo.getExtStr(1));
+        }
+        List<AccumRechargeInfo> accumerecharges = Lists.newArrayList();
 
-for (AccumRechargeInfo ar : this.arList) {
-AccumRechargeInfo builder = new AccumRechargeInfo();
-builder.setAwardId(ar.getAwardId());
-builder.setRecharge(ar.getRecharge());
-builder.setPrize(ar.getPrize());
-int index = (awardList == null) ? -1 : awardList.indexOf(Integer.valueOf(ar.getAwardId()));
-if (index != -1) {
-builder.setStatus(((Integer)stateList.get(index)).intValue());
-} else {
-builder.setStatus(FetchStatus.Cannot.ordinal());
-} 
-accumerecharges.add(builder);
-} 
-return new accumRechargeInfoP(recharge, accumerecharges, null);
-}
+        for (AccumRechargeInfo ar : this.arList) {
+            AccumRechargeInfo builder = new AccumRechargeInfo();
+            builder.setAwardId(ar.getAwardId());
+            builder.setRecharge(ar.getRecharge());
+            builder.setPrize(ar.getPrize());
+            int index = (awardList == null) ? -1 : awardList.indexOf(Integer.valueOf(ar.getAwardId()));
+            if (index != -1) {
+                builder.setStatus(((Integer) stateList.get(index)).intValue());
+            } else {
+                builder.setStatus(FetchStatus.Cannot.ordinal());
+            }
+            accumerecharges.add(builder);
+        }
+        return new accumRechargeInfoP(recharge, accumerecharges, null);
+    }
 
-private class accumRechargeInfoP
-{
-int recharge;
-List<AccumRechargeInfo> accumerecharges;
+    public AccumRechargeInfo doReceivePrize(Player player, int awardId) throws WSException {
+        Map<Integer, AccumRechargeInfo> arMap = Maps.list2Map(AccumRechargeInfo::getAwardId, this.arList);
 
-private accumRechargeInfoP(int recharge, List<AccumRechargeInfo> accumerecharges) {
-this.recharge = recharge;
-this.accumerecharges = accumerecharges;
-}
-}
+        AccumRechargeInfo arInfo = arMap.get(Integer.valueOf(awardId));
+        if (arInfo == null) {
+            throw new WSException(ErrorCode.NotFound_ActivityAwardId, "奖励ID[%s]未找到", new Object[]{Integer.valueOf(awardId)});
+        }
 
-public AccumRechargeInfo doReceivePrize(Player player, int awardId) throws WSException {
-Map<Integer, AccumRechargeInfo> arMap = Maps.list2Map(AccumRechargeInfo::getAwardId, this.arList);
+        ActivityRecordBO bo = getOrCreateRecord(player);
 
-AccumRechargeInfo arInfo = arMap.get(Integer.valueOf(awardId));
-if (arInfo == null) {
-throw new WSException(ErrorCode.NotFound_ActivityAwardId, "奖励ID[%s]未找到", new Object[] { Integer.valueOf(awardId) });
-}
+        List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
 
-ActivityRecordBO bo = getOrCreateRecord(player);
+        List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
 
-List<Integer> awardList = StringUtils.string2Integer(bo.getExtStr(0));
+        int index = awardList.indexOf(Integer.valueOf(awardId));
+        if (index == -1) {
+            throw new WSException(ErrorCode.AccumRecharge_CanNotReceive, "充值金额:%s<需求金额:%s", new Object[]{Integer.valueOf(bo.getExtInt(0)), Integer.valueOf(arInfo.getRecharge())});
+        }
+        int state = ((Integer) stateList.get(index)).intValue();
+        if (state != FetchStatus.Can.ordinal()) {
+            throw new WSException(ErrorCode.AccumRecharge_HasReceive, "奖励ID[%s]已领取", new Object[]{Integer.valueOf(awardId)});
+        }
 
-List<Integer> stateList = StringUtils.string2Integer(bo.getExtStr(1));
+        stateList.set(index, Integer.valueOf(FetchStatus.Fetched.ordinal()));
+        bo.saveExtStr(1, StringUtils.list2String(stateList));
 
-int index = awardList.indexOf(Integer.valueOf(awardId));
-if (index == -1) {
-throw new WSException(ErrorCode.AccumRecharge_CanNotReceive, "充值金额:%s<需求金额:%s", new Object[] { Integer.valueOf(bo.getExtInt(0)), Integer.valueOf(arInfo.getRecharge()) });
-}
-int state = ((Integer)stateList.get(index)).intValue();
-if (state != FetchStatus.Can.ordinal()) {
-throw new WSException(ErrorCode.AccumRecharge_HasReceive, "奖励ID[%s]已领取", new Object[] { Integer.valueOf(awardId) });
-}
+        Reward reward = arInfo.getPrize();
 
-stateList.set(index, Integer.valueOf(FetchStatus.Fetched.ordinal()));
-bo.saveExtStr(1, StringUtils.list2String(stateList));
+        ((PlayerItem) player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.Activity_AccumRecharge);
 
-Reward reward = arInfo.getPrize();
+        AccumRechargeInfo builder = new AccumRechargeInfo();
+        builder.setStatus(FetchStatus.Fetched.ordinal());
+        builder.setPrize(reward);
+        return builder;
+    }
 
-((PlayerItem)player.getFeature(PlayerItem.class)).gain(reward, ItemFlow.Activity_AccumRecharge);
+    public void onOpen() {
+    }
 
-AccumRechargeInfo builder = new AccumRechargeInfo();
-builder.setStatus(FetchStatus.Fetched.ordinal());
-builder.setPrize(reward);
-return builder;
-}
+    public void onEnd() {
+    }
 
-public void onOpen() {}
+    private class accumRechargeInfoP {
+        int recharge;
+        List<AccumRechargeInfo> accumerecharges;
 
-public void onEnd() {}
+        private accumRechargeInfoP(int recharge, List<AccumRechargeInfo> accumerecharges) {
+            this.recharge = recharge;
+            this.accumerecharges = accumerecharges;
+        }
+    }
 }
 

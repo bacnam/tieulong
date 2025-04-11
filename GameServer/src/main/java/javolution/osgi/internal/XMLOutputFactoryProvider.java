@@ -7,12 +7,12 @@ import org.osgi.framework.ServiceFactory;
 import org.osgi.framework.ServiceRegistration;
 
 public final class XMLOutputFactoryProvider
-implements ServiceFactory<XMLOutputFactory>
-{
-public XMLOutputFactory getService(Bundle bundle, ServiceRegistration<XMLOutputFactory> registration) {
-return (XMLOutputFactory)new XMLOutputFactoryImpl();
-}
+        implements ServiceFactory<XMLOutputFactory> {
+    public XMLOutputFactory getService(Bundle bundle, ServiceRegistration<XMLOutputFactory> registration) {
+        return (XMLOutputFactory) new XMLOutputFactoryImpl();
+    }
 
-public void ungetService(Bundle bundle, ServiceRegistration<XMLOutputFactory> registration, XMLOutputFactory service) {}
+    public void ungetService(Bundle bundle, ServiceRegistration<XMLOutputFactory> registration, XMLOutputFactory service) {
+    }
 }
 

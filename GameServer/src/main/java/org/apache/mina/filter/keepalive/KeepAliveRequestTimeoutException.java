@@ -1,22 +1,22 @@
 package org.apache.mina.filter.keepalive;
 
 public class KeepAliveRequestTimeoutException
-extends RuntimeException
-{
-private static final long serialVersionUID = -1985092764656546558L;
+        extends RuntimeException {
+    private static final long serialVersionUID = -1985092764656546558L;
 
-public KeepAliveRequestTimeoutException() {}
+    public KeepAliveRequestTimeoutException() {
+    }
 
-public KeepAliveRequestTimeoutException(String message, Throwable cause) {
-super(message, cause);
-}
+    public KeepAliveRequestTimeoutException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-public KeepAliveRequestTimeoutException(String message) {
-super(message);
-}
+    public KeepAliveRequestTimeoutException(String message) {
+        super(message);
+    }
 
-public KeepAliveRequestTimeoutException(Throwable cause) {
-super(cause);
-}
+    public KeepAliveRequestTimeoutException(Throwable cause) {
+        super(cause);
+    }
 }
 

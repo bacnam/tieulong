@@ -6,241 +6,231 @@ import ch.qos.logback.core.joran.action.ImplicitAction;
 import ch.qos.logback.core.joran.event.BodyEvent;
 import ch.qos.logback.core.joran.event.EndEvent;
 import ch.qos.logback.core.joran.event.StartEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.Vector;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 
-public class Interpreter
-{
-private static List<Action> EMPTY_LIST = new Vector<Action>(0);
+import java.util.*;
 
-private final RuleStore ruleStore;
+public class Interpreter {
+    private static List<Action> EMPTY_LIST = new Vector<Action>(0);
 
-private final InterpretationContext interpretationContext;
+    private final RuleStore ruleStore;
 
-private final ArrayList<ImplicitAction> implicitActions;
+    private final InterpretationContext interpretationContext;
 
-private final CAI_WithLocatorSupport cai;
+    private final ArrayList<ImplicitAction> implicitActions;
 
-private ElementPath elementPath;
+    private final CAI_WithLocatorSupport cai;
+    Locator locator;
+    EventPlayer eventPlayer;
+    Stack<List<Action>> actionListStack;
+    ElementPath skip = null;
+    private ElementPath elementPath;
 
-Locator locator;
+    public Interpreter(Context context, RuleStore rs, ElementPath initialElementPath) {
+        this.cai = new CAI_WithLocatorSupport(context, this);
+        this.ruleStore = rs;
+        this.interpretationContext = new InterpretationContext(context, this);
+        this.implicitActions = new ArrayList<ImplicitAction>(3);
+        this.elementPath = initialElementPath;
+        this.actionListStack = new Stack<List<Action>>();
+        this.eventPlayer = new EventPlayer(this);
+    }
 
-EventPlayer eventPlayer;
+    public EventPlayer getEventPlayer() {
+        return this.eventPlayer;
+    }
 
-Stack<List<Action>> actionListStack;
+    public void setInterpretationContextPropertiesMap(Map<String, String> propertiesMap) {
+        this.interpretationContext.setPropertiesMap(propertiesMap);
+    }
 
-ElementPath skip = null;
+    public InterpretationContext getExecutionContext() {
+        return getInterpretationContext();
+    }
 
-public Interpreter(Context context, RuleStore rs, ElementPath initialElementPath) {
-this.cai = new CAI_WithLocatorSupport(context, this);
-this.ruleStore = rs;
-this.interpretationContext = new InterpretationContext(context, this);
-this.implicitActions = new ArrayList<ImplicitAction>(3);
-this.elementPath = initialElementPath;
-this.actionListStack = new Stack<List<Action>>();
-this.eventPlayer = new EventPlayer(this);
-}
+    public InterpretationContext getInterpretationContext() {
+        return this.interpretationContext;
+    }
 
-public EventPlayer getEventPlayer() {
-return this.eventPlayer;
-}
+    public void startDocument() {
+    }
 
-public void setInterpretationContextPropertiesMap(Map<String, String> propertiesMap) {
-this.interpretationContext.setPropertiesMap(propertiesMap);
-}
+    public void startElement(StartEvent se) {
+        setDocumentLocator(se.getLocator());
+        startElement(se.namespaceURI, se.localName, se.qName, se.attributes);
+    }
 
-public InterpretationContext getExecutionContext() {
-return getInterpretationContext();
-}
+    private void startElement(String namespaceURI, String localName, String qName, Attributes atts) {
+        String tagName = getTagName(localName, qName);
+        this.elementPath.push(tagName);
 
-public InterpretationContext getInterpretationContext() {
-return this.interpretationContext;
-}
+        if (this.skip != null) {
 
-public void startDocument() {}
+            pushEmptyActionList();
 
-public void startElement(StartEvent se) {
-setDocumentLocator(se.getLocator());
-startElement(se.namespaceURI, se.localName, se.qName, se.attributes);
-}
+            return;
+        }
+        List<Action> applicableActionList = getApplicableActionList(this.elementPath, atts);
+        if (applicableActionList != null) {
+            this.actionListStack.add(applicableActionList);
+            callBeginAction(applicableActionList, tagName, atts);
+        } else {
 
-private void startElement(String namespaceURI, String localName, String qName, Attributes atts) {
-String tagName = getTagName(localName, qName);
-this.elementPath.push(tagName);
+            pushEmptyActionList();
+            String errMsg = "no applicable action for [" + tagName + "], current ElementPath  is [" + this.elementPath + "]";
 
-if (this.skip != null) {
+            this.cai.addError(errMsg);
+        }
+    }
 
-pushEmptyActionList();
+    private void pushEmptyActionList() {
+        this.actionListStack.add(EMPTY_LIST);
+    }
 
-return;
-} 
-List<Action> applicableActionList = getApplicableActionList(this.elementPath, atts);
-if (applicableActionList != null) {
-this.actionListStack.add(applicableActionList);
-callBeginAction(applicableActionList, tagName, atts);
-} else {
+    public void characters(BodyEvent be) {
+        setDocumentLocator(be.locator);
 
-pushEmptyActionList();
-String errMsg = "no applicable action for [" + tagName + "], current ElementPath  is [" + this.elementPath + "]";
+        String body = be.getText();
+        List<Action> applicableActionList = this.actionListStack.peek();
 
-this.cai.addError(errMsg);
-} 
-}
+        if (body != null) {
+            body = body.trim();
+            if (body.length() > 0) {
+                callBodyAction(applicableActionList, body);
+            }
+        }
+    }
 
-private void pushEmptyActionList() {
-this.actionListStack.add(EMPTY_LIST);
-}
+    public void endElement(EndEvent endEvent) {
+        setDocumentLocator(endEvent.locator);
+        endElement(endEvent.namespaceURI, endEvent.localName, endEvent.qName);
+    }
 
-public void characters(BodyEvent be) {
-setDocumentLocator(be.locator);
+    private void endElement(String namespaceURI, String localName, String qName) {
+        List<Action> applicableActionList = this.actionListStack.pop();
 
-String body = be.getText();
-List<Action> applicableActionList = this.actionListStack.peek();
+        if (this.skip != null) {
+            if (this.skip.equals(this.elementPath)) {
+                this.skip = null;
+            }
+        } else if (applicableActionList != EMPTY_LIST) {
+            callEndAction(applicableActionList, getTagName(localName, qName));
+        }
 
-if (body != null) {
-body = body.trim();
-if (body.length() > 0)
-{
-callBodyAction(applicableActionList, body);
-}
-} 
-}
+        this.elementPath.pop();
+    }
 
-public void endElement(EndEvent endEvent) {
-setDocumentLocator(endEvent.locator);
-endElement(endEvent.namespaceURI, endEvent.localName, endEvent.qName);
-}
+    public Locator getLocator() {
+        return this.locator;
+    }
 
-private void endElement(String namespaceURI, String localName, String qName) {
-List<Action> applicableActionList = this.actionListStack.pop();
+    public void setDocumentLocator(Locator l) {
+        this.locator = l;
+    }
 
-if (this.skip != null) {
-if (this.skip.equals(this.elementPath)) {
-this.skip = null;
-}
-} else if (applicableActionList != EMPTY_LIST) {
-callEndAction(applicableActionList, getTagName(localName, qName));
-} 
+    String getTagName(String localName, String qName) {
+        String tagName = localName;
 
-this.elementPath.pop();
-}
+        if (tagName == null || tagName.length() < 1) {
+            tagName = qName;
+        }
 
-public Locator getLocator() {
-return this.locator;
-}
+        return tagName;
+    }
 
-public void setDocumentLocator(Locator l) {
-this.locator = l;
-}
+    public void addImplicitAction(ImplicitAction ia) {
+        this.implicitActions.add(ia);
+    }
 
-String getTagName(String localName, String qName) {
-String tagName = localName;
+    List<Action> lookupImplicitAction(ElementPath elementPath, Attributes attributes, InterpretationContext ec) {
+        int len = this.implicitActions.size();
 
-if (tagName == null || tagName.length() < 1) {
-tagName = qName;
-}
+        for (int i = 0; i < len; i++) {
+            ImplicitAction ia = this.implicitActions.get(i);
 
-return tagName;
-}
+            if (ia.isApplicable(elementPath, attributes, ec)) {
+                List<Action> actionList = new ArrayList<Action>(1);
+                actionList.add(ia);
 
-public void addImplicitAction(ImplicitAction ia) {
-this.implicitActions.add(ia);
-}
+                return actionList;
+            }
+        }
 
-List<Action> lookupImplicitAction(ElementPath elementPath, Attributes attributes, InterpretationContext ec) {
-int len = this.implicitActions.size();
+        return null;
+    }
 
-for (int i = 0; i < len; i++) {
-ImplicitAction ia = this.implicitActions.get(i);
+    List<Action> getApplicableActionList(ElementPath elementPath, Attributes attributes) {
+        List<Action> applicableActionList = this.ruleStore.matchActions(elementPath);
 
-if (ia.isApplicable(elementPath, attributes, ec)) {
-List<Action> actionList = new ArrayList<Action>(1);
-actionList.add(ia);
+        if (applicableActionList == null) {
+            applicableActionList = lookupImplicitAction(elementPath, attributes, this.interpretationContext);
+        }
 
-return actionList;
-} 
-} 
+        return applicableActionList;
+    }
 
-return null;
-}
+    void callBeginAction(List<Action> applicableActionList, String tagName, Attributes atts) {
+        if (applicableActionList == null) {
+            return;
+        }
 
-List<Action> getApplicableActionList(ElementPath elementPath, Attributes attributes) {
-List<Action> applicableActionList = this.ruleStore.matchActions(elementPath);
+        Iterator<Action> i = applicableActionList.iterator();
+        while (i.hasNext()) {
+            Action action = i.next();
 
-if (applicableActionList == null) {
-applicableActionList = lookupImplicitAction(elementPath, attributes, this.interpretationContext);
-}
+            try {
+                action.begin(this.interpretationContext, tagName, atts);
+            } catch (ActionException e) {
+                this.skip = this.elementPath.duplicate();
+                this.cai.addError("ActionException in Action for tag [" + tagName + "]", e);
+            } catch (RuntimeException e) {
+                this.skip = this.elementPath.duplicate();
+                this.cai.addError("RuntimeException in Action for tag [" + tagName + "]", e);
+            }
+        }
+    }
 
-return applicableActionList;
-}
+    private void callBodyAction(List<Action> applicableActionList, String body) {
+        if (applicableActionList == null) {
+            return;
+        }
+        Iterator<Action> i = applicableActionList.iterator();
 
-void callBeginAction(List<Action> applicableActionList, String tagName, Attributes atts) {
-if (applicableActionList == null) {
-return;
-}
+        while (i.hasNext()) {
+            Action action = i.next();
+            try {
+                action.body(this.interpretationContext, body);
+            } catch (ActionException ae) {
+                this.cai.addError("Exception in end() methd for action [" + action + "]", ae);
+            }
+        }
+    }
 
-Iterator<Action> i = applicableActionList.iterator();
-while (i.hasNext()) {
-Action action = i.next();
+    private void callEndAction(List<Action> applicableActionList, String tagName) {
+        if (applicableActionList == null) {
+            return;
+        }
 
-try {
-action.begin(this.interpretationContext, tagName, atts);
-} catch (ActionException e) {
-this.skip = this.elementPath.duplicate();
-this.cai.addError("ActionException in Action for tag [" + tagName + "]", e);
-} catch (RuntimeException e) {
-this.skip = this.elementPath.duplicate();
-this.cai.addError("RuntimeException in Action for tag [" + tagName + "]", e);
-} 
-} 
-}
+        Iterator<Action> i = applicableActionList.iterator();
 
-private void callBodyAction(List<Action> applicableActionList, String body) {
-if (applicableActionList == null) {
-return;
-}
-Iterator<Action> i = applicableActionList.iterator();
+        while (i.hasNext()) {
+            Action action = i.next();
 
-while (i.hasNext()) {
-Action action = i.next();
-try {
-action.body(this.interpretationContext, body);
-} catch (ActionException ae) {
-this.cai.addError("Exception in end() methd for action [" + action + "]", ae);
-} 
-} 
-}
+            try {
+                action.end(this.interpretationContext, tagName);
+            } catch (ActionException ae) {
 
-private void callEndAction(List<Action> applicableActionList, String tagName) {
-if (applicableActionList == null) {
-return;
-}
+                this.cai.addError("ActionException in Action for tag [" + tagName + "]", ae);
+            } catch (RuntimeException e) {
 
-Iterator<Action> i = applicableActionList.iterator();
+                this.cai.addError("RuntimeException in Action for tag [" + tagName + "]", e);
+            }
+        }
+    }
 
-while (i.hasNext()) {
-Action action = i.next();
-
-try {
-action.end(this.interpretationContext, tagName);
-} catch (ActionException ae) {
-
-this.cai.addError("ActionException in Action for tag [" + tagName + "]", ae);
-} catch (RuntimeException e) {
-
-this.cai.addError("RuntimeException in Action for tag [" + tagName + "]", e);
-} 
-} 
-}
-
-public RuleStore getRuleStore() {
-return this.ruleStore;
-}
+    public RuleStore getRuleStore() {
+        return this.ruleStore;
+    }
 }
 

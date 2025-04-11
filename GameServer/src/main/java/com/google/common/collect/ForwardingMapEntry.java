@@ -3,56 +3,56 @@ package com.google.common.collect;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Objects;
-import java.util.Map;
+
 import javax.annotation.Nullable;
+import java.util.Map;
 
 @GwtCompatible
 public abstract class ForwardingMapEntry<K, V>
-extends ForwardingObject
-implements Map.Entry<K, V>
-{
-public K getKey() {
-return delegate().getKey();
-}
+        extends ForwardingObject
+        implements Map.Entry<K, V> {
+    public K getKey() {
+        return delegate().getKey();
+    }
 
-public V getValue() {
-return delegate().getValue();
-}
+    public V getValue() {
+        return delegate().getValue();
+    }
 
-public V setValue(V value) {
-return delegate().setValue(value);
-}
+    public V setValue(V value) {
+        return delegate().setValue(value);
+    }
 
-public boolean equals(@Nullable Object object) {
-return delegate().equals(object);
-}
+    public boolean equals(@Nullable Object object) {
+        return delegate().equals(object);
+    }
 
-public int hashCode() {
-return delegate().hashCode();
-}
+    public int hashCode() {
+        return delegate().hashCode();
+    }
 
-@Beta
-protected boolean standardEquals(@Nullable Object object) {
-if (object instanceof Map.Entry) {
-Map.Entry<?, ?> that = (Map.Entry<?, ?>)object;
-return (Objects.equal(getKey(), that.getKey()) && Objects.equal(getValue(), that.getValue()));
-} 
+    @Beta
+    protected boolean standardEquals(@Nullable Object object) {
+        if (object instanceof Map.Entry) {
+            Map.Entry<?, ?> that = (Map.Entry<?, ?>) object;
+            return (Objects.equal(getKey(), that.getKey()) && Objects.equal(getValue(), that.getValue()));
+        }
 
-return false;
-}
+        return false;
+    }
 
-@Beta
-protected int standardHashCode() {
-K k = getKey();
-V v = getValue();
-return ((k == null) ? 0 : k.hashCode()) ^ ((v == null) ? 0 : v.hashCode());
-}
+    @Beta
+    protected int standardHashCode() {
+        K k = getKey();
+        V v = getValue();
+        return ((k == null) ? 0 : k.hashCode()) ^ ((v == null) ? 0 : v.hashCode());
+    }
 
-@Beta
-protected String standardToString() {
-return (new StringBuilder()).append(getKey()).append("=").append(getValue()).toString();
-}
+    @Beta
+    protected String standardToString() {
+        return (new StringBuilder()).append(getKey()).append("=").append(getValue()).toString();
+    }
 
-protected abstract Map.Entry<K, V> delegate();
+    protected abstract Map.Entry<K, V> delegate();
 }
 

@@ -1,59 +1,61 @@
 package bsh;
 
 class BlockNameSpace
-extends NameSpace
-{
-public BlockNameSpace(NameSpace parent) throws EvalError {
-super(parent, parent.getName() + "/BlockNameSpace");
-}
+        extends NameSpace {
+    public BlockNameSpace(NameSpace parent) throws EvalError {
+        super(parent, parent.getName() + "/BlockNameSpace");
+    }
 
-public void setVariable(String name, Object value, boolean strictJava, boolean recurse) throws UtilEvalError {
-if (weHaveVar(name)) {
+    public void setVariable(String name, Object value, boolean strictJava, boolean recurse) throws UtilEvalError {
+        if (weHaveVar(name)) {
 
-super.setVariable(name, value, strictJava, false);
-} else {
+            super.setVariable(name, value, strictJava, false);
+        } else {
 
-getParent().setVariable(name, value, strictJava, recurse);
-} 
-}
+            getParent().setVariable(name, value, strictJava, recurse);
+        }
+    }
 
-public void setBlockVariable(String name, Object value) throws UtilEvalError {
-super.setVariable(name, value, false, false);
-}
+    public void setBlockVariable(String name, Object value) throws UtilEvalError {
+        super.setVariable(name, value, false, false);
+    }
 
-private boolean weHaveVar(String name) {
+    private boolean weHaveVar(String name) {
 
-try { return (getVariableImpl(name, false) != null); }
-catch (UtilEvalError e) { return false; }
+        try {
+            return (getVariableImpl(name, false) != null);
+        } catch (UtilEvalError e) {
+            return false;
+        }
 
-}
+    }
 
-private NameSpace getNonBlockParent() {
-NameSpace parent = getParent();
-if (parent instanceof BlockNameSpace) {
-return ((BlockNameSpace)parent).getNonBlockParent();
-}
-return parent;
-}
+    private NameSpace getNonBlockParent() {
+        NameSpace parent = getParent();
+        if (parent instanceof BlockNameSpace) {
+            return ((BlockNameSpace) parent).getNonBlockParent();
+        }
+        return parent;
+    }
 
-public This getThis(Interpreter declaringInterpreter) {
-return getNonBlockParent().getThis(declaringInterpreter);
-}
+    public This getThis(Interpreter declaringInterpreter) {
+        return getNonBlockParent().getThis(declaringInterpreter);
+    }
 
-public This getSuper(Interpreter declaringInterpreter) {
-return getNonBlockParent().getSuper(declaringInterpreter);
-}
+    public This getSuper(Interpreter declaringInterpreter) {
+        return getNonBlockParent().getSuper(declaringInterpreter);
+    }
 
-public void importClass(String name) {
-getParent().importClass(name);
-}
+    public void importClass(String name) {
+        getParent().importClass(name);
+    }
 
-public void importPackage(String name) {
-getParent().importPackage(name);
-}
+    public void importPackage(String name) {
+        getParent().importPackage(name);
+    }
 
-public void setMethod(String name, BshMethod method) throws UtilEvalError {
-getParent().setMethod(name, method);
-}
+    public void setMethod(String name, BshMethod method) throws UtilEvalError {
+        getParent().setMethod(name, method);
+    }
 }
 

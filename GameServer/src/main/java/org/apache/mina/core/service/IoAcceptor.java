@@ -1,50 +1,51 @@
 package org.apache.mina.core.service;
 
+import org.apache.mina.core.session.IoSession;
+
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.List;
 import java.util.Set;
-import org.apache.mina.core.session.IoSession;
 
 public interface IoAcceptor extends IoService {
-  SocketAddress getLocalAddress();
+    SocketAddress getLocalAddress();
 
-  Set<SocketAddress> getLocalAddresses();
+    Set<SocketAddress> getLocalAddresses();
 
-  SocketAddress getDefaultLocalAddress();
+    SocketAddress getDefaultLocalAddress();
 
-  List<SocketAddress> getDefaultLocalAddresses();
+    void setDefaultLocalAddress(SocketAddress paramSocketAddress);
 
-  void setDefaultLocalAddress(SocketAddress paramSocketAddress);
+    List<SocketAddress> getDefaultLocalAddresses();
 
-  void setDefaultLocalAddresses(SocketAddress paramSocketAddress, SocketAddress... paramVarArgs);
+    void setDefaultLocalAddresses(Iterable<? extends SocketAddress> paramIterable);
 
-  void setDefaultLocalAddresses(Iterable<? extends SocketAddress> paramIterable);
+    void setDefaultLocalAddresses(List<? extends SocketAddress> paramList);
 
-  void setDefaultLocalAddresses(List<? extends SocketAddress> paramList);
+    void setDefaultLocalAddresses(SocketAddress paramSocketAddress, SocketAddress... paramVarArgs);
 
-  boolean isCloseOnDeactivation();
+    boolean isCloseOnDeactivation();
 
-  void setCloseOnDeactivation(boolean paramBoolean);
+    void setCloseOnDeactivation(boolean paramBoolean);
 
-  void bind() throws IOException;
+    void bind() throws IOException;
 
-  void bind(SocketAddress paramSocketAddress) throws IOException;
+    void bind(SocketAddress paramSocketAddress) throws IOException;
 
-  void bind(SocketAddress paramSocketAddress, SocketAddress... paramVarArgs) throws IOException;
+    void bind(SocketAddress paramSocketAddress, SocketAddress... paramVarArgs) throws IOException;
 
-  void bind(SocketAddress... paramVarArgs) throws IOException;
+    void bind(SocketAddress... paramVarArgs) throws IOException;
 
-  void bind(Iterable<? extends SocketAddress> paramIterable) throws IOException;
+    void bind(Iterable<? extends SocketAddress> paramIterable) throws IOException;
 
-  void unbind();
+    void unbind();
 
-  void unbind(SocketAddress paramSocketAddress);
+    void unbind(SocketAddress paramSocketAddress);
 
-  void unbind(SocketAddress paramSocketAddress, SocketAddress... paramVarArgs);
+    void unbind(SocketAddress paramSocketAddress, SocketAddress... paramVarArgs);
 
-  void unbind(Iterable<? extends SocketAddress> paramIterable);
+    void unbind(Iterable<? extends SocketAddress> paramIterable);
 
-  IoSession newSession(SocketAddress paramSocketAddress1, SocketAddress paramSocketAddress2);
+    IoSession newSession(SocketAddress paramSocketAddress1, SocketAddress paramSocketAddress2);
 }
 

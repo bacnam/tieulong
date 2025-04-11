@@ -1,7 +1,5 @@
 package org.apache.http.impl.conn;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.annotation.GuardedBy;
@@ -17,271 +15,265 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.Args;
 import org.apache.http.util.Asserts;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 @Deprecated
 @ThreadSafe
 public class SingleClientConnManager
-implements ClientConnectionManager
-{
-private final Log log = LogFactory.getLog(getClass());
+        implements ClientConnectionManager {
+    public static final String MISUSE_MESSAGE = "Invalid use of SingleClientConnManager: connection still allocated.\nMake sure to release the connection before allocating another one.";
+    protected final SchemeRegistry schemeRegistry;
+    protected final ClientConnectionOperator connOperator;
+    protected final boolean alwaysShutDown;
+    private final Log log = LogFactory.getLog(getClass());
+    @GuardedBy("this")
+    protected volatile PoolEntry uniquePoolEntry;
 
-public static final String MISUSE_MESSAGE = "Invalid use of SingleClientConnManager: connection still allocated.\nMake sure to release the connection before allocating another one.";
+    @GuardedBy("this")
+    protected volatile ConnAdapter managedConn;
 
-protected final SchemeRegistry schemeRegistry;
+    @GuardedBy("this")
+    protected volatile long lastReleaseTime;
 
-protected final ClientConnectionOperator connOperator;
+    @GuardedBy("this")
+    protected volatile long connectionExpiresTime;
 
-protected final boolean alwaysShutDown;
+    protected volatile boolean isShutDown;
 
-@GuardedBy("this")
-protected volatile PoolEntry uniquePoolEntry;
+    @Deprecated
+    public SingleClientConnManager(HttpParams params, SchemeRegistry schreg) {
+        this(schreg);
+    }
 
-@GuardedBy("this")
-protected volatile ConnAdapter managedConn;
+    public SingleClientConnManager(SchemeRegistry schreg) {
+        Args.notNull(schreg, "Scheme registry");
+        this.schemeRegistry = schreg;
+        this.connOperator = createConnectionOperator(schreg);
+        this.uniquePoolEntry = new PoolEntry();
+        this.managedConn = null;
+        this.lastReleaseTime = -1L;
+        this.alwaysShutDown = false;
+        this.isShutDown = false;
+    }
 
-@GuardedBy("this")
-protected volatile long lastReleaseTime;
+    public SingleClientConnManager() {
+        this(SchemeRegistryFactory.createDefault());
+    }
 
-@GuardedBy("this")
-protected volatile long connectionExpiresTime;
+    protected void finalize() throws Throwable {
+        try {
+            shutdown();
+        } finally {
+            super.finalize();
+        }
+    }
 
-protected volatile boolean isShutDown;
+    public SchemeRegistry getSchemeRegistry() {
+        return this.schemeRegistry;
+    }
 
-@Deprecated
-public SingleClientConnManager(HttpParams params, SchemeRegistry schreg) {
-this(schreg);
-}
+    protected ClientConnectionOperator createConnectionOperator(SchemeRegistry schreg) {
+        return new DefaultClientConnectionOperator(schreg);
+    }
 
-public SingleClientConnManager(SchemeRegistry schreg) {
-Args.notNull(schreg, "Scheme registry");
-this.schemeRegistry = schreg;
-this.connOperator = createConnectionOperator(schreg);
-this.uniquePoolEntry = new PoolEntry();
-this.managedConn = null;
-this.lastReleaseTime = -1L;
-this.alwaysShutDown = false;
-this.isShutDown = false;
-}
+    protected final void assertStillUp() throws IllegalStateException {
+        Asserts.check(!this.isShutDown, "Manager is shut down");
+    }
 
-public SingleClientConnManager() {
-this(SchemeRegistryFactory.createDefault());
-}
+    public final ClientConnectionRequest requestConnection(final HttpRoute route, final Object state) {
+        return new ClientConnectionRequest() {
+            public void abortRequest() {
+            }
 
-protected void finalize() throws Throwable {
-try {
-shutdown();
-} finally {
-super.finalize();
-} 
-}
+            public ManagedClientConnection getConnection(long timeout, TimeUnit tunit) {
+                return SingleClientConnManager.this.getConnection(route, state);
+            }
+        };
+    }
 
-public SchemeRegistry getSchemeRegistry() {
-return this.schemeRegistry;
-}
+    public ManagedClientConnection getConnection(HttpRoute route, Object state) {
+        Args.notNull(route, "Route");
+        assertStillUp();
 
-protected ClientConnectionOperator createConnectionOperator(SchemeRegistry schreg) {
-return new DefaultClientConnectionOperator(schreg);
-}
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Get connection for route " + route);
+        }
 
-protected final void assertStillUp() throws IllegalStateException {
-Asserts.check(!this.isShutDown, "Manager is shut down");
-}
+        synchronized (this) {
 
-public final ClientConnectionRequest requestConnection(final HttpRoute route, final Object state) {
-return new ClientConnectionRequest()
-{
-public void abortRequest() {}
+            Asserts.check((this.managedConn == null), "Invalid use of SingleClientConnManager: connection still allocated.\nMake sure to release the connection before allocating another one.");
 
-public ManagedClientConnection getConnection(long timeout, TimeUnit tunit) {
-return SingleClientConnManager.this.getConnection(route, state);
-}
-};
-}
+            boolean recreate = false;
+            boolean shutdown = false;
 
-public ManagedClientConnection getConnection(HttpRoute route, Object state) {
-Args.notNull(route, "Route");
-assertStillUp();
+            closeExpiredConnections();
 
-if (this.log.isDebugEnabled()) {
-this.log.debug("Get connection for route " + route);
-}
+            if (this.uniquePoolEntry.connection.isOpen()) {
+                RouteTracker tracker = this.uniquePoolEntry.tracker;
+                shutdown = (tracker == null || !tracker.toRoute().equals(route));
 
-synchronized (this) {
+            } else {
 
-Asserts.check((this.managedConn == null), "Invalid use of SingleClientConnManager: connection still allocated.\nMake sure to release the connection before allocating another one.");
+                recreate = true;
+            }
 
-boolean recreate = false;
-boolean shutdown = false;
+            if (shutdown) {
+                recreate = true;
+                try {
+                    this.uniquePoolEntry.shutdown();
+                } catch (IOException iox) {
+                    this.log.debug("Problem shutting down connection.", iox);
+                }
+            }
 
-closeExpiredConnections();
+            if (recreate) {
+                this.uniquePoolEntry = new PoolEntry();
+            }
 
-if (this.uniquePoolEntry.connection.isOpen()) {
-RouteTracker tracker = this.uniquePoolEntry.tracker;
-shutdown = (tracker == null || !tracker.toRoute().equals(route));
+            this.managedConn = new ConnAdapter(this.uniquePoolEntry, route);
 
-}
-else {
+            return this.managedConn;
+        }
+    }
 
-recreate = true;
-} 
+    public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
+        Args.check(conn instanceof ConnAdapter, "Connection class mismatch, connection not obtained from this manager");
 
-if (shutdown) {
-recreate = true;
-try {
-this.uniquePoolEntry.shutdown();
-} catch (IOException iox) {
-this.log.debug("Problem shutting down connection.", iox);
-} 
-} 
+        assertStillUp();
 
-if (recreate) {
-this.uniquePoolEntry = new PoolEntry();
-}
+        if (this.log.isDebugEnabled()) {
+            this.log.debug("Releasing connection " + conn);
+        }
 
-this.managedConn = new ConnAdapter(this.uniquePoolEntry, route);
+        ConnAdapter sca = (ConnAdapter) conn;
+        synchronized (sca) {
+            if (sca.poolEntry == null) {
+                return;
+            }
 
-return this.managedConn;
-} 
-}
+            ClientConnectionManager manager = sca.getManager();
+            Asserts.check((manager == this), "Connection not obtained from this manager");
 
-public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
-Args.check(conn instanceof ConnAdapter, "Connection class mismatch, connection not obtained from this manager");
+            try {
+                if (sca.isOpen() && (this.alwaysShutDown || !sca.isMarkedReusable())) {
 
-assertStillUp();
+                    if (this.log.isDebugEnabled()) {
+                        this.log.debug("Released connection open but not reusable.");
+                    }
 
-if (this.log.isDebugEnabled()) {
-this.log.debug("Releasing connection " + conn);
-}
+                    sca.shutdown();
+                }
+            } catch (IOException iox) {
+                if (this.log.isDebugEnabled()) {
+                    this.log.debug("Exception shutting down released connection.", iox);
+                }
+            } finally {
 
-ConnAdapter sca = (ConnAdapter)conn;
-synchronized (sca) {
-if (sca.poolEntry == null) {
-return;
-}
+                sca.detach();
+                synchronized (this) {
+                    this.managedConn = null;
+                    this.lastReleaseTime = System.currentTimeMillis();
+                    if (validDuration > 0L) {
+                        this.connectionExpiresTime = timeUnit.toMillis(validDuration) + this.lastReleaseTime;
+                    } else {
+                        this.connectionExpiresTime = Long.MAX_VALUE;
+                    }
+                }
+            }
+        }
+    }
 
-ClientConnectionManager manager = sca.getManager();
-Asserts.check((manager == this), "Connection not obtained from this manager");
+    public void closeExpiredConnections() {
+        long time = this.connectionExpiresTime;
+        if (System.currentTimeMillis() >= time) {
+            closeIdleConnections(0L, TimeUnit.MILLISECONDS);
+        }
+    }
 
-try {
-if (sca.isOpen() && (this.alwaysShutDown || !sca.isMarkedReusable())) {
+    public void closeIdleConnections(long idletime, TimeUnit tunit) {
+        assertStillUp();
 
-if (this.log.isDebugEnabled()) {
-this.log.debug("Released connection open but not reusable.");
-}
+        Args.notNull(tunit, "Time unit");
 
-sca.shutdown();
-} 
-} catch (IOException iox) {
-if (this.log.isDebugEnabled()) {
-this.log.debug("Exception shutting down released connection.", iox);
-}
-} finally {
+        synchronized (this) {
+            if (this.managedConn == null && this.uniquePoolEntry.connection.isOpen()) {
+                long cutoff = System.currentTimeMillis() - tunit.toMillis(idletime);
 
-sca.detach();
-synchronized (this) {
-this.managedConn = null;
-this.lastReleaseTime = System.currentTimeMillis();
-if (validDuration > 0L) {
-this.connectionExpiresTime = timeUnit.toMillis(validDuration) + this.lastReleaseTime;
-} else {
-this.connectionExpiresTime = Long.MAX_VALUE;
-} 
-} 
-} 
-} 
-}
+                if (this.lastReleaseTime <= cutoff) {
+                    try {
+                        this.uniquePoolEntry.close();
+                    } catch (IOException iox) {
 
-public void closeExpiredConnections() {
-long time = this.connectionExpiresTime;
-if (System.currentTimeMillis() >= time) {
-closeIdleConnections(0L, TimeUnit.MILLISECONDS);
-}
-}
+                        this.log.debug("Problem closing idle connection.", iox);
+                    }
+                }
+            }
+        }
+    }
 
-public void closeIdleConnections(long idletime, TimeUnit tunit) {
-assertStillUp();
+    public void shutdown() {
+        this.isShutDown = true;
+        synchronized (this) {
+            try {
+                if (this.uniquePoolEntry != null) {
+                    this.uniquePoolEntry.shutdown();
+                }
+            } catch (IOException iox) {
 
-Args.notNull(tunit, "Time unit");
+                this.log.debug("Problem while shutting down manager.", iox);
+            } finally {
+                this.uniquePoolEntry = null;
+                this.managedConn = null;
+            }
+        }
+    }
 
-synchronized (this) {
-if (this.managedConn == null && this.uniquePoolEntry.connection.isOpen()) {
-long cutoff = System.currentTimeMillis() - tunit.toMillis(idletime);
+    protected void revokeConnection() {
+        ConnAdapter conn = this.managedConn;
+        if (conn == null) {
+            return;
+        }
+        conn.detach();
 
-if (this.lastReleaseTime <= cutoff) {
-try {
-this.uniquePoolEntry.close();
-} catch (IOException iox) {
+        synchronized (this) {
+            try {
+                this.uniquePoolEntry.shutdown();
+            } catch (IOException iox) {
 
-this.log.debug("Problem closing idle connection.", iox);
-} 
-}
-} 
-} 
-}
+                this.log.debug("Problem while shutting down connection.", iox);
+            }
+        }
+    }
 
-public void shutdown() {
-this.isShutDown = true;
-synchronized (this) {
-try {
-if (this.uniquePoolEntry != null) {
-this.uniquePoolEntry.shutdown();
-}
-} catch (IOException iox) {
+    protected class PoolEntry
+            extends AbstractPoolEntry {
+        protected PoolEntry() {
+            super(SingleClientConnManager.this.connOperator, null);
+        }
 
-this.log.debug("Problem while shutting down manager.", iox);
-} finally {
-this.uniquePoolEntry = null;
-this.managedConn = null;
-} 
-} 
-}
+        protected void close() throws IOException {
+            shutdownEntry();
+            if (this.connection.isOpen()) {
+                this.connection.close();
+            }
+        }
 
-protected void revokeConnection() {
-ConnAdapter conn = this.managedConn;
-if (conn == null) {
-return;
-}
-conn.detach();
+        protected void shutdown() throws IOException {
+            shutdownEntry();
+            if (this.connection.isOpen()) {
+                this.connection.shutdown();
+            }
+        }
+    }
 
-synchronized (this) {
-try {
-this.uniquePoolEntry.shutdown();
-} catch (IOException iox) {
-
-this.log.debug("Problem while shutting down connection.", iox);
-} 
-} 
-}
-
-protected class PoolEntry
-extends AbstractPoolEntry
-{
-protected PoolEntry() {
-super(SingleClientConnManager.this.connOperator, null);
-}
-
-protected void close() throws IOException {
-shutdownEntry();
-if (this.connection.isOpen()) {
-this.connection.close();
-}
-}
-
-protected void shutdown() throws IOException {
-shutdownEntry();
-if (this.connection.isOpen()) {
-this.connection.shutdown();
-}
-}
-}
-
-protected class ConnAdapter
-extends AbstractPooledConnAdapter
-{
-protected ConnAdapter(SingleClientConnManager.PoolEntry entry, HttpRoute route) {
-super(SingleClientConnManager.this, entry);
-markReusable();
-entry.route = route;
-}
-}
+    protected class ConnAdapter
+            extends AbstractPooledConnAdapter {
+        protected ConnAdapter(SingleClientConnManager.PoolEntry entry, HttpRoute route) {
+            super(SingleClientConnManager.this, entry);
+            markReusable();
+            entry.route = route;
+        }
+    }
 }
 

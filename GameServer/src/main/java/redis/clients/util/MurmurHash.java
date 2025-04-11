@@ -1,5 +1,3 @@
-
-
 package redis.clients.util;
 
 import java.nio.ByteBuffer;

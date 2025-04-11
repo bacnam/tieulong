@@ -1,132 +1,128 @@
 package org.apache.mina.filter.executor;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.mina.core.session.IoEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class IoEventQueueThrottle
-implements IoEventQueueHandler
-{
-private static final Logger LOGGER = LoggerFactory.getLogger(IoEventQueueThrottle.class);
+        implements IoEventQueueHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(IoEventQueueThrottle.class);
 
-private final IoEventSizeEstimator eventSizeEstimator;
+    private final IoEventSizeEstimator eventSizeEstimator;
+    private final Object lock = new Object();
+    private final AtomicInteger counter = new AtomicInteger();
+    private volatile int threshold;
+    private int waiters;
 
-private volatile int threshold;
+    public IoEventQueueThrottle() {
+        this(new DefaultIoEventSizeEstimator(), 65536);
+    }
 
-private final Object lock = new Object();
+    public IoEventQueueThrottle(int threshold) {
+        this(new DefaultIoEventSizeEstimator(), threshold);
+    }
 
-private final AtomicInteger counter = new AtomicInteger();
+    public IoEventQueueThrottle(IoEventSizeEstimator eventSizeEstimator, int threshold) {
+        if (eventSizeEstimator == null) {
+            throw new IllegalArgumentException("eventSizeEstimator");
+        }
 
-private int waiters;
+        this.eventSizeEstimator = eventSizeEstimator;
 
-public IoEventQueueThrottle() {
-this(new DefaultIoEventSizeEstimator(), 65536);
-}
+        setThreshold(threshold);
+    }
 
-public IoEventQueueThrottle(int threshold) {
-this(new DefaultIoEventSizeEstimator(), threshold);
-}
+    public IoEventSizeEstimator getEventSizeEstimator() {
+        return this.eventSizeEstimator;
+    }
 
-public IoEventQueueThrottle(IoEventSizeEstimator eventSizeEstimator, int threshold) {
-if (eventSizeEstimator == null) {
-throw new IllegalArgumentException("eventSizeEstimator");
-}
+    public int getThreshold() {
+        return this.threshold;
+    }
 
-this.eventSizeEstimator = eventSizeEstimator;
+    public void setThreshold(int threshold) {
+        if (threshold <= 0) {
+            throw new IllegalArgumentException("threshold: " + threshold);
+        }
 
-setThreshold(threshold);
-}
+        this.threshold = threshold;
+    }
 
-public IoEventSizeEstimator getEventSizeEstimator() {
-return this.eventSizeEstimator;
-}
+    public int getCounter() {
+        return this.counter.get();
+    }
 
-public int getThreshold() {
-return this.threshold;
-}
+    public boolean accept(Object source, IoEvent event) {
+        return true;
+    }
 
-public int getCounter() {
-return this.counter.get();
-}
+    public void offered(Object source, IoEvent event) {
+        int eventSize = estimateSize(event);
+        int currentCounter = this.counter.addAndGet(eventSize);
+        logState();
 
-public void setThreshold(int threshold) {
-if (threshold <= 0) {
-throw new IllegalArgumentException("threshold: " + threshold);
-}
+        if (currentCounter >= this.threshold) {
+            block();
+        }
+    }
 
-this.threshold = threshold;
-}
+    public void polled(Object source, IoEvent event) {
+        int eventSize = estimateSize(event);
+        int currentCounter = this.counter.addAndGet(-eventSize);
 
-public boolean accept(Object source, IoEvent event) {
-return true;
-}
+        logState();
 
-public void offered(Object source, IoEvent event) {
-int eventSize = estimateSize(event);
-int currentCounter = this.counter.addAndGet(eventSize);
-logState();
+        if (currentCounter < this.threshold) {
+            unblock();
+        }
+    }
 
-if (currentCounter >= this.threshold) {
-block();
-}
-}
+    private int estimateSize(IoEvent event) {
+        int size = getEventSizeEstimator().estimateSize(event);
 
-public void polled(Object source, IoEvent event) {
-int eventSize = estimateSize(event);
-int currentCounter = this.counter.addAndGet(-eventSize);
+        if (size < 0) {
+            throw new IllegalStateException(IoEventSizeEstimator.class.getSimpleName() + " returned " + "a negative value (" + size + "): " + event);
+        }
 
-logState();
+        return size;
+    }
 
-if (currentCounter < this.threshold) {
-unblock();
-}
-}
+    private void logState() {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(Thread.currentThread().getName() + " state: " + this.counter.get() + " / " + getThreshold());
+        }
+    }
 
-private int estimateSize(IoEvent event) {
-int size = getEventSizeEstimator().estimateSize(event);
+    protected void block() {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(Thread.currentThread().getName() + " blocked: " + this.counter.get() + " >= " + this.threshold);
+        }
 
-if (size < 0) {
-throw new IllegalStateException(IoEventSizeEstimator.class.getSimpleName() + " returned " + "a negative value (" + size + "): " + event);
-}
+        synchronized (this.lock) {
+            while (this.counter.get() >= this.threshold) {
+                this.waiters++;
+                try {
+                    this.lock.wait();
+                } catch (InterruptedException e) {
 
-return size;
-}
+                } finally {
+                    this.waiters--;
+                }
+            }
+        }
 
-private void logState() {
-if (LOGGER.isDebugEnabled()) {
-LOGGER.debug(Thread.currentThread().getName() + " state: " + this.counter.get() + " / " + getThreshold());
-}
-}
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(Thread.currentThread().getName() + " unblocked: " + this.counter.get() + " < " + this.threshold);
+        }
+    }
 
-protected void block() {
-if (LOGGER.isDebugEnabled()) {
-LOGGER.debug(Thread.currentThread().getName() + " blocked: " + this.counter.get() + " >= " + this.threshold);
-}
-
-synchronized (this.lock) {
-while (this.counter.get() >= this.threshold) {
-this.waiters++;
-try {
-this.lock.wait();
-} catch (InterruptedException e) {
-
-} finally {
-this.waiters--;
-} 
-} 
-} 
-
-if (LOGGER.isDebugEnabled()) {
-LOGGER.debug(Thread.currentThread().getName() + " unblocked: " + this.counter.get() + " < " + this.threshold);
-}
-}
-
-protected void unblock() {
-synchronized (this.lock) {
-if (this.waiters > 0)
-this.lock.notifyAll(); 
-} 
-}
+    protected void unblock() {
+        synchronized (this.lock) {
+            if (this.waiters > 0)
+                this.lock.notifyAll();
+        }
+    }
 }
 

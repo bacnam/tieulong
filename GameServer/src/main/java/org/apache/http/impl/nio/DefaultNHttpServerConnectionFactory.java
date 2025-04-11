@@ -9,7 +9,6 @@ import org.apache.http.entity.ContentLengthStrategy;
 import org.apache.http.impl.ConnSupport;
 import org.apache.http.impl.DefaultHttpRequestFactory;
 import org.apache.http.impl.nio.codecs.DefaultHttpRequestParserFactory;
-import org.apache.http.nio.NHttpConnection;
 import org.apache.http.nio.NHttpConnectionFactory;
 import org.apache.http.nio.NHttpMessageParserFactory;
 import org.apache.http.nio.NHttpMessageWriterFactory;
@@ -22,61 +21,60 @@ import org.apache.http.util.Args;
 
 @Immutable
 public class DefaultNHttpServerConnectionFactory
-implements NHttpConnectionFactory<DefaultNHttpServerConnection>
-{
-private final ContentLengthStrategy incomingContentStrategy;
-private final ContentLengthStrategy outgoingContentStrategy;
-private final NHttpMessageParserFactory<HttpRequest> requestParserFactory;
-private final NHttpMessageWriterFactory<HttpResponse> responseWriterFactory;
-private final ByteBufferAllocator allocator;
-private final ConnectionConfig cconfig;
+        implements NHttpConnectionFactory<DefaultNHttpServerConnection> {
+    private final ContentLengthStrategy incomingContentStrategy;
+    private final ContentLengthStrategy outgoingContentStrategy;
+    private final NHttpMessageParserFactory<HttpRequest> requestParserFactory;
+    private final NHttpMessageWriterFactory<HttpResponse> responseWriterFactory;
+    private final ByteBufferAllocator allocator;
+    private final ConnectionConfig cconfig;
 
-@Deprecated
-public DefaultNHttpServerConnectionFactory(HttpRequestFactory requestFactory, ByteBufferAllocator allocator, HttpParams params) {
-Args.notNull(requestFactory, "HTTP request factory");
-Args.notNull(allocator, "Byte buffer allocator");
-Args.notNull(params, "HTTP parameters");
-this.incomingContentStrategy = null;
-this.outgoingContentStrategy = null;
-this.requestParserFactory = (NHttpMessageParserFactory<HttpRequest>)new DefaultHttpRequestParserFactory(null, requestFactory);
-this.responseWriterFactory = null;
-this.allocator = allocator;
-this.cconfig = HttpParamConfig.getConnectionConfig(params);
-}
+    @Deprecated
+    public DefaultNHttpServerConnectionFactory(HttpRequestFactory requestFactory, ByteBufferAllocator allocator, HttpParams params) {
+        Args.notNull(requestFactory, "HTTP request factory");
+        Args.notNull(allocator, "Byte buffer allocator");
+        Args.notNull(params, "HTTP parameters");
+        this.incomingContentStrategy = null;
+        this.outgoingContentStrategy = null;
+        this.requestParserFactory = (NHttpMessageParserFactory<HttpRequest>) new DefaultHttpRequestParserFactory(null, requestFactory);
+        this.responseWriterFactory = null;
+        this.allocator = allocator;
+        this.cconfig = HttpParamConfig.getConnectionConfig(params);
+    }
 
-@Deprecated
-public DefaultNHttpServerConnectionFactory(HttpParams params) {
-this((HttpRequestFactory)DefaultHttpRequestFactory.INSTANCE, (ByteBufferAllocator)HeapByteBufferAllocator.INSTANCE, params);
-}
+    @Deprecated
+    public DefaultNHttpServerConnectionFactory(HttpParams params) {
+        this((HttpRequestFactory) DefaultHttpRequestFactory.INSTANCE, (ByteBufferAllocator) HeapByteBufferAllocator.INSTANCE, params);
+    }
 
-@Deprecated
-protected DefaultNHttpServerConnection createConnection(IOSession session, HttpRequestFactory requestFactory, ByteBufferAllocator allocator, HttpParams params) {
-return new DefaultNHttpServerConnection(session, requestFactory, allocator, params);
-}
+    public DefaultNHttpServerConnectionFactory(ContentLengthStrategy incomingContentStrategy, ContentLengthStrategy outgoingContentStrategy, NHttpMessageParserFactory<HttpRequest> requestParserFactory, NHttpMessageWriterFactory<HttpResponse> responseWriterFactory, ByteBufferAllocator allocator, ConnectionConfig cconfig) {
+        this.incomingContentStrategy = incomingContentStrategy;
+        this.outgoingContentStrategy = outgoingContentStrategy;
+        this.requestParserFactory = requestParserFactory;
+        this.responseWriterFactory = responseWriterFactory;
+        this.allocator = allocator;
+        this.cconfig = (cconfig != null) ? cconfig : ConnectionConfig.DEFAULT;
+    }
 
-public DefaultNHttpServerConnectionFactory(ContentLengthStrategy incomingContentStrategy, ContentLengthStrategy outgoingContentStrategy, NHttpMessageParserFactory<HttpRequest> requestParserFactory, NHttpMessageWriterFactory<HttpResponse> responseWriterFactory, ByteBufferAllocator allocator, ConnectionConfig cconfig) {
-this.incomingContentStrategy = incomingContentStrategy;
-this.outgoingContentStrategy = outgoingContentStrategy;
-this.requestParserFactory = requestParserFactory;
-this.responseWriterFactory = responseWriterFactory;
-this.allocator = allocator;
-this.cconfig = (cconfig != null) ? cconfig : ConnectionConfig.DEFAULT;
-}
+    public DefaultNHttpServerConnectionFactory(ByteBufferAllocator allocator, NHttpMessageParserFactory<HttpRequest> requestParserFactory, NHttpMessageWriterFactory<HttpResponse> responseWriterFactory, ConnectionConfig cconfig) {
+        this(null, null, requestParserFactory, responseWriterFactory, allocator, cconfig);
+    }
 
-public DefaultNHttpServerConnectionFactory(ByteBufferAllocator allocator, NHttpMessageParserFactory<HttpRequest> requestParserFactory, NHttpMessageWriterFactory<HttpResponse> responseWriterFactory, ConnectionConfig cconfig) {
-this(null, null, requestParserFactory, responseWriterFactory, allocator, cconfig);
-}
+    public DefaultNHttpServerConnectionFactory(ConnectionConfig config) {
+        this(null, null, null, null, null, config);
+    }
 
-public DefaultNHttpServerConnectionFactory(ConnectionConfig config) {
-this(null, null, null, null, null, config);
-}
+    public DefaultNHttpServerConnectionFactory() {
+        this(null, null, null, null, null, null);
+    }
 
-public DefaultNHttpServerConnectionFactory() {
-this(null, null, null, null, null, null);
-}
+    @Deprecated
+    protected DefaultNHttpServerConnection createConnection(IOSession session, HttpRequestFactory requestFactory, ByteBufferAllocator allocator, HttpParams params) {
+        return new DefaultNHttpServerConnection(session, requestFactory, allocator, params);
+    }
 
-public DefaultNHttpServerConnection createConnection(IOSession session) {
-return new DefaultNHttpServerConnection(session, this.cconfig.getBufferSize(), this.cconfig.getFragmentSizeHint(), this.allocator, ConnSupport.createDecoder(this.cconfig), ConnSupport.createEncoder(this.cconfig), this.cconfig.getMessageConstraints(), this.incomingContentStrategy, this.outgoingContentStrategy, this.requestParserFactory, this.responseWriterFactory);
-}
+    public DefaultNHttpServerConnection createConnection(IOSession session) {
+        return new DefaultNHttpServerConnection(session, this.cconfig.getBufferSize(), this.cconfig.getFragmentSizeHint(), this.allocator, ConnSupport.createDecoder(this.cconfig), ConnSupport.createEncoder(this.cconfig), this.cconfig.getMessageConstraints(), this.incomingContentStrategy, this.outgoingContentStrategy, this.requestParserFactory, this.responseWriterFactory);
+    }
 }
 

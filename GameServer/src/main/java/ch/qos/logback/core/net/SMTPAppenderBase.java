@@ -12,37 +12,28 @@ import ch.qos.logback.core.spi.CyclicBufferTracker;
 import ch.qos.logback.core.util.ContentTypeUtil;
 import ch.qos.logback.core.util.OptionHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-import javax.mail.Address;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.*;
+import javax.mail.internet.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import java.util.*;
 
 public abstract class SMTPAppenderBase<E>
         extends AppenderBase<E> {
-    static InternetAddress[] EMPTY_IA_ARRAY = new InternetAddress[0];
-
     static final int MAX_DELAY_BETWEEN_STATUS_MESSAGES = 1228800000;
-
+    static InternetAddress[] EMPTY_IA_ARRAY = new InternetAddress[0];
+    protected Layout<E> subjectLayout;
+    protected Layout<E> layout;
+    protected Session session;
+    protected EventEvaluator<E> eventEvaluator;
+    protected Discriminator<E> discriminator = (Discriminator<E>) new DefaultDiscriminator();
+    protected CyclicBufferTracker<E> cbTracker;
     long lastTrackerStatusPrint = 0L;
     int delayBetweenStatusMessages = 300000;
-
-    protected Layout<E> subjectLayout;
-
-    protected Layout<E> layout;
+    String username;
+    String password;
+    String localhost;
+    boolean asynchronousSending = true;
     private List<PatternLayoutBase<E>> toPatternLayoutList = new ArrayList<PatternLayoutBase<E>>();
     private String from;
     private String subjectStr = null;
@@ -52,23 +43,7 @@ public abstract class SMTPAppenderBase<E>
     private boolean ssl = false;
     private boolean sessionViaJNDI = false;
     private String jndiLocation = "java:comp/env/mail/Session";
-
-    String username;
-
-    String password;
-
-    String localhost;
-
-    boolean asynchronousSending = true;
     private String charsetEncoding = "UTF-8";
-
-    protected Session session;
-
-    protected EventEvaluator<E> eventEvaluator;
-
-    protected Discriminator<E> discriminator = (Discriminator<E>) new DefaultDiscriminator();
-
-    protected CyclicBufferTracker<E> cbTracker;
     private int errorCount = 0;
 
     protected abstract Layout<E> makeSubjectLayout(String paramString);
@@ -332,48 +307,48 @@ public abstract class SMTPAppenderBase<E>
         return this.from;
     }
 
-    public String getSubject() {
-        return this.subjectStr;
-    }
-
     public void setFrom(String from) {
         this.from = from;
+    }
+
+    public String getSubject() {
+        return this.subjectStr;
     }
 
     public void setSubject(String subject) {
         this.subjectStr = subject;
     }
 
-    public void setSMTPHost(String smtpHost) {
-        setSmtpHost(smtpHost);
-    }
-
-    public void setSmtpHost(String smtpHost) {
-        this.smtpHost = smtpHost;
-    }
-
     public String getSMTPHost() {
         return getSmtpHost();
+    }
+
+    public void setSMTPHost(String smtpHost) {
+        setSmtpHost(smtpHost);
     }
 
     public String getSmtpHost() {
         return this.smtpHost;
     }
 
-    public void setSMTPPort(int port) {
-        setSmtpPort(port);
-    }
-
-    public void setSmtpPort(int port) {
-        this.smtpPort = port;
+    public void setSmtpHost(String smtpHost) {
+        this.smtpHost = smtpHost;
     }
 
     public int getSMTPPort() {
         return getSmtpPort();
     }
 
+    public void setSMTPPort(int port) {
+        setSmtpPort(port);
+    }
+
     public int getSmtpPort() {
         return this.smtpPort;
+    }
+
+    public void setSmtpPort(int port) {
+        this.smtpPort = port;
     }
 
     public String getLocalhost() {
@@ -468,6 +443,10 @@ public abstract class SMTPAppenderBase<E>
         return this.charsetEncoding;
     }
 
+    public void setCharsetEncoding(String charsetEncoding) {
+        this.charsetEncoding = charsetEncoding;
+    }
+
     public String getJndiLocation() {
         return this.jndiLocation;
     }
@@ -482,10 +461,6 @@ public abstract class SMTPAppenderBase<E>
 
     public void setSessionViaJNDI(boolean sessionViaJNDI) {
         this.sessionViaJNDI = sessionViaJNDI;
-    }
-
-    public void setCharsetEncoding(String charsetEncoding) {
-        this.charsetEncoding = charsetEncoding;
     }
 
     public Layout<E> getLayout() {

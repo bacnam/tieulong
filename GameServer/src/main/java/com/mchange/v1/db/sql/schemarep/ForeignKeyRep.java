@@ -3,10 +3,10 @@ package com.mchange.v1.db.sql.schemarep;
 import java.util.List;
 
 public interface ForeignKeyRep {
-  List getLocalColumnNames();
+    List getLocalColumnNames();
 
-  String getReferencedTableName();
+    String getReferencedTableName();
 
-  List getReferencedColumnNames();
+    List getReferencedColumnNames();
 }
 

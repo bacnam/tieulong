@@ -3,36 +3,36 @@ package org.apache.mina.transport.socket;
 import org.apache.mina.core.session.IoSessionConfig;
 
 public interface SocketSessionConfig extends IoSessionConfig {
-  boolean isReuseAddress();
+    boolean isReuseAddress();
 
-  void setReuseAddress(boolean paramBoolean);
+    void setReuseAddress(boolean paramBoolean);
 
-  int getReceiveBufferSize();
+    int getReceiveBufferSize();
 
-  void setReceiveBufferSize(int paramInt);
+    void setReceiveBufferSize(int paramInt);
 
-  int getSendBufferSize();
+    int getSendBufferSize();
 
-  void setSendBufferSize(int paramInt);
+    void setSendBufferSize(int paramInt);
 
-  int getTrafficClass();
+    int getTrafficClass();
 
-  void setTrafficClass(int paramInt);
+    void setTrafficClass(int paramInt);
 
-  boolean isKeepAlive();
+    boolean isKeepAlive();
 
-  void setKeepAlive(boolean paramBoolean);
+    void setKeepAlive(boolean paramBoolean);
 
-  boolean isOobInline();
+    boolean isOobInline();
 
-  void setOobInline(boolean paramBoolean);
+    void setOobInline(boolean paramBoolean);
 
-  int getSoLinger();
+    int getSoLinger();
 
-  void setSoLinger(int paramInt);
+    void setSoLinger(int paramInt);
 
-  boolean isTcpNoDelay();
+    boolean isTcpNoDelay();
 
-  void setTcpNoDelay(boolean paramBoolean);
+    void setTcpNoDelay(boolean paramBoolean);
 }
 

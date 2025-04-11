@@ -1,5 +1,3 @@
-
-
 package com.google.protobuf;
 
 import java.util.List;
@@ -7,23 +5,23 @@ import java.util.Map;
 
 public interface MessageOrBuilder extends MessageLiteOrBuilder {
 
-  Message getDefaultInstanceForType();
+    Message getDefaultInstanceForType();
 
-  List<String> findInitializationErrors();
+    List<String> findInitializationErrors();
 
-  String getInitializationErrorString();
+    String getInitializationErrorString();
 
-  Descriptors.Descriptor getDescriptorForType();
+    Descriptors.Descriptor getDescriptorForType();
 
-  Map<Descriptors.FieldDescriptor, Object> getAllFields();
+    Map<Descriptors.FieldDescriptor, Object> getAllFields();
 
-  boolean hasField(Descriptors.FieldDescriptor field);
+    boolean hasField(Descriptors.FieldDescriptor field);
 
-  Object getField(Descriptors.FieldDescriptor field);
+    Object getField(Descriptors.FieldDescriptor field);
 
-  int getRepeatedFieldCount(Descriptors.FieldDescriptor field);
+    int getRepeatedFieldCount(Descriptors.FieldDescriptor field);
 
-  Object getRepeatedField(Descriptors.FieldDescriptor field, int index);
+    Object getRepeatedField(Descriptors.FieldDescriptor field, int index);
 
-  UnknownFieldSet getUnknownFields();
+    UnknownFieldSet getUnknownFields();
 }

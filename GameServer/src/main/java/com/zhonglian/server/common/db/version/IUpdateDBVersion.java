@@ -1,10 +1,10 @@
 package com.zhonglian.server.common.db.version;
 
 public interface IUpdateDBVersion {
-  String getRequestVersion();
+    String getRequestVersion();
 
-  String getTargetVersion();
+    String getTargetVersion();
 
-  boolean run();
+    boolean run();
 }
 

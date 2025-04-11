@@ -4,6 +4,6 @@ import java.io.IOException;
 
 @Deprecated
 public interface SpnegoTokenGenerator {
-  byte[] generateSpnegoDERObject(byte[] paramArrayOfbyte) throws IOException;
+    byte[] generateSpnegoDERObject(byte[] paramArrayOfbyte) throws IOException;
 }
 

@@ -1,6 +1,6 @@
 package bsh.util;
 
 public interface NameCompletion {
-  String[] completeName(String paramString);
+    String[] completeName(String paramString);
 }
 

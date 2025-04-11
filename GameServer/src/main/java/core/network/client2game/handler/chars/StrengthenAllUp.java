@@ -16,109 +16,108 @@ import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
 import core.config.refdata.RefDataMgr;
 import core.config.refdata.ref.RefStrengthenInfo;
 import core.network.client2game.handler.PlayerHandler;
+
 import java.io.IOException;
 import java.util.List;
 
 public class StrengthenAllUp
-extends PlayerHandler
-{
-public static class Request
-{
-int charId;
-}
+        extends PlayerHandler {
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        Request req = (Request) (new Gson()).fromJson(message, Request.class);
+        Character character = ((CharFeature) player.getFeature(CharFeature.class)).getCharacter(req.charId);
+        if (character == null) {
+            throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public static class SkillNotify {
-int charId;
-List<Integer> StrengthenLevel;
+        if (character.getEquips().size() == 0) {
+            throw new WSException(ErrorCode.Equip_NotEquip, "角色[%s]没穿装备", new Object[]{Integer.valueOf(req.charId)});
+        }
 
-public SkillNotify(int charId, List<Integer> StrengthenLevel) {
-this.charId = charId;
-this.StrengthenLevel = StrengthenLevel;
-}
-}
+        int Size = (EquipPos.values()).length - 1;
+        int Num = 0;
+        int totalMoney = 0;
+        int totalMaterial = 0;
 
-public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
-Request req = (Request)(new Gson()).fromJson(message, Request.class);
-Character character = ((CharFeature)player.getFeature(CharFeature.class)).getCharacter(req.charId);
-if (character == null) {
-throw new WSException(ErrorCode.Char_NotFound, "角色[%s]不存在或未解锁", new Object[] { Integer.valueOf(req.charId) });
-}
+        for (int i = 0; i < Size * player.getLv(); i++) {
+            int index = 1;
+            if (character.getEquip(EquipPos.values()[index]) == null) {
+                index++;
+            }
+            for (int j = index; j < Size; j++) {
 
-if (character.getEquips().size() == 0) {
-throw new WSException(ErrorCode.Equip_NotEquip, "角色[%s]没穿装备", new Object[] { Integer.valueOf(req.charId) });
-}
+                if (character.getEquip(EquipPos.values()[j + 1]) != null && character.getBo().getStrengthen(index) > character.getBo().getStrengthen(j + 1)) {
+                    index = j + 1;
+                }
+            }
 
-int Size = (EquipPos.values()).length - 1;
-int Num = 0;
-int totalMoney = 0;
-int totalMaterial = 0;
+            int Level = character.getBo().getStrengthen(index);
 
-for (int i = 0; i < Size * player.getLv(); i++) {
-int index = 1;
-if (character.getEquip(EquipPos.values()[index]) == null) {
-index++;
-}
-for (int j = index; j < Size; j++) {
+            if (Level >= player.getLv()) {
+                break;
+            }
 
-if (character.getEquip(EquipPos.values()[j + 1]) != null && character.getBo().getStrengthen(index) > character.getBo().getStrengthen(j + 1)) {
-index = j + 1;
-}
-} 
+            if (Level >= RefDataMgr.size(RefStrengthenInfo.class)) {
+                break;
+            }
 
-int Level = character.getBo().getStrengthen(index);
+            RefStrengthenInfo ref = (RefStrengthenInfo) RefDataMgr.get(RefStrengthenInfo.class, Integer.valueOf(Level + 1));
 
-if (Level >= player.getLv()) {
-break;
-}
+            int goldRequired = ref.Gold;
+            int material = ref.Material;
 
-if (Level >= RefDataMgr.size(RefStrengthenInfo.class)) {
-break;
-}
+            totalMoney += goldRequired;
+            totalMaterial += material;
 
-RefStrengthenInfo ref = (RefStrengthenInfo)RefDataMgr.get(RefStrengthenInfo.class, Integer.valueOf(Level + 1));
+            if (player.getPlayerBO().getGold() < totalMoney || player.getPlayerBO().getStrengthenMaterial() < totalMaterial) {
+                totalMoney -= goldRequired;
+                totalMaterial -= material;
 
-int goldRequired = ref.Gold;
-int material = ref.Material;
+                break;
+            }
 
-totalMoney += goldRequired;
-totalMaterial += material;
+            character.getBo().setStrengthen(index, Level + 1);
+            Num++;
+        }
 
-if (player.getPlayerBO().getGold() < totalMoney || player.getPlayerBO().getStrengthenMaterial() < totalMaterial) {
-totalMoney -= goldRequired;
-totalMaterial -= material;
+        PlayerCurrency playerCurrency = (PlayerCurrency) player.getFeature(PlayerCurrency.class);
+        if (!playerCurrency.check(PrizeType.Gold, totalMoney)) {
+            throw new WSException(ErrorCode.NotEnough_Money, "玩家金币:%s<升级金币:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getGold()), Integer.valueOf(totalMoney)});
+        }
 
-break;
-} 
+        if (!playerCurrency.check(PrizeType.StrengthenMaterial, totalMaterial)) {
+            throw new WSException(ErrorCode.NotEnough_StengthenMaterial, "玩家材料:%s<强化需要材料:%s", new Object[]{Integer.valueOf(player.getPlayerBO().getStrengthenMaterial()), Integer.valueOf(totalMaterial)});
+        }
 
-character.getBo().setStrengthen(index, Level + 1);
-Num++;
-} 
+        playerCurrency.consume(PrizeType.Gold, totalMoney, ItemFlow.StrengthenLevelUp);
 
-PlayerCurrency playerCurrency = (PlayerCurrency)player.getFeature(PlayerCurrency.class);
-if (!playerCurrency.check(PrizeType.Gold, totalMoney)) {
-throw new WSException(ErrorCode.NotEnough_Money, "玩家金币:%s<升级金币:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getGold()), Integer.valueOf(totalMoney) });
-}
+        playerCurrency.consume(PrizeType.StrengthenMaterial, totalMaterial, ItemFlow.StrengthenLevelUp);
+        character.getBo().saveAll();
 
-if (!playerCurrency.check(PrizeType.StrengthenMaterial, totalMaterial)) {
-throw new WSException(ErrorCode.NotEnough_StengthenMaterial, "玩家材料:%s<强化需要材料:%s", new Object[] { Integer.valueOf(player.getPlayerBO().getStrengthenMaterial()), Integer.valueOf(totalMaterial) });
-}
+        character.onAttrChanged();
 
-playerCurrency.consume(PrizeType.Gold, totalMoney, ItemFlow.StrengthenLevelUp);
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen, Integer.valueOf(Num));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen_M1, Integer.valueOf(Num));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen_M2, Integer.valueOf(Num));
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen_M3, Integer.valueOf(Num));
 
-playerCurrency.consume(PrizeType.StrengthenMaterial, totalMaterial, ItemFlow.StrengthenLevelUp);
-character.getBo().saveAll();
+        ((AchievementFeature) player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.StrengthTotal, Integer.valueOf(Num));
 
-character.onAttrChanged();
+        SkillNotify notify = new SkillNotify(character.getCharId(), character.getBo().getStrengthenAll());
+        request.response(notify);
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen, Integer.valueOf(Num));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen_M1, Integer.valueOf(Num));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen_M2, Integer.valueOf(Num));
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.Strengthen_M3, Integer.valueOf(Num));
+    public static class Request {
+        int charId;
+    }
 
-((AchievementFeature)player.getFeature(AchievementFeature.class)).updateInc(Achievement.AchievementType.StrengthTotal, Integer.valueOf(Num));
+    public static class SkillNotify {
+        int charId;
+        List<Integer> StrengthenLevel;
 
-SkillNotify notify = new SkillNotify(character.getCharId(), character.getBo().getStrengthenAll());
-request.response(notify);
-}
+        public SkillNotify(int charId, List<Integer> StrengthenLevel) {
+            this.charId = charId;
+            this.StrengthenLevel = StrengthenLevel;
+        }
+    }
 }
 

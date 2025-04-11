@@ -1,7 +1,5 @@
 package org.apache.mina.core.session;
 
-import java.net.SocketAddress;
-import java.util.Set;
 import org.apache.mina.core.filterchain.IoFilterChain;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ReadFuture;
@@ -12,144 +10,147 @@ import org.apache.mina.core.service.TransportMetadata;
 import org.apache.mina.core.write.WriteRequest;
 import org.apache.mina.core.write.WriteRequestQueue;
 
+import java.net.SocketAddress;
+import java.util.Set;
+
 public interface IoSession {
-  long getId();
+    long getId();
 
-  IoService getService();
+    IoService getService();
 
-  IoHandler getHandler();
+    IoHandler getHandler();
 
-  IoSessionConfig getConfig();
+    IoSessionConfig getConfig();
 
-  IoFilterChain getFilterChain();
+    IoFilterChain getFilterChain();
 
-  WriteRequestQueue getWriteRequestQueue();
+    WriteRequestQueue getWriteRequestQueue();
 
-  TransportMetadata getTransportMetadata();
+    TransportMetadata getTransportMetadata();
 
-  ReadFuture read();
+    ReadFuture read();
 
-  WriteFuture write(Object paramObject);
+    WriteFuture write(Object paramObject);
 
-  WriteFuture write(Object paramObject, SocketAddress paramSocketAddress);
+    WriteFuture write(Object paramObject, SocketAddress paramSocketAddress);
 
-  CloseFuture close(boolean paramBoolean);
+    CloseFuture close(boolean paramBoolean);
 
-  @Deprecated
-  CloseFuture close();
+    @Deprecated
+    CloseFuture close();
 
-  @Deprecated
-  Object getAttachment();
+    @Deprecated
+    Object getAttachment();
 
-  @Deprecated
-  Object setAttachment(Object paramObject);
+    @Deprecated
+    Object setAttachment(Object paramObject);
 
-  Object getAttribute(Object paramObject);
+    Object getAttribute(Object paramObject);
 
-  Object getAttribute(Object paramObject1, Object paramObject2);
+    Object getAttribute(Object paramObject1, Object paramObject2);
 
-  Object setAttribute(Object paramObject1, Object paramObject2);
+    Object setAttribute(Object paramObject1, Object paramObject2);
 
-  Object setAttribute(Object paramObject);
+    Object setAttribute(Object paramObject);
 
-  Object setAttributeIfAbsent(Object paramObject1, Object paramObject2);
+    Object setAttributeIfAbsent(Object paramObject1, Object paramObject2);
 
-  Object setAttributeIfAbsent(Object paramObject);
+    Object setAttributeIfAbsent(Object paramObject);
 
-  Object removeAttribute(Object paramObject);
+    Object removeAttribute(Object paramObject);
 
-  boolean removeAttribute(Object paramObject1, Object paramObject2);
+    boolean removeAttribute(Object paramObject1, Object paramObject2);
 
-  boolean replaceAttribute(Object paramObject1, Object paramObject2, Object paramObject3);
+    boolean replaceAttribute(Object paramObject1, Object paramObject2, Object paramObject3);
 
-  boolean containsAttribute(Object paramObject);
+    boolean containsAttribute(Object paramObject);
 
-  Set<Object> getAttributeKeys();
+    Set<Object> getAttributeKeys();
 
-  boolean isConnected();
+    boolean isConnected();
 
-  boolean isClosing();
+    boolean isClosing();
 
-  boolean isSecured();
+    boolean isSecured();
 
-  CloseFuture getCloseFuture();
+    CloseFuture getCloseFuture();
 
-  SocketAddress getRemoteAddress();
+    SocketAddress getRemoteAddress();
 
-  SocketAddress getLocalAddress();
+    SocketAddress getLocalAddress();
 
-  SocketAddress getServiceAddress();
+    SocketAddress getServiceAddress();
 
-  void setCurrentWriteRequest(WriteRequest paramWriteRequest);
+    void suspendRead();
 
-  void suspendRead();
+    void suspendWrite();
 
-  void suspendWrite();
+    void resumeRead();
 
-  void resumeRead();
+    void resumeWrite();
 
-  void resumeWrite();
+    boolean isReadSuspended();
 
-  boolean isReadSuspended();
+    boolean isWriteSuspended();
 
-  boolean isWriteSuspended();
+    void updateThroughput(long paramLong, boolean paramBoolean);
 
-  void updateThroughput(long paramLong, boolean paramBoolean);
+    long getReadBytes();
 
-  long getReadBytes();
+    long getWrittenBytes();
 
-  long getWrittenBytes();
+    long getReadMessages();
 
-  long getReadMessages();
+    long getWrittenMessages();
 
-  long getWrittenMessages();
+    double getReadBytesThroughput();
 
-  double getReadBytesThroughput();
+    double getWrittenBytesThroughput();
 
-  double getWrittenBytesThroughput();
+    double getReadMessagesThroughput();
 
-  double getReadMessagesThroughput();
+    double getWrittenMessagesThroughput();
 
-  double getWrittenMessagesThroughput();
+    int getScheduledWriteMessages();
 
-  int getScheduledWriteMessages();
+    long getScheduledWriteBytes();
 
-  long getScheduledWriteBytes();
+    Object getCurrentWriteMessage();
 
-  Object getCurrentWriteMessage();
+    WriteRequest getCurrentWriteRequest();
 
-  WriteRequest getCurrentWriteRequest();
+    void setCurrentWriteRequest(WriteRequest paramWriteRequest);
 
-  long getCreationTime();
+    long getCreationTime();
 
-  long getLastIoTime();
+    long getLastIoTime();
 
-  long getLastReadTime();
+    long getLastReadTime();
 
-  long getLastWriteTime();
+    long getLastWriteTime();
 
-  boolean isIdle(IdleStatus paramIdleStatus);
+    boolean isIdle(IdleStatus paramIdleStatus);
 
-  boolean isReaderIdle();
+    boolean isReaderIdle();
 
-  boolean isWriterIdle();
+    boolean isWriterIdle();
 
-  boolean isBothIdle();
+    boolean isBothIdle();
 
-  int getIdleCount(IdleStatus paramIdleStatus);
+    int getIdleCount(IdleStatus paramIdleStatus);
 
-  int getReaderIdleCount();
+    int getReaderIdleCount();
 
-  int getWriterIdleCount();
+    int getWriterIdleCount();
 
-  int getBothIdleCount();
+    int getBothIdleCount();
 
-  long getLastIdleTime(IdleStatus paramIdleStatus);
+    long getLastIdleTime(IdleStatus paramIdleStatus);
 
-  long getLastReaderIdleTime();
+    long getLastReaderIdleTime();
 
-  long getLastWriterIdleTime();
+    long getLastWriterIdleTime();
 
-  long getLastBothIdleTime();
+    long getLastBothIdleTime();
 }
 

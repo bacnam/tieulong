@@ -1,39 +1,40 @@
 package com.mchange.v2.c3p0;
 
+import javax.naming.Referenceable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import javax.naming.Referenceable;
 
 public final class ComboPooledDataSource
-extends AbstractComboPooledDataSource
-implements Serializable, Referenceable
-{
-private static final long serialVersionUID = 1L;
-private static final short VERSION = 2;
+        extends AbstractComboPooledDataSource
+        implements Serializable, Referenceable {
+    private static final long serialVersionUID = 1L;
+    private static final short VERSION = 2;
 
-public ComboPooledDataSource() {}
+    public ComboPooledDataSource() {
+    }
 
-public ComboPooledDataSource(boolean autoregister) {
-super(autoregister);
-}
-public ComboPooledDataSource(String configName) {
-super(configName);
-}
+    public ComboPooledDataSource(boolean autoregister) {
+        super(autoregister);
+    }
 
-private void writeObject(ObjectOutputStream oos) throws IOException {
-oos.writeShort(2);
-}
+    public ComboPooledDataSource(String configName) {
+        super(configName);
+    }
 
-private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-short version = ois.readShort();
-switch (version) {
-case 2:
-return;
-} 
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeShort(2);
+    }
 
-throw new IOException("Unsupported Serialized Version: " + version);
-}
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        short version = ois.readShort();
+        switch (version) {
+            case 2:
+                return;
+        }
+
+        throw new IOException("Unsupported Serialized Version: " + version);
+    }
 }
 

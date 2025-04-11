@@ -6,28 +6,27 @@ import ch.qos.logback.core.filter.AbstractMatcherFilter;
 import ch.qos.logback.core.spi.FilterReply;
 
 public class LevelFilter
-extends AbstractMatcherFilter<ILoggingEvent>
-{
-Level level;
+        extends AbstractMatcherFilter<ILoggingEvent> {
+    Level level;
 
-public FilterReply decide(ILoggingEvent event) {
-if (!isStarted()) {
-return FilterReply.NEUTRAL;
-}
+    public FilterReply decide(ILoggingEvent event) {
+        if (!isStarted()) {
+            return FilterReply.NEUTRAL;
+        }
 
-if (event.getLevel().equals(this.level)) {
-return this.onMatch;
-}
-return this.onMismatch;
-}
+        if (event.getLevel().equals(this.level)) {
+            return this.onMatch;
+        }
+        return this.onMismatch;
+    }
 
-public void setLevel(Level level) {
-this.level = level;
-}
+    public void setLevel(Level level) {
+        this.level = level;
+    }
 
-public void start() {
-if (this.level != null)
-super.start(); 
-}
+    public void start() {
+        if (this.level != null)
+            super.start();
+    }
 }
 

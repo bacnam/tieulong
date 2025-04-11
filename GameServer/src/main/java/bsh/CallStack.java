@@ -29,14 +29,14 @@ public class CallStack {
         this.stack.setElementAt(newTop, 0);
         return oldTop;
     }
-    
+
     public NameSpace get(int depth) {
         if (depth >= depth()) {
             return NameSpace.JAVACODE;
         }
         return (NameSpace) this.stack.elementAt(depth);
     }
-    
+
 
     public void set(int depth, NameSpace ns) {
         this.stack.setElementAt(ns, depth);

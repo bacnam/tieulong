@@ -1,6 +1,6 @@
 package ch.qos.logback.core.pattern;
 
 public interface PostCompileProcessor<E> {
-  void process(Converter<E> paramConverter);
+    void process(Converter<E> paramConverter);
 }
 

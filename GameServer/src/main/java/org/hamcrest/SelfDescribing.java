@@ -1,6 +1,6 @@
 package org.hamcrest;
 
 public interface SelfDescribing {
-  void describeTo(Description paramDescription);
+    void describeTo(Description paramDescription);
 }
 

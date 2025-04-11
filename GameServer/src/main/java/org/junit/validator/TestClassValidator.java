@@ -1,9 +1,10 @@
 package org.junit.validator;
 
-import java.util.List;
 import org.junit.runners.model.TestClass;
 
+import java.util.List;
+
 public interface TestClassValidator {
-  List<Exception> validateTestClass(TestClass paramTestClass);
+    List<Exception> validateTestClass(TestClass paramTestClass);
 }
 

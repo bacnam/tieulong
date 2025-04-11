@@ -1,26 +1,26 @@
 package org.apache.mina.core.future;
 
 public interface ReadFuture extends IoFuture {
-  Object getMessage();
+    Object getMessage();
 
-  boolean isRead();
+    boolean isRead();
 
-  boolean isClosed();
+    void setRead(Object paramObject);
 
-  Throwable getException();
+    boolean isClosed();
 
-  void setRead(Object paramObject);
+    Throwable getException();
 
-  void setClosed();
+    void setException(Throwable paramThrowable);
 
-  void setException(Throwable paramThrowable);
+    void setClosed();
 
-  ReadFuture await() throws InterruptedException;
+    ReadFuture await() throws InterruptedException;
 
-  ReadFuture awaitUninterruptibly();
+    ReadFuture awaitUninterruptibly();
 
-  ReadFuture addListener(IoFutureListener<?> paramIoFutureListener);
+    ReadFuture addListener(IoFutureListener<?> paramIoFutureListener);
 
-  ReadFuture removeListener(IoFutureListener<?> paramIoFutureListener);
+    ReadFuture removeListener(IoFutureListener<?> paramIoFutureListener);
 }
 

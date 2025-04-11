@@ -6,23 +6,22 @@ import org.apache.http.impl.conn.AbstractPooledConnAdapter;
 
 @Deprecated
 public class BasicPooledConnAdapter
-extends AbstractPooledConnAdapter
-{
-protected BasicPooledConnAdapter(ThreadSafeClientConnManager tsccm, AbstractPoolEntry entry) {
-super(tsccm, entry);
-markReusable();
-}
+        extends AbstractPooledConnAdapter {
+    protected BasicPooledConnAdapter(ThreadSafeClientConnManager tsccm, AbstractPoolEntry entry) {
+        super(tsccm, entry);
+        markReusable();
+    }
 
-protected ClientConnectionManager getManager() {
-return super.getManager();
-}
+    protected ClientConnectionManager getManager() {
+        return super.getManager();
+    }
 
-protected AbstractPoolEntry getPoolEntry() {
-return super.getPoolEntry();
-}
+    protected AbstractPoolEntry getPoolEntry() {
+        return super.getPoolEntry();
+    }
 
-protected void detach() {
-super.detach();
-}
+    protected void detach() {
+        super.detach();
+    }
 }
 

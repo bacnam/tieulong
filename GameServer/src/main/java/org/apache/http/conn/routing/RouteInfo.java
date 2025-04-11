@@ -1,38 +1,36 @@
 package org.apache.http.conn.routing;
 
-import java.net.InetAddress;
 import org.apache.http.HttpHost;
 
-public interface RouteInfo
-{
-HttpHost getTargetHost();
+import java.net.InetAddress;
 
-InetAddress getLocalAddress();
+public interface RouteInfo {
+    HttpHost getTargetHost();
 
-int getHopCount();
+    InetAddress getLocalAddress();
 
-HttpHost getHopTarget(int paramInt);
+    int getHopCount();
 
-HttpHost getProxyHost();
+    HttpHost getHopTarget(int paramInt);
 
-TunnelType getTunnelType();
+    HttpHost getProxyHost();
 
-boolean isTunnelled();
+    TunnelType getTunnelType();
 
-LayerType getLayerType();
+    boolean isTunnelled();
 
-boolean isLayered();
+    LayerType getLayerType();
 
-boolean isSecure();
+    boolean isLayered();
 
-public enum TunnelType
-{
-PLAIN, TUNNELLED;
-}
+    boolean isSecure();
 
-public enum LayerType
-{
-PLAIN, LAYERED;
-}
+    public enum TunnelType {
+        PLAIN, TUNNELLED;
+    }
+
+    public enum LayerType {
+        PLAIN, LAYERED;
+    }
 }
 

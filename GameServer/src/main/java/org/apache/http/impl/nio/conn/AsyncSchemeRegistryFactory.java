@@ -8,15 +8,14 @@ import org.apache.http.nio.conn.ssl.SSLLayeringStrategy;
 
 @Deprecated
 @ThreadSafe
-public final class AsyncSchemeRegistryFactory
-{
-public static AsyncSchemeRegistry createDefault() {
-AsyncSchemeRegistry registry = new AsyncSchemeRegistry();
-registry.register(new AsyncScheme("http", 80, null));
+public final class AsyncSchemeRegistryFactory {
+    public static AsyncSchemeRegistry createDefault() {
+        AsyncSchemeRegistry registry = new AsyncSchemeRegistry();
+        registry.register(new AsyncScheme("http", 80, null));
 
-registry.register(new AsyncScheme("https", 443, (LayeringStrategy)SSLLayeringStrategy.getDefaultStrategy()));
+        registry.register(new AsyncScheme("https", 443, (LayeringStrategy) SSLLayeringStrategy.getDefaultStrategy()));
 
-return registry;
-}
+        return registry;
+    }
 }
 

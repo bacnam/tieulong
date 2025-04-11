@@ -4,6 +4,6 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLServerSocket;
 
 public interface SSLServerSetupHandler {
-  void initialize(SSLServerSocket paramSSLServerSocket) throws SSLException;
+    void initialize(SSLServerSocket paramSSLServerSocket) throws SSLException;
 }
 

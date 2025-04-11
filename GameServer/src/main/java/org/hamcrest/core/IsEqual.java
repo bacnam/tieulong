@@ -1,64 +1,64 @@
 package org.hamcrest.core;
 
-import java.lang.reflect.Array;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
+import java.lang.reflect.Array;
+
 public class IsEqual<T>
-extends BaseMatcher<T>
-{
-private final Object expectedValue;
+        extends BaseMatcher<T> {
+    private final Object expectedValue;
 
-public IsEqual(T equalArg) {
-this.expectedValue = equalArg;
-}
+    public IsEqual(T equalArg) {
+        this.expectedValue = equalArg;
+    }
 
-public boolean matches(Object actualValue) {
-return areEqual(actualValue, this.expectedValue);
-}
+    private static boolean areEqual(Object actual, Object expected) {
+        if (actual == null) {
+            return (expected == null);
+        }
 
-public void describeTo(Description description) {
-description.appendValue(this.expectedValue);
-}
+        if (expected != null && isArray(actual)) {
+            return (isArray(expected) && areArraysEqual(actual, expected));
+        }
 
-private static boolean areEqual(Object actual, Object expected) {
-if (actual == null) {
-return (expected == null);
-}
+        return actual.equals(expected);
+    }
 
-if (expected != null && isArray(actual)) {
-return (isArray(expected) && areArraysEqual(actual, expected));
-}
+    private static boolean areArraysEqual(Object actualArray, Object expectedArray) {
+        return (areArrayLengthsEqual(actualArray, expectedArray) && areArrayElementsEqual(actualArray, expectedArray));
+    }
 
-return actual.equals(expected);
-}
+    private static boolean areArrayLengthsEqual(Object actualArray, Object expectedArray) {
+        return (Array.getLength(actualArray) == Array.getLength(expectedArray));
+    }
 
-private static boolean areArraysEqual(Object actualArray, Object expectedArray) {
-return (areArrayLengthsEqual(actualArray, expectedArray) && areArrayElementsEqual(actualArray, expectedArray));
-}
+    private static boolean areArrayElementsEqual(Object actualArray, Object expectedArray) {
+        for (int i = 0; i < Array.getLength(actualArray); i++) {
+            if (!areEqual(Array.get(actualArray, i), Array.get(expectedArray, i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-private static boolean areArrayLengthsEqual(Object actualArray, Object expectedArray) {
-return (Array.getLength(actualArray) == Array.getLength(expectedArray));
-}
+    private static boolean isArray(Object o) {
+        return o.getClass().isArray();
+    }
 
-private static boolean areArrayElementsEqual(Object actualArray, Object expectedArray) {
-for (int i = 0; i < Array.getLength(actualArray); i++) {
-if (!areEqual(Array.get(actualArray, i), Array.get(expectedArray, i))) {
-return false;
-}
-} 
-return true;
-}
+    @Factory
+    public static <T> Matcher<T> equalTo(T operand) {
+        return (Matcher<T>) new IsEqual<T>(operand);
+    }
 
-private static boolean isArray(Object o) {
-return o.getClass().isArray();
-}
+    public boolean matches(Object actualValue) {
+        return areEqual(actualValue, this.expectedValue);
+    }
 
-@Factory
-public static <T> Matcher<T> equalTo(T operand) {
-return (Matcher<T>)new IsEqual<T>(operand);
-}
+    public void describeTo(Description description) {
+        description.appendValue(this.expectedValue);
+    }
 }
 

@@ -6,6 +6,6 @@ import java.net.UnknownHostException;
 
 @Deprecated
 public interface LayeredSchemeSocketFactory extends SchemeSocketFactory {
-  Socket createLayeredSocket(Socket paramSocket, String paramString, int paramInt, boolean paramBoolean) throws IOException, UnknownHostException;
+    Socket createLayeredSocket(Socket paramSocket, String paramString, int paramInt, boolean paramBoolean) throws IOException, UnknownHostException;
 }
 

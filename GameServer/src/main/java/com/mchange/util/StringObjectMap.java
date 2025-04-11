@@ -4,18 +4,18 @@ import com.mchange.io.IOStringEnumeration;
 import com.mchange.io.IOStringObjectMap;
 
 public interface StringObjectMap extends IOStringObjectMap {
-  Object get(String paramString);
+    Object get(String paramString);
 
-  void put(String paramString, Object paramObject);
+    void put(String paramString, Object paramObject);
 
-  boolean putNoReplace(String paramString, Object paramObject);
+    boolean putNoReplace(String paramString, Object paramObject);
 
-  boolean remove(String paramString);
+    boolean remove(String paramString);
 
-  boolean containsKey(String paramString);
+    boolean containsKey(String paramString);
 
-  IOStringEnumeration keys();
+    IOStringEnumeration keys();
 
-  StringEnumeration mkeys();
+    StringEnumeration mkeys();
 }
 

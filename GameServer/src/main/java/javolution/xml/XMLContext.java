@@ -5,25 +5,24 @@ import javolution.context.FormatContext;
 import javolution.osgi.internal.OSGiServices;
 
 public abstract class XMLContext
-extends FormatContext
-{
-public static XMLContext enter() {
-return (XMLContext)currentXMLContext().enterInner();
-}
+        extends FormatContext {
+    public static XMLContext enter() {
+        return (XMLContext) currentXMLContext().enterInner();
+    }
 
-public static <T> XMLFormat<T> getFormat(Class<? extends T> type) {
-return currentXMLContext().searchFormat(type);
-}
+    public static <T> XMLFormat<T> getFormat(Class<? extends T> type) {
+        return currentXMLContext().searchFormat(type);
+    }
 
-public abstract <T> void setFormat(Class<? extends T> paramClass, XMLFormat<T> paramXMLFormat);
+    private static XMLContext currentXMLContext() {
+        XMLContext ctx = (XMLContext) AbstractContext.current(XMLContext.class);
+        if (ctx != null)
+            return ctx;
+        return OSGiServices.getXMLContext();
+    }
 
-protected abstract <T> XMLFormat<T> searchFormat(Class<? extends T> paramClass);
+    public abstract <T> void setFormat(Class<? extends T> paramClass, XMLFormat<T> paramXMLFormat);
 
-private static XMLContext currentXMLContext() {
-XMLContext ctx = (XMLContext)AbstractContext.current(XMLContext.class);
-if (ctx != null)
-return ctx; 
-return OSGiServices.getXMLContext();
-}
+    protected abstract <T> XMLFormat<T> searchFormat(Class<? extends T> paramClass);
 }
 

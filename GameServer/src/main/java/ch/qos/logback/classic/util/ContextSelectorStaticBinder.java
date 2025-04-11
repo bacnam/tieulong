@@ -6,48 +6,48 @@ import ch.qos.logback.classic.selector.ContextSelector;
 import ch.qos.logback.classic.selector.DefaultContextSelector;
 import ch.qos.logback.core.util.Loader;
 import ch.qos.logback.core.util.OptionHelper;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class ContextSelectorStaticBinder
-{
-static ContextSelectorStaticBinder singleton = new ContextSelectorStaticBinder();
+public class ContextSelectorStaticBinder {
+    static ContextSelectorStaticBinder singleton = new ContextSelectorStaticBinder();
 
-ContextSelector contextSelector;
-Object key;
+    ContextSelector contextSelector;
+    Object key;
 
-public static ContextSelectorStaticBinder getSingleton() {
-return singleton;
-}
+    public static ContextSelectorStaticBinder getSingleton() {
+        return singleton;
+    }
 
-public void init(LoggerContext defaultLoggerContext, Object key) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-if (this.key == null) {
-this.key = key;
-} else if (this.key != key) {
-throw new IllegalAccessException("Only certain classes can access this method.");
-} 
+    static ContextSelector dynamicalContextSelector(LoggerContext defaultLoggerContext, String contextSelectorStr) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Class<?> contextSelectorClass = Loader.loadClass(contextSelectorStr);
+        Constructor<?> cons = contextSelectorClass.getConstructor(new Class[]{LoggerContext.class});
 
-String contextSelectorStr = OptionHelper.getSystemProperty("logback.ContextSelector");
+        return (ContextSelector) cons.newInstance(new Object[]{defaultLoggerContext});
+    }
 
-if (contextSelectorStr == null) {
-this.contextSelector = (ContextSelector)new DefaultContextSelector(defaultLoggerContext);
-} else if (contextSelectorStr.equals("JNDI")) {
+    public void init(LoggerContext defaultLoggerContext, Object key) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        if (this.key == null) {
+            this.key = key;
+        } else if (this.key != key) {
+            throw new IllegalAccessException("Only certain classes can access this method.");
+        }
 
-this.contextSelector = (ContextSelector)new ContextJNDISelector(defaultLoggerContext);
-} else {
-this.contextSelector = dynamicalContextSelector(defaultLoggerContext, contextSelectorStr);
-} 
-}
+        String contextSelectorStr = OptionHelper.getSystemProperty("logback.ContextSelector");
 
-static ContextSelector dynamicalContextSelector(LoggerContext defaultLoggerContext, String contextSelectorStr) throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
-Class<?> contextSelectorClass = Loader.loadClass(contextSelectorStr);
-Constructor<?> cons = contextSelectorClass.getConstructor(new Class[] { LoggerContext.class });
+        if (contextSelectorStr == null) {
+            this.contextSelector = (ContextSelector) new DefaultContextSelector(defaultLoggerContext);
+        } else if (contextSelectorStr.equals("JNDI")) {
 
-return (ContextSelector)cons.newInstance(new Object[] { defaultLoggerContext });
-}
+            this.contextSelector = (ContextSelector) new ContextJNDISelector(defaultLoggerContext);
+        } else {
+            this.contextSelector = dynamicalContextSelector(defaultLoggerContext, contextSelectorStr);
+        }
+    }
 
-public ContextSelector getContextSelector() {
-return this.contextSelector;
-}
+    public ContextSelector getContextSelector() {
+        return this.contextSelector;
+    }
 }
 

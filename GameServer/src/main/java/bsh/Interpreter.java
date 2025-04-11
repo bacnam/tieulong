@@ -1,19 +1,6 @@
 package bsh;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.PrintStream;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.StringReader;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -31,30 +18,18 @@ public class Interpreter
         staticInit();
     }
 
-    private boolean strictJava = false;
-
-    transient Parser parser;
-
-    NameSpace globalNameSpace;
-
-    transient Reader in;
-
-    transient PrintStream out;
-
-    transient PrintStream err;
-
-    ConsoleInterface console;
-
-    Interpreter parent;
-
-    String sourceFileInfo;
-
-    private boolean exitOnEOF = true;
-
     protected boolean evalOnly;
-
     protected boolean interactive;
-
+    transient Parser parser;
+    NameSpace globalNameSpace;
+    transient Reader in;
+    transient PrintStream out;
+    transient PrintStream err;
+    ConsoleInterface console;
+    Interpreter parent;
+    String sourceFileInfo;
+    private boolean strictJava = false;
+    private boolean exitOnEOF = true;
     private boolean showResults;
 
     public Interpreter(Reader in, PrintStream out, PrintStream err, boolean interactive, NameSpace namespace, Interpreter parent, String sourceFileInfo) {
@@ -112,50 +87,6 @@ public class Interpreter
 
         this.evalOnly = true;
         setu("bsh.evalOnly", new Primitive(true));
-    }
-
-    public void setConsole(ConsoleInterface console) {
-        this.console = console;
-        setu("bsh.console", console);
-
-        setOut(console.getOut());
-        setErr(console.getErr());
-    }
-
-    private void initRootSystemObject() {
-        BshClassManager bcm = getClassManager();
-
-        setu("bsh", (new NameSpace(bcm, "Bsh Object")).getThis(this));
-
-        if (sharedObject == null) {
-            sharedObject = (new NameSpace(bcm, "Bsh Shared System Object")).getThis(this);
-        }
-
-        setu("bsh.system", sharedObject);
-        setu("bsh.shared", sharedObject);
-
-        This helpText = (new NameSpace(bcm, "Bsh Command Help Text")).getThis(this);
-
-        setu("bsh.help", helpText);
-
-        try {
-            setu("bsh.cwd", System.getProperty("user.dir"));
-        } catch (SecurityException e) {
-
-            setu("bsh.cwd", ".");
-        }
-
-        setu("bsh.interactive", new Primitive(this.interactive));
-
-        setu("bsh.evalOnly", new Primitive(this.evalOnly));
-    }
-
-    public void setNameSpace(NameSpace globalNameSpace) {
-        this.globalNameSpace = globalNameSpace;
-    }
-
-    public NameSpace getNameSpace() {
-        return this.globalNameSpace;
     }
 
     public static void main(String[] args) {
@@ -224,6 +155,86 @@ public class Interpreter
         if (main != null) {
             main.invoke(null, new Object[]{args});
         }
+    }
+
+    public static final void debug(String s) {
+        if (DEBUG) {
+            debug.println("LOG: " + s);
+        }
+    }
+
+    public static void redirectOutputToFile(String filename) {
+        try {
+            PrintStream pout = new PrintStream(new FileOutputStream(filename));
+
+            System.setOut(pout);
+            System.setErr(pout);
+        } catch (IOException e) {
+            System.err.println("Can't redirect output to file: " + filename);
+        }
+    }
+
+    static void staticInit() {
+        try {
+            systemLineSeparator = System.getProperty("line.separator");
+            debug = System.err;
+            DEBUG = Boolean.getBoolean("debug");
+            TRACE = Boolean.getBoolean("trace");
+            LOCALSCOPING = Boolean.getBoolean("localscoping");
+            String outfilename = System.getProperty("outfile");
+            if (outfilename != null)
+                redirectOutputToFile(outfilename);
+        } catch (SecurityException e) {
+            System.err.println("Could not init static:" + e);
+        } catch (Exception e) {
+            System.err.println("Could not init static(2):" + e);
+        } catch (Throwable e) {
+            System.err.println("Could not init static(3):" + e);
+        }
+    }
+
+    public void setConsole(ConsoleInterface console) {
+        this.console = console;
+        setu("bsh.console", console);
+
+        setOut(console.getOut());
+        setErr(console.getErr());
+    }
+
+    private void initRootSystemObject() {
+        BshClassManager bcm = getClassManager();
+
+        setu("bsh", (new NameSpace(bcm, "Bsh Object")).getThis(this));
+
+        if (sharedObject == null) {
+            sharedObject = (new NameSpace(bcm, "Bsh Shared System Object")).getThis(this);
+        }
+
+        setu("bsh.system", sharedObject);
+        setu("bsh.shared", sharedObject);
+
+        This helpText = (new NameSpace(bcm, "Bsh Command Help Text")).getThis(this);
+
+        setu("bsh.help", helpText);
+
+        try {
+            setu("bsh.cwd", System.getProperty("user.dir"));
+        } catch (SecurityException e) {
+
+            setu("bsh.cwd", ".");
+        }
+
+        setu("bsh.interactive", new Primitive(this.interactive));
+
+        setu("bsh.evalOnly", new Primitive(this.evalOnly));
+    }
+
+    public NameSpace getNameSpace() {
+        return this.globalNameSpace;
+    }
+
+    public void setNameSpace(NameSpace globalNameSpace) {
+        this.globalNameSpace = globalNameSpace;
     }
 
     public void run() {
@@ -296,10 +307,10 @@ public class Interpreter
                     eof = true;
                 }
             } catch (TargetError e) {
-                if (e.inNativeCode()){
+                if (e.inNativeCode()) {
                     e.printStackTrace(DEBUG, this.err);
                 }
-                if (!this.interactive){
+                if (!this.interactive) {
                     eof = true;
                     setu("$_e", e.getTarget());
                 }
@@ -476,8 +487,16 @@ public class Interpreter
         return this.out;
     }
 
+    public void setOut(PrintStream out) {
+        this.out = out;
+    }
+
     public PrintStream getErr() {
         return this.err;
+    }
+
+    public void setErr(PrintStream err) {
+        this.err = err;
     }
 
     public final void println(Object o) {
@@ -490,12 +509,6 @@ public class Interpreter
         } else {
             this.out.print(o);
             this.out.flush();
-        }
-    }
-
-    public static final void debug(String s) {
-        if (DEBUG) {
-            debug.println("LOG: " + s);
         }
     }
 
@@ -620,17 +633,6 @@ public class Interpreter
         return new File(file.getCanonicalPath());
     }
 
-    public static void redirectOutputToFile(String filename) {
-        try {
-            PrintStream pout = new PrintStream(new FileOutputStream(filename));
-
-            System.setOut(pout);
-            System.setErr(pout);
-        } catch (IOException e) {
-            System.err.println("Can't redirect output to file: " + filename);
-        }
-    }
-
     public void setClassLoader(ClassLoader externalCL) {
         getClassManager().setClassLoader(externalCL);
     }
@@ -639,31 +641,12 @@ public class Interpreter
         return getNameSpace().getClassManager();
     }
 
-    public void setStrictJava(boolean b) {
-        this.strictJava = b;
-    }
-
     public boolean getStrictJava() {
         return this.strictJava;
     }
 
-    static void staticInit() {
-        try {
-            systemLineSeparator = System.getProperty("line.separator");
-            debug = System.err;
-            DEBUG = Boolean.getBoolean("debug");
-            TRACE = Boolean.getBoolean("trace");
-            LOCALSCOPING = Boolean.getBoolean("localscoping");
-            String outfilename = System.getProperty("outfile");
-            if (outfilename != null)
-                redirectOutputToFile(outfilename);
-        } catch (SecurityException e) {
-            System.err.println("Could not init static:" + e);
-        } catch (Exception e) {
-            System.err.println("Could not init static(2):" + e);
-        } catch (Throwable e) {
-            System.err.println("Could not init static(3):" + e);
-        }
+    public void setStrictJava(boolean b) {
+        this.strictJava = b;
     }
 
     public String getSourceFileInfo() {
@@ -675,14 +658,6 @@ public class Interpreter
 
     public Interpreter getParent() {
         return this.parent;
-    }
-
-    public void setOut(PrintStream out) {
-        this.out = out;
-    }
-
-    public void setErr(PrintStream err) {
-        this.err = err;
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -709,12 +684,12 @@ public class Interpreter
         this.exitOnEOF = value;
     }
 
-    public void setShowResults(boolean showResults) {
-        this.showResults = showResults;
-    }
-
     public boolean getShowResults() {
         return this.showResults;
+    }
+
+    public void setShowResults(boolean showResults) {
+        this.showResults = showResults;
     }
 }
 

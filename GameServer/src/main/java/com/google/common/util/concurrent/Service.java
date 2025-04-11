@@ -3,34 +3,32 @@ package com.google.common.util.concurrent;
 import com.google.common.annotations.Beta;
 
 @Beta
-public interface Service
-{
-ListenableFuture<State> start();
+public interface Service {
+    ListenableFuture<State> start();
 
-State startAndWait();
+    State startAndWait();
 
-boolean isRunning();
+    boolean isRunning();
 
-State state();
+    State state();
 
-ListenableFuture<State> stop();
+    ListenableFuture<State> stop();
 
-State stopAndWait();
+    State stopAndWait();
 
-@Beta
-public enum State
-{
-NEW,
+    @Beta
+    public enum State {
+        NEW,
 
-STARTING,
+        STARTING,
 
-RUNNING,
+        RUNNING,
 
-STOPPING,
+        STOPPING,
 
-TERMINATED,
+        TERMINATED,
 
-FAILED;
-}
+        FAILED;
+    }
 }
 

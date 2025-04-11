@@ -4,8 +4,8 @@ import org.apache.http.nio.reactor.IOSession;
 
 @Deprecated
 public interface LayeringStrategy {
-  boolean isSecure();
+    boolean isSecure();
 
-  IOSession layer(IOSession paramIOSession);
+    IOSession layer(IOSession paramIOSession);
 }
 

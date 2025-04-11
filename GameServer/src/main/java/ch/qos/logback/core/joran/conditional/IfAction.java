@@ -8,17 +8,16 @@ import ch.qos.logback.core.joran.spi.Interpreter;
 import ch.qos.logback.core.spi.PropertyContainer;
 import ch.qos.logback.core.util.EnvUtil;
 import ch.qos.logback.core.util.OptionHelper;
+import org.xml.sax.Attributes;
 
 import java.util.List;
 import java.util.Stack;
 
-import org.xml.sax.Attributes;
-
 public class IfAction
         extends Action {
-    private static final String CONDITION_ATTR = "condition";
     public static final String MISSING_JANINO_MSG = "Could not find Janino library on the class path. Skipping conditional processing.";
     public static final String MISSING_JANINO_SEE = "See also http:";
+    private static final String CONDITION_ATTR = "condition";
     Stack<IfState> stack = new Stack<IfState>();
 
     public void begin(InterpretationContext ic, String name, Attributes attributes) throws ActionException {

@@ -4,71 +4,72 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ResourcePoolEventSupport
-{
-ResourcePool source;
-Set mlisteners = new HashSet();
+public class ResourcePoolEventSupport {
+    ResourcePool source;
+    Set mlisteners = new HashSet();
 
-public ResourcePoolEventSupport(ResourcePool source) {
-this.source = source;
-}
-public synchronized void addResourcePoolListener(ResourcePoolListener mlistener) {
-this.mlisteners.add(mlistener);
-}
-public synchronized void removeResourcePoolListener(ResourcePoolListener mlistener) {
-this.mlisteners.remove(mlistener);
-}
+    public ResourcePoolEventSupport(ResourcePool source) {
+        this.source = source;
+    }
 
-public synchronized void fireResourceAcquired(Object resc, int pool_size, int available_size, int removed_but_unreturned_size) {
-if (!this.mlisteners.isEmpty()) {
+    public synchronized void addResourcePoolListener(ResourcePoolListener mlistener) {
+        this.mlisteners.add(mlistener);
+    }
 
-ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, false, pool_size, available_size, removed_but_unreturned_size);
+    public synchronized void removeResourcePoolListener(ResourcePoolListener mlistener) {
+        this.mlisteners.remove(mlistener);
+    }
 
-for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
+    public synchronized void fireResourceAcquired(Object resc, int pool_size, int available_size, int removed_but_unreturned_size) {
+        if (!this.mlisteners.isEmpty()) {
 
-ResourcePoolListener rpl = i.next();
-rpl.resourceAcquired(evt);
-} 
-} 
-}
+            ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, false, pool_size, available_size, removed_but_unreturned_size);
 
-public synchronized void fireResourceCheckedIn(Object resc, int pool_size, int available_size, int removed_but_unreturned_size) {
-if (!this.mlisteners.isEmpty()) {
+            for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
 
-ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, false, pool_size, available_size, removed_but_unreturned_size);
+                ResourcePoolListener rpl = i.next();
+                rpl.resourceAcquired(evt);
+            }
+        }
+    }
 
-for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
+    public synchronized void fireResourceCheckedIn(Object resc, int pool_size, int available_size, int removed_but_unreturned_size) {
+        if (!this.mlisteners.isEmpty()) {
 
-ResourcePoolListener rpl = i.next();
-rpl.resourceCheckedIn(evt);
-} 
-} 
-}
+            ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, false, pool_size, available_size, removed_but_unreturned_size);
 
-public synchronized void fireResourceCheckedOut(Object resc, int pool_size, int available_size, int removed_but_unreturned_size) {
-if (!this.mlisteners.isEmpty()) {
+            for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
 
-ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, true, pool_size, available_size, removed_but_unreturned_size);
+                ResourcePoolListener rpl = i.next();
+                rpl.resourceCheckedIn(evt);
+            }
+        }
+    }
 
-for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
+    public synchronized void fireResourceCheckedOut(Object resc, int pool_size, int available_size, int removed_but_unreturned_size) {
+        if (!this.mlisteners.isEmpty()) {
 
-ResourcePoolListener rpl = i.next();
-rpl.resourceCheckedOut(evt);
-} 
-} 
-}
+            ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, true, pool_size, available_size, removed_but_unreturned_size);
 
-public synchronized void fireResourceRemoved(Object resc, boolean checked_out_resource, int pool_size, int available_size, int removed_but_unreturned_size) {
-if (!this.mlisteners.isEmpty()) {
+            for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
 
-ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, checked_out_resource, pool_size, available_size, removed_but_unreturned_size);
+                ResourcePoolListener rpl = i.next();
+                rpl.resourceCheckedOut(evt);
+            }
+        }
+    }
 
-for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
+    public synchronized void fireResourceRemoved(Object resc, boolean checked_out_resource, int pool_size, int available_size, int removed_but_unreturned_size) {
+        if (!this.mlisteners.isEmpty()) {
 
-ResourcePoolListener rpl = i.next();
-rpl.resourceRemoved(evt);
-} 
-} 
-}
+            ResourcePoolEvent evt = new ResourcePoolEvent(this.source, resc, checked_out_resource, pool_size, available_size, removed_but_unreturned_size);
+
+            for (Iterator<ResourcePoolListener> i = this.mlisteners.iterator(); i.hasNext(); ) {
+
+                ResourcePoolListener rpl = i.next();
+                rpl.resourceRemoved(evt);
+            }
+        }
+    }
 }
 

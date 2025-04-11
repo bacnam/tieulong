@@ -1,470 +1,465 @@
 package com.mysql.jdbc;
 
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class ResultSetMetaData
-implements ResultSetMetaData
-{
-Field[] fields;
+        implements ResultSetMetaData {
+    Field[] fields;
+    boolean useOldAliasBehavior = false;
+    private ExceptionInterceptor exceptionInterceptor;
+
+    public ResultSetMetaData(Field[] fields, boolean useOldAliasBehavior, ExceptionInterceptor exceptionInterceptor) {
+        this.fields = fields;
+        this.useOldAliasBehavior = useOldAliasBehavior;
+        this.exceptionInterceptor = exceptionInterceptor;
+    }
+
+    private static int clampedGetLength(Field f) {
+        long fieldLength = f.getLength();
+
+        if (fieldLength > 2147483647L) {
+            fieldLength = 2147483647L;
+        }
+
+        return (int) fieldLength;
+    }
+
+    private static final boolean isDecimalType(int type) {
+        switch (type) {
+            case -7:
+            case -6:
+            case -5:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                return true;
+        }
+
+        return false;
+    }
+
+    static String getClassNameForJavaType(int javaType, boolean isUnsigned, int mysqlTypeIfKnown, boolean isBinaryOrBlob, boolean isOpaqueBinary) {
+        switch (javaType) {
+            case -7:
+            case 16:
+                return "java.lang.Boolean";
+
+            case -6:
+                if (isUnsigned) {
+                    return "java.lang.Integer";
+                }
+
+                return "java.lang.Integer";
+
+            case 5:
+                if (isUnsigned) {
+                    return "java.lang.Integer";
+                }
+
+                return "java.lang.Integer";
+
+            case 4:
+                if (!isUnsigned || mysqlTypeIfKnown == 9) {
+                    return "java.lang.Integer";
+                }
+
+                return "java.lang.Long";
+
+            case -5:
+                if (!isUnsigned) {
+                    return "java.lang.Long";
+                }
+
+                return "java.math.BigInteger";
+
+            case 2:
+            case 3:
+                return "java.math.BigDecimal";
+
+            case 7:
+                return "java.lang.Float";
+
+            case 6:
+            case 8:
+                return "java.lang.Double";
+
+            case -1:
+            case 1:
+            case 12:
+                if (!isOpaqueBinary) {
+                    return "java.lang.String";
+                }
+
+                return "[B";
+
+            case -4:
+            case -3:
+            case -2:
+                if (mysqlTypeIfKnown == 255)
+                    return "[B";
+                if (isBinaryOrBlob) {
+                    return "[B";
+                }
+                return "java.lang.String";
 
-private static int clampedGetLength(Field f) {
-long fieldLength = f.getLength();
+            case 91:
+                return "java.sql.Date";
 
-if (fieldLength > 2147483647L) {
-fieldLength = 2147483647L;
-}
+            case 92:
+                return "java.sql.Time";
 
-return (int)fieldLength;
-}
+            case 93:
+                return "java.sql.Timestamp";
+        }
 
-private static final boolean isDecimalType(int type) {
-switch (type) {
-case -7:
-case -6:
-case -5:
-case 2:
-case 3:
-case 4:
-case 5:
-case 6:
-case 7:
-case 8:
-return true;
-} 
+        return "java.lang.Object";
+    }
 
-return false;
-}
+    public String getCatalogName(int column) throws SQLException {
+        Field f = getField(column);
 
-boolean useOldAliasBehavior = false;
+        String database = f.getDatabaseName();
 
-private ExceptionInterceptor exceptionInterceptor;
+        return (database == null) ? "" : database;
+    }
 
-public ResultSetMetaData(Field[] fields, boolean useOldAliasBehavior, ExceptionInterceptor exceptionInterceptor) {
-this.fields = fields;
-this.useOldAliasBehavior = useOldAliasBehavior;
-this.exceptionInterceptor = exceptionInterceptor;
-}
+    public String getColumnCharacterEncoding(int column) throws SQLException {
+        String mysqlName = getColumnCharacterSet(column);
 
-public String getCatalogName(int column) throws SQLException {
-Field f = getField(column);
+        String javaName = null;
 
-String database = f.getDatabaseName();
+        if (mysqlName != null) {
+            try {
+                javaName = CharsetMapping.MYSQL_TO_JAVA_CHARSET_MAP.get(mysqlName);
+            } catch (RuntimeException ex) {
+                SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor) null);
+                sqlEx.initCause(ex);
+                throw sqlEx;
+            }
+        }
 
-return (database == null) ? "" : database;
-}
+        return javaName;
+    }
 
-public String getColumnCharacterEncoding(int column) throws SQLException {
-String mysqlName = getColumnCharacterSet(column);
+    public String getColumnCharacterSet(int column) throws SQLException {
+        return getField(column).getCharacterSet();
+    }
 
-String javaName = null;
+    public String getColumnClassName(int column) throws SQLException {
+        Field f = getField(column);
 
-if (mysqlName != null) {
-try {
-javaName = CharsetMapping.MYSQL_TO_JAVA_CHARSET_MAP.get(mysqlName);
-} catch (RuntimeException ex) {
-SQLException sqlEx = SQLError.createSQLException(ex.toString(), "S1009", (ExceptionInterceptor)null);
-sqlEx.initCause(ex);
-throw sqlEx;
-} 
-}
+        return getClassNameForJavaType(f.getSQLType(), f.isUnsigned(), f.getMysqlType(), (f.isBinary() || f.isBlob()), f.isOpaqueBinary());
+    }
 
-return javaName;
-}
+    public int getColumnCount() throws SQLException {
+        return this.fields.length;
+    }
 
-public String getColumnCharacterSet(int column) throws SQLException {
-return getField(column).getCharacterSet();
-}
+    public int getColumnDisplaySize(int column) throws SQLException {
+        Field f = getField(column);
 
-public String getColumnClassName(int column) throws SQLException {
-Field f = getField(column);
+        int lengthInBytes = clampedGetLength(f);
 
-return getClassNameForJavaType(f.getSQLType(), f.isUnsigned(), f.getMysqlType(), (f.isBinary() || f.isBlob()), f.isOpaqueBinary());
-}
+        return lengthInBytes / f.getMaxBytesPerCharacter();
+    }
 
-public int getColumnCount() throws SQLException {
-return this.fields.length;
-}
+    public String getColumnLabel(int column) throws SQLException {
+        if (this.useOldAliasBehavior) {
+            return getColumnName(column);
+        }
 
-public int getColumnDisplaySize(int column) throws SQLException {
-Field f = getField(column);
+        return getField(column).getColumnLabel();
+    }
 
-int lengthInBytes = clampedGetLength(f);
+    public String getColumnName(int column) throws SQLException {
+        if (this.useOldAliasBehavior) {
+            return getField(column).getName();
+        }
 
-return lengthInBytes / f.getMaxBytesPerCharacter();
-}
+        String name = getField(column).getNameNoAliases();
 
-public String getColumnLabel(int column) throws SQLException {
-if (this.useOldAliasBehavior) {
-return getColumnName(column);
-}
+        if (name != null && name.length() == 0) {
+            return getField(column).getName();
+        }
 
-return getField(column).getColumnLabel();
-}
+        return name;
+    }
 
-public String getColumnName(int column) throws SQLException {
-if (this.useOldAliasBehavior) {
-return getField(column).getName();
-}
+    public int getColumnType(int column) throws SQLException {
+        return getField(column).getSQLType();
+    }
 
-String name = getField(column).getNameNoAliases();
+    public String getColumnTypeName(int column) throws SQLException {
+        Field field = getField(column);
 
-if (name != null && name.length() == 0) {
-return getField(column).getName();
-}
+        int mysqlType = field.getMysqlType();
+        int jdbcType = field.getSQLType();
 
-return name;
-}
+        switch (mysqlType) {
+            case 16:
+                return "BIT";
+            case 0:
+            case 246:
+                return field.isUnsigned() ? "DECIMAL UNSIGNED" : "DECIMAL";
 
-public int getColumnType(int column) throws SQLException {
-return getField(column).getSQLType();
-}
+            case 1:
+                return field.isUnsigned() ? "TINYINT UNSIGNED" : "TINYINT";
 
-public String getColumnTypeName(int column) throws SQLException {
-Field field = getField(column);
+            case 2:
+                return field.isUnsigned() ? "SMALLINT UNSIGNED" : "SMALLINT";
 
-int mysqlType = field.getMysqlType();
-int jdbcType = field.getSQLType();
+            case 3:
+                return field.isUnsigned() ? "INT UNSIGNED" : "INT";
 
-switch (mysqlType) {
-case 16:
-return "BIT";
-case 0:
-case 246:
-return field.isUnsigned() ? "DECIMAL UNSIGNED" : "DECIMAL";
+            case 4:
+                return field.isUnsigned() ? "FLOAT UNSIGNED" : "FLOAT";
 
-case 1:
-return field.isUnsigned() ? "TINYINT UNSIGNED" : "TINYINT";
+            case 5:
+                return field.isUnsigned() ? "DOUBLE UNSIGNED" : "DOUBLE";
 
-case 2:
-return field.isUnsigned() ? "SMALLINT UNSIGNED" : "SMALLINT";
+            case 6:
+                return "NULL";
 
-case 3:
-return field.isUnsigned() ? "INT UNSIGNED" : "INT";
+            case 7:
+                return "TIMESTAMP";
 
-case 4:
-return field.isUnsigned() ? "FLOAT UNSIGNED" : "FLOAT";
+            case 8:
+                return field.isUnsigned() ? "BIGINT UNSIGNED" : "BIGINT";
 
-case 5:
-return field.isUnsigned() ? "DOUBLE UNSIGNED" : "DOUBLE";
+            case 9:
+                return field.isUnsigned() ? "MEDIUMINT UNSIGNED" : "MEDIUMINT";
 
-case 6:
-return "NULL";
+            case 10:
+                return "DATE";
 
-case 7:
-return "TIMESTAMP";
+            case 11:
+                return "TIME";
 
-case 8:
-return field.isUnsigned() ? "BIGINT UNSIGNED" : "BIGINT";
+            case 12:
+                return "DATETIME";
 
-case 9:
-return field.isUnsigned() ? "MEDIUMINT UNSIGNED" : "MEDIUMINT";
+            case 249:
+                return "TINYBLOB";
 
-case 10:
-return "DATE";
+            case 250:
+                return "MEDIUMBLOB";
 
-case 11:
-return "TIME";
+            case 251:
+                return "LONGBLOB";
 
-case 12:
-return "DATETIME";
+            case 252:
+                if (getField(column).isBinary()) {
+                    return "BLOB";
+                }
 
-case 249:
-return "TINYBLOB";
+                return "TEXT";
 
-case 250:
-return "MEDIUMBLOB";
+            case 15:
+                return "VARCHAR";
 
-case 251:
-return "LONGBLOB";
+            case 253:
+                if (jdbcType == -3) {
+                    return "VARBINARY";
+                }
 
-case 252:
-if (getField(column).isBinary()) {
-return "BLOB";
-}
+                return "VARCHAR";
 
-return "TEXT";
+            case 254:
+                if (jdbcType == -2) {
+                    return "BINARY";
+                }
 
-case 15:
-return "VARCHAR";
+                return "CHAR";
 
-case 253:
-if (jdbcType == -3) {
-return "VARBINARY";
-}
+            case 247:
+                return "ENUM";
 
-return "VARCHAR";
+            case 13:
+                return "YEAR";
 
-case 254:
-if (jdbcType == -2) {
-return "BINARY";
-}
+            case 248:
+                return "SET";
 
-return "CHAR";
+            case 255:
+                return "GEOMETRY";
+        }
 
-case 247:
-return "ENUM";
+        return "UNKNOWN";
+    }
 
-case 13:
-return "YEAR";
+    protected Field getField(int columnIndex) throws SQLException {
+        if (columnIndex < 1 || columnIndex > this.fields.length) {
+            throw SQLError.createSQLException(Messages.getString("ResultSetMetaData.46"), "S1002", this.exceptionInterceptor);
+        }
 
-case 248:
-return "SET";
+        return this.fields[columnIndex - 1];
+    }
 
-case 255:
-return "GEOMETRY";
-} 
+    public int getPrecision(int column) throws SQLException {
+        Field f = getField(column);
 
-return "UNKNOWN";
-}
+        if (isDecimalType(f.getSQLType())) {
+            if (f.getDecimals() > 0) {
+                return clampedGetLength(f) - 1 + f.getPrecisionAdjustFactor();
+            }
 
-protected Field getField(int columnIndex) throws SQLException {
-if (columnIndex < 1 || columnIndex > this.fields.length) {
-throw SQLError.createSQLException(Messages.getString("ResultSetMetaData.46"), "S1002", this.exceptionInterceptor);
-}
+            return clampedGetLength(f) + f.getPrecisionAdjustFactor();
+        }
 
-return this.fields[columnIndex - 1];
-}
+        switch (f.getMysqlType()) {
+            case 249:
+            case 250:
+            case 251:
+            case 252:
+                return clampedGetLength(f);
+        }
 
-public int getPrecision(int column) throws SQLException {
-Field f = getField(column);
+        return clampedGetLength(f) / f.getMaxBytesPerCharacter();
+    }
 
-if (isDecimalType(f.getSQLType())) {
-if (f.getDecimals() > 0) {
-return clampedGetLength(f) - 1 + f.getPrecisionAdjustFactor();
-}
+    public int getScale(int column) throws SQLException {
+        Field f = getField(column);
 
-return clampedGetLength(f) + f.getPrecisionAdjustFactor();
-} 
+        if (isDecimalType(f.getSQLType())) {
+            return f.getDecimals();
+        }
 
-switch (f.getMysqlType()) {
-case 249:
-case 250:
-case 251:
-case 252:
-return clampedGetLength(f);
-} 
+        return 0;
+    }
 
-return clampedGetLength(f) / f.getMaxBytesPerCharacter();
-}
+    public String getSchemaName(int column) throws SQLException {
+        return "";
+    }
 
-public int getScale(int column) throws SQLException {
-Field f = getField(column);
+    public String getTableName(int column) throws SQLException {
+        if (this.useOldAliasBehavior) {
+            return getField(column).getTableName();
+        }
 
-if (isDecimalType(f.getSQLType())) {
-return f.getDecimals();
-}
+        return getField(column).getTableNameNoAliases();
+    }
 
-return 0;
-}
+    public boolean isAutoIncrement(int column) throws SQLException {
+        Field f = getField(column);
 
-public String getSchemaName(int column) throws SQLException {
-return "";
-}
+        return f.isAutoIncrement();
+    }
 
-public String getTableName(int column) throws SQLException {
-if (this.useOldAliasBehavior) {
-return getField(column).getTableName();
-}
+    public boolean isCaseSensitive(int column) throws SQLException {
+        String collationName;
+        Field field = getField(column);
 
-return getField(column).getTableNameNoAliases();
-}
+        int sqlType = field.getSQLType();
 
-public boolean isAutoIncrement(int column) throws SQLException {
-Field f = getField(column);
+        switch (sqlType) {
+            case -7:
+            case -6:
+            case -5:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 91:
+            case 92:
+            case 93:
+                return false;
 
-return f.isAutoIncrement();
-}
+            case -1:
+            case 1:
+            case 12:
+                if (field.isBinary()) {
+                    return true;
+                }
 
-public boolean isCaseSensitive(int column) throws SQLException {
-String collationName;
-Field field = getField(column);
+                collationName = field.getCollation();
 
-int sqlType = field.getSQLType();
+                return (collationName != null && !collationName.endsWith("_ci"));
+        }
 
-switch (sqlType) {
-case -7:
-case -6:
-case -5:
-case 4:
-case 5:
-case 6:
-case 7:
-case 8:
-case 91:
-case 92:
-case 93:
-return false;
+        return true;
+    }
 
-case -1:
-case 1:
-case 12:
-if (field.isBinary()) {
-return true;
-}
+    public boolean isCurrency(int column) throws SQLException {
+        return false;
+    }
 
-collationName = field.getCollation();
+    public boolean isDefinitelyWritable(int column) throws SQLException {
+        return isWritable(column);
+    }
 
-return (collationName != null && !collationName.endsWith("_ci"));
-} 
+    public int isNullable(int column) throws SQLException {
+        if (!getField(column).isNotNull()) {
+            return 1;
+        }
 
-return true;
-}
+        return 0;
+    }
 
-public boolean isCurrency(int column) throws SQLException {
-return false;
-}
+    public boolean isReadOnly(int column) throws SQLException {
+        return getField(column).isReadOnly();
+    }
 
-public boolean isDefinitelyWritable(int column) throws SQLException {
-return isWritable(column);
-}
+    public boolean isSearchable(int column) throws SQLException {
+        return true;
+    }
 
-public int isNullable(int column) throws SQLException {
-if (!getField(column).isNotNull()) {
-return 1;
-}
+    public boolean isSigned(int column) throws SQLException {
+        Field f = getField(column);
+        int sqlType = f.getSQLType();
 
-return 0;
-}
+        switch (sqlType) {
+            case -6:
+            case -5:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                return !f.isUnsigned();
 
-public boolean isReadOnly(int column) throws SQLException {
-return getField(column).isReadOnly();
-}
+            case 91:
+            case 92:
+            case 93:
+                return false;
+        }
 
-public boolean isSearchable(int column) throws SQLException {
-return true;
-}
+        return false;
+    }
 
-public boolean isSigned(int column) throws SQLException {
-Field f = getField(column);
-int sqlType = f.getSQLType();
+    public boolean isWritable(int column) throws SQLException {
+        return !isReadOnly(column);
+    }
 
-switch (sqlType) {
-case -6:
-case -5:
-case 2:
-case 3:
-case 4:
-case 5:
-case 6:
-case 7:
-case 8:
-return !f.isUnsigned();
+    public String toString() {
+        StringBuffer toStringBuf = new StringBuffer();
+        toStringBuf.append(super.toString());
+        toStringBuf.append(" - Field level information: ");
 
-case 91:
-case 92:
-case 93:
-return false;
-} 
+        for (int i = 0; i < this.fields.length; i++) {
+            toStringBuf.append("\n\t");
+            toStringBuf.append(this.fields[i].toString());
+        }
 
-return false;
-}
+        return toStringBuf.toString();
+    }
 
-public boolean isWritable(int column) throws SQLException {
-return !isReadOnly(column);
-}
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return iface.isInstance(this);
+    }
 
-public String toString() {
-StringBuffer toStringBuf = new StringBuffer();
-toStringBuf.append(super.toString());
-toStringBuf.append(" - Field level information: ");
-
-for (int i = 0; i < this.fields.length; i++) {
-toStringBuf.append("\n\t");
-toStringBuf.append(this.fields[i].toString());
-} 
-
-return toStringBuf.toString();
-}
-
-static String getClassNameForJavaType(int javaType, boolean isUnsigned, int mysqlTypeIfKnown, boolean isBinaryOrBlob, boolean isOpaqueBinary) {
-switch (javaType) {
-case -7:
-case 16:
-return "java.lang.Boolean";
-
-case -6:
-if (isUnsigned) {
-return "java.lang.Integer";
-}
-
-return "java.lang.Integer";
-
-case 5:
-if (isUnsigned) {
-return "java.lang.Integer";
-}
-
-return "java.lang.Integer";
-
-case 4:
-if (!isUnsigned || mysqlTypeIfKnown == 9)
-{
-return "java.lang.Integer";
-}
-
-return "java.lang.Long";
-
-case -5:
-if (!isUnsigned) {
-return "java.lang.Long";
-}
-
-return "java.math.BigInteger";
-
-case 2:
-case 3:
-return "java.math.BigDecimal";
-
-case 7:
-return "java.lang.Float";
-
-case 6:
-case 8:
-return "java.lang.Double";
-
-case -1:
-case 1:
-case 12:
-if (!isOpaqueBinary) {
-return "java.lang.String";
-}
-
-return "[B";
-
-case -4:
-case -3:
-case -2:
-if (mysqlTypeIfKnown == 255)
-return "[B"; 
-if (isBinaryOrBlob) {
-return "[B";
-}
-return "java.lang.String";
-
-case 91:
-return "java.sql.Date";
-
-case 92:
-return "java.sql.Time";
-
-case 93:
-return "java.sql.Timestamp";
-} 
-
-return "java.lang.Object";
-}
-
-public boolean isWrapperFor(Class<?> iface) throws SQLException {
-return iface.isInstance(this);
-}
-
-public Object unwrap(Class<?> iface) throws SQLException {
-try {
-return Util.cast(iface, this);
-} catch (ClassCastException cce) {
-throw SQLError.createSQLException("Unable to unwrap to " + iface.toString(), "S1009", this.exceptionInterceptor);
-} 
-}
+    public Object unwrap(Class<?> iface) throws SQLException {
+        try {
+            return Util.cast(iface, this);
+        } catch (ClassCastException cce) {
+            throw SQLError.createSQLException("Unable to unwrap to " + iface.toString(), "S1009", this.exceptionInterceptor);
+        }
+    }
 }
 

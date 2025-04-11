@@ -4,6 +4,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.spi.ContextAware;
 
 public interface LoggerContextAware extends ContextAware {
-  void setLoggerContext(LoggerContext paramLoggerContext);
+    void setLoggerContext(LoggerContext paramLoggerContext);
 }
 

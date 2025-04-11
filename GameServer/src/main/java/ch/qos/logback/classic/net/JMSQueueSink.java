@@ -4,30 +4,50 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.util.ContextInitializer;
+import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Properties;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueSession;
+import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
-
-import org.slf4j.LoggerFactory;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
 public class JMSQueueSink
         implements MessageListener {
     private Logger logger = (Logger) LoggerFactory.getLogger(JMSTopicSink.class);
+
+    public JMSQueueSink(String qcfBindingName, String queueBindingName, String username, String password) {
+        try {
+            Properties env = new Properties();
+            env.put("java.naming.factory.initial", "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
+            env.put("java.naming.provider.url", "tcp:");
+            Context ctx = new InitialContext(env);
+
+            QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) lookup(ctx, qcfBindingName);
+
+            System.out.println("Queue Cnx Factory found");
+            Queue queue = (Queue) ctx.lookup(queueBindingName);
+            System.out.println("Queue found: " + queue.getQueueName());
+
+            QueueConnection queueConnection = queueConnectionFactory.createQueueConnection(username, password);
+
+            System.out.println("Queue Connection created");
+
+            QueueSession queueSession = queueConnection.createQueueSession(false, 1);
+
+            MessageConsumer queueConsumer = queueSession.createConsumer((Destination) queue);
+
+            queueConsumer.setMessageListener(this);
+
+            queueConnection.start();
+            System.out.println("Queue Connection started");
+        } catch (Exception e) {
+            this.logger.error("Could not read JMS message.", e);
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
@@ -61,34 +81,11 @@ public class JMSQueueSink
         }
     }
 
-    public JMSQueueSink(String qcfBindingName, String queueBindingName, String username, String password) {
-        try {
-            Properties env = new Properties();
-            env.put("java.naming.factory.initial", "org.apache.activemq.jndi.ActiveMQInitialContextFactory");
-            env.put("java.naming.provider.url", "tcp:");
-            Context ctx = new InitialContext(env);
+    static void usage(String msg) {
+        System.err.println(msg);
+        System.err.println("Usage: java " + JMSQueueSink.class.getName() + " QueueConnectionFactoryBindingName QueueBindingName Username Password");
 
-            QueueConnectionFactory queueConnectionFactory = (QueueConnectionFactory) lookup(ctx, qcfBindingName);
-
-            System.out.println("Queue Cnx Factory found");
-            Queue queue = (Queue) ctx.lookup(queueBindingName);
-            System.out.println("Queue found: " + queue.getQueueName());
-
-            QueueConnection queueConnection = queueConnectionFactory.createQueueConnection(username, password);
-
-            System.out.println("Queue Connection created");
-
-            QueueSession queueSession = queueConnection.createQueueSession(false, 1);
-
-            MessageConsumer queueConsumer = queueSession.createConsumer((Destination) queue);
-
-            queueConsumer.setMessageListener(this);
-
-            queueConnection.start();
-            System.out.println("Queue Connection started");
-        } catch (Exception e) {
-            this.logger.error("Could not read JMS message.", e);
-        }
+        System.exit(1);
     }
 
     public void onMessage(Message message) {
@@ -114,13 +111,6 @@ public class JMSQueueSink
             this.logger.error("Could not find name [" + name + "].");
             throw e;
         }
-    }
-
-    static void usage(String msg) {
-        System.err.println(msg);
-        System.err.println("Usage: java " + JMSQueueSink.class.getName() + " QueueConnectionFactoryBindingName QueueBindingName Username Password");
-
-        System.exit(1);
     }
 }
 

@@ -1,169 +1,167 @@
 package org.junit.internal.runners;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import junit.extensions.TestDecorator;
-import junit.framework.AssertionFailedError;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestListener;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import junit.framework.*;
 import org.junit.runner.Describable;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
-import org.junit.runner.manipulation.Filter;
-import org.junit.runner.manipulation.Filterable;
-import org.junit.runner.manipulation.NoTestsRemainException;
-import org.junit.runner.manipulation.Sortable;
-import org.junit.runner.manipulation.Sorter;
+import org.junit.runner.manipulation.*;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 public class JUnit38ClassRunner
-extends Runner implements Filterable, Sortable {
-private volatile Test test;
+        extends Runner implements Filterable, Sortable {
+    private volatile Test test;
 
-private static final class OldTestClassAdaptingListener implements TestListener {
-private OldTestClassAdaptingListener(RunNotifier notifier) {
-this.notifier = notifier;
-}
-private final RunNotifier notifier;
-public void endTest(Test test) {
-this.notifier.fireTestFinished(asDescription(test));
-}
+    public JUnit38ClassRunner(Class<?> klass) {
+        this((Test) new TestSuite(klass.asSubclass(TestCase.class)));
+    }
 
-public void startTest(Test test) {
-this.notifier.fireTestStarted(asDescription(test));
-}
+    public JUnit38ClassRunner(Test test) {
+        setTest(test);
+    }
 
-public void addError(Test test, Throwable e) {
-Failure failure = new Failure(asDescription(test), e);
-this.notifier.fireTestFailure(failure);
-}
+    private static Description makeDescription(Test test) {
+        if (test instanceof TestCase) {
+            TestCase tc = (TestCase) test;
+            return Description.createTestDescription(tc.getClass(), tc.getName(), getAnnotations(tc));
+        }
+        if (test instanceof TestSuite) {
+            TestSuite ts = (TestSuite) test;
+            String name = (ts.getName() == null) ? createSuiteDescription(ts) : ts.getName();
+            Description description = Description.createSuiteDescription(name, new Annotation[0]);
+            int n = ts.testCount();
+            for (int i = 0; i < n; i++) {
+                Description made = makeDescription(ts.testAt(i));
+                description.addChild(made);
+            }
+            return description;
+        }
+        if (test instanceof Describable) {
+            Describable adapter = (Describable) test;
+            return adapter.getDescription();
+        }
+        if (test instanceof TestDecorator) {
+            TestDecorator decorator = (TestDecorator) test;
+            return makeDescription(decorator.getTest());
+        }
 
-private Description asDescription(Test test) {
-if (test instanceof Describable) {
-Describable facade = (Describable)test;
-return facade.getDescription();
-} 
-return Description.createTestDescription(getEffectiveClass(test), getName(test));
-}
+        return Description.createSuiteDescription(test.getClass());
+    }
 
-private Class<? extends Test> getEffectiveClass(Test test) {
-return (Class)test.getClass();
-}
+    private static Annotation[] getAnnotations(TestCase test) {
 
-private String getName(Test test) {
-if (test instanceof TestCase) {
-return ((TestCase)test).getName();
-}
-return test.toString();
-}
+        try {
+            Method m = test.getClass().getMethod(test.getName(), new Class[0]);
+            return m.getDeclaredAnnotations();
+        } catch (SecurityException e) {
+        } catch (NoSuchMethodException e) {
+        }
 
-public void addFailure(Test test, AssertionFailedError t) {
-addError(test, (Throwable)t);
-}
-}
+        return new Annotation[0];
+    }
 
-public JUnit38ClassRunner(Class<?> klass) {
-this((Test)new TestSuite(klass.asSubclass(TestCase.class)));
-}
+    private static String createSuiteDescription(TestSuite ts) {
+        int count = ts.countTestCases();
+        String example = (count == 0) ? "" : String.format(" [example: %s]", new Object[]{ts.testAt(0)});
+        return String.format("TestSuite with %s tests%s", new Object[]{Integer.valueOf(count), example});
+    }
 
-public JUnit38ClassRunner(Test test) {
-setTest(test);
-}
+    public void run(RunNotifier notifier) {
+        TestResult result = new TestResult();
+        result.addListener(createAdaptingListener(notifier));
+        getTest().run(result);
+    }
 
-public void run(RunNotifier notifier) {
-TestResult result = new TestResult();
-result.addListener(createAdaptingListener(notifier));
-getTest().run(result);
-}
+    public TestListener createAdaptingListener(RunNotifier notifier) {
+        return new OldTestClassAdaptingListener(notifier);
+    }
 
-public TestListener createAdaptingListener(RunNotifier notifier) {
-return new OldTestClassAdaptingListener(notifier);
-}
+    public Description getDescription() {
+        return makeDescription(getTest());
+    }
 
-public Description getDescription() {
-return makeDescription(getTest());
-}
+    public void filter(Filter filter) throws NoTestsRemainException {
+        if (getTest() instanceof Filterable) {
+            Filterable adapter = (Filterable) getTest();
+            adapter.filter(filter);
+        } else if (getTest() instanceof TestSuite) {
+            TestSuite suite = (TestSuite) getTest();
+            TestSuite filtered = new TestSuite(suite.getName());
+            int n = suite.testCount();
+            for (int i = 0; i < n; i++) {
+                Test test = suite.testAt(i);
+                if (filter.shouldRun(makeDescription(test))) {
+                    filtered.addTest(test);
+                }
+            }
+            setTest((Test) filtered);
+            if (filtered.testCount() == 0) {
+                throw new NoTestsRemainException();
+            }
+        }
+    }
 
-private static Description makeDescription(Test test) {
-if (test instanceof TestCase) {
-TestCase tc = (TestCase)test;
-return Description.createTestDescription(tc.getClass(), tc.getName(), getAnnotations(tc));
-} 
-if (test instanceof TestSuite) {
-TestSuite ts = (TestSuite)test;
-String name = (ts.getName() == null) ? createSuiteDescription(ts) : ts.getName();
-Description description = Description.createSuiteDescription(name, new Annotation[0]);
-int n = ts.testCount();
-for (int i = 0; i < n; i++) {
-Description made = makeDescription(ts.testAt(i));
-description.addChild(made);
-} 
-return description;
-}  if (test instanceof Describable) {
-Describable adapter = (Describable)test;
-return adapter.getDescription();
-}  if (test instanceof TestDecorator) {
-TestDecorator decorator = (TestDecorator)test;
-return makeDescription(decorator.getTest());
-} 
+    public void sort(Sorter sorter) {
+        if (getTest() instanceof Sortable) {
+            Sortable adapter = (Sortable) getTest();
+            adapter.sort(sorter);
+        }
+    }
 
-return Description.createSuiteDescription(test.getClass());
-}
+    private Test getTest() {
+        return this.test;
+    }
 
-private static Annotation[] getAnnotations(TestCase test) {
+    private void setTest(Test test) {
+        this.test = test;
+    }
 
-try { Method m = test.getClass().getMethod(test.getName(), new Class[0]);
-return m.getDeclaredAnnotations(); }
-catch (SecurityException e) {  }
-catch (NoSuchMethodException e) {}
+    private static final class OldTestClassAdaptingListener implements TestListener {
+        private final RunNotifier notifier;
 
-return new Annotation[0];
-}
+        private OldTestClassAdaptingListener(RunNotifier notifier) {
+            this.notifier = notifier;
+        }
 
-private static String createSuiteDescription(TestSuite ts) {
-int count = ts.countTestCases();
-String example = (count == 0) ? "" : String.format(" [example: %s]", new Object[] { ts.testAt(0) });
-return String.format("TestSuite with %s tests%s", new Object[] { Integer.valueOf(count), example });
-}
+        public void endTest(Test test) {
+            this.notifier.fireTestFinished(asDescription(test));
+        }
 
-public void filter(Filter filter) throws NoTestsRemainException {
-if (getTest() instanceof Filterable) {
-Filterable adapter = (Filterable)getTest();
-adapter.filter(filter);
-} else if (getTest() instanceof TestSuite) {
-TestSuite suite = (TestSuite)getTest();
-TestSuite filtered = new TestSuite(suite.getName());
-int n = suite.testCount();
-for (int i = 0; i < n; i++) {
-Test test = suite.testAt(i);
-if (filter.shouldRun(makeDescription(test))) {
-filtered.addTest(test);
-}
-} 
-setTest((Test)filtered);
-if (filtered.testCount() == 0) {
-throw new NoTestsRemainException();
-}
-} 
-}
+        public void startTest(Test test) {
+            this.notifier.fireTestStarted(asDescription(test));
+        }
 
-public void sort(Sorter sorter) {
-if (getTest() instanceof Sortable) {
-Sortable adapter = (Sortable)getTest();
-adapter.sort(sorter);
-} 
-}
+        public void addError(Test test, Throwable e) {
+            Failure failure = new Failure(asDescription(test), e);
+            this.notifier.fireTestFailure(failure);
+        }
 
-private void setTest(Test test) {
-this.test = test;
-}
+        private Description asDescription(Test test) {
+            if (test instanceof Describable) {
+                Describable facade = (Describable) test;
+                return facade.getDescription();
+            }
+            return Description.createTestDescription(getEffectiveClass(test), getName(test));
+        }
 
-private Test getTest() {
-return this.test;
-}
+        private Class<? extends Test> getEffectiveClass(Test test) {
+            return (Class) test.getClass();
+        }
+
+        private String getName(Test test) {
+            if (test instanceof TestCase) {
+                return ((TestCase) test).getName();
+            }
+            return test.toString();
+        }
+
+        public void addFailure(Test test, AssertionFailedError t) {
+            addError(test, (Throwable) t);
+        }
+    }
 }
 

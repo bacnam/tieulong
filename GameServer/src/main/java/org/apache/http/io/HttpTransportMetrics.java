@@ -1,8 +1,8 @@
 package org.apache.http.io;
 
 public interface HttpTransportMetrics {
-  long getBytesTransferred();
+    long getBytesTransferred();
 
-  void reset();
+    void reset();
 }
 

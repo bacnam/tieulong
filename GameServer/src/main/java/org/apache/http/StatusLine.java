@@ -1,10 +1,10 @@
 package org.apache.http;
 
 public interface StatusLine {
-  ProtocolVersion getProtocolVersion();
+    ProtocolVersion getProtocolVersion();
 
-  int getStatusCode();
+    int getStatusCode();
 
-  String getReasonPhrase();
+    String getReasonPhrase();
 }
 

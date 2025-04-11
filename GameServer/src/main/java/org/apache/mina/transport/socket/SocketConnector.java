@@ -1,13 +1,14 @@
 package org.apache.mina.transport.socket;
 
-import java.net.InetSocketAddress;
 import org.apache.mina.core.service.IoConnector;
 
+import java.net.InetSocketAddress;
+
 public interface SocketConnector extends IoConnector {
-  InetSocketAddress getDefaultRemoteAddress();
+    InetSocketAddress getDefaultRemoteAddress();
 
-  SocketSessionConfig getSessionConfig();
+    void setDefaultRemoteAddress(InetSocketAddress paramInetSocketAddress);
 
-  void setDefaultRemoteAddress(InetSocketAddress paramInetSocketAddress);
+    SocketSessionConfig getSessionConfig();
 }
 

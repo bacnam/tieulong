@@ -1,12 +1,12 @@
 package com.mchange.net;
 
 public class ProtocolException
-extends Exception
-{
-public ProtocolException() {}
+        extends Exception {
+    public ProtocolException() {
+    }
 
-public ProtocolException(String paramString) {
-super(paramString);
-}
+    public ProtocolException(String paramString) {
+        super(paramString);
+    }
 }
 

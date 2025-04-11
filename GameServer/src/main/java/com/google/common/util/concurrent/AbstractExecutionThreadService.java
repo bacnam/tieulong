@@ -22,7 +22,8 @@ public abstract class AbstractExecutionThreadService implements Service {
                             } catch (Throwable t) {
                                 try {
                                     AbstractExecutionThreadService.this.shutDown();
-                                } catch (Exception ignored) {}
+                                } catch (Exception ignored) {
+                                }
                                 throw t;
                             }
                         }

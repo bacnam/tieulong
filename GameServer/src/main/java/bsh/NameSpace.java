@@ -1,10 +1,6 @@
 package bsh;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
@@ -19,67 +15,26 @@ public class NameSpace
         JAVACODE.isMethod = true;
     }
 
-    private String nsName;
-
-    private NameSpace parent;
-
-    private Hashtable variables;
-
-    private Hashtable methods;
-
     protected Hashtable importedClasses;
-
-    private Vector importedPackages;
-
-    private Vector importedCommands;
-
-    private Vector importedObjects;
-
-    private Vector importedStatic;
-
-    private String packageName;
-
-    private transient BshClassManager classManager;
-
-    private This thisReference;
-
-    private Hashtable names;
-
     SimpleNode callerInfoNode;
-
     boolean isMethod;
-
     boolean isClass;
-
     Class classStatic;
-
     Object classInstance;
-
-    private transient Hashtable classCache;
-
     Vector nameSourceListeners;
-
-    void setClassStatic(Class clas) {
-        this.classStatic = clas;
-        importStatic(clas);
-    }
-
-    void setClassInstance(Object instance) {
-        this.classInstance = instance;
-        importObject(instance);
-    }
-
-    Object getClassInstance() throws UtilEvalError {
-        if (this.classInstance != null) {
-            return this.classInstance;
-        }
-        if (this.classStatic != null) {
-
-            throw new UtilEvalError("Can't refer to class instance from static context.");
-        }
-
-        throw new InterpreterError("Can't resolve class instance 'this' in: " + this);
-    }
+    private String nsName;
+    private NameSpace parent;
+    private Hashtable variables;
+    private Hashtable methods;
+    private Vector importedPackages;
+    private Vector importedCommands;
+    private Vector importedObjects;
+    private Vector importedStatic;
+    private String packageName;
+    private transient BshClassManager classManager;
+    private This thisReference;
+    private Hashtable names;
+    private transient Hashtable classCache;
 
     public NameSpace(NameSpace parent, String name) {
         this(parent, null, name);
@@ -99,16 +54,38 @@ public class NameSpace
         }
     }
 
-    public void setName(String name) {
-        this.nsName = name;
+    public static Class identifierToClass(ClassIdentifier ci) {
+        return ci.getTargetClass();
+    }
+
+    void setClassStatic(Class clas) {
+        this.classStatic = clas;
+        importStatic(clas);
+    }
+
+    Object getClassInstance() throws UtilEvalError {
+        if (this.classInstance != null) {
+            return this.classInstance;
+        }
+        if (this.classStatic != null) {
+
+            throw new UtilEvalError("Can't refer to class instance from static context.");
+        }
+
+        throw new InterpreterError("Can't resolve class instance 'this' in: " + this);
+    }
+
+    void setClassInstance(Object instance) {
+        this.classInstance = instance;
+        importObject(instance);
     }
 
     public String getName() {
         return this.nsName;
     }
 
-    void setNode(SimpleNode node) {
-        this.callerInfoNode = node;
+    public void setName(String name) {
+        this.nsName = name;
     }
 
     SimpleNode getNode() {
@@ -118,6 +95,10 @@ public class NameSpace
             return this.parent.getNode();
         }
         return null;
+    }
+
+    void setNode(SimpleNode node) {
+        this.callerInfoNode = node;
     }
 
     public Object get(String name, Interpreter interpreter) throws UtilEvalError {
@@ -239,6 +220,14 @@ public class NameSpace
         return this.parent;
     }
 
+    public void setParent(NameSpace parent) {
+        this.parent = parent;
+
+        if (parent == null) {
+            loadDefaultImports();
+        }
+    }
+
     public This getSuper(Interpreter declaringInterpreter) {
         if (this.parent != null) {
             return this.parent.getThis(declaringInterpreter);
@@ -285,14 +274,6 @@ public class NameSpace
         setParent(null);
     }
 
-    public void setParent(NameSpace parent) {
-        this.parent = parent;
-
-        if (parent == null) {
-            loadDefaultImports();
-        }
-    }
-
     public Object getVariable(String name) throws UtilEvalError {
         return getVariable(name, true);
     }
@@ -327,7 +308,7 @@ public class NameSpace
             return new Variable[0];
         Variable[] vars = new Variable[this.variables.size()];
         int i = 0;
-        for (Enumeration<Variable> e = this.variables.elements(); e.hasMoreElements();)
+        for (Enumeration<Variable> e = this.variables.elements(); e.hasMoreElements(); )
             vars[i++] = e.nextElement();
         return vars;
     }
@@ -410,7 +391,7 @@ public class NameSpace
                     ma = new BshMethod[vm.size()];
                     vm.copyInto((Object[]) ma);
                 } else {
-                    ma = new BshMethod[] { (BshMethod) m };
+                    ma = new BshMethod[]{(BshMethod) m};
                 }
 
                 Class[][] candidates = new Class[ma.length][];
@@ -571,7 +552,7 @@ public class NameSpace
     }
 
     private BshMethod loadScriptedCommand(InputStream in, String name, Class[] argTypes, String resourcePath,
-            Interpreter interpreter) throws UtilEvalError {
+                                          Interpreter interpreter) throws UtilEvalError {
         try {
             interpreter.eval(new InputStreamReader(in), this, resourcePath);
         } catch (EvalError e) {
@@ -660,9 +641,7 @@ public class NameSpace
                         clas = getNameResolver(fullname).toClass();
                     } catch (ClassNotFoundException e) {
                     }
-                }
-
-                else if (Interpreter.DEBUG) {
+                } else if (Interpreter.DEBUG) {
                     Interpreter.debug("imported unpackaged name not found:" + fullname);
                 }
 
@@ -754,7 +733,7 @@ public class NameSpace
     }
 
     public Object invokeMethod(String methodName, Object[] args, Interpreter interpreter, CallStack callstack,
-            SimpleNode callerInfo) throws EvalError {
+                               SimpleNode callerInfo) throws EvalError {
         return getThis(interpreter).invokeMethod(methodName, args, interpreter, callstack, callerInfo, false);
     }
 
@@ -811,10 +790,6 @@ public class NameSpace
         return "<invoked from Java code>";
     }
 
-    public static Class identifierToClass(ClassIdentifier ci) {
-        return ci.getTargetClass();
-    }
-
     public void clear() {
         this.variables = null;
         this.methods = null;
@@ -852,10 +827,6 @@ public class NameSpace
         nameSpaceChanged();
     }
 
-    void setPackage(String packageName) {
-        this.packageName = packageName;
-    }
-
     String getPackage() {
         if (this.packageName != null) {
             return this.packageName;
@@ -864,5 +835,9 @@ public class NameSpace
             return this.parent.getPackage();
         }
         return null;
+    }
+
+    void setPackage(String packageName) {
+        this.packageName = packageName;
     }
 }
