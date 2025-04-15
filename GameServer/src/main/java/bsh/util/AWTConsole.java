@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.peer.TextComponentPeer;
 import java.io.*;
 import java.util.Vector;
 
@@ -159,8 +158,8 @@ public class AWTConsole
     }
 
     public void setCaretPosition(int pos) {
-        ((TextComponentPeer) getPeer()).setCaretPosition(pos + countNLs());
-    }
+        super.setCaretPosition(pos + countNLs());
+    }    
 
     private int countNLs() {
         String s = getText();
@@ -196,12 +195,12 @@ public class AWTConsole
         if (this.histLine == 0) {
             showline = this.startedLine;
         } else {
-            showline = this.history.elementAt(this.history.size() - this.histLine);
+            showline = (String) this.history.elementAt(this.history.size() - this.histLine);
         }
         replaceRange(showline, this.textLength - this.line.length(), this.textLength);
         this.line = new StringBuffer(showline);
         this.textLength = getText().length();
-    }
+    }    
 
     private void acceptLine(String line) {
         if (this.outPipe == null) {

@@ -156,7 +156,7 @@ public class MysqlDataSource
 
     public String getUrl() {
         if (!this.explicitUrl) {
-            String builtUrl = "jdbc:mysql:
+            String builtUrl = "jdbc:mysql:";
             builtUrl = builtUrl + getServerName() + ":" + getPort() + "/" + getDatabaseName();
 
             return builtUrl;

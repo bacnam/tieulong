@@ -354,7 +354,7 @@ public class ClassBrowser
     public void valueChanged(ListSelectionEvent e) {
         if (e.getSource() == this.classlist) {
 
-            String methodLineString, classname = this.classlist.getSelectedValue();
+            String methodLineString, classname = this.classlist.getSelectedValue().toString();
             setMlist(classname);
 
             if (classname == null) {
@@ -496,13 +496,13 @@ public class ClassBrowser
 
         void mapNodes(TreeNode node) {
             addNodeMap(node);
-
-            Enumeration<TreeNode> e = node.children();
+        
+            Enumeration<? extends TreeNode> e = node.children();
             while (e.hasMoreElements()) {
                 TreeNode tn = e.nextElement();
                 mapNodes(tn);
             }
-        }
+        }        
 
         void addNodeMap(TreeNode node) {
             StringBuffer sb = new StringBuffer();

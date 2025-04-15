@@ -60,11 +60,11 @@ public class Parser
         this.jj_ntk = -1;
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87; ) {
+        for (i = 0; i < 87;) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length; ) {
+        for (i = 0; i < this.jj_2_rtns.length;) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -81,11 +81,11 @@ public class Parser
         this.jj_ntk = -1;
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87; ) {
+        for (i = 0; i < 87;) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length; ) {
+        for (i = 0; i < this.jj_2_rtns.length;) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -101,11 +101,11 @@ public class Parser
         this.jj_ntk = -1;
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87; ) {
+        for (i = 0; i < 87;) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length; ) {
+        for (i = 0; i < this.jj_2_rtns.length;) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -131,42 +131,42 @@ public class Parser
     }
 
     private static void jj_la1_0() {
-        jj_la1_0 = new int[]{1, 134218752, 134218752, 8192, 33554432, 0, 541214720, 0, 0, 0, 0, 0, 0, 608323584,
+        jj_la1_0 = new int[] { 1, 134218752, 134218752, 8192, 33554432, 0, 541214720, 0, 0, 0, 0, 0, 0, 608323584,
                 608323584, 0, 0, 541214720, 0, 541214720, 541214720, 541214720, 0, 608323584, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 608323584, 0, 0, 608323584, 67108864, 0, 0, 608323584, 0, 0,
                 67108864, 0, 0, 0, 67108864, 67108864, 608323584, 0, 0, 0, 0, 0, 610420736, 1074270208, 0, 1081344,
                 1081344, 8388608, 742542336, 608323584, 608323584, 1073741824, 608323584, 0, 0, 0, 0, 608323584, 65536,
-                268435456};
+                268435456 };
     }
 
     private static void jj_la1_1() {
-        jj_la1_1 = new int[]{0, 68892800, 68892800, 32, 0, 2, 33587280, 4194304, 0, 65536, 0, 4, 0, 310412112,
+        jj_la1_1 = new int[] { 0, 68892800, 68892800, 32, 0, 2, 33587280, 4194304, 0, 65536, 0, 4, 0, 310412112,
                 310412112, 0, 0, 32848, 0, 32848, 33587280, 32848, 0, 310412112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 310412112, 0, 0, 310412112, 310379264, 0, 0, 310412112, 0, 0, 310379264,
                 0, 0, 0, 310379008, 8388608, 310412112, 0, 0, 256, 0, 0, 444891985, 19415040, 66564, 0, 0, 0, 379304912,
-                310412112, 310412112, 0, 310412112, 0, 0, 0, 0, 310412112, 0, 0};
+                310412112, 310412112, 0, 310412112, 0, 0, 0, 0, 310412112, 0, 0 };
     }
 
     private static void jj_la1_2() {
-        jj_la1_2 = new int[]{0, 0, 0, 0, 0, 0, 32, 0, 17408, 0, 65536, 0, 131072, 12584237, 12584237, 32768, 32768,
+        jj_la1_2 = new int[] { 0, 0, 0, 0, 0, 0, 32, 0, 17408, 0, 65536, 0, 131072, 12584237, 12584237, 32768, 32768,
                 32, 32, 32, 32, 0, 32768, 12583213, 131072, 16777216, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2080374784,
                 -2080374784, 0, 2017198080, 2017198080, 0, 0, 0, 0, 0, 0, 0, 12583213, 12582912, 12582912, 301,
                 12583213, 256, 0, 301, 256, 70656, 269, 32, 256, 70656, 13, 0, 12583213, 32768, 4352, 0, 4096, 4096,
                 12600621, 0, 16, 0, 0, 0, 12583213, 12583213, 12583213, 0, 12583213, 32768, 32768, 32, 32, 12583213, 0,
-                0};
+                0 };
     }
 
     private static void jj_la1_3() {
-        jj_la1_3 = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 240, 0, 0, 0, 0, 0, 0, 0, 0, 240, -675282944,
+        jj_la1_3 = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 240, 0, 0, 0, 0, 0, 0, 0, 0, 240, -675282944,
                 0, 3, 3, 12, 12, 12288, 12288, 16384, 3072, 3072, 0, 0, 0, 0, 0, 4128768, 4128768, 192, 192, 33536,
                 33536, 192, 240, 0, 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0,
-                240, 240, 240, 0, 240, 0, 0, 0, 0, 240, 0, 0};
+                240, 240, 240, 0, 240, 0, 0, 0, 0, 240, 0, 0 };
     }
 
     private static void jj_la1_4() {
-        jj_la1_4 = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0,
+        jj_la1_4 = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
     public void setRetainComments(boolean b) {
@@ -200,24 +200,24 @@ public class Parser
         int curTok = 1;
 
         Token tok = getToken(curTok++);
-        if (tok.kind != 30)
+        if (tok.kind != 30) // not 'for'
             return false;
+
         tok = getToken(curTok++);
-        if (tok.kind != 72)
+        if (tok.kind != 72) // not '('
             return false;
 
         while (true) {
             tok = getToken(curTok++);
             switch (tok.kind) {
                 case 89:
-                    return false;
-                case 78:
                     return true;
+                case 78:
+                    return false;
                 case 0:
-                    break;
+                    return false;
             }
         }
-        return false;
     }
 
     ParseException createParseException(String message) {
@@ -248,7 +248,10 @@ public class Parser
         Modifiers mods = null;
 
         while (true) {
-            switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
+            int kind = (this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk;
+
+            // Nếu không còn token hợp lệ → thoát vòng lặp
+            switch (kind) {
                 case 10:
                 case 27:
                 case 39:
@@ -260,13 +263,14 @@ public class Parser
                 case 51:
                 case 52:
                 case 58:
-                    break;
-
+                    break; // tiếp tục xử lý
                 default:
                     this.jj_la1[1] = this.jj_gen;
                     break;
             }
-            switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
+
+            // Tiêu thụ token
+            switch (kind) {
                 case 43:
                     jj_consume_token(43);
                     break;
@@ -302,19 +306,32 @@ public class Parser
                     break;
                 default:
                     this.jj_la1[2] = this.jj_gen;
-                    jj_consume_token(-1);
+                    jj_consume_token(-1); // unexpected token
                     throw new ParseException();
             }
-            if (!lookahead)
+
+            if (!lookahead) {
                 try {
                     if (mods == null)
                         mods = new Modifiers();
-                    mods.addModifier(context, (getToken(0)).image);
+                    mods.addModifier(context, getToken(0).image);
                 } catch (IllegalStateException e) {
                     throw createParseException(e.getMessage());
                 }
+            }
+
+            // ✅ Điều kiện dừng vòng lặp sau mỗi vòng
+            this.jj_ntk = -1; // reset lookahead
+            if ((this.jj_ntk = jj_ntk()) != 10 &&
+                    this.jj_ntk != 27 && this.jj_ntk != 39 && this.jj_ntk != 43 &&
+                    this.jj_ntk != 44 && this.jj_ntk != 45 && this.jj_ntk != 48 &&
+                    this.jj_ntk != 49 && this.jj_ntk != 51 && this.jj_ntk != 52 &&
+                    this.jj_ntk != 58) {
+                break; // ✅ thoát vòng lặp nếu không còn modifier
+            }
         }
         return mods;
+
     }
 
     public final void ClassDeclaration() throws ParseException {
@@ -1058,17 +1075,16 @@ public class Parser
         while (true) {
             switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
                 case 79:
+                    jj_consume_token(79);
+                    AmbiguousName();
+                    count++;
                     break;
 
                 default:
                     this.jj_la1[22] = this.jj_gen;
-                    break;
+                    return count;
             }
-            jj_consume_token(79);
-            AmbiguousName();
-            count++;
         }
-        return count;
     }
 
     public final void Expression() throws ParseException {
@@ -2852,7 +2868,7 @@ public class Parser
             jj_consume_token(73);
             jj_consume_token(74);
 
-            while (true) {
+            OUTER: while (true) {
                 switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
                     case 15:
                     case 20:
@@ -2860,16 +2876,16 @@ public class Parser
 
                     default:
                         this.jj_la1[72] = this.jj_gen;
-                        break;
+                        break OUTER; // ✅ Thoát vòng lặp đúng cách
                 }
+
                 SwitchLabel();
 
                 while (jj_2_29(1)) {
-
                     BlockStatement();
                 }
             }
-            jj_consume_token(75);
+            jj_consume_token(75); // ✅ reachable code
         } catch (Throwable jjte000) {
             if (jjtc000) {
                 this.jjtree.clearNodeScope(jjtn000);
@@ -3306,25 +3322,25 @@ public class Parser
         boolean jjtc000 = true;
         this.jjtree.openNodeScope(jjtn000);
         jjtreeOpenNodeScope(jjtn000);
-        Token t = null;
 
         try {
             Modifiers mods = Modifiers(2, false);
             Type();
             VariableDeclarator();
 
-            while (true) {
+            OUTER: while (true) {
                 switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
-                    case 79:
+                    case 79: // Dấu phẩy ,
                         break;
 
                     default:
                         this.jj_la1[80] = this.jj_gen;
-                        break;
+                        break OUTER; // ✅ Thoát khi không còn biến nữa
                 }
                 jj_consume_token(79);
                 VariableDeclarator();
             }
+
             this.jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             jjtreeCloseNodeScope(jjtn000);
@@ -3594,27 +3610,28 @@ public class Parser
         jjtreeOpenNodeScope(jjtn000);
         boolean closed = false;
         try {
-            jj_consume_token(56);
+            jj_consume_token(56); // try
             Block();
 
-            while (true) {
+            OUTER: while (true) {
                 switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
-                    case 16:
+                    case 16: // catch
                         break;
-
                     default:
                         this.jj_la1[85] = this.jj_gen;
-                        break;
+                        break OUTER; // ✅ Thoát khi không còn catch
                 }
-                jj_consume_token(16);
-                jj_consume_token(72);
+
+                jj_consume_token(16); // catch
+                jj_consume_token(72); // (
                 FormalParameter();
-                jj_consume_token(73);
+                jj_consume_token(73); // )
                 Block();
                 closed = true;
             }
+
             switch ((this.jj_ntk == -1) ? jj_ntk() : this.jj_ntk) {
-                case 28:
+                case 28: // finally
                     jj_consume_token(28);
                     Block();
                     closed = true;
@@ -3623,11 +3640,14 @@ public class Parser
                     this.jj_la1[86] = this.jj_gen;
                     break;
             }
+
             this.jjtree.closeNodeScope(jjtn000, true);
             jjtc000 = false;
             jjtreeCloseNodeScope(jjtn000);
+
             if (!closed)
                 throw generateParseException();
+
         } catch (Throwable jjte000) {
             if (jjtc000) {
                 this.jjtree.clearNodeScope(jjtn000);
@@ -4560,6 +4580,7 @@ public class Parser
     private final boolean jj_3_21() {
         if (jj_3_19())
             return true;
+
         while (true) {
             Token xsp = this.jj_scanpos;
             if (jj_3_19()) {
@@ -4569,15 +4590,21 @@ public class Parser
                     xsp = this.jj_scanpos;
                     if (jj_3_20()) {
                         this.jj_scanpos = xsp;
-
                         return false;
                     }
 
+                    if (jj_3_19()) {
+                        break;
+                    }
                 }
+
+                break;
+            } else {
                 break;
             }
-
         }
+
+        return false;
     }
 
     private final boolean jj_3R_150() {
@@ -6467,11 +6494,11 @@ public class Parser
         this.jjtree.reset();
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87; ) {
+        for (i = 0; i < 87;) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length; ) {
+        for (i = 0; i < this.jj_2_rtns.length;) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -6486,11 +6513,11 @@ public class Parser
         this.jjtree.reset();
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87; ) {
+        for (i = 0; i < 87;) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length; ) {
+        for (i = 0; i < this.jj_2_rtns.length;) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -6504,11 +6531,11 @@ public class Parser
         this.jjtree.reset();
         this.jj_gen = 0;
         int i;
-        for (i = 0; i < 87; ) {
+        for (i = 0; i < 87;) {
             this.jj_la1[i] = -1;
             i++;
         }
-        for (i = 0; i < this.jj_2_rtns.length; ) {
+        for (i = 0; i < this.jj_2_rtns.length;) {
             this.jj_2_rtns[i] = new JJCalls();
             i++;
         }
@@ -6593,7 +6620,7 @@ public class Parser
                 this.jj_expentry[i] = this.jj_lasttokens[i];
             }
             boolean exists = false;
-            for (Enumeration<int[]> e = this.jj_expentries.elements(); e.hasMoreElements(); ) {
+            for (Enumeration<int[]> e = this.jj_expentries.elements(); e.hasMoreElements();) {
                 int[] oldentry = e.nextElement();
                 if (oldentry.length == this.jj_expentry.length) {
                     exists = true;
@@ -6676,7 +6703,7 @@ public class Parser
         jj_add_error_token(0, 0);
         int[][] exptokseq = new int[this.jj_expentries.size()][];
         for (int j = 0; j < this.jj_expentries.size(); j++) {
-            exptokseq[j] = this.jj_expentries.elementAt(j);
+            exptokseq[j] = (int[]) this.jj_expentries.elementAt(j);
         }
         return new ParseException(this.token, exptokseq, tokenImage);
     }
@@ -6689,7 +6716,7 @@ public class Parser
 
     private final void jj_rescan_token() {
         this.jj_rescan = true;
-        for (int i = 0; i < 31; ) {
+        for (int i = 0; i < 31;) {
             JJCalls p = this.jj_2_rtns[i];
             while (true) {
                 if (p.gen > this.jj_gen) {

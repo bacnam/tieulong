@@ -465,7 +465,7 @@ public class NameSpace
 
             for (int i = this.importedCommands.size() - 1; i >= 0; i--) {
 
-                String scriptPath, className, path = this.importedCommands.elementAt(i);
+                String scriptPath, className, path = this.importedCommands.elementAt(i).toString();
 
                 if (path.equals("/")) {
                     scriptPath = path + name + ".bsh";
@@ -514,7 +514,7 @@ public class NameSpace
         if (this.importedStatic != null)
             for (int i = 0; i < this.importedStatic.size(); i++) {
 
-                Class clas = this.importedStatic.elementAt(i);
+                Class clas = this.importedStatic.elementAt(i).getClass();
                 Method method = Reflect.resolveJavaMethod(getClassManager(), clas, name, sig, true);
 
                 if (method != null) {
@@ -541,7 +541,7 @@ public class NameSpace
         if (this.importedStatic != null)
             for (int i = 0; i < this.importedStatic.size(); i++) {
 
-                Class clas = this.importedStatic.elementAt(i);
+                Class clas = this.importedStatic.elementAt(i).getClass();
                 Field field = Reflect.resolveJavaField(clas, name, true);
 
                 if (field != null) {

@@ -348,7 +348,7 @@ public class JConsole
         if (this.histLine == 0) {
             showline = this.startedLine;
         } else {
-            showline = this.history.elementAt(this.history.size() - this.histLine);
+            showline = this.history.elementAt(this.history.size() - this.histLine).toString();
         }
         replaceRange(showline, this.cmdStart, textLength());
         this.text.setCaretPosition(textLength());

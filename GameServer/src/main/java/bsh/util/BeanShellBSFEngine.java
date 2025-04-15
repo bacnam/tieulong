@@ -13,7 +13,9 @@ public class BeanShellBSFEngine extends BSFEngineImpl {
     Interpreter interpreter;
     boolean installedApplyMethod;
 
-    public void initialize(BSFManager mgr, String lang, Vector<BSFDeclaredBean> declaredBeans) throws BSFException {
+    @Override
+    @SuppressWarnings("unchecked")
+    public void initialize(BSFManager mgr, String lang, Vector declaredBeans) throws BSFException {
         super.initialize(mgr, lang, declaredBeans);
 
         this.interpreter = new Interpreter();
@@ -24,9 +26,9 @@ public class BeanShellBSFEngine extends BSFEngineImpl {
             throw new BSFException("bsh internal error: " + e.toString());
         }
 
-        for (int i = 0; i < declaredBeans.size(); i++) {
+        Vector<BSFDeclaredBean> typedBeans = (Vector<BSFDeclaredBean>) declaredBeans;
 
-            BSFDeclaredBean bean = declaredBeans.get(i);
+        for (BSFDeclaredBean bean : typedBeans) {
             declareBean(bean);
         }
     }
@@ -85,7 +87,7 @@ public class BeanShellBSFEngine extends BSFEngineImpl {
             }
 
             This global = (This) this.interpreter.get("global");
-            Object value = global.invokeMethod("_bsfApply", new Object[]{names, args, funcBody});
+            Object value = global.invokeMethod("_bsfApply", new Object[] { names, args, funcBody });
 
             return Primitive.unwrap(value);
         } catch (InterpreterError e) {
