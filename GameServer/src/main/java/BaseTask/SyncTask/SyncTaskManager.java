@@ -52,6 +52,10 @@ public class SyncTaskManager {
         });
     }
 
+    public static void task(Runnable runnable, int i) {
+
+    }
+
     public SyncTaskQueue getQueue(String tag) {
         SyncTaskQueue ret = this.syncQueues.get(tag);
         if (ret == null) {

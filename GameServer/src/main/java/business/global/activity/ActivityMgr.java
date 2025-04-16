@@ -102,10 +102,10 @@ public class ActivityMgr {
         if (!WorldConnector.getInstance().isConnected()) {
             return;
         }
-        Player.PlayerInfo info = new Player.PlayerInfo();
+        Player info = new Player();
         info.pid = player.getPid();
         info.serverId = Config.ServerID();
-        WorldRankRequest request = new WorldRankRequest(null);
+        WorldRankRequest request = new WorldRankRequest();
         request.player = info;
         request.value = value;
         request.rankType = rankType;
@@ -273,7 +273,7 @@ public class ActivityMgr {
     }
 
     private static class WorldRankRequest {
-        Player.PlayerInfo player;
+        Player player;
 
         long value;
 

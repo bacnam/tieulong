@@ -10,79 +10,83 @@ import java.util.Map;
 
 public class HttpSyncClient {
     public static String sendGet(String url, String param) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         BufferedReader in = null;
+
         try {
-            String urlNameString = String.valueOf(url) + "?" + param;
+            String urlNameString = url + "?" + param;
             URL realUrl = new URL(urlNameString);
 
+            // Open connection
             URLConnection connection = realUrl.openConnection();
 
-            connection.setRequestProperty("accept", "*connection.setRequestProperty(" connection", " Keep - Alive");
-                    connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // Set request headers
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
 
+            // Connect and read
             connection.connect();
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 
-            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result = String.valueOf(result) + line;
+                result.append(line);
             }
+
         } catch (Exception e) {
-            CommLog.error("发送GET请求[{}]出现异常！", url, e);
+            CommLog.error("发送GET请求 [{}] 出现异常！", url, e);
         } finally {
             try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (Exception exception) {
-            }
+                if (in != null) in.close();
+            } catch (Exception ignore) {}
         }
 
-        return result;
+        return result.toString();
     }
 
     public static String sendPost(String url, String param) {
         PrintWriter out = null;
         BufferedReader in = null;
-        String result = "";
+        StringBuilder result = new StringBuilder();
+
         try {
             URL realUrl = new URL(url);
 
+            // Mở kết nối
             URLConnection conn = realUrl.openConnection();
 
-            conn.setRequestProperty("accept", "*conn.setRequestProperty(" connection", " Keep - Alive");
-                    conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // Thiết lập các thuộc tính request header
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
 
+            // Cho phép gửi dữ liệu POST
             conn.setDoOutput(true);
             conn.setDoInput(true);
 
+            // Gửi dữ liệu
             out = new PrintWriter(conn.getOutputStream());
-
-            out.print(param);
-
+            out.print(param); // ví dụ: "name=value&age=18"
             out.flush();
 
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            // Đọc dữ liệu phản hồi
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             String line;
             while ((line = in.readLine()) != null) {
-                result = String.valueOf(result) + line;
+                result.append(line);
             }
+
         } catch (Exception e) {
-            CommLog.error("发送 POST请求[{}]出现异常！", url, e);
+            CommLog.error("发送 POST请求 [{}] 出现异常！", url, e);
         } finally {
             try {
-                if (out != null) {
-                    out.close();
-                }
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException iOException) {
-            }
+                if (out != null) out.close();
+                if (in != null) in.close();
+            } catch (IOException ignore) {}
         }
 
-        return result;
+        return result.toString();
     }
 
     public static String sendPost(String url, Map<String, Object> param) {

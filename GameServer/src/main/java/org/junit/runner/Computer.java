@@ -14,7 +14,7 @@ public class Computer {
             public Runner runnerForClass(Class<?> testClass) throws Throwable {
                 return Computer.this.getRunner(builder, testClass);
             }
-        }classes);
+        }, classes);
     }
 
     protected Runner getRunner(RunnerBuilder builder, Class<?> testClass) throws Throwable {

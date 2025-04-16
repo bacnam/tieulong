@@ -15,11 +15,11 @@ public final class NamespacesImpl
 
     final CharArray _xml = new CharArray("xml");
 
-    final CharArray _xmlURI = new CharArray("http:
+    final CharArray _xmlURI = new CharArray("http:");
 
     final CharArray _xmlns = new CharArray("xmlns");
 
-    final CharArray _xmlnsURI = new CharArray("http:
+    final CharArray _xmlnsURI = new CharArray("http:");
     CharArray[] _prefixes = new CharArray[16];
     CharArray[] _namespaces = new CharArray[this._prefixes.length];
     boolean[] _prefixesWritten = new boolean[this._prefixes.length];

@@ -138,7 +138,6 @@ public class AppFileActions {
     }
 
     public void setWriteFileErrorMessage(String paramString) {
-        this;
         writeFileErrorMessage = paramString;
     }
 

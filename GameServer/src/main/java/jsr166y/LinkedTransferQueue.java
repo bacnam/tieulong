@@ -128,7 +128,6 @@ public class LinkedTransferQueue<E>
                             }
                         }
                         LockSupport.unpark(p.waiter);
-                        this;
                         return cast(item);
                     }
                 }
@@ -191,7 +190,6 @@ public class LinkedTransferQueue<E>
             if (item != e) {
                 assert item != s;
                 s.forgetContents();
-                this;
                 return cast(item);
             }
             if ((w.isInterrupted() || (timed && nanos <= 0L)) && s.casItem(e, s)) {
@@ -248,7 +246,6 @@ public class LinkedTransferQueue<E>
             Object item = p.item;
             if (p.isData) {
                 if (item != null && item != p) {
-                    this;
                     return cast(item);
                 }
             } else if (item == null) {

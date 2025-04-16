@@ -38,7 +38,7 @@ public class Login
         } else {
             String param = "access_token=" + req.access_token + "&open_id=" + req.open_id;
             String sign = MD5.md5(String.valueOf(param) + "&secret_key=" + ServerConfig.AAY_SecretKey());
-            final String url = "http:
+            final String url = "http:";
 
             ClientSession session = (ClientSession) request.getSession();
             session.setAccessToken(req.access_token);

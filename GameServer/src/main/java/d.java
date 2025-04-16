@@ -48,7 +48,10 @@ public class d {
         JsonObject param = new JsonObject();
         param.addProperty("cid", "11");
         param.addProperty("buntime", "-1");
-        HttpUtil.sendHttpPost2Web(3000, 3000, "http:
+
+        String url = "http://your-server-address/your-api-endpoint";
+
+        HttpUtil.sendHttpPost2Web(3000, 3000, url, param.toString());
     }
 
     public static void taskamount() {

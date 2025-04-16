@@ -76,7 +76,7 @@ public abstract class IApp {
     protected void loadRemoteConfig(String serverType, String serverId, String location, String configfile) {
         String url = System.getProperty("downConfUrl");
         if (url != null && !url.trim().isEmpty()) {
-            url = "http:
+            url = "http:";
             CommLog.info("从远端[{}]下载配置", url);
             try {
                 JsonObject root = (new JsonParser()).parse(new String(HttpUtil.GetAll(url))).getAsJsonObject();

@@ -47,38 +47,44 @@ public class RechargeOrder
         params.put("uid", player.getOpenId());
         params.put("cid", Long.valueOf(player.getPid()));
 
-        String createorderurl = System.getProperty("RechargeCreateOrderAddr",
-                "http:
-                HttpUtils.RequestGM(createorderurl, params, new IResponseHandler() {
-                    public void compeleted(String response) {
-                        try {
-                            JsonObject resJson = (new JsonParser()).parse(response).getAsJsonObject();
-                            if (resJson.get("code").getAsInt() != 1000) {
-                                CommLog.error("充值回调结果：{}", response);
-                                request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败1", new Object[0]);
-                                return;
-                            }
-                            RechargeOrder.PayData data = new RechargeOrder.PayData(null);
-                            data.open_id = player.getOpenId();
-                            data.access_token = player.getClientSession().getAccessToken();
-                            data.bill_no = resJson.get("bill_no").getAsString();
-                            data.goods_name = ref.Title;
-                            data.total_fee = ref.Price;
-                            data.ext = String.valueOf(resJson.get("bill_no").getAsString());
-                            String signsrc = data.getSignSrc();
-                            data.sign = MD5.md5(signsrc);
-                            CommLog.info("sign src: {}, \nsign:{}", signsrc, data.sign);
-                            request.response(data);
-                        } catch (Exception e) {
-                            request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败2", new Object[]{e});
-                            CommLog.error("订单充值失败,error", e);
-                        }
+        String createorderurl = System.getProperty("RechargeCreateOrderAddr");
+        HttpUtils.RequestGM(createorderurl, params, new IResponseHandler() {
+            @Override
+            public void compeleted(String response) {
+                try {
+                    JsonObject resJson = JsonParser.parseString(response).getAsJsonObject();
+                    if (resJson.get("code").getAsInt() != 1000) {
+                        CommLog.error("充值回调结果：{}", response);
+                        request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败1", new Object[0]);
+                        return;
                     }
 
-                    public void failed(Exception exception) {
-                        request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败3", new Object[0]);
-                    }
-                });
+                    PayData data = new PayData();
+                    data.open_id = player.getOpenId();
+                    data.access_token = player.getClientSession().getAccessToken();
+                    data.bill_no = resJson.get("bill_no").getAsString();
+                    data.goods_name = ref.Title;
+                    data.total_fee = ref.Price;
+                    data.ext = data.bill_no;
+                    String signsrc = data.getSignSrc();
+                    data.sign = MD5.md5(signsrc);
+
+                    CommLog.info("sign src: {}, \nsign:{}", signsrc, data.sign);
+                    request.response(data);
+
+                } catch (Exception e) {
+                    request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败2", new Object[]{e});
+                    CommLog.error("订单充值失败,error", e);
+                }
+            }
+
+            @Override
+            public void failed(Exception exception) {
+                request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败3", new Object[0]);
+            }
+        });
+
+
     }
 
     private static class Request {

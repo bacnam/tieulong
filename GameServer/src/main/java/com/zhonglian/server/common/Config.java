@@ -76,7 +76,7 @@ public class Config {
         if (baseurl == null || baseurl.isEmpty()) {
             return null;
         }
-        return System.getProperty("GmHeartBeatAddr", "http:
+        return System.getProperty("GmHeartBeatAddr", "http:");
     }
 
     public static String PhpMargueeNoticeAddr() {
