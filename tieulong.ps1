@@ -189,6 +189,41 @@ function Wait-Drained([string]$name, [string]$url) {
     }
 }
 
+# ------------------------------------------------- port check before "up"
+function Test-PortBusy([int]$port) {
+    $c = New-Object System.Net.Sockets.TcpClient
+    try { $ok = $c.ConnectAsync('127.0.0.1', $port).Wait(500); return ($ok -and $c.Connected) } catch { return $false } finally { $c.Dispose() }
+}
+function Set-EnvValue($name, $value) {
+    $lines = Get-Content .env -Encoding UTF8 | ForEach-Object { if ($_ -match "^$name=") { "$name=$value" } else { $_ } }
+    [System.IO.File]::WriteAllText((Join-Path $PWD '.env'), (($lines -join "`n") + "`n"), (New-Object System.Text.UTF8Encoding $false))
+}
+# MYSQL_PORT busy -> move to the next free port; the other host ports are fixed for players/GM -> stop with a clear message
+function Assert-PortsFree {
+    $checks = @(
+        @{ var = 'MYSQL_PORT'; def = 3306; svc = 'mysql'; auto = $true },
+        @{ var = 'WEB_PORT'; def = 8080; svc = 'client'; auto = $false },
+        @{ var = 'GAME_CLIENT_PORT'; def = 8501; svc = 'game'; auto = $false },
+        @{ var = $null; def = 7501; svc = 'game'; auto = $false },
+        @{ var = $null; def = 9003; svc = 'world'; auto = $false })
+    foreach ($c in $checks) {
+        if (Test-Running $c.svc) { continue }   # our own container holds it
+        $port = $c.def
+        if ($c.var) { $v = Get-EnvValue $c.var; if ($v) { $port = [int]$v } }
+        if (-not (Test-PortBusy $port)) { continue }
+        if ($c.auto) {
+            $new = $port + 1
+            while (Test-PortBusy $new) { $new++ }
+            Set-EnvValue $c.var $new
+            Warn "Port $port đang bận (thường là MySQL cài sẵn trên máy). Đã đổi $($c.var)=$new trong .env"
+        } elseif ($c.var) {
+            Die "Port $port ($($c.var)) đang bận. Đổi $($c.var) trong .env sang port khác rồi chạy lại."
+        } else {
+            Die "Port $port (GM HTTP của $($c.svc)) đang bận. Tắt chương trình đang dùng port này (netstat -ano | findstr :$port)."
+        }
+    }
+}
+
 # ---------------------------------------------------------------- commands
 function Invoke-Setup {
     Initialize-Compose
@@ -214,6 +249,7 @@ function Invoke-Setup {
     Info 'Build image (lần đầu mất vài phút: tải Maven, Composer, Docker image)...'
     Invoke-Dc build
     Info 'Khởi động'
+    Assert-PortsFree
     $since = Get-UtcNow
     Invoke-Dc up -d
     Wait-GameReady $since
@@ -223,6 +259,7 @@ function Invoke-Setup {
 function Invoke-Start {
     Initialize-Compose
     if (-not (Test-Path .env)) { Die 'Chưa có .env. Chạy: .\tieulong.ps1 setup' }
+    Assert-PortsFree
     $since = Get-UtcNow
     Invoke-Dc up -d
     Wait-GameReady $since

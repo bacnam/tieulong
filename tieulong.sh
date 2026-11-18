@@ -163,6 +163,29 @@ wait_drained() {  # wait_drained <name> <gm url>: three consecutive zero reading
   done
 }
 
+# ------------------------------------------------- port check before "up"
+port_busy() { (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null; }
+env_set() { sed -i "s/^$1=.*/$1=$2/" .env; }
+# MYSQL_PORT busy -> move to the next free port; the other host ports are fixed for players/GM -> stop with a clear message
+check_ports() {
+  local spec var def svc port new
+  for spec in MYSQL_PORT:3306:mysql WEB_PORT:8080:client GAME_CLIENT_PORT:8501:game -:7501:game -:9003:world; do
+    IFS=: read -r var def svc <<< "$spec"
+    is_running "$svc" && continue   # our own container holds it
+    port=$def; [ "$var" != - ] && port=$(env_get "$var"); port=${port:-$def}
+    port_busy "$port" || continue
+    if [ "$var" = MYSQL_PORT ]; then
+      new=$((port + 1)); while port_busy "$new"; do new=$((new + 1)); done
+      env_set MYSQL_PORT "$new"
+      warn "Port $port đang bận (thường là MySQL cài sẵn trên máy). Đã đổi MYSQL_PORT=$new trong .env"
+    elif [ "$var" != - ]; then
+      die "Port $port ($var) đang bận. Đổi $var trong .env sang port khác rồi chạy lại."
+    else
+      die "Port $port (GM HTTP của $svc) đang bận. Tắt chương trình đang dùng port này (ss -ltnp | grep :$port)."
+    fi
+  done
+}
+
 # ---------------------------------------------------------------- commands
 cmd_setup() {
   detect_compose
@@ -185,6 +208,7 @@ cmd_setup() {
   info "Build image (lần đầu mất vài phút: tải Maven, Composer, Docker image)..."
   dc build
   info "Khởi động"
+  check_ports
   local since; since=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   dc up -d
   wait_game_ready "$since"
@@ -194,6 +218,7 @@ cmd_setup() {
 cmd_start() {
   detect_compose
   [ -f .env ] || die "Chưa có .env. Chạy: ./tieulong.sh setup"
+  check_ports
   local since; since=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   dc up -d
   wait_game_ready "$since"
