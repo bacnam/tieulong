@@ -2,6 +2,8 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+App\Http\Controllers\ServerController::configureFromEnv();
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

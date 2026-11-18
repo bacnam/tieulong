@@ -1,0 +1,12 @@
+# Keep the build context small: only what the Dockerfiles copy
+.git
+**/target
+**/logs
+src/
+Server/conf2
+Server/*.jar
+Server/*.sh
+Client/vendor
+Client/.env
+Client/storage/logs/*
+Client/storage/framework/views/*

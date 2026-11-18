@@ -46,6 +46,12 @@
     </style>
     <!--这个标签为通过egret提供的第三方库的方式生成的 javascript 文件。删除 modules_files 标签后，库文件加载列表将不会变化，请谨慎操作！-->
     <!--modules_files_start-->
+    @if (env('GM_ADDR'))
+    {{-- Override GM_ADDR from config.js (e.g. for Docker); "same-origin" = this site --}}
+    <script>
+        window.LEGEND_CONFIG = { GM_ADDR: {!! env('GM_ADDR') === 'same-origin' ? 'window.location.origin' : json_encode(env('GM_ADDR')) !!} };
+    </script>
+    @endif
     <script src="config.js?v202309-02"></script>
     <script egret="lib" src="libs/modules/egret/egret.min.js"></script>
     <script egret="lib" src="libs/modules/egret/egret.web.min.js"></script>

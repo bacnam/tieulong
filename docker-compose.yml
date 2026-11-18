@@ -1,0 +1,137 @@
+# Tieu Long - full stack: MySQL + WorldServer + GameServer + web portal / H5 client
+#   cp .env.example .env   (then edit passwords / GAME_PUBLIC_HOST)
+#   docker compose up -d --build
+#   open http://localhost:8080
+name: tieulong
+
+x-server: &server
+  build:
+    context: .
+    dockerfile: docker/server/Dockerfile
+  image: tieulong/server:latest
+  restart: unless-stopped
+  stdin_open: true            # BeanShell GM console: docker attach tieulong-game-1 (detach: Ctrl-P Ctrl-Q)
+  depends_on:
+    mysql:
+      condition: service_healthy
+  environment: &server-env
+    TZ: ${TZ:-Asia/Ho_Chi_Minh}
+    DB_HOST: mysql
+    DB_PORT: 3306
+    DB_USER: root
+    DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+    WORLD_HOST: world
+    WORLD_PORT: 8003
+
+services:
+  mysql:
+    # 5.7: the servers use MySQL Connector/J 5.1.23, which cannot talk to MySQL 8 or MariaDB >= 10.10
+    image: mysql:5.7
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Asia/Ho_Chi_Minh}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/tieulong.cnf:ro
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+      - ./Server/database:/sql:ro
+    ports:
+      - "127.0.0.1:${MYSQL_PORT:-3306}:3306"
+    healthcheck:
+      # TCP ping: fails while the init scripts run (the server only listens on a socket then)
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+
+  world:
+    <<: *server
+    command: ["world"]
+    environment:
+      <<: *server-env
+      WORLD_HTTP_PORT: 9003
+      JAVA_OPTS: ${WORLD_JAVA_OPTS:--Xms256m -Xmx512m -Xss228k}
+    volumes:
+      - world-logs:/app/logs
+    ports:
+      - "127.0.0.1:9003:9003"        # GM HTTP, local only
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/8003'"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+      start_period: 20s
+
+  game:
+    <<: *server
+    command: ["game"]
+    depends_on:
+      mysql:
+        condition: service_healthy
+      world:
+        condition: service_healthy
+    environment:
+      <<: *server-env
+      GAME_SERVER_ID: ${GAME_SERVER_ID:-1}
+      GAME_SERVER_NAME: ${GAME_SERVER_NAME:-Dương Quá}
+      GAME_OPEN_TIME: ${GAME_OPEN_TIME:-2023-09-29 11:00:00}
+      GAME_CLIENT_PORT: 8501
+      GAME_HTTP_PORT: 7501
+      WORLD_OPEN: "on"
+      RECHARGE_CREATE_ORDER_URL: http://client/abchabchca8b27acbachbap1bhacb1p/orders/create
+      JAVA_OPTS: ${GAME_JAVA_OPTS:--Xms512m -Xmx1024m -Xss228k}
+    volumes:
+      - game-logs:/app/logs
+    ports:
+      - "${GAME_CLIENT_PORT:-8501}:8501"   # WebSocket for the H5 client (must be reachable by browsers)
+      - "127.0.0.1:7501:7501"              # GM / recharge HTTP, local only
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/8501'"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+      start_period: 30s
+
+  client:
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile
+    image: tieulong/client:latest
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      TZ: ${TZ:-Asia/Ho_Chi_Minh}
+      APP_NAME: ${APP_NAME:-Tieu Long}
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      APP_KEY: ${APP_KEY:?set APP_KEY in .env}
+      APP_TIMEZONE: ${TZ:-Asia/Ho_Chi_Minh}
+      LOG_CHANNEL: stderr
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: tieulong_web
+      DB_USERNAME: root
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      GAME_DATABASE: tieulong_game_server1
+      # Recharge callback on the game server (OrderController)
+      APP_RECHARGE_URL: http://game:7501/game/recharge/notify
+      # H5 client: GM API = this site; game server address/port as seen from the browser
+      GM_ADDR: same-origin
+      GAME_PUBLIC_HOST: ${GAME_PUBLIC_HOST:-localhost}
+      GAME_CLIENT_PORT: ${GAME_CLIENT_PORT:-8501}
+      GAME_SERVER_ID: ${GAME_SERVER_ID:-1}
+      GAME_SERVER_NAME: ${GAME_SERVER_NAME:-Dương Quá}
+      GAME_OPEN_TIME: ${GAME_OPEN_TIME:-2023-09-29 11:00:00}
+    ports:
+      - "${WEB_PORT:-8080}:80"
+
+volumes:
+  mysql-data:
+  world-logs:
+  game-logs:

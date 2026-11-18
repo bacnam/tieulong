@@ -33,3 +33,6 @@ logs/
 .project
 .settings/
 .DS_Store
+
+# Docker
+.env

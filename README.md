@@ -13,6 +13,7 @@ world-server/           core.*, business.*, d.java  -> worldServer.jar  (77 file
 third-party/repo/       Maven repo cục bộ: thư viện không xác định được version trên Maven Central,
                         lấy nguyên bytecode từ jar gốc (gson, bsh 2.0b5, libthrift, libfb303, jsc, jsr166y)
 tools/decompile/        Script tái tạo lại toàn bộ source từ 2 file jar
+docker/, docker-compose.yml   Chạy full stack bằng Docker (xem bên dưới)
 ```
 
 Phần code `server-common` giống hệt nhau trong cả hai jar gốc (đã so sánh SHA-1 từng class), nên được tách thành module riêng.
@@ -35,6 +36,38 @@ java -Dfile.encoding=UTF-8 -jar gameServer.jar  conf
 ```
 
 Server cần thư mục `conf/` (properties, `data/`, `map/`), MySQL với `lower_case_table_names=1` (bản gốc chạy trên Windows) và các database trong `Server/database/*.sql`.
+
+## Chạy bằng Docker (full stack)
+
+Gồm 4 service: `mysql` (5.7), `world` (WorldServer), `game` (GameServer, build từ source trong image) và `client` (web portal + H5 client, PHP 8.2/Apache).
+
+```bash
+cp .env.example .env        # đổi MYSQL_ROOT_PASSWORD, APP_KEY, GAME_PUBLIC_HOST
+docker compose up -d --build
+docker compose logs -f game # chờ dòng "[服务器启动完毕]!"
+```
+
+Sau đó mở http://localhost:8080, đăng ký tài khoản rồi vào game.
+
+| Port trên máy host | Service | Ghi chú |
+|---|---|---|
+| `WEB_PORT` (8080) | client | Web portal, H5 client và các API `gm/*` |
+| `GAME_CLIENT_PORT` (8501) | game | WebSocket mà trình duyệt kết nối trực tiếp tới |
+| 127.0.0.1:7501 / 127.0.0.1:9003 | game / world | HTTP GM (nạp tiền, gửi thư, ban...), chỉ mở cho máy local |
+| 127.0.0.1:3306 | mysql | |
+
+- **`GAME_PUBLIC_HOST`**: tên miền hoặc IP mà trình duyệt của người chơi dùng để kết nối tới máy chạy Docker. Để `localhost` thì chỉ chơi được trên chính máy đó; muốn người khác chơi thì đặt IP LAN hoặc domain.
+- **Database**: lần chạy đầu tiên (volume còn trống), `docker/mysql/init` tạo các DB từ `Server/database/*.sql`, cộng thêm DB `tieulong_web` (bảng `baubas_users`, `baubas_game_transactions`) cho web portal. Muốn làm lại từ đầu thì chạy `docker compose down -v`.
+- **Config của server**: được sinh ra từ biến môi trường mỗi lần container khởi động (`docker/server/templates/*.properties`). Container không tải config từ web GM (`downConfUrl` để trống).
+- **Console GM (BeanShell)**: `docker attach tieulong-game-1`; thoát ra bằng Ctrl-P rồi Ctrl-Q.
+- **Luồng nạp tiền**: game gọi `http://client/.../orders/create`, client gọi lại `http://game:7501/game/recharge/notify`.
+- **Log**: nằm trong các volume `game-logs` và `world-logs`, hoặc xem bằng `docker compose logs`.
+- **Phiên bản MySQL**: dùng **MySQL 5.7**, vì driver Connector/J 5.1.23 của server không kết nối được với MySQL 8 hay MariaDB 10.10 trở lên. Bắt buộc `lower_case_table_names=1` (đã cấu hình trong `docker/mysql/my.cnf`).
+
+Client (`Client/`) có thêm 3 chỗ sửa nhỏ để đọc cấu hình từ biến môi trường. Khi không đặt các biến này, client vẫn chạy như cũ:
+
+- `GM_ADDR`: ghi đè `config.js`; giá trị `same-origin` nghĩa là dùng chính site đang mở.
+- `GAME_PUBLIC_HOST`, `GAME_CLIENT_PORT`, `GAME_SERVER_*`: dùng cho danh sách server trả về H5 client.
 
 ## Thư viện
 

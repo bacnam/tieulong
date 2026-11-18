@@ -16,6 +16,19 @@ class ServerController extends Controller
     public static $serverid = 1;
     public static $openTime = '2023-09-29 11:00:00';
 
+    /**
+     * Lets the environment (e.g. Docker) override the server entry shown to the H5 client.
+     * Without these variables the defaults above are kept.
+     */
+    public static function configureFromEnv()
+    {
+        static::$server_ip   = env('GAME_PUBLIC_HOST', static::$server_ip);
+        static::$server_name = env('GAME_SERVER_NAME', static::$server_name);
+        static::$client_port = (int) env('GAME_CLIENT_PORT', static::$client_port);
+        static::$serverid    = (int) env('GAME_SERVER_ID', static::$serverid);
+        static::$openTime    = env('GAME_OPEN_TIME', static::$openTime);
+    }
+
     public function loadConfig(Request $request)
     {
         $data = [];

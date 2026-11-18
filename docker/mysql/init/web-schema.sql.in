@@ -1,0 +1,31 @@
+-- Schema for the web portal (Client/, Lumen). The repo has no migrations for it,
+-- so it is reconstructed from app/Models/User.php and app/Models/GameTransaction.php.
+CREATE TABLE IF NOT EXISTS `baubas_users` (
+  `id`              bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name`            varchar(255) NOT NULL,
+  `email`           varchar(255) NOT NULL,
+  `password`        varchar(255) NOT NULL,
+  `point`           bigint NOT NULL DEFAULT 0 COMMENT 'balance used to buy KNB (OrderController)',
+  `referer_code`    varchar(16) DEFAULT NULL,
+  `referer_user_id` bigint unsigned DEFAULT NULL,
+  `created_at`      timestamp NULL DEFAULT NULL,
+  `updated_at`      timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `baubas_users_email_unique` (`email`),
+  KEY `baubas_users_referer_code_index` (`referer_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `baubas_game_transactions` (
+  `id`          bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id`     bigint unsigned NOT NULL,
+  `email`       varchar(255) NOT NULL,
+  `status`      varchar(32) NOT NULL,
+  `amount`      bigint NOT NULL,
+  `game`        varchar(64) DEFAULT NULL,
+  `message`     varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at`  timestamp NULL DEFAULT NULL,
+  `updated_at`  timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `baubas_game_transactions_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
