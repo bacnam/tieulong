@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildBattleRecordPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="520" height="580" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="-45" horizontalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="520" height="580" scaleX="1" scaleY="1"  anchorOffsetY="0" x="0"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="67.33" width="490" height="494" scaleX="1" scaleY="1"
+		         horizontalCenter="0"  anchorOffsetY="0"/>
+		<e:Image source="btn_close_png" x="450.67" y="-1.67" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image source="smallui_tbg_png" y="21" scaleX="1" scaleY="1"  x="114"/>
+		<e:Label text="Tình hình chiến sự" y="25" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32" fontFamily="Arial"
+		         verticalAlign="middle"  bold="true" textColor="0xfdb200" x="211"/>
+		<e:Scroller id="scroller" width="470" height="473" anchorOffsetX="0" anchorOffsetY="0" y="76" scaleX="1"
+		            scaleY="1" horizontalCenter="0">
+			<e:List id="list" width="470" itemRendererSkinName="GuildBattleRecordItem">
+
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Label id="tip" text="Chưa có chiến sự" horizontalCenter="0.5" textColor="0xFF0000" bold="true" stroke="1" size="35" verticalCenter="0"/>
+	</e:Group>
+</e:Skin>

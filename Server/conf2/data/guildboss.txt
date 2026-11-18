@@ -1,0 +1,22 @@
+﻿ID	Icon	地图id	副本名称	开启帮派等级	消耗材料	消耗数量	通关奖励	怪物Id
+id	Icon	MapId	Name	NeedGuildLevel	UniformId	UniformCount	MailId	MonsterId
+1	s_portrait005_png	WorldBossMap01	Toàn Chân đệ tử	1	2	200	1200001	500001
+2	s_portrait025_png	WorldBossMap02	Tôn bà bà	1	2	250	1200002	500002
+3	s_portrait001_png	WorldBossMap03	Trình anh	2	2	300	1200003	500003
+4	s_portrait008_png	WorldBossMap04	Nha dịch	2	2	350	1200004	500004
+5	s_portrait004_png	WorldBossMap01	Kim đao hắc kiếm	3	2	400	1200005	500005
+6	s_portrait002_png	WorldBossMap02	Hồng lăng sóng	3	2	450	1200006	500006
+7	s_portrait005_png	WorldBossMap03	Hồng lão bang chủ	4	2	500	1200007	500007
+8	s_portrait007_png	WorldBossMap04	Dương đại hiệp	4	2	550	1200008	500008
+9	s_portrait009_png	WorldBossMap01	Doãn Chí Bình	5	2	600	1200009	500009
+10	s_portrait003_png	WorldBossMap02	Xích luyện nữ	5	2	650	1200010	500010
+11	s_portrait004_png	WorldBossMap03	Thiết chưởng bang chủ	6	2	700	1200011	500011
+12	s_portrait013_png	WorldBossMap04	Trường Xuân chân nhân	6	2	750	1200012	500012
+13	s_portrait014_png	WorldBossMap01	Linh miêu	7	2	800	1200013	500013
+14	s_portrait015_png	WorldBossMap02	Trùng dương chân nhân	7	2	850	1200014	500014
+15	s_portrait016_png	WorldBossMap03	Triều anh tiên tử	8	2	900	1200015	500015
+16	s_portrait001_png	WorldBossMap04	Bạch y nữ tử	8	2	950	1200016	500016
+17	s_portrait017_png	WorldBossMap01	Nam thiên phật chủ	9	2	1000	1200017	500017
+18	s_portrait013_png	WorldBossMap02	Đông đảo Tà Chủ	9	2	1050	1200018	500018
+19	s_portrait011_png	WorldBossMap03	Khâu chỗ cơ	10	2	1100	1200019	500019
+20	s_portrait012_png	WorldBossMap04	Bạch y nữ tử	10	2	1150	1200020	500020

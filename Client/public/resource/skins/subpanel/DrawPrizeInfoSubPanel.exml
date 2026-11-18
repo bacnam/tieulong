@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DrawPrizeInfoSubPanel" width="520" height="640" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*"
+	xmlns:panels="legend.panels.*">
+	<e:Image source="xianshi_bg_jpg" horizontalCenter="0" verticalCenter="0" />
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="10" y="150" anchorOffsetX="0"
+		width="380" anchorOffsetY="0"
+		height="290" />
+	<e:Label text="Hạng: " y="45" size="30" textAlign="left" strokeColor="0x5E3500" stroke="1"
+		verticalAlign="middle"
+		fontFamily="Arial" x="48" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2" />
+	<e:Label text="Điểm: " y="45" size="30" textAlign="left" strokeColor="0x5E3500" stroke="1"
+		verticalAlign="middle"
+		fontFamily="Arial" x="310" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2" />
+	<e:Label text="Thời gian: " y="10" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1"
+		verticalAlign="middle"
+		fontFamily="Arial" x="49" anchorOffsetX="0" textColor="0xFFF135" />
+	<e:Label id="time" text="Vĩnh viễn" y="10" size="24" textAlign="left" strokeColor="0x5E3500"
+		stroke="1" verticalAlign="middle"
+		fontFamily="Arial" x="156" anchorOffsetX="0" textColor="0xFFF135" />
+	<e:Label id="score" text="0" x="390" y="46" size="30" textAlign="center" strokeColor="0x000000"
+		stroke="1"
+		anchorOffsetX="0" textColor="0x00FF00" />
+	<e:Label id="rank" text="8" x="130" y="46" size="30" textAlign="center" strokeColor="0x000000"
+		stroke="1"
+		anchorOffsetX="0" textColor="0xFF0000" />
+	<e:Image id="btn_one" source="btn_bg1_png" x="29" y="496.67" />
+	<e:Image id="btn_ten" source="btn_bg1_png" x="218" y="496.67" />
+	<e:Group x="105.97" y="541.99">
+		<e:Image source="shop_bar_bg_png" scale9Grid="21,0,437,24" x="11" y="31" anchorOffsetX="0"
+			width="381" />
+		<e:Image id="line" scale9Grid="21,0,437,24" x="23" y="37" anchorOffsetX="0" width="350"
+			source="shop_bar_png" />
+		<e:Image source="redname_icon_png" x="0" y="22" />
+		<e:Image source="star_png" x="0" y="22" />
+		<panels:DrawPrizeChestItem id="chest_1" x="74" y="10" height="80" width="60"
+			anchorOffsetX="30">
+			<e:Skin>
+				<e:Image id="icon" source="chest_png" horizontalCenter="0" touchEnabled="false"
+					verticalCenter="-15" />
+				<e:Label id="point" text="50" size="20" textAlign="center" strokeColor="0x000000"
+					stroke="1" textColor="0xFFC446" verticalAlign="middle" horizontalCenter="0"
+					bottom="0" touchEnabled="false" />
+			</e:Skin>
+		</panels:DrawPrizeChestItem>
+		<panels:DrawPrizeChestItem id="chest_2" x="320.34" y="10" height="80" width="60"
+			anchorOffsetX="30">
+			<e:Skin>
+				<e:Image id="icon" source="chest3_png" horizontalCenter="0" touchEnabled="false"
+					verticalCenter="-15" />
+				<e:Label id="point" text="50" size="20" textAlign="center" strokeColor="0x000000"
+					stroke="1" textColor="0xFFC446" verticalAlign="middle" horizontalCenter="0"
+					bottom="0" touchEnabled="false" />
+			</e:Skin>
+		</panels:DrawPrizeChestItem>
+		<panels:DrawPrizeChestItem id="chest_3" x="206" y="10" height="80" width="60"
+			anchorOffsetX="30">
+			<e:Skin>
+				<e:Image id="icon" source="chest2_png" horizontalCenter="0" touchEnabled="false"
+					verticalCenter="-15" />
+				<e:Label id="point" text="50" size="20" textAlign="center" strokeColor="0x000000"
+					stroke="1" textColor="0xFFC446" verticalAlign="middle" horizontalCenter="0"
+					bottom="0" touchEnabled="false" />
+			</e:Skin>
+		</panels:DrawPrizeChestItem>
+	</e:Group>
+	<e:Label text="Mua 1 lần" y="500.67" size="22" textAlign="left" strokeColor="0x5E3500"
+		stroke="1" width="120" height="40"
+		verticalAlign="middle" fontFamily="Arial" x="47" anchorOffsetX="0" anchorOffsetY="0"
+		textColor="0xFFFDE2"
+		touchEnabled="false" />
+	<e:Label text="Mua 10 lần" y="500.67" size="22" textAlign="left" strokeColor="0x5E3500"
+		stroke="1" width="120" height="40"
+		verticalAlign="middle" fontFamily="Arial" x="236" anchorOffsetX="0" anchorOffsetY="0"
+		textColor="0xFFFDE2"
+		touchEnabled="false" />
+	<e:Label id="oneprice" text="50" y="455" size="28" textAlign="left" strokeColor="0x5E3500"
+		stroke="1"
+		verticalAlign="middle" fontFamily="Arial" x="120" anchorOffsetX="0" anchorOffsetY="0"
+		textColor="0xFFFDE2" />
+	<e:Label id="tenprice" text="250" y="455" size="28" textAlign="left" strokeColor="0x5E3500"
+		stroke="1"
+		verticalAlign="middle" fontFamily="Arial" x="300" anchorOffsetX="0" textColor="0xFFFDE2" />
+	<e:Image source="icon_crystal_png" x="70" y="448.67" />
+	<e:Image source="icon_crystal_png" x="250" y="448.67" />
+	<e:Scroller width="356" height="263" x="22.5" y="161" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:TileLayout paddingLeft="10" verticalGap="15" horizontalGap="15" />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+
+</e:Skin>

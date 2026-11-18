@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RedDotItem" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="bg"  horizontalCenter="0" verticalCenter="0" source="icon_equip_png"/>
+	<e:Label id="name_Label" anchorOffsetX="0.5" anchorOffsetY="0.5"  text="Nút" verticalCenter="0" horizontalCenter="0"/>
+	<e:Image id="prompt" source="ui_red_png" top="1" right="5"/>
+</e:Skin>

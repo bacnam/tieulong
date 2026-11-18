@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="XiaKeSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<w:Config id="158512bcebd" />
+	<e:Image source="xiake_bg_jpg" y="12" scaleX="1" scaleY="1" horizontalCenter="0" width="530" height="675" />
+	<e:Image id="wingIcon" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256" horizontalCenter="0"
+	         source="bigwing_1_png" verticalCenter="13" />
+	<e:Image id="roleIcon" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256" horizontalCenter="0"
+	         source="biggumu1_png" verticalCenter="13" />
+	<e:Image id="roleType" x="345" y="162" source="school_gumu_png" />
+	<panels:Equip_GrooveRed id="equip_Weapon" x="20" y="150" scaleX="1" scaleY="1" />
+	<panels:Equip_GrooveRed id="equip_Body" x="20" y="250" scaleX="1" scaleY="1" />
+	<panels:Equip_GrooveRed id="equip_RingLeft" x="20" y="350" scaleX="1" scaleY="1" />
+	<panels:Equip_GrooveRed id="equip_BraceletLeft" x="20" y="450" scaleX="1" scaleY="1" />
+	<panels:Equip_GrooveRed id="equip_Head" y="150" scaleX="1" scaleY="1" right="20" />
+	<panels:Equip_GrooveRed id="equip_Neck" y="250" scaleX="1" scaleY="1" right="20" />
+	<panels:Equip_GrooveRed id="equip_RingRight" y="350" scaleX="1" scaleY="1" right="20" />
+	<panels:Equip_GrooveRed id="equip_BraceletRight" y="450" scaleX="1" scaleY="1" right="20" />
+	<component:RedDotItem id="btn_change" label="" y="500" scaleX="1" scaleY="1" horizontalCenter="0">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg1_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+				<e:Image id="prompt" source="ui_red_png" top="1" left="5" visible="false" />
+			</e:Skin>
+		</component:skinName>
+	</component:RedDotItem>
+	<e:Label text="Nâng cấp" y="512" size="24" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+	         scaleX="1" scaleY="1" touchEnabled="false" horizontalCenter="0" />
+	<e:Group width="481" height="89" x="50" y="570" anchorOffsetX="0" anchorOffsetY="0">
+		<component:RedDotItem id="btn_rebirth" label="" x="-12" y="26" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="zhuansheng_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</e:skinName>
+		</component:RedDotItem>
+		<!--
+		<component:RedDotItem id="btn_dress" label="" x="-12" y="26" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="dress_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</e:skinName>
+		</component:RedDotItem>
+		-->
+		<component:RedDotItem id="btn_marry" label="" x="-2" y="36" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="btn_xialv_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="btn_lingbao" label="" x="8" y="46" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="icon_spritetreasure_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<e:layout>
+			<e:HorizontalLayout/>
+		</e:layout>
+	</e:Group>
+	<component:EuiMap id="unlockMap">
+		<e:Array>
+			<e:Object name="btn_rebirth" system="Rebirth" panel="Rebirth" index="0" />
+			<e:Object name="btn_dress" system="Dress" />
+			<e:Object name="btn_marry" system="Marry" />
+			<e:Object name="btn_lingbao" system="LingBao" panel="LingBao" index="0" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="btn_rebirth" event="Rebirth" />
+			<e:Object name="btn_dress" event="Dress" />
+			<e:Object name="btn_marry" event="Marry;MarrySign" />
+			<e:Object name="btn_lingbao" event="LingBao" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MainPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing"
+	xmlns:ns1="*" xmlns:panels="legend.panels.*" xmlns:component="legend.view.component.*">
+	<w:Config id="15847056209" />
+	<component:MainTaskGroup id="mainTaskGroup" x="-1.67" bottom="231" skinName="MainTaskGroup"
+		visible="false" />
+	<e:Group id="group_home" width="100%" height="100%">
+		<e:Image source="home_jpg" scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="0" />
+		<component:RedDotGroup id="EquipInstance" width="234.67" height="317.33"
+			horizontalCenter="-171.5" verticalCenter="-149.5" anchorOffsetY="0" anchorOffsetX="0">
+			<e:Component width="20" height="20" x="94.65" y="166.98" name="em" visible="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="Arena" width="200" height="272" horizontalCenter="177"
+			verticalCenter="-228" anchorOffsetY="0">
+			<e:Component width="20" height="20" x="85.03" y="105.65" name="em" visible="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="GemInstance" width="217.33" height="302.66"
+			horizontalCenter="-177.5" verticalCenter="246.5" anchorOffsetY="0" anchorOffsetX="0">
+			<e:Component width="20" height="20" x="91.35" y="134.96" name="em" visible="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="MeridianInstance" width="212" height="284" horizontalCenter="114"
+			verticalCenter="138" anchorOffsetY="0" anchorOffsetX="0">
+			<e:Component width="20" height="20" x="94.33" y="116.34" name="em" visible="false" />
+		</component:RedDotGroup>
+	</e:Group>
+	<e:Group id="group_guild" width="100%" height="100%" horizontalCenter="0" verticalCenter="0"
+		visible="false">
+		<e:Image scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="0" source="guild_bg_jpg"
+			locked="true" />
+		<component:RedDotGroup id="btn_GuildPray" width="149.67" height="300.33" anchorOffsetX="0"
+			anchorOffsetY="0"
+			name="open_GuildMain.1" horizontalCenter="240" verticalCenter="-211">
+			<e:Component width="20" height="20" name="em" scaleX="1" scaleY="1" x="76" y="93"
+				touchChildren="false"
+				touchEnabled="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="btn_GuildInstance" width="177.67" height="290.33"
+			anchorOffsetX="0" anchorOffsetY="0"
+			horizontalCenter="72" verticalCenter="-211">
+			<e:Component width="20" height="20" name="em" scaleX="1" scaleY="1" x="142" y="78"
+				visible="false"
+				touchChildren="false" touchEnabled="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="btn_Longnv" width="273" height="320.33" anchorOffsetX="0"
+			anchorOffsetY="0"
+			horizontalCenter="-156.5" verticalCenter="-159">
+			<e:Component width="20" height="20" name="em" scaleX="1" scaleY="1" x="174.33" y="231"
+				touchChildren="false"
+				touchEnabled="false" visible="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="btn_GuildSkill" width="255" height="254.33" anchorOffsetX="0"
+			anchorOffsetY="0"
+			name="open_GuildFunction" horizontalCenter="-186.5" verticalCenter="139">
+			<e:Component width="20" height="20" name="em" scaleX="1" scaleY="1" x="117.5" y="44"
+				visible="false"
+				touchChildren="false" touchEnabled="false" />
+		</component:RedDotGroup>
+		<component:RedDotGroup id="btn_GuildMain" width="228.33" height="240" anchorOffsetX="0"
+			anchorOffsetY="0"
+			name="open_GuildMain" horizontalCenter="59" verticalCenter="89">
+			<e:Component width="20" height="20" name="em" scaleX="1" scaleY="1" x="104.17" y="13"
+				visible="false"
+				touchChildren="false" touchEnabled="false" />
+		</component:RedDotGroup>
+		<e:Group id="btn_GuildStore" width="212" height="208" anchorOffsetX="0" anchorOffsetY="0"
+			name="open_Shop.3"
+			horizontalCenter="206" verticalCenter="315" />
+	</e:Group>
+	<e:Group width="100%" height="200" touchEnabled="false" anchorOffsetY="0">
+		<e:Image source="ui_role_bg_png" y="0" />
+		<e:Image source="money_bg_png" scale9Grid="37,2,125,36" y="3" x="209.01"
+			touchEnabled="false" width="180"/>
+		<e:Image id="btn_addGold" source="btn_bg4_1_png" x="366.01" y="1" />
+		<e:Image source="money_bg_png" scale9Grid="37,2,125,36" y="3" width="160" x="416.01" />
+		<e:Image source="icon_crystal_png" y="1.31" x="416.01" />
+		<e:Image source="icon_gold_png" y="2.31" x="206.01" />
+		<e:Image source="ui_+_png" x="375.68" y="11.99" touchEnabled="false" />
+		<e:Image source="icon_fight_bg_png" y="131.65" right="40" rotation="180"/>
+		<e:Image source="icon_fight_1_png" y="86.65" right="20" />
+		<e:Label id="label_dungen" text="Bản đồ" y="104.65" size="20" textAlign="right"
+			strokeColor="0x000000" stroke="1"
+			scaleX="1" scaleY="1" textColor="0xE0BC59" right="65" />
+		<e:Button id="btn_addCrystal" x="553.01" y="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="btn_bg4_1_png" />
+					<e:Image source="ui_+_png" horizontalCenter="0" verticalCenter="2" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Label id="label_name" text="Tên nhân vật" x="165" y="63" size="22" textAlign="left"
+			strokeColor="0x000000"
+			stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" />
+		<component:Power id="component_power" y="81.32" skinName="Power" left="120"
+			x="104" scaleX="1" scaleY="1" />
+		<e:Image id="image_icon" source="tou1_png" x="23" y="25" scaleX="1" scaleY="1"
+			name="open_PlayerInfo" />
+		<e:Label id="label_gold" text="0" y="14.32" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" scaleX="1"
+			scaleY="1" textColor="0xFCFBFB" x="249.69" />
+		<e:Label id="label_crystal" text="0" y="14.32" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" scaleX="1"
+			scaleY="1" textColor="0xFCFBFB" x="469.69" />
+		<e:BitmapLabel id="label_lv" x="120.01" y="7.31" font="lv_number_fnt" text="L75" scaleX="1"
+			scaleY="1" />
+		<component:RedDotLabel id="label_vip" x="440.68" y="56.65" anchorOffsetX="0"
+			anchorOffsetY="0" width="142" height="45"
+			touchEnabled="false" scaleX="1" scaleY="1">
+			<e:Skin>
+				<e:BitmapLabel id="label_vip" font="vip_number_fnt" text="V0" name="missonfinsh" />
+				<e:Image id="prompt" source="ui_red_png" top="-10" visible="false"
+					touchEnabled="false" />
+			</e:Skin>
+		</component:RedDotLabel>
+		<e:ToggleSwitch id="btn_sound" label="" x="0" y="100" anchorOffsetX="0" width="50"
+			anchorOffsetY="0" height="50">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="play_sound_png"
+						source.down="stop_sound_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+				</e:Skin>
+			</e:skinName>
+		</e:ToggleSwitch>
+	</e:Group>
+	<e:Group id="group_gold" touchChildren="false" touchEnabled="false" />
+	<e:Group height="200" horizontalCenter="0" bottom="0" touchEnabled="false">
+		<e:Image source="ui_main_bg_png" horizontalCenter="0" x="0" y="63" scaleX="1" scaleY="1" />
+		<e:Image id="Package" name="Package" source="icon_bag_png" x="229" y="89" scaleX="1"
+			scaleY="1" />
+		<component:RedDotItem id="Strengthen" name="Strengthen" x="325" y="89" scaleX="1" scaleY="1"
+			width="88" height="88">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="icon_equip_png" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="XiaKe" x="133.33" y="89" scaleX="1" scaleY="1" width="88"
+			height="88">
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="icon_role_png" />
+				<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+			</e:Skin>
+		</component:RedDotItem>
+		<component:RedDotItem id="WarSpirit" name="Wing" x="420.7" y="89" scaleX="1" scaleY="1"
+			width="88" height="88">
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="icon_warspirit_png" />
+				<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+			</e:Skin>
+		</component:RedDotItem>
+		<component:RedDotCheckBox id="btn_home" touchEnabled="true" x="21" y="74.33" scaleX="1"
+			scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="icon_home_png"
+						source.down="icon_fight_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</e:skinName>
+		</component:RedDotCheckBox>
+		<e:Image id="Shop" x="517" source="icon_shop_png" name="Shop" y="74.33" scaleX="1"
+			scaleY="1" />
+		<e:Image id="exp_line" source="ui_exp_png" scaleX="1" scaleY="1" x="19" y="185" />
+		<e:Label id="exp_percentage" text="20%" y="180.34" size="20" stroke="1"
+			horizontalCenter="0.5" touchEnabled="false" />
+	</e:Group>
+	<component:TalkBubbleGroup id="talkBubbleGroup" skinName="TalkBubbleGroup" bottom="190"
+		anchorOffsetX="226"
+		anchorOffsetY="66" horizontalCenter="-36" touchEnabled="false" />
+
+
+	<e:Group height="100" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false"
+		horizontalCenter="0" bottom="107">
+		<component:RedDotItem id="btn_Talk" label="" x="276" y="28" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="talking_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="GodEquip" label="" x="101" y="30" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="shenzhuang_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="Email" label="" x="188" name="open_Email" y="30" scaleX="1"
+			scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="mail_png" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="Task" label="" x="360" y="25" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="icon_task_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="Title" label="" x="370" y="35" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="icon_title_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="btn_Faction" x="444.33" y="38" scaleX="1" scaleY="1">
+			<component:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image source="bangpai_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+					<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				</e:Skin>
+			</component:skinName>
+		</component:RedDotItem>
+		<e:layout>
+			<e:HorizontalLayout verticalAlign="top" horizontalAlign="center" gap="0" />
+		</e:layout>
+	</e:Group>
+	<e:Group id="marry_prompt" touchEnabled="false" x="115" width="205" height="114" bottom="92">
+		<e:Image anchorOffsetY="0" height="114" anchorOffsetX="0" width="205" scaleX="1" scaleY="1"
+			touchEnabled="false" scale9Grid="0,8,120,23" source="prompt_bg_png" x="0" />
+		<e:Label text="Bạn có cái mới\nÝ định kết hôn" y="10" size="18" bold="true"
+			anchorOffsetX="0" verticalAlign="middle"
+			textAlign="center" scaleX="1" scaleY="1" touchEnabled="false" fontFamily="DFKai-SB"
+			textColor="0xffffff" stroke="1" lineSpacing="5" horizontalCenter="0" />
+	</e:Group>
+	<e:Group id="package_prompt" touchEnabled="false" x="229" width="205" height="114" bottom="92"  horizontalCenter="0">
+		<e:Image anchorOffsetY="0" height="114" anchorOffsetX="0" width="205" scaleX="1" scaleY="1"
+			touchEnabled="false" scale9Grid="0,8,120,23" source="prompt_bg_png" x="0" />
+		<e:Label text="Túi đồ đã gần đầy\nHãy dọn dẹp chúng" y="10" size="18" bold="true"
+			anchorOffsetX="0"
+			textAlign="center" scaleX="1" scaleY="1" touchEnabled="false" fontFamily="DFKai-SB"
+			textColor="0xffffff" lineSpacing="5" stroke="1" horizontalCenter="0" />
+	</e:Group>
+	<e:Group id="godEquip_prompt" touchEnabled="false" bottom="197" width="205" height="114" horizontalCenter="-50">
+		<e:Image anchorOffsetY="0" height="114" anchorOffsetX="0" width="205" scaleX="1" scaleY="1"
+			touchEnabled="false" scale9Grid="0,8,120,23" source="prompt_bg_png" />
+		<e:Label text="Bạn có thể tổng hợp\nTrang phục ma thuật mới" y="10" size="18"
+			anchorOffsetX="0" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"
+			touchEnabled="false" textColor="0xffffff" lineSpacing="5" fontFamily="DFKai-SB"
+			stroke="1" horizontalCenter="0" />
+	</e:Group>
+	<e:Group id="jiuyin_prompt" touchEnabled="false" bottom="197" width="205" height="114" horizontalCenter="80">
+		<e:Image anchorOffsetY="0" height="114" anchorOffsetX="0" width="205" scaleX="1" scaleY="1"
+			touchEnabled="false" scale9Grid="0,8,120,24" source="prompt_bg_png" />
+		<e:Label text="Bạn có nhiệm vụ mới\nTham gia để tăng cấp nhanh" y="10" size="18"
+			anchorOffsetX="0" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1"
+			touchEnabled="false" anchorOffsetY="0" fontFamily="DFKai-SB" textColor="0xffffff"
+			lineSpacing="5" stroke="1" horizontalCenter="0.5" />
+	</e:Group>
+	<component:EuiMap id="unlockMap">
+		<e:Array>
+			<e:Object name="Strengthen" system="Strengthen" panel="Strengthen" index="0" />
+			<e:Object name="WarSpirit" system="WarSpirit" panel="WarSpirit" />
+			<e:Object name="EquipInstance" system="EquipInstance" panel="Instance" index="0" />
+			<e:Object name="GemInstance" system="GemInstance" panel="Instance" index="1" />
+			<e:Object name="MeridianInstance" system="MeridianInstance" panel="Instance" index="2" />
+			<e:Object name="Arena" system="Arena" panel="Arena" index="" />
+			<e:Object name="Package" system="Package" panel="Package" index="" />
+			<e:Object name="Shop" system="Shop" panel="Shop" index="" />
+			<e:Object name="XiaKe" system="XiaKe" panel="XiaKe" index="" />
+			<e:Object name="GodEquip" system="GodEquip" panel="GodEquip" index="0" />
+			<e:Object name="Task" system="Task" panel="Task" index="0" />
+			<e:Object name="Title" system="Title" />
+			<e:Object name="btn_Talk" system="Talk" panel="Talk" index="0" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="Strengthen" event="Strengthen;Gem;Star;Artifice" />
+			<e:Object name="XiaKe"
+				event="Skill;Wing;Meridian;OneKeyEquip;UnlockChar;Rebirth;Dress;Title" />
+			<e:Object name="Title" event="NewTitle" />
+			<e:Object name="btn_home" event="EquipInstance;GemInstance;MeridianInstance" />
+			<e:Object name="EquipInstance" event="EquipInstance" />
+			<e:Object name="Arena" event="Arena" />
+			<e:Object name="GemInstance" event="GemInstance" />
+			<e:Object name="MeridianInstance" event="MeridianInstance" />
+			<e:Object name="WarSpirit" event="WarSpirit;WarSpiritLevel;WarSpiritTalent" />
+			<e:Object name="label_vip" event="VipReward" />
+			<e:Object name="GodEquip" event="GodEquip" />
+			<e:Object name="Email" event="Email" />
+			<e:Object name="Task" event="Task" />
+			<e:Object name="Wing" event="Wing" />
+			<e:Object name="btn_GuildPray" event="GuildSacrifice" />
+			<e:Object name="btn_GuildInstance" event="GuildBoss" />
+			<e:Object name="btn_GuildSkill" event="GuildSkill" />
+			<e:Object name="btn_GuildMain" event="GuildApply" />
+			<e:Object name="btn_Faction"
+				event="GuildSacrifice;GuildBoss;GuildSkill;GuildApply;LongnvSacrifice;LongnvWar" />
+			<e:Object name="btn_Longnv" event="LongnvSacrifice;LongnvWar" />
+			<e:Object name="btn_Talk" event="GMTalk" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotGuideMap">
+		<e:Array>
+			<e:Object name="Package" event="Package" />
+			<e:Object name="GodEquip" event="GodEquip" />
+			<e:Object name="btn_Faction" event="GuildApply" />
+			<e:Object name="label_vip" event="VipReward" />
+			<e:Object name="Task" event="JiuYinTask" />
+			<e:Object name="XiaKe" event="Marry" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotPromptMap">
+		<e:Array>
+			<e:Object name="package_prompt" event="Package" />
+			<e:Object name="godEquip_prompt" event="GodEquip" />
+			<e:Object name="jiuyin_prompt" event="JiuYinTask" />
+			<e:Object name="marry_prompt" event="Marry" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

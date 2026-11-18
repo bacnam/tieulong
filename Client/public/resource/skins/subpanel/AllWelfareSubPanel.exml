@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="AllWelfareSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_tab_png" y="2" anchorOffsetX="0" width="528" anchorOffsetY="0" height="203" horizontalCenter="0"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="18.48" scaleX="1" scaleY="1" width="540" height="670" anchorOffsetY="0" horizontalCenter="0"/>
+	<e:Image y="22.5" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" width="530" touchEnabled="false" source="allfuli_bg_jpg"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" anchorOffsetX="0" width="531" anchorOffsetY="0" height="495" y="189.66" horizontalCenter="0.5"/>
+	<e:Scroller width="530" height="447" y="195" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="list" itemRendererSkinName="SingleRechargeItem" anchorOffsetY="0" height="553.33" x="0" y="-5.33">
+		<e:layout>
+			<e:VerticalLayout gap="10"/>
+		</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="time" text="Thời gian đổi phần thưởng lúc 00:00 chủ nhật hàng tuần" y="651" textColor="0xff0000" size="20" horizontalCenter="0"/>
+	<e:BitmapLabel id="times" y="89.02" font="power_number3_fnt" text="0" horizontalCenter="1.5"/>
+	<e:Image id="btn_goto" x="462" y="29" source="btn_goto_png"/>
+</e:Skin>

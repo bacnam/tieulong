@@ -1,0 +1,185 @@
+﻿邮件ID	邮件标题（服务器直接发，不走语言表）	邮件文字描述（服务器直接发，不走语言表）	奖励ID	领取时间限制(单位秒)(注意：填0即为无限时)	已读消息保留时间(单位秒)(注意：填0即不保留立即删除)
+id	Title	Content	RewardId	ExistTime	PickUpExistTime
+100001	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510001	604800	86400
+100002	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510002	604800	86400
+100003	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510003	604800	86400
+100004	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510004	604800	86400
+100005	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510005	604800	86400
+100006	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510006	604800	86400
+100007	BOSS Thế giới	Tiêu duyệt BOSS thế giới, hạng lần này {0}nhận thưởng.	510007	604800	86400
+100101	Thưởng BOSS	Chúc mừng ngài thành công đánh bại Boss, đạt được khen thưởng:	500001	604800	86400
+200001	Đấu trường hạng 1 khen thưởng	Hôm qua ngài đấu trường xếp hạng vì đệ 1 danh, đạt được khen thưởng:	400001	604800	86400
+200002	Đấu trường hạng 2-3 khen thưởng	Hôm qua ngài đấu trường xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	400002	604800	86400
+200003	Đấu trường hạng 4-10 khen thưởng	Hôm qua ngài đấu trường xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	400003	604800	86400
+200004	Đấu trường hạng 11-20 khen thưởng	Hôm qua ngài đấu trường xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	400004	604800	86400
+200005	Đấu trường hạng 21-50 khen thưởng	Hôm qua ngài đấu trường xếp hạng ở 21-50 danh chi gian, đạt được khen thưởng:	400005	604800	86400
+200006	Đấu trường hạng 51-100 khen thưởng	Hôm qua ngài đấu trường xếp hạng ở 51-100 danh chi gian, đạt được khen thưởng:	400006	604800	86400
+200007	Đấu trường hạng 101-2000 khen thưởng	Hôm qua ngài đấu trường xếp hạng ở 101-2000 danh chi gian, đạt được khen thưởng:	400007	604800	86400
+300001	Quyết chiến đệ 1 khen thưởng	Hôm qua ngài quyết chiến xếp hạng vì đệ 1 danh, đạt được khen thưởng:	410001	604800	86400
+300002	Quyết chiến đệ 2-3 khen thưởng	Hôm qua ngài quyết chiến xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	410002	604800	86400
+300003	Quyết chiến đệ 4-10 khen thưởng	Hôm qua ngài quyết chiến xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	410003	604800	86400
+300004	Quyết chiến đệ 11-20 khen thưởng	Hôm qua ngài quyết chiến xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	410004	604800	86400
+300005	Quyết chiến đệ 21-50 khen thưởng	Hôm qua ngài quyết chiến xếp hạng ở 21-50 danh chi gian, đạt được khen thưởng:	410005	604800	86400
+300006	Quyết chiến đệ 51-100 khen thưởng	Hôm qua ngài quyết chiến xếp hạng ở 51-100 danh chi gian, đạt được khen thưởng:	410006	604800	86400
+300007	Quyết chiến đệ 101-2000 khen thưởng	Hôm qua ngài quyết chiến xếp hạng ở 101-2000 danh chi gian, đạt được khen thưởng:	410007	604800	86400
+410001	Cánh chim bảng đệ 1 khen thưởng	Hôm qua ngài cánh chim bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	910001	604800	86400
+410002	Cánh chim bảng đệ 2-3 khen thưởng	Hôm qua ngài cánh chim bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	910002	604800	86400
+410003	Cánh chim bảng đệ 4-10 khen thưởng	Hôm qua ngài cánh chim bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	910003	604800	86400
+410004	Cánh chim bảng đệ 11-20 khen thưởng	Hôm qua ngài cánh chim bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	910004	604800	86400
+420001	Sấm quan bảng đệ 1 khen thưởng	Hôm qua ngài sấm quan bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	920001	604800	86400
+420002	Sấm quan bảng đệ 2-3 khen thưởng	Hôm qua ngài sấm quan bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	920002	604800	86400
+420003	Sấm quan bảng đệ 4-10 khen thưởng	Hôm qua ngài sấm quan bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	920003	604800	86400
+420004	Sấm quan bảng đệ 11-20 khen thưởng	Hôm qua ngài sấm quan bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	920004	604800	86400
+430001	Cấp bậc bảng đệ 1 khen thưởng	Hôm qua ngài cấp bậc bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	930001	604800	86400
+430002	Cấp bậc bảng đệ 2-3 khen thưởng	Hôm qua ngài cấp bậc bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	930002	604800	86400
+430003	Cấp bậc bảng đệ 4-10 khen thưởng	Hôm qua ngài cấp bậc bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	930003	604800	86400
+430004	Cấp bậc bảng đệ 11-20 khen thưởng	Hôm qua ngài cấp bậc bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	930004	604800	86400
+440001	Chiến lực bảng đệ 1 khen thưởng	Hôm qua ngài chiến lực bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	940001	604800	86400
+440002	Chiến lực bảng đệ 2-3 khen thưởng	Hôm qua ngài chiến lực bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	940002	604800	86400
+440003	Chiến lực bảng đệ 4-10 khen thưởng	Hôm qua ngài chiến lực bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	940003	604800	86400
+440004	Chiến lực bảng đệ 11-20 khen thưởng	Hôm qua ngài chiến lực bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	940004	604800	86400
+441001	Luyện hóa bảng đệ 1 khen thưởng	Hôm qua ngài luyện hóa bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	951001	604800	86400
+441002	Luyện hóa bảng đệ 2-3 khen thưởng	Hôm qua ngài luyện hóa bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	951002	604800	86400
+441003	Luyện hóa bảng đệ 4-10 khen thưởng	Hôm qua ngài luyện hóa bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	951003	604800	86400
+441004	Luyện hóa bảng đệ 11-20 khen thưởng	Hôm qua ngài luyện hóa bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	951004	604800	86400
+442001	Bang hội bảng đệ 1 khen thưởng	Hôm qua ngài bang hội bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	952001	604800	86400
+442002	Bang hội bảng đệ 2-3 khen thưởng	Hôm qua ngài bang hội bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	952002	604800	86400
+442003	Bang hội bảng đệ 4-10 khen thưởng	Hôm qua ngài bang hội bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	952003	604800	86400
+442004	Bang hội bảng đệ 11-20 khen thưởng	Hôm qua ngài bang hội bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	952004	604800	86400
+450001	Quyết chiến bảng đệ 1 khen thưởng	Hôm qua ngài quyết chiến bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	950001	604800	86400
+450002	Quyết chiến bảng đệ 2-3 khen thưởng	Hôm qua ngài quyết chiến bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	950002	604800	86400
+450003	Quyết chiến bảng đệ 4-10 khen thưởng	Hôm qua ngài quyết chiến bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	950003	604800	86400
+450004	Quyết chiến bảng đệ 11-20 khen thưởng	Hôm qua ngài quyết chiến bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	950004	604800	86400
+460001	Cạnh kỹ bảng đệ 1 khen thưởng	Hôm qua ngài cạnh kỹ bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	960001	604800	86400
+460002	Cạnh kỹ bảng đệ 2-3 khen thưởng	Hôm qua ngài cạnh kỹ bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	960002	604800	86400
+460003	Cạnh kỹ bảng đệ 4-10 khen thưởng	Hôm qua ngài cạnh kỹ bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	960003	604800	86400
+460004	Cạnh kỹ bảng đệ 11-20 khen thưởng	Hôm qua ngài cạnh kỹ bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	960004	604800	86400
+470001	Cổ mộ bảng đệ 1 khen thưởng	Hôm qua ngài Nga Mi bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	970001	604800	86400
+470002	Cổ mộ bảng đệ 2-3 khen thưởng	Hôm qua ngài Nga Mi bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	970002	604800	86400
+470003	Cổ mộ bảng đệ 4-10 khen thưởng	Hôm qua ngài Nga Mi bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	970003	604800	86400
+470004	Cổ mộ bảng đệ 11-20 khen thưởng	Hôm qua ngài Nga Mi bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	970004	604800	86400
+480001	Thiên Long Bảng đệ 1 khen thưởng	Hôm qua ngài Thiên Long Bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	980001	604800	86400
+480002	Thiên Long Bảng đệ 2-3 khen thưởng	Hôm qua ngài Thiên Long Bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	980002	604800	86400
+480003	Thiên Long Bảng đệ 4-10 khen thưởng	Hôm qua ngài Thiên Long Bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	980003	604800	86400
+480004	Thiên Long Bảng đệ 11-20 khen thưởng	Hôm qua ngài Thiên Long Bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	980004	604800	86400
+490001	Tiêu dao bảng đệ 1 khen thưởng	Hôm qua ngài tiêu dao bảng xếp hạng vì đệ 1 danh, đạt được khen thưởng:	990001	604800	86400
+490002	Tiêu dao bảng đệ 2-3 khen thưởng	Hôm qua ngài tiêu dao bảng xếp hạng ở 2-3 danh chi gian, đạt được khen thưởng:	990002	604800	86400
+490003	Tiêu dao bảng đệ 4-10 khen thưởng	Hôm qua ngài tiêu dao bảng xếp hạng ở 4-10 danh chi gian, đạt được khen thưởng:	990003	604800	86400
+490004	Tiêu dao bảng đệ 11-20 khen thưởng	Hôm qua ngài tiêu dao bảng xếp hạng ở 11-20 danh chi gian, đạt được khen thưởng:	990004	604800	86400
+500001	Gia nhập bang phái thông tri	Chúc mừng ngươi gia nhập {0}		604800	86400
+500002	Đá ra bang phái thông tri	Thật đáng tiếc, ngươi bị {0} đá ra		604800	86400
+500003	Bang phái chức vị biến động thông tri	Ngươi chức vị từ {0} biến thành {1}		604800	86400
+1200001	Bang phái Boss 1 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200001	604800	86400
+1200002	Bang phái Boss 2 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200002	604800	86400
+1200003	Bang phái Boss 3 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200003	604800	86400
+1200004	Bang phái Boss 4 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200004	604800	86400
+1200005	Bang phái Boss 5 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200005	604800	86400
+1200006	Bang phái Boss 6 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200006	604800	86400
+1200007	Bang phái Boss 7 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200007	604800	86400
+1200008	Bang phái Boss 8 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200008	604800	86400
+1200009	Bang phái Boss 9 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200009	604800	86400
+1200010	Bang phái Boss 10 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200010	604800	86400
+1200011	Bang phái Boss 11 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200011	604800	86400
+1200012	Bang phái Boss 12 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200012	604800	86400
+1200013	Bang phái Boss 13 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200013	604800	86400
+1200014	Bang phái Boss 14 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200014	604800	86400
+1200015	Bang phái Boss 15 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200015	604800	86400
+1200016	Bang phái Boss 16 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200016	604800	86400
+1200017	Bang phái Boss 17 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200017	604800	86400
+1200018	Bang phái Boss 18 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200018	604800	86400
+1200019	Bang phái Boss 19 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200019	604800	86400
+1200020	Bang phái Boss 20 đánh bại khen thưởng	Bang phái Boss đã bị đánh bại, sở hữu thành viên đạt được:	1200020	604800	86400
+1230001	Tiền đồng cứ điểm chiến báo	<font> lần này ở tiền đồng cứ điểm trong thế giới, ta giúp </font><font color='0x00ff00'> thắng lợi </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230002	Đá quý cứ điểm chiến báo	<font> lần này ở đá quý cứ điểm trong thế giới, ta giúp </font><font color='0x00ff00'> thắng lợi </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230003	Tinh thạch cứ điểm chiến báo	<font> lần này ở tinh thạch cứ điểm trong thế giới, ta giúp </font><font color='0x00ff00'> thắng lợi </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230004	Luyện hóa thạch cứ điểm chiến báo	<font> lần này ở luyện hóa thạch cứ điểm trong thế giới, ta giúp </font><font color='0x00ff00'> thắng lợi </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230005	Thiên phú đan cứ điểm chiến báo	<font> lần này ở thiên phú đan cứ điểm trong thế giới, ta giúp </font><font color='0x00ff00'> thắng lợi </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230006	Tiền đồng cứ điểm chiến báo	<font> lần này ở tiền đồng cứ điểm trong thế giới, ta giúp </font><font color='0xff0000'> thất bại </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230007	Đá quý cứ điểm chiến báo	<font> lần này ở đá quý cứ điểm trong thế giới, ta giúp </font><font color='0xff0000'> thất bại </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230008	Tinh thạch cứ điểm chiến báo	<font> lần này ở tinh thạch cứ điểm trong thế giới, ta giúp </font><font color='0xff0000'> thất bại </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230009	Luyện hóa thạch cứ điểm chiến báo	<font> lần này ở luyện hóa thạch cứ điểm trong thế giới, ta giúp </font><font color='0xff0000'> thất bại </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230010	Thiên phú đan cứ điểm chiến báo	<font> lần này ở thiên phú đan cứ điểm trong thế giới, ta giúp </font><font color='0xff0000'> thất bại </font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230011	Long nữ thủ vệ chiến báo	<font> lần này ở long nữ thủ vệ trong thế giới, ta giúp </font><font color='0xff0000'>{8}</font><font>. \n ta giúp </font><font color='0xFFC446'>{0}</font><font> đầu nhập </font><font color='0x00ff00'>{1}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{2}</font><font> danh. \n</font><font> địch giúp </font><font color='0xFFC446'>{3}</font><font> đầu nhập </font><font color='0x00ff00'>{4}</font><font> danh hiệp khách tham dự thế giới, tổn thất </font><font color='0xff0000'>{5}</font><font> danh. \n</font><font>\n-----------------------\n\n cá nhân tình hình chiến đấu: \n triệu hoán </font><font color='0x00ff00'>{6}</font><font> cái con rối \n</font><font> cá nhân đánh chết địch giúp hiệp khách </font><font color='0xff0000'>{7}</font><font> danh </font>		604800	86400
+1230012	Tiền đồng cứ điểm chiếm lĩnh khen thưởng	Tiền đồng cứ điểm chiếm lĩnh khen thưởng	1230001	604800	86400
+1230013	Đá quý cứ điểm chiếm lĩnh khen thưởng	Đá quý cứ điểm chiếm lĩnh khen thưởng	1230002	604800	86400
+1230014	Tinh thạch cứ điểm chiếm lĩnh khen thưởng	Tinh thạch cứ điểm chiếm lĩnh khen thưởng	1230003	604800	86400
+1230015	Luyện hóa thạch cứ điểm chiếm lĩnh khen thưởng	Luyện hóa thạch cứ điểm chiếm lĩnh khen thưởng	1230004	604800	86400
+1230016	Thiên phú đan cứ điểm chiếm lĩnh khen thưởng	Thiên phú đan cứ điểm chiếm lĩnh khen thưởng	1230005	604800	86400
+1600003	Giương cánh bay cao	<font> Chúc mừng đạt được danh hiệu: </font><font color='0x00ff00'> giương cánh bay cao </font><font>\n\n danh hiệu nhưng ở danh hiệu mặt tường bản kích hoạt, sở hữu đạt được danh hiệu thuộc tính chồng lên, ngài có được nhân vật đều có thể đạt được danh hiệu thuộc tính thêm thành, thăng cấp danh hiệu nhưng gia tăng danh hiệu thuộc tính thêm thành! </font>	1600003	604800	86400
+1600004	Cao phú soái	<font> Chúc mừng đạt được danh hiệu: </font><font color='0x00ff00'> cao phú soái </font><font>\n\n danh hiệu nhưng ở danh hiệu mặt tường bản kích hoạt, sở hữu đạt được danh hiệu thuộc tính chồng lên, ngài có được nhân vật đều có thể đạt được danh hiệu thuộc tính thêm thành, thăng cấp danh hiệu nhưng gia tăng danh hiệu thuộc tính thêm thành! </font>	1600004	604800	86400
+1600005	Đệ nhất bang chủ	<font> Chúc mừng đạt được danh hiệu: </font><font color='0x00ff00'> đệ nhất bang chủ </font><font>\n\n danh hiệu nhưng ở danh hiệu mặt tường bản kích hoạt, sở hữu đạt được danh hiệu thuộc tính chồng lên, ngài có được nhân vật đều có thể đạt được danh hiệu thuộc tính thêm thành, thăng cấp danh hiệu nhưng gia tăng danh hiệu thuộc tính thêm thành! </font>	1600005	604800	86400
+1600006	Đệ nhất giúp tinh anh	<font> Chúc mừng đạt được danh hiệu: </font><font color='0x00ff00'> đệ nhất giúp tinh anh </font><font>\n\n danh hiệu nhưng ở danh hiệu mặt tường bản kích hoạt, sở hữu đạt được danh hiệu thuộc tính chồng lên, ngài có được nhân vật đều có thể đạt được danh hiệu thuộc tính thêm thành, thăng cấp danh hiệu nhưng gia tăng danh hiệu thuộc tính thêm thành! </font>	1600006	604800	86400
+1700001	Ly hôn thông tri	Thực bất hạnh, ngươi người yêu lựa chọn cùng ngươi chia tay.	11		
+1900001	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+1900002	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+1900003	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+1900004	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+1900005	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+1900006	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+1900007	Bảng xếp hạng khen thưởng	Chúc mừng ngài lần này hoạt động xếp hạng đệ {0}, đạt được khen thưởng:		604800	86400
+11	1 cấp bạch trang	1 cấp chiếm lĩnh khen thưởng	11		
+12	1 cấp lục trang	1 cấp chiếm lĩnh khen thưởng	12		
+13	1 cấp lam trang	1 cấp chiếm lĩnh khen thưởng	13		
+14	1 cấp tím trang	1 cấp chiếm lĩnh khen thưởng	14		
+15	1 cấp cam trang	1 cấp chiếm lĩnh khen thưởng	15		
+16	1 cấp hồng trang	1 cấp chiếm lĩnh khen thưởng	16		
+101	10 cấp bạch trang	10 cấp chiếm lĩnh khen thưởng	101		
+102	10 cấp lục trang	10 cấp chiếm lĩnh khen thưởng	102		
+103	10 cấp lam trang	10 cấp chiếm lĩnh khen thưởng	103		
+104	10 cấp tím trang	10 cấp chiếm lĩnh khen thưởng	104		
+105	10 cấp cam trang	10 cấp chiếm lĩnh khen thưởng	105		
+106	10 cấp hồng trang	10 cấp chiếm lĩnh khen thưởng	106		
+201	20 cấp bạch trang	20 cấp chiếm lĩnh khen thưởng	201		
+202	20 cấp lục trang	20 cấp chiếm lĩnh khen thưởng	202		
+203	20 cấp lam trang	20 cấp chiếm lĩnh khen thưởng	203		
+204	20 cấp tím trang	20 cấp chiếm lĩnh khen thưởng	204		
+205	20 cấp cam trang	20 cấp chiếm lĩnh khen thưởng	205		
+206	20 cấp hồng trang	20 cấp chiếm lĩnh khen thưởng	206		
+301	30 cấp bạch trang	30 cấp chiếm lĩnh khen thưởng	301		
+302	30 cấp lục trang	30 cấp chiếm lĩnh khen thưởng	302		
+303	30 cấp lam trang	30 cấp chiếm lĩnh khen thưởng	303		
+304	30 cấp tím trang	30 cấp chiếm lĩnh khen thưởng	304		
+305	30 cấp cam trang	30 cấp chiếm lĩnh khen thưởng	305		
+306	30 cấp hồng trang	30 cấp chiếm lĩnh khen thưởng	306		
+401	40 cấp bạch trang	40 cấp chiếm lĩnh khen thưởng	401		
+402	40 cấp lục trang	40 cấp chiếm lĩnh khen thưởng	402		
+403	40 cấp lam trang	40 cấp chiếm lĩnh khen thưởng	403		
+404	40 cấp tím trang	40 cấp chiếm lĩnh khen thưởng	404		
+405	40 cấp cam trang	40 cấp chiếm lĩnh khen thưởng	405		
+406	40 cấp hồng trang	40 cấp chiếm lĩnh khen thưởng	406		
+501	50 cấp bạch trang	50 cấp chiếm lĩnh khen thưởng	501		
+502	50 cấp lục trang	50 cấp chiếm lĩnh khen thưởng	502		
+503	50 cấp lam trang	50 cấp chiếm lĩnh khen thưởng	503		
+504	50 cấp tím trang	50 cấp chiếm lĩnh khen thưởng	504		
+505	50 cấp cam trang	50 cấp chiếm lĩnh khen thưởng	505		
+506	50 cấp hồng trang	50 cấp chiếm lĩnh khen thưởng	506		
+601	60 cấp bạch trang	60 cấp chiếm lĩnh khen thưởng	601		
+602	60 cấp lục trang	60 cấp chiếm lĩnh khen thưởng	602		
+603	60 cấp lam trang	60 cấp chiếm lĩnh khen thưởng	603		
+604	60 cấp tím trang	60 cấp chiếm lĩnh khen thưởng	604		
+605	60 cấp cam trang	60 cấp chiếm lĩnh khen thưởng	605		
+606	60 cấp hồng trang	60 cấp chiếm lĩnh khen thưởng	606		
+701	70 cấp bạch trang	70 cấp chiếm lĩnh khen thưởng	701		
+702	70 cấp lục trang	70 cấp chiếm lĩnh khen thưởng	702		
+703	70 cấp lam trang	70 cấp chiếm lĩnh khen thưởng	703		
+704	70 cấp tím trang	70 cấp chiếm lĩnh khen thưởng	704		
+705	70 cấp cam trang	70 cấp chiếm lĩnh khen thưởng	705		
+706	70 cấp hồng trang	70 cấp chiếm lĩnh khen thưởng	706		
+801	80 cấp bạch trang	80 cấp chiếm lĩnh khen thưởng	801		
+802	80 cấp lục trang	80 cấp chiếm lĩnh khen thưởng	802		
+803	80 cấp lam trang	80 cấp chiếm lĩnh khen thưởng	803		
+804	80 cấp tím trang	80 cấp chiếm lĩnh khen thưởng	804		
+805	80 cấp cam trang	80 cấp chiếm lĩnh khen thưởng	805		
+806	80 cấp hồng trang	80 cấp chiếm lĩnh khen thưởng	806		
+901	90 cấp bạch trang	90 cấp chiếm lĩnh khen thưởng	901		
+902	90 cấp lục trang	90 cấp chiếm lĩnh khen thưởng	902		
+903	90 cấp lam trang	90 cấp chiếm lĩnh khen thưởng	903		
+904	90 cấp tím trang	90 cấp chiếm lĩnh khen thưởng	904		
+905	90 cấp cam trang	90 cấp chiếm lĩnh khen thưởng	905		
+906	90 cấp hồng trang	90 cấp chiếm lĩnh khen thưởng	906		
+1001	100 cấp bạch trang	100 cấp chiếm lĩnh khen thưởng	1001		
+1002	100 cấp lục trang	100 cấp chiếm lĩnh khen thưởng	1002		
+1003	100 cấp lam trang	100 cấp chiếm lĩnh khen thưởng	1003		
+1004	100 cấp tím trang	100 cấp chiếm lĩnh khen thưởng	1004		
+1005	100 cấp cam trang	100 cấp chiếm lĩnh khen thưởng	1005		
+1006	100 cấp hồng trang	100 cấp chiếm lĩnh khen thưởng	1006		

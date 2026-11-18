@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WingActiveItem" width="477.33" height="105.33" xmlns:e="http://ns.egret.com/eui">
+	<e:Button id="btn_active" label="Nguyên bảo kích hoạt" y="25" width="110" height="35" x="360">
+		<e:skinName>
+		<e:Skin states="up,down,disabled" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+			<e:Image width="100%" height="100%" source="btn_bg2_png"/>
+			<e:Label id="labelDisplay" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Label id="label_tip" text="Tiêu hao 5000 nguyên bảo\ntrực tiếp kích hoạt cánh cấp 4" y="27.33" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="0" width="305" touchEnabled="false"/>
+	<e:Image id="bg_discount" source="zhekou_png" x="320" touchEnabled="false"/>
+	<e:BitmapLabel id="discount" text="8" y="5.91" verticalAlign="middle" horizontalCenter="102.33500000000001" font="shop_number_fnt" scaleX="0.48" scaleY="0.48" touchEnabled="false"/>
+</e:Skin>

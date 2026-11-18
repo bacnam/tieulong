@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="15861a3db90" />
+	<e:Group id="group_static" width="600" height="850" touchEnabled="false" anchorOffsetX="0"
+		anchorOffsetY="0" rotation="359.83" verticalCenter="0" horizontalCenter="0">
+		<e:Image source="ui_bg_png" horizontalCenter="0" x="9.006087877279315"
+			y="-1.973330849106361" scaleX="1" scaleY="1" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="60.08706942222392" scaleX="1"
+			scaleY="1" width="550" height="756" horizontalCenter="0" />
+		<e:Image source="jjc_png" y="4.741827512061548" horizontalCenter="0.5"
+			x="249.99240418801466" scaleX="1" scaleY="1" />
+		<e:Label text="Xếp hạng:" y="74.4186376521811" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="110.33" height="32"
+			verticalAlign="middle" anchorOffsetX="0" x="140.45284324737676" scaleX="1" scaleY="1" />
+		<e:Image source="btn_bg2_png" scale9Grid="56,4,23,37" x="416.6718511160006"
+			y="114.23918536524528" scaleX="1" scaleY="1" name="open_ArenaRank" />
+		<e:Image source="btn_bg2_png" scale9Grid="56,4,23,37" x="276.6694586086861"
+			y="113.82380023860784" scaleX="1" scaleY="1" name="open_Shop.2" />
+		<e:Label id="btn_shop" text="Cửa hàng" x="294.6341617773433" y="125.87741196980247"
+			size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+			width="100" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image source="btn_bg2_png" scale9Grid="56,4,23,37" x="136.66706610137174"
+			y="113.40841511197041" scaleX="1" scaleY="1" name="open_ArenaRecord" />
+		<e:Label id="btn_records" text="Kỷ lục" x="154.63176927002894" y="125.46202684316503"
+			size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+			width="100" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="388.7870870426724"
+			y="75.1554418557374" width="160" height="30" scaleX="1" scaleY="1" />
+		<e:Label text="Số lượt tham gia được reset vào 0h sáng hàng ngày" x="65" y="705" size="18"
+			textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" height="29"
+			verticalAlign="middle" scaleX="1" scaleY="1" />
+		<e:Image source="icon_wu_png" x="368.7956463657697" y="72.0960498553467" scaleX="1"
+			scaleY="1" />
+		<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="65.71434575640161"
+			y="764.21475540355" width="180" height="40" scaleX="1" scaleY="1" />
+		<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="378.3796889088082"
+			y="765.1424290727962" width="180" height="40" scaleX="1" scaleY="1" visible="false" />
+		<e:Image source="btn_bg5_png" scale9Grid="3,2,82,32" x="436.48" y="739.3" width="103"
+			scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_png" x="524.99" y="6.55" name="btn_close" scaleX="1" scaleY="1" />
+		<e:Label id="btn_ranklist" text="Xếp hạng" x="433.6365371953198" y="126.28983005982107"
+			size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+			width="100" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image id="btn_help" source="ui_heip_png" x="53.75465878488621" y="83.161638392468"
+			scaleX="1" scaleY="1" />
+		<e:Label text="Lượt còn:" y="768.2415270904715" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="105.33" height="32"
+			verticalAlign="middle" x="74.70263141396791" anchorOffsetX="0" scaleX="1" scaleY="1" />
+		<e:Image id="btn_buyTimes" source="btn_bg4_1_png" x="253.72" y="761.76" scaleX="1"
+			scaleY="1" />
+		<e:Image source="ui_+_png" x="262.71" y="770.79" touchEnabled="false" scaleX="1" scaleY="1" />
+		<e:Label text="Lượt có thể mua:" y="738.1929670366187" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle"
+			x="67.15001708933795" anchorOffsetX="0" scaleX="1" scaleY="1" />
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" />
+
+	</e:Group>
+	<e:Group width="600" height="850" touchEnabled="false" anchorOffsetX="0" anchorOffsetY="0"
+		rotation="359.83" verticalCenter="0" horizontalCenter="0">
+		<e:Label id="lbl_remain" text="1" y="738.56" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" x="221.19"
+			anchorOffsetX="0" scaleX="1" scaleY="1" />
+		<e:Label id="lbl_rank" text="20" y="74.7361105703969" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="110.33" height="32"
+			verticalAlign="middle" anchorOffsetX="0" x="247.45467180653847" scaleX="1" scaleY="1" />
+		<e:Label id="lbl_arenaToken" text="1234567890" x="409.7844788821507" y="76.21776671407096"
+			size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="130"
+			textColor="0xFFFFFF" height="29" verticalAlign="middle" scaleX="1" scaleY="1" />
+		<e:Label id="lbl_times" text="20/10" y="768.5599791307715" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="58.67" height="32"
+			verticalAlign="middle" x="182.03446561261117" anchorOffsetX="0" scaleX="1" scaleY="1" />
+		<e:Label id="lbl_status" text="Có thể khiêu chiến" y="769.1692304300839" size="20"
+			textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="160"
+			height="32" verticalAlign="middle" x="387.37797473726783" scaleX="1" scaleY="1"
+			visible="false" />
+		<e:Label id="btn_refresh" text="Thay đổi một đợt (50s)" x="432.63" y="748.63" size="18"
+			textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="110"
+			anchorOffsetX="0" scaleX="1" scaleY="1" />
+		<e:Group id="grp_opps" width="524.24" height="530.3" y="164.6687303987957" anchorOffsetX="0"
+			anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0">
+			<e:layout>
+				<e:VerticalLayout gap="0" paddingTop="0" horizontalAlign="center" />
+			</e:layout>
+		</e:Group>
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="CuePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="1587265697f" />
+	<e:Group id="group_static" width="400" height="245" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="-125"
+	         horizontalCenter="0" touchEnabled="false">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="245" scaleX="1" scaleY="1"  x="0"/>
+		<e:Image source="smallui_tbg_png" y="7" scaleX="1" scaleY="1" x="54" />
+		<e:Image id="btn_confirm" source="btn_bg5_png" x="242" y="188" width="108" height="44" scaleX="1"
+		         scaleY="1" />
+		<e:Label text="Xác nhận" x="242" y="199" size="22" width="108" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+		         touchEnabled="false" scaleX="1" scaleY="1" />
+		<e:Image id="btn_cancel" source="btn_bg4_png" x="59" y="188" width="120" height="44" name="btn_close"
+		         scaleX="1" scaleY="1"/>
+		<e:Label text="Hủy bỏ" x="59" y="199"  width="120" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+		         touchEnabled="false" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_png" x="333" y="-1" name="btn_close" scaleX="1" scaleY="1" />
+	</e:Group>
+	<e:Group width="400" height="245" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="-125" horizontalCenter="0"
+	         touchEnabled="false">
+		<e:ViewStack id="conent" width="350" height="125" y="44" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0"
+		             selectedIndex="1" x="27" scaleX="1" scaleY="1">
+			<e:Group width="100%" height="100%" scaleX="1" scaleY="1">
+				<e:Label id="label_content" text="Nhãn" scaleX="1" scaleY="1" width="100%" height="100%" verticalAlign="middle"
+				         textAlign="center" />
+			</e:Group>
+			<e:Group anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" scaleX="1" scaleY="1" width="100%" height="100%">
+				<e:Label text="Chi phí" y="33" size="22" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF"
+				         verticalAlign="middle" x="77" scaleX="1" scaleY="1" />
+				<e:Label id="spend_content" text="Mua" y="83" size="22" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF"
+				         verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" />
+				<e:Label id="spend_price" text="15" x="229" y="31" size="24" textAlign="left" strokeColor="0x000000" stroke="1"
+				         textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+				<e:Image id="spend_icon" source="icon_crystal_png" x="184" y="23" scaleX="1" scaleY="1" />
+			</e:Group>
+			<e:Group width="100%" height="100%" scaleX="1" scaleY="1">
+				<e:Label id="time_content" text="Nhãn" scaleX="1" scaleY="1" width="100%" height="74" verticalAlign="middle"
+				         textAlign="center" anchorOffsetY="0" horizontalCenter="0" />
+				<e:Label id="time_label" text="10" y="82" bold="true" horizontalCenter="0.5" size="42" />
+			</e:Group>
+			<e:Group width="350" height="125" scaleX="1" scaleY="1">
+				<e:Label text="Chi phí" y="12" size="22" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle" x="77" scaleX="1" scaleY="1"/>
+				<e:Label id="spendtip_content" text="Mua" y="51" size="22" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0"/>
+				<e:Label id="spendtip_tip" text="Nhắc nhở: Hoàn thành khiêu chiến sẽ nhận được rất nhiều trang bị, hãy sắp xếp túi đồ trước khi khiêu chiến." y="80" size="20" strokeColor="0x000000" stroke="1" verticalAlign="justify" scaleX="1" scaleY="1" horizontalCenter="0" textColor="0x00ff00" width="350" textAlign="center"/>
+				<e:Label id="spendtip_price" text="15" x="229" y="10" size="24" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+				<e:Image id="spendtip_icon" source="icon_crystal_png" x="184" y="2" scaleX="1" scaleY="1"/>
+			</e:Group>
+
+		</e:ViewStack>
+		<e:Label id="tittle" text="Gợi ý" y="13" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32"
+		         fontFamily="Arial" verticalAlign="middle" horizontalCenter="0" x="180" scaleX="1"
+		         scaleY="1"  bold="true" textColor="0xfdb200"/>
+	</e:Group>
+	
+
+
+</e:Skin>

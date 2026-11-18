@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaRecordPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="520" height="760" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="-45"  horizontalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="520" height="760" scaleX="1" scaleY="1"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="67.33" width="490" height="680" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="btn_close_png" x="449" y="3.33" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image source="smallui_tbg_png" y="21" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Label text="Nhật ký đấu trường" y="25" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" horizontalCenter="0"/>
+		<e:Scroller id="scroller" width="470.33" height="658.67" anchorOffsetX="0" anchorOffsetY="0" y="76" scaleX="1" scaleY="1" horizontalCenter="0">
+			<e:List id="lst"/>
+		</e:Scroller>
+	</e:Group>
+
+
+
+</e:Skin>

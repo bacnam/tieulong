@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WarSpiritPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*" xmlns:w="http://ns.egret.com/wing">
+    <e:Group width="591" height="847" verticalCenter="0" horizontalCenter="0">
+        <component:PanelBG id="panelBG" scaleX="1" scaleY="1" name="zhanling_png" verticalCenter="0"
+                           horizontalCenter="0" x="0" y="0" touchEnabled="false" />
+        <e:ViewStack id="content_View" width="550" height="694" y="63" horizontalCenter="0" selectedIndex="3">
+            <panels:WarSpiritInfoSubPanel name="Chiến linh" />
+            <panels:WarSpiritCallSubPanel name="Triệu hồi" />
+            <panels:WarSpiritTrainSubPanel name="Huấn luyện" />
+            <panels:WarSpiritLevelSubPanel name="Nâng cấp" />
+            <panels:WarSpiritTalentSubPanel name="Kỹ năng" />
+        </e:ViewStack>
+        <e:Image id="btn_help" x="50" y="127" scaleX="1" scaleY="1" source="ui_heip_png" />
+    </e:Group>
+    <component:EuiMap id="reddotMap">
+        <e:Array>
+            <e:Object name="0" event="WarSpirit" />
+            <e:Object name="2" event="WarSpiritTrain" />
+            <e:Object name="3" event="WarSpiritLevel" />
+            <e:Object name="4" event="WarSpiritTalent" />
+        </e:Array>
+    </component:EuiMap>
+</e:Skin>

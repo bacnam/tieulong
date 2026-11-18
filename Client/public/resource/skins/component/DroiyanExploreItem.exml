@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanExploreItem" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="158722079a7"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="0" scaleX="1" scaleY="1" width="520" height="150" x="0"/>
+	<e:Label id="label_name" text="s.170 Lỗ Bang Bang" x="182" y="11" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" width="185" height="30" verticalAlign="middle"/>
+	<e:Image source="ui_rank_bg_png" x="10" y="25"/>
+	<e:Label id="rank" text="1" y="41" size="26" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="33"/>
+	<e:Label text="Cấp: " x="182" y="42" size="16" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle"/>
+	<e:Label id="lv" text="123" x="230" y="42" size="16" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle"/>
+	<e:Label text="Lực chiến: " x="182" y="70" size="16" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle"/>
+	<e:Label id="power" text="1234567890" x="250" y="70" size="16" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle"/>
+	<e:Label text="Phần thưởng: " y="113.33" size="18" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="18"/>
+	<e:Label id="strengthen" text="12345" x="340.36" y="115" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="59" textColor="0xFFFFFF" height="20" verticalAlign="middle"/>
+	<e:Label id="integral" text="1234567" x="429" y="10" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="81" textColor="0xFFFFFF" height="29" verticalAlign="middle"/>
+	<e:Image source="icon_gold_png" x="115" y="104" width="35" height="36"/>
+	<e:Label id="gold" text="123456789012" x="156" y="115" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+	<e:Image source="stone_png" x="305" y="106" width="35" height="35"/>
+	<e:Image source="redname_png" x="389" y="3"/>
+	<e:Image id="btn_buy" source="btn_bg4_png" scale9Grid="5,5,110,34" x="406" y="52" width="100" touchEnabled="false"/>
+	<component:Portrait id="portrait" x="72.33" y="11.34" skinName="Portrait"/>
+	<e:Label text="Mua hàng" x="424.5" y="63" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false"/>
+</e:Skin>

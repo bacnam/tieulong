@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true"/>
+	<e:Image source="list_tab_png" x="39" y="871" anchorOffsetX="0" width="562" anchorOffsetY="0" height="131"/>
+
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="247" scaleX="1" scaleY="1" width="414" height="612" anchorOffsetY="0" x="180" anchorOffsetX="0"/>
+	<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" x="187" y="669" anchorOffsetX="0" width="399" anchorOffsetY="0" height="168"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="193.28" y="672.74" anchorOffsetX="0" width="386" anchorOffsetY="0" height="160.9"/>
+	<e:Image source="ui_rank_bg_png" x="190" y="677.02"/>
+	<e:Label text="Lực chiến: " x="227.3" y="962.14" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="108.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" bold="true" textColor="0xF8F7D3"/>
+	<e:Label text="Hạng: " x="227.3" y="918.14" size="24" textAlign="left" strokeColor="0x000000" stroke="1" width="134.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" bold="true" textColor="0xF8F7D3"/>
+	<e:Label text="5" x="323.29" y="920.12" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="63" textColor="0x00FF00" anchorOffsetX="0"/>
+	<e:Label text="2000000" x="320.64" y="961.8" size="24" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xFF0000"/>
+	<e:Group x="251.74" y="704">
+		<e:Image x="11" y="0" source="portrait_bg_png" locked="true"/>
+		<e:Image source="s_portrait012_png" x="17.33" y="6.330000000000041" anchorOffsetX="0" width="78" anchorOffsetY="0" height="79.33"/>
+		<e:Image source="ui_vip_bg_png" x="0" y="81"/>
+		<e:Image source="ui_vip_png" x="26.340000000000018" y="84.32000000000016" anchorOffsetX="0" width="53.33" anchorOffsetY="0" height="19.76"/>
+	</e:Group>
+	<e:Group x="454.18" y="704">
+		<e:Image x="11" y="0" source="portrait_bg_png"/>
+		<e:Image source="s_portrait012_png" x="17.329999999999927" y="6.330000000000041" anchorOffsetX="0" width="78" anchorOffsetY="0" height="79.33"/>
+		<e:Image source="ui_vip_bg_png" x="0" y="81"/>
+		<e:Image source="ui_vip_png" x="26.339999999999918" y="84.32000000000016" anchorOffsetX="0" width="53.33" anchorOffsetY="0" height="19.76"/>
+	</e:Group>
+	<e:Group x="61.8" y="892">
+		<e:Image x="11" y="0" source="portrait_bg_png" locked="true"/>
+		<e:Image source="s_portrait012_png" x="17.33" y="6.330000000000041" anchorOffsetX="0" width="78" anchorOffsetY="0" height="79.33"/>
+		<e:Image source="ui_vip_bg_png" x="0" y="81"/>
+		<e:Image source="ui_vip_png" x="26.340000000000018" y="84.32000000000016" anchorOffsetX="0" width="53.33" anchorOffsetY="0" height="19.76"/>
+	</e:Group>
+	<e:Group x="465.5" y="892">
+		<e:Image x="11" y="0" source="portrait_bg_png"/>
+		<e:Image source="s_portrait012_png" x="17.329999999999927" y="6.330000000000041" anchorOffsetX="0" width="78" anchorOffsetY="0" height="79.33"/>
+		<e:Image source="ui_vip_bg_png" x="0" y="81"/>
+		<e:Image source="ui_vip_png" x="26.339999999999918" y="84.32000000000016" anchorOffsetX="0" width="53.33" anchorOffsetY="0" height="19.76"/>
+	</e:Group>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<e:Image source="btn_close_1_png" x="565" y="194"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="246"/>
+	<e:Label text="Danh sách trận" x="69" y="256" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="299"/>
+	<e:Label text="Hạng" x="69" y="309" size="24" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="352"/>
+	<e:Label text="Cánh" x="69" y="362" size="24" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="405"/>
+	<e:Label text="Sấm quan" x="69" y="415" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="458"/>
+	<e:Label text="Cổ mộ" x="69" y="468" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="511"/>
+	<e:Label text="Thiên Long" x="69" y="521" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="564"/>
+	<e:Label text="Tiêu dao" x="69" y="574" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="617"/>
+	<e:Label text="Quyết chiến" x="69" y="627" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="46" y="670"/>
+	<e:Label text="Bang" x="69" y="680" size="24" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" x="187" y="252" anchorOffsetX="0" width="399" anchorOffsetY="0" height="410" locked="true"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="193.28" y="257.74" anchorOffsetX="0" width="386" anchorOffsetY="0" height="399.74" locked="true"/>
+	<e:Image source="bigwing_7_png" x="190.31" y="200.69"/>
+	<e:Image source="bigwing_7_png" x="33.34" y="189.03"/>
+	<e:Image source="biggumu8_png" x="40.68" y="186.69"/>
+	<e:Image source="bigtianlong4_png" x="189.36" y="186.69"/>
+
+
+
+	<e:Image source="ui_rank_bg_png" x="189" y="582"/>
+	<e:Group x="239.5" y="554.03" locked="true">
+		<e:Image source="ui_vip_bg_png" x="0" y="0"/>
+		<e:Image source="ui_vip_png" x="26.340000000000032" y="3.32000000000005" anchorOffsetX="0" width="53.33" anchorOffsetY="0" height="19.76"/>
+	</e:Group>
+	<e:Group x="404.5" y="554.03" locked="true">
+		<e:Image source="ui_vip_bg_png" x="0" y="0"/>
+		<e:Image source="ui_vip_png" x="26.340000000000032" y="3.32000000000005" anchorOffsetX="0" width="53.33" anchorOffsetY="0" height="19.76"/>
+	</e:Group>
+	<e:Label text="S32.Quá sử ái huy" y="804.34" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" width="146" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="251.51" anchorOffsetX="0"/>
+	<e:Label text="S32.Quá sử ái huy" y="804.34" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" width="146" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="452.21" anchorOffsetX="0"/>
+
+
+	<e:Image source="cap_bg_png" x="266" y="590.99" anchorOffsetX="0" width="305" anchorOffsetY="0" height="63.01"/>
+	<e:Label text="S32.Quá sử ái huy" y="519.64" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" width="146" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="228.18" anchorOffsetX="0"/>
+	<e:Label text="S32.Quá sử ái huy" y="519.64" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" width="146" height="32" verticalAlign="middle" fontFamily="Arial" x="394.5" anchorOffsetX="0" textColor="0xf7f397"/>
+	<e:Label text="Chú rể" y="674" size="24" textAlign="right" strokeColor="0x5E3500" stroke="1" width="56.33" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="276.48" textColor="0xffffff" bold="true"/>
+	<e:Label text="Cô dâu" y="674" size="24" textAlign="right" strokeColor="0x5E3500" stroke="1" width="56.33" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="478.48" textColor="0xFFFFFF" bold="true"/>
+	<e:Image source="love_png" x="380.31" y="724.31" width="60" height="60"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</e:Skin>

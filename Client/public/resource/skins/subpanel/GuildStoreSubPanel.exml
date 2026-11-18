@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildStoreSubPanel" width="530" height="594" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Scroller width="510" height="581" y="7" horizontalCenter="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ShopItemSkin">
+			<e:layout>
+				<e:TileLayout/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

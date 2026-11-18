@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+<e:Image source="ui_bg_png" x="25" y="146" locked="true"/>
+<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="41" y="203" anchorOffsetX="0" width="559.33" anchorOffsetY="0" height="764.67" locked="true"/>
+
+
+<e:Image source="btn_close_png" x="550" y="151.35" locked="true"/>
+
+<e:Image source="form_inbg_png" scale9Grid="14,36,23,4" x="49.33" y="678.5" anchorOffsetX="0" width="541.34" anchorOffsetY="0" height="277.17"/>
+<e:Image source="list_bg_jpg" x="53.83" y="682.16" anchorOffsetY="0" height="268.17" anchorOffsetX="0" width="531.83"/>
+<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="59.5" y="685" anchorOffsetX="0" width="271.16" anchorOffsetY="0" height="193.17"/>
+<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="334.16" y="685" anchorOffsetX="0" width="247.83" anchorOffsetY="0" height="193.17"/>
+
+
+
+
+<e:Image source="smallui_tbg_png" x="71.64" y="686.43" anchorOffsetX="0" width="245" anchorOffsetY="0" height="33.56"/>
+<e:Label text="Cứ điểm ban thưởng" x="152.32" y="695" size="18" textAlign="left" strokeColor="0x5E3500" stroke="1" width="90.67" anchorOffsetX="0" anchorOffsetY="0" height="21" bold="true" textColor="0xF7F397"/>
+<e:Group x="68.3" y="728" locked="true">
+<e:Label text="U Ám Mị ảnh" x="0" y="75" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+<e:Image source="iconbg_blue_png" x="1" y="0"/>
+</e:Group>
+<e:Group x="157.99" y="728" locked="true">
+<e:Label text="Phương đông ảo tưởng" x="0" y="75" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+<e:Image source="iconbg_blue_png" x="1" y="0"/>
+</e:Group>
+<e:Group x="247.31" y="728" locked="true">
+<e:Label text="Giáng Sinh lễ phục" x="0" y="75" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+<e:Image source="iconbg_blue_png" x="1" y="0"/>
+</e:Group>
+
+<e:Image source="line_png" x="46" y="626.5" width="550" height="2"/>
+
+
+
+
+
+
+
+
+<e:Label text="1, mỗi ngày                               Nhưng từ bang chủ hoặc Phó bang chủ tiến hành bang chiến báo danh" x="82" y="882.29" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+<e:Label text="Trước mắt khôi lỗi tổng số lượng: " x="352" y="696.62" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="186.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xffffff"/>
+<e:Label text="Ngươi đã triệu hoán khôi lỗi số: " x="352" y="768.95" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="179.34" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFFFF"/>
+<e:Label text="Tốn hao            100" x="388.67" y="806.95" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="144.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFFFF"/>
+<e:Label text="2,                             Bắt đầu tiến hành bang chiến, mỗi nửa giờ tiến hành một trận" x="82" y="906" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+<e:Label text="3, thu hoạch được thắng lợi sau cùng bang phái tất cả thành viên đều đem thu hoạch được cứ điểm ban thưởng" x="82" y="930.26" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+
+
+
+
+
+
+
+
+
+<e:Group x="146" y="837" locked="true">
+<e:Image source="btn_bg5_png" x="0" y="0" width="95"/>
+<e:Label text="Báo Tên" x="24" y="8.34" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="47" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+</e:Group>
+<e:Group x="416.66999999999996" y="837">
+<e:Image source="btn_bg5_png" x="0" y="0" anchorOffsetX="0" width="95"/>
+<e:Label text="Triệu hoán khôi lỗi" x="7" y="7.67" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="81.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+</e:Group>
+<e:Label text="10 Điểm đến 17 Điểm 59 Phân" y="882.26" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="145.5" height="19" verticalAlign="middle" fontFamily="tahoma" x="148" anchorOffsetX="0" textColor="0x00ff00" anchorOffsetY="0"/>
+<e:Label text="20" y="723.59" size="34" textAlign="left" strokeColor="0x000000" stroke="1" width="45.17" height="37" verticalAlign="middle" fontFamily="tahoma" x="448.33" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0" bold="true"/>
+<e:Label text="10" y="759.59" size="24" textAlign="left" strokeColor="0x000000" stroke="1" width="32.17" height="37" verticalAlign="middle" fontFamily="tahoma" x="505.33" anchorOffsetX="0" anchorOffsetY="0" textColor="0xff0000" bold="true"/>
+<e:Label text="19 Điểm đến 21 Điểm 59 Phân" y="905.07" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="145.5" height="19" verticalAlign="middle" fontFamily="tahoma" x="110.5" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0"/>
+<e:Image source="guildbattle_bg3_jpg" x="50" y="212" locked="true"/>
+<e:Image source="icon_crystal_png" x="440" y="793"/>
+<e:Image source="guildcenter_2_png" x="431" y="464"/>
+<e:Image source="guildcenter_3_png" x="73" y="230"/>
+<e:Image source="guildcenter_4_png" x="414" y="226"/>
+<e:Image source="guildcenter_5_png" x="84" y="426"/>
+<e:Group x="231" y="221" locked="true">
+<e:Image source="guildname_bg2_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang phái" x="31.5" y="14.620000000000005" size="14" textAlign="left" strokeColor="0x000000" stroke="1" width="21.34" anchorOffsetX="0" anchorOffsetY="0" height="70.83" textColor="0xffeccd"/>
+</e:Group>
+<e:Group x="483" y="225" locked="true">
+<e:Image source="guildname_bg2_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang phái" x="31.5" y="14.620000000000005" size="14" textAlign="left" strokeColor="0x000000" stroke="1" width="21.34" anchorOffsetX="0" anchorOffsetY="0" height="70.83" textColor="0xFFECCD"/>
+</e:Group>
+<e:Group x="513.31" y="479.69" locked="true">
+<e:Image source="guildname_bg2_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang phái" x="31.5" y="14.620000000000005" size="14" textAlign="left" strokeColor="0x000000" stroke="1" width="21.34" anchorOffsetX="0" anchorOffsetY="0" height="70.83" textColor="0xFFECCD"/>
+</e:Group>
+<e:Group x="200.64" y="497.71" locked="true">
+<e:Image source="guildname_bg2_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang phái" x="31.5" y="14.620000000000005" size="14" textAlign="left" strokeColor="0x000000" stroke="1" width="21.34" anchorOffsetX="0" anchorOffsetY="0" height="70.83" textColor="0xFFECCD"/>
+</e:Group>
+<e:Group x="383.97" y="342.38" locked="true">
+<e:Image source="guildname_bg2_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang phái" x="31.5" y="14.620000000000005" size="14" textAlign="left" strokeColor="0x000000" stroke="1" width="21.34" anchorOffsetX="0" anchorOffsetY="0" height="70.83" textColor="0xFFECCD"/>
+</e:Group>
+<e:Image source="guildwar_inspire_png" x="178" y="592" locked="true"/>
+<e:Image x="275.34" y="320.68" source="guildcenter_5_d_png"/>
+<e:Image source="biggumu8_png" x="138" y="225" anchorOffsetX="0" width="147" anchorOffsetY="0" height="147"/>
+<e:Image source="bigtianlong4_png" x="304" y="357" anchorOffsetX="0" width="147" anchorOffsetY="0" height="147"/>
+<e:Image source="bigtianlong6_png" x="112" y="509" anchorOffsetX="0" width="147" anchorOffsetY="0" height="147"/>
+<e:Image source="bigtianlong7_png" x="428" y="501" width="147" height="147"/>
+<e:Image source="bigxiaoyao4_png" x="409" y="230" width="147" height="147"/>
+<e:Group x="163" y="323" locked="true">
+<e:Image source="guildname_bg_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang chủ" x="7.5" y="7.1200000000000045" size="16" textAlign="left" strokeColor="0x000000" stroke="1" width="83.17" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xfffbf3"/>
+</e:Group>
+<e:Group x="144" y="604" locked="true">
+<e:Image source="guildname_bg_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang chủ" x="7.5" y="7.1200000000000045" size="16" textAlign="left" strokeColor="0x000000" stroke="1" width="83.17" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFBF3"/>
+</e:Group>
+<e:Group x="457" y="600" locked="true">
+<e:Image source="guildname_bg_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang chủ" x="7.5" y="7.1200000000000045" size="16" textAlign="left" strokeColor="0x000000" stroke="1" width="83.17" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFBF3"/>
+</e:Group>
+<e:Group x="443" y="326" locked="true">
+<e:Image source="guildname_bg_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang chủ" x="7.5" y="7.1200000000000045" size="16" textAlign="left" strokeColor="0x000000" stroke="1" width="83.17" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFBF3"/>
+</e:Group>
+<e:Group x="330" y="461" locked="true">
+<e:Image source="guildname_bg_png" x="0" y="0"/>
+<e:Label text="Nào đó nào đó nào đó bang chủ" x="7.5" y="7.1200000000000045" size="16" textAlign="left" strokeColor="0x000000" stroke="1" width="83.17" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFBF3"/>
+</e:Group>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</e:Skin>

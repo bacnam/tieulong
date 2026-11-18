@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ServerSelectPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0"
+		verticalCenter="0">
+		<e:Image source="ui_bg_png" scaleX="1" scaleY="1" horizontalCenter="0" />
+
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="370" scaleX="1" scaleY="1"
+			width="550" height="444"
+			horizontalCenter="0.5" anchorOffsetY="0" />
+		<e:Image y="66.97" scaleX="1" scaleY="1" width="550" height="299.33" anchorOffsetY="0"
+			anchorOffsetX="0" source="form_bg_png" scale9Grid="15,16,17,16" horizontalCenter="0.5" />
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" />
+		<e:Image source="btn_close_png" x="520" y="10" name="btn_close" scaleX="1" scaleY="1" />
+		<e:Image source="server_png" y="6" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="170.79" y="380" scaleX="1"
+			scaleY="1" width="390"
+			height="379" anchorOffsetY="0" />
+
+
+		<e:Scroller width="135" height="417" x="32" y="380" anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="list" width="135" selectedIndex="0" x="0" anchorOffsetY="0" height="415"
+				y="3">
+				<e:itemRendererSkinName>
+					<e:Skin states="up,down">
+						<e:Image source="btn_bg2_png" source.down="btn_bg2l_png"
+							scale9Grid="56,4,23,37" scaleX="1" scaleY="1" verticalCenter="0"
+							horizontalCenter="0" width="135" height="45" />
+						<e:Label id="label_name" text="Máy chủ: 001-010" textColor="0xF8F7D3" size="22"
+							textAlign="left" strokeColor="0x000000" stroke="1"
+							scaleX="1" scaleY="1" verticalCenter="0" horizontalCenter="0" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Scroller width="379" height="364" x="177" y="387" anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="lst_server" x="0" y="1" anchorOffsetX="0" anchorOffsetY="0"
+				itemRendererSkinName="ServerItem">
+				<e:layout>
+					<e:VerticalLayout />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<!--<e:Label text="老服水深,新服水浅，选服需慎重!" x="191.5" y="770" textColor="0x00ff00" size="24" />-->
+		<e:Label text="Đăng nhập gần đây:" x="42.33" y="78.98" textColor="0xfdb200" size="24" bold="true" />
+		<e:Scroller width="520" height="240" y="108" anchorOffsetX="0" anchorOffsetY="0"
+			horizontalCenter="0.5">
+			<e:List id="list_late" itemRendererSkinName="LatelyServerItem" anchorOffsetY="0"
+				height="214">
+				<e:layout>
+					<e:TileLayout horizontalGap="10" paddingLeft="6" verticalGap="5" />
+				</e:layout>
+
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+
+</e:Skin>

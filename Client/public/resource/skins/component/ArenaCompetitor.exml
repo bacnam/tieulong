@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaCompetitor" width="500" height="135" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="15861ff015f"/>
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="0" width="500" height="135" x="0" scaleX="1" scaleY="1" locked="true"/>
+	<e:Label id="lbl_name" text="s.177 Ưu đại vệ" x="137" y="7.67" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="220" textColor="0xFFFFFF" height="29" verticalAlign="middle"/>
+	<e:Label text="Lực chiến:" y="86.01" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="101.33" height="30" verticalAlign="middle" x="142.34" anchorOffsetX="0"/>
+	<e:Label id="lbl_power" text="1234567890" y="86.67" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="177.33" height="30" verticalAlign="middle" x="246.33" anchorOffsetX="0"/>
+	<e:Label id="lbl_lv" text="100 cấp" y="48" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="80.66" height="30" verticalAlign="middle" x="142.33" anchorOffsetX="0"/>
+	<e:Image source="btn_bg4_png" scale9Grid="46,5,24,35" x="387.33" y="55.67" width="104"/>
+	<e:Label id="btn_challange" text="Khiêu chiến" x="369" y="68" size="18" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="140" height="22" verticalAlign="middle"/>
+	<e:Label id="lbl_rank" text="10000" y="107.67" size="22" textAlign="center" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="35.33" width="80" height="24" />
+	<component:Portrait id="portrait" x="27" y="13" skinName="Portrait" anchorOffsetX="0" width="103" anchorOffsetY="0" height="91"/>
+</e:Skin>

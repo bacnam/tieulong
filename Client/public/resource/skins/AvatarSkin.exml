@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="AvatarSkin" width="100" height="186" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="title" source="zhanchigaofei_png" top="-90" horizontalCenter="0" visible="false"/>
+	<e:Image id="image_shadow" source="shadow_png" x="50" y="187.5" anchorOffsetX="45" anchorOffsetY="27.5"/>
+	<e:Image id="image_halo" x="50" y="187.5" source="halo_png" anchorOffsetX="74" anchorOffsetY="29.5" visible="false"/>
+	<e:Image id="hp_bg" source="xuebarbg_png" y="10" horizontalCenter="0"/>
+	<e:Image id="line_hp" source="xuebarred_png" y="10"/>
+	<e:Label id="label_hp" text="100" y="-10" size="20" textColor="0x00ff00" horizontalCenter="0" stroke="1"/>
+	<e:Label id="labelname" y="-2" anchorOffsetY="0" height="15" anchorOffsetX="0" width="153" size="25" horizontalCenter="0.5" textColor="0xf7d600" fontFamily="MingLiU" strokeColor="0x999933" stroke="1" visible="false"/>
+	<e:Label id="guildname" text="Label" x="-56.5" y="-25" anchorOffsetX="0" width="112.5" anchorOffsetY="0" height="13" size="26" textColor="0x00ff15" stroke="1" strokeColor="0x999933" visible="false"/>
+	<e:Label id="guildpos" text="Label" x="56" y="-25" anchorOffsetX="0" width="112.5" anchorOffsetY="0" height="13" size="26" textColor="0x00ff15" stroke="1" strokeColor="0x999933" visible="false"/>
+	<e:Label id="labeldroi" text="Label" y="-1" size="26" horizontalCenter="0" textColor="0xc90a0a" stroke="1" strokeColor="0x000000" visible="false"/>
+</e:Skin>

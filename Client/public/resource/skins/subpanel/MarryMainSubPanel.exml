@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarryMainSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_bg_jpg" anchorOffsetX="0" width="531" anchorOffsetY="0" height="682" horizontalCenter="1.5"
+	         verticalCenter="0" visible="false" />
+	<e:Image source="line_png" y="444.5" rotation="90.48" anchorOffsetX="0" width="120" anchorOffsetY="0" height="2"
+	         horizontalCenter="0" />
+	<e:Label id="forcedivorce_price" text="500" x="460" y="588" size="24" textAlign="left" strokeColor="0x000000"
+	         stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" visible="false" />
+	<e:Image source="icon_crystal_png" x="415" y="575" visible="false" />
+	<e:Group y="445" anchorOffsetX="0" width="126" horizontalCenter="-87">
+		<e:Label text="Lực chiến: " y="73.85000000000002" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+		         anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" />
+		<e:Label id="my_lv" text="43级" x="0" y="40" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+		         anchorOffsetX="0" textColor="0x00FF00" />
+		<e:Label id="my_name" text="神秘玩家" y="0" size="22" textAlign="right" strokeColor="0x5E3500" stroke="1"
+		         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" textColor="0xE0C302" />
+		<e:Label id="my_power" text="2000000" y="94.86" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+		         textColor="0xFF0000" horizontalCenter="0" />
+	</e:Group>
+	<e:Group id="group_spouse" y="445" anchorOffsetX="0" width="126" horizontalCenter="87">
+		<e:Label text="Lực chiến: " y="73.85000000000002" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+		         anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" />
+		<e:Label id="spouse_lv" text="43级" x="0" y="40" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+		         anchorOffsetX="0" textColor="0x00FF00" />
+		<e:Label id="spouse_name" text="神秘玩家" y="0" size="22" textAlign="right" strokeColor="0x5E3500" stroke="1"
+		         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" textColor="0xE0C302" />
+		<component:Portrait id="spouse_portrait" skinName="Portrait" x="127" y="21" />
+		<e:Label id="spouse_power" text="2000000" y="94.86" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+		         textColor="0xFF0000" horizontalCenter="0" />
+	</e:Group>
+	<e:Image source="line_png" x="15" y="432.5" width="520" />
+	<e:Image source="line_png" x="15" y="569.5" width="520" />
+	<e:Image y="7" anchorOffsetX="0" width="530" anchorOffsetY="0" height="425" horizontalCenter="0" source="marry_bg_jpg" />
+	<component:RedDotItem id="btn_intention" label="" x="440" y="225" scaleX="1" scaleY="1">
+		<component:skinName>
+			<e:Skin states="up,down,disabled" xmlns:ns1="*" xmlns:panels="legend.panels.*">
+				<e:Image source="btn_intention_png" />
+				<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</component:skinName>
+	</component:RedDotItem>
+	<e:Label text="Tình cảm:" x="25" y="338" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+	         anchorOffsetY="0" bold="true" textColor="0xFFF000" />
+	<e:Label id="level" text="5" y="369" size="24" textAlign="center" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+	         textColor="0x00FF00" horizontalCenter="-193" />
+	<e:Image source="shop_bar_bg_png" scale9Grid="21,0,437,24" y="400.2" horizontalCenter="0" />
+	<e:Image id="line" source="shop_bar_png" x="53" y="406" />
+	<e:Label id="label_exp" text="6 / 100" y="403.35" size="18" textAlign="left" strokeColor="0x000000" stroke="1"
+	         anchorOffsetX="0" anchorOffsetY="0" textColor="0xFF0000" horizontalCenter="0" />
+	<component:Portrait id="my_portrait" y="465.67" skinName="Portrait" left="20" />
+	<e:Group id="marry_group" width="532" height="115" x="11" y="576" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Label text="（VIP4解锁）" x="364.64" y="90.98000000000002" size="20" textAlign="center" strokeColor="0x000000"
+		         stroke="1" width="157" anchorOffsetX="0" textColor="0x00FF00" scaleX="1" scaleY="1" />
+		<e:Label id="sendExp" text="增加100经验" y="89.98" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+		         anchorOffsetX="0" textColor="0x00FF00" scaleX="1" scaleY="1" horizontalCenter="-174" />
+		<e:Label id="send_price" text="500" x="74" y="12" size="24" textAlign="left" strokeColor="0x000000" stroke="1"
+		         anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+		<e:Image source="icon_crystal_png" x="29" y="-1" scaleX="1" scaleY="1" />
+		<e:Button id="btn_send" label="Gửi hoa" y="42" width="100" left="40" x="29" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="20" textAlign="center" strokeColor="0x000000" stroke="1" horizontalCenter="0"
+					         verticalCenter="0" textColor="0xF8F7D3" bold="true" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_force" label="Buộc ly hôn" y="42" width="100" right="40" x="399" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="20" textAlign="center" strokeColor="0x000000" stroke="1" horizontalCenter="0"
+					         verticalCenter="0" textColor="0xF8F7D3" bold="true" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_divorce" label="Ly hôn" y="42" width="100" horizontalCenter="0" x="214" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="20" textAlign="center" strokeColor="0x000000" stroke="1" horizontalCenter="0"
+					         verticalCenter="0" textColor="0xF8F7D3" bold="true" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+	</e:Group>
+	<e:Button id="btn_request" label="Đề xuất" y="618" width="100" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg4_png" />
+				<e:Label id="labelDisplay" size="20" textAlign="center" strokeColor="0x000000" stroke="1" horizontalCenter="0"
+				         verticalCenter="0" textColor="0xF8F7D3" bold="true" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image y="352" source="marrlevel_bg_png" horizontalCenter="82" />
+	<e:Image id="chest" y="335.5" source="marraylevel_chest1_png" horizontalCenter="218" />
+	<e:BitmapLabel id="get_level" width="20" height="20" x="342" y="352" font="yuan_fnt" text="1" />
+	<e:Component id="effect_layer" x="487" y="363" touchChildren="false" touchEnabled="false" />
+</e:Skin>

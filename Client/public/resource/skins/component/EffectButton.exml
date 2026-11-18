@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="EffectButtonSkin" states="up,down,disabled" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="158be259f57" ></w:Config>
+	<e:Image id="iconDisplay" horizontalCenter="0" verticalCenter="0" source="btn_bg2_png"/>
+	
+    <e:Label id="labelDisplay"
+             size="22"
+             textColor="0xFFFFFF" verticalAlign="middle" textAlign="center" text="Nút" width="60" horizontalCenter="0" verticalCenter="0"/>
+</e:Skin>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArtificeSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="170" width="300" height="360" scaleX="1" scaleY="1"
+	         horizontalCenter="0" x="125" />
+	<e:Image source="forge_bg_jpg" y="185" scaleX="1" scaleY="1" horizontalCenter="0" x="188" />
+	<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="275" y="535" width="160" height="30" scaleX="1" scaleY="1" />
+	<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="275" y="575" width="160" height="30" scaleX="1" scaleY="1" />
+
+
+
+
+
+	<e:Label text="Chi phí:" y="533.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446"
+	         width="109" height="30" verticalAlign="middle" x="122.41" />
+	<e:Group id="group" width="279.33" height="70" y="455" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:Label text="Cấp hiện tại:" y="-5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" height="26" verticalAlign="middle" x="1"/>
+		<e:Label id="label_curAtt" text="攻击  +5021" y="-5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" height="26" verticalAlign="middle" x="130"/>
+		<e:Label text="Cấp tiếp theo:" y="20" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x54FF00" x="1"/>
+		<e:Label id="tip_jinjie" text="进阶后开启下一条属性" y="45" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x54FF00" horizontalCenter="0" x="40"/>
+		<e:Label id="label_nextAtt" text="攻击  +5021" y="20" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x54FF00" x="130"/>
+		<e:Label id="tip" text="成功概率:20%" y="45" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x54FF00" x="1"/>
+		<e:Label id="label_warning" text="没有穿戴装备无法进行强化" y="47.01" textColor="0xFF0000" size="20" horizontalCenter="-7.664999999999992" x="12" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Label id="label_ArtificeMaterial" text="15/12345" y="535.61" size="18" textAlign="center" strokeColor="0x000000"
+	         stroke="1" textColor="0xFFFFFF" height="29" verticalAlign="middle" anchorOffsetX="0" horizontalCenter="80" />
+	<e:Label id="label_Gold" text="123456789" y="575.33" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+	         textColor="0xFFFFFF" height="29" verticalAlign="middle" anchorOffsetX="0" horizontalCenter="80" />
+	<e:Image source="icon_gold_png" x="220" y="570" />
+	<e:Image x="220" y="530" source="icon_artificematerial_png" />
+	<component:Equip_Artifice id="equip_Weapon" x="20" y="150" scaleX="1" scaleY="1" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_Body" x="20" y="250" scaleX="1" scaleY="1" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_RingLeft" x="20" y="350" scaleX="1" scaleY="1" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_BraceletLeft" x="20" y="450" scaleX="1" scaleY="1" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_Head" y="150" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_Neck" y="250" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_RingRight" y="350" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+	<component:Equip_Artifice id="equip_BraceletRight" y="450" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+
+	<component:BaseItem id="baseItem" y="272" anchorOffsetX="36" anchorOffsetY="36" x="275" />
+	<e:CheckBox id="btn_auto" width="31" height="31" x="15" y="640" selected="false">
+		<e:Skin states="up,down,disabled" xmlns:w="http://ns.egret.com/wing">
+			<e:Image width="100%" height="100%" source="check_png" source.down="check_png" />
+			<e:Image width="100%" height="100%" source="check_png" source.down="gou_png" />
+		</e:Skin>
+	</e:CheckBox>
+	<e:Label text="Tự động Luyện hóa" size="20" textAlign="left" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle"
+	         scaleX="1" scaleY="1" x="55" y="640" textColor="0x00FF00" />
+	<e:Label id="label_pos" text="部位: 衣服" y="325" size="16" textAlign="center" strokeColor="0x000000" stroke="1"
+	         textColor="0xFFC446" verticalAlign="middle" horizontalCenter="0" />
+	<e:Group id="group_star" y="183.5" anchorOffsetY="0" anchorOffsetX="0" horizontalCenter="0" touchEnabled="false">
+		<e:Image x="-1" y="14" source="star_png" width="28" height="26" />
+		<e:Image x="-1" y="14" source="star_png" width="28" height="26" />
+		<e:Image x="9" y="24" source="star_png" width="28" height="26" />
+		<e:Image x="19" y="34" source="star_png" width="28" height="26" />
+		<e:Image x="29" y="44" source="star_png" width="28" height="26" />
+		<e:Image x="39" y="54" source="star_png" width="28" height="26" />
+		<e:Image x="49" y="64" source="star_png" width="28" height="26" />
+		<e:Image x="59" y="74" source="star_png" width="28" height="26" />
+		<e:Image x="69" y="84" source="star_png" width="28" height="26" />
+		<e:Image x="79" y="94" source="star_png" width="28" height="26" />
+		<e:layout>
+			<e:HorizontalLayout gap="0" />
+		</e:layout>
+	</e:Group>
+	<e:Button id="btn_artifice" label="Luyện hóa" y="622" horizontalCenter="80">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg2_png" />
+				<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+				         horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_up" label="进   阶" y="622" horizontalCenter="0">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg1_png"/>
+			<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Scroller id="scroller" height="100" y="348" anchorOffsetX="0" anchorOffsetY="0" x="137">
+		<e:List id="list" anchorOffsetY="0" >
+			<e:itemRendererSkinName>
+				<e:Skin>
+				<e:Label id="attr" text="攻击  +5021"  size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" verticalAlign="middle" />
+				</e:Skin>
+			</e:itemRendererSkinName>
+			<e:layout>
+				<e:VerticalLayout horizontalAlign="left" gap="3"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

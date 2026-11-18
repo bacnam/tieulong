@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankSpouseSubPanel" width="560" height="780" xmlns:e="http://ns.egret.com/eui">
+	<e:Group id="group_spouse" width="560" height="128" touchEnabled="false" x="0" scaleX="1" scaleY="1" bottom="0" anchorOffsetY="0">
+		<e:Group id="my_group" width="560" height="128" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false">
+		<component:Portrait id="my_portrait" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing" x="52" skinName="Portrait" verticalCenter="0" y="10" scaleX="1" scaleY="1"/>
+		<component:Portrait id="other_portrait" xmlns:component="legend.view.component.*" skinName="Portrait" x="417" verticalCenter="0" y="10" scaleX="1" scaleY="1"/>
+		<e:Label text="Lực chiến: " x="180" y="65" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+		<e:Label text="Hạng của bạn: " x="180" y="20" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+		<e:Label id="rank" text="5" x="415" y="20" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x00FF00" anchorOffsetX="0" scaleX="1" scaleY="1"/>
+		<e:Label id="power" text="2000000" x="275" y="65" size="24" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Label id="tip" text="(Bạn chưa kết hôn)" size="24" textAlign="left" strokeColor="0x000000" stroke="1" height="26" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" bold="true" verticalCenter="-4" y="-332" scaleX="1" scaleY="1" textColor="0xFF0000" horizontalCenter="0" touchEnabled="false"/>
+	</e:Group>
+	<e:Group id="group_content" width="420" height="615" x="130" y="15" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false">
+		<e:Group id="first_group" width="415" height="375" x="1" y="0" touchEnabled="false" anchorOffsetX="0" scaleX="1" scaleY="1">
+		<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" x="0" y="0" width="415" height="375" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="ui_rank_bg_png" x="21" y="287" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Label text="1" y="304.01" size="26" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="43" touchEnabled="false"/>
+		<e:Image id="wingIcon_0" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256" source="bigwing_1_png" touchEnabled="false" horizontalCenter="-90.5" verticalCenter="-0.5"/>
+		<e:Image id="wingIcon_1" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256" source="bigwing_1_png" touchEnabled="false" horizontalCenter="79.5" verticalCenter="-0.5"/>
+		<e:Image id="title_0" y="-51" source="shidagaoshou_png" horizontalCenter="-129.5" touchEnabled="false"/>
+		<e:Image id="title_1" y="-51" source="shidagaoshou_png" horizontalCenter="100.5" touchEnabled="false"/>
+		<e:Image id="roleIcon_0" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256" source="biggumu1_png" touchEnabled="false" horizontalCenter="-83.5" verticalCenter="2.5"/>
+		<e:Image id="roleIcon_1" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256" source="biggumu1_png" touchEnabled="false" horizontalCenter="86.5" verticalCenter="2.5" x="10" y="10"/>
+		<e:Image id="onevip_bg1" source="ui_vip_bg_png" x="77" y="275.01" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="img_vipIcon1" source="ui_vip_png" x="100" y="278.01" width="51" height="19" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:BitmapLabel id="label_oneVip1" x="143.67" y="275.34" font="vip_number_fnt" text="0" scaleX="0.5" scaleY="0.5" touchEnabled="false"/>
+		<e:Image id="onevip_bg2" source="ui_vip_bg_png" x="250" y="276.5" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="img_vipIcon2" source="ui_vip_png" x="273" y="279.5" width="51" height="19" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:BitmapLabel id="label_oneVip2" x="316.67" y="276.83" font="vip_number_fnt" text="0" scaleX="0.5" scaleY="0.5" touchEnabled="false"/>
+		<e:Image source="cap_bg_png" y="304" x="94" scaleX="1" scaleY="1" width="275" height="57" touchEnabled="false"/>
+			<e:Label id="label_name_1" text="S32.太史爱辉" y="245" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" anchorOffsetX="0" horizontalCenter="-80" touchEnabled="false"/>
+			<e:Label id="label_name_2" text="S32.太史爱辉" y="245" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" anchorOffsetX="0" horizontalCenter="105" touchEnabled="false"/>
+		<e:BitmapLabel id="first_power" x="189" y="323" font="power_number3_fnt" text="0" scaleX="0.8" scaleY="0.8" touchEnabled="false"/>
+			<e:Group id="btn_husband" width="207" height="375"/>
+			<e:Group id="btn_wife" width="207" height="375" right="0"/>
+		</e:Group>
+		<e:Scroller width="415" height="232" y="381" anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0">
+		<e:List id="list" width="100%" x="-139" y="-264.4" itemRendererSkinName="RankSpouseItem">
+			<e:layout>
+				<e:VerticalLayout/>
+			</e:layout>
+		</e:List>
+		</e:Scroller>
+	</e:Group>
+
+
+
+</e:Skin>

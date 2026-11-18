@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="EquipInstancePanel" width="550" height="550" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="15b0f37a847"/>
+	<e:Group width="100%" height="100%" touchEnabled="false">
+		<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="13.42" scaleX="1" scaleY="1" width="520" height="400"
+		         horizontalCenter="0" x="15" />
+		<e:Image source="fuben_bg_jpg" y="118.42" scaleX="1" scaleY="1" horizontalCenter="0" x="20" />
+		<e:Image id="tip_t" source="triangle_png" x="351.15" y="235" anchorOffsetX="0" width="35.83" anchorOffsetY="0" height="26.87"/>
+		<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="419.42" scaleX="1" scaleY="1" width="520" height="116"
+		         horizontalCenter="0" x="15" />
+		<e:Label text="物品掉落" x="34" y="429.42" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+		         textColor="0xFFC446" width="25" height="96" verticalAlign="middle" />
+		<e:Image id="tip_bg" y="145" anchorOffsetX="0" anchorOffsetY="0" scale9Grid="11,8,13,18" touchEnabled="false" x="351.15" source="form_ibg_png" width="171" height="90"/>
+		<e:Label id="label_tip" text="火麒麟的火焰唯有水麒麟才可熄灭" x="360" y="149.42" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" anchorOffsetX="0" width="152.5" anchorOffsetY="0" height="79"/>
+		<e:Component id="scrollermc" width="20" height="20" x="280" y="350" touchChildren="false" touchEnabled="false"/>
+		
+
+	</e:Group>
+	<e:Scroller id="scroller_list" width="458" height="100" x="67" y="427" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list_reward" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:HorizontalLayout gap="10" paddingTop="2" />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Image id="icon" scaleX="1" scaleY="1"  source="r_huoqilin_png" anchorOffsetX="200" anchorOffsetY="200" touchEnabled="false" horizontalCenter="0" verticalCenter="1"/>
+
+	<e:Label text="建议战力: " x="276" y="360" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="44" verticalAlign="middle"/>
+	<e:Label text="血量: " x="53" y="170" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="34"
+	         verticalAlign="middle" textColor="0xFD0029" />
+	<e:Image source="ui_fight_bg_png" x="34" y="120.42" width="233" height="47" />
+
+	<e:Label id="label_power" text="123456789" x="372" y="360" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+	         textColor="0xF8F7D3" height="44" verticalAlign="middle" bold="true" />
+	<e:Label id="label_name" text="10级头盔项链" y="131.92" size="24" textAlign="center" strokeColor="0x8B1725" stroke="2"
+	         textColor="0xFCE795" scaleX="1" scaleY="1" x="50.5" />
+	<e:Label id="label_hp" text="123456789" x="110" y="170" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+	         width="199" height="34" verticalAlign="middle" textColor="0xFD0029" bold="true" />
+</e:Skin>

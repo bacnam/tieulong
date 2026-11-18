@@ -1,0 +1,5 @@
+﻿卡牌ID	门派	备注	头像	模型	攻击范围	移动速度	技能弹道	技能
+id	Type	Name	Icon	Model	RNG	SPD	SkillBullet1	SkillList
+1001	gumu	Nga Mi	tou1_png	gumu1	230	750		1;2;3;4;5
+1002	tianlong	Thiên Long	tou2_png	tianlong1	100	800		11;12;13;14;15
+1003	xiaoyao	Tiêu Dao	tou3_png	xiaoyao1	330	700		21;22;23;24;25

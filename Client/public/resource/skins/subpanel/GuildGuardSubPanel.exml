@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildGuardSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+
+
+	<e:Label id="tip" text="1. Thời gian báo danh:" y="613" size="18"
+		textAlign="left" strokeColor="0x000000" stroke="1" width="500" anchorOffsetX="0"
+		anchorOffsetY="0" textColor="0xF8F7D3" x="17.31" lineSpacing="5" />
+	<e:Image id="tip_bg" scale9Grid="15,15,23,25" y="244.33" anchorOffsetX="0" anchorOffsetY="0"
+		horizontalCenter="0.5" source="longnvtip_bg_png" />
+	<e:Label id="tip1" text="感应到 帮派:   " y="308" size="20" textAlign="left" strokeColor="0x000000"
+		stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" width="440"
+		lineSpacing="5" x="55" />
+
+
+	<e:Image source="triangle_png" x="115.31" y="301.67" anchorOffsetX="0" width="41.07"
+		anchorOffsetY="0" height="30.8" rotation="180.13" />
+	<e:Group id="group_call" width="522" height="80" y="532.67" horizontalCenter="0">
+		<e:Image source="form_inbg_png" scale9Grid="14,36,23,4" anchorOffsetX="0" width="522"
+			anchorOffsetY="0" height="80" scaleX="1" scaleY="1" />
+		<e:Label id="my_num" text="10" y="42" size="24" textAlign="left" strokeColor="0x000000"
+			stroke="1" verticalAlign="middle" fontFamily="Arial" x="230" anchorOffsetX="0"
+			anchorOffsetY="0" textColor="0xFF0000" bold="true" scaleX="1" scaleY="1" />
+		<e:Label text="Tổng số con rối hiện tại:" x="15" y="14" size="20" textAlign="left" strokeColor="0x000000"
+			stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFFFF" scaleX="1"
+			scaleY="1" />
+		<e:Label text="Số con rối đã triệu hồi:" x="15" y="44" size="20" textAlign="left" strokeColor="0x000000"
+			stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFFFF" scaleX="1"
+			scaleY="1" />
+		<e:Label text="Phí:" x="360.64" y="5" size="20" textAlign="left" strokeColor="0x000000"
+			stroke="1" anchorOffsetX="0" anchorOffsetY="0" width="60.5" textColor="0xFFFFFF"
+			scaleX="1" scaleY="1" />
+		<e:Label id="price" text="10000" x="449.14" y="5" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xFDB200" scaleX="1" scaleY="1" />
+		<e:Label id="total_num" text="20" y="12" size="24" textAlign="left" strokeColor="0x000000"
+			stroke="1" verticalAlign="middle" fontFamily="Arial" x="230" anchorOffsetX="0"
+			textColor="0x00FF00" anchorOffsetY="0" bold="true" scaleX="1" scaleY="1" />
+		<e:Image source="icon_crystal_png" x="414.49" y="-2.2999999999999545" width="30" height="30"
+			anchorOffsetY="-1" scaleX="1" scaleY="1" />
+		<e:Button id="btn_resurrection" label="Triệu hồi con rối" y="31" x="380" anchorOffsetX="0" width="110"
+			height="40" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0"
+						strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+	</e:Group>
+	<e:Group width="522" height="115" y="413.66" anchorOffsetX="0" anchorOffsetY="0"
+		horizontalCenter="0">
+		<e:Image source="form_inbg_png" scale9Grid="14,36,23,4" y="0" anchorOffsetX="0" width="522"
+			anchorOffsetY="0" height="115" scaleX="1" scaleY="1" />
+		<e:Label text="Thưởng" x="6.349999999999994" size="22" textAlign="left" strokeColor="0x5E3500"
+			stroke="1" width="22.67" anchorOffsetX="0" anchorOffsetY="0" height="90" bold="true"
+			textColor="0xFDB200" scaleX="1" scaleY="1" verticalCenter="0" />
+		<e:Scroller width="312" height="100" anchorOffsetX="0" anchorOffsetY="0" x="36" scaleX="1"
+			scaleY="1" verticalCenter="-1.5">
+			<e:List id="list" itemRendererSkinName="ItemSkin" anchorOffsetY="0" height="114"
+				y="1.33">
+				<e:layout>
+					<e:HorizontalLayout gap="20" paddingLeft="15" paddingTop="5" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Button id="btn_get" label="Nhận" x="380" width="110" height="40" verticalCenter="0">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0"
+						strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_sign" label="Đăng ký" x="380" width="110" height="40" verticalCenter="0">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0"
+						strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_attack" label="Vào chiến trường" x="380" width="110" height="40"
+			verticalCenter="0">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0"
+						strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+						xmlns:component="legend.view.component.*" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Label id="tip3" text="Đăng ký bị lỡ" x="374.5" size="30" textAlign="left"
+			strokeColor="0x000000" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFF0000"
+			verticalCenter="0" stroke="1" />
+		<e:Image id="lingqu" x="396" source="lingqu_png" verticalCenter="0" visible="false" />
+		<e:Label id="tip2" text="Giữ nguyên:" x="361" y="15" size="25" textAlign="left"
+			strokeColor="0x000000" anchorOffsetX="0" anchorOffsetY="0" textColor="0x00ff00" />
+		<e:Label id="tip4" text="下次龙女\n守卫战" x="387" y="45.34" size="25" textAlign="center"
+			strokeColor="0x000000" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFF0000" />
+	</e:Group>
+</e:Skin>

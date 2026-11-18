@@ -1,0 +1,501 @@
+﻿编号	称谓	形容	名称
+id	PrefixName	MidName	SuffixName
+1	Đinh	Tùng	Luân
+2	Đông Phương	Lệnh	Hoa
+3	Độc Cô	Nhạc	Hành
+4	Đoạn	Chủ	Thuyền
+5	Phó	Lập	Toàn
+6	Quách	Huyền	Triệu
+7	Cơ	Lan	Đóa
+8	Lê	Hán	Húc
+9	Lý	Ninh	Danh
+10	Lệnh hồ	Vĩnh	Tráng
+11	Lục	Hoằng	Băng
+12	Lạc	Thánh	Khánh
+13	Mộ Dung	Cát	Tề
+14	Nam Cung	Dương	Châu
+15	Âu Dương	Phác	Giang
+16	Tần	Lại	Tịch
+17	Nhiễm	Tây	Tấn
+18	Nhậm	Có	Trì
+19	Thượng Quan	Liệt	Hưng
+20	Thích	Thành	Vũ
+21	Tư Không	Mại	An
+22	Tây Môn	Đến	Quân
+23	Tiêu	Quang	Hứa
+24	Hiên Viên	Đoàn	Trận
+25	Huyền	Cùng	Dương
+26	Dương	Tuổi	Thừa
+27	Ân	Há	Hảo
+28	Trương	Tắc	Vũ
+29	Gia Cát	Mới vừa	Hoan
+30	Tả	Vĩ	Trì
+31	Bạch	Truyền	Thọ
+32	Triệu	Binh	Tiến
+33	Tiền	Nhậm	Xa
+34	Tôn	Luân	Vận
+35	Chu	Hoa	Hiếu
+36	Ngô	Tự	Chí
+37	Trịnh	Y	Phân
+38	Vương	Hướng	Thương
+39	Phùng	Hợp	Tài
+40	Trần	Triệu	Dương
+41	Chử	Chúng	Phủ
+42	Vệ	Sang	Lệ
+43	Tưởng	Húc	Thần
+44	Thẩm	Tráng	Tới
+45	Hàn	Hướng	Hiên
+46	Chu	Khánh	Khi
+47	Vưu	Cũng	Viên
+48	Hứa	Sản	Khoáng
+49	Gì	Hỏi	Nam
+50	Lữ	Châu	Sầm
+51	Thi	Hãn	Lam
+52	Khổng	Giang	Lợi
+53	Tào	Trì	Hữu
+54	Nghiêm	Hưng	Bá
+55	Hoa	Vũ	Hi
+56	Kim	Thủ	Hàm
+57	Ngụy	An	Đồng
+58	Đào	Quân	Nghênh
+59	Khương	Tìm	Ngôn
+60	Thích	Lỏng	Hừ
+61	Tạ	Dương	Xán
+62	Trâu	Thừa	Trầm
+63	Dụ	Phi	Hoài
+64	Bách	Hảo	Lương
+65	Thủy	Vũ	Khải
+66	Đậu	Xem	Sơ
+67	Chương	Hoan	Thức
+68	Vân	Hồng	Quân
+69	Tô	Trì	Linh
+70	Phan	Tuần	Kỵ
+71	Cát	Lộng	Nghiên
+72	Hề	Sướng	Yêu
+73	Phạm	Xa	Nhẫn
+74	Bành	Vận	Vĩ
+75	Lang	Hiếu	Nạp
+76	Lỗ	Chí	Túng
+77	Vi	Phù	Luân
+78	Xương	Chỉ	Vĩ
+79	Mã	Nhuế	Võ
+80	Miêu	Phân	Thanh
+81	Phượng	Thương	Nguyệt
+82	Hoa	芠	Rút
+83	Phương	Phương	Khôn
+84	Du	Lao	Nếu
+85	Viên	Lệ	Mậu
+86	Liễu	Thần	Miêu
+87	Bào	Hiên	Anh
+88	Sử	Bội	Phạm
+89	Đường	Kiên	Lâm
+90	Phí	Trình	Xu
+91	Liêm	旲	Tùng
+92	Sầm	Trợ	Phong
+93	Tiết	Viên	Kiệt
+94	Lôi	Khoáng	Vũ
+95	Hạ	Lam	Úc
+96	Nghê	Lợi	Kỳ
+97	Canh	Binh	Trác
+98	Đằng	Tá	Hổ
+99	La	Hữu	Hiền
+100	Tất	Duỗi	Xương
+101	Hách	Làm	Sướng
+102	Ổ	Hừ	Hân
+103	An	Xán	Minh
+104	Thường	Phong	Dễ
+105	Nhạc	Nguyên	Ngẩng
+106	Với	Phái	Mân
+107	Khi	Thương	Điển
+108	Da	Hoài	Trung
+109	Biện	Tống	Đông
+110	Tề	Hoành	Minh
+111	Khang	Lương	Vịnh
+112	Ngũ	Khải	Ngạn
+113	Dư	Xã	Nham
+114	Nguyên	Dịch	Khải
+115	Bặc	Quân	Bại
+116	Cố	Linh	Đồ
+117	Mạnh	Tư	Biết
+118	Bình	Nghiên	Cùng
+119	Hoàng	Diệu	Bỉnh
+120	Cùng	Vĩ	Giai
+121	Mục	Võ	Hiệp
+122	Doãn	Nguyệt	Hân
+123	Diêu	Khôn	Thải
+124	Thiệu	Thế	Tìm
+125	Trạm	Này	Bằng
+126	Uông	Nếu	Chu
+127	Kỳ	Mậu	Đêm
+128	Mao	Anh	Phóng
+129	Vũ	Uyển	Dục
+130	Địch	Lâm	Vĩ
+131	Mễ	Kiệt	Viêm
+132	Bối	Vũ	Hà
+133	Minh	Úc	Sóng
+134	Kế	Kỳ	Trạch
+135	Phục	Âu	Dịch
+136	Thành	Thúc	Di
+137	Mang	Trác	Học
+138	Nói	Hiền	Bảo
+139	Tống	Thượng	Tông
+140	Mao	Hạo	Định
+141	Bàng	Quốc	Đãng
+142	Hùng	Xương	Nghi
+143	Kỷ	Sướng	Thẩm
+144	Thư	Minh	Không
+145	Khuất	Dễ	Khung
+146	Hạng	Ngẩng	Thật
+147	Chúc	Mân	Lang
+148	Đổng	Quỳnh	Thành
+149	Lương	Trung	Đường ruộng
+150	Đỗ	Vịnh	Hàm
+151	Nguyễn	Khải	Câu
+152	Lam	Cùng	Dịch
+153	Mẫn	Quý	Xuân
+154	Tịch	Giai	Giác
+155	Quý	Bội	Trân
+156	Ma	Mính	San
+157	Cường	Sài	Già
+158	Giả	Y	Thành
+159	Lộ	Hân	Chính
+160	Lâu	Chinh	Thiến
+161	Nguy	Kim	Kén
+162	Giang	Niệm	Trà
+163	Đồng	Bằng	Đãng
+164	Nhan	Bị	Vinh
+165	Mai	Canh	Hồ
+166	Thịnh	Dục	Ấm
+167	Lâm	Vĩ	Đống
+168	Điêu	Hân	Bách
+169	Từ	Viêm	Thụ
+170	Khâu	Lang	Bột
+171	Lạc	Đậu	Uy
+172	Cao	Sóng	Tinh
+173	Hạ	Trạch	Dục
+174	Thái	Di	Hồng
+175	Điền	Học	Tư
+176	Phàn	Tông	Huân
+177	Hồ	Nghi	Phục
+178	Lăng	Trụ	Thuận
+179	Hoắc	Thật	Tu
+180	Ngu	Thơ	Tin
+181	Vạn	Thành	Tuyền
+182	Chi	Tránh	Vũ
+183	Kha	Kiến	Tuấn
+184	Quản	Thao	Diễn
+185	Lư	Thừa	Kiếm
+186	Mạc	Hàm	Lung
+187	Kinh	Nỏ	Thắng
+188	Phòng	Giá	Ngục
+189	Cừu	Tham	Lượng
+190	Làm	Câu	Dịch
+191	Giải	Thiệu	Đình
+192	Ứng	Dịch	Âm
+193	Tông	Kinh	Ngạn
+194	Tuyên	Xuân	Táp
+195	Đặng	Lung	Nghe
+196	Úc	Phong	Giác
+197	Đơn	Viên	Tuyên
+198	Hàng	Hạng	Quan
+199	Hồng	Thành	Ngữ
+200	Bao	Rất	Tổ
+201	Chư	Cứu	Kiêu
+202	Thạch	Vinh	Tuyệt
+203	Thôi	Cấn	Thái
+204	Cát	Kha	Tần
+205	Nút	Bách	Châu
+206	Cung	Liễu	Ngao
+207	Trình	Sa	Chấn
+208	Hình	Dật	Tái
+209	Hoạt	Chiến	Triết
+210	Bùi	Tư	Liên
+211	Vinh	Trì	Tấn
+212	Ông	Tranh	Thật
+213	Tuân	Cương	Đồng
+214	Dương	Tuyển	Cây
+215	Với	Hương	Đào
+216	Huệ	Thu	Cách
+217	Chân	Đoạn	Hủ
+218	Gia	Thuận	Hạ
+219	Phong	Tu	Cương
+220	Nhuế	Vũ	Phong
+221	Nghệ	Xúc	Tuấn
+222	Trữ	Tin	Ngọc
+223	Cận	Tuấn	Thước
+224	Múc	Luật	Địch
+225	Bỉnh	Kiếm	Thiến
+226	Mi	Lượng	Kiện
+227	Tùng	Dịch	Hàng
+228	Giếng	Đình	Tụng
+229	Phú	Tư	Tỉ
+230	Vu	Ngạn	Khanh
+231	Ô	Táp	Kiệt
+232	Tiêu	Đế	Đường
+233	Ba	Nghe	Tư
+234	Cung	Mỹ	Ích
+235	Mục	Trước	Sóc
+236	Sơn	Bỉnh	Diệp
+237	Cốc	Luyện	Đào
+238	Xe	Huyễn	Thiệp
+239	Hầu	Hồng	涆
+240	Mật	Lạc	Hạo
+241	Bồng	Tuyên	Hải
+242	Toàn	Cung	Ngộ
+243	Hi	Hiến	Duyệt
+244	Ban	Quan	Lãng
+245	Ngưỡng	Ngữ	Mộng
+246	Thu	Na	Thạc
+247	Trọng	Dũng	Tuyết
+248	Y	Kiêu	Đường
+249	Cung	Hoa	Dã
+250	Ninh	Tuyệt	Nhảy
+251	Thù	Diễm	Khiếu
+252	Loan	Thái	Dật
+253	Bạo	Tần	Loan
+254	Cam	Ngao	Ngân
+255	Thẩu	Tố	Khang
+256	Lịch	Chấn	Dung
+257	Nhung	Triết	Chương
+258	Tổ	Lai	Dực
+259	Võ	Mạc	Phong
+260	Phù	Tấn	Thanh
+261	Lưu	Oánh	Hồng
+262	Cảnh	Đào	Nhai
+263	Chiêm	Cách	Uyên
+264	Thúc	Huệ	Bác
+265	Long	Hạ	Bành
+266	Diệp	Ân	Huyên
+267	Hạnh	Phong	Triều
+268	Tư	Tuấn	Sâm
+269	Thiều	Ngọc	Ngọc
+270	Cáo	Đạc	Đạc
+271	Kế	Cười	Cười
+272	Phổ	Thiến	Thiến
+273	Ấn	Ỷ	Ỷ
+274	Túc	Xướng	Xướng
+275	Hoài	Chờ	Chờ
+276	Bồ	Phủ	Phủ
+277	Thai	Tông	Tông
+278	Từ	Kiện	Kiện
+279	Ngạc	Khoang	Khoang
+280	Tác	Hàng	Hàng
+281	Hàm	Ái	Ái
+282	Tịch	Báo	Báo
+283	Lại	Ban	Ban
+284	Trác	Tụng	Tụng
+285	Lận	Trẫm	Trẫm
+286	Đồ	Kiệt	Kiệt
+287	Mông	Lăng	Lăng
+288	Trì	Cao	Cao
+289	Kiều	Trai	Trai
+290	Dương	Bộ	Bộ
+291	Tư	Bên	Bên
+292	Có thể	Quyền	Quyền
+293	Thương	Ích	Ích
+294	Song	Sóc	Sóc
+295	Nghe	Diệp	Diệp
+296	Sân	Đào	Đào
+297	Đảng	Phổ	Phổ
+298	Địch	Sầm	Sầm
+299	Đàm	Hạo	Hạo
+300	Cống	Hải	Hải
+301	Lao	Nhuận	Nhuận
+302	Thân	Duyệt	Duyệt
+303	Đỡ	Khoan	Khoan
+304	Đổ	Thần	Thần
+305	Tể	Gia	Gia
+306	Lệ	Tân	Tân
+307	Ung	Tể	Tể
+308	Lại	Lãng	Lãng
+309	Tang	Nặc	Nặc
+310	Quế	Tường	Tường
+311	Ngưu	Nghị	Nghị
+312	Thọ	Triển	Triển
+313	Thông	Xi	Xi
+314	Biên	Kế	Kế
+315	Hỗ	Tuấn	Tuấn
+316	Yến	Lý	Lý
+317	Ký	Phỉ	Phỉ
+318	Phổ	Manh	Manh
+319	Thượng	Càn	Càn
+320	Nông	Bân	Bân
+321	Ôn	Mộng	Mộng
+322	Đừng	Tử	Tử
+323	Trang	Tào	Tào
+324	Yến	Thạc	Thạc
+325	Sài	Tuyết	Tuyết
+326	Diêm	Phụ	Phụ
+327	Sung	Hư	Hư
+328	Mộ	Bưu	Bưu
+329	Liền	Thần	Thần
+330	Như	Khải	Khải
+331	Tập	Minh	Minh
+332	Hoạn	Mẫn	Mẫn
+333	Ngải	Thường	Thường
+334	Cá	Thuyền	Thuyền
+335	Dung	Huyền	Huyền
+336	Hướng	Dật	Dật
+337	Cổ	Quỳ	Quỳ
+338	Dễ	Tế	Tế
+339	Thận	Loan	Loan
+340	Qua	Khang	Khang
+341	Liêu	Chương	Chương
+342	Chung	Dực	Dực
+343	Cư	Toàn	Toàn
+344	Hành	Phong	Phong
+345	Bước	Thanh	Thanh
+346	Đều	Hồng	Hồng
+347	Cảnh	Hạo	Hạo
+348	Mãn	Thuần	Thuần
+349	Hoằng	Hàm	Hàm
+350	Khuông	Lương	Lương
+351	Quốc	Tích	Tích
+352	Văn	Dực	Dực
+353	Khấu	Tự	Tự
+354	Quảng	Tục	Tục
+355	Lộc	Duy	Duy
+356	Khuyết	Tổng	Tổng
+357	Đông	Kỳ	Kỳ
+358	Âu	Lâm	Lâm
+359	Thù	Chước	Chước
+360	Ốc	Xương	Xương
+361	Lợi	Tịnh	Tịnh
+362	Úy	Quỳnh	Quỳnh
+363	Càng	Tông	Tông
+364	Quỳ	Uyển	Uyển
+365	Long	Sâm	Sâm
+366	Sư	Càng	Càng
+367	Củng	Siêu	Siêu
+368	Xá	Hi	Hi
+369	Nhiếp	Bác	Bác
+370	Triều	Bành	Bành
+371	Câu	Tư	Tư
+372	Ngao	Lạc	Lạc
+373	Dung	Hàn	Hàn
+374	Lãnh	Thực	Thực
+375	Mã	Sâm	Sâm
+376	Tân	Huệ	Huệ
+377	Kia	Nhạn	Nhạn
+378	Giản	Hùng	Hùng
+379	Tha	Văn	Văn
+380	Không	Tạm	Tạm
+381	Từng	Nhã	Nhã
+382	Vô	Bối	Bối
+383	Sa	Tím	Tím
+384	Miết	Huy	Huy
+385	Dưỡng	Tình	Tình
+386	Cúc	Đỉnh	Đỉnh
+387	Cần	Tường	Tường
+388	Phong	Tôn	Tôn
+389	Sào	Từng	Từng
+390	Quan	Diễm	Diễm
+391	Tương	Tương	Tương
+392	Tra	Ôn	Ôn
+393	Sau	Thoan	Thoan
+394	Kinh	Loan	Loan
+395	Hồng	Hàn	Hàn
+396	Du	Kỳ	Kỳ
+397	Trúc	Thiền	Thiền
+398	Quyền	Bật	Bật
+399	Bắt được	Cường	Cường
+400	Hạp	Khôi	Khôi
+401	Ích	Cằm	Cằm
+402	Hoàn	Bằng	Bằng
+403	Công	Đằng	Đằng
+404	Tư Mã	Tĩnh	Tĩnh
+405	Hạ Hầu	Tân	Tân
+406	Văn Nhân	Ý	Ý
+407	Hoàng Phủ	Điện	Điện
+408	Uất Trì	Sơn	Sơn
+409	Công dương	Phàm	Phàm
+410	Đạm đài	Tịch	Tịch
+411	Công dã	Quảng	Quảng
+412	Tông chính	Nghĩa	Nghĩa
+413	Bộc dương	Chi	Chi
+414	Thuần Vu	Vệ	Vệ
+415	Thiền Vu	Phi	Phi
+416	Quá thúc	Phong	Phong
+417	Thân Đồ	Thiên	Thiên
+418	Công Tôn	Phu	Phu
+419	Trọng tôn	Nguyên	Nguyên
+420	Chung Ly	Vi	Vi
+421	Vũ Văn	Chuyên	Chuyên
+422	Trưởng tôn	Vân	Vân
+423	Tư Đồ	Nghệ	Nghệ
+424	Triệu	Mộc	Mộc
+425	Có	Quá	Quá
+426	Thuấn	Hữu	Hữu
+427	Vũ	Trung	Trung
+428	Tùng	Thủy	Thủy
+429	Nhạc	Khí	Khí
+430	Tấc	Thăng	Thăng
+431	Hoàng	Trường	Trường
+432	Kiều	Nhân	Nhân
+433	Đồng	Hóa	Hóa
+434	Đoan	Nguyệt	Nguyệt
+435	Hách	Phong	Phong
+436	Thật	Đan	Đan
+437	Phủ	Văn	Văn
+438	Tập	Phương	Phương
+439	Tượng	Hỏa	Hỏa
+440	Thúy	Vì	Vì
+441	Cuồng	Tâm	Tâm
+442	Tích	Duẫn	Duẫn
+443	Điển	Dư	Dư
+444	Lương	Song	Song
+445	Hàm	Thư	Thư
+446	Mang	Ngọc	Ngọc
+447	Khổ	Chính	Chính
+448	Này	Ngải	Ngải
+449	Kinh	Bổn	Bổn
+450	Trung	Nhưng	Nhưng
+451	Tịch	Thạch	Thạch
+452	Chi	Long	Long
+453	Kia kéo	Bình	Bình
+454	Quan	Đông	Đông
+455	Tân	Nghiệp	Nghiệp
+456	Hương	Soái	Soái
+457	Quả	Giáp	Giáp
+458	Mậu	Điền	Điền
+459	Anh	Nhiễm	Nhiễm
+460	Lan	Sinh	Sinh
+461	Đàn	Tiên	Tiên
+462	Đằng	Nghi	Nghi
+463	Chi	Bạch	Bạch
+464	Kiểm	Dùng	Dùng
+465	Sinh	Nhạc	Nhạc
+466	Chiết	Đông	Đông
+467	Đăng	Lập	Lập
+468	Câu	Hối	Hối
+469	Kỵ	Hán	Hán
+470	Mạch	Ninh	Ninh
+471	Hổ	Lễ	Lễ
+472	Phì	Nghị	Nghị
+473	Lộc	Vĩnh	Vĩnh
+474	Nạp rầm	Dân	Dân
+475	Ô nhã	Hoằng	Hoằng
+476	Phạm khương	Phát	Phát
+477	Bích lỗ	Thánh	Thánh
+478	Trương Liêu	Bang	Bang
+479	Trương giản	Cát	Cát
+480	Đồ môn	Quyến	Quyến
+481	Quá sử	Dương	Dương
+482	Công thúc	Chi	Chi
+483	Ô tôn	Tuyên	Tuyên
+484	Xong nhan	Tồn	Tồn
+485	Mã giai	Đạt	Đạt
+486	Đồng giai	Thành	Thành
+487	Phú sát	Tà	Tà
+488	Phí mạc	Nghiêu	Nghiêu
+489	Xưng	Mại	Mại
+490	Nặc	Trinh	Trinh
+491	Tới	Trần	Trần
+492	Nhiều	Quang	Quang
+493	Phồn	Cùng	Cùng
+494	Mậu	Phàm	Phàm
+495	Phác	Năm	Năm
+496	Hồi	Trúc	Trúc
+497	Dục	Vĩ	Vĩ
+498	Thuế	Duyên	Duyên
+499	Huân	Luân	Luân

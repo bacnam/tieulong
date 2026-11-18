@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SingleRechargeItem2" width="515" height="135" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Image x="0" y="0" anchorOffsetX="0" width="515" anchorOffsetY="0" height="135" source="form_abg_jpg" scale9Grid="26,23,3,5"/>
+	<e:Image source="form_bbg_jpg" x="15." y="13." scale9Grid="10,9,30,31" anchorOffsetX="0" width="337.83" anchorOffsetY="0" height="112.34"/>
+
+	<e:Button id="btn" label="Nạp thẻ" x="390" y="75" width="90">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image id="lingqu" x="391.44" y="68.69" source="lingqu_png" rotation="20.28" visible="false"/>
+	<e:Scroller width="328" height="100" x="20.66" y="20.67" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin" anchorOffsetX="0" width="327" x="-2">
+		<e:layout>
+			<e:HorizontalLayout paddingTop="2" paddingLeft="15" gap="28"/>
+		</e:layout>
+		</e:List>
+	</e:Scroller>
+
+
+	<e:Label id="title" text="Nạp 100k" y="16.99" size="22" textAlign="center" strokeColor="0x000000" stroke="1" verticalAlign="top" fontFamily="Arial" anchorOffsetX="0" textColor="0xFFF45B" horizontalCenter="176"/>
+	<e:Label id="times" text="Đã đạt đến 0/7 ngày" y="44.67" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" textColor="0xFF0000" bold="true" horizontalCenter="177"/>
+	<component:Button_Get id="btn_get" width="90" x="390" y="75" skinName="Button_Get"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</e:Skin>

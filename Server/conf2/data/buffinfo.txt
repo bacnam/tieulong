@@ -1,0 +1,709 @@
+﻿buffId		特效名字	备注	特效位置	是否关闭通用Hit特效	表现参数1 万分比 击退击飞填距离	表现参数2 万分比 击退击飞填速度	表现参数3 万分比 击飞填下降速度	持续时间	持续时间等级成长	持续时间品质成长	生效间隔 为0 只生效一次  毫秒	buff等级 	buff类型	效果类型 Buff    DeBuff	特殊标记用于攻击时判定	覆盖类型，为0即全部兼容， 同一覆盖值之间根据优先级覆盖	覆盖优先级，数值大覆盖数值小	最大Buff层数默认为1，不可叠加	DamageType	SourceType	效果固定值	效果固定值等级提升	效果固定值品质提升	效果万分比	效果万分比等级提升	效果万分比品质提升	额外万分比参数	额外万分比参数	额外万分比参数品质提升	免疫列表 List<BuffType> 	免疫标记列表 为免疫buff服务的字段	Buff结束时触发的技能ID	Buff结束时触发的技能是否由释放者释放（否则为Buff接收者释放，默认为False接收者）
+BuffId	LinkBuffId	EffectName	#comments	EffectPos	CloseHitEffect	PerforParamOne	PerforParamTwo	PerforParamThree	DurationTime	DurationTimeUp	DurationTimeQualityUp	Interval	BuffLevel	BuffType	EffectType	MarkType	CoverageType	CoverageValue	MaxLayers	DamageType	SourceType	ValueTwo	ValueTwoUp	ValueTwoQualityUp	ValueOne	ValueOneUp	ValueOneQualityUp	ValueThree	ValueThreeUp	ValueThreeQualityUp	ImmuneList	ImmuneMarkList	EndTriggerSkill	CasterTriggerEndSkill
+101			Thạch hóa chi vật miễn +100%	Head					-1			0	15	PhysicalDefensePer	DeBuff	None	0	1	1	Physical	SelfAttack				10000									
+102			Đóng băng phương pháp miễn +100%	Head					-1			0	15	MagicDefensePer	DeBuff	None	0	1	1	Magic	SelfAttack				10000									
+103			Xung phong chi di tốc tăng lên 50%	Head					2000			0	99	Speed	Buff	None	0	1	1	Physical	SelfAttack				5000									
+101021		E_Buff_Magicshield_1	Pháp thuật hấp thu thuẫn	Foot					5000			0	15	Shield	Buff	None	0	1	1	Magic	SelfAttack				20000									
+101031		E_Buff_Physicalguard_1	Vật lý hấp thu thuẫn	Foot					5000			0	15	Shield	Buff	None	0	1	1	Physical	SelfAttack				20000									
+102011		E_Buff_ReduceAnger_1	Rơi chậm lại mục tiêu 5 giờ tức giận	Head					1000			0	99	Energy	DeBuff	None	0	1	1	Physical	SelfAttack	-5												
+103011		E_Buff_Anger_1	Hồi phục tự thân 5 giờ tức giận	Body					1000			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	5												
+111011			Sinh mệnh lực +3000	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				3000									
+111012			Lực công kích +200	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				200									
+111021			Lực công kích +300	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				300									
+111031			Cuối cùng thương tổn +200	Head					-1			0	99	FinalDamage	Buff	None	0	1	1	Physical	SelfAttack				200									
+111041			Lực công kích +300	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				300									
+111051			Cuối cùng miễn thương +300	Head					-1			0	99	FinalDefense	Buff	None	0	1	1	Physical	SelfAttack				300									
+111061			Sinh mệnh lực +6000	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				6000									
+111071			Lực công kích +200	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				200									
+111072			Cuối cùng miễn thương +100	Head					-1			0	99	FinalDefense	Buff	None	0	1	1	Physical	SelfAttack				100									
+111081			Thương tổn phát ra +5%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				500									
+111091		E_Buff_AttackUp_1	Bị né tránh sau thương tổn phát ra +20%	Head					3000			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				2000									
+111101			Sinh mệnh lực +3000	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				3000									
+111102			Vật lý phòng ngự +300	Head					-1			0	99	Defend	Buff	None	0	1	1	Physical	SelfAttack				300									
+111111			Lực công kích +200	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				200									
+111112			Vật lý phòng ngự +200	Head					-1			0	99	Defend	Buff	None	0	1	1	Physical	SelfAttack				200									
+111121			Sinh mệnh lực +5000	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				5000									
+111122			Pháp thuật phòng ngự +200	Head					-1			0	99	MagicDefend	Buff	None	0	1	1	Physical	SelfAttack				200									
+111131			Lực công kích +300	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				300									
+111141			Sinh mệnh lực +6000	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				6000									
+112011			Miễn dịch đánh bay cùng giam cầm.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						KnockFly;Imprisonment			
+112021			Miễn dịch trầm mặc cùng mị hoặc.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Silence;Charm			
+112031			Miễn dịch thạch hóa cùng xua tan.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Petrified;Purify			
+112041			Miễn dịch suy yếu cùng thôi miên.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Hypnosis;Weak			
+112051			Miễn dịch trọng thương cùng cấm giận.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						NoReplyEnergy	Injured		
+112061			Miễn dịch trào phúng cùng bỏng cháy.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Taunt;FireBurn			
+112071			Miễn dịch mị hoặc cùng giam cầm.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Charm;Imprisonment			
+112081			Miễn dịch đóng băng cùng tụ lại.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Pull;Frozen			
+112091			Miễn dịch choáng váng cùng trọng thương.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo	Injured		
+112101			Miễn dịch đánh lui cùng trúng độc.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						KnockBack	Poisoning		
+112111			Miễn dịch choáng váng cùng nguyền rủa.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Curse			
+112121			Miễn dịch choáng váng cùng sợ hãi.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Fear			
+112131			Miễn dịch trí manh cùng mị hoặc.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Blinding;Charm			
+112141			Miễn dịch trào phúng cùng điện chước.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Taunt;ElecBurn			
+112151			Miễn dịch đổ máu cùng đánh bay.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						KnockFly;Bleeding			
+112161			Miễn dịch thạch hóa cùng suy yếu.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Petrified;Weak			
+112171			Miễn dịch thôi miên cùng mị hoặc.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Hypnosis;Charm			
+112181			Miễn dịch trí manh cùng đánh bay.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Blinding;KnockFly			
+112191			Miễn dịch trầm mặc cùng sợ hãi.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Silence;Fear			
+112201			Miễn dịch tụ lại cùng đổ máu.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Pull;Bleeding			
+112211			Miễn dịch trúng độc cùng mị hoặc.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Charm	Poisoning		
+112221			Miễn dịch đánh lui cùng trọng thương.	Head					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						KnockBack	Injured		
+113011			Mới bắt đầu tức giận gia tăng 20 điểm	Foot					1000			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	20												
+114011			Thương tổn giảm miễn 25%	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				2500									
+114021			Thương tổn gia tăng giảm bớt 25%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				-2500									
+214021			Thương tổn gia tăng 20%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				2500									
+114031			10% hút huyết hiệu quả	Head					-1			0	99	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				1000									
+114041			Công tốc gia tăng 20%	Head					3000			0	99	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				2000									
+114051		E_Buff_Invincible_1	Gia tăng 1 tầng thánh thuẫn	Body					-1			0	99	HolyShield	Buff	None	0	1	1	Physical	SelfAttack				1									
+114061			Thương tổn giảm miễn 50%	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				5000									
+114071			Gia tăng 3 điểm tức giận	Foot					500			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	3												
+114081			Gia tăng 30 điểm tức giận	Foot					500			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	30												
+114101			25% hút huyết hiệu quả	Head					-1			0	99	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				2500									
+114111			Gia tăng 12% công tốc	Head					-1			0	99	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1200									
+114121			Thương tổn gia tăng 20%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				2000									
+114131			Thương tổn giảm miễn 5%	Head					-1			0	99	DefensePer	Buff	None	0	1	9	Physical	SelfAttack				500									
+114141			Thương tổn gia tăng 4%	Head					-1			0	99	DamagePer	Buff	None	0	1	9	Physical	SelfAttack				400									
+114151			Gia tăng 3% công tốc	Head					-1			0	99	AtkSpeedUp	Buff	None	0	1	9	Physical	SelfAttack				300									
+114171			Pháp thương giảm miễn 25%	Head					-1			0	99	MagicDefensePer	Buff	None	0	1	1	Physical	SelfAttack				2500									
+114181			Bạo kích suất +25%	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2500									
+114201		E_Buff_Invincible_1	Miễn dịch 5 thứ công kích	Body					-1			0	99	HolyShield	Buff	None	0	1	1	Physical	SelfAttack				5									
+114211			Thương tổn gia tăng giảm bớt 20%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				-2000									
+214211			Thương tổn gia tăng 20%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				2000									
+114221		E_Buff_Vertigo_1	Choáng váng 1.5 giây	Head					1500			0	15	Vertigo	DeBuff	None	0	1	1	Physical	SelfAttack													
+114231			Trị liệu hiệu quả +10%	Head					-1			0	99	HealAddition	Buff	None	0	1	1	Physical	SelfAttack				1000									
+114241		E_Buff_ReduceAnger_1	Tức giận rơi chậm lại 20 điểm	Head					2000			0	99	Energy	DeBuff	None	0	1	1	Physical	SelfAttack	-20												
+115011			Lực lượng gia tăng 5 giờ	Head					-1			0	99	Strength	Buff	None	0	1	1	Physical	SelfAttack				5									
+115012			Thể chất gia tăng 5 giờ	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				5									
+115021			Trí lực gia tăng 6 giờ	Head					-1			0	99	Intellect	Buff	None	0	1	1	Physical	SelfAttack				6									
+115022			Thể chất gia tăng 4 giờ	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				4									
+115031			Lực lượng gia tăng 8 giờ	Head					-1			0	99	Strength	Buff	None	0	1	1	Physical	SelfAttack				8									
+115032			Thể chất gia tăng 2 điểm	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				2									
+115041			Lực lượng gia tăng 5 giờ	Head					-1			0	99	Strength	Buff	None	0	1	1	Physical	SelfAttack				5									
+115042			Trí lực gia tăng 5 giờ	Head					-1			0	99	Intellect	Buff	None	0	1	1	Physical	SelfAttack				5									
+115051			Trí lực gia tăng 5 giờ	Head					-1			0	99	Intellect	Buff	None	0	1	1	Physical	SelfAttack				5									
+115052			Thể chất gia tăng 5 giờ	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				5									
+115061			Lực lượng gia tăng 3 điểm	Head					-1			0	99	Strength	Buff	None	0	1	1	Physical	SelfAttack				3									
+115062			Thể chất gia tăng 7 điểm	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				7									
+115071			Trí lực gia tăng 7 điểm	Head					-1			0	99	Intellect	Buff	None	0	1	1	Physical	SelfAttack				7									
+115072			Thể chất gia tăng 3 điểm	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				3									
+115081			Lực lượng gia tăng 7 điểm	Head					-1			0	99	Strength	Buff	None	0	1	1	Physical	SelfAttack				7									
+115082			Thể chất gia tăng 3 điểm	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				3									
+115091			Trí lực gia tăng 3 điểm	Head					-1			0	99	Intellect	Buff	None	0	1	1	Physical	SelfAttack				3									
+115092			Thể chất gia tăng 7 điểm	Head					-1			0	99	Physique	Buff	None	0	1	1	Physical	SelfAttack				7									
+240101		E_Buff_AttackUp_1	Toàn thể thương tổn tăng lên 10%+2%	Head					8000			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				1000	200								
+240201		E_Buff_DamageDown_1	Toàn thể thương tổn giảm miễn 10%+2%	Head					8000			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				1000	200								
+250101		E_Buff_Physicalguard_1	Toàn thể gia tăng hộ thuẫn	Foot					6000			0	99	Shield	Buff	None	0	1	1	Real	SelfMaxHp				600	120								
+250301		E_Buff_ReduceAnger_1	Toàn thể khấu trừ tức giận	Head					1000			0	99	Energy	DeBuff	None	0	1	1	Physical	SelfAttack	-6												
+230111			Bị trị liệu hiệu quả tăng lên 10%+1%	Head					-1			0	99	HealedAddition	Buff	None	0	1	1	Physical	SelfAttack				1000	100								
+240111			Bạo kích thương tổn tăng lên 15%+2%	Head					-1			0	99	CritDamagePer	Buff	None	0	1	1	Physical	SelfAttack				1500	200								
+240211			Bị bạo kích thương tổn rơi chậm lại 20%+2.5%	Head					-1			0	99	CritDamageDefensePer	Buff	None	0	1	1	Physical	SelfAttack				2000	250								
+250111			Thương tổn giảm miễn 8%+0.8%	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				800	80								
+250211			Thương tổn phát ra gia tăng 8%+0.8%	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				800	80								
+250311		E_Buff_Anger_1	Mới bắt đầu tức giận giá trị gia tăng 1 5 giờ +2 điểm	Body					1000			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	15	2											
+401011			Mệnh trung cấp bậc đề cao 9 cấp	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				900									
+401021			Né tránh cấp bậc đề cao 6 cấp	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				600									
+401031			Bạo kích cấp bậc đề cao 6 cấp	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				600									
+401041			Kháng bạo cấp bậc đề cao 9 cấp	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				900									
+401051			Đón đỡ cấp bậc đề cao 6 cấp	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				600									
+401061			Phá đương cấp bậc đề cao 9 cấp	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				900									
+401071			Thương tổn cấp bậc đề cao 6 cấp	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				600									
+401081			Miễn thương cấp bậc đề cao 6 cấp	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				600									
+402011			Mệnh trung cấp bậc đề cao 12 cấp	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1200									
+402021			Né tránh cấp bậc đề cao 8 cấp	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				800									
+402031			Bạo kích cấp bậc đề cao 8 cấp	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				800									
+402041			Kháng bạo cấp bậc đề cao 12 cấp	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1200									
+402051			Đón đỡ cấp bậc đề cao 8 cấp	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				800									
+402061			Phá đương cấp bậc đề cao 12 cấp	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1200									
+402071			Thương tổn cấp bậc đề cao 8 cấp	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				800									
+402081			Miễn thương cấp bậc đề cao 8 cấp	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				800									
+403011			Mệnh trung cấp bậc đề cao 15 cấp	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+403021			Né tránh cấp bậc đề cao 10 cấp	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+403031			Bạo kích cấp bậc đề cao 10 cấp	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+403041			Kháng bạo cấp bậc đề cao 15 cấp	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+403051			Đón đỡ cấp bậc đề cao 10 cấp	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+403061			Phá đương cấp bậc đề cao 15 cấp	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+403071			Thương tổn cấp bậc đề cao 10 cấp	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+403081			Miễn thương cấp bậc đề cao 10 cấp	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+301011			Toàn viên mệnh trung cấp bậc +15	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+302011			Toàn viên né tránh cấp bậc +10	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+303011			Toàn viên bạo kích cấp bậc +10	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+304011			Toàn viên kháng bạo cấp bậc +15	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+305011			Toàn viên đón đỡ cấp bậc +10	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+306011			Toàn viên phá chắn cấp bậc +15	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+307011			Toàn viên thương tổn cấp bậc +10	Head					-1			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+308011			Toàn viên giảm thương cấp bậc +10	Head					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				1000									
+309011			Toàn viên vật lý giảm thương cấp bậc +15	Head					-1			0	99	PhysicalDefensePer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+310011			Toàn viên pháp thuật giảm thương cấp bậc +15	Head					-1			0	99	MagicDefensePer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+600011			Tôn Ngộ Không tự thân lớn nhất sinh mệnh giá trị thương tổn	Head					-1			0	99	MaxHpDamagePer	Buff	None	0	1	1	Physical	SelfAttack				10000									
+600021		E_Buff_Disperse_1	Đường Tăng phải giết xua tan tăng hiệu quả	Foot					1000			0	16	Purify	Buff	None	0	1	1	Physical	SelfAttack													
+600022			Đường Tăng phải giết hồi huyết	Head					1000			0	99	Heal	Buff	None	0	1	1	Physical	SelfMaxHp				2000									
+600023			Đường Tăng phải giết thương tổn	Head					1000			0	99	Damage	DeBuff	None	0	1	1	Magic	SelfAttack				35000									
+610011			Con rối sư thiên phú 1 thị huyết chi công tốc gia tăng	Head					-1			0	15	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				5000									
+610012		E_Buff_Rage_1	Con rối sư thiên phú 1 lực công kích gia tăng	Body					-1			0	15	AttackPer	Buff	None	0	1	1	Physical	SelfAttack				5000									
+610013			Con rối sư thiên phú 1 thể tích biến đại	Head					-1			0	15	Scale	Buff	None	0	1	1	Physical	SelfAttack				3000									
+610021		E_Buff_Invincible_1	Con rối sư quang hoàn kỹ	Body					4000			0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+610031			Miễn dịch đánh gãy	Head					-1			0	99	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+610051			Miễn dịch đánh gãy	Head					-1			0	99	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Charm;Fear;Hypnosis;Scale;Imprisonment;Blinding			
+610061		E_Buff_DamageDown_1	Thí luyện thương tổn giảm miễn	Head					-1			0	99	DefensePer	Buff	None	0	1	99	Real	SelfAttack				10000									
+621011	621012;621013;621014;621015;621016		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				800	80								
+621012			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				880	88								
+621013			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				976	97								
+621014			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1110	111								
+621015			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1212	121								
+621016			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1425	142								
+621021	621022;621023;621024;621025;621026		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1772	177								
+621022			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2226	222								
+621023			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				2348	234								
+621024			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				2493	249								
+621025			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				520	52								
+621026			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				586	58								
+621031	621032;621033;621034;621035;621036		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				650	65								
+621032			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				740	74								
+621033			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				808	80								
+621034			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				950	95								
+621035			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1181	118								
+621036			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1483	148								
+621041	621042;621043;621044;621045;621046		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1565	156								
+621042			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1662	166								
+621043			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1600	160								
+621044			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1760	176								
+621045			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1956	195								
+621046			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				2222	222								
+621051	621052;621053;621054;621055;621056		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				2424	242								
+621052			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2850	285								
+621053			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				3547	354								
+621054			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				4453	445								
+621055			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				4697	469								
+621056			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				4987	498								
+621061	621062;621063;621064;621065;621066		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1060	106								
+621062			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1173	117								
+621063			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1303	130								
+621064			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1482	148								
+621065			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1616	161								
+621066			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1900	190								
+621071	621072;621073;621074;621075;621076		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				2364	236								
+621072			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2968	296								
+621073			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				3132	313								
+621074			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				3324	332								
+621075			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1320	132								
+621076			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1466	146								
+621081	621082;621083;621084;621085;621086		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1630	163								
+621082			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1852	185								
+621083			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				2020	202								
+621084			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				2375	237								
+621085			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				2955	295								
+621086			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				3711	371								
+621091	621092;621093;621094;621095;621096		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				3915	391								
+621092			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				4156	415								
+621093			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				660	66								
+621094			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				733	73								
+621095			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				813	81								
+621096			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				925	92								
+621101	621102;621103;621104;621105;621106		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1010	101								
+621102			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1186	118								
+621103			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1477	147								
+621104			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1855	185								
+621105			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1957	195								
+621106			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				2078	207								
+621111	621112;621113;621114;621115;621116		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				800	80								
+621112			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				880	88								
+621113			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				976	97								
+621114			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1110	111								
+621115			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1212	121								
+621116			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1425	142								
+621121	621122;621123;621124;621125;621126		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1772	177								
+621122			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2226	222								
+621123			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				2348	234								
+621124			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				2493	249								
+621125			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				520	52								
+621126			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				586	58								
+621131	621132;621133;621134;621135;621136		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				650	65								
+621132			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				740	74								
+621133			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				808	80								
+621134			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				950	95								
+621135			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1181	118								
+621136			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1483	148								
+621141	621142;621143;621144;621145;621146		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1565	156								
+621142			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1662	166								
+621143			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1600	160								
+621144			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1760	176								
+621145			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1956	195								
+621146			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				2222	222								
+621151	621152;621153;621154;621155;621156		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				2424	242								
+621152			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2850	285								
+621153			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				3547	354								
+621154			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				4453	445								
+621155			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				4697	469								
+621156			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				4987	498								
+621161	621162;621163;621164;621165;621166		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1060	106								
+621162			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1173	117								
+621163			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1303	130								
+621164			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1482	148								
+621165			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1616	161								
+621166			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1900	190								
+621171	621172;621173;621174;621175;621176		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				2364	236								
+621172			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				2968	296								
+621173			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				3132	313								
+621174			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				3324	332								
+621175			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1320	332								
+621176			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				1466	146								
+621181	621182;621183;621184;621185;621186		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1630	163								
+621182			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1852	185								
+621183			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				2020	202								
+621184			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				2375	237								
+621185			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				2955	295								
+621186			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				3711	371								
+621191	621192;621193;621194;621195;621196		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				3915	391								
+621192			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				4156	415								
+621193			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				660	66								
+621194			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				733	73								
+621195			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				813	81								
+621196			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack				925	92								
+621201	621202;621203;621204;621205;621206		Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1010	101								
+621202			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				1186	118								
+621203			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	ParryPer	Buff	None	0	1	1	Physical	SelfAttack				1477	147								
+621204			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				1855	185								
+621205			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	CritResistPer	Buff	None	0	1	1	Physical	SelfAttack				1957	195								
+621206			Thủ lĩnh đột kích xác suất thuộc tính	Head					-1			0	99	BreakParryPer	Buff	None	0	1	1	Physical	SelfAttack													
+700011			Cốt truyện hồi huyết mỗi giây 4%	Head					-1			1000	99	Heal	Buff	None	0	1	1	Physical	SelfMaxHp				400									
+700021			Cốt truyện hồi huyết mỗi giây 1 5 giờ tức giận	Foot					-1			1000	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	15												
+700031		E_Buff_Anger_1	Cốt truyện hồi huyết mới bắt đầu 50 điểm tức giận	Body					1000			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	50												
+710011			Công kích thành công khi tự thân hồi phục 6 giờ tức giận	Foot					100			0	99	Energy	Buff	None	0	1	1	Physical	SelfAttack	6												
+2001101			Hồng tây trang Tôn Ngộ Không đánh bay mục tiêu	Head		30000	100000	120000	500			0	15	KnockFly	DeBuff	None	2001101	1	1	Physical	SelfAttack													
+1001102		E_Buff_DamageDown_1	Hồng tây trang Tôn Ngộ Không thương tổn giảm miễn	Head					1500			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				10000									
+1001121			Hồng tây trang Tôn Ngộ Không 11 cấp đánh bay mục tiêu	Head		50000	100000	80000	1500			0	15	KnockFly	DeBuff	None	2001101	2	1	Physical	SelfAttack													
+1001111		E_Buff_Moribund_1	Hồng tây trang Tôn Ngộ Không 7 cấp trọng thương	Head					5000			0	5	Mark	DeBuff	Injured	0	1	1	Physical	SelfAttack													
+1001131		E_Buff_Immune_1	Hồng tây trang Tôn Ngộ Không 16 cấp miễn dịch đánh gãy	Foot					1500			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1001011			Hồng tây trang Tôn Ngộ Không thiên phú 1 đánh bại	Head					1000			0	15	KnockDown	DeBuff	None	0	1	1	Physical	SelfAttack													
+1001021		E_Buff_DamageUp_1	Hồng tây trang Tôn Ngộ Không thiên phú 2 mục tiêu thương tổn gia tăng	Head					3000			0	5	DefensePer	DeBuff	None	0	1	3	Physical	SelfAttack				-710	-10	-20							
+2001021			Hồng tây trang Tôn Ngộ Không thiên phú 2 lực công kích gia tăng	Head					-1			0	99	Attack	Buff	None	0	1	1	Physical	SelfAttack				192	12								
+1001031		E_1001_Attack_Buff_3	Hồng tây trang Tôn Ngộ Không thiên phú 3 thương tổn giảm miễn	Foot					-1			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack	42	6	30	3050	50	100							
+1001041	101		Hồng tây trang Tôn Ngộ Không thiên phú 4 thạch hóa	Foot					3000			0	99	Petrified	Buff	None	0	1	1	Physical	SelfAttack												200104	
+1001042			Hồng tây trang Tôn Ngộ Không thiên phú 4 thanh trừ sở hữu cừu hận	Head					3000			0	99	ClearAllHatred	Buff	None	0	1	1	Physical	SelfAttack													
+1001043		E_1001_Attack_Buff_4	Hồng tây trang Tôn Ngộ Không hộ thuẫn	Body					3000			0	99	Shield	Buff	None	0	1	1	Real	SelfMaxHp	240	50		2025	25								
+1002101		E_Buff_Disperse_1	Đường Tăng xua tan mục tiêu tăng trạng thái	Foot					1000			0	16	Purify	Buff	None	1002101	1	1	Physical	SelfAttack	1												
+1002111		E_Buff_Disperse_1	Đường Tăng 7 cấp xua tan mục tiêu tăng trạng thái	Foot					1000			0	16	Purify	Buff	None	1002111	1	1	Physical	SelfAttack	1												
+1002121			Đường Tăng 11 cấp xuyên thấu pháp thuật hộ giáp	Head					1000			0	5	MagicSunder	Buff	None	0	1	1	Physical	SelfAttack				10000									
+1002131		E_Buff_AttackUp_1	Đường Tăng 16 cấp thêm lực công kích	Head					6000			0	5	AttackPer	Buff	None	0	1	1	Physical	SelfAttack				2500									
+1002011		E_Buff_Silence_1	Đường Tăng sử mục tiêu trầm mặc	Head					3000			0	5	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1002021		E_Buff_Poisoning_1	Đường Tăng thiên phú 2 trúng độc	Foot	TRUE				4000			1000	5	Damage	DeBuff	Poisoning	0	1	1	Physical	TargetMaxHp				100									
+1002031		E_Buff_Purify_1	Đường Tăng tinh lọc sở hữu trạng thái xấu	Foot					2000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack													
+1002032		E_Buff_Anger_1	Đường Tăng gia tăng tức giận	Body					2000			0	5	Energy	Buff	None	0	1	1	Physical	SelfAttack				910	10	100							
+1002041	1002042	E_1002_Attack_Buff_4	Đường Tăng mở màn toàn thể thêm hộ thuẫn	Foot					-1			0	5	Shield	Buff	None	0	1	1	Real	SelfAttack	240	50		20100	100								
+1002042			Đường Tăng toàn thể miễn dịch đánh gãy	Foot					-1			0	15	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1002043		E_1002_Attack_Hit_4	Đường Tăng mở màn đặc hiệu	Foot					1000			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack													
+1003101	101		Phú nhị đại Bát Giới tám thạch hóa mục tiêu 2 giây	Head					2000			0	10	Petrified	DeBuff	None	1003101	1	1	Physical	SelfAttack													
+1003102	101		Phú nhị đại Bát Giới tám thạch hóa mục tiêu 3 giây	Head					3000			0	10	Petrified	DeBuff	None	1003101	1	1	Physical	SelfAttack													
+1003103	101		Phú nhị đại Bát Giới tám thạch hóa mục tiêu 4 giây	Head					4000			0	10	Petrified	DeBuff	None	1003101	1	1	Physical	SelfAttack													
+1003104	101		Phú nhị đại Bát Giới tám thạch hóa mục tiêu 5 giây	Head					5000			0	10	Petrified	DeBuff	None	1003101	1	1	Physical	SelfAttack													
+1003111	101		Phú nhị đại Bát Giới tám 7 cấp thạch hóa mục tiêu 3 giây	Head					3000			0	10	Petrified	DeBuff	None	1003101	2	1	Physical	SelfAttack													
+1003112	101		Phú nhị đại Bát Giới tám 7 cấp thạch hóa mục tiêu 4 giây	Head					4000			0	10	Petrified	DeBuff	None	1003101	2	1	Physical	SelfAttack													
+1003113	101		Phú nhị đại Bát Giới tám 7 cấp thạch hóa mục tiêu 5 giây	Head					5000			0	10	Petrified	DeBuff	None	1003101	2	1	Physical	SelfAttack													
+1003114	101		Phú nhị đại Bát Giới tám 7 cấp thạch hóa mục tiêu 6 giây	Head					6000			0	10	Petrified	DeBuff	None	1003101	2	1	Physical	SelfAttack													
+1003121	1003122	E_Buff_Bleed_1	Phú nhị đại Bát Giới 11 cấp đổ máu hiệu quả	Body					5000			0	5	Bleeding	DeBuff	None	0	1	1	Physical	TargetCurHp													
+1003122			Phú nhị đại Bát Giới 11 cấp đổ máu hiệu quả	Foot					-1			1000	5	Damage	DeBuff	None	0	1	1	Physical	TargetCurHp				200									
+1003131		E_Buff_AtkSpeedUp_1	Phú nhị đại Bát Giới 16 cấp công kích tốc độ đề cao	Head					6000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				2500									
+1003011		E_Buff_DefendDown_1	Phú nhị đại Bát Giới hàng mục tiêu vật lý lực phòng ngự	Head					5000			0	5	DefendPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+1003012			Phú nhị đại Bát Giới hàng mục tiêu pháp thuật lực phòng ngự	Head					5000			0	5	MagicDefendPer	DeBuff	None	0	1	1	Magic	SelfAttack				-2500									
+1003021		E_Buff_Blindness_1	Phú nhị đại Bát Giới sử mục tiêu trí manh	Head					3000			0	15	Blinding	DeBuff	None	0	1	1	Physical	SelfAttack													
+1003031		E_Buff_PercisionDown_1	Phú nhị đại Bát Giới rơi chậm lại mục tiêu mệnh trung suất	Head					3000			0	5	PercisionPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2830	-30	-200							
+2003031			Phú nhị đại Bát Giới tăng lên tự thân né tránh giá trị	Head					-1			0	99	DodgeValue	Buff	None	0	1	1	Physical	SelfAttack				312	12	60							
+1003041		E_Buff_SpeedUp_1	Phú nhị đại Bát Giới tăng lên di động tốc độ	Head					12100	100		0	5	Speed	Buff	None	0	1	1	Physical	SelfAttack				3050	50								
+1003042		E_Buff_AtkSpeedUp_1	Phú nhị đại Bát Giới tăng lên công kích tốc độ	Head					12100	100		0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				2110	10								
+1003043		E_1003_Attack_Hit_4	Phú nhị đại Bát Giới mở màn đặc hiệu	Foot					1000			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1004101			Áo khoác bản Sa Tăng đánh bay mục tiêu	Head		30000	90000	80000	1000			0	15	KnockFly	DeBuff	None	0	1	1	Physical	SelfAttack													
+1004111			Áo khoác bản Sa Tăng 7 cấp đánh bay mục tiêu	Head		30000	90000	80000	2000			0	15	KnockFly	DeBuff	None	0	1	1	Physical	SelfAttack													
+1004121		E_Buff_Curse_1	Áo khoác bản Sa Tăng 7 liền nguyền rủa mục tiêu	Head					6000			0	15	Curse	DeBuff	None	0	1	1	Physical	SelfAttack				2500									
+1004131			Áo khoác bản Sa Tăng 16 cấp bạo kích thương tổn tăng lên	Head					6000			0	5	CritDamagePer	Buff	None	0	1	1	Physical	SelfAttack				4500									
+1004011		E_Buff_SpeedDown_1	Áo khoác bản Sa Tăng thiên phú 1 hàng di động tốc độ	Head					5000			0	5	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-4000									
+1004021		E_Buff_AttackUp_1	Áo khoác bản Sa Tăng thiên phú 2 thêm lực công kích	Head					-1			0	5	AttackPer	Buff	None	0	1	9	Physical	SelfAttack				303	3	10							
+2004031			Áo khoác bản Sa Tăng thiên phú 3 gia tăng bạo kích giá trị	Head					-1			0	99	CritValue	Buff	None	0	1	1	Physical	SelfAttack				312	12	50							
+1004031		E_Buff_CritUp_1	Áo khoác bản Sa Tăng thiên phú 3 gia tăng bạo kích suất	Head					-1			0	5	CritPer	Buff	None	0	1	20	Physical	SelfAttack				810	10	100							
+1004041		E_Buff_Invincible_1	Áo khoác bản Sa Tăng thiên phú 4 vô địch	Body					3050	50		0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1004042		E_Buff_Anger_1	Áo khoác bản Sa Tăng thiên phú 4 gia tăng tức giận	Body					1000			0	5	Energy	Buff	None	0	1	1	Physical	SelfAttack				1210	10								
+1005101		E_Buff_Detention_1	Người phục vụ Sa Tăng phải giết giam cầm	Foot					1500			0	15	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1005111			Người phục vụ Sa Tăng 7 cấp không buff ( tạm thời vô dụng )	Head					500			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack												200511	
+1005121		E_Buff_Silence_1	Người phục vụ Sa Tăng 11 cấp trầm mặc mục tiêu	Head					2500			0	10	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1005131		E_Buff_TheBlood_1	Người phục vụ Sa Tăng 16 cấp tự thân hồi huyết	Foot					1000			0	99	Heal	Buff	None	0	1	1	Real	SelfMaxHp				600									
+1005011			Người phục vụ Sa Tăng thiên phú 1 không buff	Foot					100			0	99	Heal	Buff	None	0	1	1	Real	SelfAttack												200501	
+2005011		E_Buff_Fear_1	Người phục vụ Sa Tăng thiên phú 1 sợ hãi mục tiêu ( tạm thời vô dụng )	Head					1000			0	15	Fear	DeBuff	None	0	1	1	None	SelfAttack													
+1005021		E_Buff_Silence_1	Người phục vụ Sa Tăng thiên phú 2 trầm mặc mục tiêu	Head					2400			0	10	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+2005031			Người phục vụ Sa Tăng gia tăng tự thân sinh mệnh	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				3840	240								
+1005041		E_1005_Attack_Buff_4	Người phục vụ Sa Tăng mở màn đặc hiệu	Foot					1000			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1006101	1006102	E_1006_Skill_Buff_1_2	Trư Bát Giới phải giết hàng mục tiêu vật phòng	Foot					6000			0	5	DefendPer	DeBuff	None	0	1	3	Physical	SelfAttack				-3000									
+1006102			Trư Bát Giới phải giết hàng mục tiêu pháp phòng	Head					-1			0	5	MagicDefendPer	DeBuff	None	0	1	3	Physical	SelfAttack				-3000									
+1006103			Trư Bát Giới phải giết rút ra hồi huyết	Head					1			0	5	DelayAttackHeal	Buff	None	0	1	1	Physical	DamageValue				10000									
+1006104	1006105	E_1006_Skill_Buff_1_1	Trư Bát Giới phải giết tăng lên vật phòng	Foot					6000			0	5	DefendPer	Buff	None	0	1	3	Physical	SelfAttack				3000									
+1006105			Trư Bát Giới phải giết tăng lên pháp phòng	Head					-1			0	5	MagicDefendPer	Buff	None	0	1	3	Physical	SelfAttack				3000									
+1006106			Trư Bát Giới phải giết biến đại	Foot					6000			0	15	Scale	Buff	None	0	1	3	Physical	SelfAttack				0									
+1006111		E_Buff_Fear_1	Trư Bát Giới 7 cấp sợ hãi	Head					1000			0	15	Fear	DeBuff	None	0	1	1	Physical	SelfAttack													
+1006121		E_Buff_ReduceAnger_1	Trư Bát Giới 11 cấp hàng giận	Head					700			0	5	Energy	DeBuff	None	0	1	1	Physical	SelfAttack	-10												
+1006131			Trư Bát Giới 16 cấp	Head					5000			0	99	MaxHpPer	Buff	None	0	1	1	Physical	SelfAttack				600									
+1006011			Trư Bát Giới kéo người đến phía sau	Head		-100000	50000		500			0	99	KnockFlyMove	DeBuff	None	0	1	1	Physical	SelfAttack													
+1006012		E_Buff_Ridicule_1	Trư Bát Giới trào phúng mục tiêu	Head					1000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1006013			Trư Bát Giới trào phúng chi tự thân thương tổn giảm miễn	Head					1000			0	15	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1006014			Trư Bát Giới đánh bay địch nhân ( thực nghiệm )	Head		30000	90000	80000	500			0	15	KnockFlyMove	DeBuff	None	0	1	1	Physical	SelfAttack													
+1006021		E_Buff_DefendUp_1	Trư Bát Giới vật lý thương tổn giảm miễn	Head					6000			0	5	PhysicalDefensePer	Buff	None	0	1	1	Physical	SelfAttack				3000									
+1006031		E_Buff_Purify_1	Trư Bát Giới thanh trừ tự thân hai cái trạng thái xấu	Foot					1000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack	1												
+1006032		E_1006_Attack_Buff_3	Trư Bát Giới thanh trừ tự thân hai cái trạng thái xấu đặc hiệu	Foot					2000			0	16	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1006041	1006042	E_1006_Attack_Buff_4	Trư Bát Giới hấp thu hộ thuẫn	Body					-1			0	10	Shield	Buff	None	0	1	1	Real	SelfMaxHp				1820	20								
+1006042			Trư Bát Giới vật lý thương tổn rơi chậm lại	Head					-1			0	5	PhysicalDefensePer	Buff	None	0	1	1	Physical	SelfAttack				2025	25								
+1007101		E_Buff_TheBlood_1	Nhị Lang Thần tích lũy thương tổn hồi huyết	Foot					1000			0	99	DelayAttackHeal	Buff	None	0	1	1	Physical	DamageValue				5000									
+1007102	1007104		Nhị Lang Thần áp chế mục tiêu	Head					1000			0	15	Suppress	DeBuff	None	0	1	1	Physical	SelfAttack													
+1007104			Nhị Lang Thần hàng di tốc	Head					-1			0	15	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-20000									
+1007103		E_Buff_Immune_1	Nhị Lang Thần bá thể trạng thái	Foot					3000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1007111		E_Buff_AttackUp_1	Nhị Lang Thần 7 cấp thương tổn tăng lên	Head					1000			0	5	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				1600									
+1007121	1007122;1007123;1007124;1007125;1007126;1007127	E_Buff_weak_1	Nhị Lang Thần 11 cấp suy yếu	Foot					3000			0	5	Weak	DeBuff	None	0	1	1	Physical	SelfAttack													
+1007122			Nhị Lang Thần 11 cấp suy yếu chi hàng mệnh trung	Head					-1			0	5	PercisionPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1007123			Nhị Lang Thần 11 cấp suy yếu chi hàng né tránh	Head					-1			0	5	DodgePer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1007124			Nhị Lang Thần 11 cấp suy yếu chi hạ thấp chắn	Head					-1			0	5	ParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1007125			Nhị Lang Thần 11 cấp suy yếu chi hàng phá đương	Head					-1			0	5	BreakParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1007126			Nhị Lang Thần 11 cấp suy yếu chi hàng bạo kích	Head					-1			0	5	CritPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1007127			Nhị Lang Thần 11 cấp suy yếu chi hàng kháng bạo	Head					-1			0	5	CritResistPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1007131			Nhị Lang Thần 16 cấp hút huyết	Head					2700			0	5	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				-20000									
+1007132			Nhị Lang Thần 16 cấp hút huyết	Head					8700			0	5	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				3500									
+1007011		E_Buff_Curse_1	Nhị Lang Thần thiên phú 1 nguyền rủa	Head					5000			0	15	Curse	DeBuff	None	0	1	1	Physical	SelfAttack				2000									
+1007021		E_Buff_Blindness_1	Nhị Lang Thần thiên phú 2 trí manh	Head					3000			0	15	Blinding	DeBuff	None	0	1	1	Physical	SelfAttack													
+1007031		E_Buff_Rage_1	Nhị Lang Thần thiên phú 3 cuồng bạo chi công tốc tăng lên	Foot					-1			0	99	AtkSpeedUp	Buff	None	0	1	10	Physical	SelfAttack				323	3	30							
+1007041		E_1007_Attack_Buff_4	Nhị Lang Thần thiên phú 4 hữu mới trở về huyết	Foot					2000			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack	315	65		13150	150								
+1007042		E_Buff_Silence_1	Nhị Lang Thần thiên phú 4 trầm mặc mục tiêu 2 giây	Head					2000			0	10	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1007043		E_Buff_Silence_1	Nhị Lang Thần thiên phú 4 trầm mặc mục tiêu 3 giây	Head					3000			0	10	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1007044		E_Buff_Silence_1	Nhị Lang Thần thiên phú 4 trầm mặc mục tiêu 4 giây	Head					4000			0	10	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1007045		E_Buff_Silence_1	Nhị Lang Thần thiên phú 4 trầm mặc mục tiêu 5 giây	Head					5000			0	10	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+2007041		E_1007_Attack_Hit_4	Nhị Lang Thần thiên phú 4 tự thân đặc hiệu	Foot					2000			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1008101			Phó hạ phải giết đánh lui mục tiêu	Head		10000	20000		1000			0	15	KnockBack	DeBuff	None	1008101	1	1	Physical	SelfAttack													
+1008111		E_Buff_Burn_1	Phó hạ 7 cấp bỏng cháy	Body					8000			0	5	FireBurn	DeBuff	None	0	1	1	Physical	SelfAttack				500									
+1008121		E_Buff_Purify_1	Phó hạ 11 cấp tinh lọc tự thân trạng thái xấu	Foot					2000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack													
+1008131		E_Buff_Immune_1	Phó hạ 16 cấp miễn dịch đánh gãy	Foot					3000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1008011			Phó hạ thiên phú 1 đánh bay mục tiêu	Head		30000	90000	80000	500			0	15	KnockFly	DeBuff	None	0	1	1	Physical	SelfAttack													
+1008021		E_1008_Attack_Buff_1	Phó hạ thiên phú 2 hộ thuẫn	Body					5000			0	99	Shield	Buff	None	0	1	1	Real	SelfAttack	144	24	120	10060	60	200							
+1008022		E_Buff_DefendUp_1	Phó hạ thiên phú 2 tăng lên vật phòng	Head					5000			0	5	DefendPer	Buff	None	0	1	1	Physical	SelfAttack				2000									
+1008031		E_1008_Attack_Buff_3_2	Phó hạ thiên phú 3 tăng lên vật thương	Foot					3000			0	99	PhysicalDamagePer	Buff	None	0	1	1	Physical	SelfAttack				1115	15	100							
+1008032		E_1008_Attack_Buff_3_1	Phó hạ thiên phú 3 tăng lên vật thương tự thân đặc hiệu	Foot					3000			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack													
+1008041		E_Buff_DefendDown_1	Phó hạ thiên phú 4 rơi chậm lại vật phòng	Head					10000			0	5	DefendPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1720	-20								
+1008042		E_Buff_DefendUp_1	Phó hạ thiên phú 4 gia tăng vật phòng	Head					10000			0	5	DefendPer	Buff	None	0	1	1	Physical	SelfAttack				1720	20								
+2008041		E_1008_Attack_Hit_4	Phó hạ thiên phú 4 tự thân đặc hiệu	Foot					2000			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1009101		E_Buff_TheBlood_1	Đinh tiểu mâu phải giết hồi huyết	Foot					1000			0	99	Heal	Buff	None	0	1	1	Physical	SelfMaxHp				750	0								
+1009301		E_Buff_TheBlood_1	Đinh tiểu mâu phải giết hồi huyết	Foot					1000			0	99	Heal	Buff	None	0	1	1	Physical	SelfMaxHp				1125	0								
+1009401		E_Buff_TheBlood_1	Đinh tiểu mâu phải giết hồi huyết	Foot					1000			0	99	Heal	Buff	None	0	1	1	Physical	SelfMaxHp				1500	0								
+1009121		E_Buff_Purify_1	Đinh tiểu mâu 11 cấp tinh lọc tự thân sở hữu trạng thái xấu	Foot					1000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack													
+1009131			Đinh tiểu dư công tốc tăng lên	Head					1000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1000									
+1009132			Đinh tiểu dư công tốc tăng lên	Head					2000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1000									
+1009133			Đinh tiểu dư công tốc tăng lên	Head					3000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1000									
+1009134		E_Buff_AtkSpeedUp_1	Đinh tiểu dư công tốc tăng lên	Head					4000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				2000									
+1009011		E_Buff_DefendUp_1	Đinh tiểu mâu thiên phú 1 tăng lên pháp phòng	Head					5000			0	5	MagicDefendPer	Buff	None	0	1	1	Magic	SelfAttack				1800									
+1009021	102		Đinh tiểu mâu thiên phú 2 đóng băng mục tiêu	Head					1500			0	15	Frozen	DeBuff	None	0	1	1	Physical	SelfAttack													
+1009022			Đinh tiểu mâu thiên phú 2 tự thân không buff	Head					200			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack												200902	
+1009023			Đinh tiểu dư thiên phú 2 lui về phía sau cấm công kích	Head					200			0	99	AttackLimit	Buff	None	0	1	1	Physical	SelfAttack													
+2009021		E_1009_Attack_Range_Hit_2	Đinh tiểu dư thiên phú 2 lui về phía sau đặc hiệu	Foot					1000			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1009031		E_1009_Attack_Buff_3_2	Đinh tiểu mâu thiên phú 3 tăng lên pháp thương	Foot					2000			0	99	MagicDamagePer	Buff	None	0	1	1	Physical	SelfAttack				1115	15	100							
+1009032		E_1009_Attack_Buff_3_1	Đinh tiểu mâu thiên phú 3 tăng lên pháp thương đặc hiệu	Foot					2000			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack													
+1009041		E_Buff_DefendDown_1	Đinh tiểu mâu thiên phú 4 rơi chậm lại pháp phòng	Head					10000			0	5	MagicDefendPer	DeBuff	None	0	1	1	Magic	SelfAttack				-1720	-20								
+1009042		E_Buff_DefendUp_1	Đinh tiểu mâu thiên phú 4 gia tăng pháp phòng	Head					10000			0	5	MagicDefendPer	Buff	None	0	1	1	Magic	SelfAttack				1720	20								
+2009041		E_1009_Attack_4	Đinh tiểu dư thiên phú 4 tự thân đặc hiệu	Foot					2000			0	99	Shield	Buff	None	0	1	1	Magic	SelfAttack													
+1010101			Tiểu di phải giết tỏa định mục tiêu	Head					-1			0	99	Lock	DeBuff	None	0	1	1	Magic	SelfAttack													
+1010102	1010103		Tiểu di phải giết áp chế mục tiêu	Head					500			0	20	Suppress	DeBuff	None	0	1	1	Magic	SelfAttack													
+1010103			Tiểu di phải giết hàng di tốc	Head					-1			0	15	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-20000									
+1010111		E_Buff_AtkSpeedUp_1	Tiểu di 7 cấp phải giết công tốc tăng lên	Head					5000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1500									
+1010121		E_Buff_TheBlood_1	Tiểu di 11 cấp phải giết tích lũy công kích hồi huyết	Foot					2500			0	5	DelayAttackHeal	Buff	None	0	1	1	Physical	DamageValue				2500									
+1010131		E_Buff_Immune_1	Tiểu di 16 cấp miễn dịch đánh gãy	Foot					2500			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1010011		E_Buff_Electrocautery_1	Tiểu di thiên phú 1 điện chước	Body					3000			0	5	ElecBurn	DeBuff	None	0	1	1	Physical	SelfAttack				700		100							
+1010021		E_Buff_Moribund_1	Tiểu di thiên phú 2 trọng thương	Head					5000			0	5	Mark	DeBuff	Injured	1010021	2	1	Physical	SelfAttack												201002	TRUE
+1010031		E_Buff_Moribund_1	Tiểu di thiên phú 3 trọng thương	Head					3000			0	5	Mark	DeBuff	Injured	1010021	1	1	Physical	SelfAttack													
+2010031			Tiểu di thiên phú 3 gia tăng pháp phòng	Head					-1			0	99	MagicDefend	Buff	None	0	1	1	Physical	SelfAttack				312	12	50							
+1010041		E_Buff_Magicshield_1	Tiểu di thiên phú 4 hộ thuẫn	Foot					-1			0	15	Shield	Buff	None	0	1	1	Real	SelfAttack	725	150		30500	500								
+1010042			Tiểu di thiên phú 4 gia tăng công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				3030	30								
+1011101		E_Buff_Vertigo_1	Tông đế choáng váng mục tiêu	Head					2000			0	10	Vertigo	DeBuff	None	0	1	1	Physical	SelfAttack													
+1011111		E_Buff_Vertigo_1	Tông đế 7 cấp choáng váng mục tiêu	Head					2000			0	10	Vertigo	DeBuff	None	0	1	1	Physical	SelfAttack													
+1011121			Tông đế 11 cấp vật lý hộ giáp	Head					1000			0	99	PhysicalSunder	Buff	None	0	1	1	Physical	SelfAttack				10000									
+1011131		E_Buff_AttackUp_1	Tông đế 16 cấp lực công kích tăng lên	Head					5000			0	5	AttackPer	Buff	None	0	1	1	Physical	SelfAttack				3200									
+1011011		E_1011_Attack_Buff_1	Tông đế thiên phú 1 hàng giận	Foot					1500			0	5	Energy	DeBuff	None	0	1	1	Physical	SelfAttack	-6												
+1011012	102		Tông đế thiên phú 1 đóng băng mục tiêu	Head					1500			0	15	Frozen	DeBuff	None	0	1	1	Physical	SelfAttack													
+1011021		E_Buff_Fear_1	Tông đế thiên phú 2 sợ hãi địch quân	Head					3000			0	15	Fear	DeBuff	None	0	1	1	Physical	SelfAttack													
+1011022			Tông đế thiên phú 2 thoáng hiện trở về không buff	Head					200			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack												201102	
+1011023			Tông đế thiên phú 2 thoáng hiện trở về nháy mắt cấm công kích	Head					100			0	99	AttackLimit	Buff	None	0	1	1	Physical	SelfAttack													
+1011031	1011033		Tông đế thiên phú 3 bá thể ( miễn dịch đánh gãy )	Foot					2500		500	0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1011032		E_1011_Attack_Buff_3	Tông đế thiên phú 3 pháp thuật thương tổn đề cao	Foot					6000			0	5	MagicDamagePer	Buff	None	0	1	1	Physical	SelfAttack				2620	20	200							
+1011033			Tông đế thiên phú 3 bá thể phụ gia thể tích biến đại	Head					-1			0	16	Scale	Buff	None	0	1	1	Physical	SelfAttack				1000									
+1011041		E_1011_Attack_Buff_4	Tông đế thiên phú 4 thương tổn	Foot	TRUE				5000			1000	99	Damage	DeBuff	None	0	1	1	Magic	TargetMaxHp				122	2								
+1011042			Tông đế thiên phú 4 vô địch	Body					5000			0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1011043		E_Buff_TheBlood_1	Tông đế thiên phú 4 hồi huyết	Foot					4500			0	99	DelayAttackHeal	Buff	None	0	1	1	None	DamageValue				2000									
+1012101		E_Buff_Vertigo_1	Hợp thể Tôn Ngộ Không phải giết đơn thể choáng váng	Head					2000			0	15	Vertigo	DeBuff	None	1012101	1	1	Physical	SelfAttack													
+1012102			Hợp thể Tôn Ngộ Không phải giết tỏa định mục tiêu	Head					500			0	99	Lock	DeBuff	None	0	1	1	Physical	SelfAttack													
+1012103			Hợp thể Tôn Ngộ Không đơn thể không buff( tạm thời vô dụng )	Head					100			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack												201210	
+2012101	2012102;2012103;2012104;2012105;2012106;2012107	E_Buff_weak_1	Hợp thể Tôn Ngộ Không phải giết suy yếu	Foot					6000			0	5	Weak	DeBuff	None	0	1	1	Physical	SelfAttack													
+2012102			Hợp thể Tôn Ngộ Không phải giết suy yếu chi hàng mệnh trung	Head					-1			0	5	PercisionPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+2012103			Hợp thể Tôn Ngộ Không phải giết suy yếu chi hàng né tránh	Head					-1			0	5	DodgePer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+2012104			Hợp thể Tôn Ngộ Không phải giết suy yếu chi hạ thấp chắn	Head					-1			0	5	ParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+2012105			Hợp thể Tôn Ngộ Không phải giết suy yếu chi hàng phá đương	Head					-1			0	5	BreakParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+2012106			Hợp thể Tôn Ngộ Không phải giết suy yếu chi hàng bạo kích	Head					-1			0	5	CritPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+2012107			Hợp thể Tôn Ngộ Không phải giết suy yếu chi hàng kháng bạo	Head					-1			0	5	CritResistPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2500									
+1012111		E_Buff_Vertigo_1	Hợp thể Tôn Ngộ Không 7 cấp phải giết choáng váng	Head					3000			0	15	Vertigo	DeBuff	None	1012101	2	1	Physical	SelfAttack													
+1012121		E_Buff_Burn_1	Hợp thể Tôn Ngộ Không 11 cấp bỏng cháy	Body					8000			0	5	FireBurn	DeBuff	None	0	1	1	Physical	SelfAttack				700									
+1012131		E_Buff_Immune_1	Hợp thể Tôn Ngộ Không 16 cấp bá thể ( miễn dịch đánh gãy )	Foot					2000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1012011		E_Buff_Silence_1	Hợp thể Tôn Ngộ Không thiên phú 1 trầm mặc	Head					2000			0	15	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1012021		E_Buff_Burn_1	Hợp thể Tôn Ngộ Không thiên phú 2 bỏng cháy	Body					5000			0	5	FireBurn	DeBuff	None	0	1	1	Physical	SelfAttack				1000									
+1012031		E_1012_Attack_Buff_3_01	Hợp thể Tôn Ngộ Không thiên phú 3 thương tổn giảm miễn	Foot					10000			0	99	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				1720	20	100						201203	
+1012032		E_Buff_Purify_1	Hợp thể Tôn Ngộ Không tinh lọc sở hữu trạng thái xấu	Foot					1000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack													
+2012031		E_1012_Attack_Buff_3_02	Hợp thể Tôn Ngộ Không thiên phú 3 phát ra thương tổn đề cao	Foot					10000			0	99	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				1720	20	100						101203	
+1012041		E_1012_Attack_Buff_4	Hợp thể Tôn Ngộ Không thiên phú 4 bá thể ( miễn dịch đánh gãy )	Foot					3050	50		0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1012042			Hợp thể Tôn Ngộ Không thiên phú 4 vô địch	Body					3050	50		0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1012043		E_Buff_AtkSpeedUp_1	Hợp thể Tôn Ngộ Không thiên phú 4 công tốc tăng lên	Head					3050	50		0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				3025	25								
+1012044			Hợp thể Tôn Ngộ Không thiên phú 4 hút huyết	Head					3050	50		0	5	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				1410	10								
+1013101			Hắc hóa Nhị Lang Thần phải giết miễn dịch pháp thuật thương tổn	Body					1000			0	99	DamageImmunity	Buff	None	0	1	1	Magic	SelfAttack													
+2013101			Hắc hóa Nhị Lang Thần đoạn thứ nhất đánh bay	Head		30000	90000	80000	1000			0	15	KnockFly	DeBuff	None	0	1	1	Magic	SelfAttack													
+1013102		E_Buff_TheBlood_1	Hắc hóa Nhị Lang Thần phải giết hồi huyết	Foot					500			0	99	Heal	Buff	None	1013102	1	1	Physical	SelfMaxHp				140	4								
+1013111		E_Buff_TheBlood_1	Hắc hóa Nhị Lang Thần 7 cấp hồi huyết	Foot					500			0	99	Heal	Buff	None	1013102	2	1	Physical	SelfMaxHp				80									
+1013121		E_Buff_DefendDown_1	Hắc hóa Nhị Lang Thần 11 cấp hàng mục tiêu vật phòng	Foot					1500			0	5	DefendPer	DeBuff	None	0	1	1	Physical	SelfAttack				-2000									
+1013131		E_Buff_Immune_1	Hắc hóa Nhị Lang Thần 16 cấp bá thể	Foot					4500			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1013011			Hắc hóa Nhị Lang Thần thiên phú 1 trảo lấy mục tiêu đến trước người	Head		200000	0		500			0	99	Pull	DeBuff	None	0	1	1	Physical	SelfAttack													
+1013012		E_Buff_Detention_1	Hắc hóa Nhị Lang Thần thiên phú 1 giam cầm mục tiêu	Foot					2000			0	10	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1013021	1013023;1013024;1013025	E_Buff_Charm_1	Hắc hóa Nhị Lang Thần 7 cấp phải giết mị hoặc địch quân	Head					4000			0	15	Charm	DeBuff	None	1024101	2	1	Physical	SelfAttack													
+1013023			Hắc hóa Nhị Lang Thần 7 cấp phải giết mị hoặc chi hàng lực công kích	Head					-1			0	15	AttackPer	DeBuff	None	1024103	2	1	Physical	SelfAttack				-2500									
+1013024			Hắc hóa Nhị Lang Thần 7 cấp phải giết mị hoặc chi hàng vật phòng	Head					-1			0	15	PhysicalDefensePer	DeBuff	None	1024104	2	1	Physical	SelfAttack				-2500									
+1013025			Hắc hóa Nhị Lang Thần 7 cấp phải giết mị hoặc chi hàng pháp phòng	Head					-1			0	15	MagicDefensePer	DeBuff	None	1024105	2	1	Physical	SelfAttack				-2500									
+1013022			Hắc hóa Nhị Lang Thần thiên phú 2 phạm vi đặc hiệu	Foot					1000			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack													
+1013031	1013032	E_1013_Attack_Buff_3	Hắc hóa Nhị Lang Thần thiên phú 3 hộ thuẫn	Body					5000			0	5	Shield	Buff	None	0	1	1	Real	SelfMaxHp	240	20	100	475	5	30						201303	
+1013032		E_Buff_Immune_1	Hắc hóa Nhị Lang Thần thiên phú 3 miễn dịch đánh gãy	Foot					-1			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+2013031		E_Buff_Blindness_1	Hắc hóa Nhị Lang Thần thiên phú 3 trí manh	Head					2000			0	15	Blinding	DeBuff	None	0	1	1	Physical	SelfAttack													
+1013041			Hắc hóa Nhị Lang Thần thiên phú 4 hồi phục tự thân toàn bộ huyết lượng	Head					500			0	99	Heal	Buff	None	0	1	1	Real	SelfMaxHp				10000								201304	FALSE
+2013041		E_1013_Attack_Buff_4	Hắc hóa Nhị Lang Thần thiên phú 4 tự thân bị thương thương tổn	Body					-1			1000	99	Damage	DeBuff	None	0	1	1	Real	SelfMaxHp				1190	-10								
+1014101	102		Tiểu bạch long đóng băng mục tiêu	Foot					2000			0	15	Frozen	DeBuff	None	1014101	1	1	Physical	SelfAttack												201410	TRUE
+2014101		E_Buff_Silence_1	Tiểu bạch long trầm mặc mục tiêu	Head					4000			0	15	Silence	DeBuff	None	2014101	1	1	Physical	SelfAttack													
+1014111	102		Tiểu bạch long 7 cấp đóng băng mục tiêu	Foot					3000			0	15	Frozen	DeBuff	None	1014101	2	1	Physical	SelfAttack												201410	TRUE
+1014121	102		Tiểu bạch long 11 cấp đóng băng mục tiêu	Foot					3000			0	15	Frozen	DeBuff	None	1014101	3	1	Physical	SelfAttack												201412	TRUE
+2014121		E_Buff_Silence_1	Tiểu bạch long 11 cấp trầm mặc mục tiêu	Head					6000			0	15	Silence	DeBuff	None	2014101	2	1	Physical	SelfAttack													
+1014131		E_Buff_Immune_1	Tiểu bạch long 16 cấp bá thể ( miễn dịch đánh gãy )	Foot					3000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1014011		E_Buff_Noanger_1	Tiểu bạch long thiên phú 1 cấm giận	Head					2000			0	5	NoReplyEnergy	DeBuff	None	0	1	1	Physical	SelfAttack													
+1014021		E_Buff_AttackUp_1	Tiểu bạch long thiên phú 2 thương tổn phát ra gia tăng	Head					5000			0	5	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				2000		500							
+1014022			Tiểu bạch long thiên phú 2 thoáng hiện sau thương tổn	Head					100			0	99	Heal	Buff	None	0	1	1	Physical	SelfAttack												201402	
+1014031	1014032	E_Buff_Physicalguard_1	Tiểu bạch long thiên phú 3 hộ thuẫn	Foot					5000			0	5	Shield	Buff	None	0	1	1	Real	SelfAttack	250	35	200	10500	100	500							
+1014032		E_Buff_AttackUp_1	Tiểu bạch long thiên phú 3 lực công kích tăng lên	Head					-1			0	5	AttackPer	Buff	None	0	1	1	Physical	SelfAttack				2000									
+1014041		E_1014_Attack_Buff_4	Tiểu bạch long thiên phú 4 khôi phục huyết lượng	Foot					1000			0	99	Heal	Buff	None	0	1	1	Real	SelfMaxHp				1820	20								
+1014042			Tiểu bạch long thiên phú 4 đóng băng mục tiêu	Body					1500			0	15	Frozen	DeBuff	None	0	1	1	Physical	SelfAttack													
+1015101		E_Buff_Immune_1	Hao Thiên Khuyển phải giết miễn dịch đánh gãy	Foot					6000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1015102		E_Buff_CritUp_1	Hao Thiên Khuyển phải giết bạo kích suất tăng lên	Head					6000			0	5	CritPer	Buff	None	0	1	1	Physical	SelfAttack				4500	100								
+1015103		E_Buff_AtkSpeedUp_1	Hao Thiên Khuyển phải giết công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				4250	50								
+1015104		E_Buff_DamageDown_1	Hao Thiên Khuyển phải giết thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				2250	50								
+1015301		E_Buff_Immune_1	Hao Thiên Khuyển phải giết miễn dịch đánh gãy	Foot					6000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1015302		E_Buff_CritUp_1	Hao Thiên Khuyển phải giết bạo kích suất tăng lên	Head					6000			0	5	CritPer	Buff	None	0	1	1	Physical	SelfAttack				6750	150								
+1015303		E_Buff_AtkSpeedUp_1	Hao Thiên Khuyển phải giết công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				6375	75								
+1015304		E_Buff_DamageDown_1	Hao Thiên Khuyển phải giết thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				3375	75								
+1015111		E_Buff_CritUp_1	Hao Thiên Khuyển 7 cấp phải giết bạo thương tăng lên	Head					6000			0	5	CritDamagePer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+1015401		E_Buff_Immune_1	Hao Thiên Khuyển phải giết miễn dịch đánh gãy	Foot					6000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1015402		E_Buff_CritUp_1	Hao Thiên Khuyển phải giết bạo kích suất tăng lên	Head					6000			0	5	CritPer	Buff	None	0	1	1	Physical	SelfAttack				9000	200								
+1015403		E_Buff_AtkSpeedUp_1	Hao Thiên Khuyển phải giết công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				8500	100								
+1015404		E_Buff_DamageDown_1	Hao Thiên Khuyển phải giết thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				4500	100								
+1015405		E_Buff_CritUp_1	Hao Thiên Khuyển 7 cấp phải giết bạo thương tăng lên	Head					6000			0	5	CritDamagePer	Buff	None	0	1	1	Physical	SelfAttack				1500									
+1015121	1015122		Hao Thiên Khuyển 11 cấp phải giết hộ giáp xuyên thấu	Head					6000			0	5	PhysicalSunder	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1015122			Hao Thiên Khuyển 11 cấp phải giết hộ giáp xuyên thấu	Head					-1			0	5	MagicSunder	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1015131			Hao Thiên Khuyển 16 cấp phải giết hút huyết	Head					6000			0	5	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				3200									
+1015011	1015012	E_Buff_Bleed_1	Hao Thiên Khuyển thiên phú 1 đổ máu	Body					4000			0	5	Bleeding	DeBuff	None	0	1	1	Physical	TargetCurHp													
+1015012			Hao Thiên Khuyển thiên phú 1 đổ máu	Foot					-1			1000	5	Damage	DeBuff	None	0	1	1	Physical	TargetCurHp				200									
+1015021			Hao Thiên Khuyển thiên phú 2 đánh bay	Head		30000	90000	80000	1000			0	15	KnockFly	DeBuff	None	0	1	1	Physical	SelfAttack													
+1015022		E_1015_Attack_Buff_2	Hao Thiên Khuyển thiên phú 2 miễn dịch đánh gãy	Foot					1000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1015023			Hao Thiên Khuyển thiên phú 2 không buff	Head					500			0	99	Speed	Buff	None	0	1	1	Physical	SelfAttack				0								201502	
+2015021		E_Buff_SpeedUp_1	Hao Thiên Khuyển thiên phú 2 di tốc đề cao	Head					3000			0	5	Speed	Buff	None	0	1	1	Physical	SelfAttack				3420	20	200							
+1015031		E_Buff_AttackUp_1	Hao Thiên Khuyển thiên phú 3 tăng lên phát ra thương tổn	Head					-1			0	5	DamagePer	Buff	None	0	1	9	Physical	SelfAttack				102	2	20							
+2015031			Hao Thiên Khuyển thiên phú 3 hút huyết hiệu quả	Head					-1			0	5	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				1520	20	100							
+1015041		E_1015_Attack_Buff_4	Hao Thiên Khuyển thiên phú 4 vô địch	Body					3050	50		0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1015042			Hao Thiên Khuyển thiên phú 4 thanh trừ thiên phú 1CD	Head					1000			0	99	ReduceOneCD	Buff	None	1015042	1	1	Physical	SelfAttack	101501			70000								201504	
+1015043			Hao Thiên Khuyển thiên phú 4 thanh trừ thiên phú 2CD	Head					1000			0	99	ReduceOneCD	Buff	None	1015043	1	1	Physical	SelfAttack	101502			100000									
+1016101			Lý Thiên Vương phải giết đánh lui mục tiêu	Head		30000	120000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1016102		E_1016_Skill_Buff_1	Lý Thiên Vương phải giết tự thân tích lũy thương tổn hồi huyết	Foot					1500			0	99	DelayAttackHeal	Buff	None	1016102	1	1	Physical	DamageValue				2500									
+2016101		E_Buff_Invincible_1	Lý Thiên Vương phải giết súc lực miễn dịch vật lý thương tổn	Body					4000			0	99	DamageImmunity	Buff	None	0	1	1	Physical	SelfAttack													
+1016111			Lý Thiên Vương 7 cấp phải giết tự thân tích lũy thương tổn hồi huyết	Head					1500			0	99	DelayAttackHeal	Buff	None	1016102	2	1	Physical	DamageValue				2900									
+1016121			Lý Thiên Vương 11 cấp phải giết trúng độc	Head					5000			1000	5	Damage	DeBuff	None	0	1	1	Physical	TargetMaxHp				100									
+1016131		E_Buff_Immune_1	Lý Thiên Vương 16 cấp miễn dịch đánh gãy	Foot					3000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1016011	1016012		Lý Thiên Vương thiên phú 1 hộ thuẫn	Head					3000			0	5	Shield	Buff	None	0	1	1	Physical	SelfMaxHp	100	25	125	350	0	50							
+1016012			Lý Thiên Vương thiên phú 1 bắn ngược thương tổn	Head					-1			0	99	ReturnDamage	Buff	None	0	1	1	Physical	SelfAttack				2525	25	50							
+1016013		E_Buff_Ridicule_1	Lý Thiên Vương thiên phú 1 trào phúng	Head					3000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1016021		E_1016_Attack_Buff_2	Lý Thiên Vương thiên phú 2 hy sinh hộ thuẫn	Foot					5000			0	99	PayShield	Buff	None	0	1	1	Physical	SelfAttack	256	36	180	15100	100	500	2500						
+1016031		E_Buff_Invincible_1	Lý Thiên Vương thiên phú 3 vô địch	Body					1500		500	0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1016041			Lý Thiên Vương thiên phú 4 linh hồn liên tiếp	Head					5000			0	99	SoulLink	Buff	None	0	1	1	Physical	SelfAttack													
+1016042		E_Buff_Anger_1	Lý Thiên Vương thiên phú 4 đạt được tức giận	Body					5000			1000	5	Energy	Buff	None	0	1	1	Physical	SelfAttack				205	5								
+1701011		E_Buff_Ridicule_1	Võ cát phân thân trào phúng mục tiêu	Head					5000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1701012			Võ cát phân thân thương tổn giảm miễn	Head					-1			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1017101		E_Buff_Vertigo_1	Võ cát phải giết đánh bại mục tiêu	Head					1000			0	15	Vertigo	DeBuff	None	1017101	1	1	Physical	SelfAttack													
+1017102			Võ cát phải giết thể tích biến đại	Head					5500			0	15	Scale	Buff	None	2017101	2	1	Physical	SelfAttack				1500									
+1017103			Võ cát phải giết miễn dịch đánh gãy	Head					1000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1017104		E_Buff_DamageDown_1	Võ cát phải giết thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	1017104	1	1	None	SelfAttack				6000									
+1017105			Võ cát phải giết thể tích biến đại	Head					6500			0	15	Scale	Buff	None	0	1	1	Physical	SelfAttack				1500									
+2017101			Võ cát phải giết phóng thích trước thể tích biến đại	Head					2000			0	15	Scale	Buff	None	2017101	1	1	Physical	SelfAttack				5000									
+1017111		E_Buff_DamageDown_1	Võ cát phải giết 7 cấp thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	1017104	2	1	None	SelfAttack				7200									
+1017121		E_Buff_Vertigo_1	Võ cát phải giết 11 cấp đánh bại mục tiêu	Head					2000			0	15	Vertigo	DeBuff	None	1017101	2	1	Physical	SelfAttack													
+1017131			Võ cát phải giết tăng lên tự thân lớn nhất sinh mệnh giá trị	Head					5000			0	5	MaxHpPer	Buff	None	0	1	1	Physical	SelfAttack				700									
+1017011		E_Buff_Moribund_1	Võ cát thiên phú 1 trọng thương	Head					6000			0	5	Mark	DeBuff	Injured	0	1	1		SelfAttack													
+1017021		E_1017_Attack_Buff_2	Võ cát thiên phú 2 hộ thuẫn	Body					3000			0	5	Shield	Buff	None	0	1	1	Real	SelfAttack	90	15	0	6050	50	250							
+1017022			Võ cát thiên phú 2 đánh lui	Head		50000	500000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1017023			Võ cát thiên phú 2 không buff	Head					500			0	99	Speed	Buff	None	0	1	1	Physical	SelfAttack				0								201702	
+2017021			Võ cát thiên phú 2 di tốc đề cao	Head					2000			0	5	Speed	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1017031		E_Buff_Invincible_1	Võ cát thiên phú 3 lau đi thương tổn	Body					500			0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+2017031			Võ cát thiên phú 3 gia tăng tự thân sinh mệnh	Head					-1			0	99	MaxHp	Buff	None	0	1	1	Physical	SelfAttack				3840	240								
+1017041			Võ cát thiên phú 4 hồi huyết	Foot					200			0	99	DelayAttackHeal	Buff	None	0	1	1	Physical	DamageValue				5000									
+1017042			Võ cát thiên phú 4 đã chịu pháp thuật thương tổn rơi chậm lại	Foot					5000			0	5	MagicDefensePer	Buff	None	0	1	1	Physical	SelfAttack				2050	50								
+1017043		E_1017_Attack_Buff_4	Võ cát thiên phú 3 lau đi thương tổn	Body					500			0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1018101		E_Buff_AtkSpeedUp_1	Tuyết hàm phải giết lưu tăng lên công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	1018101	1	1	Physical	SelfAttack				3000									
+1018102		E_Buff_CritUp_1	Tuyết hàm phải giết tăng lên bạo kích	Head					6000			0	5	CritPer	Buff	None	1018102	1	1	Physical	SelfAttack				3000									
+1018103			Tuyết hàm phải giết tỏa định mục tiêu	Head					-1			0	99	Lock	DeBuff	None	0	1	1	Physical	SelfAttack													
+1018301		E_Buff_AtkSpeedUp_1	Tuyết hàm phải giết lưu tăng lên công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	1018101	1	1	Physical	SelfAttack				4500									
+1018302		E_Buff_CritUp_1	Tuyết hàm phải giết tăng lên bạo kích	Head					6000			0	5	CritPer	Buff	None	1018102	1	1	Physical	SelfAttack				4500									
+1018401		E_Buff_AtkSpeedUp_1	Tuyết hàm phải giết lưu tăng lên công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	1018101	1	1	Physical	SelfAttack				6000									
+1018402		E_Buff_CritUp_1	Tuyết hàm phải giết tăng lên bạo kích	Head					6000			0	5	CritPer	Buff	None	1018102	1	1	Physical	SelfAttack				6000									
+1018111		E_Buff_Fear_1	Tuyết hàm 7 cấp phải giết sợ hãi mục tiêu	Head					1000			0	15	Fear	DeBuff	None	0	1	1	Physical	SelfAttack													
+1018121		E_Buff_AtkSpeedUp_1	Tuyết hàm 11 cấp phải giết lưu tăng lên công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	1018101	2	1	Physical	SelfAttack				4200									
+1018122		E_Buff_CritUp_1	Tuyết hàm 11 cấp phải giết tăng lên bạo kích	Head					6000			0	5	CritPer	Buff	None	1018102	2	1	Physical	SelfAttack				4200									
+1018131		E_Buff_Immune_1	Tuyết hàm 16 cấp phải giết miễn dịch đánh gãy	Foot					4000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1018011		E_Buff_Silence_1	Tuyết hàm thiên phú 1 trầm mặc	Head					2000			0	15	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1018021			Tuyết hàm thiên phú 2 hút huyết hiệu quả	Head					5000			0	5	HpLeech	Buff	None	0	1	1	Physical	SelfAttack				2710	10	50							
+1018031	1018033	E_Buff_Bleed_1	Tuyết hàm thiên phú 3 đổ máu	Body					2000			0	5	Bleeding	DeBuff	None	0	1	1	Physical	TargetCurHp													
+1018033			Tuyết hàm thiên phú 3 đổ máu	Foot					-1			1000	5	Damage	DeBuff	None	0	1	1	Physical	TargetCurHp	36	6	30	131	1	10							
+1018032		E_Buff_Detention_1	Tuyết hàm thiên phú 3 giam cầm	Foot					2000			0	10	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1018041		E_Buff_Hemophilia_1	Tuyết hàm thiên phú 4 cấm hồi huyết	Head					6100	100		0	5	NoReplyHp	DeBuff	None	0	1	1	Physical	SelfAttack													
+2019201			Con rối sư triệu hoán vật chia sẻ thương tổn	Head					5000			0	99	Dedication	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1703001			Phải giết triệu hoán tiểu bạch tuộc tự mình hại mình	Head					100			0	99	Damage	Buff	None	0	1	1	Physical	SelfMaxHp												270300	
+1704001			Thiên phú triệu hoán tiểu bạch tuộc tự mình hại mình	Head					100			0	99	Damage	Buff	None	0	1	1	Physical	SelfMaxHp												270300	
+1703002		E_Buff_DamageUp_1	Phải giết triệu hoán tiểu bạch tuộc thương tổn gia tăng	Head					3000			0	5	DefensePer	DeBuff	None	0	1	4	Physical	SelfAttack				-2000									
+1704002		E_Buff_Silence_1	Thiên phú triệu hoán tiểu bạch tuộc trầm mặc mục tiêu	Head					2000			0	15	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1703011		E_Buff_Ridicule_1	Triệu hoán vật trào phúng mục tiêu	Head					3000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1019111		E_Buff_Curse_1	Con rối sư 7 cấp nguyền rủa	Head					4000			0	15	Curse	DeBuff	None	0	1	1	Physical	SelfAttack				2500									
+1019131		E_Buff_Immune_1	Con rối sư 16 cấp miễn dịch đánh gãy	Foot					3000			0	16	Immune	Buff	None	0	1	1	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+2019011		E_Buff_Silence_1	Con rối sư thiên phú 1 trầm mặc	Head					2400			0	15	Silence	DeBuff	None	0	1	1	Physical	SelfAttack													
+1019021		E_Buff_DefendDown_1	Con rối sư thiên phú 2 pháp phòng rơi chậm lại	Head					5000			0	5	MagicDefendPer	DeBuff	None	0	1	1	Magic	SelfAttack				-3025	-25								
+2019021			Con rối sư triệu hoán vật chia sẻ thương tổn	Head					5000			0	99	Dedication	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1704011		E_Buff_Ridicule_1	Triệu hoán vật trào phúng mục tiêu	Head					3000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1019031		E_Buff_Poisoning_1	Con rối sư thiên phú 3 trúng độc	Foot	TRUE				2000			1000	5	Damage	DeBuff	Poisoning	0	1	1	Physical	TargetMaxHp				150		50							
+1019032			Con rối sư thiên phú 3 không buff	Head					100			0	99	Shield	Buff	None	0	1	1	Real	SelfAttack												201903	
+1019033		E_Buff_SpeedDown_1	Con rối sư thiên phú 3 hàng di tốc	Head					2000			0	5	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-5000									
+1019041		E_Buff_Vertigo_1	Con rối sư thiên phú 4 choáng váng mục tiêu	Head					1500			0	15	Vertigo	DeBuff	None	0	1	1	Magic	SelfAttack													
+1019042		E_Buff_Invincible_1	Con rối sư thiên phú 4 lau đi thương tổn	Body					500			0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1020101		E_1020_Skill_Buff_1	Giao gia phải giết hồi huyết	Foot					4000			1000	5	Heal	Buff	None	0	1	1	Physical	SelfAttack	60	60		3400	100								
+1020301		E_1020_Skill_Buff_1	Giao gia phải giết hồi huyết	Foot					4000			1000	5	Heal	Buff	None	0	1	1	Physical	SelfAttack	90	90		5100	150								
+1020401		E_1020_Skill_Buff_1	Giao gia phải giết hồi huyết	Foot					4000			1000	5	Heal	Buff	None	0	1	1	Physical	SelfAttack	120	120		6800	200								
+1020121		E_Buff_Invincible_1	Giao gia phải giết 11 cấp vô địch	Body					1000			0	99	DamageImmunity	Buff	None	0	1	1	None	SelfAttack													
+1020131		E_Buff_Anger_1	Giao gia phải giết 16 cấp thêm tức giận	Body					2000			0	5	Energy	Buff	None	0	1	1	Physical	SelfAttack	8												
+1020021		E_1020_Attack_Buff_2	Giao gia thiên phú 2 hộ thuẫn	Body					-1			0	5	Shield	Buff	None	0	1	1	Real	SelfAttack	196	32	160	10060	60	400							
+1020022		E_Buff_Purify_1	Giao gia thiên phú 2 tinh lọc 1 cái trạng thái xấu	Foot					1000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack	1												
+1020031	1020032;1020033;1020034;1020035;1020036;1020037	E_Buff_weak_1	Giao gia thiên phú 3 suy yếu mục tiêu	Foot					6000			0	5	Weak	DeBuff	None	0	1	1	Physical	SelfAttack													
+1020032			Giao gia thiên phú 3 suy yếu chi hàng mệnh trung	Head					-1			0	5	PercisionPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1910	-10								
+1020033			Giao gia thiên phú 3 suy yếu chi hàng né tránh	Head					-1			0	5	DodgePer	DeBuff	None	0	1	1	Physical	SelfAttack				-1910	-10								
+1020034			Giao gia thiên phú 3 suy yếu chi hạ thấp chắn	Head					-1			0	5	ParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1910	-10								
+1020035			Giao gia thiên phú 3 suy yếu chi hàng phá đương	Head					-1			0	5	BreakParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1910	-10								
+1020036			Giao gia thiên phú 3 suy yếu chi hàng bạo kích	Head					-1			0	5	CritPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1910	-10								
+1020037			Giao gia thiên phú 3 suy yếu chi hàng kháng bạo	Head					-1			0	5	CritResistPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1910	-10								
+1020041		E_Buff_SpeedDown_1	Giao gia thiên phú 4 hàng di tốc	Head					12100	100		0	5	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-3050	-50								
+1020042		E_Buff_AtkSpeedDown_1	Giao gia thiên phú 4 hàng công tốc	Head					12100	100		0	5	AtkSpeedDown	DeBuff	None	0	1	1	Physical	SelfAttack				-2110	-10								
+1020043		E_1020_Attack_Range_Hit_4	Giao gia thiên phú 4 tự thân thêm đặc hiệu	Foot					10000			0	99	Shield	Buff	None	0	1	1	Real	SelfAttack													
+2021101		E_Buff_CritUp_1	Tìm cánh phải giết bạo kích suất tăng lên	Head					1200			0	99	CritPer	Buff	None	0	1	1	Physical	SelfAttack				3000									
+1021111		E_Buff_Moribund_1	Tìm cánh 7 cấp trọng thương	Head					6000			0	5	Mark	DeBuff	Injured	0	1	1	Physical	SelfAttack													
+1021121			Tìm cánh 11 cấp nhất định mệnh trung	Head					1000			0	99	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				10000									
+1021011		E_1021_Attack_Buff_1	Tìm cánh thiên phú 1 thương tổn gia tăng	Head					5000			0	5	DefensePer	DeBuff	None	0	1	1	Physical	SelfAttack				-1850		-50							
+1021021		E_Buff_Anger_1	Tìm cánh thiên phú 2 gia tăng tức giận	Body					500			0	5	Energy	Buff	None	0	1	1	Physical	SelfAttack				400		100							
+1021022		E_1021_Attack_Buff_2	Tìm cánh thiên phú 2 hồi huyết đặc hiệu	Body					1500			0	99	Shield	Buff	None	0	1	1	Physical	SelfAttack													
+1021031	1021032	E_Buff_AttackUp_1	Tìm cánh thiên phú 3 tăng lên lực công kích	Head					2000			0	5	AttackPer	Buff	None	0	1	4	Physical	SelfAttack				1025	25	50							
+1021032			Tìm cánh thiên phú 3 tăng lên lực công kích	Head					-1			0	5	Attack	Buff	None	0	1	4	Physical	SelfAttack				120	20								
+1021041		E_Buff_Anger_1	Tìm cánh thiên phú 4 gia tăng tức giận	Body					1000			0	5	Energy	Buff	None	0	1	1	Physical	SelfAttack				1110	10								
+1021042		E_Buff_AtkSpeedUp_1	Tìm cánh thiên phú 4 tăng lên công tốc	Head					8000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				3050	50								
+1021043		E_Buff_SpeedUp_1	Tìm cánh thiên phú 4 tăng lên di tốc	Head					8000			0	5	Speed	Buff	None	0	1	1	Physical	SelfAttack				2025	25								
+1021044		E_Buff_DodgeUp_1	Tìm cánh thiên phú 4 tăng lên né tránh	Head					8000			0	5	DodgePer	Buff	None	0	1	1	Physical	SelfAttack				1525	25								
+1022101			Phật la đà phải giết đánh lui	Head		20000	400000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1022111			Phật la đà 7 cấp phải giết đánh lui	Head		40000	400000		2000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1022121	1022122	E_Buff_Bleed_1	Phật la đà 11 cấp phải giết đổ máu	Body					3000			0	5	Bleeding	DeBuff	None	0	1	1	Physical	TargetCurHp													
+1022122			Phật la đà 11 cấp phải giết đổ máu	Foot					-1			1000	5	Damage	DeBuff	None	0	1	1	Physical	TargetCurHp				200									
+1022131		E_Buff_CritUp_1	Phật la đà 16 cấp tăng lên bạo kích suất	Head					1000			0	5	CritPer	Buff	None	0	1	1	Physical	SelfAttack				3200									
+1022011			Phật la đà thiên phú 1 đánh bay	Head		30000	90000	80000	1000			0	15	KnockFly	DeBuff	None	0	1	1	Physical	SelfAttack													
+1022021			Phật la đà thiên phú 2 đánh lui	Head		30000	120000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1022023		E_Buff_AttackUp_1	Phật la đà thiên phú 2 tăng lên lực công kích	Head					3000			0	5	AttackPer	Buff	None	0	1	1	Physical	SelfAttack				3000									
+1022031		E_Buff_Purify_1	Phật la đà thiên phú 3 tinh lọc tự thân 1 cái trạng thái xấu	Foot					1000			0	16	Purify	DeBuff	None	0	1	1	Physical	SelfAttack	1												
+2022031		E_Buff_AtkSpeedUp_1	Phật la đà thiên phú 3 tăng lên công tốc	Head					-1			0	99	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1420	20	100							
+2022051			Phật la đà thiên phú 4 cùng chung thương tổn	Head					14000			0	99	Dedication	Buff	None	0	1	1	Physical	SelfAttack				1500									
+1023101	1023102	E_Buff_AtkSpeedDown_1	Phàm đóa tùy cơ chi hàng công tốc	Head					5000			0	5	AtkSpeedDown	DeBuff	None	1023101	1	1	Physical	SelfAttack				-3000									
+1023102			Phàm đóa tùy cơ chi hàng di tốc	Head					-1			0	5	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-3000									
+1023103		E_Buff_AttackDown_1	Phàm đóa tùy cơ chi hàng lực công kích	Head					5000			0	5	AttackPer	DeBuff	None	1023101	1	1	Physical	SelfAttack				-3000									
+1023104		E_Buff_Detention_1	Phàm đóa tùy cơ chi hàng giam cầm	Foot					4000			0	15	Imprisonment	DeBuff	None	1023101	1	1	Physical	SelfAttack													
+1023105	101		Phàm đóa tùy cơ chi hàng thạch hóa	Head					3000			0	15	Petrified	DeBuff	None	1023101	1	1	Physical	SelfAttack													
+1023106		E_Buff_Fear_1	Phàm đóa tùy cơ chi hàng sợ hãi	Head					2000			0	15	Fear	DeBuff	None	1023101	1	1	Physical	SelfAttack													
+1023111		E_Buff_AttackUp_1	Phàm đóa 7 cấp phải giết thương tổn tăng lên	Head					1000			0	5	DamagePer	Buff	None	0	1	1	Physical	SelfAttack				1600									
+1023121		E_Buff_Disperse_1	Phàm đóa 11 cấp xua tan 1 một cái tăng trạng thái	Foot					1000			0	16	Purify	Buff	None	0	1	1	Physical	SelfAttack	1												
+1023131	1023132	E_Buff_AtkSpeedDown_1	Phàm đóa 16 cấp tùy cơ chi hàng công tốc	Head					5000			0	5	AtkSpeedDown	DeBuff	None	1023101	2	1	Physical	SelfAttack				-6000									
+1023132			Phàm đóa 16 cấp tùy cơ chi hàng di tốc	Head					-1			0	5	Speed	DeBuff	None	0	1	1	Physical	SelfAttack				-6000									
+1023133		E_Buff_AttackDown_1	Phàm đóa 16 cấp tùy cơ chi hàng lực công kích	Head					5000			0	5	AttackPer	DeBuff	None	1023101	2	1	Physical	SelfAttack				-6000									
+1023134		E_Buff_Detention_1	Phàm đóa 16 cấp tùy cơ chi hàng giam cầm	Foot					8000			0	15	Imprisonment	DeBuff	None	1023101	2	1	Physical	SelfAttack													
+1023135	101		Phàm đóa 16 cấp tùy cơ chi hàng thạch hóa	Head					6000			0	15	Petrified	DeBuff	None	1023101	2	1	Physical	SelfAttack													
+1023136		E_Buff_Fear_1	Phàm đóa 16 cấp tùy cơ chi hàng sợ hãi	Head					4000			0	15	Fear	DeBuff	None	1023101	2	1	Physical	SelfAttack													
+1023011		E_Buff_Vertigo_1	Phàm đóa thiên phú 1 choáng váng mục tiêu	Head					1000			0	15	Vertigo	DeBuff	None	0	1	1	Physical	SelfAttack													
+1023031		E_Buff_AtkSpeedUp_1	Phàm đóa thiên phú 3 tăng lên công tốc	Head					6000			0	5	AtkSpeedUp	Buff	None	0	1	1	Physical	SelfAttack				1820	20	200							
+1023041		E_Buff_Detention_1	Phàm đóa thiên phú 4 giam cầm mục tiêu	Foot					3500			0	15	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1024101	1024102;1024103;1024104	E_Buff_Charm_1	Bồ nặc a phải giết mị hoặc địch quân	Head					5000			0	15	Charm	DeBuff	None	1024101	1	1	Physical	SelfAttack													
+1024102			Bồ nặc a phải giết mị hoặc chi hàng lực công kích	Head					-1			0	15	AttackPer	DeBuff	None	1024102	1	1	Physical	SelfAttack				-2020	-20								
+1024103			Bồ nặc a phải giết mị hoặc chi hàng vật phòng	Head					-1			0	15	PhysicalDefensePer	DeBuff	None	1024103	1	1	Physical	SelfAttack				-2020	-20								
+1024104			Bồ nặc a phải giết mị hoặc chi hàng pháp phòng	Head					-1			0	15	MagicDefensePer	DeBuff	None	1024104	1	1	Physical	SelfAttack				-2020	-20								
+1024111	1024112;1024113;1024114	E_Buff_Charm_1	Bồ nặc a 7 cấp phải giết mị hoặc địch quân	Head					7000			0	15	Charm	DeBuff	None	1024101	2	1	Physical	SelfAttack													
+1024112			Bồ nặc a 7 cấp phải giết mị hoặc chi hàng lực công kích	Head					-1			0	15	AttackPer	DeBuff	None	1024102	2	1	Physical	SelfAttack				-2020	-20								
+1024113			Bồ nặc a 7 cấp phải giết mị hoặc chi hàng vật phòng	Head					-1			0	15	PhysicalDefensePer	DeBuff	None	1024103	2	1	Physical	SelfAttack				-2020	-20								
+1024114			Bồ nặc a 7 cấp phải giết mị hoặc chi hàng pháp phòng	Head					-1			0	15	MagicDefensePer	DeBuff	None	1024104	2	1	Physical	SelfAttack				-2020	-20								
+1024121	1024122;1024123;1024124;1024125;1024126;1024127	E_Buff_weak_1	Bồ nặc a 11 cấp suy yếu	Foot					7000			0	5	Weak	DeBuff	None	0	1	1	Physical	SelfAttack													
+1024122			Bồ nặc a 11 cấp suy yếu chi hàng mệnh trung	Head					-1			0	5	PercisionPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1500									
+1024123			Bồ nặc a 11 cấp suy yếu chi hàng né tránh	Head					-1			0	5	DodgePer	DeBuff	None	0	1	1	Physical	SelfAttack				-1500									
+1024124			Bồ nặc a 11 cấp suy yếu chi hạ thấp chắn	Head					-1			0	5	ParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1500									
+1024125			Bồ nặc a 11 cấp suy yếu chi hàng phá đương	Head					-1			0	5	BreakParryPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1500									
+1024126			Bồ nặc a 11 cấp suy yếu chi hàng bạo kích	Head					-1			0	5	CritPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1500									
+1024127			Bồ nặc a 11 cấp suy yếu chi hàng kháng bạo	Head					-1			0	5	CritResistPer	DeBuff	None	0	1	1	Physical	SelfAttack				-1500									
+1024131		E_Buff_Hemophilia_1	Bồ nặc a 16 cấp cấm hồi huyết	Head					7000			0	5	NoReplyHp	DeBuff	None	0	1	1	Physical	SelfAttack													
+1024011		E_Buff_Poisoning_1	Bồ nặc A Thiên phú 1 trúng độc	Foot	TRUE				3000			1000	5	Damage	DeBuff	Poisoning	0	1	1	Physical	TargetMaxHp				90		10							
+1024021		E_1024_Attack_Buff_2	Bồ nặc A Thiên phú 2 hoãn hồi huyết	Body					3000			1000	5	Heal	Buff	None	0	1	1	Physical	SelfAttack	30	5	25	2000		200							
+1024031		E_1024_Attack_Buff_3	Bồ nặc A Thiên phú 3 gia tăng tức giận	Foot					1000			0	5	Energy	Buff	None	0	1	1	Physical	SelfAttack				1410	10	100							
+1024032		E_Buff_PercisionUp_1	Bồ nặc A Thiên phú 3 gia tăng mệnh trung	Head					6000			0	5	PercisionPer	Buff	None	0	1	1	Physical	SelfAttack				3000		600							
+1024041		E_Buff_DamageDown_1	Bồ nặc A Thiên phú 4 thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				2020	20								
+1024042		E_Buff_TheBlood_1	Bồ nặc A Thiên phú 4 hồi huyết	Foot					6000			1000	5	Heal	Buff	None	0	1	1	Physical	SelfAttack	150	25		5050	50								
+1025101		E_Buff_Fear_1	Tà mắt Thiên Tôn phải giết sợ hãi 1 giây	Head					1000			0	15	Fear	DeBuff	None	1025101	1	1	Physical	SelfAttack													
+1025102		E_Buff_Fear_1	Tà mắt Thiên Tôn phải giết sợ hãi 2 giây	Head					2000			0	15	Fear	DeBuff	None	1025101	2	1	Physical	SelfAttack													
+1025103		E_Buff_Fear_1	Tà mắt Thiên Tôn phải giết sợ hãi 3 giây	Head					3000			0	15	Fear	DeBuff	None	1025101	3	1	Physical	SelfAttack													
+1025104		E_Buff_Anger_1	Tà mắt Thiên Tôn phải giết tức giận gia tăng 8 giờ	Body					1000			0	5	Energy	Buff	None	1025105	1	1	Physical	SelfAttack	8												
+1025105		E_Buff_Anger_1	Tà mắt Thiên Tôn phải giết tức giận gia tăng 9 giờ	Body					1000			0	5	Energy	Buff	None	1025105	2	1	Physical	SelfAttack	1												
+1025106		E_Buff_Anger_1	Tà mắt Thiên Tôn phải giết tức giận gia tăng 10 giờ	Body					1000			0	5	Energy	Buff	None	1025105	3	1	Physical	SelfAttack	2												
+1025107		E_Buff_Anger_1	Tà mắt Thiên Tôn phải giết tức giận gia tăng 11 giờ	Body					1000			0	5	Energy	Buff	None	1025105	4	1	Physical	SelfAttack	3												
+1025108		E_Buff_Anger_1	Tà mắt Thiên Tôn phải giết tức giận gia tăng 12 điểm	Body					1000			0	5	Energy	Buff	None	1025105	5	1	Physical	SelfAttack	4												
+1025111		E_Buff_Fear_1	Tà mắt Thiên Tôn 7 cấp phải giết sợ hãi 2 giây	Head					2000			0	15	Fear	DeBuff	None	1025101	4	1	Physical	SelfAttack													
+1025112		E_Buff_Fear_1	Tà mắt Thiên Tôn 7 cấp phải giết sợ hãi 3 giây	Head					3000			0	15	Fear	DeBuff	None	1025101	5	1	Physical	SelfAttack													
+1025113		E_Buff_Fear_1	Tà mắt Thiên Tôn 7 cấp phải giết sợ hãi 4 giây	Head					4000			0	15	Fear	DeBuff	None	1025101	6	1	Physical	SelfAttack													
+1025121		E_Buff_Curse_1	Tà mắt Thiên Tôn 11 cấp phải giết nguyền rủa	Head					6000			0	15	Curse	DeBuff	None	0	1	1	Physical	SelfAttack				2500									
+1025131		E_Buff_DamageDown_1	Tà mắt Thiên Tôn 16 cấp phải giết thương tổn giảm miễn	Head					6000			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				3200									
+1025021		E_Buff_Blindness_1	Tà mắt Thiên Tôn thiên phú 2 trí manh	Head					2500			0	15	Blinding	DeBuff	None	0	1	1	Physical	SelfAttack													
+1025022			Tà mắt Thiên Tôn thiên phú 2 không buff	Head					500			0	99	Speed	Buff	None	0	1	1	Physical	SelfAttack				0								202502	
+2025021			Tà mắt Thiên Tôn thiên phú 2 di tốc đề cao	Head					2000			0	5	Speed	Buff	None	0	1	1	Physical	SelfAttack				5000									
+1025031		E_1025_Attack_Buff_3	Tà mắt Thiên Tôn thiên phú 3 thu nhỏ	Body					5000			0	15	Scale	DeBuff	None	0	1	1	Physical	SelfAttack				-5000									
+1701001		E_Buff_Ridicule_1	Võ cát phân thân trào phúng mục tiêu	Head					5000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1702011		E_Buff_Ridicule_1	Giao gia ảo giác trào phúng mục tiêu	Head					2000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1702012			Giao gia ảo giác 5 giây sau tự bạo	Head					5000			0	99	Shield	Buff	None	0	1	1	Real	SelfAttack												270201	
+2702011			Giao gia ảo giác tự bạo	Head					100			0	99	Damage	Buff	None	0	1	1	Physical	SelfMaxHp				200000									
+1601021			Lý Thiên Vương Boss thiên phú 1 thương tổn giảm miễn	Head					3000			0	5	DefensePer	Buff	None	0	1	1	Physical	SelfAttack				3030	30	50							
+1601022		E_1001_Attack_Buff_3	Lý Thiên Vương Boss thiên phú 1 bắn ngược thương tổn	Foot					3000			0	99	ReturnDamage	Buff	None	0	1	1	Physical	SelfAttack				2525	25	50							
+1601023		E_Buff_Ridicule_1	Lý Thiên Vương Boss thiên phú 1 trào phúng	Head					1000			0	15	Taunt	DeBuff	None	0	1	1	Physical	SelfAttack													
+1601041		E_Buff_Detention_1	Lý Thiên Vương trói buộc mục tiêu	Foot					3000			0	15	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1601042			Lý Thiên Vương tỏa định mục tiêu	Head					3000			0	99	Lock	DeBuff	None	0	1	1	Physical	SelfAttack													
+1601051			Lý Thiên Vương đánh bại mục tiêu	Head					2000			0	15	KnockDown	DeBuff	None	0	1	1	Physical	SelfAttack													
+1601031			Lý Thiên Vương phải giết đánh lui mục tiêu	Head		30000	200000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1601032		E_1601_Skill_Buff_1	Lý Thiên Vương phải giết tự thân tích lũy thương tổn hồi huyết	Foot					1500			0	99	DelayAttackHeal	Buff	None	1016102	1	1	Physical	DamageValue				5000									
+1601033			Thủ lĩnh đột kích thông dụng thương tổn gia tăng	Head					-1			0	999	DefensePer	DeBuff	None	0	1	3	Physical	SelfAttack				-2500									
+1601061			Thông dụng miễn dịch đánh gãy vĩnh cửu hình	Head					-1			0	999	Immune	Buff	None	0	1	0	Physical	SelfAttack				10000						Vertigo;Petrified;Frozen;KnockDown;KnockBack;KnockFly;Pull;Silence;Hypnosis;Fear;KnockFlyMove			
+1601062			Lý Thiên Vương tỉ lệ phần trăm thương huyết	Head					-1			0	99	MaxHpDamagePer	Buff	None	0	1	0	Physical	SelfAttack				400									
+1601071			Thủ lĩnh đột kích thông dụng huyết thiếu công kích tăng lên	Head					-1			0	999	AttackPer	Buff	None	0	1	99	Physical	SelfAttack				500									
+1601072			Thủ lĩnh đột kích thương tổn giảm miễn +5%	Head					-1			0	99	DefensePer	Buff	None	0	1	99	Physical	SelfAttack				500									
+1602031		E_Buff_DefendDown_1	Con rối sư Boss sử mục tiêu pháp phòng rơi chậm lại	Head					6000			0	5	MagicDefendPer	DeBuff	None	0	1	1	Magic	SelfAttack				-4000									
+1705001			Boss triệu hoán tiểu bạch tuộc tự mình hại mình	Head					100			0	99	Damage	Buff	None	0	1	1	Physical	SelfMaxHp												270300	
+1705002		E_Buff_AtkSpeedDown_1	Boss triệu hoán tiểu bạch tuộc công tốc rơi chậm lại	Head					2000			0	5	AtkSpeedDown	DeBuff	None	0	1	1	Physical	SelfAttack				-8000									
+1602051		E_Buff_Detention_1	Con rối sư Boss trói buộc mục tiêu	Foot					3000			0	15	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1101101		E_Buff_Vertigo_1	Lưu manh choáng váng mục tiêu	Head					2000			0	15	Vertigo	DeBuff	None	0	1	1	Physical	SelfAttack													
+1102101			Tam cháu ngoại trai tụ lại	Head		200000			3000			0	15	Pull	DeBuff	None	0	1	1	Physical	SelfAttack													
+1103101			Đại bàng kim sí điểu đánh bay	Head		30000	90000	80000	1500			0	15	KnockFly	DeBuff	None	0	1	1	Physical	SelfAttack													
+1104101			Bôn ba nhi bá đánh lui	Head		40000	200000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1105101			Doanh cá đánh lui	Head		10000	200000		1000			0	15	KnockBack	DeBuff	None	0	1	1	Physical	SelfAttack													
+1106101		E_Buff_Moribund_1	Tiểu bạch tuộc trọng thương mục tiêu	Head					8000			0	5	Mark	DeBuff	Injured	0	1	1	Physical	SelfAttack													
+1106102			Tiểu bạch tuộc tự mình hại mình	Head					100			0	99	Damage	Buff	None	0	1	1	Physical	SelfMaxHp												270300	
+1107101		E_Buff_Detention_1	Thiền trùng giam cầm mục tiêu	Foot					5000			0	15	Imprisonment	DeBuff	None	0	1	1	Physical	SelfAttack													
+1107102			Thiền trùng tỏa định giam cầm mục tiêu	Head					-1			0	99	Lock	DeBuff	None	0	1	1	Magic	SelfAttack													
+1108101		E_Buff_Disperse_1	Kim mao rống xua tan tăng buff	Foot					1000			0	16	Purify	Buff	None	0	1	1	Physical	SelfAttack													
+1109101		E_Buff_Blindness_1	Con cua trí manh	Head					6000			0	15	Blinding	DeBuff	None	0	1	1	Physical	SelfAttack													
+1110101		E_Buff_Poisoning_1	Hao Thiên Khuyển trúng độc	Foot	TRUE				6000			1000	5	Damage	DeBuff	Poisoning	0	1	1	Physical	TargetMaxHp				200									
+1111101		E_Buff_Noanger_1	Hắc bang cấm giận	Head					5000			0	5	NoReplyEnergy	DeBuff	None	0	1	1	Physical	SelfAttack													

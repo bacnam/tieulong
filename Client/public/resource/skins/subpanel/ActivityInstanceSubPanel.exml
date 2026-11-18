@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ActivityInstanceSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_tab_png" y="2" anchorOffsetX="0" width="528" anchorOffsetY="0" height="203" scaleX="1" scaleY="1" horizontalCenter="0" x="11"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" scaleX="1" scaleY="1" width="540" height="677" anchorOffsetY="0" y="17" horizontalCenter="0"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="7.81" anchorOffsetX="0" width="533" anchorOffsetY="0" height="165.4" y="524.32" scaleX="1" scaleY="1"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="4.33" y="401.17" anchorOffsetY="0" height="124.83" anchorOffsetX="0" width="542.34"/>
+	<e:Image source="form_goldtit_png" scale9Grid="84,3,65,27" x="0.83" y="18" anchorOffsetY="0" height="47.33" anchorOffsetX="0" width="547.67"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="6.33" y="65.33" anchorOffsetY="0" height="337.17" anchorOffsetX="0" width="536.34"/>
+	<e:Image source="dark_png" x="9.15" y="402.86" anchorOffsetX="0" width="530.67" anchorOffsetY="0" height="120.34" scaleX="1" scaleY="1"/>
+	<e:Image source="dark_png" x="9.15" y="526.2" anchorOffsetX="0" width="530.67" anchorOffsetY="0" height="160.33" scaleX="1" scaleY="1"/>
+	<e:Image source="vip_line_png" x="64.76" y="404.04" width="120" rotation="90.56" anchorOffsetY="0" height="1"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="6" y="561.33" anchorOffsetY="0" height="64" anchorOffsetX="0" width="531"/>
+
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="548.76" scaleX="1" scaleY="1" width="520" height="52.66" horizontalCenter="0" x="40" anchorOffsetY="0" visible="false"/>
+	<e:Image id="btn_token" source="btn_bg4_1_png" x="482.02" y="570.25" scaleX="1" scaleY="1" name="open_Shop.1"/>
+	<e:Image source="ui_+_png" x="491.02" y="578.75" touchEnabled="false" scaleX="1" scaleY="1"/>
+	<e:Image id="btn_times" source="btn_bg4_1_png" x="197" y="570.25" scaleX="1" scaleY="1"/>
+	<e:Image source="ui_+_png" x="206" y="579.25" touchEnabled="false" scaleX="1" scaleY="1"/>
+	<e:Image id="btn_start" source="btn_bg1_png" y="632" scaleX="1" scaleY="1" x="195"/>
+	<e:Label text="进  入" y="644" size="24" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="108" touchEnabled="false" scaleX="1" scaleY="1" x="221"/>
+
+
+
+
+
+
+	<e:Image source="fuben_bg_jpg" y="65.42" scaleX="1" scaleY="1" horizontalCenter="0" x="20" anchorOffsetY="0" height="334" anchorOffsetX="0" width="530"/>
+
+	<e:Label text="物品掉落" x="25" y="414.42" size="22" textAlign="center" strokeColor="0x5e3500" stroke="1" width="25" height="96" verticalAlign="middle" textColor="0xf7d704"/>
+	<e:Scroller id="scroller_list" width="458" height="100" x="70" y="412" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin" y="-27" x="5">
+		<e:layout>
+			<e:HorizontalLayout gap="10" paddingTop="2" paddingLeft="10"/>
+		</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Image id="icon" scaleX="1" scaleY="1" source="r_huoqilin_png" anchorOffsetX="200" anchorOffsetY="200" touchEnabled="false" horizontalCenter="0" verticalCenter="-92"/>
+	<e:Image id="tip_t" source="triangle_png" x="351.15" y="205" anchorOffsetX="0" width="35.83" anchorOffsetY="0" height="26.87"/>
+	<e:Image id="tip_bg" y="115" anchorOffsetX="0" anchorOffsetY="0" scale9Grid="11,8,13,18" touchEnabled="false" x="351.15" source="form_ibg_png" width="171" height="90"/>
+	<e:Label id="label_tip" text="火麒麟的火焰唯有水麒麟才可熄灭" x="360" y="119.42" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" anchorOffsetX="0" width="152.5" anchorOffsetY="0" height="79"/>
+	<e:Label id="timetip" text="活动时间: " y="32" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" height="22" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="65" width="110"/>
+	<e:Label id="label_time" text="2017年1月10日-2017年1月17日" x="165" y="32" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="350" textColor="0xFFFEFD"/>
+	<e:Label text="血量: " x="53" y="110" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="34" verticalAlign="middle" textColor="0xFD0029" visible="false"/>
+	<e:Image source="ui_fight_bg_png" x="21" y="76.42" width="233" height="47"/>
+	<e:Label text="建议战力: " x="296" y="350" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="44" verticalAlign="middle"/>
+	<e:Label id="label_power" text="123456789" x="402" y="350" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="44" verticalAlign="middle" bold="true"/>
+	<e:Label id="label_name" text="10级头盔项链" y="87.92" size="24" textAlign="center" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="37.5"/>
+	<e:Label id="label_hp" text="123456789" x="110" y="110" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="199" height="34" verticalAlign="middle" textColor="0xFD0029" bold="true" visible="false"/>
+
+	<e:Label id="label_times" text="2" x="119" y="580.17" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0xff0000"/>
+	<e:Image id="material" x="454" y="591.17" blendMode="normal" anchorOffsetX="20" anchorOffsetY="20" source="icon_equipinstancematerial_png"/>
+	<e:Label id="label_token" text="120/180" x="334" y="579.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x28ff00"/>
+	<e:Label text="副本挑战次数每日凌晨4点重置" y="534.32" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="21" textColor="0xF8F7D3"/>
+	<e:Label text="消耗: " x="282.33" y="583.35" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="70.01" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="剩余次数: " x="21" y="583.35" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="111.34" anchorOffsetX="0" anchorOffsetY="0" height="22" textColor="0xF8F7D3"/>
+
+
+
+</e:Skin>

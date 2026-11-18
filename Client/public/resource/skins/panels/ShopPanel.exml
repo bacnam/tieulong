@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ShopPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing"
+	xmlns:component="legend.view.component.*">
+	<e:Group width="600" height="847" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false"
+		horizontalCenter="0"
+		verticalCenter="0">
+		<e:Group width="600" height="847" anchorOffsetX="0" anchorOffsetY="0"
+			touchEnabled="false" scaleX="1" scaleY="1">
+			<e:Image source="ui_shop_bg_png" y="-8" scaleX="1" scaleY="1" horizontalCenter="0" />
+			<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="61" scaleX="1" scaleY="1"
+				width="540"
+				height="716" anchorOffsetY="0" horizontalCenter="0" />
+			<e:Image source="women_png" x="-240.34" y="-23" scaleX="1" scaleY="1"
+				touchEnabled="false" />
+			<e:Image source="shop_png" y="2" scaleX="1" scaleY="1" horizontalCenter="0" />
+			<e:Image name="btn_close" source="btn_close_1_png" x="542.66" y="15" scaleX="1"
+				scaleY="1" />
+		</e:Group>
+		<e:TabBar id="tabBar_page" dataProvider="{content_View}" y="774.67" anchorOffsetX="0"
+			anchorOffsetY="0" scaleX="1"
+			scaleY="1" horizontalCenter="0" selectedIndex="3">
+			<e:itemRendererSkinName>
+				<e:Skin states="up,down,disabled" width="124">
+					<e:Image source="shopbar_off_png" source.down="shopbar_on_png" y="0"
+						horizontalCenter="0" />
+					<e:Label text="{data}" y="8" horizontalCenter="0" size="24" textAlign="center"
+						strokeColor="0x000000" stroke="1"
+						textColor="0xfaf9e2" />
+				</e:Skin>
+			</e:itemRendererSkinName>
+			<e:layout>
+				<e:HorizontalLayout gap="10" />
+			</e:layout>
+		</e:TabBar>
+		<e:ViewStack id="content_View" width="510" height="696" y="70" anchorOffsetX="0"
+			anchorOffsetY="0"
+			horizontalCenter="0" x="38" scaleX="1" scaleY="1" selectedIndex="3">
+			<e:Scroller name="Trang bị" width="100%" height="567" y="0" scaleX="1" scaleY="1"
+				anchorOffsetY="0">
+				<e:List id="group_Equip" width="100%" itemRendererSkinName="ShopItemSkin">
+					<e:layout>
+						<e:TileLayout horizontalGap="0" paddingLeft="15" verticalGap="0" />
+					</e:layout>
+				</e:List>
+			</e:Scroller>
+			<e:Scroller name="Vật phẩm" width="100%" height="100%" y="0" scaleX="1" scaleY="1">
+				<e:List id="group_Item" width="100%">
+					<e:layout>
+						<e:TileLayout horizontalGap="0" paddingLeft="15" verticalGap="0" />
+					</e:layout>
+				</e:List>
+			</e:Scroller>
+			<e:Group width="100%" height="100%" scaleX="1" scaleY="1" name="Đấu trường">
+				<e:Scroller width="100%" height="640" y="0" scaleX="1" scaleY="1" anchorOffsetY="0">
+					<e:List id="group_Arena" width="100%">
+						<e:layout>
+							<e:TileLayout horizontalGap="0" paddingLeft="15" verticalGap="0" />
+						</e:layout>
+					</e:List>
+				</e:Scroller>
+				<e:Image x="0" y="656" source="icon_arenatoken_png" />
+				<e:Label id="arenaToken" text="" size="20" textAlign="center" strokeColor="0x000000"
+					stroke="1" height="30" verticalAlign="middle" scaleX="1" scaleY="1" x="48"
+					y="658" textColor="0xf8f7d3" />
+			</e:Group>
+			<e:Group width="100%" height="100%" scaleX="1" scaleY="1" name="Bang">
+				<e:Scroller width="100%" height="640" y="0" scaleX="1" scaleY="1" anchorOffsetY="0">
+					<e:List id="group_guild" width="100%">
+						<e:layout>
+							<e:TileLayout horizontalGap="0" paddingLeft="15" verticalGap="0" />
+						</e:layout>
+					</e:List>
+				</e:Scroller>
+				<e:Image x="3" y="651" source="icon_guilddonate_png" />
+				<e:Label id="guildDonate" text="123" size="20" textAlign="center"
+					strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle" scaleX="1"
+					scaleY="1" x="48" y="658" textColor="0xf8f7d3" />
+			</e:Group>
+
+		</e:ViewStack>
+		<e:Group id="group_func" width="538" height="136" x="29" y="644" anchorOffsetX="0"
+			anchorOffsetY="0"
+			touchEnabled="false">
+			<e:Label text="Thời gian làm mới vật phẩm:" x="69.66" y="6" size="24" textAlign="center"
+				strokeColor="0x000000"
+				stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle" scaleX="1"
+				scaleY="1" />
+			<e:Image id="btn_refresh" source="btn_bg3_png" x="267" y="38" scaleX="1" scaleY="1" />
+			<e:Label text="Làm mới" x="317" y="53" size="26" textAlign="center"
+				strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="120" height="30"
+				verticalAlign="middle"
+				touchEnabled="false" scaleX="1" scaleY="1" />
+			<e:Label id="refreshTime" text="50:40" x="384.66" y="6" size="24" textAlign="center"
+				strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30"
+				verticalAlign="middle" scaleX="1"
+				scaleY="1" />
+			<e:Image id="btn_buyAll" source="btn_bg3_png" x="27" y="38" scaleX="1" scaleY="1" />
+			<e:Label text="Mua tất" x="77.66" y="54" size="26" textAlign="center"
+				strokeColor="0x000000" stroke="1"
+				textColor="0xFFC446" width="120" height="30" verticalAlign="middle"
+				touchEnabled="false" scaleX="1"
+				scaleY="1" />
+			<e:Label id="label_consume" text="10000" x="350" y="105" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+			<e:Image id="icon_consume" source="icon_gold_png" x="318" y="102" width="27" height="27"
+				scaleX="1"
+				scaleY="1" />
+			<e:Label id="label_freeTimes" text="1 次" x="366.99" y="105" size="22" textAlign="left"
+				strokeColor="0x000000"
+				stroke="1" textColor="0x00ff00" scaleX="1" scaleY="1" visible="false" />
+			<e:Label id="consumetimes_tip" text="Số lần làm mới còn:" x="80" y="105" size="22"
+				textAlign="left" strokeColor="0x000000" stroke="1" textColor="0x00FF00" scaleX="1"
+				scaleY="1" />
+			<e:Label id="consumetimes" text="20次" x="236.37" y="105" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0x00FF00" scaleX="1" scaleY="1" />
+			<e:Label id="label_free" text="Thời gian làm mới miễn phí:" y="105" size="22"
+				textAlign="left" strokeColor="0x000000" stroke="1"
+				textColor="0xF8F7D3" x="84.66" scaleX="1" scaleY="1"
+				visible="false" />
+		</e:Group>
+		<e:Image id="btn_close1" x="530" y="815" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+	</e:Group>
+	<component:EuiMap id="shopData">
+		<e:Array>
+			<e:Object name="EquipStore" group="group_Equip" func="true" />
+			<e:Object name="ItemStore" group="group_Item" />
+			<e:Object name="ArenaStore" group="group_Arena" system='Arena' />
+			<e:Object name="GuildStore" group="group_guild" system='Guild' />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

@@ -1,0 +1,59 @@
+id	名称
+id	Name
+1	Thần điêu đại hiệp Dương Quá
+2	Bạch y Tiểu Long Nữ
+3	Xạ điêu đại hiệp Quách Tĩnh
+4	Tiếu Hoàng Dung
+5	Lão ngoan đồng Châu Bá Thông
+6	Hoạt tử nhân Vương Trùng Dương
+7	Long Kỵ Sĩ Doãn Chí Bình
+8	Cổ mộ tông sư lâm triều anh
+9	Toàn Chân khâu chỗ cơ
+10	Nhất Đăng Đại Sư
+11	Thần cái Hồng Thất Công
+12	Lão tà Hoàng Dược Sư
+13	Tây Độc Âu Dương phong
+14	Xích luyện tiên Lý Mạc Sầu
+15	Kim luân Pháp Vương
+16	Thiết chưởng thủy thượng phiêu
+17	Cái thế anh hùng Kiều Phong
+18	Đại lý thế tử Đoàn Dự
+19	Linh thứu cung chủ hư trúc
+20	Tội ác chồng chất đoạn Duyên Khánh
+21	Không chuyện ác nào không làm diệp Nhị nương
+22	Nam Hải cá sấu thần
+23	Cùng hung cực ác vân trung hạc
+24	Tinh tú lão tiên Đinh Xuân Thu
+25	Thiên Sơn Đồng Mỗ
+26	Lý thu thủy
+27	Vật đổi sao dời Mộ Dung phục
+28	Thần tiên tỷ tỷ Vương Ngữ Yên
+29	Vô danh lão tăng
+30	Tiêu dao tổ sư vô nhai tử
+31	Chín âm tổ sư hoàng thường
+32	Độc Cô Cầu Bại
+33	Việt Nữ a thanh
+34	Hỏa diễm đao thứu ma trí
+35	Thái Cực Trương Tam Phong
+36	Đông Phương Bất Bại
+37	Kim Mao Sư Vương Tạ Tốn
+38	Độc Cô cửu kiếm Lệnh Hồ Xung
+39	Trừ tà kiếm pháp Lâm Bình Chi
+40	Ma giáo Nhậm Ngã Hành
+41	Hoa Sơn Phong Thanh Dương
+42	Quân Tử Kiếm Nhạc Bất Quần
+43	Vạn dặm độc hành Điền Bá Quang
+44	Lam Phượng Hoàng
+45	Ngũ nhạc minh chủ Tả Lãnh Thiền
+46	Thần Long Giáo hồng an thông
+47	Chín âm thần trảo mai siêu phong
+48	Minh Giáo Trương Vô Kỵ
+49	Quang minh tả sứ dương tiêu
+50	Quang minh hữu sứ phạm dao
+51	Diệt Tuyệt Sư Thái
+52	Quận chúa Triệu Mẫn
+53	Nga Mi Chu Chỉ Nhược
+54	Bạch Mi Ưng Vương Ân Thiên Chính
+55	Tử Sam Long Vương
+56	Thanh Dực Bức Vương Vi Nhất Tiếu
+57	Sét đánh hỗn nguyên tay thành côn

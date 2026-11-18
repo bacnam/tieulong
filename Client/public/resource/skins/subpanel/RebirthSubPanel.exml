@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RebirthSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui">
+	<e:Image source="list_bg_jpg" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="0"/>
+	<e:Image source="smallui_tbg_png" y="186.34" anchorOffsetX="0" width="192" anchorOffsetY="0" height="60.5" horizontalCenter="-127" x="76" scaleX="1" scaleY="1"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="247.34" anchorOffsetX="0" width="190" anchorOffsetY="0" height="240" horizontalCenter="-125" x="77" scaleX="1" scaleY="1"/>
+	<e:Label text="当前: " y="189.01" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFEFD" anchorOffsetX="0" anchorOffsetY="0" height="24" bold="true" horizontalCenter="-118" x="146" scaleX="1" scaleY="1"/>
+	<e:Label id="label_curlv" text="Lv.73" y="218.01" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFEFD" anchorOffsetX="0" anchorOffsetY="0" height="27" horizontalCenter="-128" x="147" scaleX="1" scaleY="1"/>
+	<e:Image source="smallui_tbg_png" y="186.34" anchorOffsetX="0" width="192" anchorOffsetY="0" height="60.5" horizontalCenter="120" x="324" scaleX="1" scaleY="1"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="247.34" anchorOffsetX="0" width="190" anchorOffsetY="0" height="240" horizontalCenter="125" x="325" scaleX="1" scaleY="1"/>
+	<e:Label text="培养后: " y="191.34" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFEFD" anchorOffsetX="0" anchorOffsetY="0" height="24" bold="true" x="355" scaleX="1" scaleY="1"/>
+	<e:Label id="label_nextlv" text="Lv.73" y="220.01" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFEFD" anchorOffsetX="0" anchorOffsetY="0" height="27" scaleX="1" scaleY="1" horizontalCenter="116.5"/>
+	<e:Label text="连续提升" x="63" y="643.5" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="93" anchorOffsetX="0" textColor="0x00FF00" scaleX="1" scaleY="1"/>
+	<e:Label text="消耗经验/万: " y="500" size="22" textAlign="right" strokeColor="0x5E3500" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xE0C302" anchorOffsetX="0" x="144" scaleX="1" scaleY="1"/>
+	<e:CheckBox id="btn_auto" width="31" height="31" x="25" y="640" selected="false">
+		<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+		<e:Image width="100%" height="100%" source="check_png" source.down="check_png"/>
+		<e:Image width="100%" height="100%" source="check_png" source.down="gou_png"/>
+		</e:Skin>
+	</e:CheckBox>
+	<e:Image source="loading_bg_png" scale9Grid="57,0,409,39" y="529.01" anchorOffsetX="0" scaleX="1" scaleY="1" horizontalCenter="0"/>
+	<e:Image id="line_exp" source="loading_line_jpg" y="545.03" scaleX="1" x="64"/>
+	<e:Label id="label_exp" text="108/3" x="282" y="500" size="22" textAlign="center" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle" textColor="0xFF0000" bold="true" scaleX="1" scaleY="1"/>
+	<e:Label id="label_expcur" text="3000/40000" y="543.01" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0.5"/>
+	<e:Button id="btn_up" label="提  升" y="592.5" scaleX="1" scaleY="1" horizontalCenter="-2.5">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg2_png"/>
+			<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_rebirth" label="转  生" y="590" scaleX="1" scaleY="1" horizontalCenter="0">
+		<e:Skin states="up,down,disabled">
+		<e:Image width="100%" height="100%" source="btn_bg1_png"/>
+		<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+		</e:Skin>
+	</e:Button>
+	<e:Label id="tip" text="标签" y="601" scaleX="1" scaleY="1" textColor="0xFF0000" bold="true" stroke="1" touchEnabled="false" horizontalCenter="-2.5" size="24"/>
+	<e:Scroller width="160" height="215" y="260.01" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="-125">
+		<e:List id="list_cur" width="160" y="340" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="-120" x="95" scaleX="1" scaleY="1">
+		<e:itemRendererSkinName>
+			<e:Skin>
+			<e:Label text="{data}" size="22" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+			</e:Skin>
+		</e:itemRendererSkinName>
+		</e:List>
+	</e:Scroller>
+	<e:Scroller width="157" height="220" y="260.01" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="125">
+		<e:List id="list_next" width="160" height="215" y="338" anchorOffsetX="0" anchorOffsetY="0" x="344" scaleX="1" scaleY="1">
+		<e:itemRendererSkinName>
+			<e:Skin>
+			<e:Label text="{data}" size="22" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+			</e:Skin>
+		</e:itemRendererSkinName>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

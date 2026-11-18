@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="OneYuanWaitSubPanel" width="520" height="640" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Label id="title" text="第 4 期（总 20 期）" y="30" size="30" textAlign="left" strokeColor="0x5E3500" stroke="1"
+	         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFF135"
+	         horizontalCenter="0.5" />
+	<e:Label id="tip" text="等待开奖..." y="103.32" size="46" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle"
+	         fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFF0000" bold="true" horizontalCenter="0" />
+	<e:Image source="form_hd_png" scale9Grid="40,34,20,32" x="20" y="194.68" anchorOffsetX="0" width="487"
+	         anchorOffsetY="0" height="430.33" />
+	<e:Label text="期数" y="217.67" size="22" strokeColor="0x5E3500" stroke="1" width="48" height="29" verticalAlign="middle"
+	         fontFamily="Arial" anchorOffsetY="0" anchorOffsetX="0" textAlign="left" textColor="0xFFFDE2" x="62.39" />
+	<e:Label text="幸运号码" y="217.67" size="22" strokeColor="0x5E3500" stroke="1" width="95" height="29"
+	         verticalAlign="middle" fontFamily="Arial" anchorOffsetY="0" anchorOffsetX="0" textAlign="left"
+	         textColor="0xFFFDE2" x="186" />
+	<e:Label text="获奖者" y="217.67" size="22" strokeColor="0x5E3500" stroke="1" width="66" height="29"
+	         verticalAlign="middle" fontFamily="Arial" anchorOffsetY="0" anchorOffsetX="0" textAlign="left"
+	         textColor="0xFFFDE2" x="354" />
+	<e:Scroller width="445" height="345" x="39" y="256" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list">
+			<e:itemRendererSkinName>
+				<e:Skin width="445">
+					<e:Label id="num" text="5" x="39.05" y="5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+					         anchorOffsetY="0" textColor="0xFFFDE2" scaleX="1" scaleY="1" />
+					<e:Label id="label_name" text="s1111.天狼" x="290" y="5" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetY="0"
+					         bold="true" anchorOffsetX="0" size="20" textColor="0xFFF135" scaleX="1" scaleY="1" />
+					<e:Label id="number" text="500000000" x="145" y="5" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+					         anchorOffsetX="0" anchorOffsetY="0" textColor="0x00FF00" scaleX="1" scaleY="1" />
+				</e:Skin>
+			</e:itemRendererSkinName>
+			<e:layout>
+				<e:VerticalLayout paddingTop="10" gap="10"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+
+</e:Skin>

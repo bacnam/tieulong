@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true"/>
+<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="259" scaleX="1" scaleY="1" width="540" height="150" horizontalCenter="0"/>
+<e:Image source="shop_bar_jpg" x="413" y="478" scaleX="1" scaleY="1" height="250"/>
+<e:Label text="10000" x="461" y="639" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84"/>
+<e:Label text="Bộ vị: Quần áo" x="441" y="596" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="98" height="30" verticalAlign="middle"/>
+<e:Label text="Tàng bảo đồ" x="441" y="569" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="98" height="30" verticalAlign="middle" textColor="0xfaf9fb"/>
+<e:Image source="iconbg_purple_png" x="454" y="498"/>
+<e:Image source="btn_close_1_png" x="565" y="194"/>
+<e:Image source="icon_gold_png" x="431" y="636" width="27" height="27"/>
+<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="429" y="670"/>
+<e:Label text="Mua     Mua" x="458" y="681" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+<e:Image source="shop_bar_jpg" y="478" scaleX="1" scaleY="1" height="250" x="245"/>
+<e:Label text="10000" x="294" y="639" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84"/>
+<e:Label text="Bộ vị: Quần áo" x="271" y="596" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="98" height="30" verticalAlign="middle"/>
+<e:Label text="Tàng bảo đồ" x="271" y="569" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="98" height="30" verticalAlign="middle" textColor="0xFAF9FB"/>
+<e:Image source="iconbg_purple_png" x="284" y="498"/>
+<e:Image source="icon_gold_png" x="262" y="636" width="27" height="27"/>
+<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="260" y="670"/>
+<e:Label text="Mua     Mua" x="289" y="681" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+<e:Image source="shop_bar_jpg" x="77" y="478" scaleX="1" scaleY="1" height="250"/>
+<e:Label text="10000" x="125" y="639" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84"/>
+<e:Label text="Bộ vị: Quần áo" x="105" y="596" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="98" height="30" verticalAlign="middle"/>
+<e:Label text="Tàng bảo đồ" x="105" y="569" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="98" height="30" verticalAlign="middle" textColor="0xFAF9FB"/>
+<e:Image source="iconbg_purple_png" x="118" y="498"/>
+<e:Image source="icon_gold_png" x="95" y="636" width="27" height="27"/>
+<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="93" y="670"/>
+<e:Label text="Mua     Mua" x="122" y="681" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+<e:Image source="shop_bar_jpg" x="413" y="748" scaleX="1" scaleY="1" height="250"/>
+<e:Label text="10000" x="461" y="909" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84"/>
+<e:Label text="Bộ vị: Quần áo" x="441" y="866" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="98" height="30" verticalAlign="middle"/>
+<e:Label text="Tàng bảo đồ" x="441" y="839" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="98" height="30" verticalAlign="middle" textColor="0xFAF9FB"/>
+<e:Image source="iconbg_purple_png" x="454" y="768"/>
+<e:Image source="icon_gold_png" x="431" y="906" width="27" height="27"/>
+<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="429" y="940"/>
+<e:Label text="Mua     Mua" x="458" y="951" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+<e:Image source="shop_bar_jpg" y="748" scaleX="1" scaleY="1" height="250" x="245"/>
+<e:Label text="10000" x="295" y="909" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84"/>
+<e:Label text="Bộ vị: Quần áo" x="271" y="866" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="98" height="30" verticalAlign="middle"/>
+<e:Label text="Tàng bảo đồ" x="271" y="839" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="98" height="30" verticalAlign="middle" textColor="0xFAF9FB"/>
+<e:Image source="iconbg_purple_png" x="284" y="768"/>
+<e:Image source="icon_gold_png" x="263" y="906" width="27" height="27"/>
+<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="260" y="940"/>
+<e:Label text="Mua     Mua" x="289" y="951" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+<e:Image source="shop_bar_jpg" x="77" y="748" scaleX="1" scaleY="1" height="250"/>
+<e:Label text="10000" x="125" y="909" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84"/>
+<e:Label text="Bộ vị: Quần áo" x="105" y="866" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="98" height="30" verticalAlign="middle"/>
+<e:Label text="Tàng bảo đồ" x="105" y="839" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="98" height="30" verticalAlign="middle" textColor="0xFAF9FB"/>
+<e:Image source="iconbg_purple_png" x="118" y="768"/>
+<e:Image source="icon_gold_png" x="95" y="906" width="27" height="27"/>
+<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="93" y="940"/>
+<e:Label text="Mua     Mua" x="122" y="951" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+<e:Image source="zhekou_png" x="59" y="470"/>
+<e:Image source="shop_8_png" x="60" y="460"/>
+<e:Image source="yueka_jpg" x="55" y="263" height="140"/>
+<e:Label text="10 Nguyệt 30 Nhật 00:00-11 Nguyệt 1 Nhật 23:59" y="371" size="18" textAlign="right" strokeColor="0x5e3500" stroke="1" width="349" height="32" verticalAlign="middle" horizontalCenter="82.5" fontFamily="tahoma" textColor="0xf7f397"/>
+<e:Label text="Thời gian hoạt động: " y="415" size="18" textAlign="left" strokeColor="0x5E3500" stroke="1" width="126" height="32" verticalAlign="middle" fontFamily="tahoma" textColor="0xF7F397" x="71"/>
+<e:Label text="10 Nguyệt 30 Nhật 00:00-11 Nguyệt 1 Nhật 23:59" x="186" y="422" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="351" textColor="0xfffefd"/>
+<e:Image source="vip_line_png" y="458" horizontalCenter="0"/>
+<e:Image source="ui_heip_png" x="38" y="206"/>
+<e:Image source="huodong_png" y="183" horizontalCenter="0"/>
+</e:Skin>

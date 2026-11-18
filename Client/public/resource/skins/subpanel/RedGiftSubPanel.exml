@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RedGiftSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Scroller width="540" height="610" y="13.33" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="list" itemRendererSkinName="RedGiftItem">
+		</e:List>
+	</e:Scroller>
+	<e:Button id="btn" label="充值发红包" y="636" anchorOffsetX="0" width="132" horizontalCenter="-15">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="22" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" textAlign="center" horizontalCenter="0" text="Nhận" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+			<e:Label size="22" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" textAlign="center" text="已领取: " y="657" x="375"/>
+	<e:Label id="num" size="22" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" textAlign="center" text="0/10" y="657" x="455"/>
+	<e:Label id="tip" text="暂时还没有人发红包" y="318" horizontalCenter="0" textColor="0xFF0000" bold="true" stroke="1" size="35"/>
+
+
+
+
+
+</e:Skin>

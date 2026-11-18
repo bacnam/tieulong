@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true" />
+
+	<e:Image source="btn_close_1_png" x="565" y="194" locked="true" />
+
+
+	<e:Image source="ui_heip_png" x="38" y="206" locked="true" />
+	<e:Image source="huodong_png" y="183" horizontalCenter="0" locked="true" />
+	<e:Group x="51" y="305" locked="true" visible="false">
+		<e:Image source="list_tab_png" y="0" anchorOffsetX="0" width="528" anchorOffsetY="0"
+			height="203" scaleX="1" scaleY="1" x="7.310000000000002" />
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="16" scaleX="1" scaleY="1"
+			width="540" height="670" anchorOffsetY="0" x="0" />
+		<e:Image source="shop_line_png" x="3.3500000000000227" y="183.32999999999998"
+			anchorOffsetX="0" width="533" anchorOffsetY="0" height="19.17" />
+		<e:Image source="vip_line_png" x="3.5" y="184" width="533" height="2" />
+	</e:Group>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="321" scaleX="1" scaleY="1" width="540"
+		height="174" anchorOffsetY="0" x="51" locked="true" />
+	<e:Image source="dark_png" x="55.54000000000002" y="428" anchorOffsetX="0" width="530.83"
+		anchorOffsetY="0" height="558.5" scaleX="1" scaleY="1" visible="false" />
+
+
+	<e:Group x="82" y="806.98" locked="true" visible="false">
+		<e:Image source="form_hd_png" scale9Grid="40,34,20,32" x="0" y="16" anchorOffsetX="0"
+			width="458.81" anchorOffsetY="0" height="159.35" scaleX="1.04" />
+		<e:Label id="reward_price2" text="100000" x="372.32" y="63.37" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xF8F7D3" />
+		<e:Image source="icon_crystal_png" x="326.6499999999999" y="49.04" width="40" height="40" />
+		<e:Image source="num_bg_png" scale9Grid="71,17,71,11" x="25" y="134.36" anchorOffsetX="0"
+			width="428.33" anchorOffsetY="0" height="34" />
+		<e:Image source="vip_line_png" x="17.67" y="51.2" width="280" />
+		<e:Group x="339" y="90.38">
+			<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="0" y="0" anchorOffsetX="0"
+				width="104" />
+			<e:Label text="购  买" x="21" y="10" size="24" textAlign="left" strokeColor="0x000000"
+				stroke="1" textColor="0xF8F7D3" bold="true" />
+		</e:Group>
+		<e:Image source="iconbg_prange_png" x="198" y="65.35000000000002" />
+		<e:Group x="22" y="76.68" anchorOffsetX="0" width="153">
+			<e:Image source="form_goldtit_png" x="0" y="0" anchorOffsetX="0" width="153" />
+			<e:Label text="全民特惠" x="32" y="5.67" size="22" textAlign="left" strokeColor="0x5e3500"
+				stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xFFF135" />
+		</e:Group>
+		<e:Label text="宝石碎片" x="193" y="138.70000000000005" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true"
+			textColor="0xFFFDE2" />
+		<e:Label text="今日购买次数: " y="134.35000000000002" size="18" textAlign="right"
+			strokeColor="0x5E3500" stroke="1" width="143" height="32" verticalAlign="middle"
+			fontFamily="Arial" textColor="0xF7F397" x="305" anchorOffsetX="0" />
+		<e:Label text="0天6小时10分" y="24.68" size="20" strokeColor="0x5E3500" stroke="1" width="141"
+			height="25" verticalAlign="middle" fontFamily="Arial" anchorOffsetY="0"
+			anchorOffsetX="0" textAlign="center" scaleX="1" scaleY="1" textColor="0x00FF00" x="111" />
+		<e:Label text="剩余时间: " y="24.7" size="18" textAlign="left" strokeColor="0x5E3500" stroke="1"
+			width="126" height="25" verticalAlign="middle" fontFamily="Arial" x="30"
+			anchorOffsetX="0" textColor="0xFFFDE2" anchorOffsetY="0" />
+		<e:Label id="reward_num2" text="1" x="448" y="140.35000000000002" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xFF0000" bold="true" />
+		<e:Image source="1_png" x="156" y="98" rotation="339.13" />
+	</e:Group>
+	<e:Group x="68" y="508" locked="true">
+		<e:Image source="form_abg_jpg" x="0" y="0" scale9Grid="18,16,14,16" anchorOffsetX="0"
+			width="504.66" anchorOffsetY="0" height="139.16" />
+		<e:Image source="form_bbg_jpg" x="15.659999999999968" y="13.329999999999984"
+			scale9Grid="10,9,30,31" anchorOffsetX="0" width="334.5" anchorOffsetY="0"
+			height="112.34" />
+		<e:Image id="btn_buy" source="btn_bg4_png" scale9Grid="5,5,110,34" y="82" x="366.02" />
+		<e:Label id="label_buy" text="充  值" y="93" size="22" textAlign="left" strokeColor="0x000000"
+			stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="398.02" />
+		<component:BaseItem id="baseItem" y="22.329999999999984" x="25.329999999999984" />
+		<e:Label id="label_name" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="31.329999999999984" />
+		<component:BaseItem id="baseItem0" y="22.329999999999984" x="106.32999999999998" />
+		<e:Label id="label_name0" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="112.32999999999998" />
+		<component:BaseItem id="baseItem1" y="22.329999999999984" x="186.32999999999993" />
+		<e:Label id="label_name1" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="192.32999999999993" />
+		<component:BaseItem id="baseItem3" y="22.329999999999984" x="267.3299999999999" />
+		<e:Label id="label_name3" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="273.3299999999999" />
+		<e:Label text="单笔充值      元" x="355.18000000000006" y="16.5" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle" scaleX="1"
+			scaleY="1" bold="true" textColor="0xfff45b" />
+		<e:Label id="label_discount" text="6" x="447.02" y="21.5" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" background="false" backgroundColor="0x000000"
+			textColor="0x00ff00" />
+		<e:Label id="reward_num0" text="（   / 1）" x="381.3599999999999" y="51.35000000000002"
+			size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+			anchorOffsetY="0" textColor="0xFF0000" bold="true" />
+		<e:Label id="reward_num1" text="1" x="402.02" y="51.35000000000002" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			bold="true" textColor="0x00ff00" />
+	</e:Group>
+	<e:Group x="68" y="508">
+		<e:Image source="form_abg_jpg" x="0" y="0" scale9Grid="18,16,14,16" anchorOffsetX="0"
+			width="504.66" anchorOffsetY="0" height="139.16" />
+		<e:Image source="form_bbg_jpg" x="15.659999999999968" y="13.329999999999927"
+			scale9Grid="10,9,30,31" anchorOffsetX="0" width="334.5" anchorOffsetY="0"
+			height="112.34" />
+		<e:Group x="366" y="85.34000000000003">
+			<e:Image id="btn_buy0" source="btn_bg4_png" scale9Grid="5,5,110,34" y="-2.68" x="0" />
+			<e:Label id="label_buy0" text="领  取" y="8.32" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="32" />
+		</e:Group>
+		<component:BaseItem id="baseItem2" y="22.329999999999927" x="25.329999999999984" />
+		<e:Label id="label_name2" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="31.329999999999984" />
+		<component:BaseItem id="baseItem4" y="22.329999999999927" x="106.32999999999998" />
+		<e:Label id="label_name4" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="112.32999999999998" />
+		<component:BaseItem id="baseItem5" y="22.329999999999927" x="186.32999999999993" />
+		<e:Label id="label_name5" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="192.32999999999993" />
+		<component:BaseItem id="baseItem6" y="22.329999999999927" x="267.3299999999999" />
+		<e:Label id="label_name6" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="273.3299999999999" />
+		<e:Label text="每日充值     元      " x="358.21000000000004" y="17.99000000000001" size="20"
+			textAlign="center" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle"
+			scaleX="1" scaleY="1" bold="true" textColor="0xFFF45B" anchorOffsetX="0" width="139.33" />
+		<e:Label id="label_discount3" text="6" x="451.39" y="22.99000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" background="false"
+			backgroundColor="0x000000" textColor="0x00FF00" />
+		<e:Label id="reward_num4" text="（    / 6 天）" x="370.72" y="54.289999999999964" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xFF0000" bold="true" />
+		<e:Label id="reward_num7" text="1" x="397.04999999999995" y="54.289999999999964" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			bold="true" textColor="0x00FF00" />
+	</e:Group>
+	<e:Group x="68" y="665">
+		<e:Image source="form_abg_jpg" x="0" y="0" scale9Grid="18,16,14,16" anchorOffsetX="0"
+			width="504.66" anchorOffsetY="0" height="139.16" />
+		<e:Image source="form_bbg_jpg" x="15.659999999999968" y="13.329999999999927"
+			scale9Grid="10,9,30,31" anchorOffsetX="0" width="334.5" anchorOffsetY="0"
+			height="112.34" />
+		<e:Group x="366" y="85.34000000000003">
+			<e:Image id="btn_buy2" source="btn_bg4_png" scale9Grid="5,5,110,34" y="-2.68" x="0" />
+			<e:Label id="label_buy2" text="领  取" y="8.32" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="32" />
+		</e:Group>
+		<component:BaseItem id="baseItem11" y="22.329999999999927" x="25.329999999999984" />
+		<e:Label id="label_name11" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="31.329999999999984" />
+		<component:BaseItem id="baseItem12" y="22.329999999999927" x="106.32999999999998" />
+		<e:Label id="label_name12" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="112.32999999999998" />
+		<component:BaseItem id="baseItem13" y="22.329999999999927" x="186.32999999999993" />
+		<e:Label id="label_name13" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="192.32999999999993" />
+		<component:BaseItem id="baseItem14" y="22.329999999999927" x="267.3299999999999" />
+		<e:Label id="label_name14" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="273.3299999999999" />
+		<e:Label text="每日充值     元      " x="358.21000000000004" y="17.99000000000001" size="20"
+			textAlign="center" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle"
+			scaleX="1" scaleY="1" bold="true" textColor="0xFFF45B" anchorOffsetX="0" width="139.33" />
+		<e:Label id="label_discount4" text="6" x="451.39" y="22.99000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" background="false"
+			backgroundColor="0x000000" textColor="0x00FF00" />
+		<e:Label id="reward_num8" text="（    / 6 天）" x="370.72" y="54.289999999999964" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xFF0000" bold="true" />
+		<e:Label id="reward_num9" text="1" x="397.04999999999995" y="54.289999999999964" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			bold="true" textColor="0x00FF00" />
+	</e:Group>
+	<e:Group x="68" y="822">
+		<e:Image source="form_abg_jpg" x="0" y="0" scale9Grid="18,16,14,16" anchorOffsetX="0"
+			width="504.66" anchorOffsetY="0" height="139.16" />
+		<e:Image source="form_bbg_jpg" x="15.659999999999968" y="13.329999999999927"
+			scale9Grid="10,9,30,31" anchorOffsetX="0" width="334.5" anchorOffsetY="0"
+			height="112.34" />
+		<e:Group x="366" y="85.34000000000003">
+			<e:Image id="btn_buy4" source="btn_bg4_png" scale9Grid="5,5,110,34" y="-2.68" x="0" />
+			<e:Label id="label_buy4" text="领  取" y="8.32" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="32" />
+		</e:Group>
+		<component:BaseItem id="baseItem19" y="22.329999999999927" x="25.329999999999984" />
+		<e:Label id="label_name19" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="31.329999999999984" />
+		<component:BaseItem id="baseItem20" y="22.329999999999927" x="106.32999999999998" />
+		<e:Label id="label_name20" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="112.32999999999998" />
+		<component:BaseItem id="baseItem21" y="22.329999999999927" x="186.32999999999993" />
+		<e:Label id="label_name21" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="192.32999999999993" />
+		<component:BaseItem id="baseItem22" y="22.329999999999927" x="267.3299999999999" />
+		<e:Label id="label_name22" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="273.3299999999999" />
+		<e:Label text="每日充值     元      " x="358.21000000000004" y="17.99000000000001" size="20"
+			textAlign="center" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle"
+			scaleX="1" scaleY="1" bold="true" textColor="0xFFF45B" anchorOffsetX="0" width="139.33" />
+		<e:Label id="label_discount5" text="6" x="451.39" y="22.99000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" background="false"
+			backgroundColor="0x000000" textColor="0x00FF00" />
+		<e:Label id="reward_num10" text="（    / 6 天）" x="370.72" y="54.289999999999964" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xFF0000" bold="true" />
+		<e:Label id="reward_num11" text="1" x="397.04999999999995" y="54.289999999999964" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			bold="true" textColor="0x00FF00" />
+	</e:Group>
+
+
+	<e:Group x="69.33" y="676.66" visible="false">
+		<e:Image source="form_abg_jpg" x="0" y="0" scale9Grid="18,16,14,16" anchorOffsetX="0"
+			width="504.66" anchorOffsetY="0" height="139.16" />
+		<e:Image source="num_bg_png" scale9Grid="71,17,71,11" x="363.67" y="19.34" anchorOffsetX="0"
+			width="120.67" visible="false" />
+		<e:Label id="label_discount0" text="第一天" x="389.19" y="28.34" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" background="false" backgroundColor="0x000000"
+			anchorOffsetX="0" width="70" bold="true" textColor="0xfff45b" />
+		<e:Label id="label_discount2" text="2次" x="170.01999999999998" y="12.340000000000032"
+			size="20" textAlign="left" strokeColor="0x000000" stroke="1" background="false"
+			backgroundColor="0x000000" anchorOffsetX="0" width="32" textColor="0xfff45b" />
+		<e:Image source="form_bbg_jpg" x="15.659999999999968" y="13.329999999999984"
+			scale9Grid="10,9,30,31" anchorOffsetX="0" width="334.5" anchorOffsetY="0"
+			height="112.34" />
+		<e:Image id="btn_buy3" source="btn_bg4_png" scale9Grid="5,5,110,34" y="74" x="366" />
+		<e:Label id="label_buy3" text="领  取" y="85" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="398" />
+		<component:BaseItem id="baseItem15" y="22.329999999999984" x="25.329999999999984" />
+		<e:Label id="label_name15" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="31.329999999999984" />
+		<component:BaseItem id="baseItem16" y="22.329999999999984" x="106.32999999999998" />
+		<e:Label id="label_name16" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="112.32999999999998" />
+		<component:BaseItem id="baseItem17" y="22.329999999999984" x="186.32999999999993" />
+		<e:Label id="label_name17" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="192.32999999999993" />
+		<component:BaseItem id="baseItem18" y="22.329999999999984" x="267.3299999999999" />
+		<e:Label id="label_name18" text="藏宝图" y="98.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="273.3299999999999" />
+		<e:Label text="第一天" x="386.85" y="37.33" size="22" textAlign="center" strokeColor="0x000000"
+			stroke="1" height="30" verticalAlign="middle" scaleX="1" scaleY="1" bold="true"
+			textColor="0xFFF45B" visible="false" />
+		<e:Image source="vip_line_png" x="374.68" y="56.5" width="100" height="2" visible="false" />
+	</e:Group>
+
+
+	<e:Group x="68" y="661" locked="true" visible="false">
+		<e:Image source="form_abg_jpg" x="0" y="0" scale9Grid="18,16,14,16" anchorOffsetX="0"
+			width="504.66" anchorOffsetY="0" height="165.16" />
+		<e:Image source="form_bbg_jpg" x="15.659999999999968" y="39.32999999999993"
+			scale9Grid="10,9,30,31" anchorOffsetX="0" width="334.5" anchorOffsetY="0"
+			height="112.34" />
+		<e:Image id="btn_buy1" source="btn_bg4_png" scale9Grid="5,5,110,34" y="97.64" x="366.02" />
+		<e:Label id="label_buy1" text="领  取" y="108.64" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="398.02" />
+		<component:BaseItem id="baseItem7" y="48.32999999999993" x="25.329999999999984" />
+		<e:Label id="label_name7" text="藏宝图" y="124.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="31.329999999999984" />
+		<component:BaseItem id="baseItem8" y="48.32999999999993" x="106.32999999999998" />
+		<e:Label id="label_name8" text="藏宝图" y="124.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="112.32999999999998" />
+		<component:BaseItem id="baseItem9" y="48.32999999999993" x="186.32999999999993" />
+		<e:Label id="label_name9" text="藏宝图" y="124.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="192.32999999999993" />
+		<component:BaseItem id="baseItem10" y="48.32999999999993" x="267.3299999999999" />
+		<e:Label id="label_name10" text="藏宝图" y="124.33000000000004" size="20" textAlign="center"
+			strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB"
+			x="273.3299999999999" />
+		<e:Label text="累计充值      天，即可领取" x="17.50999999999999" y="8.009999999999991" size="20"
+			textAlign="center" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle"
+			scaleX="1" scaleY="1" bold="true" textColor="0xfff45b" />
+		<e:Label id="label_discount1" text="6" x="112.7" y="12.35" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" background="false" backgroundColor="0x000000"
+			anchorOffsetX="0" width="32" textColor="0x00ff00" />
+		<e:Label id="reward_num5" text="2" x="473.17999999999995" y="13.009999999999991" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xFF0000" bold="true" locked="true" visible="false" />
+		<e:Label id="reward_num6" text="已达成     / 7天" x="360.34" y="54.01" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			bold="true" textColor="0xff0000" />
+		<e:Label id="reward_num3" text="5" x="430.35" y="54.01" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true"
+			textColor="0x00ff00" />
+	</e:Group>
+
+	<e:Image source="dailyrecharge_bg_jpg" x="57" y="325" anchorOffsetX="0" width="530.24"
+		anchorOffsetY="0" height="163" />
+
+</e:Skin>

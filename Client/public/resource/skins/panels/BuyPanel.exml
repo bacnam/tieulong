@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BuyPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Group id="group_static" width="505" height="613" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0"
+	         verticalCenter="0"  touchEnabled="false">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="610" horizontalCenter="0"
+		         verticalCenter="0" x="3" y="2" scaleX="1" scaleY="1" />
+		<e:Image id="btn_addTwo" source="btn_bg4_png" scale9Grid="5,5,110,34" x="361" y="383" scaleX="1" scaleY="1"
+		         width="101" />
+		<e:Image id="btn_subTwo" source="btn_bg4_png" scale9Grid="5,5,110,34" x="44" y="383" scaleX="1" scaleY="1" width="101" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="135" scaleX="1" scaleY="1" width="420" horizontalCenter="0"
+		         height="193" x="43" />
+		<e:Image source="btn_close_png" x="437" y="-1" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image id="btn_buy" source="btn_bg4_png" scale9Grid="5,5,110,34" y="519" scaleX="1" scaleY="1"  horizontalCenter="0"/>
+		<e:Label text="Mua" y="530" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+		         textColor="0xF8F7D3" scaleX="1" scaleY="1"  touchEnabled="false" horizontalCenter="0"/>
+		<e:Image id="btn_sub" source="btn_bg4_1_png" x="148" y="383" scaleX="1" scaleY="1" />
+		<e:Image id="btn_add" source="btn_bg4_1_png" x="314" y="383" scaleX="1" scaleY="1" />
+		<e:Image source="ui_sub_png" x="158" y="402" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image source="ui_+_png" x="323" y="391" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" y="385" width="100" horizontalCenter="0" x="203" scaleX="1"
+		         scaleY="1" />
+		<e:Image source="ui_sub_png" x="55.66" y="402" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image source="ui_+_png" x="373.66" y="391" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Label text="Phí: " x="125" y="459" size="24" textAlign="right" strokeColor="0x000000" stroke="1" textColor="0xFDB200"
+		         width="72" height="29" verticalAlign="middle" scaleX="1" scaleY="1" />
+		<e:Label text="Vui lòng chọn số lượng" y="341" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1"
+		         width="200" height="26" verticalAlign="middle" horizontalCenter="-99" textColor="0xFFF600" x="54" />
+	</e:Group>
+	<e:Group width="505" height="613" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" verticalCenter="0"
+	         touchEnabled="false">
+		<component:BaseItem id="baseItem" x="52" y="38" scaleX="1" scaleY="1" />
+		<e:Label id="label_name" text="物品名称" x="145" y="42" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+		         textColor="0xFDB200" height="30" verticalAlign="middle" touchEnabled="false" scaleX="1" scaleY="1" />
+		<e:Label id="label_description" text="这是装备的说明文。形成盾，盾可抵消伤害，免疫定身形成盾，盾可抵消伤害，免疫定身形成盾，盾可抵消伤害，免疫定身" y="157" size="22"
+		         textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" width="360" height="150"
+		         verticalAlign="top" horizontalCenter="0" x="72" scaleX="1" scaleY="1" />
+		<e:Label id="label_consume" text="400" x="241" y="460" size="24" textAlign="left" strokeColor="0x000000" stroke="1"
+		         textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+		<e:Image id="icon_consume" x="195" y="452" source="icon_crystal_png" scaleX="1" scaleY="1" />
+		<e:BitmapLabel id="label_addSup" y="390" text="10" font="yuan_fnt" touchEnabled="false"
+		               horizontalCenter="171.16000000000003" x="409" scaleX="1" scaleY="1" />
+		<e:BitmapLabel id="label_subSup" y="390" font="yuan_fnt" text="10" touchEnabled="false" horizontalCenter="-145" x="93"
+		               scaleX="1" scaleY="1" />
+		<e:TextInput id="input" y="390" horizontalCenter="0" restrict="0-9" text="1323">
+			<e:skinName>
+				<e:Skin states="normal,disabled,normalWithPrompt,disabledWithPrompt">
+					<e:EditableText id="textDisplay" verticalCenter="0" textColor.disabled="0xffffff" width="100%"
+					                size="28" text="9999999" textColor="0xffffff" height="28" horizontalCenter="0" textAlign="center"/>
+					<e:Label id="promptDisplay" verticalCenter="0" width="100%" size="28" touchEnabled="false"
+					         includeIn="normalWithPrompt,disabledWithPrompt" text="请输入" textColor="0xa6a7b6" height="28" horizontalCenter="0" textAlign="center"/>
+				</e:Skin>
+			</e:skinName>
+		</e:TextInput>
+		<e:Label id="label_count" text="0" verticalAlign="justify" size="16" stroke="1" y="87.67" right="390"/>
+	</e:Group>
+</e:Skin>

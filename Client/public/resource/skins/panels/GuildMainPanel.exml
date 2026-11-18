@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildMainPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_bg_png" x="0" y="0" scaleX="1" scaleY="1" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="19" y="63" anchorOffsetX="0"
+			width="552" anchorOffsetY="0"
+			height="705" scaleX="1" scaleY="1" />
+		<e:Image source="list_bg_jpg" x="30" y="74" anchorOffsetX="0" width="531" anchorOffsetY="0"
+			height="682" scaleX="1"
+			scaleY="1" />
+		<e:Image source="btn_close_png" x="518" y="10" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image source="title_guild_png" y="5" scaleX="1" scaleY="1" horizontalCenter="0" x="261" />
+		<e:Image source="smallui_tbg_png" y="74" anchorOffsetX="0" width="453.4" anchorOffsetY="0"
+			height="62.11"
+			scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Label text="Cấp:" y="133" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+			height="32"
+			verticalAlign="middle" fontFamily="Arial" x="75" scaleX="1" scaleY="1"
+			textColor="0xffffff" />
+		<e:Label id="lv" text="8" y="134" size="22" textAlign="left" strokeColor="0x000000"
+			stroke="1" verticalAlign="middle"
+			fontFamily="Arial" x="139" scaleX="1" scaleY="1" height="32" textColor="0xff0000"
+			bold="true" />
+		<e:Label text="Bang chủ:" y="180" size="22" textAlign="left" strokeColor="0x000000"
+			stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" x="75" anchorOffsetX="0" scaleX="1" scaleY="1"
+			textColor="0xffffff" />
+		<e:Label id="master" text="Bang chủ" y="180" size="22" textAlign="left"
+			strokeColor="0x5E3500" stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" x="189" anchorOffsetX="0" scaleX="1"
+			scaleY="1" textColor="0xfdb200" />
+		<e:Label text="Thành viên:" y="227" size="22" textAlign="left" strokeColor="0x000000"
+			stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" x="75" anchorOffsetX="0" scaleX="1" scaleY="1"
+			textColor="0xffffff" />
+		<e:Label id="member_num" text="10/20" y="229" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" x="200" anchorOffsetX="0" scaleX="1"
+			scaleY="1" textColor="0x00ff00" bold="true" />
+		<e:Label text="Đóng góp cá nhân:" y="274" size="22" textAlign="left" strokeColor="0x000000"
+			stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" x="75" anchorOffsetX="0" scaleX="1" scaleY="1"
+			textColor="0xffffff" />
+		<e:Label id="contribution" text="6000" y="276" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1"
+			height="32" verticalAlign="middle" fontFamily="Arial" x="301" anchorOffsetX="0"
+			scaleX="1"
+			scaleY="1" textColor="0xfdb200" />
+
+
+		<e:Group id="group_manager" x="38" y="364.72" anchorOffsetY="0" height="416.66"
+			touchEnabled="false"
+			scaleX="1" scaleY="1">
+			<e:Image source="ui_tit_bg_png" y="5" anchorOffsetY="0" height="265" anchorOffsetX="0"
+				width="495"
+				horizontalCenter="0" locked="true" visible="false" />
+			<e:Image y="5" anchorOffsetY="0" height="293.67" anchorOffsetX="0" width="495"
+				scaleX="-1"
+				source="form_sibg_png" x="505" />
+			<e:TextInput id="input" width="400" height="150" y="50" anchorOffsetX="0"
+				anchorOffsetY="0" maxChars="128" x="55" prompt="Nhập vào nội dung thông báo">
+				<e:Skin states="normal,disabled,normalWithPrompt,disabledWithPrompt">
+					<e:EditableText id="textDisplay" verticalCenter="0" left="10" right="10"
+						textColor.disabled="0x00ff00" width="100%"
+						size="28" text="" textColor="0xffffff" top="10" bottom="10" />
+					<e:Label id="promptDisplay" verticalCenter="0" left="10" right="10" width="100%"
+						size="28" touchEnabled="false"
+						includeIn="normalWithPrompt,disabledWithPrompt" text="Bang chủ không có thông báo gì."
+						textColor="0xa6a7b6" top="10" bottom="10" />
+				</e:Skin>
+			</e:TextInput>
+			<e:Label text="Thông báo" y="17.77" size="24" textAlign="left"
+				strokeColor="0x000000" stroke="1"
+				width="150" anchorOffsetX="0" anchorOffsetY="0" height="21.33"
+				x="190" textColor="0xffed29" bold="true" />
+			<e:Image source="line_png" y="0" width="510" horizontalCenter="0" visible="false" />
+			<e:Button id="btn_save" label="Lưu" y="232.95" width="120" height="44" x="197">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="btn_bg2_png" />
+						<e:Label id="labelDisplay" size="22" textAlign="center"
+							strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+							horizontalCenter="0" verticalCenter="0" />
+					</e:Skin>
+				</e:skinName>
+
+			</e:Button>
+			<e:Button id="btn_Member" label="Thành viên" y="318.65" width="105" height="44"
+				x="34" scaleX="1" scaleY="1">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="btn_bg4_png" />
+						<e:Label id="labelDisplay" size="22" textAlign="center"
+							strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+							horizontalCenter="0" verticalCenter="0" />
+					</e:Skin>
+				</e:skinName>
+			</e:Button>
+			<component:RedDotItem id="btn_List" label="Duyệt" y="318.65" width="105" height="44"
+				horizontalCenter="2.5" x="208"
+				scaleX="1" scaleY="1">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="btn_bg4_png" />
+						<e:Label id="labelDisplay" size="22" textAlign="center"
+							strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+							horizontalCenter="0" verticalCenter="0" />
+						<e:Image id="prompt" source="ui_red_png" top="-5" right="0" visible="false" />
+					</e:Skin>
+				</e:skinName>
+			</component:RedDotItem>
+			<e:Button id="btn_ext" label="Rời bang" y="318.65" width="105" height="44" x="376.72"
+				scaleX="1" scaleY="1">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="btn_bg4_png" />
+						<e:Label id="labelDisplay" size="22" textAlign="center"
+							strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+							horizontalCenter="0" verticalCenter="0" />
+					</e:Skin>
+				</e:skinName>
+			</e:Button>
+			<e:Image source="rank_line_png" x="133" y="12" anchorOffsetX="0" width="239.4"
+				anchorOffsetY="0" height="35" locked="true" />
+		</e:Group>
+		<e:Label id="guild_name" text="Tên Bang hội" y="88" size="24" textAlign="left"
+			strokeColor="0x5E3500" stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" scaleX="1" scaleY="1"
+			horizontalCenter="0" bold="true" textColor="0xfdb200" />
+		<e:Image source="loading_bg_png" scale9Grid="57,0,409,39" y="312.5" x="36" scaleX="1"
+			scaleY="1" horizontalCenter="0" />
+		<e:Image id="link" y="330.5" source="shop_bar_png" anchorOffsetX="0" x="83"
+			scaleX="1" scaleY="1" width="426" />
+		<e:Label id="exp" text="6000" y="319.5" size="22" textAlign="left" strokeColor="0x000000"
+			stroke="1" height="32"
+			verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" scaleX="1" scaleY="1"
+			x="273" textColor="0xf7f397" />
+		<e:Group id="group_sacrifice" width="520" height="364.5" y="361" anchorOffsetX="0"
+			anchorOffsetY="0"
+			horizontalCenter="0.5" touchEnabled="false" visible="false">
+			<e:Group x="24" y="2.319999999999993">
+				<e:Image source="smallui_tbg_png" x="0" y="0" anchorOffsetX="0" width="228.13"
+					anchorOffsetY="0" height="52.66" />
+				<e:Label text="Ngọc xanh" x="63" y="17.989999999999952" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" width="150" anchorOffsetX="0"
+					anchorOffsetY="0" height="28" bold="true" textColor="0xfdb200" />
+				<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="5" y="59.01000000000005"
+					anchorOffsetX="0" width="217.33" anchorOffsetY="0" height="217.17" />
+				<e:Label text="Đóng góp:" x="33" y="128.18" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle"
+					textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Label id="ji_contribution" text="+100" x="136" y="129.68" size="20"
+					textAlign="left" strokeColor="0x000000" stroke="1" height="32"
+					verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Label id="ji_consume" text="10000" x="136" y="179.68" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle"
+					anchorOffsetX="0" anchorOffsetY="0" textColor="0xfdb200" />
+				<e:Label text="Phí" x="33" y="178.18" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle"
+					textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Label text="Kinh nghiệm" x="33" y="77.68" size="20" strokeColor="0x000000"
+					stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB"
+					anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Label id="ji_exp" text="+10" x="151" y="78.68" size="20" strokeColor="0x000000"
+					stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB"
+					anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Image source="icon_gold_png" x="84.30000000000001" y="170.68" />
+				<e:Button id="btn_ji" label="Tế thiên" y="297.18" width="100" height="44" scaleX="1"
+					scaleY="1" x="64">
+					<e:skinName>
+						<e:Skin states="up,down,disabled">
+							<e:Image width="100%" height="100%" source="btn_bg4_png" />
+							<e:Label id="labelDisplay" size="22" textAlign="center"
+								strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+								horizontalCenter="0" verticalCenter="0" />
+						</e:Skin>
+					</e:skinName>
+				</e:Button>
+				<e:Label text="Số lần còn:" y="234.68" size="20" textAlign="left"
+					strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial"
+					x="33" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0x00ff00" />
+				<e:Label id="sacrificeLeftTimes" text="6000" y="236.18" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial"
+					x="136" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xff0000" bold="true" />
+			</e:Group>
+			<e:Group x="273" y="2.319999999999993">
+				<e:Image source="smallui_tbg_png" x="0" y="0" anchorOffsetX="0" width="228.13"
+					anchorOffsetY="0" height="52.66" />
+				<e:Label text="Hoàng hoàng" x="53" y="17.989999999999952" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" width="150" anchorOffsetX="0"
+					anchorOffsetY="0" height="28" bold="true" textColor="0xfdb200" />
+				<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="5" y="59.01000000000005"
+					anchorOffsetX="0" width="217.33" anchorOffsetY="0" height="217.17" />
+				<e:Label text="Tế thiên không giới hạn" y="234.68" size="20" textAlign="left"
+					strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial"
+					anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0x00FF00" x="13" />
+				<e:Label text="Phí" x="33" y="178.68" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle"
+					textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Label text="Đóng góp:" x="33" y="127.68" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle"
+					textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Label text="Kinh nghiệm" x="33" y="77.68" size="20" strokeColor="0x000000"
+					stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB"
+					anchorOffsetX="0" anchorOffsetY="0" />
+				<e:Image source="icon_crystal_png" x="82.97000000000003" y="170.68" />
+				<e:Button id="btn_li" label="Tế thiên" y="297.18" width="100" height="44" scaleX="1"
+					scaleY="1" x="64">
+					<e:skinName>
+						<e:Skin states="up,down,disabled">
+							<e:Image width="100%" height="100%" source="btn_bg4_png" />
+							<e:Label id="labelDisplay" size="22" textAlign="center"
+								strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+								horizontalCenter="0" verticalCenter="0" />
+						</e:Skin>
+					</e:skinName>
+				</e:Button>
+				<e:Label id="li_contribution" text="+100" x="131" y="129.68" size="20"
+					textAlign="left" strokeColor="0x000000" stroke="1" height="32"
+					verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"
+					scaleX="1" scaleY="1" />
+				<e:Label id="li_consume" text="10000" x="131" y="179.68" size="20" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle"
+					anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200" />
+				<e:Label id="li_exp" text="+10" x="151" y="78.68" size="20" strokeColor="0x000000"
+					stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB"
+					anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+			</e:Group>
+
+
+		</e:Group>
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" />
+		<e:Image source="icon_guilddonate_png" x="256" y="269" />
+
+	</e:Group>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="btn_List" event="GuildApply" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

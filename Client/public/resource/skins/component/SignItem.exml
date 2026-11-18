@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SignItemSkin" width="72" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*"  height="95">
+	<w:Config id="158cd16b63f" ></w:Config>
+	<component:BaseItem id="baseItem"/>
+	<e:Label id="label_count" text="100" y="49" size="18" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textAlign="right" textColor="0xFFFFFF" verticalAlign="middle" right="5" touchEnabled="false"/>
+	<e:Label id="label_name" text="100.000VND" y="77" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" horizontalCenter="0" touchEnabled="false"/>
+	<e:Image id="img_get" y="10.5" horizontalCenter="0" touchEnabled="false" source="sign_png"/>
+</e:Skin>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildBattleResurrectionPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui">
+	<e:Group width="400" height="280" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="280" anchorOffsetY="0" scaleX="1" scaleY="1" x="0"/>
+		<e:Label text="Không có lời nhắc nào cho trận chiến này" x="64" y="247" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0x00ff00"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="8" y="52" anchorOffsetX="0" width="384" anchorOffsetY="0" height="112.5" scaleX="1" scaleY="1"/>
+		<e:Label text="Có nên chi tiêu không" y="79" size="22" strokeColor="0x000000" stroke="1" verticalAlign="middle" x="103" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Label id="spend_price" text="15" x="256" y="76" size="22" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Image id="spend_icon" source="icon_crystal_png" x="203" y="65" scaleX="1" scaleY="1" width="40" height="40"/>
+		<e:Label id="spend_content" text="Triệu hồi một con rối?" y="121" size="22" strokeColor="0x000000" stroke="1" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" textColor="0xffffff"/>
+		<e:Image source="smallui_tbg_png" y="3" scaleX="1" scaleY="1" x="54"/>
+		<e:Label text="Triệu hồi một con rối" y="7" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" x="152" textColor="0xfdb200"/>
+		<e:Image id="btn_cancel" scale9Grid="5,5,110,34" x="54" y="182" anchorOffsetX="0" width="100" scaleX="1" scaleY="1" name="btn_close" source="btn_bg5_png" height="44"/>
+		<e:Label text="Hủy bỏ" x="54" y="194" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="btn_confirm" source="btn_bg4_png" scale9Grid="5,5,110,34" x="266.32" y="181" anchorOffsetX="0" width="100" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Label text="Xác nhận" x="266.32" y="193" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:CheckBox id="set" width="31" height="31" x="24" y="240" selected="false">
+			<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+			<e:Image width="100%" height="100%" source="check_png" source.down="check_png"/>
+			<e:Image width="100%" height="100%" source="check_png" source.down="gou_png"/>
+			</e:Skin>
+		</e:CheckBox>
+	</e:Group>
+    
+</e:Skin>

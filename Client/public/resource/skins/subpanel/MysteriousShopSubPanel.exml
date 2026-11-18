@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MysteriousShopSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_tab_png" y="2" anchorOffsetX="0" width="527" anchorOffsetY="0"
+		height="203" horizontalCenter="0.5" />
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="17" scaleX="1" scaleY="1" width="540"
+		height="677" anchorOffsetY="0" horizontalCenter="0" />
+	<e:Image source="dark_png" y="63.96" anchorOffsetX="0" width="530.83" anchorOffsetY="0"
+		height="624.5" horizontalCenter="0.5" />
+	<e:Image source="form_goldtit_png" scale9Grid="84,3,65,27" y="18.96" anchorOffsetX="0"
+		width="533" anchorOffsetY="0" height="45.1" horizontalCenter="0.5" />
+	<e:Label id="timetip" text="Thời gian: " y="32" size="22" textAlign="left" strokeColor="0x5E3500"
+		stroke="1" height="22" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="65"
+		width="110" />
+	<e:Label id="label_time" text="2017年1月10日-2017年1月17日" x="165" y="32" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" width="350" textColor="0xFFFEFD" />
+	<e:Image source="vip_line_png" y="61.89" width="530" horizontalCenter="0" />
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" y="63.48" anchorOffsetX="0" width="528"
+		anchorOffsetY="0" height="627.74" horizontalCenter="0" />
+
+
+	<e:Label id="label_timestip" text="Số lần làm mới: " y="660" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" x="113.69"
+		anchorOffsetX="0" textColor="0x00ff00" />
+	<e:Label id="label_consume" text="10000" x="379.33" y="660" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84" scaleX="1" scaleY="1" />
+	<e:Image id="icon_consume" source="icon_gold_png" x="347" y="655" width="27" height="27"
+		scaleX="1" scaleY="1" />
+
+	<e:Label id="label_times" text="10次" y="660.02" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" x="265"
+		anchorOffsetX="0" anchorOffsetY="0" textColor="0x00ff00" />
+	<e:Image id="btn_refresh" source="btn_bg3_png" x="296" y="598" scaleX="1" scaleY="1" />
+	<e:Label text="Làm mới" x="346" y="613" size="26" textAlign="center" strokeColor="0x000000"
+		stroke="1" textColor="0xFFC446" width="120" height="30" verticalAlign="middle"
+		touchEnabled="false" scaleX="1" scaleY="1" />
+	<e:Image id="btn_buyAll" source="btn_bg3_png" x="56" y="598" scaleX="1" scaleY="1" />
+	<e:Label text="Mua hết" x="107" y="613" size="26" textAlign="center" strokeColor="0x000000"
+		stroke="1" textColor="0xFFC446" width="120" height="30" verticalAlign="middle"
+		touchEnabled="false" scaleX="1" scaleY="1" />
+	<e:Label text="Thời gian làm mới: " y="571.33" size="24" textAlign="left" strokeColor="0x000000"
+		stroke="1" verticalAlign="middle" fontFamily="Arial" x="139" anchorOffsetX="0"
+		textColor="0xffc446" />
+	<e:Label id="label_free" text="Làm mới miễn phí: " y="660" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" x="290"
+		anchorOffsetX="0" textColor="0xf8f7d3" />
+	<e:Label id="label_freeTimes" text="10" y="660" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" x="480"
+		anchorOffsetX="0" anchorOffsetY="0" textColor="0x00ff00" />
+	<e:Label id="refreshTime" text="2:19:01" x="344" y="571.33" size="24" textAlign="left"
+		strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" fontFamily="Arial"
+		textColor="0xffc446" />
+
+	<e:Scroller width="527.33" height="493.67" y="69" anchorOffsetX="0" anchorOffsetY="0"
+		horizontalCenter="-0.5">
+		<e:List id="list" itemRendererSkinName="ShopItemSkin" height="524" x="11.67" y="119.67"
+			locked="true">
+			<e:layout>
+				<e:TileLayout />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

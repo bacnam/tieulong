@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildGuardPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing" xmlns:panels="legend.panels.*">
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<component:PanelBG id="panelBG" xmlns:component="legend.view.component.*" scaleX="1" scaleY="1" name="guildguard_png"
+		                   verticalCenter="0" horizontalCenter="0" />
+
+		<e:Image source="list_bg_jpg" y="73.66" anchorOffsetY="0" anchorOffsetX="0" horizontalCenter="0.5" />
+		<e:Image id="ima_bg" y="76" horizontalCenter="0.5" source="guildguard_bg_jpg" width="532" anchorOffsetY="0"
+		         height="396" />
+		<e:ViewStack id="content_View" width="550" height="694" scaleX="1" scaleY="1" selectedIndex="3" y="63"
+		             horizontalCenter="0">
+			<panels:GuildGuardSubPanel name="Bảo vệ" skinName="GuildGuardSubPanel" />
+			<panels:GuildGuardMainSubPanel name="Huấn luyện" skinName="GuildGuardMainSubPanel" />
+		</e:ViewStack>
+		<e:BitmapLabel id="level" y="108" font="vip_number_fnt" text="70" horizontalCenter="237" scaleX="0.85" scaleY="0.85" x="504"/>
+		<e:Image id="btn_help" source="ui_heip_png" x="31" y="76.5" scaleX="1" scaleY="1"/>
+	</e:Group>
+
+
+
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="0" event="LongnvWar" />
+			<e:Object name="1" event="LongnvSacrifice" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

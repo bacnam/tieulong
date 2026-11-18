@@ -1,0 +1,51 @@
+﻿物品ID	物品Name	道具描述	是否可使用bool值	是否立即使用	物品使用类型	对应reward表ID字段	限制等级	携带经验
+ID	#名字	#道具描述	CanUse	UseNow	ItemUseType	RewardList	LimitLevel	CarryExp
+0	Thí nghiệm dùng	Thí nghiệm dùng	TRUE		Chests	101001		
+1	Kết hôn nhẫn	Dùng để kết hôn	FALSE		Chests			
+2	Ly hôn cho phép	Dùng để ly hôn	FALSE		Chests			
+3	Linh bảo mảnh	Thăng cấp linh bảo	FALSE					
+4	Danh hiệu mảnh							
+501	Cao phú soái	Kích hoạt cao phú soái danh hiệu						
+502	Kỹ quan quần hùng	Kích hoạt kỹ quan quần hùng danh hiệu						
+503	Một con đương ngàn	Kích hoạt một con đương ngàn danh hiệu						
+504	Trăm luyện thành tiên	Kích hoạt trăm luyện thành tiên danh hiệu						
+505	Cánh Ngạo thiên	Kích hoạt Cánh Ngạo thiên danh hiệu						
+506	Bộc lộ mũi nhọn	Kích hoạt bộc lộ mũi nhọn danh hiệu						
+507	Tuyệt thế vô song	Kích hoạt tuyệt thế vô song danh hiệu						
+508	Thiên hạ nỗi nhớ nhà	Kích hoạt thiên hạ nỗi nhớ nhà danh hiệu						
+509	Thiên hạ đệ nhất	Kích hoạt thiên hạ đệ nhất danh hiệu						
+510	Mười đại cao thủ	Kích hoạt mười đại cao thủ danh hiệu						
+511	Chiến đấu chi vương	Kích hoạt chiến đấu chi vương danh hiệu						
+512	Quyết chiến mười kiệt	Kích hoạt quyết chiến mười kiệt danh hiệu						
+513	Đệ nhất bang chủ	Kích hoạt đệ nhất bang chủ danh hiệu						
+514	Đệ nhất giúp tinh anh	Kích hoạt đệ nhất giúp tinh anh danh hiệu						
+515	Giương cánh bay cao	Kích hoạt giương cánh bay cao danh hiệu						
+516	Tân hôn yến nhĩ	Kích hoạt tân hôn yến nhĩ danh hiệu						
+517	Triển lộ cao chót vót	Kích hoạt triển lộ cao chót vót danh hiệu						
+518	Phu thê tình thâm	Kích hoạt phu thê tình thâm danh hiệu						
+519	Thần tiên quyến lữ	Kích hoạt thần tiên quyến lữ danh hiệu						
+520	Mậu huyện cố lên	Kích hoạt mậu huyện cố lên danh hiệu						
+521	Tư nỗi nhớ nhà thiết	Kích hoạt tư nỗi nhớ nhà thiết danh hiệu						
+522	Du tử tư về	Kích hoạt du tử tư về danh hiệu						
+523	Vương giả trở về	Kích hoạt vương giả trở về danh hiệu						
+524	Tiểu Long Nữ tuỳ tùng	Kích hoạt Tiểu Long Nữ tuỳ tùng danh hiệu						
+525	Mua nước tương	Kích hoạt mua nước tương danh hiệu						
+526	Đã từng hỗn quá	Kích hoạt đã từng hỗn quá danh hiệu						
+527	Hỗn đến cũng không tệ lắm	Kích hoạt hỗn đến cũng không tệ lắm danh hiệu						
+528	Kim chủ đại nhân	Kích hoạt kim chủ đại nhân danh hiệu						
+2001	Tuyết sơn linh miêu							
+2002	Mạc sầu tiên tử							
+2003	Hỏa vũ tiên đồng							
+2004	Băng phách							
+2005	Thủy Kỳ Lân							
+2006	Băng linh chuột							
+2007	Trăng non thỏ							
+2008	Hổ phách							
+2009	Dao Trì tiên tử							
+2010	Sủng vật heo							
+2011	Lợn rừng							
+2012	Ếch xanh							
+1001	Cấp thấp kinh nghiệm đan		TRUE	TRUE		2000		
+1002	Trung cấp kinh nghiệm đan		TRUE	TRUE		2001		
+1003	Cao cấp kinh nghiệm đan		TRUE	TRUE		2002		
+1004	Siêu phẩm kinh nghiệm đan		TRUE	TRUE		2003		

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true" />
+
+	<e:Image source="btn_close_1_png" x="565" y="194" locked="true" />
+
+
+	<e:Image source="ui_heip_png" x="38" y="206" locked="true" />
+	<e:Image source="huodong_png" y="183" horizontalCenter="0" locked="true" />
+
+
+	<e:Group x="51" y="329.51" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0"
+			width="540" anchorOffsetY="0" height="132.5" />
+		<e:Label id="first_name8" text="1小时44分钟前" x="384" y="25.49000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="138.01" height="21.33" textColor="0x00FF00"
+			fontFamily="Arial" />
+		<e:Group x="41.670000000000016" y="16.149999999999977">
+			<e:Image source="portrait_bg_png" x="6" y="0" />
+			<e:Image source="tou1_png" x="13" y="7.340000000000032" anchorOffsetX="0" width="76.34"
+				anchorOffsetY="0" height="76.34" />
+			<e:Image source="ui_vip_bg_png" x="-6" y="76" />
+			<e:Image source="ui_vip_png" x="18.33" y="80.69" anchorOffsetX="0" width="47.54"
+				anchorOffsetY="0" height="17.61" />
+		</e:Group>
+		<e:Label id="first_name0" text="某某某" x="157" y="25.49000000000001" size="24"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="74.01" height="21.33" textColor="0xFFED29"
+			fontFamily="Arial" />
+		<e:Label id="first_name2" text="红包额度: " x="157" y="62.49000000000001" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial"
+			textColor="0xfdfbe0" />
+		<e:Label id="first_name4" text="9" x="262.71" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="11.01" height="21.33" fontFamily="Arial"
+			textColor="0x00ff00" />
+		<e:Label id="first_name5" text="/30" x="277.56" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial"
+			textColor="0xff0000" />
+		<e:Label id="first_name6" text="9" x="262.71" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="11.01" height="21.33" textColor="0x00FF00" fontFamily="Arial" />
+		<e:Label id="first_name7" text="/30" x="277.56" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="36.34" height="21.33" textColor="0xFF0000" fontFamily="Arial" />
+		<e:Label id="first_name3" text="领取人数: " x="157" y="93.99" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="111.01" height="21.33" textColor="0xFDFBE0" fontFamily="Arial" />
+		<e:Image source="icon_crystal_png" x="318.31" y="53.15" width="35" height="35" />
+		<e:Image source="btn_bg4_3.fw_png" x="406" y="63" />
+		<e:Label id="first_name9" text="抢红包" x="420" y="74.48000000000002" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="61.68" height="21.33" textColor="0xFDFBE0"
+			fontFamily="Arial" />
+	</e:Group>
+	<e:Group x="51" y="470" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0"
+			width="540" anchorOffsetY="0" height="132.5" />
+		<e:Label id="first_name19" text="1小时44分钟前" x="384" y="25.49000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="138.01" height="21.33" textColor="0x00FF00"
+			fontFamily="Arial" />
+		<e:Group x="41.670000000000016" y="16.149999999999977">
+			<e:Image source="portrait_bg_png" x="6" y="0" />
+			<e:Image source="tou1_png" x="13" y="7.340000000000032" anchorOffsetX="0" width="76.34"
+				anchorOffsetY="0" height="76.34" />
+			<e:Image source="ui_vip_bg_png" x="-6" y="76" />
+			<e:Image source="ui_vip_png" x="18.33" y="80.69" anchorOffsetX="0" width="47.54"
+				anchorOffsetY="0" height="17.61" />
+		</e:Group>
+		<e:Label id="first_name20" text="某某某" x="157" y="25.49000000000001" size="24"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="74.01" height="21.33" textColor="0xFFED29"
+			fontFamily="Arial" />
+		<e:Label id="first_name21" text="红包额度: " x="157" y="62.49000000000001" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial"
+			textColor="0xFDFBE0" />
+		<e:Label id="first_name22" text="9" x="262.71" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="11.01" height="21.33" fontFamily="Arial"
+			textColor="0x00FF00" />
+		<e:Label id="first_name23" text="/30" x="277.56" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial"
+			textColor="0xFF0000" />
+		<e:Label id="first_name24" text="9" x="262.71" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="11.01" height="21.33" textColor="0x00FF00" fontFamily="Arial" />
+		<e:Label id="first_name25" text="/30" x="277.56" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="36.34" height="21.33" textColor="0xFF0000" fontFamily="Arial" />
+		<e:Label id="first_name26" text="领取人数: " x="157" y="93.99" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="111.01" height="21.33" textColor="0xFDFBE0" fontFamily="Arial" />
+		<e:Image source="icon_crystal_png" x="318.31" y="53.15" width="35" height="35" />
+		<e:Image source="btn_bg4_3.fw_png" x="406" y="63" />
+		<e:Label id="first_name27" text="抢红包" x="420" y="74.48000000000002" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="61.68" height="21.33" textColor="0xFDFBE0"
+			fontFamily="Arial" />
+	</e:Group>
+	<e:Group x="51" y="611" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0"
+			width="540" anchorOffsetY="0" height="132.5" />
+		<e:Label id="first_name28" text="1小时44分钟前" x="384" y="25.49000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="138.01" height="21.33" textColor="0x00FF00"
+			fontFamily="Arial" />
+		<e:Group x="41.670000000000016" y="16.149999999999977">
+			<e:Image source="portrait_bg_png" x="6" y="0" />
+			<e:Image source="tou1_png" x="13" y="7.340000000000032" anchorOffsetX="0" width="76.34"
+				anchorOffsetY="0" height="76.34" />
+			<e:Image source="ui_vip_bg_png" x="-6" y="76" />
+			<e:Image source="ui_vip_png" x="18.33" y="80.69" anchorOffsetX="0" width="47.54"
+				anchorOffsetY="0" height="17.61" />
+		</e:Group>
+		<e:Label id="first_name29" text="某某某" x="157" y="25.49000000000001" size="24"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="74.01" height="21.33" textColor="0xFFED29"
+			fontFamily="Arial" />
+		<e:Label id="first_name30" text="红包额度: " x="157" y="62.49000000000001" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial"
+			textColor="0xFDFBE0" />
+		<e:Label id="first_name31" text="9" x="262.71" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="11.01" height="21.33" fontFamily="Arial"
+			textColor="0x00FF00" />
+		<e:Label id="first_name32" text="/30" x="277.56" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial"
+			textColor="0xFF0000" />
+		<e:Label id="first_name33" text="9" x="262.71" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="11.01" height="21.33" textColor="0x00FF00" fontFamily="Arial" />
+		<e:Label id="first_name34" text="/30" x="277.56" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="36.34" height="21.33" textColor="0xFF0000" fontFamily="Arial" />
+		<e:Label id="first_name35" text="领取人数: " x="157" y="93.99" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="111.01" height="21.33" textColor="0xFDFBE0" fontFamily="Arial" />
+		<e:Image source="icon_crystal_png" x="318.31" y="53.15" width="35" height="35" />
+		<e:Image source="btn_bg4_3.fw_png" x="406" y="63" />
+		<e:Label id="first_name36" text="抢红包" x="420" y="74.48000000000002" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="61.68" height="21.33" textColor="0xFDFBE0"
+			fontFamily="Arial" />
+	</e:Group>
+	<e:Group x="51" y="750.51" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0"
+			width="540" anchorOffsetY="0" height="132.5" />
+		<e:Label id="first_name46" text="1小时44分钟前" x="384" y="25.49000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="138.01" height="21.33" textColor="0x00FF00"
+			fontFamily="Arial" />
+		<e:Group x="41.670000000000016" y="16.149999999999977">
+			<e:Image source="portrait_bg_png" x="6" y="0" />
+			<e:Image source="tou1_png" x="13" y="7.340000000000032" anchorOffsetX="0" width="76.34"
+				anchorOffsetY="0" height="76.34" />
+			<e:Image source="ui_vip_bg_png" x="-6" y="76" />
+			<e:Image source="ui_vip_png" x="18.33" y="80.69" anchorOffsetX="0" width="47.54"
+				anchorOffsetY="0" height="17.61" />
+		</e:Group>
+		<e:Label id="first_name47" text="某某某" x="157" y="25.49000000000001" size="24"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="74.01" height="21.33" textColor="0xFFED29"
+			fontFamily="Arial" />
+		<e:Label id="first_name48" text="红包额度: " x="157" y="62.49000000000001" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial"
+			textColor="0xFDFBE0" />
+		<e:Label id="first_name49" text="9" x="262.71" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="11.01" height="21.33" fontFamily="Arial"
+			textColor="0x00FF00" />
+		<e:Label id="first_name50" text="/30" x="277.56" y="62.82999999999993" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial"
+			textColor="0xFF0000" />
+		<e:Label id="first_name51" text="9" x="262.71" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="11.01" height="21.33" textColor="0x00FF00" fontFamily="Arial" />
+		<e:Label id="first_name52" text="/30" x="277.56" y="91.5" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="36.34" height="21.33" textColor="0xFF0000" fontFamily="Arial" />
+		<e:Label id="first_name53" text="领取人数: " x="157" y="93.99" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="111.01" height="21.33" textColor="0xFDFBE0" fontFamily="Arial" />
+		<e:Image source="icon_crystal_png" x="318.31" y="53.15" width="35" height="35" />
+		<e:Image source="btn_bg4_3.fw_png" x="406" y="63" />
+		<e:Label id="first_name54" text="抢红包" x="420" y="74.48000000000002" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="61.68" height="21.33" textColor="0xFDFBE0"
+			fontFamily="Arial" />
+	</e:Group>
+
+
+	<e:Group x="51" y="477" locked="true" visible="false">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0"
+			width="540" anchorOffsetY="0" height="132.5" />
+		<e:Label id="first_name10" text="1小时44分钟前" x="384" y="25.49000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="138.01" height="21.33" textColor="0x00FF00"
+			fontFamily="Arial" />
+		<e:Group x="41.670000000000016" y="16.149999999999977">
+			<e:Image source="portrait_bg_png" x="6" y="0" />
+			<e:Image source="tou1_png" x="13" y="7.340000000000032" anchorOffsetX="0" width="76.34"
+				anchorOffsetY="0" height="76.34" />
+			<e:Image source="ui_vip_bg_png" x="-6" y="76" />
+			<e:Image source="ui_vip_png" x="18.33" y="80.69" anchorOffsetX="0" width="47.54"
+				anchorOffsetY="0" height="17.61" />
+		</e:Group>
+		<e:Label id="first_name11" text="某某某" x="157" y="25.49000000000001" size="24"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="74.01" height="21.33" textColor="0xFFED29"
+			fontFamily="Arial" />
+		<e:Label id="first_name12" text="红包额度: " x="157" y="62.49000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial"
+			textColor="0xFDFBE0" />
+		<e:Label id="first_name13" text="9" x="251" y="62.82999999999993" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="11.01" height="21.33" fontFamily="Arial" textColor="0x00FF00" />
+		<e:Label id="first_name14" text="/30" x="265.8499999999999" y="62.82999999999993" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial"
+			textColor="0xFF0000" />
+		<e:Label id="first_name15" text="9" x="251" y="91.5" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="11.01" height="21.33" textColor="0x00FF00" fontFamily="Arial" />
+		<e:Label id="first_name16" text="/30" x="265.8499999999999" y="91.5" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="36.34" height="21.33" textColor="0xFF0000"
+			fontFamily="Arial" />
+		<e:Label id="first_name17" text="领取人数: " x="157" y="90.99000000000001" size="20"
+			textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			scaleX="1" scaleY="1" width="111.01" height="21.33" textColor="0xFDFBE0"
+			fontFamily="Arial" />
+		<e:Image source="icon_crystal_png" x="299.31999999999994" y="54.49000000000001" width="30"
+			height="30" />
+		<e:Image source="btn_bg4_1_png" x="439" y="63.48000000000002" />
+		<e:Label id="first_name18" text="抢" x="450" y="74.48000000000002" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" width="21.68" height="21.33" textColor="0xFDFBE0" fontFamily="Arial" />
+	</e:Group>
+
+</e:Skin>

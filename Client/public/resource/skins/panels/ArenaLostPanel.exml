@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaLostPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="1586bc9fdaa" />
+	<e:Group anchorOffsetX="0" anchorOffsetY="0" width="640" horizontalCenter="0" verticalCenter="0"
+		touchEnabled="false">
+		<e:Group id="group_static" width="100%" height="100%" touchEnabled="false">
+			<e:Image y="69" scaleX="1" scaleY="1" source="battlelost_bg_png" horizontalCenter="-1" />
+			<e:Image scaleX="1" scaleY="1" source="lose_png" horizontalCenter="0" />
+			<e:Image source="vs_png" y="90.68" scaleX="1" scaleY="1" anchorOffsetX="0"
+				anchorOffsetY="0" horizontalCenter="0" />
+			<e:Image source="icon_wu_png" x="268" y="287" scaleX="1" scaleY="1" anchorOffsetX="0"
+				anchorOffsetY="0" />
+			<e:Label text="Lực chiến:" x="60.26" y="225" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30"
+				verticalAlign="middle" anchorOffsetX="0" scaleX="1" scaleY="1" />
+			<e:Label text="Xếp hạng:" y="256" size="22" textAlign="center"
+				strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26"
+				verticalAlign="middle" textColor="0x54FF00" anchorOffsetX="0" horizontalCenter="-90" />
+			<e:Label id="tip" text="(Không đổi)" y="256" size="24" textAlign="center"
+				strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="26"
+				verticalAlign="middle" textColor="0x54FF00" anchorOffsetX="0" horizontalCenter="87" />
+			<e:Label text="Lực chiến:" x="380" y="225" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30"
+				verticalAlign="middle" anchorOffsetX="0" scaleX="1" scaleY="1" />
+		</e:Group>
+		<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" y="326" horizontalCenter="0" />
+		<component:Portrait id="portrait_me" y="106" skinName="Portrait" horizontalCenter="-160" />
+		<e:Label id="lbl_opppower" text="1234567890" x="469" y="225" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30"
+			verticalAlign="middle" anchorOffsetX="0" />
+		<e:Label id="lbl_oppname" text="s.170 Tên nhân vật quá dài" y="197" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" height="30"
+			verticalAlign="middle" horizontalCenter="160" />
+		<component:Portrait id="portrait_opp" y="106" skinName="Portrait" horizontalCenter="160" />
+		<e:Label id="lbl_mypower" text="1234567890" x="162.18" y="225" size="22" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30"
+			verticalAlign="middle" anchorOffsetX="0" />
+		<e:Label id="lbl_myname" text="s.170 Tên nhân vật quá dài" y="197" size="22"
+			textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" height="30"
+			verticalAlign="middle" horizontalCenter="-160" />
+		<e:Label id="btn_rtn" text="Quay lại" y="331" size="22" strokeColor="0x000000" stroke="1"
+			textColor="0xF8F7D3" width="146" verticalAlign="middle" textAlign="center"
+			anchorOffsetY="0" height="34" anchorOffsetX="0" horizontalCenter="0" />
+		<e:Label id="lbl_token" text="12345" x="312" y="288" size="20" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" height="29"
+			verticalAlign="middle" />
+		<e:Label id="lbl_rank" text="28" y="256" size="24" textAlign="center" strokeColor="0x000000"
+			stroke="1" scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x54FF00"
+			x="297" anchorOffsetX="0" />
+	</e:Group>
+</e:Skin>

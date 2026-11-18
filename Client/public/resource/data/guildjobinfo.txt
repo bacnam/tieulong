@@ -1,0 +1,7 @@
+﻿职位枚举	职位名字	#职位名字备注	图标	职位是否显示	数量上限	修改公告权限	修改宣言权限	管理公会权限	审核权限	公会设置	解散权限	解锁等级	开启副本权限	踢人权限	报名帮派战
+id	#JobName	JobName	JobIcon	ShowName	JobAmount	ChangeNotice	ChangeManifesto	ManageGuild	DealRequest	GuildSetting	SetTopMessage	UnlockLevel	OpenInstance	Kickout	GuildwarApply
+President	Bang chủ	Bang chủ		TRUE	1	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE	1	TRUE	TRUE	TRUE
+VicePresident	Phó bang chủ	Phó bang chủ		TRUE	2	TRUE	TRUE	TRUE	TRUE	TRUE	TRUE	1	TRUE	TRUE	TRUE
+Chief	Trưởng lão	Trưởng lão		TRUE	1							1	FALSE	FALSE	FALSE
+Elite	Tinh anh	Tinh anh		TRUE	1							1	FALSE	FALSE	FALSE
+Member	Bình thường thành viên	Bình thường thành viên			999							1	FALSE	FALSE	FALSE

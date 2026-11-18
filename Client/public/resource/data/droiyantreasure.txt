@@ -1,0 +1,7 @@
+﻿统一物品ID	藏宝图	需要等级	打开时间	掉落概率 万分比	关联奖励	锁住的Icon	可以开启时的Icon		普通决斗红名掉落权重	复仇掉落权重
+id	Name	LevelMax	Time	Rate	Reward	LockIcon	Icon	Quality	NormalWeight	RevengeWeight
+1001	Tàng bảo đồ	10	600	1000	700001	cangbaotu_jpg	cangbaotu_jpg	1	10	10
+1002	Tàng bảo đồ	20	900	1000	700002	cangbaotu_jpg	cangbaotu_jpg	2	20	10
+1003	Tàng bảo đồ	30	1200	1500	700003	cangbaotu_jpg	cangbaotu_jpg	3	30	10
+1004	Tàng bảo đồ	40	1800	2000	700004	cangbaotu_jpg	cangbaotu_jpg	4	40	10
+1005	Tàng bảo đồ	50	2400	500	700005	cangbaotu_jpg	cangbaotu_jpg	5	50	10

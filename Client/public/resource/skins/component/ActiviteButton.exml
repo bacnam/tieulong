@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ActiviteButton" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="88" height="86">
+	<e:Image id="bg" source="button_bg_png" x="-7" y="-10" touchEnabled="false"/>
+	<e:Image id="img" source="icon_vipgift_png" touchEnabled="false" y="0" x="0"/>
+	<e:Component id="effect_bg" horizontalCenter="0" verticalCenter="0" touchEnabled="false"/>
+</e:Skin>

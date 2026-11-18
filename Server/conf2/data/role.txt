@@ -1,0 +1,6 @@
+﻿卡牌ID	备注
+id	Name
+1000	Tiêu chuẩn mô hình
+1001	Cổ mộ
+1002	Thiên long
+1003	Cái Bang

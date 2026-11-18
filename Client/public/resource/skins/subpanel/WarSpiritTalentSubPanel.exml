@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WarSpiritTalentSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+	xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_bg_jpg" y="12" anchorOffsetX="0" width="530" anchorOffsetY="0"
+		height="680" horizontalCenter="0" />
+	<e:Button id="btn_up" label="Nâng cấp" y="628.5" width="135" height="45" horizontalCenter="-0.5">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg2_png" />
+				<e:Label id="labelDisplay" size="24" textAlign="center" strokeColor="0x000000"
+					stroke="1" verticalAlign="middle" textColor="0xF8F7D3" horizontalCenter="0"
+					verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Group x="47" y="437.33" anchorOffsetY="0" height="179">
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="1" y="56" anchorOffsetX="0"
+			width="190" anchorOffsetY="0" height="122" />
+		<e:Group x="0" y="5">
+			<e:Image source="smallui_tbg_png" anchorOffsetX="0" width="192" anchorOffsetY="0"
+				height="60.5" horizontalCenter="0" y="-4" />
+			<e:Label text="Hiện tại" x="55" y="2" size="22" textAlign="left" strokeColor="0x000000"
+				stroke="1" width="133" anchorOffsetX="0" anchorOffsetY="0" height="24" bold="true"
+				textColor="0xfdb200" />
+			<e:Label id="cur_lv" text="Lv.0" y="27" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xFFFEFD" anchorOffsetX="0"
+				anchorOffsetY="0" x="53" />
+		</e:Group>
+		<e:Scroller width="177" height="109" x="6" y="66" anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="cur_list">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Label text="{data}" size="18" strokeColor="0x000000" stroke="1"
+							verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0"
+							anchorOffsetY="0" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+	<e:Group x="312" y="437.33" anchorOffsetY="0" height="179">
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="1" y="56" anchorOffsetX="0"
+			width="190" anchorOffsetY="0" height="122" />
+		<e:Group x="0" y="5">
+			<e:Image source="smallui_tbg_png" y="-4" anchorOffsetX="0" width="192" anchorOffsetY="0"
+				height="60.5" horizontalCenter="0" />
+			<e:Label text="Cấp sau" x="57" y="2" size="22" textAlign="left" strokeColor="0x000000"
+				stroke="1" anchorOffsetX="0" anchorOffsetY="0" height="24" bold="true"
+				textColor="0xfdb200" />
+			<e:Label id="next_lv" text="Lv.1" y="27" size="22" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xFFFEFD" anchorOffsetX="0"
+				anchorOffsetY="0" x="57" />
+		</e:Group>
+		<e:Scroller width="177" height="109" y="66" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" horizontalCenter="0">
+			<e:List id="next_list">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Label text="{data}" size="18" strokeColor="0x000000" stroke="1"
+							verticalAlign="middle" textColor="0x00FF00" anchorOffsetX="0"
+							anchorOffsetY="0" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+	<e:Label text="Thiên phú đan: " y="664" size="18" textAlign="left" strokeColor="0x8B1725" stroke="2"
+		textColor="0xFCE795" scaleX="1" scaleY="1" x="15" anchorOffsetX="0" />
+	<e:Label id="label_meridian" text="0/0" y="665" size="20" textAlign="left"
+		strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="137.32"
+		anchorOffsetX="0" />
+	<e:Image source="zl_bg_png" y="89.33" horizontalCenter="0" locked="true" />
+	<e:Label text="Kỹ năng được chia sẻ bở tất cả Chiến linh" y="670" size="18" textAlign="right" strokeColor="0x5E3500" stroke="1"
+		height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xE0C302" anchorOffsetX="0"
+		x="206" />
+	<e:Label id="channel_label" text="Kiếm Thiên phú đan" x="15" y="625.33" size="18" textAlign="left"
+		strokeColor="0x000000" stroke="1" width="228" height="30" verticalAlign="middle"
+		textColor="0x28FF00" bold="true" />
+	<e:Image id="icon_stage_4" x="355.34" y="359.66" source="zl_4n_png" />
+	<e:Image id="icon_stage_8" x="140.34" y="148.66" source="zl_8n_png" />
+	<e:Image id="icon_stage_5" x="248" y="409" source="zl_5_png" />
+	<e:Image id="icon_stage_1" x="248" y="101.33" source="zl_1n_png" />
+	<e:Image id="icon_stage_6" x="136.66" y="360.33" source="zl_6n_png" />
+	<e:Image id="icon_stage_3" x="400.32" y="253.98" source="zl_3n_png" />
+	<e:Image id="icon_stage_2" x="352.66" y="147.66" source="zl_2n_png" />
+	<e:Image id="icon_stage_7" x="96" y="255.01" source="zl_7n_png" />
+	<e:Image id="cur_select" source="zl_select_png" x="275.5" y="127.83" anchorOffsetX="42.5"
+		anchorOffsetY="41" />
+	<e:Image id="img_stage" source="stage_bg_png" y="370.99" rotation="270.1" horizontalCenter="0"
+		height="60" />
+	<component:Power id="power" y="20" skinName="Power" horizontalCenter="0" />
+	<e:BitmapLabel id="label_stage" y="346" font="stage_number_fnt" text="一阶" horizontalCenter="0" />
+</e:Skin>

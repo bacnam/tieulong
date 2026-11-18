@@ -1,0 +1,30 @@
+﻿ID	称号名称	模型	获得条件	品质	激活物品Id	激活物品数量	激活需要等级
+id	Name	Icon	Condition	Quality	ActiveId	ActiveCount	Level
+1	Cao phú soái	gaofushuai_png	Hoạt động đạt được, sung giá trị nguyên bảo đạt tới một vạn nhân dân tệ	6	501	1	1
+2	Kỹ quan quần hùng	jiguanqunxiong_png	Khai phục bảy ngày hoạt động, chiến lực hướng bảng đệ nhất danh đạt được	5	502	1	1
+3	Một con đương ngàn	yijidangqian_png	Khai phục bảy ngày hoạt động, sấm quan hướng bảng đệ nhất danh đạt được	5	503	1	1
+4	Trăm luyện thành tiên	bailianchengxian_png	Khai phục bảy ngày hoạt động, luyện hóa hướng bảng đệ nhất danh đạt được	5	504	1	1
+5	Cánh Ngạo thiên	yifeichongtian_png	Khai phục bảy ngày hoạt động, cánh chim hướng bảng đệ nhất danh đạt được	5	505	1	1
+6	Bộc lộ mũi nhọn	fengmangbilu_png	Khai phục bảy ngày hoạt động, cấp bậc hướng bảng đệ nhất danh đạt được	5	506	1	1
+7	Tuyệt thế vô song	jueshiwushuang_png	Khai phục bảy ngày hoạt động, quyết chiến hướng bảng đệ nhất danh đạt được	5	507	1	1
+8	Thiên hạ nỗi nhớ nhà	tianxiaguixin_png	Khai phục bảy ngày hoạt động, bang phái hướng bảng đệ nhất danh đạt được	5	508	1	1
+9	Thiên hạ đệ nhất	tianxiadiyi_png	Đấu trường xếp hạng đệ nhất đạt được, mỗi ngày 0 điểm kết toán	5	509	1	1
+10	Mười đại cao thủ	shidagaoshou_png	Đấu trường xếp hạng top 10 danh đạt được, mỗi ngày 0 điểm kết toán	4	510	1	1
+11	Giết chóc chi vương	shaluzhiwang_png	Quyết chiến đệ nhất danh đạt được, mỗi ngày 0 điểm kết toán	5	511	1	1
+12	Mười đại sát thủ	shidashashou_png	Quyết chiến trước mười tên đạt được, mỗi ngày 0 điểm kết toán	4	512	1	1
+13	Đệ nhất bang chủ	tianxiadiyibangzhu_png	Bảng đơn đệ nhất bang phái bang chủ, mỗi ngày 0 điểm kết toán	5	513	1	1
+14	Đệ nhất giúp tinh anh	tianxiadiyijingying_png	Bảng đơn đệ nhất bang phái bang phái thành viên, mỗi ngày 0 điểm kết toán	4	514	1	1
+15	Giương cánh bay cao	zhanchigaofei_png	Một người nhân vật cánh cấp bậc đạt tới 50 cấp	4	515	1	1
+16	Tân hôn yến nhĩ	xinhunyaner_png	Hiệp lữ đánh dấu đạt được	4	516	1	1
+17	Triển lộ cao chót vót	zhangluzhengrong_png	Sấm quan đạt tới 50 tầng	3	517	1	1
+18	Phu thê tình thâm	kangliqingshen_png	Hiệp lữ đánh dấu đạt được	4	518	1	1
+19	Thần tiên quyến lữ	shenxianjuanlv_png	Hiệp lữ đánh dấu đạt được	4	519	1	1
+20	Mậu huyện cố lên	maoxianjiayou_png	Hoạt động đạt được	3	520	1	1
+21	Tư nỗi nhớ nhà thiết	siguixinqie_png	Hoạt động đạt được	4	521	1	1
+22	Du tử tư về	youzisigui_png	Hoạt động đạt được	4	522	1	1
+23	Vương giả trở về	wangzheguilai_png	Hoạt động đạt được	5	523	1	1
+24	Tiểu Long Nữ tuỳ tùng	xiaolongnvgenban_png	Hoạt động đạt được, sung giá trị nhất định kim ngạch đạt được	4	524	1	1
+25	Mua nước tương	dajiangyoude_png	Hoạt động đạt được, vượt phục bảng xếp hạng đạt được	4	525	1	1
+26	Đã từng hỗn quá	cengjinghunguo_png	Hoạt động đạt được, vượt phục bảng xếp hạng đạt được	4	526	1	1
+27	Hỗn đến cũng không tệ lắm	hundehaibucuo_png	Hoạt động đạt được, vượt phục bảng xếp hạng đạt được	5	527	1	1
+28	Kim chủ đại nhân	jinzhudaren_png	Hoạt động đạt được, vượt phục bảng xếp hạng đạt được	6	528	1	1

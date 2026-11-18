@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanEnemiesItem" xmlns:e="http://ns.egret.com/eui" width="500" height="135">
+                    <e:Image source="form_inbg_png" scale9Grid="5,4,40,41" width="500" height="135" scaleX="1"
+                             scaleY="1" />
+                    <e:Label id="label_name" text="s.177 Thần toán" size="24" textAlign="left" strokeColor="0x000000"
+                             stroke="1" width="220" textColor="0xFFFFFF" height="29" verticalAlign="middle" scaleX="1"
+                             scaleY="1" y="24" left="147.67" />
+                    <e:Label id="lv" text="100 Cấp" y="76.33" size="24" textAlign="center" strokeColor="0x000000"
+                             stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle" scaleX="1" scaleY="1"
+                             left="151.67" />
+                    <component:Portrait xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing"
+                                        id="portrait" y="13.66" skinName="Portrait" scaleX="1" scaleY="1" left="21.33" />
+                    <e:Button id="btn_revenge" label="Trả thù" width="104" y="64.34" x="376.66" scaleX="1" scaleY="1">
+                        <e:Skin states="up,down,disabled">
+                            <e:Image width="100%" height="100%" source="btn_bg4_png" />
+                            <e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" size="22"
+                                     textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+                                     width="79" />
+                        </e:Skin>
+                    </e:Button>
+</e:Skin>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GemSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+    <w:Config id="1584c96b3b1" />
+    <e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="275" y="563.5" width="160" height="30" scaleX="1"
+             scaleY="1" />
+    <e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="170" width="300" height="360" scaleX="1" scaleY="1"
+             horizontalCenter="0" />
+    <e:Image source="forge_bg_jpg" y="185" scaleX="1" scaleY="1"  horizontalCenter="0"/>
+    <e:Label id="label_gemCount" text="123456789" y="564.33" size="18" textAlign="center" strokeColor="0x000000"
+             stroke="1" textColor="0xFFFFFF" height="29" verticalAlign="middle" anchorOffsetX="0" horizontalCenter="80" />
+    <component:Equip_Gem id="equip_Weapon" x="20" y="150" scaleX="1" scaleY="1" skinName="SlotItem"  groupName="Gem"/>
+    <component:Equip_Gem id="equip_Body" x="20" y="250" scaleX="1" scaleY="1" skinName="SlotItem"  groupName="Gem"/>
+    <component:Equip_Gem id="equip_RingLeft" x="20" y="350" scaleX="1" scaleY="1" skinName="SlotItem"  groupName="Gem"/>
+    <component:Equip_Gem id="equip_BraceletLeft" x="20" y="450" scaleX="1" scaleY="1" skinName="SlotItem"  groupName="Gem"/>
+    <component:Equip_Gem id="equip_Head" y="150" scaleX="1" scaleY="1" right="20" skinName="SlotItem" groupName="Gem" />
+    <component:Equip_Gem id="equip_Neck" y="250" scaleX="1" scaleY="1" right="20" skinName="SlotItem"  groupName="Gem"/>
+    <component:Equip_Gem id="equip_RingRight" y="350" scaleX="1" scaleY="1" right="20" skinName="SlotItem"  groupName="Gem"/>
+    <component:Equip_Gem id="equip_BraceletRight" y="450" scaleX="1" scaleY="1" right="20" skinName="SlotItem"  groupName="Gem"/>
+    <e:Label id="label_gem" text="10级宝石" y="374.62" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             scaleX="1" scaleY="1" textColor="0xFCFBFB" width="202" height="26" verticalAlign="middle" x="197.01" />
+    <e:Label text="Chi phí:" x="128" y="563.68" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" width="109" height="30" verticalAlign="middle" />
+    <e:Image id="btn_up" source="btn_bg2_png" scale9Grid="56,4,23,37" y="625" scaleX="1" scaleY="1" horizontalCenter="0" />
+    <e:Label id="label_up" text="Nâng cấp" y="636.23" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+             textColor="0xF8F7D3" width="100" horizontalCenter="0" touchEnabled="false" />
+	<e:Image id="btn_upAll" source="btn_bg2_png" scale9Grid="56,4,23,37" y="625" scaleX="1" scaleY="1" horizontalCenter="190.5"/>
+	<e:Label id="label_upAll" text="Tối đa" y="636.23" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="100" horizontalCenter="190" touchEnabled="false"/>
+    <e:Image source="gem_png" x="230.01" y="557.36" />
+    <e:Image source="gem_png" x="146" y="368.84" />
+    <e:Label text="Cấp hiện tại" y="417.59" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1"
+             textColor="0xFCFBFB" height="26" verticalAlign="middle" x="146" />
+    <e:Label id="label_curAtt" text="攻击  +5021" y="441.59" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             scaleX="1" scaleY="1" textColor="0xFCFBFB" height="26" verticalAlign="middle" x="215" />
+    <e:Label text="Cấp tiếp theo" y="469.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1"
+             height="26" verticalAlign="middle" textColor="0x54FF00" x="146" />
+    <e:Label id="label_nextAtt" text="攻击  +5021" y="500.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             scaleX="1" scaleY="1" height="26" verticalAlign="middle" textColor="0x54FF00" x="215" />
+    <component:BaseItem id="baseItem" y="273" horizontalCenter="0"  anchorOffsetX="36" anchorOffsetY="36"/>
+    <e:Label id="label_pos" text="部位: 衣服" y="325" size="16" textAlign="center" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" verticalAlign="middle" horizontalCenter="0" />
+</e:Skin>

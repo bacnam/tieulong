@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="LimitGiftSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_tab_png" anchorOffsetX="0" width="527" anchorOffsetY="0" height="203" scaleX="1" scaleY="1" horizontalCenter="0" y="2"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" anchorOffsetX="0" width="531" anchorOffsetY="0" height="677" scaleX="1" scaleY="1" horizontalCenter="0.5" y="17"/>
+	<e:Image source="huodong_bg_jpg" anchorOffsetY="0" height="668.34" scaleX="1" scaleY="1" horizontalCenter="0" y="21.02"/>
+	<e:Label id="endTime" text="23:30:30" x="293.83" y="31.27" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" width="119" anchorOffsetX="0" textColor="0xFFF523" scaleX="1" scaleY="1"/>
+	<e:Label id="label_endTip" text="结束倒计时: " x="165.72" y="31.27" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" textColor="0xFFF027" scaleX="1" scaleY="1" anchorOffsetY="0" height="22"/>
+	<e:Label id="label_end" text="活动结束" y="30.27" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" scaleX="1" scaleY="1" textColor="0xFF0000" horizontalCenter="0"/>
+	<e:Scroller width="518" height="617" x="17" y="67" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="LimitGiftItem">
+			<e:layout>
+				<e:VerticalLayout horizontalAlign="center" gap="0"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

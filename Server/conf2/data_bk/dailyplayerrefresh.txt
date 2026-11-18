@@ -1,0 +1,26 @@
+﻿ID	备注	起始参照	起始第一次触发秒数	循环间隔 至少为1	触发事件列表	事件值
+Index	Comment	StartRefer	FirstSec	Interval	EventTypes	EventValues
+1	Mỗi ngày 0 điểm kích phát	NowDay	0	86400	Day_h0	
+2	Mỗi ngày 3 điểm kích phát	NowDay	10800	86400	Day_h4	
+3	Mỗi ngày 8 giờ kích phát	NowDay	28800	86400	Day_h8	
+4	Mỗi ngày 9 giờ kích phát	NowDay	32400	86400	Day_h9	
+5	Mỗi ngày 10 giờ kích phát	NowDay	36000	86400	Day_h10	
+6	Mỗi ngày 11 giờ kích phát	NowDay	39590	86400	Day_h11	
+7	Mỗi ngày 12 điểm kích phát	NowDay	43200	86400	Day_h12	
+8	Mỗi ngày 1 8 giờ kích phát	NowDay	64800	86400	Day_h18	
+9	Mỗi ngày 20 điểm kích phát	NowDay	72000	86400	Day_h20	
+10	Mỗi ngày 21 điểm kích phát	NowDay	75600	86400	Day_h21	
+11	Mỗi ngày 22 điểm kích phát	NowDay	79200	86400	Day_h22	
+12	Mỗi ngày 1 4 giờ kích phát	NowDay	50400	86400	Day_h14	
+13	Mỗi tuần ngày thứ Hai 0 điểm	NowWeek	0	604800	Week_d1h0	
+14	Mỗi tuần ngày thứ Hai 3 điểm	NowWeek	97200	604800	Week_d1h4	
+15	Mỗi cách 5 phút	NowSec	300	300	Every_m5	
+16	Mỗi cách 15 phút	NowSec	900	900	Every_m15	
+17	Mỗi cách 30 phút	NowSec	1800	1800	Every_m30	
+18	Mỗi cách một giờ	NowDay	0	3600	Every_h1	
+19	Mỗi cách hai giờ	NowDay	0	7200	Every_h2	
+20	Mỗi cách tam giờ	NowDay	0	10800	Every_h3	
+21	Mỗi cách bốn giờ	NowDay	0	14400	Every_h4	
+22	Mỗi cách sáu giờ	NowDay	0	21600	Every_h6	
+23	Mỗi cách tám giờ	NowDay	0	28800	Every_h8	
+24	Mỗi cách mười hai giờ	NowDay	0	43200	Every_h12	

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildBattleWinPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="400" height="320" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="320" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="8" y="49" anchorOffsetX="0" width="384" anchorOffsetY="0" height="190.5" scaleX="1" scaleY="1"/>
+		<e:Label id="reward1" text="Biếu" x="165" y="135" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label id="reward2" text="Tiền đồng" x="165" y="186.39" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label id="reweardcount1" text="100000" x="263" y="135" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label id="rewardcount2" text="100000" x="263" y="185" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label id="attack" text="10" x="178" y="80" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Label text="Thất bại cá nhân:" x="45" y="80" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Label text="Phần thưởng cá nhân:" x="45" y="135" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Image source="smallui_tbg_png" y="3" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Label text="Chiến thắng" y="7" size="24" textAlign="center" strokeColor="0x000000" stroke="1" height="32" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" textColor="0xfdb200"/>
+		<e:Image source="btn_close_png" x="331.32" y="-1.65" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="150" y="256.65" anchorOffsetX="0" width="100" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Label text="Xác nhận" x="150" y="268.65" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="rewardicon1" source="icon_guilddonate_png" x="213" y="120" scaleX="1" scaleY="1"/>
+		<e:Image id="rewardicon2" source="icon_gold_png" x="213" y="175" scaleX="1" scaleY="1"/>
+	</e:Group>
+</e:Skin>

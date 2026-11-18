@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankItem" width="415" height="88" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" width="415" height="88" scaleX="1" scaleY="1" touchEnabled="false"/>
+	<e:Image source="ui_rank_bg_png" x="21" scaleX="1" scaleY="1" touchEnabled="false"/>
+	<e:Label id="rank" text="2" y="16" size="26" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" touchEnabled="false" horizontalCenter="-156.5"/>
+	<e:Image id="img_vipbg" source="ui_vip_bg_png" x="-1.5" scaleX="1" scaleY="1" y="60" touchEnabled="false"/>
+	<e:Image id="img_vip" source="ui_vip_png" x="18.5" y="63.5" width="51" height="19" scaleX="1" scaleY="1" touchEnabled="false"/>
+	<e:Label id="label_name" text="asd  170 cấp" x="130" y="10.5" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle" scaleX="1" scaleY="1" touchEnabled="false"/>
+	<e:Label id="power" text="Trợ giúp" x="130" y="38" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" touchEnabled="false"/>
+	<e:Label id="tip" text="Lực chiến: 1111111111" x="130" y="62" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" touchEnabled="false"/>
+	<e:BitmapLabel id="vip" font="vip_number_fnt" text="10" scaleX="0.5" scaleY="0.5" x="63.5" y="59" touchEnabled="false"/>
+</e:Skin>

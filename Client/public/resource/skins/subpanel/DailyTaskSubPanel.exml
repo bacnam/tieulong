@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DailyTaskSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="8.35" scaleX="1" scaleY="1" width="520" height="600"
+	         horizontalCenter="0" />
+	<e:Image source="shop_bar_bg_png" x="121.45" y="625.4" width="403" />
+	<e:Label text="Hoạt động" x="6" y="621.01" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+	         textColor="0xF8F7D3" width="90" />
+	<e:Label id="label_active" text="110/120" x="11" y="643.01" size="20" textAlign="center" strokeColor="0x000000"
+	         stroke="1" textColor="0xFFC446" width="80" height="30" verticalAlign="middle" />
+	<e:Image id="line" source="shop_bar_png" scale9Grid="11,0,421,12" x="127" y="630.98" width="385" />
+	<e:Image source="vitality_png" x="111" y="616.98" />
+	<e:Scroller width="500" height="580" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" y="17.36">
+		<e:List id="list" width="100%" itemRendererSkinName="DailyTaskItem">
+			<e:layout>
+				<e:VerticalLayout/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<component:DailyChestItem id="chest_1" x="213.33" y="635" anchorOffsetX="40" anchorOffsetY="50" width="80"
+	                          height="90" touchEnabled="false">
+		<e:Skin>
+			<e:Image id="icon" source="chest_png" horizontalCenter="0" verticalCenter="0" touchEnabled="false"/>
+			<e:Label id="point" text="50" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446"
+			         verticalAlign="middle" horizontalCenter="0" bottom="0" touchEnabled="false"/>
+		</e:Skin>
+	</component:DailyChestItem>
+	<component:DailyChestItem id="chest_2" x="333.34" y="635" anchorOffsetX="40" anchorOffsetY="50" width="80"
+	                          height="90" touchEnabled="false">
+		<e:Skin>
+			<e:Image id="icon" source="chest2_png" horizontalCenter="0" verticalCenter="0" touchEnabled="false"/>
+			<e:Label id="point" text="50" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446"
+			         verticalAlign="middle" horizontalCenter="0" bottom="0" touchEnabled="false"/>
+		</e:Skin>
+	</component:DailyChestItem>
+	<component:DailyChestItem id="chest_3" x="482.66" y="635" anchorOffsetX="40" anchorOffsetY="50" width="80"
+	                          height="90" touchEnabled="false">
+		<e:Skin>
+			<e:Image id="icon" source="chest3_png" horizontalCenter="0" verticalCenter="0" touchEnabled="false"/>
+			<e:Label id="point" text="50" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446"
+			         verticalAlign="middle" horizontalCenter="0" bottom="0" touchEnabled="false"/>
+		</e:Skin>
+	</component:DailyChestItem>
+</e:Skin>

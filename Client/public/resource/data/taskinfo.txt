@@ -1,0 +1,3 @@
+﻿ID	任务跳转类型	任务图标	完成标题	完成标题	中文描述	中文描述	达成条件个数	奖励表ID(reward表)	参数列表(完成次数)	参数2列表	附加参数	排序ID	是否隐藏	完成获得活跃度
+ID	TaskName	Icon	#CompleteTitle	CompleteTitle	#Description	Description	Condition	PrizeID	ArgsList	SecondArgsList	AdditionArgsList	SortID	IsHide	ActiveScore
+1	CompleteNormalLevel	TaskLevelIcon	Lớn hơn	@taskinfo_CompleteTitle_1	Hoàn thành {0} mức thông thường.	@taskinfo_Description_1	6	105001	10			1		5

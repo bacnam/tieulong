@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DialogPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group id="group" width="100%" height="470" touchEnabled="false" anchorOffsetY="0" bottom="0" x="0">
+		<e:Group id="group_Left" width="200" height="200" anchorOffsetX="0" anchorOffsetY="0" bottom="230" touchEnabled="false" left="60">
+			<e:Image id="icon_left" anchorOffsetY="270" anchorOffsetX="125" touchEnabled="false" scaleX="1" scaleY="1" y="180" source="portrait_gumu_png" width="250" height="270" x="80"/>
+			<e:Image id="nameBg_Left" source="namebg_png" x="13.33" y="122.66" scaleX="1" scaleY="1" touchEnabled="false"/>
+			<e:Label id="name_left" text="标签" textAlign="center" touchEnabled="false" scaleX="1" scaleY="1" stroke="1" strokeColor="0x000000" y="133.99" horizontalCenter="-9"/>
+		</e:Group>
+		<e:Group id="group_Right" width="200" height="200" anchorOffsetX="0" anchorOffsetY="0" bottom="230" touchEnabled="false" right="60">
+			<e:Image id="icon_right" anchorOffsetY="270" anchorOffsetX="125" touchEnabled="false" scaleX="1" scaleY="1" y="180" source="portrait_gumu_png" x="90" width="250" height="270"/>
+			<e:Image id="nameBg_Right" source="namebg_png" x="16" y="122.66" scaleX="1" scaleY="1" touchEnabled="false"/>
+			<e:Label id="name_right" text="标签" textAlign="center" touchEnabled="false" scaleX="1" scaleY="1" stroke="1" strokeColor="0x000000" y="133.34" horizontalCenter="-5"/>
+		</e:Group>
+		<e:Image width="100%" height="253.34" anchorOffsetX="12.41" anchorOffsetY="-2.16" touchEnabled="false" scaleX="1" scaleY="1" horizontalCenter="0" source="talk_jpg" bottom="0"/>
+		<e:Label id="label_content" text="标签" anchorOffsetX="0" width="584.24" anchorOffsetY="0" height="161.82" touchEnabled="false" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" textAlign="left" stroke="1" strokeColor="0xffffff" textColor="0x774129" fontFamily="Arial" bold="true" verticalCenter="85.61000000000001"/>
+		<e:Component id="movieclip" x="323" y="464"/>
+		<e:Component id="anjian" x="593" y="422" touchChildren="false" touchEnabled="false"/>
+	</e:Group>
+	<e:Label id="label_bg" text="天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天天" horizontalCenter="0" verticalCenter="0" width="560" touchEnabled="false" textAlign="center" stroke="2" strokeColor="0x010101" lineSpacing="5" size="42"/>
+	<e:Button id="btn_jump" label="Bỏ qua" bottom="14" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg2_png"/>
+			<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0" stroke="1" textColor="0xf1d506" bold="true"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+</e:Skin>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanLogItem" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="1587205a85c"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" scaleX="1" scaleY="1" width="460" height="223"/>
+	<e:Label id="label_name" text="s.170 Lỗ Tân Tân" x="117" y="10" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" width="200" height="30" verticalAlign="middle"/>
+	<e:Label id="time" text="14 phút trước" y="14" size="20" textAlign="right" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" right="17"/>
+	<e:Label id="integral" text="12345" x="258" y="50" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle"/>
+	<e:Label id="exp" text="12345" x="387" y="50" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle"/>
+	<e:Label text="EXP:" x="334" y="50" size="20" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0x00ff00" bold="true"/>
+	<e:Image source="icon_gold_png" x="114" y="42" width="35" height="36"/>
+	<e:Label id="gold" text="2" x="156" y="50" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+	<e:Image source="redname_png" x="221" y="40" width="36" height="36"/>
+	<e:Image id="winIcon" source="pk_win_png" x="9" y="56"/>
+	<e:Label text="Vật phẩm rơi" y="85" size="16" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" height="15" verticalAlign="middle" textColor="0x54FF00" x="131.69"/>
+	<e:Scroller width="329" height="101" x="119" y="114" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:HorizontalLayout gap="15" paddingLeft="10"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

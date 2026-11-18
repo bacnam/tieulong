@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarqueeSkin" width="538" height="254" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="158cef48204" ></w:Config>
+	<e:Image id="bg" source="tit_bg_png" scale9Grid="99,3,314,50" anchorOffsetX="0" width="538" anchorOffsetY="0" height="45" x="0" y="105"/>
+	<e:Label id="label" text="Thẻ" anchorOffsetX="0" textColor="0xffb402" x="239" y="112"/>
+</e:Skin>

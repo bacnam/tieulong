@@ -1,0 +1,63 @@
+﻿副本id	副本类型	地图id	等级	名称	名称	图标	材料消耗	奖励预览	奖励id	建议战力	开始对话	结束对话	引导类型	提示说明	第一波怪	第二波怪	第三波怪	第四波怪	第五波
+id	Type	MapId	Level	Name	BossName	Icon	Material	RewardList	RewardId	Power	BeginDialog	EndDialog	GuideType	Tip	Wave1	Wave2	Wave3	Wave4	Wave5
+1	EquipInstance	BattleFubenMap04	10	Quét sạch Toàn Chân	Toàn Chân đệ tử	s_portrait005_png	1	11047;11053;11059;11065;11071;12047;12053;12059;12065;12071;13047;13053;13059;13065;13071	320001	1500	6	7			201001:3	202001:3	203001:3	200001	
+2	EquipInstance	BattleFubenMap05	20	Chín âm bản thiếu	Tôn bà bà	s_portrait025_png	1	11083;11089;11095;11101;11107;12083;12089;12095;12101;12107;13083;13089;13095;13101;13107	320002	12000	8	9			201002:3	202002:3	203002:3	200002	
+3	EquipInstance	BattleFubenMap06	30	Đào hoa đoạn tuyệt	Trình cô nương	s_portrait001_png	1	11119;11125;11131;11137;11143;12119;12125;12131;12137;12143;13119;13125;13131;13137;13143	320003	25000	10	11			201003:3	202003:3	203003:3	200003	
+4	EquipInstance	BattleFubenMap	40	Thật giả long nữ	Nha dịch	s_portrait008_png	1	11155;11161;11167;11173;11179;12155;12161;12167;12173;12179;13155;13161;13167;13173;13179	320004	70000	12	13			201004:3	202004:3	203004:3	200004	
+5	EquipInstance	BattleSceneMap	50	Thân thế chi mê	Kim đao hắc kiếm	s_portrait004_png	1	11191;11197;11203;11209;11215;12191;12197;12203;12209;12215;13191;13197;13203;13209;13215	320005	125000	14	15			201005:3	202005:3	203005:3	200005	
+6	EquipInstance	BattleFubenMap07	60	Hoa Sơn đỉnh	Lăng Ba tiên tử	s_portrait002_png	1	11227;11233;11239;11245;11251;12227;12233;12239;12245;12251;13227;13233;13239;13245;13251	320006	225000	16	17			201006:3	202006:3	203006:3	200006	
+7	EquipInstance	BattleFubenMap02	70	Hoạt tử nhân	Bắc Sơn rượu tiên	s_portrait005_png	1	11263;11269;11275;11281;11287;12263;12269;12275;12281;12287;13263;13269;13275;13281;13287	320007	280000	18	19			201007:3	202007:3	200007		
+8	EquipInstance	BattleFubenMap03	80	Sinh tử cách đôi đường	Dương đại hiệp	s_portrait007_png	1	11299;11305;11311;11317;11323;12299;12305;12311;12317;12323;13299;13305;13311;13317;13323	320008	1000000	20	21			201008:3	202008:3	203008:3	200008	
+9	EquipInstance	BattleFubenMap09	90	Si tâm một mảnh	Doãn Chí Bình	s_portrait009_png	1	11335;11341;11347;11353;11359;12335;12341;12347;12353;12359;13335;13341;13347;13353;13359	320009	1200000	22	23			201009:3	202009:3	200009		
+10	EquipInstance	BattleFubenMap04	100	Tình là vật gì	Xích luyện nữ	s_portrait003_png	1	11371;11377;11383;11389;11395;12371;12377;12383;12389;12395;13371;13377;13383;13389;13395	320010	1600000	24	25			201010:3	202010:3	203010:3	200010	
+11	EquipInstance	BattleSceneMap09	110	Long nữ rơi xuống	Thiết chưởng bang chủ	s_portrait004_png	1	11401;11407;11413;11419;11425;11431;12401;12407;12413;12419;12425;12431;13401;13407;13413;13419;13425;13431	320011	3000000	26	27		Ta đường đường đàn ông, vì cái gì sẽ sợ trăng non thỏ?	201011:3	202011:3	203011:3	200011	
+12	EquipInstance	BattleSceneMap03	120	Trường Xuân chân nhân	Trường Xuân chân nhân	s_portrait013_png	1	11437;11443;11449;11455;11461;11467;12437;12443;12449;12455;12461;12467;13437;13443;13449;13455;13461;13467	320012	3400000	28	29		Mỗi lần nhìn đến chiến linh trăng non thỏ liền hai chân nhũn ra	201012:3	202012:3	203012:3	200012	
+13	EquipInstance	BattleSceneMap02	130	Đầm rồng hang hổ	Linh miêu	s_portrait014_png	1	11473;11479;11485;11491;11497;11503;12473;12479;12485;12491;12497;12503;13473;13479;13485;13491;13497;13503	320013	4000000	30	31		Trăng non thỏ là ta đối thủ một mất một còn	201013:3	202013:3	203013:3	200013	
+14	EquipInstance	BattleSceneMap07	140	Trở về Chung Nam	Trùng dương chân nhân	s_portrait015_png	1	11509;11515;11521;11527;11533;11539;12509;12515;12521;12527;12533;12539;13509;13515;13521;13527;13533;13539	320014	5000000	32	33		Trừ bỏ trăng non thỏ, ta sợ quá ai?	201014:3	202014:3	203014:3	200014	
+15	EquipInstance	BattleFubenMap08	150	Triều anh lạc phượng	Triều anh tiên tử	s_portrait016_png	1	11545;11551;11557;11563;11569;11575;12545;12551;12557;12563;12569;12575;13545;13551;13557;13563;13569;13575	320015	6000000	34	35		Manh manh thỏ con ở nơi nào nha	201015:3	202015:3	203015:3	200015	
+16	EquipInstance	BattleSceneMap10	160	Song long sẽ	Bạch y nữ tử	s_portrait001_png	1	11581;11587;11593;11599;11605;11611;12581;12587;12593;12599;12605;12611;13581;13587;13593;13599;13605;13611	320016	7000000	36	37		Trăng non thỏ như vậy đáng yêu, như thế nào bỏ được đánh nó	201016:3	202016:3	203016:3	200016	
+17	EquipInstance	BattleSceneMap11	170	Nam thiên phật chủ	Nam thiên phật chủ	s_portrait017_png	1	11617;11623;11629;11635;11641;11647;12617;12623;12629;12635;12641;12647;13617;13623;13629;13635;13641;13647	320017	8000000	38	39		Bị thỏ con sợ tới mức ta đều gầy	201017:3	202017:3	200017		
+18	EquipInstance	BattleFubenMap12	180	Đông đảo Tà Chủ	Đông đảo Tà Chủ	s_portrait013_png	1	11653;11659;11665;11671;11677;11683;12653;12659;12665;12671;12677;12683;13653;13659;13665;13671;13677;13683	320018	9000000	40	41		Trăng non thỏ đến trảo trở về cấp Dung nhi, cũng không thể bị thương nó	201018:3	202018:3	203018:3	200018	
+19	EquipInstance	BattleSceneMap05	190	Yêu hận tình thù	Khâu chỗ cơ	s_portrait011_png	1	11689;11695;11701;11707;11713;11719;12689;12695;12701;12707;12713;12719;13689;13695;13701;13707;13713;13719	320019	10000000	42	43		Khâu mỗ không đối tiểu động vật ra tay	201019:3	202019:3	200019		
+20	EquipInstance	BattleFubenMap10	200	Long nữ truyền kỳ	Bạch y nữ tử	s_portrait012_png	1	11725;11731;11737;11743;11749;11755;12725;12731;12737;12743;12749;12755;13725;13731;13737;13743;13749;13755	320020	11000000	44	45		Trăng non thỏ như vậy đáng yêu, như thế nào bỏ được đánh nó	201020:3	202020:3	203020:3	200020	
+21	EquipInstance	BattleSceneMap09	210	Long nữ rơi xuống	Thiết chưởng bang chủ	s_portrait004_png	1	110005;110011;110017;110023;110029;110035;120005;120011;120017;120023;120029;120035;130005;130011;130017;130023;130029;130035	320021	13000000					200021				
+22	EquipInstance	BattleSceneMap03	220	Trường Xuân chân nhân	Trường Xuân chân nhân	s_portrait013_png	1	110041;110047;110053;110059;110065;110071;120041;120047;120053;120059;120065;120071;130041;130047;130053;130059;130065;130071	320022	15000000					200022				
+23	EquipInstance	BattleSceneMap02	230	Đầm rồng hang hổ	Linh miêu	s_portrait014_png	1	110077;110083;110089;110095;110101;110107;120077;120083;120089;120095;120101;120107;130077;130083;130089;130095;130101;130107	320023	17000000					200023				
+24	EquipInstance	BattleSceneMap07	240	Trở về Chung Nam	Trùng dương chân nhân	s_portrait015_png	1	110113;110119;110125;110131;110137;110143;120113;120119;120125;120131;120137;120143;130113;130119;130125;130131;130137;130143	320024	18000000					200024				
+25	EquipInstance	BattleFubenMap08	250	Triều anh lạc phượng	Triều anh tiên tử	s_portrait016_png	1	110149;110155;110161;110167;110173;110179;120149;120155;120161;120167;120173;120179;130149;130155;130161;130167;130173;130179	320025	19000000					200025				
+26	EquipInstance	BattleSceneMap10	260	Song long sẽ	Bạch y nữ tử	s_portrait001_png	1	110185;110191;110197;110203;110209;110215;120185;120191;120197;120203;120209;120215;130185;130191;130197;130203;130209;130215	320026	20000000					200026				
+27	EquipInstance	BattleSceneMap11	270	Nam thiên phật chủ	Nam thiên phật chủ	s_portrait017_png	1	110221;110227;110233;110239;110245;110251;120221;120227;120233;120239;120245;120251;130221;130227;130233;130239;130245;130251	320027	21000000					200027				
+28	EquipInstance	BattleFubenMap12	280	Đông đảo Tà Chủ	Đông đảo Tà Chủ	s_portrait013_png	1	110257;110263;110269;110275;110281;110287;120257;120263;120269;120275;120281;120287;130257;130263;130269;130275;130281;130287	320028	22000000					200028				
+29	EquipInstance	BattleSceneMap05	290	Yêu hận tình thù	Khâu chỗ cơ	s_portrait011_png	1	110293;110299;110305;110311;110317;110323;120293;120299;120305;120311;120317;120323;130293;130299;130305;130311;130317;130323	320029	20000000					200029				
+30	EquipInstance	BattleFubenMap10	300	Long nữ truyền kỳ	Bạch y nữ tử	s_portrait012_png	1	110329;110335;110341;110347;110353;110359;120329;120335;120341;120347;120353;120359;130329;130335;130341;130347;130353;130359	320030	21000000					200030				
+1001	GemInstance	BattleBossMap04	26	Hổ phách	Hổ phách	s_portrait023_png	1	8	300001	70000					210001				
+1002	GemInstance	BattleBossMap04	50	Hổ phách	Hổ phách	s_portrait023_png	1	8	300002	350000					210002				
+1003	GemInstance	WorldBossMap01	70	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300003	1200000					210003				
+1004	GemInstance	WorldBossMap02	90	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300004	5500000				Chiến linh Thủy Kỳ Lân mới có thể khắc chế ta	210004				
+1005	GemInstance	WorldBossMap03	120	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300005	9000000				Chiến linh Thủy Kỳ Lân mới có thể khắc chế ta	210005				
+1006	GemInstance	WorldBossMap04	150	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300006	15000000				Chiến linh Thủy Kỳ Lân mới có thể khắc chế ta	210006				
+1007	GemInstance	WorldBossMap02	170	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300007	30000000				Chiến linh Thủy Kỳ Lân mới có thể khắc chế ta	210007				
+1008	GemInstance	WorldBossMap04	180	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300008	60000000				Chiến linh Thủy Kỳ Lân mới có thể khắc chế ta	210008				
+1009	GemInstance	WorldBossMap01	200	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300009	90000000					210009				
+1010	GemInstance	WorldBossMap02	220	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300010	120000000					210010				
+1011	GemInstance	WorldBossMap03	240	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300011	150000000					210011				
+1012	GemInstance	WorldBossMap04	260	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300012	180000000					210012				
+1013	GemInstance	WorldBossMap02	280	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300013	210000000					210013				
+1014	GemInstance	WorldBossMap04	300	Hỏa Kỳ Lân	Hỏa Kỳ Lân	s_portrait010_png	1	8	300014	240000000					210014				
+2001	MeridianInstance	BattleBossMap04	9	Trường Xuân tử	Trường Xuân tử	s_portrait004_png	1	10	310001	12000					220001				
+2002	MeridianInstance	BattleBossMap01	25	Ngọc Dương Tử	Ngọc Dương Tử	s_portrait006_png	1	10	310002	50000					220002				
+2003	MeridianInstance	BattleBossMap02	50	Trường sinh tử	Trường sinh tử	s_portrait009_png	1	10	310003	280000					220003				
+2004	MeridianInstance	BattleBossMap03	75	Đan dương tử	Đan dương tử	s_portrait008_png	1	10	310004	1000000					220004				
+2005	MeridianInstance	BattleBossMap04	95	Tiêu Dao Tử	Tiêu Dao Tử	s_portrait005_png	1	10	310005	3500000				Băng linh chuột hàn khí có thể hạn chế ta năng lực	220005				
+2006	MeridianInstance	BattleBossMap04	130	Đan dương tử	Đan dương tử	s_portrait008_png	1	10	310006	7000000				Băng linh chuột hàn khí có thể hạn chế ta năng lực	220006				
+2007	MeridianInstance	BattleBossMap04	160	Tiêu Dao Tử	Tiêu Dao Tử	s_portrait005_png	1	10	310007	11500000				Băng linh chuột hàn khí có thể hạn chế ta năng lực	220007				
+2008	MeridianInstance	BattleBossMap01	190	Ngọc Dương Tử	Ngọc Dương Tử	s_portrait006_png	1	10	310008	16000000					220008				
+2009	MeridianInstance	BattleBossMap02	210	Trường sinh tử	Trường sinh tử	s_portrait009_png	1	10	310009	20500000					220009				
+2010	MeridianInstance	BattleBossMap03	230	Đan dương tử	Đan dương tử	s_portrait008_png	1	10	310010	25000000					220010				
+2011	MeridianInstance	BattleBossMap04	250	Tiêu Dao Tử	Tiêu Dao Tử	s_portrait005_png	1	10	310011	29500000					220011				
+2012	MeridianInstance	BattleBossMap04	270	Đan dương tử	Đan dương tử	s_portrait008_png	1	10	310012	34000000					220012				
+2013	MeridianInstance	BattleBossMap04	290	Tiêu Dao Tử	Tiêu Dao Tử	s_portrait005_png	1	10	310013	38500000					220013				
+3001	GuaidInstance	BattleSceneMap04s	0				0		600001		3	4	Battle:GodCharacters		400001:3	400002			
+3002	GuaidInstance												Guide:1						
+3003	GuaidInstance											5	Guide:2						
+3004	GuaidInstance												End						

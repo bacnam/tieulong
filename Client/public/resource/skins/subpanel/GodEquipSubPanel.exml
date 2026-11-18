@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GodEquipSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+    <e:Image source="list_bg_jpg" scaleX="1" scaleY="1"  horizontalCenter="0" verticalCenter="0"/>
+    <e:Label id="btn_get" text="Mua Thần trang mảnh" y="562.33" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+             scaleX="1" scaleY="1" width="220" height="26" verticalAlign="middle" textColor="0x54FF00" italic="true"
+             x="124.33" />
+    <e:Label text="Thần trang mảnh:" x="108.33" y="520.33" size="20" textAlign="right" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" width="161" height="30" verticalAlign="middle" />
+    <e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="264.33" y="519.33" width="160" height="30" />
+    <e:Label id="label_material" text="15/12345" x="272.33" y="520.33" size="18" textAlign="left" strokeColor="0x000000"
+             stroke="1" textColor="0xFFFFFF" height="29" verticalAlign="middle" />
+    <component:Equip_God id="equip_Weapon" x="20" y="150" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_God id="equip_Body" x="20" y="250" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_God id="equip_RingLeft" x="20" y="350" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_God id="equip_BraceletLeft" x="20" y="450" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_God id="equip_Head" y="150" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <component:Equip_God id="equip_Neck" y="250" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <component:Equip_God id="equip_RingRight" y="350" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <component:Equip_God id="equip_BraceletRight" y="450" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <e:Group id="group_one" width="350" height="365" y="150" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" visible="false">
+        <e:Label id="one_curName" text="Huyền Thiên" y="25" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+                 textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" />
+        <component:Equip_God id="one_cur" y="60" scaleX="1" scaleY="1" horizontalCenter="0" skinName="SlotItem"
+                             touchEnabled="false" />
+        <e:Image source="form_jbg_png" scale9Grid="13,14,24,22" y="190" width="250" height="150" scaleX="1" scaleY="1"
+                 horizontalCenter="0" />
+        <e:Label text="Thuộc tính" y="200" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200"
+                 scaleX="1" scaleY="1" horizontalCenter="0" />
+        <e:Scroller height="107" y="222" horizontalCenter="0" anchorOffsetY="0">
+            <e:List id="one_listCur">
+                <e:itemRendererSkinName>
+                    <e:Skin>
+                        <e:Label text="{data}" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+                                 width="100%" height="20" horizontalCenter="0" />
+                    </e:Skin>
+                </e:itemRendererSkinName>
+                <e:layout>
+                    <e:VerticalLayout gap="2"  />
+                </e:layout>
+            </e:List>
+        </e:Scroller>
+    </e:Group>
+    <e:Group id="group_two" width="350" height="365" y="150" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+        <e:Label id="two_curName" text="Huyền Thiên" y="25" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+                 textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="-90" />
+        <e:Label id="two_nextName" text="Huyền Thiên" y="25" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+                 textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="90" />
+        <component:Equip_God id="two_cur" y="60" scaleX="1" scaleY="1" left="50" skinName="SlotItem"
+                             touchEnabled="false" />
+        <component:Equip_God id="two_next" y="60" scaleX="1" scaleY="1" right="50" skinName="SlotItem"
+                             touchEnabled="false" />
+        <e:Image source="form_jbg_png" scale9Grid="13,14,24,22" y="190" width="350" height="150" scaleX="1" scaleY="1"
+                 horizontalCenter="0" />
+        <e:Label text="Thuộc tính" y="202" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200"
+                 scaleX="1" scaleY="1" left="30" />
+        <e:Label text="Nâng cấp" y="200" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200"
+                 scaleX="1" scaleY="1" right="30" />
+        <e:Scroller height="107" anchorOffsetY="0" scaleX="1" scaleY="1" y="222" anchorOffsetX="0" left="10">
+            <e:List id="two_listCur">
+                <e:itemRendererSkinName>
+                    <e:Skin>
+                        <e:Label text="{data}" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+                                 width="100%" height="20" horizontalCenter="0" />
+                    </e:Skin>
+                </e:itemRendererSkinName>
+                <e:layout>
+                    <e:VerticalLayout gap="2" />
+                </e:layout>
+            </e:List>
+        </e:Scroller>
+        <e:Scroller height="107" anchorOffsetY="0" scaleX="1" scaleY="1" y="222" anchorOffsetX="0"
+                    right="10">
+            <e:List id="two_listNext">
+                <e:itemRendererSkinName>
+                    <e:Skin>
+                        <e:Label text="{data}" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+                                 width="100%" height="20" horizontalCenter="0" textColor="0x00FF00" />
+                    </e:Skin>
+                </e:itemRendererSkinName>
+                <e:layout>
+                    <e:VerticalLayout gap="2" />
+                </e:layout>
+            </e:List>
+        </e:Scroller>
+        <e:Image source="right_png" y="71" horizontalCenter="0" x="161" scaleX="1" scaleY="1" />
+    </e:Group>
+    <e:Button id="btn_up" label="Nâng cấp" y="615" horizontalCenter="0">
+        <e:skinName>
+            <e:Skin states="up,down,disabled">
+                <e:Image width="100%" height="100%" source="btn_bg2_png" />
+                <e:Label id="labelDisplay" text="Nâng cấp" y="621.33" size="22" textAlign="center" strokeColor="0x000000"
+                         stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0" touchEnabled="false" />
+            </e:Skin>
+        </e:skinName>
+    </e:Button>
+    <component:RoleSubPanel id="roleSubPanel" y="-15" horizontalCenter="0" />
+    <component:Power id="component_power" y="95" skinName="Power" horizontalCenter="0" visible="false" />
+</e:Skin>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildMemberItem" width="478" height="150" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="0" anchorOffsetX="0" width="478" anchorOffsetY="0" height="150" horizontalCenter="0"/>
+	<e:Image source="dark_png" anchorOffsetX="0" width="468" anchorOffsetY="0" height="141.5" horizontalCenter="0" verticalCenter="0"/>
+	<e:Image source="icon_guilddonate_png" x="236" y="109" width="35" height="35"/>
+	<e:Label id="label_time" text="2017 01-05-03" y="10" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xC5D9EA" verticalAlign="middle" anchorOffsetX="0" right="156"/>
+
+
+	<e:Label id="point" text="Phó bang chủ" x="224.84" y="89.8" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xffc446"/>
+	<e:Label text="Chức vị:" x="138.64" y="89.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Label text="Cống hiến:" x="138.64" y="115.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Label id="donate" text="1000000" x="274.44" y="117" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xfdb200"/>
+
+	<e:Label id="power" text="1000000" x="242.64" y="63.8" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00"/>
+	<e:Label text="Lực chiến:" x="138.64" y="63.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Label id="lv" text="8" x="200.24" y="37.3" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000"/>
+	<e:Label text="Cấp:" x="138.64" y="36.8" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+
+	<e:Label id="label_name" text="Thần bí người chơi" y="10" size="22" textAlign="right" strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="13" textColor="0xfdb200"/>
+	<e:Image source="line_png" x="332" rotation="90.48" anchorOffsetX="0" width="100" anchorOffsetY="0" height="2" verticalCenter="0" locked="true" visible="false"/>
+
+	<e:Button id="btn_Kick" label="Kích" width="100" height="44" x="352" y="84">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg5_png"/>
+			<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+
+	</e:Button>
+	<e:Button id="btn_Appoint" label="Chức vụ" width="100" height="44" x="352" y="24.5">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<component:Portrait id="portrait" x="20" skinName="Portrait" y="45"/>
+</e:Skin>

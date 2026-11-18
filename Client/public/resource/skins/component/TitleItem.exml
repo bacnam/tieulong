@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TitleItem" width="480" height="360" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="bg" source="form_sibg_png" scale9Grid="17,16,16,17" anchorOffsetX="0" anchorOffsetY="0" width="480"
+	         height="110" y="0" x="0" />
+	<e:Group id="group_small" width="480" height="110" touchEnabled="false">
+		<e:Label id="time" text="Một ngày 23 giờ 59 phân 59 giây" y="10" textColor="0x00ff00" size="20" right="15"/>
+		<e:Image id="icon" anchorOffsetX="0" anchorOffsetY="0" source="tianxiadiyi_png" horizontalCenter="-111.5"
+		         verticalCenter="0" />
+		<e:Image id="img_nohave" source="weiyongyou_png" rotation="354.44" horizontalCenter="76.5" verticalCenter="8" />
+		<e:Button id="btn_use" label="Sử dụng" width="100" height="44" x="265" y="45">
+			<e:skinName>
+			<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*">
+				<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+				<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_Unload" label="Không dùng" width="100" height="44" x="265" y="45">
+			<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg5_png"/>
+				<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:CheckBox id="look" label="" x="404.47" rotation="270.12" verticalCenter="0">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="left_png" source.down="right_png" />
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+				</e:Skin>
+			</e:skinName>
+		</e:CheckBox>
+	</e:Group>
+	<e:Group id="group_all" width="480" touchEnabled="false">
+		<e:Group id="group_base" width="480" y="110" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0"
+		         horizontalCenter="0">
+			<e:Image id="base_bg" source="tit_bg_png" scale9Grid="99,3,314,50" y="49" anchorOffsetY="0" height="75.17"
+			         anchorOffsetX="0" width="476.34" scaleX="1" scaleY="1" horizontalCenter="0" />
+			<e:Label id="tip" text="Đạt được điều kiện: Tao ngộ chiến hạng 1 có thể đạt được" x="29" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+			         anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1" scaleY="1" bottom="9" />
+			<e:Label text="Lực chiến: " x="30" y="28" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+			         anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+			<e:Label id="power" text="298" y="28" size="18" textAlign="right" strokeColor="0x5E3500" stroke="1"
+			         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="100" textColor="0xF7D704" scaleX="1"
+			         scaleY="1" />
+			<e:Label text="Hi hữu: " x="260" y="28" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+			         anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+			<e:Label id="quality" text="Quốc khí" x="330" y="28" size="18" textAlign="left" strokeColor="0x000000" stroke="1"
+			         anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xFF0000" scaleX="1" scaleY="1" />
+			<e:Label text="Danh hiệu hiện tại" y="-6.030000000000001" size="18" textAlign="right" strokeColor="0x5E3500" stroke="1"
+			         width="122.33" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="14.99"
+			         textColor="0xF7D704" scaleX="1" scaleY="1" />
+				<e:List id="list_base" anchorOffsetY="0" y="55" anchorOffsetX="0" width="450" horizontalCenter="0">
+					<e:itemRendererSkinName>
+						<e:Skin width="200">
+							<e:Label id='attr' text="{data.name}" size="18" textAlign="left" strokeColor="0x000000" stroke="1"
+							         anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+							<e:Label id='count' text="{data.count}" x="70" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+							         textColor="0x28FF00" anchorOffsetX="0" scaleX="1" scaleY="1" />
+						</e:Skin>
+					</e:itemRendererSkinName>
+					<e:layout>
+						<e:TileLayout  paddingLeft="14" paddingTop="5" horizontalGap="32"/>
+					</e:layout>
+				</e:List>
+		</e:Group>
+		<e:Group id="group_total" width="480" y="235" anchorOffsetY="0" horizontalCenter="0">
+			<e:Image id="total_bg" source="tit_bg_png" scale9Grid="99,3,314,50" y="32.16999999999996" anchorOffsetY="0" height="77.83"
+			         anchorOffsetX="0" width="476.34" scaleX="1" scaleY="1" horizontalCenter="0" />
+			<e:Label text="Danh hiệu tổng thuộc tính danh hiệu người chơi sở hữu nhân vật cung cấp thuộc tính tổng" x="21" size="16" textAlign="center"
+			         strokeColor="0x000000" stroke="1" width="384.97" textColor="0x28FF00" anchorOffsetX="0" rotation="0.11"
+			         bold="true" scaleX="1" scaleY="1"  bottom="25"/>
+			<e:Label text="Danh hiệu tổng thuộc tính" y="4" size="18" textAlign="right" strokeColor="0x5E3500" stroke="1" width="101.16" height="32"
+			         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="16.979999999999997" textColor="0xF7D704"
+			         scaleX="1" scaleY="1" />
+			<e:List id="list_total" anchorOffsetY="0" y="40" anchorOffsetX="0" width="450" horizontalCenter="0">
+				<e:itemRendererSkinName>
+				<e:Skin width="200">
+					<e:Label id="attr" text="{data.name}" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+					<e:Label id="count" text="{data.count}" x="70" size="18" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00" anchorOffsetX="0" scaleX="1" scaleY="1"/>
+				</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:TileLayout horizontalGap="32" paddingLeft="14" paddingTop="5"/>
+				</e:layout>
+			</e:List>
+		</e:Group>
+	</e:Group>
+</e:Skin>

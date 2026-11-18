@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="OneYuanRecordItem" width="494" height="135" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="bg" source="form_hd_png" x="1" y="0" anchorOffsetX="0" width="497" anchorOffsetY="0" height="129" scale9Grid="40,40,20,21"/>
+	<e:Image source="vip_line_png" x="5" y="54" width="480"/>
+	<e:Label id="title" text="Số phát hành 4 (tổng cộng 20)" y="18" size="26" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2" horizontalCenter="0"/>
+
+
+	<e:Label id="tip" text="（Đợi mở thưởng）" y="66.33" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" horizontalCenter="0" textColor="0x777474"/>
+	<e:List id="list" width="450" y="100" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:itemRendererSkinName>
+			<e:Skin width="200">
+				<e:Label text="{data}" horizontalCenter="0" size="24"/>
+			</e:Skin>
+		</e:itemRendererSkinName>
+		<e:layout>
+			<e:TileLayout horizontalGap="30" verticalGap="10"/>
+		</e:layout>
+	</e:List>
+
+</e:Skin>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MeridianSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="1585144e976" />
+	<e:Image source="jmbg_jpg" x="9.92" y="114.62" scaleX="1" scaleY="1" />
+	<e:Image id="btn_up" source="btn_bg2_png" scale9Grid="56,4,23,37" x="366.97" y="597.02" />
+	<e:Label text="Nâng cấp" x="386.97" y="608.45" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+	         textColor="0xF8F7D3" touchEnabled="false" />
+	<e:Label text="Hiện tại" x="310" y="190" size="22" textAlign="center" strokeColor="0x000000" stroke="1" bold="true"
+	         textColor="0xf6b92e" />
+	<e:Label text="Cấp sau" x="445" y="190" size="22" textAlign="center" strokeColor="0x000000" stroke="1" bold="true"
+	         textColor="0xf6b92e" />
+	<e:Label text="Thuốc kinh mạch:" y="550" size="22" textAlign="left" strokeColor="0x8B1725" stroke="3" textColor="0xFCE795"
+	         scaleX="1" scaleY="1" x="255" />
+	<e:Label id="label_meridian" text="3000/3000" y="550" size="22" textAlign="left" strokeColor="0x8B1725" stroke="3"
+	         textColor="0xFCE795" scaleX="1" scaleY="1" x="430" />
+	<e:Image id="image_stage" source="stage_bg_png"  horizontalCenter="-219.5" verticalCenter="-157" width="34" height="54"/>
+	<e:Image id="line_1" x="175.34" y="202.17" width="60.26" height="6" rotation="46.84" anchorOffsetX="0" scaleX="1"
+	         scaleY="1" source="vip_line_png" />
+	<e:Image id="line_2" x="213.13" y="248.52" width="85.73" height="6" rotation="160.48" anchorOffsetX="0" scaleX="1"
+	         scaleY="1" source="vip_line_png" />
+	<e:Image id="line_3" source="vip_line_png" x="137.13" y="271.02" width="128.36" height="6" rotation="60.6"
+	         anchorOffsetX="0" scaleX="1" scaleY="1" />
+	<e:Image id="line_4" source="vip_line_png" x="195.47" y="386.19" width="59.62" height="6" rotation="200.57"
+	         anchorOffsetX="0" scaleX="1" scaleY="1" />
+	<e:Image id="line_5" source="vip_line_png" x="144.47" y="362.35" width="92.54" height="6" rotation="106.85"
+	         anchorOffsetX="0" scaleX="1" scaleY="1" />
+	<e:Image id="line_6" source="vip_line_png" x="116.8" y="448.02" width="111.87" height="6" rotation="39.83"
+	         anchorOffsetX="0" scaleX="1" scaleY="1" />
+	<e:Image id="line_7" source="vip_line_png" x="203.13" y="520.52" width="119.53" height="6" rotation="92.12"
+	         anchorOffsetX="0" scaleX="1" scaleY="1" />
+	<e:Image id="meridian_1" source="xue_png" x="163" y="193.96" scaleX="1" scaleY="1" />
+	<e:Image id="meridian_2" source="xue_png" x="197.67" y="232.29" />
+	<e:Image id="meridian_3" source="xue_png" x="120.33" y="260.46" />
+	<e:Image id="meridian_4" source="xue_png" x="183.5" y="369.29" />
+	<e:Image id="meridian_5" source="xue_png" x="128.33" y="348.46" />
+	<e:Image id="meridian_6" source="xue_png" x="102.33" y="438.46" />
+	<e:Image id="meridian_7" source="xue_png" x="186.67" y="508.29" />
+	<e:Image id="meridian_8" source="xue_png" x="182" y="625.96" />
+	<e:BitmapLabel id="label_stage" font="stage_number_fnt" text="一阶" width="22"
+	                horizontalCenter="-220" verticalCenter="-157"/>
+	<e:Scroller width="300" height="266" x="250" y="230" anchorOffsetY="0">
+		<e:List id="list_Attr" width="210" x="250" y="198" anchorOffsetX="0" anchorOffsetY="0">
+			<e:itemRendererSkinName>
+				<e:Skin>
+					<e:Label text="{data.cur}" x="0" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF"
+					         height="30" verticalAlign="middle" />
+					<e:Label text="{data.next}" x="190" size="20" textAlign="right" strokeColor="0x000000" stroke="1"
+					         textColor="0x00FF00" height="30" verticalAlign="middle" />
+				</e:Skin>
+			</e:itemRendererSkinName>
+			<e:layout>
+				<e:VerticalLayout horizontalAlign="left" verticalAlign="middle" />
+			</e:layout>
+			<e:ArrayCollection>
+				<e:Array>
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+					<e:Object cur="生命值 +1" next="+2" />
+				</e:Array>
+			</e:ArrayCollection>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

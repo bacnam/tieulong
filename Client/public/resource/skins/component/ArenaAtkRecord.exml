@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaRecord" width="460" height="140" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="15861ff015f"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="0" scaleX="1" scaleY="1" width="460" height="141" x="0" anchorOffsetY="0" locked="true"/>
+	<e:Label id="lbl_rank" text="28" y="94" size="24" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="63" height="26" verticalAlign="middle" textColor="0x54FF00" x="313" anchorOffsetX="0"/>
+	<e:Label text="Hạng cá nhân " y="94" size="20" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="170" height="26" verticalAlign="middle" textColor="0x54FF00" x="156" anchorOffsetX="0"/>
+	<e:Label id="lbl_name" text="s.170 Tên tao dài lắm" x="127" y="14" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" width="200" height="30" verticalAlign="middle"/>
+	<e:Label id="lbl_time" text="14 Phút trước" y="19" size="20" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="358" />
+	<e:Image id="img_win" source="pk_win_png" x="9" y="30"/>
+	<e:Image id="img_lost" source="pk_lose_png" x="9.01" y="30" visible="false"/>
+	<e:Image source="icon_gold_png" x="126" y="51" width="35" height="36"/>
+	<e:Label id="lbl_gold" text="123456789012" x="167" y="59" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+	<e:Image source="icon_wu_png" x="334" y="51"/>
+	<e:Label id="lbl_token" text="12345" x="376" y="54" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="59" textColor="0xFFFFFF" height="29" verticalAlign="middle"/>
+</e:Skin>

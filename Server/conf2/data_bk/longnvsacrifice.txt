@@ -1,0 +1,4 @@
+﻿祭天类型	祭天类型名字	消耗物品id	获得龙女经验	暴击概率万分比	暴击倍率万分比	限制次数	对应刷新类型
+id	SacrificeName	CostItemID	Exp	Critical	CriticalValue	Limit	RefreshType
+Donate	@guildsacrifice_SacrificeName_Normal	19	2	0	15000	5	LongnvDonate
+Crystal	@guildsacrifice_SacrificeName_Middle	2	10	0	15000	-1	LongnvCrystal

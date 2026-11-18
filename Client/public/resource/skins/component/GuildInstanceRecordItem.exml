@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildInstanceRecordItem" width="450" height="120" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="0" y="0" anchorOffsetX="0" width="450" anchorOffsetY="0" height="120"/>
+	<e:Label id="times" text="0Thứ" x="265" y="50" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Label text="Đã tốn công:" x="125" y="50" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Label text="Sát thương:" x="125" y="80" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Label id="damage" text="0" x="265" y="80" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Label id="label_name" text="Thần bí người chơi" y="15" size="22" textAlign="right" strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="125" anchorOffsetY="0" textColor="0xfdb200"/>
+	<component:Portrait id="portrait" x="15" y="15" skinName="Portrait"/>
+</e:Skin>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Button_funcSkin" states="up,down,disabled" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="157e661bb93" ></w:Config>
+	<e:Image id="bg" source="tab_off_png" source.down="tab_on_png" scale9Grid="11,0,102,35" y="0" horizontalCenter="0"/>
+	<e:Label id="name_Label" y="12" anchorOffsetX="0.5" anchorOffsetY="0.5" horizontalCenter="0" text="{data}" size="20"/>
+	<e:Image id="prompt" source="ui_red_png" top="0" right="0" width="25" visible="false"/>
+</e:Skin>

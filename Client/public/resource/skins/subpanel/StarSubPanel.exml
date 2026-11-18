@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="StarSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+    <w:Config id="1584d17bb8f" />
+    <e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="170" width="300" height="360" scaleX="1" scaleY="1"
+             horizontalCenter="0" />
+    <e:Image source="forge_bg_jpg" y="185" scaleX="1" scaleY="1" horizontalCenter="0" />
+    <e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="275" y="535" width="160" height="30" scaleX="1" scaleY="1" />
+    <e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="275" y="575" width="160" height="30" scaleX="1" scaleY="1" />
+    <e:Label text="Chi phí:" y="533.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446"
+             width="109" height="30" verticalAlign="middle" x="122.41" />
+    <e:Label id="label_star" text="15/12345" y="535.61" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+             textColor="0xFFFFFF" height="29" verticalAlign="middle" anchorOffsetX="0" horizontalCenter="80" />
+    <e:Label id="label_gold" text="123456789" y="575.33" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+             textColor="0xFFFFFF" height="29" verticalAlign="middle" anchorOffsetX="0" horizontalCenter="80" />
+    <e:Image id="btn_up" source="btn_bg2_png" scale9Grid="56,4,23,37" y="625" scaleX="1" scaleY="1" horizontalCenter="0" />
+    <e:Label id="label_up" text="Nâng cấp" y="636" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+             textColor="0xF8F7D3" width="100" horizontalCenter="0" touchEnabled="false" />
+	<e:Image id="btn_upAll" source="btn_bg2_png" scale9Grid="56,4,23,37" y="625" scaleX="1" scaleY="1" horizontalCenter="190.5"/>
+	<e:Label id="label_upAll" text="Tối đa" y="636" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="100" horizontalCenter="190" touchEnabled="false"/>
+    <e:Image source="icon_gold_png" x="220" y="570" />
+    <e:Image x="220" y="530" source="stone_png" />
+    <component:Equip_Star id="equip_Weapon" x="20" y="150" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_Star id="equip_Body" x="20" y="250" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_Star id="equip_RingLeft" x="20" y="350" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_Star id="equip_BraceletLeft" x="20" y="450" scaleX="1" scaleY="1" skinName="SlotItem" />
+    <component:Equip_Star id="equip_Head" y="150" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <component:Equip_Star id="equip_Neck" y="250" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <component:Equip_Star id="equip_RingRight" y="350" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <component:Equip_Star id="equip_BraceletRight" y="450" scaleX="1" scaleY="1" right="20" skinName="SlotItem" />
+    <e:Label text="Cấp hiện tại:" y="420" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1"
+             textColor="0xFCFBFB" height="26" verticalAlign="middle" x="165" />
+    <e:Label text="Cấp tiếp theo:" y="450" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1"
+             height="26" verticalAlign="middle" x="165" textColor="0x00ff00" />
+    <e:Label id="label_curAtt" text="+50%" y="420" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             scaleX="1" scaleY="1" textColor="0xFCFBFB" height="26" verticalAlign="middle" x="300" />
+    <e:Label id="label_nextAtt" text="+60%" y="450" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             scaleX="1" scaleY="1" height="26" verticalAlign="middle" x="300" textColor="0x54FF00" />
+    <e:Label text="Thăng tinh:" x="165" y="360" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFDB200" scaleX="1" scaleY="1" />
+    <e:Label id="label_starLv" text="✯✯" x="280" y="360" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFDB200" scaleX="1" scaleY="1" />
+    <e:Label text="Thuộc tính:" x="165" y="390" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFDB200" />
+    <component:BaseItem id="baseItem" y="272.5"  anchorOffsetX="36" anchorOffsetY="36" x="275"/>
+    <e:Label id="label_pos" text="部位: 衣服" y="325" size="16" textAlign="center" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" verticalAlign="middle" horizontalCenter="0" />
+</e:Skin>

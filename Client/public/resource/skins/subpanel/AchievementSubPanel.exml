@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="AchievementSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="8.35" scaleX="1" scaleY="1" width="520" height="651.67" horizontalCenter="0" anchorOffsetY="0"/>
+	<e:Scroller width="500" height="633" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" y="17.36">
+		<e:List id="list" width="100%" itemRendererSkinName="DailyTaskItem">
+			<e:layout>
+				<e:VerticalLayout gap="10" paddingTop="10"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

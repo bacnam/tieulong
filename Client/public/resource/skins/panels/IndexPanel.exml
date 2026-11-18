@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="IndexPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:component="legend.view.component.*">
+	<w:Config id="158686582a2" />
+	<e:Group anchorOffsetX="0" anchorOffsetY="0" bottom="468" top="315" touchEnabled="false" width="216" minHeight="228" x="0">
+		<component:RedDotItem id="WorldBoss" label="" x="9" y="-1" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="icon_boss_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false"/>
+			</e:Skin>
+		</e:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="Arena" label="" x="9" y="91" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_jjc_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false"/>
+			</e:Skin>
+		</e:skinName>
+		</component:RedDotItem>
+		<component:RedDotItem id="guildDeclaration" label="" x="9" y="183" scaleX="1" scaleY="1" width="88" height="86">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="icon_guildbattle_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false"/>
+			</e:Skin>
+		</component:skinName>
+		</component:RedDotItem>
+		<e:layout>
+		<e:TileLayout orientation="columns"/>
+		</e:layout>
+	</e:Group>
+	<e:Group id="group_droiyan" height="519" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" y="152" right="0" width="115">
+		<e:List id="list_droiyan" anchorOffsetX="0" anchorOffsetY="0" y="75" scaleX="1" scaleY="1" itemRendererSkinName="DroiyanEnemiesHead" right="0">
+		<e:layout>
+			<e:VerticalLayout gap="10"/>
+		</e:layout>
+		</e:List>
+		<component:RedDotItem id="btn_Droiyan" name="open_Droiyan" label="" y="-17.47" scaleX="1" scaleY="1" horizontalCenter="0">
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="icon_battle_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			<e:Image id="prompt" source="ui_red_png" top="1" right="5" visible="false"/>
+		</e:Skin>
+		</component:RedDotItem>
+	</e:Group>
+
+	<e:Group id="group_beheaded" x="9.72" bottom="339" touchEnabled="false" visible="false">
+		<e:Image source="combo_bg_png" y="1" scaleX="1" scaleY="1" right="12" touchEnabled="false" />
+		<e:Image source="combo_line_png" y="5" scaleX="1" scaleY="1" right="2" touchEnabled="false" />
+		<e:Image source="combo_zi_png" y="11" scaleX="1" scaleY="1" right="45" touchEnabled="false" />
+		<e:BitmapLabel id="beheaded" y="19" text="1" scaleX="1.5" scaleY="1.5" textAlign="right"
+		               verticalAlign="right" right="103" touchEnabled="false"  font="power_fnt"/>
+	</e:Group>
+	<e:Group id="group_btn" width="528" height="172" y="138" anchorOffsetX="0" anchorOffsetY="0" x="-3">
+		<component:EffectButtonOnce id="btn_rank" label="" x="-5" y="9" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image id="icon" horizontalCenter="0" verticalCenter="0" source="icon_list_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_welfare" label="" x="87" y="19" name="open_Welfare" scaleX="1" scaleY="1" width="88" height="86">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="btn_fuli_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce label="" x="255" y="9" name="open_GodEquip.1" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="xunbao_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_firstRecharge" y="9"  x="418" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="icon_frist_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_recharge" y="9" x="419" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="icon_recharge_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_competition" x="431" y="91" name="open_Activity" scaleX="1" scaleY="1" width="88" height="86">
+		<e:Skin states="up,down,disabled">
+			<e:Image id="image" horizontalCenter="0" verticalCenter="0" source="btn_huodong_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_lottery" x="293" y="101" name="open_OneYuanList" scaleX="1" scaleY="1" width="88" height="86">
+		<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="btn_oneyuan_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_qq" x="120" y="104" scaleX="1" scaleY="1" width="88" height="86">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="qq_server_png"/>
+			</e:Skin>
+		</e:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_weiduan" x="374.5" y="99" scaleX="1" scaleY="1" width="88" height="86" name="open_ShareGift.2">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="weiduan_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_follow" x="384.5" y="109" scaleX="1" scaleY="1" width="88" height="86" name="open_ShareGift.3">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="icon_follow_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_share" x="384.5" y="109" scaleX="1" scaleY="1" width="88" height="86" name="open_ShareGift.1">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="btn_fenxiang_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_quest" x="394.5" y="119" scaleX="1" scaleY="1" width="88" height="86">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="btn_quest_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_vipCustomer" x="414.5" y="139" scaleX="1" scaleY="1" width="88" height="86" name="open_VipCustomer">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="icon_customer_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_drawPrize" x="424.5" y="149" scaleX="1" scaleY="1" width="88" height="86" name="open_DrawPrize">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="btn_timedraw_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_holiday" x="434.5" y="159" scaleX="1" scaleY="1" width="88" height="86" name="open_HolidayActivity">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="btn_faterday_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_levelreward" x="444.5" y="169" scaleX="1" scaleY="1" width="88" height="86" name="open_Activity.LevelReward">
+		<component:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image horizontalCenter="0" verticalCenter="0" source="icon_levelreward_png"/>
+			</e:Skin>
+		</component:skinName>
+		</component:EffectButtonOnce>
+		<component:EffectButtonOnce id="btn_severcompetition" x="454.5" y="179" scaleX="1" scaleY="1" width="88" height="86" name="open_HolidayActivity.WorldRecharge">
+			<component:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image horizontalCenter="0" verticalCenter="0" source="btn_serverrank_png"/>
+			</e:Skin>
+			</component:skinName>
+		</component:EffectButtonOnce>
+		<e:layout>
+		<e:TileLayout verticalGap="0" horizontalGap="0"/>
+		</e:layout>
+	</e:Group>
+	<e:Group id="competition_prompt" touchEnabled="false" x="426" y="235" width="205" anchorOffsetX="53">
+		<e:Image anchorOffsetY="0" height="114" width="205" scaleX="1" scaleY="-1" touchEnabled="false" scale9Grid="0,8,120,23" source="prompt_bg_png" y="114" x="0"/>
+		<e:Label text="开服冲榜\n活动已开启" y="40" size="30" anchorOffsetX="0" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1" touchEnabled="false" fontFamily="DFKai-SB" stroke="1" lineSpacing="5" textColor="0xffffff" horizontalCenter="0"/>
+	</e:Group>
+
+	<e:CheckBox id="check_auto" label="" scaleX="1" scaleY="1" selected="false" enabled="true" x="487" width="150" height="50" bottom="210" right="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_auto_lock_png" source.down="btn_auto_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+				<e:Component name="effectbg" horizontalCenter="0" verticalCenter="0" touchChildren="false" touchEnabled="false"/>
+			</e:Skin>
+		</e:skinName>
+	</e:CheckBox>
+	<component:EffectButton id="btn_challenge" right="0" x="484" width="155" height="173" name="uiboss" bottom="249">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="icon_inboss_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</component:EffectButton>
+	
+	<e:Group id="vipreward_prompt" touchEnabled="false" width="205" y="195" x="379">
+		<e:Image anchorOffsetY="0" height="114" anchorOffsetX="0" width="205" scaleX="-1" scaleY="-1"
+		         touchEnabled="false" scale9Grid="0,8,120,23"  source="prompt_bg_png" x="203"/>
+		<e:Label text="Có VIP mới\nGói quà tặng có sẵn" y="-75" size="30" anchorOffsetX="0" verticalAlign="middle"
+		         textAlign="center" scaleX="1" scaleY="1" touchEnabled="false"  textColor="0xffffff" fontFamily="DFKai-SB" stroke="1" lineSpacing="5" horizontalCenter="0"/>
+	</e:Group>
+	
+	<e:Group id="guild_prompt" touchEnabled="false" bottom="187" width="205" height="114" x="376">
+		<e:Image anchorOffsetY="0" height="114" anchorOffsetX="0" width="205" scaleX="-1" scaleY="1" touchEnabled="false" scale9Grid="0,8,120,23" source="prompt_bg_png" x="205" y="0"/>
+		<e:Label text="有玩家\n申请入帮" y="10" size="30" bold="true" anchorOffsetX="0" verticalAlign="middle" textAlign="center" scaleX="1" scaleY="1" touchEnabled="false" textColor="0xffffff" fontFamily="DFKai-SB" stroke="1" lineSpacing="5" horizontalCenter="0"/>
+	</e:Group>
+	<component:EuiMap id="unlockMap">
+		<e:Array>
+			<e:Object name="WorldBoss" system="WorldBoss" panel="WorldBossList" index="0" hide="true" />
+			<e:Object name="group_droiyan" system="Droiyan" hide="true" />
+			<e:Object name="check_auto" system="Auto" hide="true" />
+			<e:Object name="Arena" system="Arena" panel="Arena" index="0" hide="true" />
+			<e:Object name="btn_rank" system="Rank" panel="Rank" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="WorldBoss" event="WorldBoss" />
+			<e:Object name="Arena" event="Arena" />
+			<e:Object name="btn_Droiyan" event="Droiyan;DroiyanEnemies;DroiyanTreasure" />
+			<e:Object name="btn_welfare" event="AllPeopleReward;DailySign" />
+
+			<e:Object name="btn_competition" event="SignInPrize;SignInOpenServer;SignInSeven;DailyRecharge;AccumRecharge;VipAward" />
+			<e:Object name="SevenActivity" event="SignInPrize;SignInOpenServer" />
+			<e:Object name="btn_holiday" event="AccumConsume,AccumDayRecharge,RedPacket" />
+			<e:Object name="btn_levelreward" event="LevelReward" />
+			<e:Object name="btn_drawPrize" event="DrawPrize" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="activityDataMap">
+		<e:Array>
+			<e:Object name="SignSevenDay" activity="SignInOpenServer,SignInPrize" />
+			<e:Object name="btn_lottery" activity="Lottery" />
+			<e:Object name="btn_drawPrize" activity="DrawPrize" />
+			<e:Object name="btn_competition"
+			          activity="SignInPrize,SignInOpenServer,SignInSeven,WingRank,DungeonRank,LevelRank,PowerRank,DroiyanRank,ArenaRank,GumuRank,TianLongRank,
+					  XiaoyaoRank,DailyRecharge,AccumRecharge,MysteryStore,VipAward,ActivityInstance" />
+			<e:Object name="SevenActivity" activity="SignInPrize,SignInOpenServer,WingRank,DungeonRank,LevelRank,PowerRank,DroiyanRank,ArenaRank,GumuRank,TianLongRank,
+					  XiaoyaoRank,ArtificeRank,GuildRank" />
+			<e:Object name="btn_holiday" activity="AccumConsume,WorldRecharge,WorldConsume,WorldTreasure,AccumDayRecharge,RedPacket,FortuneWheel" />
+			<e:Object name="btn_levelreward" activity="LevelReward" />
+			<e:Object name="btn_severcompetition" activity="WorldRecharge,WorldConsume,WorldTreasure" />
+
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotGuideMap">
+		<e:Array>
+			<e:Object name="btn_competition" event="Competition" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotPromptMap">
+		<e:Array>
+			<e:Object name="competition_prompt" event="Competition"  />
+			<e:Object name="guild_prompt" event="GuildApply"/>
+			<e:Object name="vipreward_prompt" event="VipReward"/>
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

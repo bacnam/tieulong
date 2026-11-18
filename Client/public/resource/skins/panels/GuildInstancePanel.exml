@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildInstancePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_bg_png" x="0" y="0" scaleX="1" scaleY="1" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="19" y="60" anchorOffsetX="0"
+			width="552" anchorOffsetY="0"
+			height="565" scaleX="1" scaleY="1" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="19" y="629" anchorOffsetX="0"
+			width="552" anchorOffsetY="0"
+			height="190" scaleX="1" scaleY="1" />
+		<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="70" anchorOffsetX="0" width="531"
+			anchorOffsetY="0"
+			height="413" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image source="btn_close_png" x="518" y="12.35" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="76.78" width="510" height="100"
+			scaleX="1" scaleY="1"
+			horizontalCenter="0" />
+
+		<e:Scroller id="scroller_boss" width="410" height="95" y="80.35" anchorOffsetY="0"
+			anchorOffsetX="0" scaleX="1"
+			scaleY="1" horizontalCenter="0">
+			<e:List id="list_boss" height="100%" itemRendererSkinName="InstanceBossSelect" y="-42"
+				horizontalCenter="0">
+				<e:itemRendererSkinName>
+					<e:Skin width="92" height="92" states="up,down,disabled">
+						<e:Image id="btn_bg" source="portrait_bg_off_png"
+							source.down="portrait_bg_png"
+							source.disabled="portrait_bg_none_png" x="0" y="0" />
+						<e:Image id="role_icon" source="tou1_png" x="8" y="8" width="76" height="76" />
+						<e:Label id="lock_label" text="Đã mở khóa cấp 150" y="27" width="60"
+							anchorOffsetX="0.5" anchorOffsetY="0.5"
+							horizontalCenter="1" textAlign="center" size="20" x="19" scaleX="1"
+							scaleY="1" textColor="0xC9C8C9"
+							stroke="1" />
+						<e:Label id="label_name" text="Nhãn" y="68" stroke="1" size="22"
+							horizontalCenter="0" visible="false"/>
+						<e:Image id="chean" x="-5.65" y="40" source="2_png" rotation="322.61"
+							anchorOffsetX="0" width="80"
+							anchorOffsetY="0" height="70" touchEnabled="false" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:HorizontalLayout />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_next" source="right_png" y="99.36" right="60" x="522" scaleX="1" scaleY="1" />
+		<e:Image id="btn_front" source="left_png" y="104.36" left="60" x="50" scaleX="1" scaleY="1" />
+		<e:Group x="37" y="97" scaleX="1" scaleY="1" touchEnabled="false" width="517" height="450">
+			<e:Image source="fuben_bg_jpg" x="0" y="86" anchorOffsetX="0" width="517"
+				anchorOffsetY="0" height="293.98" />
+
+			<e:Image id="tip_t" source="triangle_png" x="329.15" y="186.08" anchorOffsetX="0"
+				width="35.83" anchorOffsetY="0" height="26.87" />
+			<e:Image id="tip_bg" y="96.08" anchorOffsetX="0" anchorOffsetY="0"
+				scale9Grid="11,8,13,18" touchEnabled="false" x="329.15" source="form_ibg_png"
+				width="171" height="90" />
+			<e:Label id="label_tip"
+				text="Ngọn lửa của kỳ lân lửa chỉ có thể bị dập tắt bởi Kỳ lân nước" x="338"
+				y="100.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+				textColor="0xF8F7D3" verticalAlign="middle" anchorOffsetX="0" width="152.5"
+				anchorOffsetY="0" height="79" />
+
+
+			<e:Label id="hp" text="3000000" x="60.5" y="142" size="20" textAlign="left"
+				strokeColor="0x3F1313" stroke="1"
+				width="88.01" anchorOffsetX="0" anchorOffsetY="0" height="19" textColor="0xFF0000" />
+			<e:Label text="HP:" x="15" y="142" size="20" textAlign="left" strokeColor="0x3F1313"
+				stroke="1" width="102.51"
+				anchorOffsetX="0" anchorOffsetY="0" height="19" textColor="0xFF0000" bold="true" />
+			<e:Label id="tip" text="Chỉ Bang chủ hoặc Phó bang chủ mới có thể mở, và cần 500 KNB"
+				y="353.14" size="19" textAlign="center" strokeColor="0x000000" width="500"
+				stroke="1" textColor="0x28FF00" anchorOffsetX="0" rotation="0.11" bold="true"
+				horizontalCenter="0" />
+			<e:Label text="Hạ BOSS và nhận phần thưởng" y="610" size="19" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0x28FF00" anchorOffsetX="0"
+				rotation="0.11" bold="true" x="11" />
+
+			<e:Image id="bossIcon" source="r_yangguo_png" touchEnabled="false"
+				horizontalCenter="-0.5" verticalCenter="0"
+				locked="true" />
+			<e:Image source="ui_fight_bg_png" x="4" y="89.64999999999998" anchorOffsetX="0"
+				width="236.76" anchorOffsetY="0"
+				height="46.78" />
+			<e:Label id="label_name" text="Trụy cấp 10" y="101.92" size="24" textAlign="center"
+				strokeColor="0x8B1725" stroke="2"
+				textColor="0xFCE795" scaleX="1" scaleY="1" x="30.5" />
+			<e:Button id="btn_open" label="Mở" y="307.68" horizontalCenter="0.5" width="100"
+				height="40">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="btn_bg2_png" />
+						<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" size="20"
+							textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0"
+							anchorOffsetY="0" textColor="0xFFFEED" />
+					</e:Skin>
+				</e:skinName>
+
+			</e:Button>
+			<e:Component id="scrollermc" width="36.67" height="26.67" x="259" y="299.01"
+				anchorOffsetX="0" anchorOffsetY="0" touchChildren="false" touchEnabled="false" />
+		</e:Group>
+		<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="29" y="489" anchorOffsetX="0"
+			width="531" anchorOffsetY="0"
+			height="122" scaleX="1" scaleY="1" />
+		<e:Image source="dark_png" x="34" y="492" anchorOffsetX="0" width="521.34" anchorOffsetY="0"
+			height="115.33"
+			scaleX="1" scaleY="1" visible="false" />
+		<e:Scroller id="scroller_list" width="459" height="100" x="89.59" y="500.34"
+			anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="list_reward" itemRendererSkinName="ItemSkin">
+				<e:layout>
+					<e:HorizontalLayout gap="10" paddingTop="2" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Label text="Thưởng" y="506.97" size="20" textAlign="right" strokeColor="0x5E3500"
+			stroke="1" width="32.33"
+			height="87" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="37.99"
+			anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xffc446" />
+		<e:Image source="vip_line_png" x="94.76" y="492.03999999999996" width="116" rotation="90.56"
+			anchorOffsetY="0"
+			height="1" scaleX="1" scaleY="1" visible="false" />
+		<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="29" y="640.62" anchorOffsetX="0"
+			width="531"
+			anchorOffsetY="0" height="64.67" scaleX="1" scaleY="1" />
+		<e:Image source="dark_png" x="34" y="643.31" anchorOffsetX="0" width="521.34"
+			anchorOffsetY="0" height="55.33"
+			scaleX="1" scaleY="1" />
+		<e:Label id="times" text="37" x="170" y="660" size="24" textAlign="center"
+			strokeColor="0x000000" stroke="1"
+			textColor="0x28FF00" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+		<e:Label text="Thời gian:" x="55" y="660" size="24" textAlign="left" strokeColor="0x000000"
+			stroke="1" anchorOffsetX="0"
+			anchorOffsetY="0" textColor="0xFFFEED" scaleX="1" scaleY="1" />
+		<e:Label id="time_tip" text="10:00-21:59内,每隔2小时恢复1次," x="30" y="730" size="20"
+			textAlign="left" strokeColor="0x000000"
+			stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFEED" scaleX="1"
+			scaleY="1" />
+		<e:Image id="btn_addTimes" source="btn_bg4_1_png" x="496" y="649.31" scaleX="1" scaleY="1" />
+		<e:Image source="ui_+_png" x="505" y="658.31" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image y="7" source="title_guild_png" horizontalCenter="0" />
+		<e:Button id="btn_Record" label="Nhật ký" x="79.38" y="755">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg1_png" />
+					<e:Label id="labelDisplay" size="24" horizontalCenter="0" verticalCenter="0"
+						strokeColor="0x000000" stroke="1"
+						anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1"
+						scaleY="1" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_Attack" label="Tấn công" x="360" y="755">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg1_png" />
+					<e:Label id="labelDisplay" size="24" horizontalCenter="0" verticalCenter="0"
+						strokeColor="0x000000" stroke="1"
+						anchorOffsetX="0" anchorOffsetY="0" textColor="0xF8F7D3" scaleX="1"
+						scaleY="1" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" />
+	</e:Group>
+</e:Skin>

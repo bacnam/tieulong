@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SignSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:cpmponent="legend.view.component.*">
+	<e:Image source="list_tab_png" y="2" anchorOffsetX="0" width="528" anchorOffsetY="0" height="203" scaleX="1" scaleY="1" horizontalCenter="0" x="11"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" width="540" height="673" scaleX="1" scaleY="1" horizontalCenter="0" anchorOffsetY="0" y="17"/>
+	<e:Label id="label_title" text="9月签到奖励" size="26" textAlign="center" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" y="29.25" horizontalCenter="0"/>
+	<e:Scroller width="500" height="606" y="70" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="group_content" itemRendererSkinName="SignItemSkin">
+			<e:layout>
+				<e:TileLayout paddingTop="20" paddingLeft="14" horizontalGap="28" verticalGap="28"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

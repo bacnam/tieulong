@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaRecord" width="460" height="140" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="15861ff015f"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="0" scaleX="1" scaleY="1" width="460" height="141" x="0" anchorOffsetY="0" locked="true"/>
+	<e:Label id="lbl_rank" text="28" y="86" size="24" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="57" height="26" verticalAlign="middle" x="318" anchorOffsetX="0" textColor="0xec3135"/>
+	<e:Label text="Thứ hạng của bạn đã thay đổi" y="86" size="24" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="176" height="26" verticalAlign="middle" x="152" anchorOffsetX="0" textColor="0xec3135"/>
+	<e:Label id="lbl_name" text="s.170 Lỗ Túc" x="127" y="33" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFEFEFE" width="200" height="30" verticalAlign="middle"/>
+	<e:Label id="lbl_time" text="14 Phút trước" y="38" size="20" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="352" />
+	<e:Image id="img_win" source="pk_win_png" x="9" y="30" visible="false"/>
+	<e:Image id="img_lost" source="pk_lose_png" x="8.17" y="31.27"/>
+	<e:Label text="Phòng ngự" x="30" y="40" bold="true" background="true" backgroundColor="0x0a0a0a"/>
+</e:Skin>

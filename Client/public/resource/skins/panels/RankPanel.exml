@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing"
+	xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<e:Group width="600" height="847" touchEnabled="false" horizontalCenter="1" verticalCenter="0.5">
+		<e:Image source="ui_shop_bg_png" x="0" scaleX="1" scaleY="1" y="0" />
+
+		<e:Image source="list_png" y="8.319999999999993" horizontalCenter="0" x="248" scaleX="1"
+			scaleY="1" />
+		<e:Image source="list_tab_png" y="706" width="560" scaleX="1" scaleY="1" height="125"
+			horizontalCenter="0" x="20" />
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="68" scaleX="1" scaleY="1"
+			width="435" height="630" x="138" />
+		<e:Scroller width="120" height="621" x="16" y="68" anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="list_rank" width="100%" height="621" x="5" y="-1" anchorOffsetX="0"
+				anchorOffsetY="0" selectedIndex="0">
+				<e:itemRendererSkinName>
+					<e:Skin states="up,down">
+						<e:Image source.up="btn_bg4_png" source.down="btn_bg4l_png" width="120"
+							height="44" scale9Grid="5,5,110,34" scaleX="1" scaleY="1"
+							horizontalCenter="0" verticalCenter="0" />
+						<e:Label text="{data.name}" size="20" textAlign="center"
+							strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="120"
+							verticalAlign="middle" scaleX="1" scaleY="1" verticalCenter="0"
+							horizontalCenter="0" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:ArrayCollection>
+					<e:Array>
+						<e:Object name="Lực chiến" rank="Power" />
+						<e:Object name="Cấp" rank="Level" />
+						<e:Object name="Cánh" rank="WingLevel" />
+						<e:Object name="Đột phá" rank="Dungeon" />
+						<e:Object name="Nga Mi" rank="GuMuPower" charId="1001" />
+						<e:Object name="Thiên Long" rank="TianLongPower" charId="1002" />
+						<e:Object name="Tiêu Dao" rank="XiaoYaoPower" charId="1003" />
+						<e:Object name="Quyết đấu" rank="Droiyan" />
+						<e:Object name="Bang" rank="Guild" />
+						<e:Object name="Luyện hóa" rank="Artifice" />
+						<e:Object name="Hôn nhân" rank="Lovers" />
+					</e:Array>
+				</e:ArrayCollection>
+				<e:layout>
+					<e:VerticalLayout paddingTop="5" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Group id="group_content" width="560" height="780" y="60" horizontalCenter="0"
+			touchEnabled="false">
+			<panels:RankNormalSubPanel id="rankNormal" y="0" scaleX="1" scaleY="1"
+				skinName="RankNormalSubPanel" horizontalCenter="0" touchEnabled="false" x="0"
+				name="normal" visible="false" />
+			<panels:RankSpouseSubPanel id="rankSpouse" width="560" height="780"
+				skinName="RankSpouseSubPanel" horizontalCenter="0" touchEnabled="false" x="0"
+				scaleX="1" scaleY="1" name="spouse" visible="false" />
+		</e:Group>
+
+
+		<e:Button id="btn_worship" label="Tôn kính" x="503" y="299.8" rotation="270.57"
+			anchorOffsetX="0" width="230" anchorOffsetY="0" height="40">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg3_png" />
+					<e:Label id="labelDisplay" size="22" strokeColor="0x000000" stroke="1"
+						textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0" width="22"
+						rotation="90" lineSpacing="10" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_1_png" y="18.340000000000003" scaleX="1" scaleY="1" x="545.67"
+			name="btn_close" />
+	</e:Group>
+</e:Skin>

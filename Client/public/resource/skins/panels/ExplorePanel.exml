@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ExplorePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_bg_png" scaleX="1" scaleY="1" touchEnabled="false" x="0" y="0"/>
+		<e:Image source="form_bg_png" width="550" height="744" scale9Grid="16,15,19,18" scaleX="1" scaleY="1" anchorOffsetY="0" y="67.31" horizontalCenter="0.5"/>
+		<e:Image source="list_bg_jpg" y="75" anchorOffsetX="0" width="531" anchorOffsetY="0" height="723" horizontalCenter="0"/>
+		<e:Image source="ui_tit_bg_png" y="654.51" anchorOffsetY="0" height="135" anchorOffsetX="0" width="520" horizontalCenter="0.5"/>
+		<e:Label text="Lưu ý: Cơ hội nhận gấp đôi khi Mua vào lúc 10 giờ sáng." y="697" size="18" textAlign="right" strokeColor="0x000000" stroke="1" width="483.33" height="31" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0x00FF00" horizontalCenter="0"/>
+		<e:Image name="btn_close" source="btn_close_png" y="15" scaleX="1" scaleY="1" x="515"/>
+		<e:Image y="5.35" scaleX="1" scaleY="1" horizontalCenter="0.5" source="explore_png"/>
+		<e:Label text="Số lần mua:" y="665" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="55" anchorOffsetX="0"/>
+		<e:Label id="label_times" text="3/3" y="665" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="210" anchorOffsetX="0"/>
+		<e:Button id="btn_new" label="Tán gẫu" x="75" y="735" anchorOffsetY="0" anchorOffsetX="0" width="120" height="44" touchChildren="false">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg5_png"/>
+				<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Button id="btn_explore" label="Mua tất" x="395" y="735" width="120" height="44">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg5_png"/>
+				<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Scroller width="520" height="560" y="82" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0.5">
+			<e:List id="list" itemRendererSkinName="ExploreItem" x="-9" y="88">
+				<e:layout>
+					<e:VerticalLayout gap="10" horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_help" x="21" y="16" source="ui_heip_png"/>
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"/>
+
+	</e:Group>
+</e:Skin>

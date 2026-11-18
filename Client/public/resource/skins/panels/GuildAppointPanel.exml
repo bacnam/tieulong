@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<e:Skin class="GuildAppointPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="400" height="390" touchEnabled="false" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="390" anchorOffsetY="0" x="0" y="0" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_confirm" source="btn_bg4_png" scale9Grid="5,5,110,34" x="248" y="324" anchorOffsetX="0" width="100" scaleX="1" scaleY="1"/>
+		<e:Label text="Xác nhận" x="248" y="335" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="btn_cancel" x="53" y="324" anchorOffsetX="0" width="100" scaleX="1" scaleY="1" name="btn_close" source="btn_bg5_png" height="44"/>
+		<e:Label text="Hủy" x="53" y="335" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="50.39" width="340" height="248" scaleX="1" scaleY="1" horizontalCenter="0" x="30" anchorOffsetY="0"/>
+		<e:Label id="name_2" text="Phó bang chủ" x="119" y="82" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+		<e:Label id="name_3" text="Trưởng lão" x="119" y="135" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+		<e:Label id="name_4" text="Tinh anh" x="119" y="189" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+
+		<e:Label id="name_5" text="Thành viên" x="119" y="245" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" scaleX="1" scaleY="1"/>
+		<e:Image source="btn_close_png" x="331" y="-1" scaleX="1" scaleY="1" name="btn_close"/>
+
+		<e:RadioButton id="radio_4" label="" x="75" y="240" width="240" height="32" selected="true" groupName="GuildPoint" value="5">
+			<e:skinName>
+				<e:Skin states="up,down,disabled" width="240" height="32">
+				<e:Group width="240" height="32"/>
+				<e:Image width="32" height="32" source="redname_icon_png" source.down="ui_red_png"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+			</e:skinName>
+
+		</e:RadioButton>
+		<e:RadioButton id="radio_3" label="" x="75" y="184" width="240" height="32" groupName="GuildPoint" value="4">
+			<e:skinName>
+				<e:Skin states="up,down,disabled" width="240" height="32">
+				<e:Group width="240" height="32"/>
+				<e:Image width="32" height="32" source="redname_icon_png" source.down="ui_red_png"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+			</e:skinName>
+
+		</e:RadioButton>
+		<e:RadioButton id="radio_2" label="" x="75" y="131" width="240" height="32" groupName="GuildPoint" value="3">
+			<e:skinName>
+				<e:Skin states="up,down,disabled" width="240" height="32">
+				<e:Group width="240" height="32"/>
+				<e:Image width="32" height="32" source="redname_icon_png" source.down="ui_red_png"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+			</e:skinName>
+
+		</e:RadioButton>
+		<e:RadioButton id="radio_1" label="" x="75" y="79" width="240" height="32" groupName="GuildPoint" value="2" anchorOffsetX="0">
+			<e:skinName>
+				<e:Skin states="up,down,disabled" width="240" height="32">
+				<e:Group width="240" height="32"/>
+				<e:Image width="32" height="32" source="redname_icon_png" source.down="ui_red_png"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+			</e:skinName>
+
+		</e:RadioButton>
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarryProposeItem" width="478" height="129" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="0" y="0" anchorOffsetX="0" width="478" anchorOffsetY="0" height="129"/>
+	<e:Image source="dark_png" x="5" y="4" anchorOffsetX="0" width="467" anchorOffsetY="0" height="120"/>
+	<e:Label id="power" text="1000000" x="210" y="90" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00"/>
+	<e:Label text="Lực chiến: " x="130" y="90" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3"/>
+	<e:Label id="lv" text="8" x="185" y="55" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000"/>
+	<e:Label text="Cấp: " x="130" y="55" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3"/>
+	<e:Label id="label_name" text="Thần bí người chơi" y="20.15" size="22" textAlign="right" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" textColor="0xE0C302" anchorOffsetX="0" x="130"/>
+	<e:Image source="line_png" x="320" y="12" rotation="90.48" anchorOffsetX="0" width="100" anchorOffsetY="0" height="2"/>
+	<e:Image id="btn_marry" source="btn_bg4_png" scale9Grid="5,5,110,34" x="346" y="38" anchorOffsetX="0" width="100"/>
+	<e:Label text="Cầu hôn" x="344" y="49" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" touchEnabled="false"/>
+	<component:Portrait id="portrait" x="20" skinName="Portrait" verticalCenter="0"/>
+</e:Skin>

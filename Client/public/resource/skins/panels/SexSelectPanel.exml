@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SexSelectPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="400" height="360" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="360" x="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="8" y="47.00999999999999" anchorOffsetX="0" width="384" anchorOffsetY="0" height="303.83" scaleX="1" scaleY="1"/>
+		<e:Label text="(Lưu ý: Không thể thay đổi)" x="64.13999999999999" y="242.02999999999997" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="274.67" textColor="0xFF0000" anchorOffsetX="0" anchorOffsetY="0" height="24.16" bold="true" scaleX="1" scaleY="1"/>
+		<e:Label text="Lựa chọn giới tính, giới tính sẽ được đặt làm giới tính trong game." x="39" y="72.69" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="332" anchorOffsetX="0" anchorOffsetY="0" height="91.33" bold="true" textColor="0xF8F7D3" lineSpacing="10" scaleX="1" scaleY="1"/>
+		<e:Image source="smallui_tbg_png" y="1.009999999999991" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Label text="Giới tính" y="5.009999999999991" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0"/>
+
+		<e:Image id="btn_select" source="btn_bg4_png" scale9Grid="5,5,110,34" x="150" y="286.65999999999997" anchorOffsetX="0" width="100" scaleX="1" scaleY="1"/>
+		<e:Label text="Xác nhận" x="150" y="298.65999999999997" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:RadioButton id="gen_man" label="" x="64.14" y="183.49" selected="true" groupName="gender" width="100" height="38">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+				<e:Image source="redname_icon_png" />
+				<e:Image x="8" source="" source.down="gou_png" verticalCenter="-2"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+                <e:Label text="Nam" right="-20" verticalCenter="0" size="30" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0x28FF00" scaleX="1" scaleY="1"/>
+				</e:Skin>
+			</e:skinName>
+		</e:RadioButton>
+		<e:RadioButton id="gen_women" label="" x="236" y="183.49" groupName="gender" width="100" height="38">
+			<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image source="redname_icon_png" />
+				<e:Image x="8" source="" source.down="gou_png" verticalCenter="-2"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+				<e:Label text="Nữ" right="-20" verticalCenter="0" size="30" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xFF0000" scaleX="1" scaleY="1"/>
+			</e:Skin>
+			</e:skinName>
+		</e:RadioButton>
+        
+	</e:Group>
+</e:Skin>

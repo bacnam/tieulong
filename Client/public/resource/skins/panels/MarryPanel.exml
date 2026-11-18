@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarryPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:panels="legend.panels.*"
+        xmlns:component="legend.view.component.*">
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<component:PanelBG id="panelBG" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing"
+		                   scaleX="1" scaleY="1" name="xialv_png" verticalCenter="0" horizontalCenter="0" />
+		<e:Image id="btn_help" source="ui_heip_png" x="10" y="15" scaleX="1" scaleY="1" />
+		<e:ViewStack id="content_View" width="550" height="694" scaleX="1" scaleY="1" selectedIndex="2" y="63"
+		             horizontalCenter="0">
+			<panels:MarryProposeSubPanel name="Đề xuất" />
+			<panels:MarryMainSubPanel name="Kết hôn" />
+			<panels:MarrySignSubPanel name="Tân hôn" />
+		</e:ViewStack>
+	</e:Group>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="1" event="Marry" />
+			<e:Object name="2" event="MarrySign" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

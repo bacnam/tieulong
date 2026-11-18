@@ -1,0 +1,7 @@
+﻿ID	金额范围	红包可领次数	红包总金额	名称
+id	Range	PickNum	Money	Name
+1	100~200	10	150	Tiểu bao lì xì
+2	201~500	20	500	Trung bao lì xì
+3	501~1000	30	1000	Đại hồng bao
+4	1001~3000	30	2000	Siêu đại hồng bao
+

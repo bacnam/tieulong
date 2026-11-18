@@ -1,0 +1,46 @@
+﻿提示触发条件	提示说明	龙女祭天	龙女守护	结婚签到	新称号	灵宝	结婚	时装	称号	祭天	帮派技能	申请列表	帮派boss	强化	升星	宝石	技能	翅膀	经脉	装备副本	宝石副本	经脉副本	神装	决战	世界boss	竞技场	邮件	签到	一键换装	转生	开启新角色	仇人	决战宝图	炼化	战灵	战灵等级	战灵天赋	战灵培养	VIP奖励
+id	#Name	LongnvSacrifice	LongnvWar	MarrySign	NewTitle	LingBao	Marry	Dress	Title	GuildSacrifice	GuildSkill	GuildApply	GuildBoss	Strengthen	Star	Gem	Skill	Wing	Meridian	EquipInstance	GemInstance	MeridianInstance	GodEquip	Droiyan	WorldBoss	Arena	Email	Sign	OneKeyEquip	Rebirth	UnlockChar	DroiyanEnemies	DroiyanTreasure	Artifice	WarSpirit	WarSpiritLevel	WarSpiritTalent	WarSpiritTrain	VipReward
+Gold	Đồng vàng				TRUE	TRUE				TRUE	TRUE			TRUE	TRUE		TRUE																	TRUE				TRUE	
+Crystal	Nguyên bảo				TRUE																																		
+StrengthenMaterial	Cường hóa thạch													TRUE																									
+GemMaterial	Đá quý															TRUE																							
+StarMaterial	Tinh thạch														TRUE																								
+MerMaterial	Kinh mạch đan																		TRUE																				
+WingMaterial	Lông chim																	TRUE																					
+EquipInstanceMaterial	Trang bị phó bản tài liệu																			TRUE																			
+GemInstanceMaterial	Đá quý phó bản tài liệu																				TRUE																		
+MeridianInstanceMaterial	Kinh mạch phó bản tài liệu																					TRUE																	
+RedPiece	Hồng trang mảnh																						TRUE																
+Lv	Cấp bậc													TRUE			TRUE			TRUE	TRUE	TRUE	TRUE						TRUE	TRUE	TRUE								TRUE
+Equip	Mặc vào hoặc cởi trang bị													TRUE									TRUE						TRUE					TRUE					
+Droiyan	Quyết chiến																							TRUE															
+WorldBoss	Thế giới Boss																								TRUE														
+Arena	Đấu trường																									TRUE													
+Email	Bưu kiện																										TRUE												
+Sign	Đánh dấu																											TRUE											
+UnlockChar	Mở ra tân nhân vật													TRUE	TRUE	TRUE	TRUE	TRUE	TRUE				TRUE						TRUE		TRUE								
+AddEquip	Tăng thêm tân trang bị																												TRUE										
+DelEquip	Cắt bỏ trang bị																												TRUE										
+Exp	Đạt được kinh nghiệm																													TRUE						TRUE			
+VipLv	VIP																														TRUE								TRUE
+DroiyanEnemies	Kẻ thù																															TRUE							
+DroiyanTreasure	Quyết chiến bảo đồ																																TRUE						
+ArtificeMaterial	Luyện hóa thạch																																	TRUE					
+WarSpirit	Chiến linh																																		TRUE	TRUE	TRUE	TRUE	
+WarSpiritLevel	Chiến linh cấp bậc																																		TRUE	TRUE		TRUE	
+WarSpiritStar	Chiến linh tinh cấp																																		TRUE			TRUE	
+WarspiritTalentMaterial	Thiên phú đan																																				TRUE		
+GuildSacrifice	Tế thiên									TRUE																													
+GuildSkill	Bang phái kỹ năng										TRUE																												
+GuildApply	Xin danh sách											TRUE																											
+GuildBoss	Bang phái Boss												TRUE																										
+GuildDonate	Bang cống		TRUE								TRUE																												
+GuildLevel	Bang phái cấp bậc	TRUE	TRUE							TRUE	TRUE																												
+GuildLeave	Bị đưa ra bang phái	TRUE	TRUE							TRUE	TRUE	TRUE	TRUE																										
+GuildInfo	Bang phái tin tức	TRUE	TRUE							TRUE	TRUE		TRUE																										
+Dress	Thời trang							TRUE																															
+Title	Danh hiệu								TRUE																														
+Marry	Kết hôn						TRUE																																
+LingBaoMaterial	Linh bảo mảnh					TRUE																																	
+Item	Vật phẩm biến hóa				TRUE																																	TRUE	
+MarrySign	Kết hôn đánh dấu			TRUE																																			

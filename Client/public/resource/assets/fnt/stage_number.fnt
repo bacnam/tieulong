@@ -1,0 +1,12 @@
+{"file":"stage_number.png","frames":{
+"二":{"x":76,"y":21,"w":23,"h":17,"offX":0,"offY":1,"sourceW":23,"sourceH":18},
+"三":{"x":51,"y":1,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"四":{"x":51,"y":21,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"五":{"x":76,"y":1,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"六":{"x":26,"y":21,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"七":{"x":101,"y":1,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"八":{"x":101,"y":21,"w":23,"h":15,"offX":0,"offY":1,"sourceW":23,"sourceH":18},
+"九":{"x":1,"y":1,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"十":{"x":26,"y":1,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"阶":{"x":1,"y":21,"w":23,"h":18,"offX":0,"offY":0,"sourceW":23,"sourceH":18},
+"一":{"x":101,"y":38,"w":23,"h":11,"offX":0,"offY":3,"sourceW":23,"sourceH":18}}}

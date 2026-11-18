@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarryIntentionSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_bg_jpg" anchorOffsetX="0" width="531" anchorOffsetY="0" height="682" horizontalCenter="0"
+	         verticalCenter="0" x="0" y="0" scaleX="1" scaleY="1" />
+	<e:Group id="group_one" width="531" height="682" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_tit_bg_png" y="3.33" anchorOffsetY="0" height="62.34" anchorOffsetX="0" width="505.33"
+		         horizontalCenter="0" x="12" scaleX="1" scaleY="1" />
+		<e:Label text="Đề xuất:  " y="15" size="22" strokeColor="0x000000" stroke="1" verticalAlign="middle"
+		         fontFamily="Arial" anchorOffsetX="0" x="25" anchorOffsetY="0" textColor="0xFF0000" bold="true" />
+		<e:Label id="apply_tip" text="Sau 30 phút, nếu không xác nhận sẽ bị hủy" y="15" size="22" strokeColor="0x000000" stroke="1" width="320"
+		         height="48" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0"
+		         textColor="0xfdffdd" x="195" scaleX="1" scaleY="1" textAlign="left" />
+		<e:Image source="ui_tit_bg_png" y="341.33" anchorOffsetY="0" height="62.34" anchorOffsetX="0" width="505.33"
+		         scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Label id="send_tip" text="Sau 30 phút, nếu đối phương không phản hồi, đề xuất sẽ bị hủy." y="350" size="22" strokeColor="0x000000" stroke="1" width="320"
+		         height="48" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="195" anchorOffsetY="0"
+		         textColor="0xFDFFDD" lineSpacing="5" />
+		<e:Label text="Đề xuất:  " y="350" size="22" strokeColor="0x000000" stroke="1" verticalAlign="middle"
+		         fontFamily="Arial" anchorOffsetX="0" x="25" anchorOffsetY="0" textColor="0x00FF00" bold="true" />
+		<e:Scroller width="508" height="270" y="68" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" x="11" scaleX="1"
+		            scaleY="1">
+			<e:List id="list_received" itemRendererSkinName="MarryIntentionItem">
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center" gap="5" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Scroller width="508" height="270" y="407" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" x="11"
+		            scaleX="1" scaleY="1">
+			<e:List id="list_send" y="-1" itemRendererSkinName="MarryIntentionItem">
+				<e:layout>
+					<e:VerticalLayout gap="5" horizontalAlign="center" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+	<e:Group id="group_two" width="531" height="682" horizontalCenter="0" verticalCenter="0" visible="false">
+		<e:Image source="ui_tit_bg_png" y="6.989999999999998" anchorOffsetY="0" height="39.34" anchorOffsetX="0"
+		         width="505.33" horizontalCenter="-0.5" x="12" scaleX="1" scaleY="1" />
+		<e:Label text="Yêu cầu ly hôn: " y="12.3" size="22" strokeColor="0x000000" stroke="1" width="250.66" height="31.33"
+		         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="19.339999999999996" anchorOffsetY="0"
+		         textColor="0xFFFBC4" scaleX="1" scaleY="1" />
+		<e:Scroller width="508" height="630" y="48.3" anchorOffsetY="0" horizontalCenter="0.5">
+			<e:List id="list_divorce" itemRendererSkinName="MarryIntentionItem">
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

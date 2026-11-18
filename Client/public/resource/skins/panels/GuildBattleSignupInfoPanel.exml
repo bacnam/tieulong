@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildBattleSignupInfoPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui">
+	<e:Group anchorOffsetX="0" anchorOffsetY="0" verticalCenter="-45" horizontalCenter="-24">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="394" height="364" scaleX="1" scaleY="1" anchorOffsetY="0" anchorOffsetX="0" x="0"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" width="374" height="269" scaleX="1" scaleY="1" y="67" anchorOffsetY="0" anchorOffsetX="0" horizontalCenter="0"/>
+		<e:Image source="btn_close_png" x="327" y="-1.67" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image source="smallui_tbg_png" y="21" scaleX="1" scaleY="1" x="51"/>
+		<e:Label text="Đăng ký" y="25" size="24" textAlign="center" strokeColor="0x000000" stroke="1" height="32" fontFamily="Arial" verticalAlign="middle" bold="true" x="148" textColor="0xfdb200"/>
+		<e:Scroller id="scroller" width="357" height="239" anchorOffsetX="0" anchorOffsetY="0" y="76" scaleX="1" scaleY="1" horizontalCenter="0">
+		<e:List id="list" width="371" anchorOffsetY="0" height="372.67" anchorOffsetX="0">
+			<e:itemRendererSkinName>
+			<e:Skin xmlns:w="http://ns.egret.com/wing">
+				<e:Label id="label" text="xxxx Bị đánh bại xxxx" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" horizontalCenter="0"/>
+			</e:Skin>
+			</e:itemRendererSkinName>
+		</e:List>
+		</e:Scroller>
+		<e:Label id="tip" text="Chưa có Bang hội" horizontalCenter="0.5" textColor="0xFF0000" bold="true" stroke="1" size="35" verticalCenter="0"/>
+	</e:Group>
+</e:Skin>

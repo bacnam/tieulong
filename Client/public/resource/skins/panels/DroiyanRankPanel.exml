@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanRankPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+    <w:Config id="1587259f626" />
+	<e:Group width="545" height="710" touchEnabled="false" horizontalCenter="0" verticalCenter="-45">
+		<e:Group id="statics" width="545" height="710" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" y="0" x="0" scaleX="1" scaleY="1">
+			<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="680" y="11" scaleX="1" scaleY="1" x="23"/>
+			<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="84.73" width="480" height="499" scaleX="1" scaleY="1" horizontalCenter="0"/>
+			<e:Image source="ui_heip_png" x="55" y="26" name="open_DroiyanReward"/>
+			<e:Image source="list_tab_png" y="588" height="86" width="500" x="36" scaleX="1" scaleY="1"/>
+			<e:Image source="btn_close_png" x="455" y="11" name="btn_close"/>
+			<e:Image source="smallui_tbg_png" y="27" scaleX="1" scaleY="1" x="127"/>
+			<e:Label text="Bảng xếp hạng" y="33" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" verticalAlign="middle" x="171" bold="true" textColor="0xfdb200"/>
+			<e:Label text="Hạng của bạn:" x="64" y="602" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="144" height="30" verticalAlign="middle"/>
+			<e:Label text="Phần thưởng:" x="70" y="639" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="144" height="30" verticalAlign="middle"/>
+			<e:Image source="icon_gold_png" x="215.64" y="633.88" width="35" height="36"/>
+			<e:Image width="40" height="37" x="386" y="632" source="stone_png"/>
+		</e:Group>
+		<e:Label id="lbl_rank" text="s.170 我的角色名很长" x="224" y="601" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="30" verticalAlign="middle" scaleX="1" scaleY="1"/>
+		<e:Label id="lbl_exp" text="12345" x="427" y="644" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="59" textColor="0xFFFFFF" verticalAlign="middle" scaleX="1" scaleY="1"/>
+		<e:Label id="lbl_gold" text="123456789012" x="265" y="644" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+		<e:Scroller id="scroller" height="462" y="94" scaleX="1" scaleY="1" horizontalCenter="0" width="450" x="47">
+			<e:List id="lst_ranks" height="458" x="-14" y="-90" itemRendererSkinName="DroiyanRankItem">
+			<e:layout>
+				<e:VerticalLayout/>
+			</e:layout>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

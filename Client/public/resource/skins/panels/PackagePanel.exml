@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="PackagePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:view="legend.view.*" xmlns:ns1="*" xmlns:component="legend.view.component.*">
+	<w:Config id="158335b8470" />
+	<e:Group width="590" height="845" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" touchEnabled="false"
+	         verticalCenter="0">
+		<e:Group width="590" height="845" anchorOffsetX="0" anchorOffsetY="0" x="0" y="13" scaleX="1" scaleY="1"
+		         touchEnabled="false">
+			<e:Image source="ui_bg_png" y="-12" scaleX="1" scaleY="1" horizontalCenter="0.5" x="0" />
+			<e:Image name="btn_close" source="btn_close_png" y="0" scaleX="1" scaleY="1" horizontalCenter="257" x="517" />
+			<e:Image source="beibao_png" y="-7" scaleX="1" scaleY="1" horizontalCenter="0" x="261" />
+		</e:Group>
+		<e:ViewStack id="content_View" width="551" height="694" y="65" scaleX="1" scaleY="1" selectedIndex="1"
+		             horizontalCenter="0">
+			<e:Group name="Trang bị" id="group0" width="100%" height="100%" touchEnabled="true" x="0" y="0" scaleX="1" scaleY="1">
+				<e:Group scaleX="1" scaleY="1" width="100%" height="100%" touchEnabled="false">
+					<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="621" scaleX="1" scaleY="1" width="550" height="75"
+					         horizontalCenter="0" />
+					<e:Image source="check_png" x="18" y="640" scaleX="1" scaleY="1" />
+					<e:Image id="btn_melting" source="btn_bg1_png" y="635" x="376" scaleX="1" scaleY="1" name="btn_melting" />
+					<e:Label text="Giữ lại trang bị thuộc tính cao." x="60" y="642" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+					         textColor="0xFFC446" width="290" height="30" verticalAlign="middle" scaleX="1" scaleY="1" />
+					<e:Label text="Bán hết" x="402" y="648" size="24" textAlign="center" strokeColor="0x000000" stroke="1"
+					         textColor="0xF8F7D3" width="108" scaleX="1" scaleY="1" touchEnabled="false" />
+					<e:Image source="form_bg_png" scale9Grid="16,15,19,18" scaleX="1" scaleY="1" width="550" height="625"
+					         horizontalCenter="0" />
+					<e:Label text="Túi đồ:" x="339" y="577" size="20" textAlign="right" strokeColor="0x000000" stroke="1" scaleX="1"
+					         scaleY="1" textColor="0xFCFBFB" verticalAlign="middle" />
+					<e:Image id="bt_add" source="btn_bg4_1_png" x="490" y="568" scaleX="1" scaleY="1" />
+					<e:Image source="ui_+_png" x="499" y="578" scaleX="1" scaleY="1" touchEnabled="false" />
+					<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="15" scaleX="1" scaleY="1" width="520" height="550"
+					         horizontalCenter="0" />
+					<e:Label text="Hệ thống tự động lọc trang bị luyện kim" x="18" y="568" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+					         textColor="0xF8F7D3" width="275" height="44" verticalAlign="middle" scaleX="1" scaleY="1" />
+				</e:Group>
+				<e:Scroller width="481" height="520" y="30" skinName="skins.ScrollerSkin" horizontalCenter="0" scrollPolicyH="auto"
+				            scrollPolicyV="auto" bounces="false">
+					<e:List id="list_equip" width="481" itemRendererSkinName="ItemSkin">
+						<e:layout>
+							<e:TileLayout horizontalGap="20" verticalGap="20" paddingLeft="20" paddingTop="10" />
+						</e:layout>
+					</e:List>
+				</e:Scroller>
+				<e:CheckBox id="check_filterEquip" label="" x="18" y="640" selected="true">
+					<e:Skin states="up,down,disabled,upAndSelected,downAndSelected,disabledAndSelected">
+						<e:Image fillMode="scale" source="check_png" source.upAndSelected="gou_png" />
+					</e:Skin>
+				</e:CheckBox>
+				<e:Label id="label_capacity" text="999/999" x="396" y="577" size="20" strokeColor="0x000000" stroke="1" scaleX="1"
+				         scaleY="1" textColor="0xFCFBFB" width="90" height="26" textAlign="center" />
+				<e:Label id="equip_tip" text="Túi đồ trống" y="329" textColor="0xFF0000" bold="true" stroke="1" size="35" x="187"
+				         scaleX="1" scaleY="1" horizontalCenter="0" />
+			</e:Group>
+			<e:Group name="Vật phẩm" id="group1" width="100%" height="100%">
+				<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="0" scaleX="1" scaleY="1" width="550" height="696"
+				         horizontalCenter="0" />
+				<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="15" scaleX="1" scaleY="1" width="520" height="664"
+				         horizontalCenter="0.5" />
+				<e:Scroller width="481" height="630" y="30" skinName="skins.ScrollerSkin" scaleX="1" scaleY="1" horizontalCenter="0">
+					<e:List id="list_item" width="481" itemRendererSkinName="ItemSkin">
+						<e:layout>
+							<e:TileLayout horizontalGap="20" verticalGap="20" paddingLeft="20" paddingTop="10" />
+						</e:layout>
+					</e:List>
+				</e:Scroller>
+				<e:Label id="item_tip" text="Túi đồ trống" y="329" textColor="0xFF0000" bold="true" stroke="1" size="35" scaleX="1"
+				         scaleY="1" horizontalCenter="0" />
+			</e:Group>
+		</e:ViewStack>
+		<e:TabBar id="tabBar_page" dataProvider="{content_View}" y="760" itemRendererSkinName="Button_funcSkin" scaleX="1"
+		          scaleY="1" x="75" />
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" />
+	</e:Group>
+	<component:EuiMap id="itemData">
+		<e:Array>
+			<e:Object name="gold" uniformId="1" />
+			<e:Object name="crystal" uniformId="2" />
+			<e:Object name="strengthenMaterial" uniformId="7" />
+			<e:Object name="gemMaterial" uniformId="8" />
+			<e:Object name="starMaterial" uniformId="9" />
+			<e:Object name="merMaterial" uniformId="10" />
+			<e:Object name="wingMaterial" uniformId="11" />
+			<e:Object name="arenaToken" uniformId="12" />
+			<e:Object name="equipInstanceMaterial" uniformId="13" />
+			<e:Object name="gemInstanceMaterial" uniformId="14" />
+			<e:Object name="meridianInstanceMaterial" uniformId="15" />
+			<e:Object name="redPiece" uniformId="16" />
+			<e:Object name="artificeMaterial" uniformId="17" />
+			<e:Object name="warspiritTalentMaterial" uniformId="18" />
+			<e:Object name="lottery" uniformId="20" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

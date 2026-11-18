@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Portrait" width="107" height="90" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="img_bg" source="portrait_bg_png" x="4.33" y="-1.33"/>
+	<e:Image id="img_icon" source="tou1_png" x="10.31" y="5.32" width="76" height="76"/>
+	<e:Image id="img_vipbg" source="ui_vip_bg_png" x="-9.34" y="63.69"/>
+	<e:Image id="img_vip" x="15.01" y="66.34" height="19" source="ui_vip_png" width="51"/>
+	<e:BitmapLabel id="lbl_vipLv" x="59.33" y="62.98" height="38" text="5" scaleX="0.45" scaleY="0.45" font="vip_number_fnt"/>
+	<e:Image id="month_card" x="-6" y="-18" source="month_card_png" visible="false"/>
+	<e:Image id="year_card" source="year_card_png" x="20" y="-18" visible="false"/>
+</e:Skin>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="PowerUpPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+    <e:Group width="450" height="560" touchEnabled="false" horizontalCenter="0" verticalCenter="0">
+        <e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="450" height="560" scaleX="1" scaleY="1" />
+        <e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="71.39" width="428" height="477.67" scaleX="1"
+                 scaleY="1" horizontalCenter="0" anchorOffsetY="0" />
+        <e:Image source="btn_close_png" y="0" name="btn_close" scaleX="1" scaleY="1" right="0" />
+        <e:Image source="smallui_tbg_png" y="13.66" scaleX="1" scaleY="1" horizontalCenter="0" />
+        <e:Label text="我要变强" y="19.66" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205"
+                 height="32" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0.5"
+                 textColor="0xf7f397" />
+        <e:Scroller height="450" y="84.67" scaleX="1" scaleY="1" horizontalCenter="0" width="400" x="47"
+                    anchorOffsetY="0">
+            <e:List id="list" height="470" x="0" y="-7.33" anchorOffsetY="0">
+                <e:itemRendererSkinName>
+                    <e:Skin>
+                        <e:Image source="form_jbg_png" scale9Grid="13,14,24,22" width="400" height="55" scaleX="1"
+                                 scaleY="1" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" />
+                        <e:Label id="label_name" text="提升装备战力" bold="true" size="24" x="21" verticalCenter="0" />
+                        <e:Label id="label_go" text="前往&gt;&gt;" bold="true" size="24" textColor="0x00ff00"
+                                 verticalCenter="0.5" right="18" />
+                        <e:Label id="tip" text="翅膀系统 等级50级 开启" size="20" textColor="0x00FF00" verticalCenter="0.5"
+                                 right="10" anchorOffsetX="0" width="180" textAlign="center" />
+                    </e:Skin>
+                </e:itemRendererSkinName>
+                <e:layout>
+                    <e:VerticalLayout/>
+                </e:layout>
+            </e:List>
+        </e:Scroller>
+    </e:Group>
+    <component:EuiMap id="panelMap">
+        <e:Array>
+            <e:Object name="提升装备战力" panel="Strengthen" index="0" system="Strengthen" />
+            <e:Object name="提升神装等级" panel="GodEquip" index="0" system="GodEquip" />
+            <e:Object name="提升翅膀等级" panel="XiaKe" index="2" system="Wing" />
+            <e:Object name="提升经脉等级" panel="XiaKe" index="3" system="Meridian" />
+            <e:Object name="提升技能等级" panel="XiaKe" index="1" system="Skill" />
+            <e:Object name="提升宝石等级" panel="Strengthen" index="1" system="Gem" />
+            <e:Object name="提升升星等级" panel="Strengthen" index="2" system="Star" />
+            <e:Object name="提升炼化等级" panel="Strengthen" index="3" system="Artifice" />
+        </e:Array>
+    </component:EuiMap>
+</e:Skin>

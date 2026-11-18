@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="OneYuanListPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_shop_bg_png" x="0" scaleX="1" scaleY="1"/>
+		<e:Image source="btn_close_1_png" x="545" y="26.33" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image id="btn_help" source="ui_heip_png" x="18" y="43.67" scaleX="1" scaleY="1"/>
+		<e:Image source="list_tab_png" y="107.98" anchorOffsetX="0" width="556.1" anchorOffsetY="0" height="134" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="huodong_png" y="12.7" horizontalCenter="0" x="267" scaleX="1" scaleY="1"/>
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="118.98" anchorOffsetX="0" width="531" anchorOffsetY="0" height="698" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="dark_png" y="122.98" anchorOffsetX="0" width="520" anchorOffsetY="0" height="688" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="huodong_bg_jpg" y="122.98" anchorOffsetY="0" height="688" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Label text="活动规则" y="133.48" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1" width="97" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" textColor="0xFFF135" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Label text="使用奖券参与夺宝，当前总参与次数达到需求才会开奖，未达到将返回支付的奖券" y="163.98" size="20" strokeColor="0x5E3500" stroke="1" width="421" height="70" verticalAlign="middle" fontFamily="Arial" anchorOffsetY="0" anchorOffsetX="0" textAlign="center" textColor="0xFFFDE2" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Scroller width="500" height="580" y="225" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+			<e:List id="list" itemRendererSkinName="OneYuanListItem">
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

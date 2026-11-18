@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ActivityNoticeSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Scroller width="550" height="670" y="17" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:Group id="group">
+			<e:layout>
+				<e:VerticalLayout/>
+			</e:layout>
+			<e:Group width="550" height="360" x="119" y="252">
+				<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" scaleX="1" scaleY="1" width="550" height="360"
+				         anchorOffsetY="0" y="0" x="0" />
+				<e:Image source="opennotice_bg_jpg" scaleX="1" scaleY="1" width="540" height="350" x="5" y="4" />
+			</e:Group>
+		</e:Group>
+	</e:Scroller>
+	<component:EuiMap id="activityNotice">
+		<e:Array>
+			<e:Object name="ResetFirstRecharge" class="ActivityNoticeResetRecharge" />
+			<e:Object name="AccumRecharge" class="ActivityNoticeAccumRecharge" />
+			<e:Object name="DailyRecharge" class="ActivityNoticeDailyRecharge" />
+			<e:Object name="AccumDayRecharge" class="ActivityNoticeAccumDayRecharge" />
+			<e:Object name="RedPacket" class="ActivityNoticeRedGift" />
+			<e:Object name="WorldRecharge;WorldConsume;WorldTreasure" class="ActivityNoticeTitle" />
+			<e:Object name="AccumConsume" class="ActivityNoticeAccumConsume" />
+			<e:Object name="DrawPrize" class="ActivityNoticeDrawPrize" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="login" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="157d79a8a6a" />
+	<e:Group width="640" height="1136" horizontalCenter="0" touchEnabled="false" verticalCenter="-50">
+		<e:Image source="login_bg_new_jpg" horizontalCenter="0" verticalCenter="0" width="640" />
+
+		<e:Group id="static_group" width="644.85" height="509.81" anchorOffsetY="0"
+			anchorOffsetX="0" touchEnabled="false"
+			horizontalCenter="0" bottom="0" x="-2" y="626.19" scaleX="1" scaleY="1">
+			<e:Image source="scorll_png" width="330" anchorOffsetX="0" anchorOffsetY="0"
+				height="57.28" x="157" y="-27.47" />
+			<e:Image id="btn_start" source="btn_bg3_png" y="328.80999999999995" x="210" scaleX="1"
+				scaleY="1" />
+			<e:Image source="name_png" y="148.80999999999995" horizontalCenter="0" x="194"
+				scaleX="1" scaleY="1" />
+			<e:Image id="btn_randName" source="dou_png" x="491" y="204.80999999999995" scaleX="1"
+				scaleY="1" />
+			<e:Image source="zi_bg_png" scale9Grid="7,7,36,36" x="111" y="200.80999999999995"
+				width="358" height="53" scaleX="1"
+				scaleY="1" />
+			<e:Image source="portrait_bg_png" y="29.809999999999945" horizontalCenter="0" x="274"
+				scaleX="1" scaleY="1" />
+			<e:Image source="startgame_png" x="259" y="342.80999999999995" touchEnabled="false"
+				scaleX="1" scaleY="1" />
+		</e:Group>
+		<e:Label id="label_warning" text="Tên nhân vật quá dài" x="104" textColor="0xff0000"
+			size="24" bold="true" textAlign="left"
+			strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" bottom="226" />
+		<e:TextInput id="input_name" x="119.5" skinName="skins.TextInputSkin" width="341" scaleX="1"
+			scaleY="1" prompt="Vui lòng nhập tên của bạn"
+			textColor="0xffffff" bottom="263" />
+		<e:Image id="role_Icon" x="282" scaleX="0.8" scaleY="0.8" source="tou1_png" bottom="396"
+			horizontalCenter="0" />
+
+		<e:Group x="4" y="137.15" touchEnabled="false" anchorOffsetY="0" height="258"
+			anchorOffsetX="0" width="268">
+
+			<e:RadioButton id="radio_1" label="" x="306.5" y="515" selected="true" value="1001"
+				scaleX="1" scaleY="1" anchorOffsetX="175.5" anchorOffsetY="466">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="createrole1_png" />
+					</e:Skin>
+				</e:skinName>
+			</e:RadioButton>
+
+			<e:RadioButton id="radio_2" label="" y="422" value="1002" x="569.33" scaleX="0.6"
+				scaleY="0.6" anchorOffsetX="171.06" alpha="0.7" anchorOffsetY="448.22">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="createrole2_png" />
+					</e:Skin>
+				</e:skinName>
+			</e:RadioButton>
+
+			<e:RadioButton id="radio_3" label="" y="422.66" value="1003" x="57.7" scaleX="0.6"
+				scaleY="0.6" anchorOffsetX="175.5" alpha="0.7" anchorOffsetY="466">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="createrole3_png" />
+					</e:Skin>
+				</e:skinName>
+			</e:RadioButton>
+			<e:Component id="tar1" width="20" height="20" x="306.5" y="515" />
+			<e:Component id="tar2" width="20" height="20" x="572" y="422.66" />
+			<e:Component id="tar3" width="20" height="20" x="59.37" y="421.8" />
+			<e:Image source="guildname_bg_png" x="207" y="52" rotation="90" scaleX="1" scaleY="1"
+				anchorOffsetX="0" width="140" anchorOffsetY="0" height="40" />
+			<e:Label id="role_name" text="Nga Mi" x="170" y="68" size="26" textAlign="left"
+				strokeColor="0x000000" stroke="1" width="28" anchorOffsetX="0" anchorOffsetY="0"
+				height="88" bold="true" scaleX="1" scaleY="1" fontFamily="KaiTi"
+				textColor="0xd5e5e3" />
+		</e:Group>
+	</e:Group>
+</e:Skin>

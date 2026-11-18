@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RoleSelectSkin" states="up,down,disabled" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="1582d039261" ></w:Config>
+	<e:Image id="btn_bg" source="portrait_bg_off_png" source.down="portrait_bg_png" source.disabled="portrait_bg_none_png" x="0" y="0"/>
+	<e:Image id="role_icon" source="tou1_png" x="8" y="8" width="76" height="76"/>
+	<e:Label id="lock_label" text="Cấp 150 mở khóa" y="27" width="60" anchorOffsetX="0.5" anchorOffsetY="0.5" horizontalCenter="1" textAlign="center" size="20" x="19" scaleX="1" scaleY="1" textColor="0xC9C8C9" stroke="1"/>
+	<e:Image id="prompt" source="ui_red_png" right="2" top="2" visible="false"/>
+</e:Skin>

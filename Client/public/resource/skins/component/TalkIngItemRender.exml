@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TalkIngItemRender" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*" xmlns:w="http://ns.egret.com/wing" height="120" width="530">
+	<e:Label id="content" text="Đây là một cuộc trò chuyện dài, dài, dài, dài, dài, dài, dài và dài." x="119" y="36" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="402" textColor="0xFFFFFF" height="81" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Label id="label_name" text="s575 Tên tôi rất dài" x="119" y="5" size="21" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xC5D9EA" height="30" verticalAlign="middle"/>
+	<e:Label id="label_sendtime" text="2017 01-05-03" y="12" size="15" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xC5D9EA" verticalAlign="middle" anchorOffsetX="0" right="5"/>
+	<e:Image source="line_png" y="118" width="525" horizontalCenter="0"/>
+	<e:Label id="label_pos" text="[Hội trưởng]" y="5" size="19" textAlign="right" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="30" verticalAlign="middle" right="135"/>
+	<panels:TalkPortrait id="portrait" x="13.62" y="19.34" skinName="Portrait"/>
+</e:Skin>

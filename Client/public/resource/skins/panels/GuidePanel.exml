@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuidePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="btn" x="288.94" y="361.97" source="select_png" anchorOffsetX="0" anchorOffsetY="0" scale9Grid="20,20,16,17"/>
+	<e:Image id="arrow" x="310.4" y="326.18" rotation="270" scaleX="-1" scaleY="1" touchEnabled="false" anchorOffsetY="30" anchorOffsetX="80" source="jiantou_png" width="80" height="60"/>
+	<e:Component id="jiantou" x="392" y="277" rotation="90" scaleX="1.2" scaleY="1.2" touchChildren="false" touchEnabled="false"/>
+	<e:Component id="btneffect" x="402" y="287" touchChildren="false" touchEnabled="false"/>
+</e:Skin>

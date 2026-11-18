@@ -1,0 +1,4 @@
+﻿id	GM权限	VIP等级	队伍等级	经验值	金币	水晶	技能点	战灵初始等级
+id	GmLevel	VipLevel	Level	Exp	Gold	Crystal	DungeonLevel	WarspiritLv
+0	0	10	1	0	1000000	88888	1	1
+1	200	10	10	99999	2000000	200000	1	1

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildIntanceBuyTimesPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui">
+	<e:Group width="400" height="420" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="418" anchorOffsetY="0" scaleX="1" scaleY="1" y="1" x="0"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="47" anchorOffsetX="0" width="384" anchorOffsetY="0" height="361.16" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Label text="Phí" x="120.62" y="288" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="62.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" bold="true" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Label id="crystal" text="15" x="232" y="287" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Image source="icon_crystal_png" x="176.95" y="273.33" width="40" height="40" scaleX="1" scaleY="1"/>
+		<e:Label id="curTimes" text="0次" x="220" y="108" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00" anchorOffsetX="0" anchorOffsetY="0" bold="true" scaleX="1" scaleY="1"/>
+		<e:Label id="maxBuyTimes" text="0次" x="220" y="152" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" anchorOffsetX="0" anchorOffsetY="0" bold="true" scaleX="1" scaleY="1"/>
+		<e:Label text="Số lượng thử thách sao chép băng nhóm" y="64.68" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0" textColor="0xffc446" fontFamily="Arial" bold="true"/>
+		<e:Label text="Hiện tại:" y="108" size="20" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="top" height="19" x="120" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Label text="Có sẵn:" y="151" size="20" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="top" x="120" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Image source="smallui_tbg_png" y="6" scaleX="1" scaleY="1" x="54"/>
+		<e:Label text="Số lượng" y="10" size="24" textAlign="center" strokeColor="0x000000" stroke="1" width="205" height="32" fontFamily="Arial" verticalAlign="middle" x="98" scaleX="1" scaleY="1" bold="true" textColor="0xfdb200"/>
+		<e:Image source="btn_close_png" x="331" y="-2" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image source="line_png" y="188" horizontalCenter="0" width="350" x="25" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_subTwo" source="btn_bg4_3.fw_png" x="20.330000000000013" y="213" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_sub" source="btn_bg4_1_png" x="112.33000000000001" y="213" scaleX="1" scaleY="1"/>
+		<e:Image source="ui_sub_png" x="37.33000000000001" y="233.01" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="ui_sub_png" x="122.33000000000001" y="233.01" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Label id="label_subSup" text="10" y="219.69" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="34.34" height="32" textColor="0xF7F397" verticalAlign="middle" x="62.99000000000001" anchorOffsetX="0" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="btn_addTwo" source="btn_bg4_3.fw_png" x="292.33" y="213" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_add" source="btn_bg4_1_png" x="243" y="213" scaleX="1" scaleY="1"/>
+		<e:Label id="label_addSup" text="10" y="221.02" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="34.34" height="32" textColor="0xF7F397" verticalAlign="middle" x="334.99" anchorOffsetX="0" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="163.5" y="215" anchorOffsetX="0" width="73.49" scaleX="1" scaleY="1"/>
+		<e:TextInput id="input" y="221" restrict="0-9" text="1" anchorOffsetX="0" width="61" horizontalCenter="0.5">
+			<e:skinName>
+			<e:Skin states="normal,disabled,normalWithPrompt,disabledWithPrompt" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+				<e:EditableText id="textDisplay" verticalCenter="0" textColor.disabled="0xffffff" width="100%" size="28" text="9999999" textColor="0xffffff" height="28" horizontalCenter="0" textAlign="center"/>
+				<e:Label id="promptDisplay" verticalCenter="0" width="100%" size="28" touchEnabled="false" includeIn="normalWithPrompt,disabledWithPrompt" text="请输入" textColor="0xa6a7b6" height="28" horizontalCenter="0" textAlign="center"/>
+			</e:Skin>
+			</e:skinName>
+		</e:TextInput>
+		<e:Image source="ui_+_png" x="306.99" y="224" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="ui_+_png" x="253" y="224" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image id="btn_buy" source="btn_bg4_png" scale9Grid="5,5,110,34" x="150" y="339" anchorOffsetX="0" width="100" scaleX="1" scaleY="1"/>
+		<e:Label text="Mua" x="150" y="351" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" scaleX="1" scaleY="1" touchEnabled="false"/>
+	</e:Group>
+</e:Skin>

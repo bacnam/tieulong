@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GodEquipPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*" xmlns:component="legend.view.component.*"
+        xmlns:panels="legend.panels.*">
+	<e:Group width="591" height="847" touchEnabled="false" horizontalCenter="0" verticalCenter="0">
+		<component:PanelBG id="panelBG" scaleX="1" scaleY="1" name="xb_png" horizontalCenter="0" verticalCenter="0" x="1" y="1"/>
+		<e:ViewStack id="content_View" width="550" height="690" scaleX="1" scaleY="1" horizontalCenter="0" x="21" selectedIndex="1" y="69" anchorOffsetY="0">
+			<panels:GodEquipSubPanel name="Thần trang"/>
+			<panels:SeekSubPanels name="Kho báu"/>
+		</e:ViewStack>
+	</e:Group>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="0" event="GodEquip"/>
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="unlockData">
+		<e:Array>
+			<e:Object name="0" system="GodEquip"/>
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

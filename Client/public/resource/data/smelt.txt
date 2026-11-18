@@ -1,0 +1,189 @@
+id	等级	品质	熔炼强化石	熔炼金币	熔炼红碎片
+id	Level	Quality	Strengthen	Gold	RedPiece	
+Red0	0	Red			75000
+White1	1	White	1	800	
+Green1	1	Green	2	840	
+Blue1	1	Blue	4	880	
+Purple1	1	Purple	8	940	
+Orange1	1	Orange	16	1000	
+Red1	1	Red			2
+White10	10	White	1	920	
+Green10	10	Green	2	980	
+Blue10	10	Blue	4	1040	
+Purple10	10	Purple	8	1120	
+Orange10	10	Orange	16	1200	
+Red10	10	Red			4
+White20	20	White	2	1040	
+Green20	20	Green	4	1120	
+Blue20	20	Blue	8	1200	
+Purple20	20	Purple	16	1300	
+Orange20	20	Orange	32	1400	
+Red20	20	Red			7
+White30	30	White	2	1160	
+Green30	30	Green	4	1260	
+Blue30	30	Blue	8	1360	
+Purple30	30	Purple	16	1480	
+Orange30	30	Orange	32	1600	
+Red30	30	Red			12
+White40	40	White	3	1280	
+Green40	40	Green	6	1400	
+Blue40	40	Blue	12	1520	
+Purple40	40	Purple	24	1660	
+Orange40	40	Orange	48	1800	
+Red40	40	Red			21
+White50	50	White	3	1400	
+Green50	50	Green	6	1540	
+Blue50	50	Blue	12	1680	
+Purple50	50	Purple	24	1840	
+Orange50	50	Orange	48	2000	
+Red50	50	Red			36
+White60	60	White	4	1520	
+Green60	60	Green	8	1680	
+Blue60	60	Blue	16	1840	
+Purple60	60	Purple	32	2020	
+Orange60	60	Orange	64	2200	
+Red60	60	Red			62
+White70	70	White	4	1640	
+Green70	70	Green	8	1820	
+Blue70	70	Blue	16	2000	
+Purple70	70	Purple	32	2200	
+Orange70	70	Orange	64	2400	
+Red70	70	Red			106
+White80	80	White	5	1760	
+Green80	80	Green	10	1960	
+Blue80	80	Blue	20	2160	
+Purple80	80	Purple	40	2380	
+Orange80	80	Orange	80	2600	
+Red80	80	Red			181
+White90	90	White	5	1880	
+Green90	90	Green	10	2100	
+Blue90	90	Blue	20	2320	
+Purple90	90	Purple	40	2560	
+Orange90	90	Orange	80	2800	
+Red90	90	Red			308
+White100	100	White	6	2000	
+Green100	100	Green	12	2240	
+Blue100	100	Blue	24	2480	
+Purple100	100	Purple	48	2740	
+Orange100	100	Orange	96	3000	
+Red100	100	Red			524
+White110	110	White	6	2120	
+Green110	110	Green	12	2380	
+Blue110	110	Blue	24	2640	
+Purple110	110	Purple	48	2920	
+Orange110	110	Orange	96	3200	
+Red110	110	Red			850
+White120	120	White	7	2240	
+Green120	120	Green	14	2520	
+Blue120	120	Blue	28	2800	
+Purple120	120	Purple	56	3100	
+Orange120	120	Orange	112	3400	
+Red120	120	Red			1300
+White130	130	White	7	2360	
+Green130	130	Green	14	2660	
+Blue130	130	Blue	28	2960	
+Purple130	130	Purple	56	3280	
+Orange130	130	Orange	112	3600	
+Red130	130	Red			2000
+White140	140	White	8	2480	
+Green140	140	Green	16	2800	
+Blue140	140	Blue	32	3120	
+Purple140	140	Purple	64	3460	
+Orange140	140	Orange	128	3800	
+Red140	140	Red			2800
+White150	150	White	8	2600	
+Green150	150	Green	16	2940	
+Blue150	150	Blue	32	3280	
+Purple150	150	Purple	64	3640	
+Orange150	150	Orange	128	4000	
+Red150	150	Red			4800
+White160	160	White	9	2720	
+Green160	160	Green	18	3080	
+Blue160	160	Blue	36	3440	
+Purple160	160	Purple	72	3820	
+Orange160	160	Orange	144	4200	
+Red160	160	Red			7000
+White170	170	White	9	2840	
+Green170	170	Green	18	3220	
+Blue170	170	Blue	36	3600	
+Purple170	170	Purple	72	4000	
+Orange170	170	Orange	144	4400	
+Red170	170	Red			10000
+White180	180	White	10	2960	
+Green180	180	Green	20	3360	
+Blue180	180	Blue	40	3760	
+Purple180	180	Purple	80	4180	
+Orange180	180	Orange	160	4600	
+Red180	180	Red			15000
+White190	190	White	10	3080	
+Green190	190	Green	20	3500	
+Blue190	190	Blue	40	3920	
+Purple190	190	Purple	80	4360	
+Orange190	190	Orange	160	4800	
+Red190	190	Red			20000
+White200	200	White	11	3092	
+Green200	200	Green	22	3514	
+Blue200	200	Blue	44	3936	
+Purple200	200	Purple	88	4378	
+Orange200	200	Orange	176	4820	
+Red200	200	Red			25000
+White210	210	White	11	3104	
+Green210	210	Green	22	3528	
+Blue210	210	Blue	44	3952	
+Purple210	210	Purple	88	4396	
+Orange210	210	Orange	176	4840	
+Red210	210	Red			30000
+White220	220	White	12	3116	
+Green220	220	Green	24	3542	
+Blue220	220	Blue	48	3968	
+Purple220	220	Purple	96	4414	
+Orange220	220	Orange	192	4860	
+Red220	220	Red			35000
+White230	230	White	12	3128	
+Green230	230	Green	24	3556	
+Blue230	230	Blue	48	3984	
+Purple230	230	Purple	96	4432	
+Orange230	230	Orange	192	4880	
+Red230	230	Red			40000
+White240	240	White	13	3140	
+Green240	240	Green	26	3570	
+Blue240	240	Blue	52	4000	
+Purple240	240	Purple	104	4450	
+Orange240	240	Orange	208	4900	
+Red240	240	Red			45000
+White250	250	White	13	3152	
+Green250	250	Green	26	3584	
+Blue250	250	Blue	52	4016	
+Purple250	250	Purple	104	4468	
+Orange250	250	Orange	208	4920	
+Red250	250	Red			50000
+White260	260	White	14	3164	
+Green260	260	Green	28	3598	
+Blue260	260	Blue	56	4032	
+Purple260	260	Purple	112	4486	
+Orange260	260	Orange	224	4940	
+Red260	260	Red			55000
+White270	270	White	14	3176	
+Green270	270	Green	28	3612	
+Blue270	270	Blue	56	4048	
+Purple270	270	Purple	112	4504	
+Orange270	270	Orange	224	4960	
+Red270	270	Red			60000
+White280	280	White	15	3188	
+Green280	280	Green	30	3626	
+Blue280	280	Blue	60	4064	
+Purple280	280	Purple	120	4522	
+Orange280	280	Orange	240	4980	
+Red280	280	Red			65000
+White290	290	White	15	3200	
+Green290	290	Green	30	3640	
+Blue290	290	Blue	60	4080	
+Purple290	290	Purple	120	4540	
+Orange290	290	Orange	240	5000	
+Red290	290	Red			70000
+White300	300	White	16	3212	
+Green300	300	Green	32	3654	
+Blue300	300	Blue	64	4096	
+Purple300	300	Purple	128	4558	
+Orange300	300	Orange	256	5020	
+Red300	300	Red			75000

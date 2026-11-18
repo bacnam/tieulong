@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankSpouseItem" width="415" height="170" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" anchorOffsetX="0" width="415" anchorOffsetY="0" height="170"/>
+	<e:Label id="power" text="Lực chiến: 1111111111" y="142.15" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" touchEnabled="false" horizontalCenter="18"/>
+	<component:Portrait id="husband_portrait" x="65" skinName="Portrait" y="30" scaleX="1" scaleY="1"/>
+	<component:Portrait id="wife_portrait" x="276.67" skinName="Portrait" scaleX="1" scaleY="1" y="30"/>
+	<e:Label text="Tân lang" size="24" textAlign="right" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="90" textColor="0xFFFFFF" bold="true" y="5"/>
+	<e:Label text="Tân Nương" size="24" textAlign="right" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="306.67" textColor="0xFFFFFF" bold="true" y="5"/>
+	<e:Image source="love_png" width="60" height="60" y="50" horizontalCenter="16.5"/>
+	<e:Label id="husband_name" text="S32.Lê thị Nam" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" anchorOffsetX="0" x="51.65" y="120.83"/>
+	<e:Label id="wife_name" text="S32.Trần Thị Nữ" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" anchorOffsetX="0" y="120.82" horizontalCenter="126.5"/>
+	<e:Image source="ui_rank_bg_png" y="14.67" x="3.99"/>
+	<e:Label id="rank" text="2" y="31.33" size="26" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" touchEnabled="false" horizontalCenter="-173"/>
+</e:Skin>

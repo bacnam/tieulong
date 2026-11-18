@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanListSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Scroller width="500" height="550" y="120" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:Group>
+			<e:List id="list" width="100%" scaleX="1" scaleY="1"  itemRendererSkinName="DroiyanListItem">
+				<e:layout>
+					<e:VerticalLayout gap="15" paddingTop="5"/>
+				</e:layout>
+			</e:List>
+		</e:Group>
+	</e:Scroller>
+</e:Skin>

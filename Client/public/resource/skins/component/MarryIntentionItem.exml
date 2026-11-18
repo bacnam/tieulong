@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarryIntentionItem" width="478" height="121" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="0" y="0" anchorOffsetX="0" width="478" anchorOffsetY="0" height="121"/>
+	<e:Image source="dark_png" x="5" y="4" anchorOffsetX="0" width="467" anchorOffsetY="0" height="112"/>
+	<e:Image id="btn_agree" source="btn_bg4_png" scale9Grid="5,5,110,34" x="347" y="12" anchorOffsetX="0" width="100"/>
+	<e:Image id="btn_reject" x="347" y="65" anchorOffsetX="0" width="100" source="btn_bg5_png"/>
+	<e:Label id="time_tip" text="Thời gian còn: " x="125" y="90" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3"/>
+	<e:Label id="power" text="1000000" x="200" y="65" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00"/>
+	<e:Label text="Lực chiến: " x="125" y="65" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3"/>
+	<e:Label id="lv" text="8" x="180" y="40" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000"/>
+	<e:Label id="time" text="29:45" x="220" y="90" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000"/>
+	<e:Label text="Cấp: " y="40" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" x="125"/>
+	<e:Label id="label_name" text="Thần bí người chơi" y="10" size="22" textAlign="right" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="125" textColor="0xE0C302"/>
+	<e:Image source="line_png" x="320" y="12" rotation="90.48" anchorOffsetX="0" width="100" anchorOffsetY="0" height="2"/>
+	<e:Label id="label_agree" text="Đồng ý" x="347" y="24" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" touchEnabled="false"/>
+	<e:Label id="label_regect" text="Từ chối" x="347" y="74" size="20" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" touchEnabled="false"/>
+	<component:Portrait id="portrait" x="13" skinName="Portrait" verticalCenter="0"/>
+</e:Skin>

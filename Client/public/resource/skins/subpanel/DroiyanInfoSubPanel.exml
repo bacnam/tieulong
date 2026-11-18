@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanInfoSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*" >
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="133" width="500" height="135" scaleX="1" scaleY="1" horizontalCenter="0"/>
+	<e:Label id="label_name" text="s.177 我是神逸主角" x="195" y="168" size="24" textAlign="left" strokeColor="0x000000" stroke="1" width="220" textColor="0xFFFFFF" height="29" verticalAlign="middle"/>
+	<e:Image source="zzjf_png" x="185" y="218"/>
+	<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="388" y="217" width="120" height="30"/>
+	<e:Image source="redname_png" x="348" y="208"/>
+	<e:Label id="integral" text="123456789" x="399" y="218" size="18" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xFFFFFF" height="29" verticalAlign="middle"/>
+	<e:Image source="shop_bar_bg_png" scale9Grid="21,0,437,24" y="338" horizontalCenter="0" width="480" height="24"/>
+	<e:Image id="line" source="shop_bar_png" scale9Grid="11,0,421,12" y="344" x="54" width="444" height="12"/>
+	<e:Image source="redname_icon_png" x="54" y="350" anchorOffsetX="18.5" anchorOffsetY="19"/>
+	<e:Image id="yellowbg" source="redname_icon_png" x="310" y="350" rotation="359.37" anchorOffsetX="18.5" anchorOffsetY="19"/>
+	<e:Image id="redbg" source="redname_icon_png" x="498" y="350" anchorOffsetX="18.5" anchorOffsetY="19"/>
+	<e:Label id="label_red" text="100" y="341.5" size="18" textAlign="center" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFF0000" bold="true" horizontalCenter="223"/>
+	<e:Label id="label_yellow" text="60" x="301" y="350" size="18" textAlign="center" strokeColor="0x000000" stroke="1" verticalAlign="middle" bold="true" textColor="0xFFF000" anchorOffsetY="9"/>
+	<e:Label text="0" x="54" y="350" size="18" textAlign="center" strokeColor="0x000000" stroke="1" verticalAlign="middle" bold="true" textColor="0xFFFFFF" anchorOffsetX="5.5" anchorOffsetY="9"/>
+	<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" y="398" width="500" height="80" x="31"/>
+	<e:Label id="tip" text="Bạch danh bảo hộ: Bị đánh bại không chịu tổn thất" x="40" y="420" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="328" textColor="0xFFFFFF" height="40" verticalAlign="middle"/>
+
+
+	<e:Label text="Sau 100 trận quyết đấu mỗi ngày, \nbạn sẽ không nhận được phần thưởng vàng nữa." y="502" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="480" height="40" verticalAlign="middle" horizontalCenter="0"/>
+	<e:Label text="Máu của nhân vật có tên màu đỏ \nsẽ không tự động được phục hồi trong quyết đấu." y="629" size="20" textAlign="center" width="480" height="40" verticalAlign="middle" x="10" textColor="0xFF0031"/>
+
+
+
+
+	<component:Portrait id="portrait" x="45" y="158" skinName="Portrait"/>
+	<e:Group id="cur" x="176" y="335" anchorOffsetY="64" anchorOffsetX="60">
+		<e:Image source="redname_tit_png" scaleX="1" scaleY="1" width="100%"/>
+		<e:Label text="Điểm PK" y="5" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="32" verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="66" x="74"/>
+		<e:Label id="red" text="4527257  " y="6" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" height="32" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="50"/>
+	</e:Group>
+	<e:Button id="btn_log" label="Nhật ký" y="555" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg2_png"/>
+			<e:Label id="labelDisplay" size="26" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_new" label="Tin tức" y="555" horizontalCenter="155">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg2_png"/>
+			<e:Label id="labelDisplay" size="26" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_clean" label="Tẩy PK" y="415" x="384" width="130">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="26" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_rank" label="Xếp hạng" y="555" horizontalCenter="-155">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg2_png"/>
+			<e:Label id="labelDisplay" size="26" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+</e:Skin>

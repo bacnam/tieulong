@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanEnemiesSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui">
+    <e:Scroller width="500" height="550" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" x="35" scaleX="1"
+                scaleY="1" y="120">
+        <e:List id="list" width="100%" anchorOffsetY="0" height="497" itemRendererSkinName="DroiyanEnemiesItem" x="0" y="163">
+					<e:layout>
+						<e:VerticalLayout gap="10"/>
+					</e:layout>
+        </e:List>
+    </e:Scroller>
+    <e:Label id="tip" text="Chưa có kẻ thù" horizontalCenter="0" textColor="0xFF0000" bold="true" stroke="1" size="35"
+              y="390"/>
+</e:Skin>

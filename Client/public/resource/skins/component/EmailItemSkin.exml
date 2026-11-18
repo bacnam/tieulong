@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="EmailItemSkin" width="480" height="98" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="158705308f8" ></w:Config>
+	
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" width="480" height="96" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0" rotation="0" horizontalCenter="0" verticalCenter="0"/>
+	<e:Label id="lbl_time" x="110" y="67" size="20" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0x8D8D8D" text="{data.time}" scaleX="1" scaleY="1"/>
+	<e:Label id="lbl_title" text="{data.title}" x="110" y="18" size="24" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" scaleX="1" scaleY="1"/>
+	<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="17.29" width="80" height="80" scaleX="1" scaleY="1" verticalCenter="0"/>
+	<e:Image id="img_item" source="mail4_png" x="22.79" scaleX="1" scaleY="1" verticalCenter="0"/>
+	<e:Image id="img_pick" source="lingqu_png" x="397.9" scaleX="1" scaleY="1" rotation="17.97" verticalCenter="0"/>
+</e:Skin>

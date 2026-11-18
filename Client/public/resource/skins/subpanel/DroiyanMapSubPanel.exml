@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanMapSubPanel" width="550" height="690" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" scaleX="1" scaleY="1" width="520" height="571" y="105"
+	         horizontalCenter="0" />
+	<e:Scroller width="485" height="459" y="202" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0.5">
+		<e:List id="list" itemRendererSkinName="DroiyanMapItem">
+			<e:layout>
+				<e:TileLayout paddingTop="11" horizontalGap="15" verticalGap="20" />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="tip" text="Chưa có bản đồ kho báu" y="408" horizontalCenter="0" textColor="0xff0000" bold="true" stroke="1" size="35" />
+	<e:Label text="Đang có: " y="120" stroke="1" size="28" x="30" textColor="0xffc446"/>
+	<e:Label text="Hôm nay có thể mở:" y="160" stroke="1" size="28" x="30" textColor="0x00ff00"/>
+	<e:Label id="times" text="1/1" y="160" stroke="1" size="28" x="290" textColor="0x00FF00"/>
+	<e:Label id="tip_max" text="0/5" y="120" textColor="0xFFC446" stroke="1" size="28" x="166" anchorOffsetX="0"/>
+</e:Skin>

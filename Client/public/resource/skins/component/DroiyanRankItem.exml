@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanRankItem" width="450" height="150" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+    <e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="0" scaleX="1" scaleY="1" width="450" height="150" x="0"
+             locked="true" />
+    <e:Label id="lbl_name" x="193.13" y="17.23" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFEFEFE" width="220" height="30" verticalAlign="middle" text="{data.name}" />
+    <e:Image source="ui_rank_bg_png" x="15.13" y="26.23" />
+    <e:Label id="lbl_rank" y="42.73" size="26" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1"
+             scaleY="1" text="{data.rank}" horizontalCenter="-179.84" textAlign="center" />
+    <e:Label text="Lực chiến: " x="197.13" y="76.75" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" width="92" height="30" verticalAlign="middle" anchorOffsetX="0" />
+    <e:Label x="282.8" y="76.75" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446"
+             width="131" height="30" verticalAlign="middle" anchorOffsetX="0" text="{data.power}" />
+	<e:Label text="Cấp: " x="197.13" y="45.75" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="92" height="30" verticalAlign="middle" anchorOffsetX="0"/>
+	<e:Label x="254.8" y="45.75" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle" anchorOffsetX="0" text="{data.lv}"/>
+    <e:Label text="Phần thưởng: " y="113.23" size="20" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795"
+             scaleX="1" scaleY="1" x="23.13" />
+    <e:Label id="lbl_exp" text="1000" x="365" y="115" size="20" textAlign="left" strokeColor="0x000000"
+             stroke="1" width="59" textColor="0xFFFFFF" verticalAlign="middle" />
+	<e:Label id="lbl_point" text="{data.value}" x="396" y="51" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle"/>
+    <e:Image source="icon_gold_png" x="140.13" y="105.23" width="35" height="36" />
+    <e:Label id="lbl_gold" x="181.13" y="115" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1"
+             scaleY="1" textColor="0xFCFBFB" text="123465" />
+    <component:Portrait id="portrait" x="79.33" y="17.67" anchorOffsetX="0" width="96" anchorOffsetY="0" height="88"
+                        skinName="Portrait" />
+	<e:Label text="Điểm:" x="341" textColor="0x00FF00" bold="true" size="22" y="50"/>
+	<e:Image width="40" height="35" x="326" y="108" source="stone_png"/>
+</e:Skin>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TitleChannelItem" width="490" height="195" xmlns:e="http://ns.egret.com/eui"
+	xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="0" y="0" anchorOffsetX="0" width="490"
+		anchorOffsetY="0" height="195" />
+	<e:Image source="dark_png" x="5" y="4" anchorOffsetX="0" width="479.17" anchorOffsetY="0"
+		height="186" />
+	<e:Label text="Lực chiến: " x="16" y="130" size="20" textAlign="left" strokeColor="0x000000"
+		stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" />
+	<e:Label id="minpower" text="1000000" x="130" y="131" size="22" textAlign="center"
+		strokeColor="0x000000" stroke="1" textColor="0x28FF00" />
+	<e:Label text="đến" x="210" y="131" size="18" textAlign="left"
+		strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true"
+		textColor="0xF8F7D3" />
+	<e:Label id="maxpower" text="888888" x="265" y="131" size="22" textAlign="center"
+		strokeColor="0x000000" stroke="1" textColor="0xFF0000" anchorOffsetY="2" />
+	<e:Label text="Sở hữu: " x="16" y="160" size="20" textAlign="left" strokeColor="0x000000"
+		stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xF8F7D3" />
+	<e:Label id="channel" text="Vị trí đầu tiên trong đấu trường" y="161" size="20"
+		textAlign="right" strokeColor="0x5E3500" stroke="1" verticalAlign="middle"
+		fontFamily="Arial" textColor="0xE0C302" anchorOffsetX="0" x="110" />
+	<e:Image id="icon" source="bailianchengxian_png" x="128.01" y="9.99" />
+	<e:Image source="line_png" x="20" y="119" width="450" />
+	<component:Item id="item" x="31" y="15.66" />
+
+
+</e:Skin>

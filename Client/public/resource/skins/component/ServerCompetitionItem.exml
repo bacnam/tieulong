@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ServerCompetitionItem" width="518" height="115" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="from_bbg_png" scale9Grid="6,6,38,38" anchorOffsetX="0" width="518" anchorOffsetY="0" height="115" verticalCenter="0"/>
+	<e:Image source="from_cbg_png" x="175" scale9Grid="6,6,38,38" anchorOffsetX="0" width="337.33" anchorOffsetY="0" height="105" verticalCenter="0"/>
+	<e:Image source="rank_line_png" x="0" verticalCenter="0"/>
+	<e:Label id="first_name" text="Hạng 2~3" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xFFED29" fontFamily="Arial" verticalCenter="0" horizontalCenter="-173"/>
+	<e:Scroller width="325" height="95" x="181" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:HorizontalLayout/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

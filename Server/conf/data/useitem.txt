@@ -1,0 +1,5 @@
+﻿唯一主键	物品类型	匹配类型	匹配次数	属性权重	物品列表	数量范围
+ID	Type	MatcherType	Times	Probabilities	Items	NumberRange
+1	Box_Gold	Any	0	1200;	1	3~5
+2	Box_Gold	PerN	30	1100;	1	5
+3	Box_Silver	Any	0	1100;	1	2

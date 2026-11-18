@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildJoinItem" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="478" height="121">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="0" y="0" anchorOffsetX="0" width="478" anchorOffsetY="0" height="121"/>
+	<e:Image source="dark_png" x="5" y="4" anchorOffsetX="0" width="467" anchorOffsetY="0" height="112"/>
+
+	<e:Label id="num" text="20" x="135" y="91" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0x28FF00" anchorOffsetX="0"/>
+	<e:Label id="master" text="Mỗ mỗ mỗ" x="135" y="67" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffc446"/>
+	<e:Label id="lv" text="8" x="75" y="42" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000"/>
+	<e:Label text="Thành viên:" x="26" y="91" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Label text="Bang chủ:" x="26" y="67" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" textColor="0xffffff"/>
+	<e:Label id="label_name" text="Cái Bang" y="11" size="22" textAlign="right" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="46" textColor="0xfdb200"/>
+	<e:Label text="Cấp" x="26" y="42" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffffff"/>
+	<e:Image source="line_png" x="315" y="12" rotation="90.48" anchorOffsetX="0" width="100" anchorOffsetY="0" height="2" locked="true" visible="false"/>
+	<e:Image id="btn" source="btn_bg4_png" scale9Grid="5,5,110,34" x="346" y="38" anchorOffsetX="0" width="100"/>
+	<e:Label id="tip" text="Xin gia nhập" y="50" size="18" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="156" touchEnabled="false"/>
+</e:Skin>

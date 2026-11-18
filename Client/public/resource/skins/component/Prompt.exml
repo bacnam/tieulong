@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="PromptSkin" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="15871060f38" ></w:Config>
+	<e:Image id="bg" height="50" source="form_jbg_png" horizontalCenter="0" width="200" touchEnabled="false" verticalCenter="0"/>
+	<e:Label id="label" text="Không đủ KNB" horizontalCenter="0" verticalCenter="0" verticalAlign="justify" textAlign="center" stroke="1" textColor="0xeea80b" touchEnabled="false" bold="true"/>
+</e:Skin>

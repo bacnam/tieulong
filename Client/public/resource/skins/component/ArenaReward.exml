@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaReward" width="481.34" height="42" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Label id="lbl_rank" text="Hạng 1" x="15.52" y="6.94" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="131" height="30" verticalAlign="middle" anchorOffsetX="0"/>
+	<e:Image source="icon_gold_png" x="158.52" y="-2.06"/>
+	<e:Label text="{data.gold}" x="202.52" y="8.94" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+	<e:Label text="{data.token}" x="374.52" y="9.94" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+	<e:Image source="icon_wu_png" x="334.52" y="0.94"/>
+	<e:Image source="line_png" y="36.94" width="460" x="11.52"/>
+	<w:Config id="1586b0de6be"/>
+</e:Skin>

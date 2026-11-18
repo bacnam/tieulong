@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="PlayerInfoPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="409" height="495" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0" verticalCenter="0">
+		<e:Group width="409" height="495" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" scaleX="1" scaleY="1" >
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="492" horizontalCenter="0" verticalCenter="0" x="5" y="2" scaleX="1" scaleY="1"/>
+		<e:Image source="smallui_tbg_png" y="7" scaleX="1" scaleY="1" x="58"/>
+		<e:Label text="Thông tin" y="11" size="28" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="btn_close_png" x="338" y="-1" name="btn_close" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Label text="Biệt danh: " y="80" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+		<e:Label id="label_name" text="龙女传奇" y="80" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="160"/>
+		<e:Label id="label_gender" text="龙女传奇" y="125" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" left="160" textColor="0x00ff00"/>
+		<e:Label id="label_rolename" text="龙女传奇" y="170" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="160"/>
+		<e:Label id="label_serverId" text="龙女传奇" y="215" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" left="160" textColor="0xff0000"/>
+		<e:Label id="label_lv" text="龙女传奇" y="260" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" left="160" textColor="0x00ff00"/>
+		<e:Label id="label_vip" text="龙女传奇" y="305" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" left="160" textColor="0x00ff00"/>
+		<e:Label id="label_playerId" text="龙女传奇" y="350" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" left="160" textColor="0xff0000"/>
+		<e:Label text="Môn phái" y="170" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+		<e:Label text="Máy chủ:" y="215" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+		<e:Label text="VIP:" y="305" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+		<e:Label text="ID:" y="350" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+		<e:Label text="Giới tính:" y="125" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+		<e:Label text="Cấp:" y="260" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" left="50"/>
+	</e:Group>
+</e:Skin>

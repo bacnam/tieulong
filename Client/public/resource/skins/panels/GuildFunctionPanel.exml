@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildFunctionPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*"
+ xmlns:panels="legend.panels.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0">
+		<component:PanelBG id="panelBG" horizontalCenter="0" verticalCenter="0" name="title_guild_png"/>
+		<e:Image source="list_bg_jpg" y="74" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="line_png" y="154" width="510" horizontalCenter="0.5"/>
+		<e:Label text="Cấp:" y="80" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" x="378" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Label id="lv" text="8" y="80" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" x="441" scaleX="1" scaleY="1" textColor="0xff0000"/>
+		<e:Label text="Tên bang:" y="80" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" x="45" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Label id="label_name" text="Tên bang" y="80" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" x="156" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label text="Đóng góp cá nhân:" y="117" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" x="45" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+
+		<e:Label id="donate" text="100000" y="117" size="22" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" x="294" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+
+		<e:ViewStack id="content_View" width="530" height="594" scaleX="1" scaleY="1" selectedIndex="1" y="153.48" horizontalCenter="0.5" anchorOffsetY="0">
+			<panels:GuildSkillSubPanel scaleX="1" scaleY="1" skinName="GuildSkillSubPanel" name="Kỹ năng"/>
+			
+		</e:ViewStack>
+		<e:Image source="icon_guilddonate_png" x="246" y="109"/>
+	</e:Group>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="0" event="GuildSkill" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

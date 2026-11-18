@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Warning" width="640" height="360" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*">
+	<w:Config id="15a2084e423"/>
+	<w:Declarations>
+		<tween:TweenGroup id="blink">
+			<tween:TweenItem target="{group}">
+				<tween:Set>
+					<tween:props>
+						<e:Object alpha="{0}"/>
+					</tween:props>
+				</tween:Set>
+				<tween:To duration="750">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object alpha="{0.5}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object alpha="{0.5}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+				<tween:Wait duration="500"/>
+				<tween:Set>
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:Set>
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object alpha="{0}"/>
+					</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+		</tween:TweenGroup>
+	</w:Declarations>
+	<e:Group id="group" height="360" width="640" touchEnabled="false">
+		<e:Image id="image" source="warning_bg_png" touchEnabled="false" x="0" y="0" scaleX="1" scaleY="1"/>
+		<e:Image id="tip" x="264" y="220" source="warning_boss_png" touchEnabled="false" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Component id="effectbg" width="20" height="20" horizontalCenter="16" verticalCenter="114" anchorOffsetX="10" anchorOffsetY="10" touchEnabled="false" name="missonfinsh" scaleX="3" scaleY="3"/>
+</e:Skin>

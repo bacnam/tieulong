@@ -1,0 +1,38 @@
+﻿id	备注	解锁等级	解锁VIP等级	解锁关卡等级	解锁系统名字	解锁系统icon	系统是否开放(功能开关）	解锁提示语	需要展示解锁图标	解锁功能描述	跳转类型
+id	#name	UnlockLevel	UnlockVip	UnlockDungeon	UnlockName	UnlockIcon	NeedFunction	UnlockDialogue	UnlockView	UnlockDesc	OpenType
+Character1		0									
+Package	Túi đồ	2			Hệ thống Túi đồ						
+Smelt	Luyện	2			Hệ thống Luyện						
+Skill	Kỹ năng	2			Hệ thống Kỹ năng						
+Role	Nhân vật	2			Hệ thống Nhân vật						
+Rank	Bảng xếp hạng	2			Bảng xếp hạng				icon_list_png		
+Task	Nhiệm vụ	2			Hệ thống Nhiệm vụ				icon_task_png		
+GodEquip	Thần trang	2			Hệ thống Thần trang				shenzhuang_png		
+Strengthen	Cường hóa	2			Hệ thống Cường hóa				icon_equip_png		
+Meridian	Kinh mạch	9			Hệ thống Kinh mạch				icon_role_png		
+MeridianInstance	Kinh mạch phó bản	9			Kinh mạch phó bản						
+Auto	Tự động khiêu chiến			3	Tự động khiêu chiến công năng				icon_auto_png		
+EquipInstance	Cốt truyện phó bản	10			Cốt truyện phó bản				icon_home_png		
+WorldBoss	Thế giới Boss	12			Hệ thống Thế giới Boss				icon_boss_png		
+Star	Thăng tinh	35			Hệ thống Thăng tinh						
+Wing	Cánh	15			Hệ thống Cánh				icon_wing_png		
+Droiyan	Quyết chiến	20			Hệ thống Quyết chiến				icon_battle_png		
+Talk	Nói chuyện phiếm	50			Hệ thống Nói chuyện phiếm				talking_png		
+Gem	Đá quý	26			Hệ thống Đá quý				icon_equip_png		
+GemInstance	Đá quý phó bản	26			Hệ thống Đá quý phó bản						
+Arena	Đấu trường	30			Hệ thống Đấu trường				btn_jjc_png		
+Character2	Mở khóa 2 đệ tử	60	2		Mở khóa 2 đệ tử						
+Character3	Mở khóa 2 đệ tử	100	7		Mở khóa 3 đệ tử						
+OneKeyEquip	Một kiện trang bị	2									
+Shop	Thương thành	2			Hệ thống Thương thành						
+OfflineReward	Offline kinh nghiệm cấp bậc	2			Offline kinh nghiệm						
+XiaKe		2			Hệ thống Hiệp khách						
+Rebirth	Chuyển sinh	100			Hệ thống Chuyển sang kiếp khác				zhuansheng_png		
+Artifice	Luyện hóa	70			Hệ thống Luyện hóa				icon_equip_png		
+WarSpirit	Chiến linh	110			Hệ thống Chiến linh				icon_warspirit_png		
+Guild	Bang phái	50			Bang phái				bangpai_png		
+Dress	Thời trang	40			Hệ thống Thời trang				dress_png		
+Marry	Kết hôn	2			Hệ thống Kết hôn						
+Title	Danh hiệu	2			Hệ thống Danh hiệu						
+LingBao	Linh bảo	75			Hệ thống Linh bảo						
+GMTalk	GM		3		Khách nói chuyện						

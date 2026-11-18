@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TitlesPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:ns1="*" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<w:Config id="157e5c70f0d" />
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<component:PanelBG id="panelBG" scaleX="1" scaleY="1" name="chenghao_png" verticalCenter="0" horizontalCenter="0" />
+		<e:Image source="list_bg_jpg" anchorOffsetX="0" width="532" anchorOffsetY="0" height="672" horizontalCenter="0" y="77"/>
+		<e:ViewStack id="content_View" width="550" height="694" scaleX="1" scaleY="1" selectedIndex="6" y="63"
+		             horizontalCenter="0">
+			<panels:TitleAttrSubPanel  name="Thuộc tính" />
+			<panels:TitleWallSubPanel name="Sở hữu"  />
+			<panels:TitleChannelSubPanel  name="Danh sách" />
+		</e:ViewStack>
+	</e:Group>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="1" event="NewTitle" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

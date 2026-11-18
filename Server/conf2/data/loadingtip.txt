@@ -1,0 +1,14 @@
+﻿id	tip
+id	Tip
+1	Bạn có biết: Thần trang có thể dung luyện được
+2	Muốn tăng lực chiến hãy dung luyện toàn bộ trang bị
+3	Thiêu chiến quan chủ thành có thể nhận nguyên bảo
+4	Quyết chiến có thể nhận được phần thưởng
+5	Hoàn thành nhiệm vụ mỗi ngày có thể nhận thưởng
+6	Quyết chiến có thể nhận được phần thưởng
+7	60 cấp mở thành tựu cá nhân và phái mới
+8	Cường hóa, thăng tinh, bảo thạch.
+9	Có thể sử dụng auto để tự đánh BOSS
+10	Chúc bạn chơi game vui vẻ
+11	Chúc bạn chơi game vui vẻ
+12	Chúc bạn chơi game vui vẻ

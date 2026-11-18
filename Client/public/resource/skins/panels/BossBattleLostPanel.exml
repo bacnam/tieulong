@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BossBattleLostPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="640" height="378" y="386" horizontalCenter="0">
+		<e:Image horizontalCenter="0" bottom="0" source="battlelost_bg_png"/>
+		<e:Image horizontalCenter="-160" y="130" source="btn_battlelost_png"/>
+		<e:Image horizontalCenter="-160" y="130" source="btn_resurrection_png"/>
+		<e:Image source="btn_battlelost_png" y="130" horizontalCenter="0"/>
+		<e:Image y="130" horizontalCenter="0" source="btn_powerup_png"/>
+		<e:Image source="btn_battlelost_png" horizontalCenter="160" y="130"/>
+		<e:Image y="130" horizontalCenter="160" source="btn_gorecharge_png"/>
+		<e:Image id="btn_resurrection" source="btn_bg4_png" scale9Grid="5,5,110,34" x="118" y="318" anchorOffsetX="0" width="100"/>
+		<e:Image id="btn_back" x="445" y="321" anchorOffsetX="0" width="100" source="btn_bg5_png"/>
+		<e:Label text="复 活" x="147" y="330" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false"/>
+		<e:Label text="(tiêu thụ" x="228" y="330" size="20" textAlign="center" strokeColor="0x000000" stroke="1" touchEnabled="false" textColor="0xf7f397"/>
+		<e:Label id="label_consume" text="XXX thỏi)" x="323" y="330" size="20" textAlign="center" strokeColor="0x000000" stroke="1" touchEnabled="false" textColor="0xf7f397"/>
+		<e:Label id="label_back" text="Trở lại" y="330" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" horizontalCenter="175"/>
+		<e:Label text="你可以通过以下途径变强" y="99" textColor="0x00ff00" bold="true" size="22" horizontalCenter="-56.5"/>
+		<e:Label text="更换装备、提升装备、经脉、翅膀、技能等级可增加战斗力" y="230" size="18" anchorOffsetX="0" width="130" horizontalCenter="2"/>
+		<e:Label id="tip1" text="使用xx" y="232" size="18" anchorOffsetX="0" right="466"/>
+		<e:Label text="复活，并提升攻击" y="256" size="18" anchorOffsetX="0" x="80"/>
+		<e:Label id="tip2" text="N%继续挑战" y="282" size="18" anchorOffsetX="0" x="87"/>
+		<e:Label text="元宝可兑换大量资源进行战力提升" x="410" y="230" width="130" size="18" anchorOffsetX="0"/>
+		<e:Image x="277" y="317" source="icon_crystal_png"/>
+		<e:Image x="179" y="223" source="icon_crystal_png" width="30" height="30"/>
+		<e:Group id="btn_up" width="142" height="162" x="250" y="142" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Group id="btn_recharge" width="142" height="162" x="408" y="140" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image horizontalCenter="0" y="-3" source="lose_png"/>
+	</e:Group>
+</e:Skin>

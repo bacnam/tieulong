@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="AccumConsumeSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_tab_png" y="2" anchorOffsetX="0" width="528" anchorOffsetY="0" height="203" scaleX="1" scaleY="1" horizontalCenter="0" x="11"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" scaleX="1" scaleY="1" width="540" height="677" anchorOffsetY="0" y="17" horizontalCenter="0"/>
+
+
+	<e:Image anchorOffsetX="0" anchorOffsetY="0" height="100" horizontalCenter="0" source="totalrecharge_bg_jpg" width="530" y="21"/>
+	<e:Image y="27" anchorOffsetX="0" anchorOffsetY="0" x="174" source="title_consumergift_png"/>
+	<e:Label id="endTime" text="23:30:30" x="142" y="93" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" textColor="0xFFF523"/>
+	<e:Label text="结束倒计时: " x="12" y="92" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" textColor="0xFFF027"/>
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" anchorOffsetX="0" width="530" anchorOffsetY="0" height="569" y="122" horizontalCenter="0"/>
+	<e:Scroller width="520" height="520" y="126" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="3">
+		<e:List id="list" anchorOffsetX="0" width="500" x="-10" y="0" itemRendererSkinName="SingleRechargeItem2">
+		<e:layout>
+			<e:VerticalLayout gap="10" horizontalAlign="center"/>
+		</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="consume" text="已消费 0 元宝" y="659" horizontalCenter="0" textColor="0x00FF00" bold="true" size="24" height="24"/>
+	<e:Image id="btn_shop" x="477" y="74.5" source="btn_shop1_png"/>
+
+
+
+
+
+
+
+
+
+</e:Skin>

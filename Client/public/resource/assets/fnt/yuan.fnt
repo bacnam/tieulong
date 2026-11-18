@@ -1,0 +1,12 @@
+{"file":"yuan.png","frames":{
+"元":{"x":1,"y":1,"w":32,"h":31,"offX":0,"offY":0,"sourceW":32,"sourceH":31},
+"0":{"x":76,"y":1,"w":18,"h":26,"offX":0,"offY":0,"sourceW":18,"sourceH":26},
+"1":{"x":116,"y":1,"w":11,"h":25,"offX":0,"offY":0,"sourceW":11,"sourceH":25},
+"2":{"x":1,"y":34,"w":17,"h":25,"offX":0,"offY":0,"sourceW":17,"sourceH":25},
+"3":{"x":74,"y":29,"w":17,"h":26,"offX":0,"offY":0,"sourceW":17,"sourceH":26},
+"4":{"x":35,"y":1,"w":19,"h":25,"offX":0,"offY":0,"sourceW":19,"sourceH":25},
+"5":{"x":93,"y":29,"w":17,"h":26,"offX":0,"offY":0,"sourceW":17,"sourceH":26},
+"6":{"x":56,"y":1,"w":18,"h":26,"offX":0,"offY":0,"sourceW":18,"sourceH":26},
+"7":{"x":35,"y":28,"w":18,"h":25,"offX":0,"offY":0,"sourceW":18,"sourceH":25},
+"8":{"x":96,"y":1,"w":18,"h":26,"offX":0,"offY":0,"sourceW":18,"sourceH":26},
+"9":{"x":55,"y":29,"w":17,"h":26,"offX":0,"offY":0,"sourceW":17,"sourceH":26}}}

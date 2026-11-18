@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SeekSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:panels="legend.panels.*"
+	xmlns:component="legend.view.component.*">
+	<e:Image source="xunbao_bg_jpg" scaleX="1" scaleY="1" horizontalCenter="0" width="536"
+		height="676" verticalCenter="0" />
+	<e:Label id="label_tentimestip" text="Thời gian:" x="370" y="560" textColor="0x00FF00" size="22"
+		stroke="1" />
+	<e:Label id="label_tentimes" text="1次" x="470" y="560" textColor="0x00FF00" size="22" stroke="1" />
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="140" y="190" scaleX="1" scaleY="1"
+		width="400" height="360.67" anchorOffsetY="0" anchorOffsetX="0" />
+	<e:Image id="btn_buyTen" source="btn_bg1_png" y="591" x="360" />
+	<e:Label text="Mua 10 lần" x="376" y="604" size="22" textAlign="center" strokeColor="0x000000"
+		stroke="1" textColor="0xF8F7D3" width="120" touchEnabled="false" />
+	<e:Image id="btn_buyOne" source="btn_bg1_png" y="591" x="165" />
+	<e:Label text="Mua 1 lần" x="181" y="604" size="22" textAlign="center" strokeColor="0x000000"
+		stroke="1" textColor="0xF8F7D3" width="120" touchEnabled="false" />
+	<e:Scroller width="400" height="340.67" x="140" y="199.96" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin" anchorOffsetX="0" width="355"
+			anchorOffsetY="0" height="379" x="-13" y="0">
+			<e:layout>
+				<e:TileLayout horizontalGap="23" verticalGap="15" paddingLeft="23" />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="label_tenPrice" text="400" x="446" y="649" size="24" textAlign="left"
+		strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+	<e:Label id="label_price" text="50" x="256" y="649" size="24" textAlign="left"
+		strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+	<e:Image x="400" y="641" source="icon_crystal_png" scaleX="1" scaleY="1" />
+	<e:Image x="210" y="641" source="icon_crystal_png" scaleX="1" scaleY="1" />
+	<e:Label id="label_timestip" text="Thời gian:" x="170" y="560" textColor="0x00ff00" size="22"
+		stroke="1" />
+	<e:Label id="label_times" text="1次" x="270" y="560" textColor="0x00FF00" size="22" stroke="1" />
+</e:Skin>

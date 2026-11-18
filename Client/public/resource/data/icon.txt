@@ -1,0 +1,1395 @@
+﻿图标ID	图集名字	图标名字	备注
+ID	AtlasName	SpriteName	Remarks
+<00>	EmojiXY	Face_Angry	
+<01>	EmojiXY	Face_Beat	
+<02>	EmojiXY	Face_Blame	
+<03>	EmojiXY	Face_Boom	
+<04>	EmojiXY	Face_Contempt	
+<05>	EmojiXY	Face_Cool	
+<06>	EmojiXY	Face_Cry	
+<07>	EmojiXY	Face_Daze	
+<08>	EmojiXY	Face_Doubt	
+<09>	EmojiXY	Face_Giddy	
+<0A>	EmojiXY	Face_Happy	
+<0B>	EmojiXY	Face_Helpless	
+<0C>	EmojiXY	Face_Laugh	
+<0D>	EmojiXY	Face_LaughCry	
+<0E>	EmojiXY	Face_Panic	
+<0F>	EmojiXY	Face_Pornographic	
+<10>	EmojiXY	Face_Proud	
+<11>	EmojiXY	Face_Puzzled	
+<12>	EmojiXY	Face_Roar	
+<13>	EmojiXY	Face_ShutUp	
+<14>	EmojiXY	Face_Shy	
+<15>	EmojiXY	Face_Sick	
+<16>	EmojiXY	Face_Silence	
+<17>	EmojiXY	Face_Smile	
+<18>	EmojiXY	Face_Sneer	
+<19>	EmojiXY	Face_Snicker	
+<1A>	EmojiXY	Face_Strive	
+<1B>	EmojiXY	Face_Sweat	
+Card_1001	Icon1XY	Card_1001	Anh hùng hình cái đầu
+Card_1002	Icon1XY	Card_1002	
+Card_1003	Icon1XY	Card_1003	
+Card_1004	Icon1XY	Card_1004	
+Card_1005	Icon1XY	Card_1005	
+Card_1006	Icon1XY	Card_1006	
+Card_1007	Icon1XY	Card_1007	
+Card_1008	Icon1XY	Card_1008	
+Card_1009	Icon1XY	Card_1009	
+Card_1010	Icon1XY	Card_1010	
+Card_1011	Icon1XY	Card_1011	
+Card_1012	Icon1XY	Card_1012	
+Card_1013	Icon1XY	Card_1013	
+Card_1014	Icon1XY	Card_1014	
+Card_1015	Icon1XY	Card_1015	
+Card_1016	Icon1XY	Card_1016	
+Card_1017	Icon1XY	Card_1017	
+Card_1018	Icon1XY	Card_1018	
+Card_1019	Icon1XY	Card_1019	
+Card_1020	Icon1XY	Card_1020	
+Card_1021	Icon1XY	Card_1021	
+Card_1022	Icon1XY	Card_1022	
+Card_1023	Icon1XY	Card_1023	
+Card_1024	Icon1XY	Card_1024	
+Card_1025	Icon1XY	Card_1025	
+Card_2001	Icon1XY	Card_2001	Thăng tinh phía sau giống
+Card_2002	Icon1XY	Card_2002	
+Card_2003	Icon1XY	Card_2003	
+Card_2004	Icon1XY	Card_2004	
+Card_2005	Icon1XY	Card_2005	
+Card_2006	Icon1XY	Card_2006	
+Card_2007	Icon1XY	Card_2007	
+Card_2008	Icon1XY	Card_2008	
+Card_2009	Icon1XY	Card_2009	
+Card_2010	Icon1XY	Card_2010	
+Card_2011	Icon1XY	Card_2011	
+Card_2012	Icon1XY	Card_2012	
+Card_2013	Icon1XY	Card_2013	
+Card_2014	Icon1XY	Card_2014	
+Card_2015	Icon1XY	Card_2015	
+Card_2016	Icon1XY	Card_2016	
+Card_2017	Icon1XY	Card_2017	
+Card_2018	Icon1XY	Card_2018	
+Card_2019	Icon1XY	Card_2019	
+Card_2020	Icon1XY	Card_2020	
+Card_2021	Icon1XY	Card_2021	
+Card_2022	Icon1XY	Card_2022	
+Card_2023	Icon1XY	Card_2023	
+Card_2024	Icon1XY	Card_2024	
+Card_2025	Icon1XY	Card_2025	
+Card_1101	Icon1XY	Card_1101	Tạp cá hình cái đầu
+Card_1102	Icon1XY	Card_1102	
+Card_1103	Icon1XY	Card_1103	
+Card_1104	Icon1XY	Card_1104	
+Card_1105	Icon1XY	Card_1105	
+Card_1106	Icon1XY	Card_1106	
+Card_1107	Icon1XY	Card_1107	
+Card_1108	Icon1XY	Card_1108	
+Card_1109	Icon1XY	Card_1109	
+Card_1110	Icon1XY	Card_1110	
+Card_1111	Icon1XY	Card_1111	
+Card_1201	Icon1XY	Card_1101	
+Card_1202	Icon1XY	Card_1102	
+Card_1203	Icon1XY	Card_1103	
+Card_1204	Icon1XY	Card_1104	
+Card_1205	Icon1XY	Card_1105	
+Card_1206	Icon1XY	Card_1106	
+Card_1207	Icon1XY	Card_1107	
+Card_1208	Icon1XY	Card_1208	
+Card_1209	Icon1XY	Card_1209	
+Card_1210	Icon1XY	Card_1210	
+Card_1211	Icon1XY	Card_1211	
+Card_1301	Icon1XY	Card_1101	
+Card_1302	Icon1XY	Card_1102	
+Card_1303	Icon1XY	Card_1103	
+Card_1304	Icon1XY	Card_1104	
+Card_1305	Icon1XY	Card_1105	
+Card_1306	Icon1XY	Card_1106	
+Card_1307	Icon1XY	Card_1107	
+Card_1308	Icon1XY	Card_1308	
+Card_1309	Icon1XY	Card_1309	
+Card_1310	Icon1XY	Card_1310	
+Card_1311	Icon1XY	Card_1311	
+Card_1401	Icon1XY	Card_1101	
+Card_1402	Icon1XY	Card_1102	
+Card_1403	Icon1XY	Card_1103	
+Card_1404	Icon1XY	Card_1104	
+Card_1405	Icon1XY	Card_1105	
+Card_1406	Icon1XY	Card_1106	
+Card_1407	Icon1XY	Card_1107	
+Card_1408	Icon1XY	Card_1408	
+Card_1409	Icon1XY	Card_1409	
+Card_1410	Icon1XY	Card_1410	
+Card_1411	Icon1XY	Card_1411	
+Skill_10010	Icon1XY	Skill_10010	Kỹ năng icon
+Skill_10020	Icon1XY	Skill_10020	
+Skill_10030	Icon1XY	Skill_10030	
+Skill_10040	Icon1XY	Skill_10040	
+Skill_10050	Icon1XY	Skill_10050	
+Skill_10060	Icon1XY	Skill_10060	
+Skill_10070	Icon1XY	Skill_10070	
+Skill_10080	Icon1XY	Skill_10080	
+Skill_10090	Icon1XY	Skill_10090	
+Skill_10100	Icon1XY	Skill_10100	
+Skill_10110	Icon1XY	Skill_10110	
+Skill_10120	Icon1XY	Skill_10120	
+Skill_10130	Icon1XY	Skill_10130	
+Skill_10140	Icon1XY	Skill_10140	
+Skill_10150	Icon1XY	Skill_10150	
+Skill_10160	Icon1XY	Skill_10160	
+Skill_10170	Icon1XY	Skill_10170	
+Skill_10180	Icon1XY	Skill_10180	
+Skill_10190	Icon1XY	Skill_10190	
+Skill_10200	Icon1XY	Skill_10200	
+Skill_10210	Icon1XY	Skill_10210	
+Skill_10220	Icon1XY	Skill_10220	
+Skill_10230	Icon1XY	Skill_10230	
+Skill_10240	Icon1XY	Skill_10240	
+Skill_10250	Icon1XY	Skill_10250	
+Skill_10260	Icon1XY	Skill_10260	
+Skill_10270	Icon1XY	Skill_10270	
+Skill_10280	Icon1XY	Skill_10280	
+Skill_10290	Icon1XY	Skill_10290	
+Skill_10300	Icon1XY	Skill_10300	
+Skill_10310	Icon1XY	Skill_10310	
+Skill_10320	Icon1XY	Skill_10320	
+Skill_10330	Icon1XY	Skill_10330	
+Skill_10340	Icon1XY	Skill_10340	
+Skill_10350	Icon1XY	Skill_10350	
+Skill_10360	Icon1XY	Skill_10360	
+Skill_10370	Icon1XY	Skill_10370	
+Skill_10380	Icon1XY	Skill_10380	
+Skill_10390	Icon1XY	Skill_10390	
+Skill_10400	Icon1XY	Skill_10400	
+Skill_10410	Icon1XY	Skill_10410	
+Skill_10420	Icon1XY	Skill_10420	
+Skill_10430	Icon1XY	Skill_10430	
+Skill_10440	Icon1XY	Skill_10440	
+Skill_10450	Icon1XY	Skill_10450	
+Skill_10460	Icon1XY	Skill_10460	
+Skill_10470	Icon1XY	Skill_10470	
+Skill_10480	Icon1XY	Skill_10480	
+Skill_10490	Icon1XY	Skill_10490	
+Skill_10500	Icon1XY	Skill_10500	
+Skill_10510	Icon1XY	Skill_10500	
+Skill_10520	Icon1XY	Skill_10500	
+Skill_10530	Icon1XY	Skill_10500	
+Skill_10540	Icon1XY	Skill_10540	
+Skill_10550	Icon1XY	Skill_10540	
+Skill_10560	Icon1XY	Skill_10540	
+Skill_10570	Icon1XY	Skill_10540	
+Skill_10580	Icon1XY	Skill_10580	
+Skill_10590	Icon1XY	Skill_10580	
+Skill_10600	Icon1XY	Skill_10580	
+Skill_10610	Icon1XY	Skill_10580	
+Skill_10620	Icon1XY	Skill_10620	
+Skill_10630	Icon1XY	Skill_10620	
+Skill_10640	Icon1XY	Skill_10620	
+Skill_10650	Icon1XY	Skill_10620	
+Skill_10660	Icon1XY	Skill_10660	
+Skill_10670	Icon1XY	Skill_10660	
+Skill_10680	Icon1XY	Skill_10660	
+Skill_10690	Icon1XY	Skill_10660	
+Skill_10700	Icon1XY	Skill_10260	
+Skill_10710	Icon1XY	Skill_10710	
+Skill_10720	Icon1XY	Skill_10720	
+Skill_10730	Icon1XY	Skill_10730	
+Skill_10740	Icon1XY	Skill_10740	
+Skill_10750	Icon1XY	Skill_10750	
+Skill_10760	Icon1XY	Skill_10760	
+Skill_10770	Icon1XY	Skill_10770	
+Skill_10780	Icon1XY	Skill_10780	
+Skill_10790	Icon1XY	Skill_10790	
+Skill_10800	Icon1XY	Skill_10800	
+Skill_10810	Icon1XY	Skill_10810	
+Skill_10820	Icon1XY	Skill_10820	
+Skill_10830	Icon1XY	Skill_10830	
+Skill_10840	Icon1XY	Skill_10840	
+Skill_10850	Icon1XY	Skill_10850	
+Skill_10860	Icon1XY	Skill_10860	
+Skill_10870	Icon1XY	Skill_10870	
+Skill_10880	Icon1XY	Skill_10880	
+Skill_10890	Icon1XY	Skill_10890	
+Skill_10900	Icon1XY	Skill_10900	
+Skill_10910	Icon1XY	Skill_10910	
+Skill_10920	Icon1XY	Skill_10920	
+Skill_10930	Icon1XY	Skill_10930	
+Skill_10940	Icon1XY	Skill_10940	
+Skill_10950	Icon1XY	Skill_10950	
+Skill_10960	Icon1XY	Skill_10960	
+Skill_10970	Icon1XY	Skill_10970	
+Skill_10980	Icon1XY	Skill_10980	
+Skill_10990	Icon1XY	Skill_10990	
+Skill_11000	Icon1XY	Skill_11000	
+Skill_11010	Icon1XY	Skill_11010	
+Skill_11020	Icon1XY	Skill_11020	
+Skill_11030	Icon1XY	Skill_11030	
+Skill_11040	Icon1XY	Skill_11040	
+Skill_11050	Icon1XY	Skill_11050	
+Skill_11060	Icon1XY	Skill_11060	
+Skill_11070	Icon1XY	Skill_11070	
+Skill_11080	Icon1XY	Skill_11080	
+Skill_11090	Icon1XY	Skill_11090	
+Skill_11100	Icon1XY	Skill_11100	
+Skill_11110	Icon1XY	Skill_11110	
+Skill_11120	Icon1XY	Skill_11120	
+Skill_11130	Icon1XY	Skill_11130	
+Skill_11140	Icon1XY	Skill_11140	
+Skill_11150	Icon1XY	Skill_11150	
+Skill_11160	Icon1XY	Skill_11160	
+Skill_11170	Icon1XY	Skill_200201	
+Skill_11180	Icon1XY	Skill_206501	
+Skill_11190	Icon1XY	Skill_11190	
+Skill_11200	Icon1XY	Skill_11200	
+Skill_11210	Icon1XY	Skill_11210	
+Skill_11220	Icon1XY	Skill_11220	
+Skill_11230	Icon1XY	Skill_11230	
+Skill_11240	Icon1XY	Skill_11240	
+Skill_11250	Icon1XY	Skill_11250	
+Skill_11260	Icon1XY	Skill_10480	
+Skill_11270	Icon1XY	Skill_10470	
+Skill_11280	Icon1XY	Skill_10490	
+Skill_11290	Icon1XY	Skill_11290	
+Skill_11300	Icon1XY	Skill_11300	
+Skill_11310	Icon1XY	Skill_11310	
+Skill_11320	Icon1XY	Skill_11320	
+Skill_11330	Icon1XY	Skill_11330	
+Skill_11340	Icon1XY	Skill_11340	
+Skill_11350	Icon1XY	Skill_11350	
+Skill_11360	Icon1XY	Skill_11360	
+Skill_11370	Icon1XY	Skill_11370	
+Skill_11380	Icon1XY	Skill_11380	
+Skill_11390	Icon1XY	Skill_11390	
+Skill_11400	Icon1XY	Skill_11400	
+Skill_11410	Icon1XY	Skill_11410	
+Skill_11420	Icon1XY	Skill_11420	
+Skill_11430	Icon1XY	Skill_11430	
+Skill_11440	Icon1XY	Skill_11440	
+Skill_11450	Icon1XY	Skill_11450	
+Skill_11460	Icon1XY	Skill_11460	
+Skill_11470	Icon1XY	Skill_11470	
+Skill_11540	Icon1XY	Skill_11540	
+Skill_11550	Icon1XY	Skill_11550	
+Skill_11560	Icon1XY	Skill_11560	
+Skill_11570	Icon1XY	Skill_11570	
+Skill_11580	Icon1XY	Skill_11580	
+Skill_11590	Icon1XY	Skill_11590	
+Skill_11630	Icon1XY	Skill_11630	
+Skill_10011	Icon1XY	Skill_10011	
+Skill_10021	Icon1XY	Skill_10021	
+Skill_10031	Icon1XY	Skill_10031	
+Skill_10041	Icon1XY	Skill_10041	
+Skill_10051	Icon1XY	Skill_10051	
+Skill_10061	Icon1XY	Skill_10061	
+Skill_10071	Icon1XY	Skill_10071	
+Skill_10081	Icon1XY	Skill_10081	
+Skill_10082	Icon1XY	Skill_10082	
+Skill_10091	Icon1XY	Skill_10091	
+Skill_10101	Icon1XY	Skill_10101	
+Skill_10111	Icon1XY	Skill_10111	
+Skill_10121	Icon1XY	Skill_10121	
+Skill_10131	Icon1XY	Skill_10131	
+Skill_10141	Icon1XY	Skill_10141	
+Skill_10151	Icon1XY	Skill_10151	
+Skill_10161	Icon1XY	Skill_10161	
+Skill_10171	Icon1XY	Skill_10171	
+Skill_10181	Icon1XY	Skill_10181	
+Skill_10191	Icon1XY	Skill_10191	
+Skill_10201	Icon1XY	Skill_10201	
+Skill_10211	Icon1XY	Skill_10211	
+Skill_10221	Icon1XY	Skill_10221	
+Skill_10231	Icon1XY	Skill_10231	
+Skill_10241	Icon1XY	Skill_10241	
+Skill_10251	Icon1XY	Skill_10251	
+Skill_10261	Icon1XY	Skill_307001	
+Skill_10271	Icon1XY	Skill_10271	
+Skill_10281	Icon1XY	Skill_10281	
+Skill_10291	Icon1XY	Skill_302901	
+Skill_10301	Icon1XY	Skill_10301	
+Skill_10311	Icon1XY	Skill_10311	
+Skill_10321	Icon1XY	Skill_10321	
+Skill_10331	Icon1XY	Skill_10331	
+Skill_10341	Icon1XY	Skill_10341	
+Skill_10351	Icon1XY	Skill_10351	
+Skill_10361	Icon1XY	Skill_10361	
+Skill_10371	Icon1XY	Skill_10371	
+Skill_10381	Icon1XY	Skill_303801	
+Skill_10391	Icon1XY	Skill_10391	
+Skill_10401	Icon1XY	Skill_10401	
+Skill_10411	Icon1XY	Skill_10411	
+Skill_10421	Icon1XY	Skill_10421	
+Skill_10431	Icon1XY	Skill_10431	
+Skill_10441	Icon1XY	Skill_10441	
+Skill_10451	Icon1XY	Skill_10451	
+Skill_10461	Icon1XY	Skill_10461	
+Skill_10471	Icon1XY	Skill_304701	
+Skill_10481	Icon1XY	Skill_10481	
+Skill_10491	Icon1XY	Skill_304901	
+Skill_10501	Icon1XY	Skill_305001	
+Skill_10511	Icon1XY	Skill_305001	
+Skill_10521	Icon1XY	Skill_305001	
+Skill_10531	Icon1XY	Skill_305001	
+Skill_10541	Icon1XY	Skill_305401	
+Skill_10551	Icon1XY	Skill_305401	
+Skill_10561	Icon1XY	Skill_305401	
+Skill_10571	Icon1XY	Skill_305401	
+Skill_10581	Icon1XY	Skill_305801	
+Skill_10591	Icon1XY	Skill_305801	
+Skill_10601	Icon1XY	Skill_305801	
+Skill_10611	Icon1XY	Skill_305801	
+Skill_10621	Icon1XY	Skill_306201	
+Skill_10631	Icon1XY	Skill_306201	
+Skill_10641	Icon1XY	Skill_306201	
+Skill_10651	Icon1XY	Skill_306201	
+Skill_10661	Icon1XY	Skill_306601	
+Skill_10671	Icon1XY	Skill_306601	
+Skill_10681	Icon1XY	Skill_306601	
+Skill_10691	Icon1XY	Skill_306601	
+Skill_10701	Icon1XY	Skill_307001	
+Skill_10711	Icon1XY	Skill_10711	
+Skill_10731	Icon1XY	Skill_10731	
+Skill_10741	Icon1XY	Skill_10741	
+Skill_10801	Icon1XY	Skill_10801	
+Skill_10831	Icon1XY	Skill_10831	
+Skill_10841	Icon1XY	Skill_10841	
+Skill_10861	Icon1XY	Skill_10861	
+Skill_10881	Icon1XY		
+Skill_10901	Icon1XY	Skill_10901	
+Skill_10921	Icon1XY	Skill_10921	
+Skill_10931	Icon1XY	Skill_10931	
+Skill_10941	Icon1XY	Skill_10941	
+Skill_10951	Icon1XY	Skill_10951	
+Skill_10961	Icon1XY	Skill_10961	
+Skill_10971	Icon1XY		
+Skill_10981	Icon1XY		
+Skill_10991	Icon1XY	Skill_10991	
+Skill_11051	Icon1XY	Skill_11051	
+Skill_11011	Icon1XY	Skill_11011	
+Skill_11021	Icon1XY	Skill_11021	
+Skill_11031	Icon1XY	Skill_10323	
+Skill_11141	Icon1XY	Skill_11141	
+Skill_11151	Icon1XY	Skill_11151	
+Skill_11171	Icon1XY	Skill_207301	
+Skill_11181	Icon1XY	Skill_201501	
+Skill_11261	Icon1XY	Skill_208001	
+Skill_11271	Icon1XY	Skill_304701	
+Skill_11281	Icon1XY	Skill_304901	
+Skill_11291	Icon1XY	Skill_11291	
+Skill_11301	Icon1XY	Skill_11301	
+Skill_11311	Icon1XY	Skill_11311	
+Skill_11321	Icon1XY	Skill_11322	
+Skill_11331	Icon1XY	Skill_11331	
+Skill_11341	Icon1XY	Skill_11341	
+Skill_11351	Icon1XY	Skill_11351	
+Skill_11361	Icon1XY	Skill_11361	
+Skill_10012	Icon1XY	Skill_10012	
+Skill_10013	Icon1XY	Skill_10013	
+Skill_10014	Icon1XY	Skill_10014	
+Skill_10022	Icon1XY	Skill_10022	
+Skill_10024	Icon1XY	Skill_10024	
+Skill_10034	Icon1XY	Skill_10034	
+Skill_10044	Icon1XY	Skill_10044	
+Skill_10054	Icon1XY	Skill_10054	
+Skill_10064	Icon1XY	Skill_10064	
+Skill_10084	Icon1XY	Skill_10084	
+Skill_10092	Icon1XY	Skill_10092	
+Skill_10102	Icon1XY	Skill_10102	
+Skill_10103	Icon1XY	Skill_10103	
+Skill_10104	Icon1XY	Skill_10104	
+Skill_10112	Icon1XY	Skill_10112	
+Skill_10113	Icon1XY	Skill_10113	
+Skill_10114	Icon1XY	Skill_10114	
+Skill_10122	Icon1XY	Skill_10122	
+Skill_10124	Icon1XY	Skill_10124	
+Skill_10132	Icon1XY	Skill_10132	
+Skill_10134	Icon1XY	Skill_10134	
+Skill_10142	Icon1XY	Skill_10142	
+Skill_10144	Icon1XY	Skill_10144	
+Skill_10152	Icon1XY	Skill_10152	
+Skill_10154	Icon1XY	Skill_10154	
+Skill_10162	Icon1XY	Skill_10162	
+Skill_10164	Icon1XY	Skill_10164	
+Skill_10172	Icon1XY	Skill_10172	
+Skill_10173	Icon1XY	Skill_10173	
+Skill_10174	Icon1XY	Skill_10174	
+Skill_10182	Icon1XY	Skill_10182	
+Skill_10183	Icon1XY	Skill_10183	
+Skill_10184	Icon1XY	Skill_10184	
+Skill_10192	Icon1XY	Skill_10192	
+Skill_10194	Icon1XY	Skill_10194	
+Skill_10202	Icon1XY	Skill_10202	
+Skill_10203	Icon1XY	Skill_10203	
+Skill_10204	Icon1XY	Skill_10204	
+Skill_10222	Icon1XY	Skill_10222	
+Skill_10223	Icon1XY	Skill_10223	
+Skill_10224	Icon1XY	Skill_10224	
+Skill_10232	Icon1XY	Skill_10232	
+Skill_10233	Icon1XY	Skill_10233	
+Skill_10234	Icon1XY	Skill_10234	
+Skill_10242	Icon1XY	Skill_10242	
+Skill_10244	Icon1XY	Skill_10244	
+Skill_10252	Icon1XY	Skill_10252	
+Skill_10253	Icon1XY	Skill_10253	
+Skill_10254	Icon1XY	Skill_10254	
+Skill_10264	Icon1XY	Skill_Passive_201901	
+Skill_10272	Icon1XY	Skill_205901	
+Skill_10274	Icon1XY	Skill_Passive_202001	
+Skill_10282	Icon1XY	Skill_10282	
+Skill_10283	Icon1XY	Skill_207301	
+Skill_10284	Icon1XY	Skill_10284	
+Skill_10292	Icon1XY	Skill_10292	
+Skill_10294	Icon1XY	Skill_202801	
+Skill_10302	Icon1XY	Skill_10302	
+Skill_10303	Icon1XY	Skill_208001	
+Skill_10304	Icon1XY	Skill_205501	
+Skill_10312	Icon1XY	Skill_10312	
+Skill_10313	Icon1XY	Skill_10313	
+Skill_10314	Icon1XY	Skill_Passive_205201	
+Skill_10322	Icon1XY	Skill_10322	
+Skill_10323	Icon1XY	Skill_10323	
+Skill_10324	Icon1XY	Skill_203401	
+Skill_10332	Icon1XY	Skill_10332	
+Skill_10333	Icon1XY	Skill_10333	
+Skill_10334	Icon1XY	Skill_10334	
+Skill_10343	Icon1XY	Skill_10343	
+Skill_10344	Icon1XY	Skill_10344	
+Skill_10352	Icon1XY	Skill_10352	
+Skill_10353	Icon1XY	Skill_10353	
+Skill_10354	Icon1XY	Skill_10354	
+Skill_10362	Icon1XY	Skill_210201	
+Skill_10363	Icon1XY	Skill_10363	
+Skill_10364	Icon1XY	Skill_10364	
+Skill_10372	Icon1XY	Skill_10372	
+Skill_10374	Icon1XY	Skill_203701	
+Skill_10382	Icon1XY	Skill_209701	
+Skill_10384	Icon1XY	Skill_Passive_207101	
+Skill_10392	Icon1XY	Skill_10392	
+Skill_10393	Icon1XY	Skill_10393	
+Skill_10394	Icon1XY	Skill_Passive_202101	
+Skill_10402	Icon1XY	Skill_10402	
+Skill_10404	Icon1XY	Skill_Passive_201401	
+Skill_10412	Icon1XY	Skill_10412	
+Skill_10414	Icon1XY	Skill_203901	
+Skill_10422	Icon1XY	Skill_10422	
+Skill_10423	Icon1XY	Skill_200901	
+Skill_10424	Icon1XY	Skill_205501	
+Skill_10432	Icon1XY	Skill_10432	
+Skill_10433	Icon1XY	Skill_10433	
+Skill_10434	Icon1XY	Skill_204201	
+Skill_10442	Icon1XY	Skill_10442	
+Skill_10444	Icon1XY	Skill_203701	
+Skill_10452	Icon1XY	Skill_209701	
+Skill_10454	Icon1XY	Skill_Passive_202901	
+Skill_10712	Icon1XY	Skill_209901	
+Skill_10713	Icon1XY	Skill_10713	
+Skill_10714	Icon1XY	Skill_10714	
+Skill_10732	Icon1XY	Skill_10732	
+Skill_10733	Icon1XY	Skill_10733	
+Skill_10734	Icon1XY	Skill_10734	
+Skill_10742	Icon1XY	Skill_10742	
+Skill_10743	Icon1XY	Skill_10743	
+Skill_10744	Icon1XY	Skill_10744	
+Skill_10802	Icon1XY	Skill_10802	
+Skill_10803	Icon1XY	Skill_10803	
+Skill_10804	Icon1XY	Skill_10804	
+Skill_10832	Icon1XY	Skill_10832	
+Skill_10833	Icon1XY	Skill_10833	
+Skill_10834	Icon1XY	Skill_10834	
+Skill_10842	Icon1XY	Skill_10842	
+Skill_10843	Icon1XY	Skill_10843	
+Skill_10844	Icon1XY	Skill_10844	
+Skill_10862	Icon1XY	Skill_10862	
+Skill_10863	Icon1XY	Skill_10863	
+Skill_10864	Icon1XY	Skill_10864	
+Skill_10902	Icon1XY	Skill_10903	
+Skill_10904	Icon1XY	Skill_201001	
+Skill_10922	Icon1XY	Skill_10922	
+Skill_10923	Icon1XY	Skill_10923	
+Skill_10924	Icon1XY	Skill_10924	
+Skill_10933	Icon1XY	Skill_10933	
+Skill_10934	Icon1XY	Skill_202301	
+Skill_10942	Icon1XY	Skill_200501	
+Skill_10943	Icon1XY	Skill_10943	
+Skill_10944	Icon1XY	Skill_10944	
+Skill_10952	Icon1XY	Skill_10952	
+Skill_10953	Icon1XY	Skill_210201	
+Skill_10954	Icon1XY	Skill_10954	
+Skill_10962	Icon1XY	Skill_10962	
+Skill_10963	Icon1XY	Skill_10963	
+Skill_10964	Icon1XY	Skill_10964	
+Skill_10972	Icon1XY		
+Skill_10982	Icon1XY		
+Skill_10992	Icon1XY	Skill_10992	
+Skill_10993	Icon1XY	Skill_10993	
+Skill_10994	Icon1XY	Skill_10994	
+Skill_11052	Icon1XY	Skill_11052	
+Skill_11053	Icon1XY	Skill_11053	
+Skill_11054	Icon1XY	Skill_204501	
+Skill_11012	Icon1XY	Skill_11012	
+Skill_11013	Icon1XY	Skill_11013	
+Skill_11014	Icon1XY	Skill_11014	
+Skill_11022	Icon1XY	Skill_11022	
+Skill_11023	Icon1XY	Skill_11023	
+Skill_11024	Icon1XY	Skill_200601	
+Skill_11032	Icon1XY	Skill_11032	
+Skill_11033	Icon1XY	Skill_11033	
+Skill_11034	Icon1XY	Skill_205401	
+Skill_11142	Icon1XY	Skill_11142	
+Skill_11143	Icon1XY	Skill_11143	
+Skill_11144	Icon1XY	Skill_205401	
+Skill_11152	Icon1XY	Skill_11152	
+Skill_11153	Icon1XY	Skill_11153	
+Skill_11154	Icon1XY	Skill_11154	
+Skill_11292	Icon1XY	Skill_11292	
+Skill_11293	Icon1XY	Skill_11053	
+Skill_11294	Icon1XY	Skill_11294	
+Skill_11302	Icon1XY	Skill_11302	
+Skill_11304	Icon1XY	Skill_11304	
+Skill_11312	Icon1XY	Skill_11313	
+Skill_11313	Icon1XY	Skill_11312	
+Skill_11314	Icon1XY	Skill_11314	
+Skill_11324	Icon1XY	Skill_11324	
+Skill_11322	Icon1XY	Skill_11321	
+Skill_11323	Icon1XY	Skill_11323	
+Skill_11332	Icon1XY	Skill_11332	
+Skill_11333	Icon1XY	Skill_11333	
+Skill_11334	Icon1XY	Skill_11334	
+Skill_11342	Icon1XY	Skill_11342	
+Skill_11343	Icon1XY	Skill_11343	
+Skill_11344	Icon1XY	Skill_11344	
+Skill_General_9001	Icon1XY	Skill_205401	
+Skill_General_9002	Icon1XY	Skill_200101	
+Skill_General_9003	Icon1XY	Skill_205101	
+Skill_General_9004	Icon1XY	Skill_201001	
+Skill_General_9005	Icon1XY	Skill_201601	
+Skill_General_9006	Icon1XY	Skill_201201	
+Skill_General_9007	Icon1XY	Skill_201701	
+Skill_General_9008	Icon1XY	Skill_10333	
+Skill_General_9009	Icon1XY	Skill_201801	
+Skill_General_9010	Icon1XY	Skill_202301	
+Skill_General_9011	Icon1XY	Skill_202401	
+Skill_General_9012	Icon1XY	Skill_205701	
+Skill_General_9013	Icon1XY	Skill_204801	
+Skill_General_9014	Icon1XY	Skill_11142	
+Skill_General_9015	Icon1XY	Skill_11023	
+Skill_General_9016	Icon1XY	Skill_206601	
+Icon_Recharge_01	Skin2XY	Icon_Recharge_01	Sung giá trị icon 1
+Icon_Recharge_02	Skin2XY	Icon_Recharge_02	2
+Icon_Recharge_03	Skin2XY	Icon_Recharge_03	3
+Icon_Recharge_04	Skin2XY	Icon_Recharge_04	4
+Icon_Recharge_05	Skin2XY	Icon_Recharge_05	5
+Icon_Recharge_06	Skin2XY	Icon_Recharge_06	6
+Icon_Recharge_07	Skin2XY	Icon_Recharge_07	7
+Icon_Recharge_08	Skin2XY	Icon_Recharge_08	8
+Icon_Recharge_A	Skin2XY	Icon_Recharge_A	Sung giá trị nguyệt tạp Icon
+Icon_Recharge_B	Skin2XY	Icon_Recharge_B	Chí tôn tạp
+Weapon	Skin1XY	Spt_EquipType1	Trang bị giao diện Icon: Vũ khí
+Head	Skin1XY	Spt_EquipType2	Mũ giáp
+Cloth	Skin1XY	Spt_EquipType3	Áo giáp
+Belt	Skin1XY	Spt_EquipType4	Đai lưng
+Lection	Skin1XY	Spt_EquipType5	Chip
+Spell	Skin1XY	Spt_EquipType6	Di động
+NormalOpen	Skin1XY	Spt_26_4	Bình thường trạm kiểm soát lựa chọn
+NormalPass	Skin1XY	Spt_26_4	Bình thường trạm kiểm soát thông qua
+NormalNotOpen	Skin1XY	Spt_26_5	Bình thường trạm kiểm soát chưa mở ra
+BossOpen	Skin1XY	Spt_26_4	Boss trạm kiểm soát lựa chọn
+BossPass	Skin1XY	Spt_26_4	Boss trạm kiểm soát thông qua
+BossNotOpen	Skin1XY	Spt_26_5	Boss trạm kiểm soát chưa mở ra
+LevelBox_1	IconXY	Box_2_Close	Trạm kiểm soát bảo rương icon chưa mở ra 1
+LevelBox_2	IconXY	Box_2_GetAble	Nhưng lĩnh 1
+LevelBox_3	IconXY	Box_2_GetDone	Đã lĩnh 1
+LevelBox_4	IconXY	Box_2_Close	Trạm kiểm soát bảo rương icon chưa mở ra 2
+LevelBox_5	IconXY	Box_2_GetAble	Nhưng lĩnh 2
+LevelBox_6	IconXY	Box_2_GetDone	Đã lĩnh 2
+LevelBox_7	IconXY	Box_2_Close	Trạm kiểm soát bảo rương icon chưa mở ra 3
+LevelBox_8	IconXY	Box_2_GetAble	Nhưng lĩnh 3
+LevelBox_9	IconXY	Box_2_GetDone	Đã lĩnh 3
+AutoBattleOpen	Skin1XY	Combat_Btn_Bg	Tự động chiến đấu mở ra icon
+AutoBattleClose	Skin1XY	Combat_Btn_Bg	Tự động chiến đấu đóng cửa icon
+QualityWhite	Skin1XY	PZ_0	Vật phẩm phẩm chất khung
+QualityGreen	Skin1XY	PZ_1	
+QualityBlue	Skin1XY	PZ_2	
+QualityPurple	Skin1XY	PZ_3	
+QualityOrange	Skin1XY	PZ_4	
+ArenaRankOne	Skin2XY	Spt_Rank1	Đệ nhất
+ArenaRankTwo	Skin2XY	Spt_Rank2	Đệ nhị
+ArenaRankThree	Skin2XY	Spt_Rank3	Đệ tam
+ArenaWin	Skin2XY	Spt_Win	Đấu trường thắng lợi
+ArenaLose	Skin2XY	Spt_Lose	Đấu trường thất bại
+ArenaAtk	Skin2XY	Spt_Atk	Đấu trường tiến công
+ArenaDef	Skin2XY	Spt_Def	Đấu trường phòng ngự
+RuneCanInlay	Skin1XY	Spt_19	
+RuneNotInlay	Skin1XY	Spt_19_Bg	Phù văn không thể được khảm
+MailUnread	IconXY	Mail_Unread	Chưa đọc bưu kiện
+MailRead	IconXY	Mail_Readed	Đã đọc bưu kiện
+MailGift	IconXY	Mail_Reward	Bưu kiện mang khen thưởng
+Crystal	IconXY	Crystal	Thủy tinh Icon
+captain_life1	Skin1XY	Pro2_Bg	Đội trưởng huyết điều đế khung
+captain_life2	Skin1XY	Pro2_Green	Đội trưởng huyết điều
+normal_liferbar1	Skin1XY	Pro2_Bg	Bình thường huyết điều đế khung
+mob_lifebar	Skin1XY	Pro2_Red	Địch quân huyết điều
+player_lifebar	Skin1XY	Pro2_Green	Bên ta huyết điều
+NormalSkillBar	Skin1XY	New_Boss_BloodFill	Boss bình thường kỹ năng đọc điều
+NormalSkillBarFrame	Skin1XY	New_Boss_BloodFill_Lock	Boss bình thường kỹ năng đọc điều đế khung
+NromalSkillIconFrame	Skin1XY	New_Boss_Skill	Boss bình thường kỹ năng đọc điều Icon khung
+BreakSkillBar	Skin1XY	New_Boss_BloodFill	Boss đánh gãy kỹ năng đọc điều
+BreakSkillBarFrame	Skin1XY	New_Boss_BloodFill_Lock	Boss đánh gãy kỹ năng đọc điều đế khung
+BreakSkillIconFrame	Skin1XY	New_Boss_Skill_lock	Boss đánh gãy kỹ năng đọc điều Icon khung
+quality_1	Skin1XY	PZ_0	Hình cái đầu, vật phẩm, trang bị phẩm chất khung, bạch
+quality_2	Skin1XY	PZ_1	Lục 1
+quality_2_1	Skin1XY	PZ_1	Lục 2
+quality_3	Skin1XY	PZ_2	Lam 1
+quality_3_1	Skin1XY	PZ_2	Lam 2
+quality_3_2	Skin1XY	PZ_2	Lam 3
+quality_4	Skin1XY	PZ_3	Tím 1
+quality_4_1	Skin1XY	PZ_3	Tím 2
+quality_4_2	Skin1XY	PZ_3	Tím 3
+quality_4_3	Skin1XY	PZ_3	Tím 4
+quality_5	Skin1XY	PZ_4	Màu cam
+quality_5_1	Skin1XY	PZ_4	Màu cam +1
+quality_5_2	Skin1XY	PZ_4	Màu cam +2
+quality_5_3	Skin1XY	PZ_4	Màu cam +3
+quality_5_4	Skin1XY	PZ_4	Màu cam +4
+quality_6	Skin1XY	PZ_5	Màu đỏ
+quality_2_Point	Skin1XY	quality_2_Point	Lục phẩm chất khung điểm
+quality_3_Point	Skin1XY	quality_3_Point	Lam phẩm chất khung điểm
+quality_4_Point	Skin1XY	quality_4_Point	Tím phẩm chất khung điểm
+quality_5_Point	Skin1XY	quality_5_Point	Cam phẩm chất khung điểm
+quality_6_Point	Skin1XY	quality_6_Point	Hồng phẩm chất khung điểm
+Weapon_Bg1	Skin1XY	PZ_0_Bg	Màu trắng trang bị đế đồ
+Weapon_Bg2	Skin1XY	PZ_1_Bg	Màu xanh biếc trang bị đế đồ
+Weapon_Bg3	Skin1XY	PZ_2_Bg	Màu lam trang bị đế đồ
+Weapon_Bg4	Skin1XY	PZ_3_Bg	Màu tím trang bị đế đồ
+Weapon_Bg5	Skin1XY	PZ_4_Bg	Màu cam trang bị đế đồ
+Weapon_Bg6	Skin1XY	PZ_5_Bg	Màu đỏ trang bị đế đồ
+QualityNormalBg	Skin1XY	PZ_Null_Bg	Bình thường đạo cụ đế đồ
+bossicon	Skin1XY	ico_monster	Hạng mục phụ /Boss icon
+FullyCompound	Skin1XY	Tip_5_Type6	Ba lô nhưng hợp thành nhãn
+NewItem	Skin1XY	Tip_5_Type10	Ba lô tân vật phẩm nhãn
+captainicon	Skin1XY	Spt_Leader	Đội trưởng icon
+PartnerIcon	Skin1XY	Tip_5_Type2	Tiểu đồng bọn icon
+PetState_InCard	Skin1XY	Tip_5_Type3	Ra trận sủng vật ( bảo hộ trung )
+FightingIcon	Skin1XY	Tip_5_Type1	Ra trận sủng vật
+TeamMemberIcon	Skin1XY	Tip_5_Type1	Ra trận đội viên icon
+ServerLoadGreen	Skin2XY	Tab_14_Green	Server phụ tải lưu sướng
+ServerLoadYellow	Skin2XY	Tab_14_Yellow	Server phụ tải bận rộn
+ServerLoadRed	Skin2XY	Tab_14_Red	Server phụ tải chật ních
+ServerLoadNone	Skin2XY	Tab_14_Grey	Server dị thường
+ServerLoadBg1	Skin2XY	Bg_2_8	Server phụ tải lưu sướng bối cảnh
+ServerLoadBg2	Skin2XY	Bg_2_8	Server dị thường bối cảnh
+Unknowplayer	IconXY	Unknowplayer	Không biết nhân vật
+Unknowitem	IconXY	Box_1_Close	Không biết bảo rương
+ItemBg	Skin1XY	PZ_Null_Bg	Xoắn ốc văn đế khung
+QualityNone	Skin1XY	PZ_Null	Không có phẩm trật chất khung
+QualityNoneBg	Skin1XY	PZ_Null_Bg	Không có phẩm trật chất đế khung
+Guild_01	IconXY	Ico_Guild1	Hiệp hội huy chương 1
+Guild_02	IconXY	Ico_Guild2	Hiệp hội huy chương 2
+Guild_03	IconXY	Ico_Guild3	Hiệp hội huy chương 3
+Guild_04	IconXY	Ico_Guild4	Hiệp hội huy chương 4
+Guild_05	IconXY	Ico_Guild5	Hiệp hội huy chương 5
+Guild_06	IconXY	Ico_Guild6	Hiệp hội huy chương 6
+Guild_07	IconXY	Ico_Guild7	Hiệp hội huy chương 7
+Guild_08	IconXY	Ico_Guild8	Hiệp hội huy chương 8
+Guild_01_Ex	IconXY	Mission_1	Hiệp hội huy chương 1
+Guild_02_Ex	IconXY	Mission_2	Hiệp hội huy chương 2
+Guild_03_Ex	IconXY	Mission_7	Hiệp hội huy chương 3
+Guild_04_Ex	IconXY	Mission_4	Hiệp hội huy chương 4
+Guild_05_Ex	IconXY	Mission_5	Hiệp hội huy chương 5
+Guild_06_Ex	IconXY	Mission_6	Hiệp hội huy chương 6
+Ico_GuildFlame1	IconXY	Ico_GuildFlame1	Hiệp hội huy chương ngoại khung 1
+Ico_GuildFlame2	IconXY	Ico_GuildFlame2	Hiệp hội huy chương ngoại khung 2
+Ico_GuildFlame3	IconXY	Ico_GuildFlame3	Hiệp hội huy chương ngoại khung 3
+Ico_GuildFlame4	IconXY	Ico_GuildFlame4	Hiệp hội huy chương ngoại khung 4
+Ico_GuildFlame5	IconXY	Ico_GuildFlame5	Hiệp hội huy chương ngoại khung 5
+Ico_GuildFlame6	IconXY	Ico_GuildFlame6	Hiệp hội huy chương ngoại khung 6
+Ico_GuildFlame7	IconXY	Ico_GuildFlame7	Hiệp hội huy chương ngoại khung 7
+VipBg1	Skin1XY	Spt_VipBg	vip1-8 bối cảnh
+VipBg2	Skin1XY	Spt_VipBg	vip9-13 bối cảnh
+VipBg3	Skin1XY	Spt_VipBg	vip14-16 bối cảnh
+Skill_10751	Icon1XY	Skill_10751	
+Skill_10752	Icon1XY	Skill_10752	
+Skill_10753	Icon1XY	Skill_10753	
+Skill_10754	Icon1XY	Skill_10754	
+Skill_10761	Icon1XY	Skill_10761	
+Skill_10762	Icon1XY	Skill_10762	
+Skill_10763	Icon1XY	Skill_10763	
+Skill_10764	Icon1XY	Skill_10764	
+Skill_10771	Icon1XY	Skill_10771	
+Skill_10772	Icon1XY	Skill_10772	
+Skill_10773	Icon1XY	Skill_10773	
+Skill_10774	Icon1XY	Skill_10774	
+Skill_10851	Icon1XY	Skill_10851	
+Skill_10852	Icon1XY	Skill_10852	
+Skill_10853	Icon1XY	Skill_10853	
+Skill_10854	Icon1XY	Skill_10854	
+Skill_11001	Icon1XY	Skill_11001	
+Skill_11002	Icon1XY	Skill_11002	
+Skill_11003	Icon1XY	Skill_11003	
+Skill_11004	Icon1XY	Skill_11004	
+Skill_11041	Icon1XY	Skill_11041	
+Skill_11042	Icon1XY	Skill_11042	
+Skill_11043	Icon1XY	Skill_11043	
+Skill_11044	Icon1XY	Skill_11044	
+Skill_11061	Icon1XY	Skill_11061	
+Skill_11062	Icon1XY	Skill_11062	
+Skill_11063	Icon1XY	Skill_11063	
+Skill_11064	Icon1XY	Skill_11064	
+Skill_11071	Icon1XY	Skill_11071	
+Skill_11072	Icon1XY	Skill_11072	
+Skill_11073	Icon1XY	Skill_11073	
+Skill_11074	Icon1XY	Skill_11074	
+Skill_11352	Icon1XY	Skill_11352	
+Skill_11353	Icon1XY	Skill_11353	
+Skill_11354	Icon1XY	Skill_11354	
+Skill_11362	Icon1XY	Skill_11362	
+Skill_11363	Icon1XY	Skill_11363	
+Skill_11364	Icon1XY	Skill_11364	
+Act_DailySign	IconXY	Unknowplayer	Mỗi ngày đánh dấu
+Act_SignInVip	IconXY	Unknowplayer	Xa hoa đánh dấu
+Act_SignInPrize	IconXY	Unknowplayer	7 thiên đổ bộ
+Act_SignInOpenServer	IconXY	Unknowplayer	Khai phục đầu chu đổ bộ
+Act_SignInFestival	IconXY	Unknowplayer	Ngày hội đánh dấu
+Act_FirstRecharge	IconXY	Unknowplayer	Đầu sung hoạt động
+Act_AccumRecharge	IconXY	Unknowplayer	Mệt sung tặng lễ
+Act_DailyRecharge	IconXY	Unknowplayer	Đơn bút sung giá trị chỉ định ngạch độ
+Act_VipAward	IconXY	Unknowplayer	Vip lễ bao
+Act_InvestmentPlan	IconXY	Unknowplayer	Đầu tư tiền lời
+Act_FightPowerCompete	IconXY	Unknowplayer	Khai phục chiến lực thi đua
+Act_TeamLevelCompete	IconXY	Unknowplayer	Khai phục xếp hạng thi đua
+Act_RebateStore	IconXY	Unknowplayer	Hạn khi đánh gãy
+Act_OnlineTimeReward	IconXY	Unknowplayer	Ở tuyến lễ bao
+Act_DailyGo	IconXY	Unknowplayer	Mỗi ngày hoạt động
+Act_TreasureKing	IconXY	Unknowplayer	Vương chi tài bảo
+Act_RechargeLottery	IconXY	Unknowplayer	Sung giá trị rút thăm trúng thưởng
+Act_TimeLimitDrawCard	IconXY	Unknowplayer	Hạn khi bói toán
+Act_DoubleDrop	IconXY	Unknowplayer	Gấp đôi rơi xuống
+Act_OpenServer7Days	IconXY	Unknowplayer	Khai phục bảy ngày nhạc
+Unlock_HeroStar	Skin1XY	Btn_23_5	
+Unlock_DifficultChallenge	Skin1XY	Btn_58	
+Unlock_Level	Skin1XY	Btn_49_1	
+Unlock_Bag	Skin1XY	Btn_29	
+Unlock_Detail	Skin1XY	Btn_51	
+Unlock_Divination	Skin1XY	Btn_39	
+Unlock_Mail	Skin1XY	Btn_32	
+Unlock_Setting	Skin1XY	Btn_50	
+Unlock_OpenBattle1	Skin1XY	Btn_35	
+Unlock_OpenBattle2	Skin1XY	Btn_35	
+Unlock_MagicBoxShop	Skin1XY	Btn_27	
+Unlock_LimitedShop	Skin1XY	Btn_27	
+Unlock_Upgrade	Skin1XY	Btn_51	
+Unlock_OpenBattle3	Skin1XY	Btn_35	
+Unlock_Activity	Skin1XY	Btn_30	
+Unlock_HappySevenDay	Skin1XY	Btn_30	
+Unlock_Task	Skin1XY	Btn_34	
+Unlock_GuideAchievement	Skin1XY	Btn_56	
+Unlock_BossLevel	Skin1XY	Btn_45	
+Unlock_Friend	Skin1XY	Btn_31	
+Unlock_SpecialEquip	Skin1XY	Btn_23_2	
+Unlock_Chat	Skin1XY	Btn_41	
+Unlock_PVP	Skin1XY	Btn_25	
+Unlock_Arena	Skin1XY	Btn_25	
+Unlock_TowerLevelSweep	Skin1XY	Btn_44	
+Unlock_Tower	Skin1XY	Btn_44	
+Unlock_Equip	Skin1XY	Btn_23_2	
+Unlock_FateEnhance	Skin1XY	Btn_51	
+Unlock_Recycle	Skin1XY	Btn_48	
+Unlock_Pet	Skin1XY	Btn_38	
+Unlock_RecycleResolve	Skin1XY	Btn_48	
+Unlock_BuyGold	IconXY	Gold	
+Unlock_OpenBattle4	Skin1XY	Btn_35	
+Unlock_RankSystem	Skin1XY	Btn_33	
+Unlock_HonorRoom	Skin1XY	Btn_33	
+Unlock_Shop	Skin1XY	Btn_27	
+Unlock_GoldShop	Skin1XY	Btn_27	
+Unlock_Trial	Skin1XY	Btn_46	
+Unlock_SecretShop	Skin1XY	Btn_27	
+Unlock_TakeLection	Skin1XY	Btn_25	
+Unlock_FriendLeader	Skin1XY	Btn_35	
+Unlock_Guild	Skin1XY	Btn_47	
+Unlock_OpenReserve1	Skin1XY	Btn_35	
+Unlock_RecycleRecast	Skin1XY	Btn_48	
+Unlock_WorldBoss	Skin1XY	Btn_43	
+Unlock_OpenReserve2	Skin1XY	Btn_35	
+Unlock_ActivityFate	Skin1XY	Btn_30	
+Unlock_EquipWash	Skin1XY	Btn_23_3	
+Unlock_SearchLevel	IconXY	Btn_59	
+Unlock_EquipRefine	Skin1XY	Btn_23_4	
+Unlock_OneKeyUpgrade	Skin1XY	Btn_23_2	
+Unlock_TreasureKing	Skin1XY	Btn_30	
+Unlock_RecycleChange	Skin1XY	Btn_48	
+Unlock_OpenReserve3	Skin1XY	Btn_35	
+Unlock_SpecialEquipRefine	Skin1XY	Btn_23_4	
+Unlock_SkyArena	Skin1XY	Btn_25	
+Unlock_SignetSet	Skin1XY	Btn_37	
+Unlock_EquipWashFive	Skin1XY	Btn_23_3	
+Unlock_SkillOneKeyUpgrade	Skin1XY	Btn_51	
+Unlock_WorldPVP	Skin1XY	Btn_25	
+Unlock_SkyArenaSweep	Skin1XY	Btn_25	
+Unlock_EquipWashTen	Skin1XY	Btn_23_3	
+Unlock_EquipStar	Skin1XY	Btn_23_5	
+Unlock_EquipOnekeyRefine	Skin1XY	Btn_23_4	
+Unlock_FastRefinePet	Skin1XY	Btn_38	
+Unlock_EquipOnekeyStar	Skin1XY	Btn_23_5	
+Unlock_CardRebreakNormalFive	Skin1XY	Btn_38	
+Unlock_CardRebreakAdvanceFive	Skin1XY	Btn_38	
+Unlock_StrengthenMaster	Skin1XY	Btn_12	
+Unlock_LevelSweep	Skin1XY	Btn_49_1	
+Unlock_OneKeyEnhanceFate	Skin1XY	Btn_51	
+Unlock_RichRisk	Skin1XY	Btn_42	
+Skill_11371	Icon1XY	Skill_11371	
+Skill_11372	Icon1XY	Skill_11372	
+Skill_11373	Icon1XY	Skill_11373	
+Skill_11374	Icon1XY	Skill_11374	
+Skill_11381	Icon1XY	Skill_11381	
+Skill_11382	Icon1XY	Skill_11382	
+Skill_11383	Icon1XY	Skill_11383	
+Skill_11384	Icon1XY	Skill_11384	
+Skill_11391	Icon1XY	Skill_11391	
+Skill_11392	Icon1XY	Skill_11392	
+Skill_11393	Icon1XY	Skill_11393	
+Skill_11394	Icon1XY	Skill_11394	
+Skill_11401	Icon1XY	Skill_11401	
+Skill_11402	Icon1XY	Skill_11402	
+Skill_11403	Icon1XY	Skill_11403	
+Skill_11404	Icon1XY	Skill_11404	
+Skill_11411	Icon1XY	Skill_11411	
+Skill_11412	Icon1XY	Skill_11412	
+Skill_11413	Icon1XY	Skill_11413	
+Skill_11414	Icon1XY	Skill_11414	
+Skill_11421	Icon1XY	Skill_11421	
+Skill_11422	Icon1XY	Skill_11422	
+Skill_11423	Icon1XY	Skill_11423	
+Skill_11424	Icon1XY	Skill_11424	
+Skill_11431	Icon1XY	Skill_11431	
+Skill_11432	Icon1XY	Skill_11432	
+Skill_11433	Icon1XY	Skill_11433	
+Skill_11434	Icon1XY	Skill_11434	
+Skill_11441	Icon1XY	Skill_11441	
+Skill_11442	Icon1XY	Skill_11442	
+Skill_11443	Icon1XY	Skill_11443	
+Skill_11444	Icon1XY	Skill_11444	
+Skill_11101	Icon1XY	Skill_11101	
+Skill_11102	Icon1XY	Skill_11102	
+Skill_11103	Icon1XY	Skill_11103	
+Skill_11104	Icon1XY	Skill_11104	
+Gem_All	Skin3	Icon_Gem_00	Bảo ngọc
+Gem_Wind	Skin3	Icon_Gem_01	Phong nguyên tố thạch
+Gem_Fire	Skin3	Icon_Gem_02	Hỏa nguyên tố thạch
+Gem_Earth	Skin3	Icon_Gem_03	Mà nguyên tố thạch
+Gem_Water	Skin3	Icon_Gem_04	Thủy nguyên tố thạch
+Gem_FireWind	Skin3	Icon_Gem_05	Hỏa phong nguyên tố thạch
+Gem_WindEarth	Skin3	Icon_Gem_06	Phong mà nguyên tố thạch
+Gem_WaterFire	Skin3	Icon_Gem_07	Nước lửa nguyên tố thạch
+Gem_EarthWater	Skin3	Icon_Gem_08	Mà thủy nguyên tố thạch
+Signet_01	Skin3	Compass_01	La bàn 1
+Signet_02	Skin3	Compass_02	La bàn 2
+Signet_03	Skin3	Compass_03	La bàn 3
+Signet_04	Skin3	Compass_04	La bàn 4
+Signet_05	Skin3	Compass_05	La bàn 5
+Signet_06	Skin3	Compass_06	La bàn 6
+Signet_07	Skin3	Compass_07	La bàn 7
+Signet_08	Skin3	Compass_08	La bàn 8
+Signet_QuailtyA	Skin1XY	PZ_R_1	La bàn phẩm chất bạch
+Signet_QuailtyB	Skin1XY	PZ_R_2	La bàn phẩm chất lục
+Signet_QuailtyC	Skin1XY	PZ_R_3	La bàn phẩm chất lam
+Signet_QuailtyD	Skin1XY	PZ_R_4	La bàn phẩm chất tím
+Signet_QuailtyE	Skin1XY	PZ_R_5	La bàn phẩm chất cam
+DoubleCard_01	Skin3	DoubleCard_01	2 lần tạp
+DoubleCard_02	Skin3	DoubleCard_02	3 lần tạp
+DoubleCard_03	Skin3	DoubleCard_03	5 lần tạp
+icon_1001	Skin1XY	Bg_Main	Mới bắt đầu hình cái đầu khung
+Skill_11451	Icon1XY	Skill_11451	
+Skill_11452	Icon1XY	Skill_11452	
+Skill_11453	Icon1XY	Skill_11453	
+Skill_11454	Icon1XY	Skill_11454	
+Skill_11461	Icon1XY	Skill_11461	
+Skill_11462	Icon1XY	Skill_11462	
+Skill_11463	Icon1XY	Skill_11463	
+Skill_11464	Icon1XY	Skill_11464	
+Skill_11471	Icon1XY	Skill_11471	
+Skill_11472	Icon1XY	Skill_11472	
+Skill_11473	Icon1XY	Skill_11473	
+Skill_11474	Icon1XY	Skill_11474	
+Skill_11541	Icon1XY	Skill_11541	
+Skill_11542	Icon1XY	Skill_11542	
+Skill_11543	Icon1XY	Skill_11543	
+Skill_11544	Icon1XY	Skill_11544	
+Skill_11551	Icon1XY	Skill_11551	
+Skill_11552	Icon1XY	Skill_11552	
+Skill_11553	Icon1XY	Skill_11553	
+Skill_11554	Icon1XY	Skill_11554	
+Skill_11561	Icon1XY	Skill_11561	
+Skill_11562	Icon1XY	Skill_11562	
+Skill_11563	Icon1XY	Skill_11563	
+Skill_11564	Icon1XY	Skill_11564	
+Skill_11571	Icon1XY	Skill_11571	
+Skill_11572	Icon1XY	Skill_11572	
+Skill_11573	Icon1XY	Skill_11573	
+Skill_11574	Icon1XY	Skill_11574	
+Skill_11581	Icon1XY	Skill_11581	
+Skill_11582	Icon1XY	Skill_11582	
+Skill_11583	Icon1XY	Skill_11583	
+Skill_11584	Icon1XY	Skill_11584	
+Skill_11591	Icon1XY	Skill_11591	
+Skill_11592	Icon1XY	Skill_11592	
+Skill_11593	Icon1XY	Skill_11593	
+Skill_11594	Icon1XY	Skill_11594	
+Skill_11631	Icon1XY	Skill_11631	
+Skill_11632	Icon1XY	Skill_11632	
+Skill_11633	Icon1XY	Skill_11633	
+Skill_11634	Icon1XY	Skill_11634	
+Skill_12001	Icon1XY	Skill_12001	
+Skill_12002	Icon1XY	Skill_12002	
+Skill_12003	Icon1XY	Skill_12003	
+Skill_12004	Icon1XY	Skill_12004	
+Skill_12005	Icon1XY	Skill_12005	
+GoldExpUp1	Icon1XY	GoldExpUp1	
+GoldExpUp2	Icon1XY	GoldExpUp2	
+GoldExpUp3	Icon1XY	GoldExpUp3	
+GoldExpUp4	Icon1XY	GoldExpUp4	
+Rating_SS	Skin1XY	Hero_IQ_SS	
+Rating_S	Skin1XY	Hero_IQ_S	
+Rating_A	Skin1XY	Hero_IQ_A	
+Rating_B	Skin1XY	Hero_IQ_A	
+Rating_C	Skin1XY	Hero_IQ_A	
+Rating_D	Skin1XY	Hero_IQ_A	
+AttackType	Skin1XY	Hero_Type_Atk	
+DefenceType	Skin1XY	Hero_Type_Def	
+AuxiliaryType	Skin1XY	Hero_Type_Other	
+BreakSkillTypeAtk	Skin1XY	Hero_Type_Atk	Đột phá công kích hình icon
+BreakSkillTypeDef	Skin1XY	Hero_Type_Def	Đột phá phòng chế hình icon
+BreakSkillTypeAux	Skin1XY	Hero_Type_Other	Đột phá phụ trợ hình icon
+DiscountTipBg1	Skin1XY	Tip_4_Type1	5 chiết dưới chiết khấu số đế đồ
+DiscountTipBg2	Skin1XY	Tip_4_Type1	5-8 chiết chiết khấu số đế đồ
+DiscountTipBg3	Skin1XY	Tip_4_Type1	8 chiết trở lên chiết khấu số đế đồ
+SkillType_1	Skin1XY	Tip_3_Type1	Tất sát kĩ loại hình dấu mũ
+SkillType_2	Skin1XY	Tip_3_Type2	Thiên phú loại hình dấu mũ
+FightNoneAwakeIcon	Skin1XY	PZ_Null	Thức tỉnh tiền nhân vật hình cái đầu khung
+FightAwakeIcon	Skin1XY	PZ_Null	Sau khi thức tỉnh avatar nhân vật khung
+SearchLevelReward1	Skin3	Revealer_08	Địa cung đồng bảo rương
+SearchLevelReward2	Skin3	Revealer_09	Địa cung bạc bảo rương
+SearchLevelReward3	Skin3	Revealer_10	Địa cung kim bảo rương
+Signet_Atk_Green	Icon1XY	Signet_Atk_White	Đãi xử lý
+Signet_Atk_Blue	IconXY	Signet_Atk_Blue	Màu lam la bàn công kích
+Signet_Atk_Purple	IconXY	Signet_Atk_Purple	Màu tím la bàn công kích
+Signet_Atk_Orange	IconXY	Signet_Atk_Orange	Màu cam la bàn công kích
+Signet_Atk_White	IconXY	Signet_Atk_White	Màu trắng la bàn công kích
+Signet_Bla_Green	Icon1XY	Signet_Bla_White	Đãi xử lý
+Signet_Bla_Blue	IconXY	Signet_Bla_Blue	Màu lam la bàn cân đối
+Signet_Bla_Purple	IconXY	Signet_Bla_Purple	Màu tím la bàn cân đối
+Signet_Bla_Orange	IconXY	Signet_Bla_Orange	Màu cam la bàn cân đối
+Signet_Bla_White	IconXY	Signet_Bla_White	Màu trắng la bàn cân đối
+Signet_Def_Green	Icon1XY	Signet_Def_White	Đãi xử lý
+Signet_Def_Blue	IconXY	Signet_Def_Blue	Màu lam la bàn phòng ngự
+Signet_Def_Purple	IconXY	Signet_Def_Purple	Màu tím la bàn phòng ngự
+Signet_Def_Orange	IconXY	Signet_Def_Orange	Màu cam la bàn phòng ngự
+Signet_Def_White	IconXY	Signet_Def_White	Màu trắng la bàn phòng ngự
+Equip_31001	IconXY	Equip_31001	Màu xanh biếc pháp bảo kinh nghiệm
+Equip_31002	IconXY	Equip_31002	Màu lam pháp bảo kinh nghiệm
+Equip_31003	IconXY	Equip_31003	Màu tím pháp bảo kinh nghiệm
+Equip_31004	IconXY	Equip_31004	Màu cam pháp bảo kinh nghiệm
+Equip_31201	IconXY	Equip_31201	Hàng ma trượng miêu tả
+Equip_31202	IconXY	Equip_31202	Hàng ma đầu khôi miêu tả
+Equip_31203	IconXY	Equip_31203	Hàng ma giáp miêu tả
+Equip_31204	IconXY	Equip_31204	Hàng ma đai lưng miêu tả
+Equip_31301	IconXY	Equip_31301	Hỏa linh thương (súng) miêu tả
+Equip_31302	IconXY	Equip_31302	Hỏa linh mũ giáp miêu tả
+Equip_31303	IconXY	Equip_31303	Hỏa linh giáp miêu tả
+Equip_31304	IconXY	Equip_31304	Hỏa linh đai lưng miêu tả
+Equip_31401	IconXY	Equip_31401	Hỗn Thiên Lăng miêu tả
+Equip_31402	IconXY	Equip_31402	Hỗn lề trên khôi miêu tả
+Equip_31403	IconXY	Equip_31403	Hỗn thiên khóa giáp miêu tả
+Equip_31404	IconXY	Equip_31404	Hỗn thiên đai lưng miêu tả
+Equip_31411	IconXY	Equip_31411	Càn khôn vòng miêu tả
+Equip_31412	IconXY	Equip_31412	Càn khôn mũ giáp miêu tả
+Equip_31413	IconXY	Equip_31413	Càn khôn khóa giáp miêu tả
+Equip_31414	IconXY	Equip_31414	Càn khôn đai lưng miêu tả
+Equip_31501	IconXY	Equip_31501	Âm dương trời tru linh phù miêu tả
+Equip_31502	IconXY	Equip_31502	Âm dương luân hồi mũ giáp miêu tả
+Equip_31503	IconXY	Equip_31503	Âm dương luân hồi áo giáp miêu tả
+Equip_31504	IconXY	Equip_31504	Âm dương luân hồi đai lưng miêu tả
+Equip_31511	IconXY	Equip_31511	Hỗn nguyên đấu kim pháp kiếm miêu tả
+Equip_31512	IconXY	Equip_31512	Hỗn nguyên phá quân mũ giáp miêu tả
+Equip_31513	IconXY	Equip_31513	Hỗn nguyên phá quân áo giáp miêu tả
+Equip_31514	IconXY	Equip_31514	Hỗn nguyên phá quân đai lưng miêu tả
+Equip_31601	IconXY	Equip_31601	Màu đỏ trang bị kiếm miêu tả
+Equip_31602	IconXY	Equip_31602	Màu đỏ trang bị mũ giáp miêu tả
+Equip_31603	IconXY	Equip_31603	Màu đỏ trang bị áo giáp miêu tả
+Equip_31604	IconXY	Equip_31604	Màu đỏ trang bị đai lưng miêu tả
+DreamCoin	IconXY	DreamCoin	Ngàn kiếp tháp tiền
+Fame	IconXY	Fame	Đấu trường tiền
+FlameGold	IconXY	FlameGold	Hồn tinh
+Honor	IconXY	Honor	Vinh dự đấu trường tiền
+Lucky	IconXY	Lucky	Kinh thư chuyển phát nhanh tiền
+Friendship	IconXY	FriendGold	Nghĩa khí giá trị
+VipExp	IconXY	Ico_VipExp	Vip kinh nghiệm
+GemDust	IconXY	GemDust	Đá quý bụi
+GemAnima	IconXY	GemAnima	Đá quý tinh hoa
+Medal	IconXY	Medal	Huân chương
+PetSoul	IconXY	PetSoul	Thú hồn
+Item_60112	IconXY	Item_62001	Đãi xử lý
+Item_60113	IconXY	Item_62001	Đãi xử lý
+Item_61001	IconXY	Item_61001	
+Item_61002	IconXY	Item_61002	
+Item_61003	IconXY	Item_61003	
+Item_61004	IconXY	Item_61004	Thăng tinh ấn
+Item_61006	IconXY	Item_61006	Đúc lại thạch
+Item_61008	IconXY	Item_61008	Pháp bảo Luyện hóa thạch
+Item_61009	IconXY	Item_61009	Tẩy luyện thạch
+Item_61010	IconXY	Item_61010	Thú lương
+Item_61011	IconXY	Item_61011	Sủng vật thăng tinh đan
+Item_61012	IconXY	Item_61012	Triệu hoán quyển trục
+Item_61013	IconXY	Item_61013	Đãi xử lý
+Item_61014	IconXY	Item_61014	Đãi xử lý
+Item_61015	Icon1XY	Item_62001	Bang hội nhiệm vụ đổi mới lệnh đãi xử lý
+Item_61016	IconXY	Item_61016	Thể lực đan
+Item_61017	IconXY	Item_61016	Tiểu thể lực đan icon
+Item_61018	Icon1XY	Item_62001	Chém yêu lệnh đãi xử lý
+Item_62021	IconXY	Item_62021	Sơ cấp Luyện hóa thạch
+Item_62022	IconXY	Item_62022	Trung cấp Luyện hóa thạch
+Item_62023	IconXY	Item_62023	Cao cấp Luyện hóa thạch
+Item_62024	IconXY	Item_62024	Siêu cấp Luyện hóa thạch
+Item_62031	IconXY	Item_62031	Sơ cấp sủng vật tu luyện thạch
+Item_62032	IconXY	Item_62032	Trung cấp sủng vật tu luyện thạch
+Item_62033	IconXY	Item_62033	Cao cấp sủng vật tu luyện thạch
+Item_62034	IconXY	Item_62034	Siêu cấp sủng vật tu luyện thạch
+Item_62100	IconXY	Item_62200	VIP miễn phí lễ bao
+Item_62101	IconXY	Item_62201	VIP miễn phí lễ bao
+Item_62102	IconXY	Item_62202	VIP miễn phí lễ bao
+Item_62103	IconXY	Item_62203	VIP miễn phí lễ bao
+Item_62104	IconXY	Item_62204	VIP miễn phí lễ bao
+Item_62105	IconXY	Item_62205	VIP miễn phí lễ bao
+Item_62106	IconXY	Item_62206	VIP miễn phí lễ bao
+Item_62107	IconXY	Item_62207	VIP miễn phí lễ bao
+Item_62108	IconXY	Item_62208	VIP miễn phí lễ bao
+Item_62109	IconXY	Item_62209	VIP miễn phí lễ bao
+Item_62110	IconXY	Item_62210	VIP miễn phí lễ bao
+Item_62111	IconXY	Item_62211	VIP miễn phí lễ bao
+Item_62112	IconXY	Item_62212	VIP miễn phí lễ bao
+Item_62113	IconXY	Item_62213	VIP miễn phí lễ bao
+Item_62114	IconXY	Item_62214	VIP miễn phí lễ bao
+Item_62115	IconXY	Item_62215	VIP miễn phí lễ bao
+Item_62116	IconXY	Item_62216	VIP miễn phí lễ bao
+Item_62200	IconXY	Item_62200	VIP mua sắm lễ bao
+Item_62201	IconXY	Item_62201	VIP mua sắm lễ bao
+Item_62202	IconXY	Item_62202	VIP mua sắm lễ bao
+Item_62203	IconXY	Item_62203	VIP mua sắm lễ bao
+Item_62204	IconXY	Item_62204	VIP mua sắm lễ bao
+Item_62205	IconXY	Item_62205	VIP mua sắm lễ bao
+Item_62206	IconXY	Item_62206	VIP mua sắm lễ bao
+Item_62207	IconXY	Item_62207	VIP mua sắm lễ bao
+Item_62208	IconXY	Item_62208	VIP mua sắm lễ bao
+Item_62209	IconXY	Item_62209	VIP mua sắm lễ bao
+Item_62210	IconXY	Item_62210	VIP mua sắm lễ bao
+Item_62211	IconXY	Item_62211	VIP mua sắm lễ bao
+Item_62212	IconXY	Item_62212	VIP mua sắm lễ bao
+Item_62213	IconXY	Item_62213	VIP mua sắm lễ bao
+Item_62214	IconXY	Item_62214	VIP mua sắm lễ bao
+Item_62215	IconXY	Item_62215	VIP mua sắm lễ bao
+Item_62216	IconXY	Item_62216	VIP mua sắm lễ bao
+Item_63002	IconXY	Box_3	10W đồng vàng bao, đãi xử lý
+Item_63003	IconXY	Box_3	500W đồng vàng bao, đãi xử lý
+Item_63005	IconXY	Box_3	200W đồng vàng bao, đãi xử lý
+Item_63006	IconXY	Box_3	Thăng tinh ấn lễ bao, đãi xử lý
+Item_63007	IconXY	Box_3	Âm dương thạch lễ bao, đãi xử lý
+Item_63004	IconXY	Box_3	Kim cương bao
+Item_63011	IconXY	Box_3	Kinh nghiệm bụi bao
+Item_63015	IconXY	Box_3	VIP kinh nghiệm bao
+Item_63111	IconXY	Box_3	Chỉ định S cấp võ tướng mảnh lựa chọn bao
+Item_63112	IconXY	Box_3	Chỉ định A cấp anh hùng lựa chọn bao
+Item_63121	IconXY	Box_3	Vai chính mảnh lựa chọn bao
+Item_63122	IconXY	Box_3	Vai chính bên ngoài S cấp mảnh lựa chọn bao
+Item_63123	IconXY	Box_3	SS cấp mảnh lựa chọn bao
+Item_63124	IconXY	Box_3	A cấp mảnh lựa chọn bao
+Item_63125	IconXY	Box_3	SS cấp mảnh lựa chọn bao
+Item_63126	IconXY	Box_3	SS cấp anh hùng lựa chọn bao
+Item_63131	IconXY	Item_63131	Màu tím trang bị lựa chọn bao
+Item_63132	IconXY	Item_63131	Màu cam trang bị lựa chọn bao
+Item_63133	IconXY	Box_3	Màu cam pháp bảo mảnh lựa chọn bao
+Item_63134	IconXY	Box_3	Màu tím pháp bảo lựa chọn bao
+Item_63135	IconXY	Box_3	Màu cam pháp bảo lựa chọn bao
+Item_63136	IconXY	Box_3	Màu tím pháp bảo mảnh lựa chọn bao
+Item_63137	IconXY	Box_3	Màu tím kinh thư lựa chọn bao
+Item_63138	IconXY	Box_3	Màu đỏ pháp bảo lựa chọn bao
+Item_63139	IconXY	Item_63131	Màu cam trang bị mảnh lựa chọn bao
+Item_63140	IconXY	Box_3	Màu đỏ pháp bảo mảnh lựa chọn bao
+Item_63211	IconXY	Box_3	Cao cấp anh hùng bao
+Item_63231	IconXY	Item_63131	Cao cấp trang bị bảo rương
+Item_63232	IconXY	Item_63131	Cấp thấp trang bị bảo rương
+Item_63233	IconXY	Box_Equip	Pháp bảo túi
+Item_63234	IconXY	Item_63131	Màu lam trang bị bốn kiện bộ
+Item_63235	IconXY	Item_63131	Màu tím sắc trang bị bốn kiện bộ, đãi xử lý
+Item_63241	IconXY	Item_63131	Lam trang mảnh bao
+Item_63242	IconXY	Item_63131	Tím trang mảnh bao
+Item_63243	IconXY	Item_63131	Cam trang mảnh bao
+Item_63244	IconXY	Box_4	Màu cam pháp bảo mảnh bao
+Item_63251	IconXY	Box_2	Đá quý túi
+Item_63252	IconXY	Box_S	La bàn túi
+Item_63261	IconXY	Box_A	Kim bảo rương
+Item_63262	IconXY	Box_4	Bạc bảo rương
+Item_63541	IconXY	Box_4	Màu tím đá quý bao
+Item_63542	IconXY	Box_4	Màu tím la bàn bao
+Item_63601	IconXY	Box_4	Sủng vật đồ ăn bao
+Unknowcard	Icon1XY	Unknowcard	Không biết anh hùng
+Equip_32301	IconXY	Equip_32301	TMS1000
+Equip_32302	IconXY	Equip_32302	Tntel4004
+Equip_32401	IconXY	Equip_32401	Khốc duệ 2
+Equip_32402	IconXY	Equip_32402	Lao nhanh
+Equip_32501	IconXY	Equip_32501	I7
+Equip_32502	IconXY	Equip_32502	Lưỡi dao server
+Equip_32601	IconXY	Equip_32601	Siêu cấp máy tính chip
+Equip_32602	IconXY	Equip_32602	Nhân công AI
+Equip_33301	IconXY	Equip_33301	BB cơ
+Equip_33302	IconXY	Equip_33302	Đại ca đại
+Equip_33401	IconXY	Equip_33401	Tác ái
+Equip_33402	IconXY	Equip_33402	Motorola
+Equip_33501	IconXY	Equip_33501	Nokia
+Equip_33502	IconXY	Equip_33502	Google nexus
+Equip_33601	IconXY	Equip_33601	Quả táo plus
+Equip_33602	IconXY	Equip_33602	Tam tinh Galaxy
+Energy	IconXY	Energy	Thể lực
+ExpDust	IconXY	ExpDust	Kinh nghiệm bụi ( bài thi )
+Gold	IconXY	Gold	Tiền mặt ( đồng vàng )
+Item_61005	IconXY	Item_61005	Khi chi sa ( đột phá lệnh )
+Item_61007	IconXY	Item_61007	F5 ( đổi mới quyển trục )
+Item_62001	IconXY	Item_62001	Hảo cảm tạp
+Gem_Blue_1	IconXY	Gem_Blue_1	Rách nát ngọc bích
+Gem_Blue_2	IconXY	Gem_Blue_2	Bình thường ngọc bích
+Gem_Blue_3	IconXY	Gem_Blue_3	Tinh xảo ngọc bích
+Gem_Blue_4	IconXY	Gem_Blue_4	Hoàn mỹ ngọc bích
+Gem_Green_1	IconXY	Gem_Green_1	Rách nát lục đá quý
+Gem_Green_2	IconXY	Gem_Green_2	Bình thường lục đá quý
+Gem_Green_3	IconXY	Gem_Green_3	Tinh xảo lục đá quý
+Gem_Green_4	IconXY	Gem_Green_4	Hoàn mỹ lục đá quý
+Gem_Orange_1	IconXY	Gem_Orange_1	Rách nát cam đá quý
+Gem_Orange_2	IconXY	Gem_Orange_2	Bình thường cam đá quý
+Gem_Orange_3	IconXY	Gem_Orange_3	Tinh xảo cam đá quý
+Gem_Orange_4	IconXY	Gem_Orange_4	Hoàn mỹ cam đá quý
+Gem_Purple_1	IconXY	Gem_Purple_1	Rách nát tím đá quý
+Gem_Purple_2	IconXY	Gem_Purple_2	Bình thường tím đá quý
+Gem_Purple_3	IconXY	Gem_Purple_3	Tinh xảo tím đá quý
+Gem_Purple_4	IconXY	Gem_Purple_4	Hoàn mỹ tím đá quý
+Gem_Red_1	IconXY	Gem_Red_1	Rách nát hồng bảo thạch
+Gem_Red_2	IconXY	Gem_Red_2	Bình thường hồng bảo thạch
+Gem_Red_3	IconXY	Gem_Red_3	Tinh xảo hồng bảo thạch
+Gem_Red_4	IconXY	Gem_Red_4	Hoàn mỹ hồng bảo thạch
+Gem_Yellow_1	IconXY	Gem_Yellow_1	Rách nát hoàng đá quý
+Gem_Yellow_2	IconXY	Gem_Yellow_2	Bình thường hoàng đá quý
+Gem_Yellow_3	IconXY	Gem_Yellow_3	Tinh xảo hoàng đá quý
+Gem_Yellow_4	IconXY	Gem_Yellow_4	Hoàn mỹ hoàng đá quý
+Gem_Black_1	IconXY	Gem_Black_1	Rách nát hắc đá quý
+Gem_Black_2	IconXY	Gem_Black_2	Bình thường hắc đá quý
+Gem_Black_3	IconXY	Gem_Black_3	Tinh xảo hắc đá quý
+Gem_Black_4	IconXY	Gem_Black_4	Hoàn mỹ hắc đá quý
+Rune_1001	IconXY	Rune_1001	Nước bùn sống tử
+Rune_1002	IconXY	Rune_1002	Đồng thau sống tử
+Rune_1003	IconXY	Rune_1003	Khô mộc sống tử
+Rune_1004	IconXY	Rune_1004	Ngọn lửa sống tử
+Rune_1005	IconXY	Rune_1005	Giọt nước sống tử
+Rune_1006	IconXY	Rune_1006	Cục đá sống tử
+Rune_1007	IconXY	Rune_1007	Vẫn thiết sống tử
+Rune_1008	IconXY	Rune_1008	Lá xanh sống tử
+Rune_1009	IconXY	Rune_1009	Lửa cháy sống tử
+Rune_1010	IconXY	Rune_1010	Suối nước sống tử
+Rune_2001	IconXY	Rune_2001	Thật • nước bùn sống tử
+Rune_2002	IconXY	Rune_2002	Thật • đồng thau sống tử
+Rune_2003	IconXY	Rune_2003	Thật • khô mộc sống tử
+Rune_2004	IconXY	Rune_2004	Thật • ngọn lửa sống tử
+Rune_2005	IconXY	Rune_2005	Thật • giọt nước sống tử
+Rune_2006	IconXY	Rune_2006	Thật • cục đá sống tử
+Rune_2007	IconXY	Rune_2007	Thật • vẫn thiết sống tử
+Rune_2008	IconXY	Rune_2008	Thật • lá xanh sống tử
+Rune_2009	IconXY	Rune_2009	Thật • lửa cháy sống tử
+Rune_2010	IconXY	Rune_2010	Thật • suối nước sống tử
+Rune_3001	IconXY	Rune_3001	Yêu • nước bùn sống tử
+Rune_3002	IconXY	Rune_3002	Yêu • đồng thau sống tử
+Rune_3003	IconXY	Rune_3003	Yêu • khô mộc sống tử
+Rune_3004	IconXY	Rune_3004	Yêu • ngọn lửa sống tử
+Rune_3005	IconXY	Rune_3005	Yêu • giọt nước sống tử
+Rune_3006	IconXY	Rune_3006	Yêu • cục đá sống tử
+Rune_3007	IconXY	Rune_3007	Yêu • vẫn thiết sống tử
+Rune_3008	IconXY	Rune_3008	Yêu • lá xanh sống tử
+Rune_3009	IconXY	Rune_3009	Yêu • lửa cháy sống tử
+Rune_3010	IconXY	Rune_3010	Yêu • suối nước sống tử
+Rune_4001	IconXY	Rune_4001	Linh • nước bùn sống tử
+Rune_4002	IconXY	Rune_4002	Linh • đồng thau sống tử
+Rune_4003	IconXY	Rune_4003	Linh • khô mộc sống tử
+Rune_4004	IconXY	Rune_4004	Linh • ngọn lửa sống tử
+Rune_4005	IconXY	Rune_4005	Linh • giọt nước sống tử
+Rune_4006	IconXY	Rune_4006	Linh • cục đá sống tử
+Rune_4007	IconXY	Rune_4007	Linh • vẫn thiết sống tử
+Rune_4008	IconXY	Rune_4008	Linh • lá xanh sống tử
+Rune_4009	IconXY	Rune_4009	Linh • lửa cháy sống tử
+Rune_4010	IconXY	Rune_4010	Linh • suối nước sống tử
+Rune_5001	IconXY	Rune_5001	Thần • nước bùn sống tử
+Rune_5002	IconXY	Rune_5002	Thần • đồng thau sống tử
+Rune_5003	IconXY	Rune_5003	Thần • khô mộc sống tử
+Rune_5004	IconXY	Rune_5004	Thần • ngọn lửa sống tử
+Rune_5005	IconXY	Rune_5005	Thần • giọt nước sống tử
+Rune_5006	IconXY	Rune_5006	Thần • cục đá sống tử
+Rune_5007	IconXY	Rune_5007	Thần • vẫn thiết sống tử
+Rune_5008	IconXY	Rune_5008	Thần • lá xanh sống tử
+Rune_5009	IconXY	Rune_5009	Thần • lửa cháy sống tử
+Rune_5010	IconXY	Rune_5010	Thần • suối nước sống tử
+Rune_6001	IconXY	Rune_6001	Tiên • nước bùn sống tử
+Rune_6002	IconXY	Rune_6002	Tiên • đồng thau sống tử
+Rune_6003	IconXY	Rune_6003	Tiên • khô mộc sống tử
+Rune_6004	IconXY	Rune_6004	Tiên • ngọn lửa sống tử
+Rune_6005	IconXY	Rune_6005	Tiên • giọt nước sống tử
+Rune_6006	IconXY	Rune_6006	Tiên • cục đá sống tử
+Rune_6007	IconXY	Rune_6007	Tiên • vẫn thiết sống tử
+Rune_6008	IconXY	Rune_6008	Tiên • lá xanh sống tử
+Rune_6009	IconXY	Rune_6009	Tiên • lửa cháy sống tử
+Rune_6010	IconXY	Rune_6010	Tiên • suối nước sống tử
+Pet_301	Icon1XY	Card_1106	Tiểu bạch tuộc
+Pet_401	Icon1XY	Pet_401	Bạch Cốt Tinh
+Pet_402	Icon1XY	Pet_402	Thỏ ngọc tinh
+Pet_501	Icon1XY	Card_1504	Gấu đen tinh
+Pet_502	Icon1XY	Card_1505	Sư Vương
+Pet_503	Icon1XY	Card_1506	Lục Nhĩ Mi Hầu
+IconBorder_101	Icon	New_SeasonBorder_02	Đãi xử lý
+IconBorder_102	Icon	New_SeasonBorder_03	Đãi xử lý
+IconBorder_103	Icon	New_SeasonBorder_04	Đãi xử lý
+IconBorder_104	Icon	New_SeasonBorder_05	Đãi xử lý
+IconBorder_105	Icon	New_SeasonBorder_06	Đãi xử lý
+Lection_1	Skin2XY	Spt_Cloud_PZ1	Kinh thư chuyển phát nhanh loại hình icon
+Lection_2	Skin2XY	Spt_Cloud_PZ2	
+Lection_3	Skin2XY	Spt_Cloud_PZ3	
+Lection_4	Skin2XY	Spt_Cloud_PZ4	
+Lection_5	Skin2XY	Spt_Cloud_PZ5	
+ServerLoadGreenSign	Skin1XY	Tip_5_Type10	Server trạng thái dấu mũ phối trí
+ServerLoadRedSign	Skin1XY	Tip_5_Type7	
+ServerLoadYellowSign	Skin1XY	Tip_5_Type8	
+ServerLoadNoneSign	Skin1XY	Tip_5_Type9	
+Skill_10023	Skin1XY	Skill_10023	
+Skill_10032	Skin1XY	Skill_10032	
+Skill_10033	Skin1XY	Skill_10033	
+Skill_10042	Skin1XY	Skill_10042	
+Skill_10043	Skin1XY	Skill_10043	
+Skill_10052	Skin1XY	Skill_10052	
+Skill_10053	Skin1XY	Skill_10053	
+Skill_10062	Skin1XY	Skill_10062	
+Skill_10063	Skin1XY	Skill_10063	
+Skill_10072	Skin1XY	Skill_10072	
+Skill_10073	Skin1XY	Skill_10073	
+Skill_10074	Skin1XY	Skill_10074	
+Skill_10083	Skin1XY	Skill_10083	
+Skill_10093	Skin1XY	Skill_10093	
+Skill_10094	Skin1XY	Skill_10094	
+Skill_10123	Skin1XY	Skill_10123	
+Skill_10133	Skin1XY	Skill_10133	
+Skill_10143	Skin1XY	Skill_10143	
+Skill_10153	Skin1XY	Skill_10153	
+Skill_10163	Skin1XY	Skill_10163	
+Skill_10193	Skin1XY	Skill_10193	
+Skill_10212	Skin1XY	Skill_10212	
+Skill_10213	Skin1XY	Skill_10213	
+Skill_10214	Skin1XY	Skill_10214	
+Skill_10243	Skin1XY	Skill_10243	
+Taobao_Box1	Skin2XY	Taobao_Box1	Bình thường
+Taobao_Box2	Skin2XY	Taobao_Box2	A cấp chỉnh tạp
+Taobao_Box3	Skin2XY	Taobao_Box3	S cấp chỉnh tạp
+Taobao_Box4	Skin2XY	Taobao_Box3	SS cấp chỉnh tạp
+Mission_1	IconXY	Mission_1	Trang bị tương quan thành tựu icon
+Mission_2	IconXY	Mission_2	Khiêu chiến loại phó bản tương quan thành tựu icon
+Mission_3	IconXY	Mission_3	Bạn tốt tương quan thành tựu icon
+Mission_4	IconXY	Mission_4	Một trận chiến rốt cuộc tương quan icon
+Mission_5	IconXY	Mission_5	Phù văn đạo cụ tương quan thành tựu icon
+Mission_6	IconXY	Mission_6	Sủng vật tương quan thành tựu icon
+Mission_7	IconXY	Mission_7	Tích lũy loại thành tựu tương quan icon
+Mission_Month	IconXY	Mission_Month	Nguyệt tạp
+Mission_Forever	IconXY	Mission_Forever	Chí tôn tạp
+Mission_Pve	IconXY	Mission_Pve	Thường quy phó bản tương quan thành tựu icon
+Mission_Pvp	IconXY	Mission_Pvp	PVP tương quan thành tựu icon
+SkyArena_LevelFightYet    	Skin2XY	Tab_14_Grey	Thiên cung thăm bảo chưa khiêu chiến
+SkyArena_LevelNow    	Skin2XY	Tab_14_Yellow	Thiên cung thăm bảo đang ở khiêu chiến
+SkyArena_LevelOver   	Skin2XY	Tab_14_Green	Thiên cung thăm bảo đã thông quan
+Arena_Win	Skin2XY	Spt_Win	Đấu trường thắng lợi ký lục icon
+Arena_Lose	Skin2XY	Spt_Lose	Đấu trường thắng lợi ký lục icon
+SkillType1	Skin1XY	Spt_SkillType1	Kỹ năng loại hình khống chế icon
+SkillType2	Skin1XY	Spt_SkillType2	Kỹ năng loại hình phụ trợ icon
+Card_1504	Icon1XY	Card_1504	Gấu đen tinh hình cái đầu
+Card_1505	Icon1XY	Card_1505	Sư Vương hình cái đầu
+Card_1506	Icon1XY	Card_1506	Lục Nhĩ Mi Hầu hình cái đầu
+GuildSkillExp	Icon1XY	GuildSkillExp	Hiệp hội kỹ năng kinh nghiệm
+GuildSkillGold	Icon1XY	GuildSkillGold	Hiệp hội kỹ năng đồng vàng
+Skill_50201	Icon1XY	Skill_50201	Sinh mệnh đề cao
+Skill_50202	Icon1XY	Skill_50202	Công kích đề cao
+Skill_50203	Icon1XY	Skill_50203	Vật phòng đề cao
+Skill_50204	Icon1XY	Skill_50204	Pháp phòng đề cao
+Skill_50205	Icon1XY	Skill_50205	Mệnh trung đề cao
+Skill_50206	Icon1XY	Skill_50206	Né tránh đề cao
+Skill_50207	Icon1XY	Skill_50207	Bạo kích suất đề cao
+Skill_50208	Icon1XY	Skill_50208	Kháng bạo suất đề cao
+Skill_50209	Icon1XY	Skill_50209	Đón đỡ suất đề cao
+Skill_50210	Icon1XY	Skill_50210	Phá đương suất đề cao
+GuildChannel	Skin2XY	GuildChannel	Hiệp hội kênh
+GuildComment	Skin2XY	GuildComment	Hiệp hội nhắn lại bản
+GuildDonate	Skin2XY	GuildDonate	Hiệp hội cống hiến
+GuildExp	Skin2XY	GuildExp	Hiệp hội kinh nghiệm
+GuildReward	Skin2XY	GuildReward	Hiệp hội phúc lợi
+GuildTask	Skin2XY	GuildTask	Hiệp hội treo giải thưởng
+RichRisk_Reward1Icon	Skin3	Type_66	
+RichRisk_Reward2Icon	Skin3	Type_22	
+RichRisk_RewardBuild1	Skin3	Type_6	
+RichRisk_RewardBuild2	Skin3	Type_3	
+RichRisk_ShopIcon	Skin3	Type_4	
+RichRisk_ShopBuild	Skin3	Type_44	
+RichRiskBuff_Score2	Skin3	IconReward_01	
+RichRiskBuff_Score3	Skin3	IconReward_03	
+RichRiskBuff_Reward2	Skin3	IconReward_02	
+RichRiskBuff_Reward3	Skin3	IconReward_04	
+groupbuying_Icon_1	IconXY	Gold	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_2	IconXY	Item_61004	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_3	IconXY	PetSoul	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_4	IconXY	Box_3	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_5	IconXY	Item_61003	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_6	IconXY	Item_62024	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_7	IconXY	Box_3	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_8	IconXY	Equip_31601	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_9	IconXY	Equip_31602	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_10	IconXY	Equip_31603	Hạn khi đoàn mua lễ bao Icon
+groupbuying_Icon_11	IconXY	Equip_31604	Hạn khi đoàn mua lễ bao Icon
+FestivalCollect_Recharge	Skin1XY	Btn_52	Lâm thời ngày hội hoạt động sung giá trị icon
+FestivalCollect_Sign	Skin1XY	Btn_26	Lâm thời ngày hội hoạt động đánh dấu icon
+RichRisk_LuckyDice	Skin3	btn_LuckyDice	May mắn xúc xắc
+Skill_23010	Icon1XY	Skill_23010	
+Skill_24010	Icon1XY	Skill_24010	
+Skill_24020	Icon1XY	Skill_24020	
+Skill_25010	Icon1XY	Skill_25010	
+Skill_25020	Icon1XY	Skill_25020	
+Skill_25030	Icon1XY	Skill_25030	
+Skill_23011	Icon1XY	Skill_23011	
+Skill_24011	Icon1XY	Skill_24011	
+Skill_24021	Icon1XY	Skill_24021	
+Skill_25011	Icon1XY	Skill_25011	
+Skill_25021	Icon1XY	Skill_25021	
+Skill_25031	Icon1XY	Skill_25031	
+Unlock_CardBreak	Skin1XY	Btn_51	
+Treasure	IconXY	Item_62001	Càn quét quyển trục đãi xử lý
+HasReward	Skin3XY	Spt_Rich19	Khen thưởng nhắc nhở icon
+HasRefresh	Skin3XY	Spt_Rich15	Đổi mới nhắc nhở icon
+HasApply	Skin2XY	Ico_05	Bang hội xin icon
+UpgradeWay_HeroLevel	Skin1XY	Btn_51	Anh hùng cấp bậc
+UpgradeWay_HeroQuality	Skin1XY	Btn_51	Anh hùng phẩm chất
+UpgradeWay_HeroActiveSkill	Skin1XY	Btn_51	Tất sát kĩ cấp bậc
+UpgradeWay_HeroTallent	Skin1XY	Btn_51	Thiên phú cấp bậc
+UpgradeWay_HeroStarUp	Skin1XY	Btn_51	Anh hùng thăng tinh
+UpgradeWay_HeroBreak	Skin1XY	Btn_51	Anh hùng đột phá
+UpgradeWay_HeroFate	Skin1XY	Btn_51	Duyên phận kích hoạt
+UpgradeWay_EquipEnhance	Skin1XY	Btn_23_2	Trang bị cường hóa
+UpgradeWay_EquipStar	Skin1XY	Btn_23_5	Trang bị thăng tinh
+UpgradeWay_SpecialEquipRefine	Skin1XY	Btn_23_4	Pháp bảo Luyện hóa
+UpgradeWay_EquipRefine	Skin1XY	Btn_23_4	Trang bị Luyện hóa
+UpgradeWay_GemSet	Skin1XY	Btn_37	Được khảm đá quý
+UpgradeWay_SpecialEquipEnhance	Skin1XY	Btn_23_2	Pháp bảo cường hóa
+UpgradeWay_PetLevel	Skin1XY	Btn_38	Sủng vật cấp bậc
+UpgradeWay_PetStarLevel	Skin1XY	Btn_38	Sủng vật tinh cấp
+UpgradeWay_PetGrade	Skin1XY	Btn_38	Sủng vật tu luyện
+UpgradeWay_GemLevel	Skin1XY	Btn_37	Đá quý cấp bậc
+UpgradeWay_EquipWash	Skin1XY	Btn_23_3	Trang bị mạch lạc
+UpgradeWay_Score_1	Skin2XY	Spt_Duan3	Chiến lực bình xét cấp bậc lâm thời icon
+UpgradeWay_Score_2	Skin2XY	Spt_Duan6	Chiến lực bình xét cấp bậc lâm thời icon
+UpgradeWay_Score_3	Skin2XY	Spt_Duan9	Chiến lực bình xét cấp bậc lâm thời icon
+UpgradeWay_Score_4	Skin2XY	Spt_Duan10	Chiến lực bình xét cấp bậc lâm thời icon

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="408" horizontalCenter="0" verticalCenter="0" locked="true"/>
+	<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="481" width="340" height="188" scaleX="1" scaleY="1" horizontalCenter="0" x="150"/>
+	<e:Image source="iconbg_purple_png" x="151" y="397"/>
+	<e:Label text="Vật phẩm tên" x="243" y="401" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="248" height="30" verticalAlign="middle"/>
+	<e:Label text="Yêu cầu vật phẩm" x="170" y="494" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="248" height="30" verticalAlign="middle"/>
+	<e:Image source="btn_bg2_png" scale9Grid="56,4,23,37" y="692" scaleX="1" scaleY="1" x="253"/>
+	<e:Label text="Hợp thành" x="271" y="704" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="100"/>
+	<e:Image source="iconbg_white_png" x="172" y="534"/>
+	<e:Label text="1/20" x="173" y="629" size="15" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="70" height="25" textAlign="center" verticalAlign="middle" textColor="0xffffff"/>
+	<e:Label text="Vật phẩm tên" x="173" y="611" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="70" verticalAlign="middle"/>
+	<e:Image source="iconbg_white_png" y="534" horizontalCenter="0"/>
+	<e:Label text="20/30" y="629" size="15" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="70" height="25" textColor="0xFFFFFF" textAlign="center" verticalAlign="middle" horizontalCenter="0"/>
+	<e:Label text="Vật phẩm tên" y="611" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="70" verticalAlign="middle" horizontalCenter="0"/>
+	<e:Image source="iconbg_white_png" x="392" y="534"/>
+	<e:Label text="20/30" x="393" y="629" size="15" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="70" height="25" textColor="0xFFFFFF" textAlign="center" verticalAlign="middle"/>
+	<e:Label text="Vật phẩm tên" x="393" y="611" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="70" verticalAlign="middle"/>
+	<e:Image source="btn_close_png" x="454" y="360"/>
+</e:Skin>

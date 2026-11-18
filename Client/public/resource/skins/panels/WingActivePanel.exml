@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WingActivePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*"
+	xmlns:panels="legend.panels.*">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_bg_png" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Image id="frombg" source="form_bg_png" width="550" height="753" scale9Grid="16,15,19,18"
+			scaleX="1" scaleY="1" y="61" anchorOffsetY="0" horizontalCenter="1.5" />
+		<e:Image source="form_inbg_png" scale9Grid="14,36,23,4" y="329.67" anchorOffsetX="0"
+			width="531.34" anchorOffsetY="0" height="473.67" horizontalCenter="0" />
+		<e:Image source="list_bg_jpg" y="335.33" anchorOffsetY="0" height="460.67" anchorOffsetX="0"
+			width="521.83" horizontalCenter="0.5" />
+		<e:Image id="wingIcon" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256"
+			source="bigwing_1_png" verticalCenter="196.5" horizontalCenter="0" />
+		<e:Image id="btn_active" source="btn_bg4_png" scale9Grid="5,5,110,34" y="744" width="114"
+			anchorOffsetX="0" horizontalCenter="0" />
+		<e:Image id="bg_discount" source="zhekou_png" x="205" y="735" touchEnabled="false" />
+		<e:BitmapLabel id="discount" text="8" y="742.76" verticalAlign="middle"
+			horizontalCenter="-68.5" font="shop_number_fnt" scaleX="0.48" scaleY="0.48"
+			touchEnabled="false" />
+		<e:Label text="Kích hoạt" y="755" size="22" textAlign="center" strokeColor="0x000000"
+			stroke="1" width="100" fontFamily="Arial" anchorOffsetX="0" textColor="0xF7F397"
+			horizontalCenter="0" touchEnabled="false" />
+		<e:Label text="Bạn chỉ có một cơ hội!" y="753" size="22" textAlign="left"
+			strokeColor="0x5E3500" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial"
+			x="352" anchorOffsetX="0" textColor="0x00FF00" />
+		<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" y="584.33" width="360" height="110"
+			scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" />
+		<e:Label text="Thuộc tính:" x="128" y="596.34" size="18" textAlign="right"
+			strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0"
+			textColor="0xF8F7D3" bold="true" />
+		<e:Scroller height="89" y="595" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="55"
+			width="235">
+			<e:List id="list_Attr" scaleX="1" scaleY="1" y="16" anchorOffsetY="0" x="-1"
+				anchorOffsetX="0" width="236">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Label text="{data}" size="21" textAlign="left" strokeColor="0x000000"
+							stroke="1" textColor="0xF8F7D3" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:ArrayCollection>
+					<e:Array>
+						<e:Object null="" />
+						<e:Object null="" />
+						<e:Object null="" />
+						<e:Object null="" />
+						<e:Object null="" />
+					</e:Array>
+				</e:ArrayCollection>
+				<e:layout>
+					<e:VerticalLayout gap="1" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image source="line_png" y="323" width="550" height="2" horizontalCenter="0.5" />
+		<e:Scroller width="540" height="252" y="68.02" anchorOffsetX="0" anchorOffsetY="0"
+			horizontalCenter="0">
+			<e:List id="list">
+				<e:itemRendererSkinName>
+					<e:Skin states="up,down,disabled" width="180" height="252">
+						<e:Image id="icon" width="180" height="252" source="wingbanner_01_jpg"
+							horizontalCenter="0" verticalCenter="0" touchEnabled="false" />
+						<e:Image width="100%" height="100%" source.down="light_png"
+							horizontalCenter="0" verticalCenter="0" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:HorizontalLayout gap="0" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_close" source="btn_close_png" y="13" scaleX="1" scaleY="1" x="516.33" />
+		<e:Image id="tittle" y="7.01" scaleX="1" scaleY="1" horizontalCenter="0" source="wing_png" />
+		<e:Image id="btn_close1" x="530" y="802" source="btn_close_2_png" anchorOffsetX="0"
+			anchorOffsetY="0" scaleX="1" scaleY="1" />
+		<component:Power id="power" y="340.5" skinName="Power" horizontalCenter="-0.5" />
+		<e:Image source="form_goldtit_png" y="415" scaleX="1" scaleY="1" horizontalCenter="-4.5"
+			x="159" />
+		<e:Label id="label_name" text="黄金羽翼 10级" y="420.98" size="22" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="-4" />
+		<e:Group height="45" y="691" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+			<e:Label id="label_consume" text="消耗10000" y="5" size="22" textAlign="left"
+				strokeColor="0x5E3500" stroke="1" height="40" verticalAlign="middle"
+				fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2"
+				scaleX="1" scaleY="1" />
+			<e:Label id="label_consume1" text=" 直接激活7阶翅膀" y="5" size="22" textAlign="left"
+				strokeColor="0x5E3500" stroke="1" height="40" verticalAlign="middle"
+				fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2"
+				scaleX="1" scaleY="1" x="318" />
+			<e:Image id="consume_icon" source="icon_crystal_png" x="169.66" y="5.649999999999977"
+				scaleX="1" scaleY="1" />
+		</e:Group>
+	</e:Group>
+</e:Skin>

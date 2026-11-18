@@ -1,0 +1,14 @@
+﻿卡牌ID	备注	头像	模型	攻击范围	移动速度	技能弹道	技能	顺序	激活材料	激活数量	培养消耗材料
+id	Name	Icon	Model	RNG	SPD	SkillBullet1	SkillList	Sort	ActiveId	ActiveCount	StarMaterial
+2001	Tuyết sơn linh miêu	s_portrait014_png	lingmao	350	550		5001;0	10			2001
+2002	Mạc sầu tiên tử	s_portrait016_png	limochou	350	550		5002;0	50	2002	1	2002
+2003	Hỏa vũ tiên đồng	s_portrait018_png	zhanling01	350	550		5003;0	70	2003	1	2003
+2004	Băng phách	s_portrait019_png	zhanling02	350	550		5005;5006;0	30	2004	1	2004
+2005	Thủy Kỳ Lân	s_portrait020_png	zhanling05	350	550		5013;5004;0	60	2005	1	2005
+2006	Băng linh chuột	s_portrait021_png	zhanling03	350	550		5014;5008;0	40	2006	1	2006
+2007	Trăng non thỏ	s_portrait022_png	tuzi	350	550		5015;5010;0	20	2007	1	2007
+2008	Hổ phách	s_portrait023_png	hupo	350	550		5012;0	80	2008	1	2008
+2009	Dao Trì tiên tử	s_portrait024_png	zhanling04	350	550		5011;0	90	2009	1	2009
+2010	Sủng vật heo	s_portrait026_png	chongwuzhu	350	550		5001;0	11	2010	1	2010
+2011	Lợn rừng	s_portrait028_png	yezhu	350	550		5001;0	13	2011	1	2011
+2012	Ếch xanh	s_portrait027_png	jiaowa	350	550		5001;0	12	2012	1	2012

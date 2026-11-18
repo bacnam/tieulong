@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TitleAttrSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+
+
+
+
+
+	<e:Image id="icon" source="bailianchengxian_png" y="130" anchorOffsetX="0" width="358.4" anchorOffsetY="0" height="128" horizontalCenter="0"/>
+	<e:Image source="line_png" x="10.05" y="313.42" width="500"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="411.42" anchorOffsetX="0" width="480" anchorOffsetY="0" height="220" horizontalCenter="0"/>
+	<e:Image source="smallui_tbg_png" y="320.42" anchorOffsetX="0" width="519" anchorOffsetY="0" height="73" x="21"/>
+	<e:Label text="Thuộc tính các danh hiệu" y="345" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" width="252.17" anchorOffsetX="0" anchorOffsetY="0" height="27.5" bold="true" textColor="0xfdb200" x="159"/>
+	<component:Power id="power" y="45.5" skinName="Power" horizontalCenter="0"/>
+	<e:Scroller width="450" height="198" y="421" anchorOffsetX="0" horizontalCenter="1" anchorOffsetY="0">
+		<e:List id="list">
+		<e:itemRendererSkinName>
+			<e:Skin width="450">
+			<e:Label id="tip" text="HP:" size="22"/>
+			<e:Label id="attr" text="+4564" x="170" size="22" textColor="0x00FF00"/>
+			</e:Skin>
+		</e:itemRendererSkinName>
+		<e:layout>
+			<e:TileLayout horizontalGap="0"/>
+		</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="tip2" text="Chưa có danh hiệu" y="502" horizontalCenter="0.5" textColor="0xFF0000" bold="true" stroke="1" size="35"/>
+	<e:Label id="tip" text="Chưa có danh hiệu được kích hoạt" y="188" textColor="0xff0000" bold="true" stroke="1" horizontalCenter="0.5"/>
+
+</e:Skin>

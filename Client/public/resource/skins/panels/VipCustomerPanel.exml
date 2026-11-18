@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="VipCustomerPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:panels="legend.panels.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_shop_bg_png" x="0" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_1_png" x="545" y="26.33" scaleX="1" scaleY="1" name="btn_close" />
+
+		<e:Image source="list_tab_png" y="87.98" anchorOffsetX="0" width="556.1" anchorOffsetY="0" height="134" scaleX="1"
+		         scaleY="1" horizontalCenter="0" />
+		<e:Image y="11.7" scaleX="1" scaleY="1"  source="vipkefu_png" horizontalCenter="0"/>
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="101.98" anchorOffsetX="0" width="560" anchorOffsetY="0"
+		         height="708" scaleX="1" scaleY="1"  horizontalCenter="0"/>
+		<e:Image source="customer_bg_jpg" horizontalCenter="0.5" verticalCenter="32"/>
+
+
+
+
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Group id="btn_add" width="200" height="50" y="747" anchorOffsetY="0" horizontalCenter="0"/>
+
+	</e:Group>
+</e:Skin>

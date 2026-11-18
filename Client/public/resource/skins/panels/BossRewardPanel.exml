@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BossRewardPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Group anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0" verticalCenter="0">
+		<e:Group anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0" verticalCenter="0" x="0" y="0" scaleX="1" scaleY="1">
+			<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="500" scaleX="1" scaleY="1"/>
+			<e:Image source="form_bg_png" y="75" scaleX="1" scaleY="1" width="450" horizontalCenter="0" height="349" x="29" anchorOffsetY="0" scale9Grid="16,15,19,18"/>
+			<e:Image source="btn_close_png" x="431.98" y="-1" name="btn_close" scaleX="1" scaleY="1"/>
+			<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="194" y="445" scaleX="1" scaleY="1"/>
+			<e:Image source="smallui_tbg_png" y="17" scaleX="1" scaleY="1" horizontalCenter="0" x="108"/>
+		</e:Group>
+		<e:Scroller width="425.33" height="322.01" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" y="88">
+			<e:List id="list" anchorOffsetY="0" height="303.01" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:TileLayout paddingLeft="10" horizontalGap="12" verticalGap="20" paddingTop="10"/>
+			</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Label id="lbl_title" text="Phần thưởng" y="21" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" x="152"/>
+		<e:Label id="label_receive" text="Mặc định" x="196" y="445" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" anchorOffsetX="0" width="116" anchorOffsetY="0" height="42" verticalAlign="middle" scaleX="1" scaleY="1"/>
+		<e:Label id="label_gold" text="10000" x="162" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84" verticalCenter="130" y="346" scaleX="1" scaleY="1" visible="false"/>
+	</e:Group>
+</e:Skin>

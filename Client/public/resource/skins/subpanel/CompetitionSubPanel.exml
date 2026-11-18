@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="CompetitionSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="159c5392915"/>
+	<e:Group width="550" height="694" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="list_tab_png" y="2" anchorOffsetX="0" width="528" anchorOffsetY="0" height="203" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="17" scaleX="1" scaleY="1" width="540" height="673.67" anchorOffsetY="0" horizontalCenter="0"/>
+		<e:Image source="dark_png" y="352.98" anchorOffsetX="0" width="532" anchorOffsetY="0" height="333" horizontalCenter="0"/>
+		<e:Image source="from_bbg_png" y="511.61" scale9Grid="6,6,38,38" anchorOffsetX="0" width="517" anchorOffsetY="0" height="171.33" horizontalCenter="0.5"/>
+		<e:Image source="from_cbg_png" x="250" y="549.28" scale9Grid="6,6,38,38" anchorOffsetX="0" width="93.66" anchorOffsetY="0" height="103.83"/>
+		<e:Label id="label_tip" text="Khi điểm chiến đấu đạt 100, bạn có thể nhận được thưởng:" x="25" y="559.94" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="175" textColor="0xFFED29" fontFamily="Arial" lineSpacing="5"/>
+		<e:Label text="Hạng của bạn:" x="20" y="519.94" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" fontFamily="Arial" lineSpacing="5" textColor="0xFDB200" bold="true"/>
+		<e:Label id="my_rank" text="123" x="125" y="519.94" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" fontFamily="Arial" lineSpacing="5" textColor="0xFFFFFF"/>
+		<e:Label id="btn_go" text="Quyết đấu" y="520.94" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="445" textColor="0x00FF00" italic="true"/>
+		<e:Image source="vip_line_png" x="19.34" y="543.43" width="510"/>
+		<e:Image source="rank_bg_jpg" horizontalCenter="0" y="21.98"/>
+		<e:Label id="btn_rank" text="Xếp hạng" y="329.48" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="446" textColor="0x00FF00" italic="true"/>
+		<e:Image source="from_cbg_png" x="36" y="235.31" scale9Grid="6,6,38,38" anchorOffsetX="0" width="311.46" anchorOffsetY="0" height="104.5"/>
+
+
+		<e:Image id="rank_icon" y="24.01" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" source="title_arenarank_png" horizontalCenter="0.5"/>
+
+
+
+
+
+
+
+		<e:Image id="img_vipIcon" source="ui_vip_png" x="40.68" y="210.15" width="59.32" height="21.66" scaleX="1" scaleY="1" touchEnabled="false" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:BitmapLabel id="label_oneVip" x="95.35" y="207.82" font="vip_number_fnt" text="15" scaleX="0.5" scaleY="0.5" touchEnabled="false"/>
+
+
+
+
+
+
+
+		<e:Label id="endTime" text="23:30:30" x="145.83" y="89.25" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" width="119" anchorOffsetX="0" textColor="0xFFF523" scaleX="1" scaleY="1"/>
+		<e:Image id="title" source="gaofushuai_png" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="-88" width="268" height="95.71" y="127.98"/>
+		<e:Label id="label_endTip" text="Còn lại: " x="17.72" y="89.25" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" textColor="0xFFF027" scaleX="1" scaleY="1" anchorOffsetY="0" height="22"/>
+		<e:Label id="label_end" text="Hoạt động đã kết thúc" y="88.25" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" scaleX="1" scaleY="1" textColor="0xff0000" horizontalCenter="-90"/>
+
+
+
+		<e:Label id="first_name" text="s.155神一样的女人" y="206.98" size="24" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" anchorOffsetX="0" touchEnabled="false" textColor="0xf8f7d3" x="132"/>
+		<e:Label id="label_cost" text="100" y="567.69" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFF0000" scaleX="1" scaleY="1" horizontalCenter="149.5"/>
+
+
+
+
+		<e:Label text="Lưu ý: Khi kết thúc sự kiện, phần thưởng sẽ được gửi vào hộp thư của người chơi dựa trên thứ hạng." x="20" y="657.17" size="18" textAlign="left" strokeColor="0x000000" stroke="1" bold="true" anchorOffsetX="0" anchorOffsetY="0" textColor="0x43FF00" scaleX="1" scaleY="1"/>
+		<e:Scroller id="scroller" width="296" height="96" y="241.98" anchorOffsetY="0" anchorOffsetX="0" horizontalCenter="-82">
+			<e:List id="list_frist" itemRendererSkinName="ItemSkin">
+				<e:layout>
+					<e:HorizontalLayout gap="15" paddingLeft="8"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+
+		<e:Scroller width="510" height="157" x="18.59" y="355.68" anchorOffsetY="0" anchorOffsetX="0">
+			<e:List id="reward_list" x="0" y="-47" anchorOffsetY="0" height="269" itemRendererSkinName="CompetitionItem">
+				<e:layout>
+					<e:HorizontalLayout/>
+				</e:layout>
+
+            </e:List>
+		</e:Scroller>
+		<component:Button_Get id="get" x="375" y="596.94" skinName="Button_Get" width="100" height="40"/>
+
+
+		<e:Scroller id="scroller_added" width="72" height="95" y="552.81" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="21">
+			<e:List id="list_added" height="104" itemRendererSkinName="ItemSkin" y="-6.67" horizontalCenter="0" anchorOffsetX="0" width="78.67">
+				<e:layout>
+					<e:HorizontalLayout horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="lingqu" y="601.27" scaleX="1" scaleY="1" source="lingqu_png" touchEnabled="false" x="386"/>
+
+	</e:Group>
+	<component:EuiMap id="activityDataMap">
+		<e:Array>
+			<e:Object name="WingRank" panel="ActivityPanel" index="WingRankLimitAward" rankindex="2" titleId="5"/>
+			<e:Object name="DungeonRank" panel="ActivityPanel" index="DungeonRankLimitAward" rankindex="3" titleId="3"/>
+			<e:Object name="LevelRank" panel="ActivityPanel" index="LevelRankLimitAward" rankindex="1" titleId="6"/>
+			<e:Object name="PowerRank" panel="ActivityPanel" index="PowerRankLimitAward" rankindex="0" titleId="2"/>
+			<e:Object name="DroiyanRank" panel="ActivityPanel" index="DroiyanRankLimitAward" rankindex="7" titleId="7"/>
+			<e:Object name="ArenaRank" panel="ActivityPanel"  index="ArenaRankLimitAward" />
+			<e:Object name="GumuRank" panel="ActivityPanel" index="GumuRankLimitAward" rankindex="4"/>
+			<e:Object name="TianLongRank" panel="ActivityPanel" index="TianLongRankLimitAward" rankindex="5"/>
+			<e:Object name="XiaoyaoRank" panel="ActivityPanel" index="XiaoyaoRankLimitAward" rankindex="6"/>
+			<e:Object name="ArtificeRank" panel="ActivityPanel" index="ArtificeRankLimitAward" rankindex="9" titleId="4"/>
+			<e:Object name="GuildRank" panel="ActivityPanel" index="GuildRankLimitAward" rankindex="8" titleId="8"/>
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

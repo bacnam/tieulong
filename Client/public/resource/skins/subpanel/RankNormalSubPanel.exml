@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankNormalSubPanel" width="560" height="780" xmlns:e="http://ns.egret.com/eui">
+	<e:Group id="group_normal" width="420" height="615" x="130" y="15" anchorOffsetX="0"
+		anchorOffsetY="0">
+		<e:Group id="group_first" width="415" height="375" x="1" y="0" touchEnabled="false"
+			anchorOffsetX="0" scaleX="1" scaleY="1">
+			<e:Image id="firstinfo" source="form_jbg_png" scale9Grid="13,14,24,22" x="0" y="0"
+				width="415" height="375" scaleX="1" scaleY="1" touchEnabled="true" />
+			<e:Image source="ui_rank_bg_png" x="21" y="258" scaleX="1" scaleY="1"
+				touchEnabled="false" />
+			<e:Image id="onevip_bg" source="ui_vip_bg_png" x="-4" y="329" scaleX="1" scaleY="1"
+				touchEnabled="false" />
+			<e:Image id="img_vipIcon" source="ui_vip_png" x="19" y="332" width="51" height="19"
+				scaleX="1" scaleY="1" touchEnabled="false" />
+			<e:Label text="1" y="275.01" size="26" textAlign="left" strokeColor="0x8B1725"
+				stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="43" touchEnabled="false" />
+			<e:Image id="wingIcon" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256"
+				source="bigwing_1_png" touchEnabled="false" horizontalCenter="-0.5"
+				verticalCenter="9.5" />
+			<e:Image id="roleIcon" scaleX="1" scaleY="1" anchorOffsetX="256" anchorOffsetY="256"
+				source="biggumu1_png" touchEnabled="false" horizontalCenter="6.5"
+				verticalCenter="12.5" />
+			<e:BitmapLabel id="label_oneVip" x="62.67" y="329.33" font="vip_number_fnt" text="0"
+				scaleX="0.5" scaleY="0.5" touchEnabled="false" />
+			<e:Image source="cap_bg_png" y="304" x="124" scaleX="1" scaleY="1" width="275"
+				height="57" touchEnabled="false" />
+			<e:BitmapLabel id="label_onePower" x="219" y="323" font="power_number3_fnt" text="0"
+				scaleX="0.8" scaleY="0.8" touchEnabled="false" />
+			<e:Group id="firstguild" width="310" height="102" x="101" y="266" anchorOffsetX="0"
+				anchorOffsetY="0" touchEnabled="false" visible="false">
+				<e:Label text="Bang chủ:" y="15" size="22" textAlign="left" strokeColor="0x000000"
+					stroke="1" verticalAlign="middle" x="0" anchorOffsetX="0" scaleX="1" scaleY="1"
+					touchEnabled="false" textColor="0xffffff" />
+				<e:Label text="Bang:" y="-20" size="24" textAlign="left" strokeColor="0x000000"
+					stroke="1" verticalAlign="middle" anchorOffsetX="0" scaleX="1" scaleY="1"
+					touchEnabled="false" textColor="0xffffff" />
+				<e:Label id="label_masterName" text="帮主" y="15" size="22" textAlign="left"
+					strokeColor="0x000000" stroke="1" verticalAlign="middle" x="65"
+					anchorOffsetX="0" scaleX="1" scaleY="1" touchEnabled="false"
+					textColor="0xffffff" />
+				<e:Label id="label_guildName" text="s177.哈哈哈哈哈哈哈 11转" y="-20" size="22"
+					textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle"
+					anchorOffsetX="0" scaleX="1" scaleY="1" touchEnabled="false" x="65"
+					textColor="0xffffff" />
+			</e:Group>
+			<e:Group id="firstrole" width="100%" height="200" y="170" anchorOffsetX="0" x="0"
+				touchEnabled="false" visible="false">
+				<e:Label id="label_tip" text="133 重阳宫" x="8" y="51" size="22" textAlign="left"
+					strokeColor="0x000000" stroke="1" height="29" verticalAlign="middle"
+					textColor="0xE0BC59" touchEnabled="false" scaleX="1" scaleY="1" />
+				<e:Label id="label_oneName" text="s1." x="140" y="95" size="22" textAlign="left"
+					strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" height="29"
+					verticalAlign="middle" touchEnabled="false" scaleX="1" scaleY="1" />
+				<e:Image id="img_love" source="love_png" width="40" height="40" y="90" x="91"
+					scaleX="1" scaleY="1" />
+			</e:Group>
+			<e:Image id="title" y="-51" source="shidagaoshou_png" horizontalCenter="0" />
+		</e:Group>
+		<e:Scroller width="415" height="232" x="1" y="381" anchorOffsetY="0" scaleX="1" scaleY="1">
+			<e:List id="list_rankList" width="100%" itemRendererSkinName="RankItem" />
+		</e:Scroller>
+	</e:Group>
+	<e:Group id="group_role" width="560" height="128" touchEnabled="false" scaleX="1" scaleY="1"
+		anchorOffsetY="0" bottom="0" horizontalCenter="0">
+		<e:Label text="Hạng của bạn:" x="259" y="21" size="24" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="158" height="30"
+			verticalAlign="middle" scaleX="1" scaleY="1" />
+
+		<component:Portrait id="portrait" xmlns:component="legend.view.component.*"
+			xmlns:w="http://ns.egret.com/wing" x="114.32999999999998" y="10.32000000000005"
+			skinName="Portrait" scaleX="1" scaleY="1" />
+		<e:Label id="label_myPower" text="0" x="260" y="66" size="24" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30"
+			verticalAlign="middle" scaleX="1" scaleY="1" />
+		<e:Label id="label_myRank" text="0" x="415" y="21" size="30" textAlign="left"
+			strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" scaleX="1" scaleY="1" />
+	</e:Group>
+	<e:Group id="group_guild" width="560" height="128" touchEnabled="false" scaleX="1" scaleY="1"
+		bottom="0" anchorOffsetY="0" y="10" horizontalCenter="0">
+		<e:Label id="guild_tip" text="(Bạn không có trong Bang)" size="24" textAlign="left"
+			strokeColor="0x000000" stroke="1" height="26" verticalAlign="middle" fontFamily="Arial"
+			anchorOffsetX="0" bold="true" verticalCenter="-24" y="-308" scaleX="1" scaleY="1"
+			horizontalCenter="145" textColor="0xFF0000" />
+		<e:Group id="group_myguild" width="560" height="128" touchEnabled="false" scaleX="1"
+			scaleY="1" bottom="0" anchorOffsetY="0" y="0" horizontalCenter="0">
+			<e:Label text="Hạng của bạn:" x="160" y="26" size="24" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" anchorOffsetX="0"
+				anchorOffsetY="0" height="26" scaleX="1" scaleY="1" />
+			<e:Label id="guild_rank" text="100000" y="26" size="24" textAlign="left"
+				strokeColor="0x000000" stroke="1" height="26" verticalAlign="middle"
+				fontFamily="Arial" x="320" anchorOffsetX="0" textColor="0x43FF00" bold="true"
+				scaleX="1" scaleY="1" />
+			<e:Label text="Bang chủ:" x="160" y="71" size="24" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" anchorOffsetX="0" scaleX="1"
+				scaleY="1" />
+			<e:Label id="guild_master" text="Bang chủ" x="278" y="71" size="24" textAlign="left"
+				strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" anchorOffsetX="0" scaleX="1"
+				scaleY="1" />
+		</e:Group>
+	</e:Group>
+</e:Skin>

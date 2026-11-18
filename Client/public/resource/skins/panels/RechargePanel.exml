@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RechargePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="600" height="847" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="0"
+		horizontalCenter="0">
+		<e:Image source="ui_shop_bg_png" horizontalCenter="0" />
+		<e:Image source="btn_close_1_png" x="541" y="25" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image source="chongzhi_png" y="10" horizontalCenter="0.5" x="264" scaleX="1" scaleY="1" />
+		<e:Image source="shop_bar_bg_png" y="194" width="480" horizontalCenter="1" x="57" scaleX="1"
+			scaleY="1" />
+		<e:Image source="ui_vip_png" x="59" y="80" scaleX="1" scaleY="1" />
+		<e:Group id="grp_next" width="494.67" height="97.34" x="51" y="81" anchorOffsetX="0"
+			anchorOffsetY="0" touchEnabled="false">
+			<e:BitmapLabel id="lbl_nextLv" x="237" y="49" font="vip_number_fnt" text="3" />
+			<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="280" y="1" width="160"
+				height="30" scaleX="1" scaleY="1" />
+			<e:Image source="ui_vip_png" x="134" y="59" scaleX="1" scaleY="1" />
+			<e:Label id="lbl_remain" text="123456789" x="295" y="3" size="20" textAlign="center"
+				strokeColor="0x000000" stroke="1" width="130" textColor="0xFFFFFF" height="29"
+				verticalAlign="middle" scaleX="1" scaleY="1" />
+			<e:Label text="Nâng cấp" x="23" y="56" size="24" textAlign="left" strokeColor="0x000000"
+				stroke="1" width="108" height="24" verticalAlign="middle" textColor="0xFFEF46"
+				scaleX="1" scaleY="1" />
+			<e:Label text="Nạp thêm" x="159" y="2" size="26" textAlign="left" strokeColor="0x000000"
+				stroke="1" width="128" height="30" verticalAlign="middle" textColor="0xffef46"
+				scaleX="1" scaleY="1" bold="true"/>
+		</e:Group>
+		<e:Image id="img_vipExp" source="shop_bar_png" scale9Grid="11,0,421,12" y="199.5" x="78" />
+		<e:Label id="lbl_vipExp" text="3000/40000" x="198" y="196" size="22" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="197" scaleX="1" scaleY="1" />
+		<e:BitmapLabel id="lbl_curLv" x="152" y="75" font="vip_number_fnt" text="2" />
+		<e:Image source="btn_bg3_png" x="346" y="132" width="194" height="50" scaleX="1" scaleY="1"
+			name="open_Vip" />
+		<e:Label id="btn_privilege" text="Xem VIP" x="383" y="142" size="22" textAlign="center"
+			strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="120" height="30"
+			verticalAlign="middle" scaleX="1" scaleY="1" touchEnabled="false" />
+		<e:Scroller id="scroller" width="540" height="560" y="243" anchorOffsetX="0"
+			anchorOffsetY="0" horizontalCenter="0">
+			<e:List id="lst_recharge" x="-32" y="-120" itemRendererSkinName="RechargeItem">
+				<e:layout>
+					<e:VerticalLayout gap="6" />
+				</e:layout>
+
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+	</e:Group>
+</e:Skin>

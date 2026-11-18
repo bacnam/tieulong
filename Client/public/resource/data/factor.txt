@@ -1,0 +1,191 @@
+﻿系数名称	系数值	备注
+id	Value	Remarks
+Arena_FightTime	90	Đơn tràng chiến đấu thời gian
+Arena_OpponentsSize	4	Đối thủ chiều dài
+Arena_OpponentsOffset	5	Đối thủ tùy cơ biên độ
+Arena_ShowSize	30	Bảng xếp hạng triển lãm chiều dài
+Arena_MaxChallengeTimes	10	Đơn ngày lớn nhất khiêu chiến thời gian
+Arena_FightCD	60	Chiến đấu làm lạnh CD
+Arena_WinnerToken	60	Thắng lợi phương khen thưởng đại tệ
+Arena_WinnerGold	3000	Thắng lợi phương khen thưởng đồng vàng
+Arena_LoserToken	40	Chiến bại phương khen thưởng đại tệ
+Arena_RefreshCD	50	Đổi mới khoảng cách
+MonsterAtk	5	
+MonsterHit	10000	
+MonsterDodge	20	
+MonsterCritical	100	
+MonsterTenacity	2000	
+MonsterAtkAdd	3000	
+MonsterHitAdd	1500	
+MonsterDodgeAdd	1500	
+MonsterCriticalAdd	2000	
+MonsterTenacityAdd	5000	
+MonsterSPD	100	
+MonsterRNG	100	
+BattleCD	1	
+DungeonCD	3	
+Hero_Max_Gold	999999999	
+HeroMaxLevel	100	
+BulletSpeed	800	
+Offline_DungeonInterval	20	
+EffectMax	5	
+RequestRank_CD	60000	Bảng xếp hạng thỉnh cầu khoảng cách
+Droiyan_WinnerGold	10000	Quyết chiến đồng vàng khen thưởng
+Droiyan_WinnerExp	1000	Quyết chiến kinh nghiệm khen thưởng
+Power_Factor	1250	
+Power_MaxHP	30000	
+Power_ATK	130000	
+Power_DEF	130000	
+Power_RGS	130000	
+Power_Critical	100000	
+Power_Tenacity	70000	
+Power_Hit	130000	
+Power_Dodge	70000	
+GuaidInstanceChallengTimes	4	Tay mới phó bản khiêu chiến số lần
+WorldBossAttackCD	30	Thế giới BOSS khiêu chiến CD
+WorldBossChallengeTimes	4	Thế giới BOSS khiêu chiến số lần
+WorldBossFightTime	1800	Thế giới BOSS đánh chết thời gian điểm tới hạn
+MaxInspireTimes	10	Lớn nhất ủng hộ số lần
+MailDefaultExistTime	604800	Cam chịu bưu kiện tồn tại thời gian
+MailDefaultPickExistTime	259200	Cam chịu bưu kiện lĩnh sau tồn tại thời gian
+PlayerEquipSize	200	Lớn nhất trang bị số lượng
+ATKCD	0.8	Công kích tần suất
+MinATK	10	Không phá phòng thương tổn
+CriticalMultiple	1300	Bạo kích thương tổn
+MonsterSkill	0	Quái vật kỹ năng ID
+Droiyan_SearchInterval	1200	Quyết chiến tìm tòi thời gian
+Droiyan_MaxRed	100	Quyết chiến hồng danh điểm cực đại
+Droiyan_YellowMax	60	Quyết chiến hoàng danh điểm
+MaxDroiyans	3	Quyết chiến xứng đôi đối thủ lớn nhất số lượng
+NextRunDis	40	Cốt truyện mũi tên di động khoảng cách
+NextRunTime	500	Cốt truyện mũi tên di động thời gian
+Droiyan_FightTime	90	Quyết chiến chiến đấu dài nhất thời gian, vượt qua tắc thua
+SrearchCrystal	15	Quyết chiến tìm kiếm sau đối thủ tiêu phí nguyên bảo
+EquipSizeFloat	50	Ba lô đem mãn di động
+BuyPackageSize	50	Mỗi lần mua sắm ba lô gia tăng dung lượng
+WorldBossMinHp	25000000	Thế giới BOSS thấp nhất huyết lượng
+ChatCD	5	Nói chuyện phiếm CD
+GodEquipCoefficient	10	Thần trang cấp bậc khoảng cách
+IsOpenRedDot	1	Hay không mở ra tiểu điểm đỏ
+MaxRoleName	32	Tên chiều dài hạn mức cao nhất
+DailyTaskActiveMax	150	Mỗi ngày sinh động điểm hạn mức cao nhất
+Hero_Max_Crystal	99999999	Nguyên bảo hạn mức cao nhất
+Hero_Max_RedPiece	99999999	Lớn nhất kiềm giữ thần trang mảnh
+Hero_Max_StrenghenMaterial	99999999	Lớn nhất kiềm giữ cường hóa tài liệu
+Hero_Max_WingMaterial	99999999	Lớn nhất kiềm giữ lông vũ
+Hero_Max_MeridianInstanceMaterial	99999999	Lớn nhất kiềm giữ Vé kinh mạch
+Hero_Max_GemInstanceMaterial	99999999	Lớn nhất kiềm giữ đá quý vé vào cửa
+Hero_Max_EquipInstanceMaterial	99999999	Lớn nhất kiềm giữ trang bị vé vào cửa
+Hero_Max_ArtificeMaterial	99999999	Lớn nhất luyện hóa tài liệu
+Hero_Max_WarspiritTalentMaterial	99999999	Lớn nhất chiến linh thiên phú tài liệu
+ZoneServer_LevelLimit	110	Vượt phục thấp kém nhất cấp
+Offline_MaxOffline	86400	Lớn nhất ly tuyến thời gian
+MaxMailCount	20	Lớn nhất bưu kiện số lượng
+Hero_Max_ArenaToken	99999999	Lớn nhất cạnh kỹ tệ
+Droiyan_LostRed	15	Quyết chiến thất bại tổn thất hồng danh điểm số
+RoleMaxNum	3	Nhân vật lớn nhất số lượng
+Hero_Max_MerMaterial	99999999	Lớn nhất kinh mạch đan kiềm giữ số lượng
+Hero_Max_GemMaterial	99999999	Lớn nhất đá quý mảnh số lượng
+Droiyan_Red	60	Đạt tới hồng danh điểm số
+ChatRecordCount	30	Lịch sử trò chuyện số
+ChatSystemRecordCount	10	Hệ thống nói chuyện phiếm điều số
+Droiyan_RobRate	3000	Cướp bóc xác suất
+Droiyan_RedRobRate	8000	Hồng danh cướp bóc xác suất
+Droiyan_RevengeRobRate	10000	Báo thù cướp bóc xác suất
+Droiyan_WinRed	20	Quyết chiến thắng lợi đạt được hồng danh điểm
+Droiyan_RedDamageMax	20	Hồng danh người chơi tổn thất huyết lượng hạn mức cao nhất
+Droiyan_RedDamageMin	5	Hồng danh người chơi tổn thất huyết lượng hạn cuối
+Hero_Max_StarMaterial	99999999	Lớn nhất kiềm giữ thăng tinh thạch
+MaxWorldBossRole	10	Thế giới Boss người chơi lớn nhất nhân vật số lượng
+MaxWorldBossRobot	8	Thế giới Boss người máy lớn nhất nhân vật số lượng
+HeroMaxExp	1000000000	Kinh nghiệm trì chứa đựng hạn mức cao nhất
+SevenDayActivityOpenTime	5	Đầu chu đánh dấu mở ra lùi lại
+SevenDayActivitycloseOffset	5	Đầu chu đánh dấu đóng cửa lùi lại
+ServerListSize	100	Server danh sách một liệt cực đại
+ChatMax	64	Nói chuyện phiếm đưa vào chiều dài
+ChatMaxSize	50	Nói chuyện phiếm biểu hiện chiều dài
+MaxSkillLevel	100	Lớn nhất kỹ năng cấp bậc
+MaxTreasureSize	4	Tàng bảo đồ lớn nhất hạn mức cao nhất
+WorldBoss_FightTime	30	Thế giới Boss chiến đấu thời gian
+TalkShowTime	3000	Nói chuyện phiếm bọt khí biểu hiện thời gian
+WorldBossResurrection	20	Thế giới BOSS sống lại cơ bản giá cả
+WorldBossResurrectionAdd	10	Thế giới BOSS sống lại tăng lên giá cả
+DroiyanSearchOffset	20	Quyết chiến tìm tòi khu gian
+WingMarqueeLevel	5	Cánh đạt tới phát phi ngựa đèn giai số
+StealGoldCrit	2000	Thăm kim tay bạo kích tỷ lệ
+FreeWarSpirit	2001	Miễn phí chiến linh ID
+SacrificeTimes	5	Mỗi ngày bang phái tế thiên số lần
+guildSkillPoints	10	Mỗi ngày hạn chế thăng cấp kỹ năng số lần
+Guild_JoinCD	10800	Bang phái gia nhập CD
+GuildBossChallengeTimes	2	Bang phái phó bản mỗi ngày khiêu chiến số lần
+GuildBossChallengeBuyTimes	10	Bang phái phó bản mỗi ngày mua sắm số lần
+GuildJoinListSize	20	Bang hội xin biểu hiện bang phái số
+WorshipReward	1300001	Cúng bái khen thưởng
+GuildJoinTimeLimit	86400	Xin mất đi hiệu lực thời gian
+QuestionnaireMaxLevel	60	Hỏi cuốn điều tra mở ra cấp bậc
+DailyGuildBossOpenTims	2	Mỗi ngày mở ra bang phái Boss số lần
+TitleSize	1	Danh hiệu đeo lớn nhất số lượng
+Guild_NameMaxLength	32	Bang phái danh lớn nhất chiều dài
+Guild_NameMinLength	6	Bang phái danh nhỏ nhất chiều dài
+CreateGuildCost	500	Sáng tạo bang phái yêu cầu nguyên bảo
+GuildBossBeginTime	10	Bang phái BOSS bắt đầu thời gian
+GuildBossEndTime	22	Bang phái BOSS kết thúc thời gian
+VIP_Marque	6	VIP phi ngựa đèn cấp bậc
+GuildWar_ApplyBegin	10	Bang phái chiến báo danh bắt đầu thời gian
+GuildWar_ApplyEnd	18	Bang phái chiến báo danh kết thúc thời gian
+MaxGuildWarApply	6	Bang phái chiến mỗi cái cứ điểm lớn nhất xin số lượng
+GuildWar_rebirthCD	3	Bang phái chiến sống lại CD
+GuildWar_OneFight	180000	Bang phái chiến mỗi tràng chiến đấu thời gian ( hào giây )
+GuildWar_RestTime	600	Mỗi tràng bang phái chiến nghỉ ngơi thời gian ( giây )
+GuildWar_FightTime	1800	Mỗi tràng bang phái chiến chiến đấu thời gian ( giây )
+GuildWar_OverTime	60	Bang phái chiến một đường không ai về sau nhiều ít giây chiếm lĩnh
+WingPrice	5	Lông vũ giá trị nguyên bảo số
+VipUnlockUpWing	4	Một kiện thăng giai yêu cầu VIP cấp bậc
+DrawPrizeActiveMax	10000	Nguyên bảo rút thăm trúng thưởng tích phân cực đại
+VipCustomer	3	vip khách phục mở ra vip cấp bậc
+DroiyanMaxEnemy	20	Quyết chiến lớn nhất kẻ thù số
+BuyItem_MaxBuyTimes	10000	Cửa hàng lớn nhất mua sắm số lần
+CreateGuildMinLv	50	Sáng tạo bang phái nhỏ nhất cấp bậc
+GuildBattleTime	68400	Bang phái chiến mở ra thời gian chọc, chỉ khách hàng biểu hiện
+DrawPrizeShowNum	16	Nguyên bảo rút thăm trúng thưởng triển lãm khen thưởng cái số
+findTreasureTimes	-1	Mỗi ngày tầm bảo số lần
+Battle_HitFactor	40	Chiến đấu né tránh hệ số
+Battle_CriticalFactor	40	Chiến đấu bạo kích hệ số
+findTreasureTentimes	-1	Mỗi ngày mười liền số lần
+ExpMaterialForExp	4000000	Kinh nghiệm đan đối ứng kinh nghiệm
+SendFlowerExp	100	Đưa hoa đạt được kinh nghiệm
+MarryDivorceApplyCostId	23	Ly hôn tiêu hao vật phẩm id
+MarryDivorceApplyCostCount	1	Ly hôn tiêu hao vật phẩm số lượng
+MarryDivorceForceApplyCost	10000	Cưỡng chế ly hôn tiêu hao nguyên bảo
+ForceDivorceVip	4	Cưỡng chế ly hôn VIP cấp bậc
+MarryApplyTime	43200	Kết hôn xin thời gian
+MarryApplyCostId	22	Kết hôn tiêu hao vật phẩm id
+MarryApplyCostCount	1	Kết hôn tiêu hao vật phẩm số lượng
+MarryList	4	Mỗi lần đề cử kết hôn đối tượng cái số
+MarryReceiveApply	10	Thu được cầu hôn xin lớn nhất cái số
+MarryAllReward	800013	Kết hôn toàn phục ở tuyến khen thưởng
+DropNumber	16	Rơi xuống sàn nhà biểu hiện icon lớn nhất cái số
+MarryReward	1600001	Kết hôn khen thưởng ( thời trang )
+Longnv_ChallengeCD	7200	Long nữ tuyên chiến CD thời gian
+Longnv_OverTime	60	Long nữ một đường không ai về sau nhiều ít giây chiếm lĩnh
+Longnv_FightTime	1800	Long nữ thủ vệ chiến đấu thời gian
+Longnv_OneFight	180000	Mỗi tràng chiến đấu thời gian ( hào giây )
+Longnv_RewardBegin	14	Long nữ lãnh thưởng bắt đầu thời gian
+Longnv_RewardEnd	18	Long nữ lãnh thưởng kết thúc thời gian
+LingBaoExp	10	Linh bảo đạt được kinh nghiệm
+LongnvUnlockLv	2	Bang phái mở ra long nữ cấp bậc
+Longnv_ResultMail	1230011	Long nữ chiến báo bưu kiện
+VipQQ	1	Mở ra Q đàn Vip cấp bậc
+ArenaMaxLevel	89	Đấu trường người máy lớn nhất cấp bậc
+AllWorldChatInterval	5	Vượt phục nói chuyện phiếm CD
+AllWorldChatRecordCount	30	Vượt phục nói chuyện phiếm hạn chế số lượng
+GuildWarApplyLevel	1	Bang phái chiến mở ra cấp bậc
+ReSignCost	100	Bổ đánh dấu giá cả
+MemberLeaveTime	2	Bang chúng ly tuyến bao nhiêu thời gian biểu hiện ly tuyến thời gian
+Hero_Max_ItemMaterial	999999999	Nhiều nhất vật phẩm số lượng
+OnlineRewardLimit	5000	Ở tuyến khen thưởng suy giảm hệ số ( vạn phần so )
+OnlineLimitSecond	28800	Ở tuyến thời gian quải cơ suy giảm thời gian
+ForceDivorceMail	1700001	Cưỡng chế ly hôn bưu kiện
+GuildwarOpenServerTime	518400	Bang phái chiến mở ra tương đối thời gian
+RedPacketPickTimes	10	Mỗi ngày bao lì xì lĩnh số lần
+WorldBossAutoChallengeLevel	12	Tự động khiêu chiến Boss mở ra cấp bậc

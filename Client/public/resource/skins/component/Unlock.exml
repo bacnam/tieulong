@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Unlock" width="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" height="258">
+	<w:Declarations>
+		<tween:TweenGroup id="run">
+			<tween:TweenItem target="{group}">
+				<tween:Set>
+					<tween:props>
+						<e:Object alpha="{0}"/>
+					</tween:props>
+				</tween:Set>
+				<tween:To duration="500">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="1000">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="500">
+					<tween:props>
+						<e:Object alpha="{0}"/>
+					</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+		</tween:TweenGroup>
+	</w:Declarations>
+	<e:Group id="group" height="258" width="640" touchEnabled="false">
+		<e:Image source="unlock_bg_png" horizontalCenter="0" verticalCenter="0" touchEnabled="false" x="0" y="0" scaleX="1" scaleY="1"/>
+		<e:Image id="icon" verticalCenter="-30" y="35" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="-3.5" touchEnabled="false" x="261" scaleX="1" scaleY="1" source="icon_task_png"/>
+	</e:Group>
+</e:Skin>

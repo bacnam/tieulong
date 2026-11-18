@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="ui_bg_png" x="25" y="146" locked="true"/>
+	<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="41" y="203" anchorOffsetX="0" width="559.33" anchorOffsetY="0" height="764.67" locked="true"/>
+
+
+	<e:Image source="btn_close_png" x="550" y="151.35" locked="true"/>
+
+	<e:Image source="form_inbg_png" scale9Grid="14,36,23,4" x="49.33" y="678.5" anchorOffsetX="0" width="541.34" anchorOffsetY="0" height="277.17"/>
+	<e:Image source="list_bg_jpg" x="53.83" y="682.16" anchorOffsetY="0" height="268.17" anchorOffsetX="0" width="531.83"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="59.5" y="685" anchorOffsetX="0" width="271.16" anchorOffsetY="0" height="183.17"/>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="334.16" y="685" anchorOffsetX="0" width="247.83" anchorOffsetY="0" height="183.17"/>
+
+
+
+
+	<e:Image source="smallui_tbg_png" x="71.64" y="683.75" anchorOffsetX="0" width="245" anchorOffsetY="0" height="33.56"/>
+	<e:Label text="Ưu đãi" x="152.32" y="692.32" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" width="90.67" anchorOffsetX="0" anchorOffsetY="0" height="21" bold="true" textColor="0xF7F397"/>
+	<e:Group x="68.3" y="728" locked="true">
+		<e:Label text="U ám mị ảnh" x="0" y="72.32" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image source="iconbg_blue_png" x="1" y="-2.68"/>
+	</e:Group>
+	<e:Group x="157.99" y="728" locked="true">
+		<e:Label text="Đông Phương Ảo Cảnh" x="0" y="72.32" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image source="iconbg_blue_png" x="1" y="-2.68"/>
+	</e:Group>
+	<e:Group x="247.31" y="728" locked="true">
+		<e:Label text="Lễ phục sinh" x="0" y="72.32" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image source="iconbg_blue_png" x="1" y="-2.68"/>
+	</e:Group>
+
+	<e:Image source="line_png" x="46" y="626.5" width="550" height="2"/>
+
+
+
+
+
+
+
+
+	<e:Label text="1、                             mỗi ngày nhưng từ bang chủ hoặc Phó bang chủ tiến hành giúp chiến báo danh" x="82" y="869.59" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="Lỗi hiện tại: " x="352" y="693.27" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="186.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xffffff"/>
+	<e:Label text="Triệu hoán: " x="352" y="761.58" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="179.34" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFFFF"/>
+	<e:Label text="Tiêu phí           100" x="388.67" y="798.24" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="144.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFFFF"/>
+	<e:Label text="2、                             Bắt đầu tiến hành bang chiến, mỗi nửa giờ tiến hành một hồi" x="82" y="890" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="3、Đạt được cuối cùng thắng lợi bang phái sở hữu thành viên đều đem đạt được cứ điểm khen thưởng" x="82" y="911" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="4、Mỗi bang hội chỉ có thể báo danh một cái vượt phục chiến cứ điểm" x="82" y="932.89" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+
+
+
+
+
+
+
+
+
+	<e:Group x="146" y="828.65" locked="true">
+		<e:Image source="btn_bg5_png" x="0" y="-2.68" width="95"/>
+		<e:Label text="Báo danh" x="24" y="5.66" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="47" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	</e:Group>
+	<e:Group x="416.66999999999996" y="828.65" locked="true">
+		<e:Image source="btn_bg5_png" x="0" y="-3.35" anchorOffsetX="0" width="95"/>
+		<e:Label text="Triệu hoán" x="7" y="4.32" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="81.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	</e:Group>
+	<e:Label text="10 giờ đến 17 điểm 59 phân" y="868.24" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="145.5" height="19" verticalAlign="middle" fontFamily="Arial" x="148" anchorOffsetX="0" textColor="0x00ff00" anchorOffsetY="0"/>
+	<e:Label text="20" y="718.23" size="34" textAlign="left" strokeColor="0x000000" stroke="1" width="45.17" height="37" verticalAlign="middle" fontFamily="Arial" x="448.33" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0" bold="true"/>
+	<e:Label text="10" y="752.22" size="24" textAlign="left" strokeColor="0x000000" stroke="1" width="32.17" height="37" verticalAlign="middle" fontFamily="Arial" x="505.33" anchorOffsetX="0" anchorOffsetY="0" textColor="0xff0000" bold="true"/>
+	<e:Label text="19 giờ đến 21 điểm 59 phân" y="889.04" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="145.5" height="19" verticalAlign="middle" fontFamily="Arial" x="110.5" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0"/>
+	<e:Image source="guildbattle_bg3_jpg" x="50" y="212"/>
+	<e:Image source="icon_crystal_png" x="440" y="784.29"/>
+</e:Skin>

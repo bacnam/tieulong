@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WingSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="1585144309e" />
+	<e:Group id="grouop_static" width="100%" height="100%" touchEnabled="false" >
+		<e:Image source="list_bg_jpg" scaleX="1" scaleY="1" width="530" height="675" horizontalCenter="0" y="12"/>
+		<e:Image source="icon_gold_png" y="535" width="31" height="31" x="80" scaleX="1" scaleY="1"/>
+		<e:Image source="yumao_png" x="324.5" y="533.5" width="31" height="31"/>
+		<e:Image source="loading_bg_png" y="495.37" horizontalCenter="0" x="15" scaleX="1" scaleY="1"/>
+		<e:Label text="Tự động nâng cấp" size="16" textAlign="left" strokeColor="0x000000" stroke="1" height="30" verticalAlign="middle" scaleX="1" scaleY="1" x="55" y="640" textColor="0x00ff00"/>
+	</e:Group>
+	<e:Image id="wingIcon" scaleX="1" scaleY="1" horizontalCenter="0"  anchorOffsetX="256" anchorOffsetY="256" source="bigwing_1_png" verticalCenter="20"/>
+	<e:Image source="form_jbg_png" scale9Grid="13,14,24,22" y="316.05" width="430" height="140" horizontalCenter="0" x="60" scaleX="1" scaleY="1"/>
+	<e:Label text="Hiện tại" x="112" y="328" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="197" bold="true" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+	<e:Label text="Cấp sau" x="300" y="328" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="197" bold="true" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+	<e:Image source="form_goldtit_png" y="175.02" scaleX="1" scaleY="1" horizontalCenter="0" x="159"/>
+	<e:Label id="label_gold" text="123456/89012" x="121.02" y="540" size="20" textAlign="left" strokeColor="0x000000"
+	         stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" />
+	<e:Label id="label_wing" text="123456/89012" x="361.02" y="540" size="20" textAlign="left" strokeColor="0x000000"
+	         stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" />
+	<e:Label id="label_name" text="黄金羽翼 10级" y="180" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+	         textColor="0xF8F7D3" horizontalCenter="0" />
+	<e:Image id="star_1" source="star_off_png" x="55" y="460" />
+	<e:Image id="star_2" source="star_off_png" x="100" y="460" />
+	<e:Image id="star_3" source="star_off_png" x="145" y="460" />
+	<e:Image id="star_4" source="star_off_png" x="190" y="460" />
+	<e:Image id="star_5" source="star_off_png" x="235" y="460" />
+	<e:Image id="star_6" source="star_off_png" x="280" y="460" />
+	<e:Image id="star_7" source="star_off_png" x="325" y="460" />
+	<e:Image id="star_8" source="star_off_png" x="370" y="460" />
+	<e:Image id="star_9" source="star_off_png" x="415" y="460" />
+	<e:Image id="star_10" source="star_off_png" x="460" y="460" />
+	<e:Image id="line_exp" source="loading_line_jpg" y="512.02" scaleX="1" x="64.67" />
+	<e:Label id="label_exp" text="3000/40000" y="508" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+	         textColor="0xF8F7D3" horizontalCenter="0" />
+	<e:Scroller width="200" height="90" x="80" y="355" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Group>
+			<e:List id="list_curAttr" scaleX="1" scaleY="1" width="100%">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Label text="{data}" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF"
+						         width="197" height="19" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="left" verticalAlign="middle" />
+				</e:layout>
+			</e:List>
+		</e:Group>
+	</e:Scroller>
+	<e:Scroller width="200" height="90" x="300" y="356" anchorOffsetX="0" anchorOffsetY="0">
+		<e:Group>
+			<e:List id="list_nextAttr" scaleX="1" scaleY="1" width="100%">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Label text="{data}" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0x00FF00"
+						         width="197" height="19" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="left" verticalAlign="middle" />
+				</e:layout>
+				<e:ArrayCollection>
+					<e:Array></e:Array>
+				</e:ArrayCollection>
+			</e:List>
+		</e:Group>
+	</e:Scroller>
+	<e:Button id="btn_goldUp" label="Nâng cấp" y="570" left="85">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg2_png" />
+				<e:Label id='labelDisplay' size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+				         touchEnabled="false" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_wingUp" label="Nâng cấp" right="85" y="570">
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg2_png" />
+			<e:Label id='labelDisplay' size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+			         touchEnabled="false" horizontalCenter="0" verticalCenter="0" />
+		</e:Skin>
+	</e:Button>
+	<e:Button id="btn_Up" label="Tăng cấp" y="620" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg1_png" />
+				<e:Label id="labelDisplay" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+				         touchEnabled="false" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_OneKeyUp" label="Nâng cấp nhanh" y="620" horizontalCenter="0">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg1_png"/>
+			<e:Label id="labelDisplay" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Label id="tip" text="Mở khóa (VIP4)" size="20" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle" scaleX="1" scaleY="1" x="359" y="647" textColor="0x00FF00"/>
+	<e:CheckBox id="btn_auto" width="31" height="31" x="15" y="640" selected="false">
+		<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*">
+		<e:Image width="100%" height="100%" source="check_png" source.down="check_png"/>
+		<e:Image width="100%" height="100%" source="check_png" source.down="gou_png"/>
+		</e:Skin>
+	</e:CheckBox>
+</e:Skin>

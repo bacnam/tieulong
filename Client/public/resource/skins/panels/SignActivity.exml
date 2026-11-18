@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SignActivity" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false">
+		<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false" x="0" y="0" scaleX="1" scaleY="1">
+		</e:Group>
+		<e:Image source="ui_shop_bg_png" horizontalCenter="0" x="0" scaleX="1" scaleY="1"/>
+		<e:Image source="list_tab_png" y="131" anchorOffsetX="0" width="527" anchorOffsetY="0" height="203" horizontalCenter="0"/>
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="143" scaleX="1" scaleY="1" width="540" height="677" horizontalCenter="0" anchorOffsetY="0"/>
+		<e:Image source="dark_png" y="191" anchorOffsetX="0" width="530.83" anchorOffsetY="0" height="624.5" horizontalCenter="0"/>
+		<e:Label text="活动时间: " y="152" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="72"/>
+		<e:Label id="time" text="2017年1月10日-2017年1月17日" x="178" y="158" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFEFD"/>
+		<e:Image source="huodong_png" y="13" horizontalCenter="0" x="267" scaleX="1" scaleY="1"/>
+		<e:Image source="btn_close_1_png" x="545" y="22" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Scroller width="532" height="626" x="35" y="191" scaleX="1" scaleY="1" anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="list" itemRendererSkinName="SignActivityItem">
+				<e:ArrayCollection>
+					<e:Array>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+					</e:Array>
+				</e:ArrayCollection>
+				<e:layout>
+					<e:VerticalLayout gap="10"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+	</e:Group>
+</e:Skin>

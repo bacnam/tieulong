@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WorldBossListPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="597" height="839" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0"
+	         verticalCenter="0">
+		<e:Image source="ui_bg_png" horizontalCenter="0" x="3" y="-5" scaleX="1" scaleY="1" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="23" y="62" scaleX="1" scaleY="1" width="550" height="760" />
+		<e:Image name="btn_close" source="btn_close_png" x="521" y="6" scaleX="1" scaleY="1" />
+		<e:Image source="boss_png" y="-1" horizontalCenter="0.5" x="238" scaleX="1" scaleY="1" />
+
+		<e:Scroller width="530" height="685" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0.5" verticalCenter="-2"
+		            x="33" y="74" scaleX="1" scaleY="1">
+			<e:List id="list" width="100%" x="33" y="74" scaleX="1" scaleY="1">
+				<e:itemRendererSkinName>
+					<e:Skin width="520" height="150">
+						<e:Image id="bg" source="form_inbg_png" scale9Grid="5,4,40,41" scaleX="1" scaleY="1" width="520" height="150" />
+						<e:Image source="ui_fight_bg_png" x="234" y="21" width="273" height="55" touchEnabled="false" />
+						<e:Label id="bossName" text="赤炎猪（60级）" y="33" size="30" textAlign="left" strokeColor="0x8B1725" stroke="2"
+						         textColor="0xFCE795" scaleX="1" scaleY="1" x="224" touchEnabled="false" />
+						<e:Label text="Thời gian:" x="250" y="85" size="20" textAlign="left" strokeColor="0x000000" stroke="1" height="44"
+						         verticalAlign="middle" textColor="0x54ff00" touchEnabled="false" />
+						<e:Image id="icon" scaleX="0.75" scaleY="0.75" touchEnabled="false" source="r_duanwangye_png"
+						         horizontalCenter="-159" verticalCenter="-8" />
+						<e:Label id="fightTime" text="21:00-22:00" x="345" y="85" size="20" textAlign="left" strokeColor="0x000000"
+						         stroke="1" height="44" verticalAlign="middle" textColor="0x54FF00" touchEnabled="false" />
+						<e:Image id="dead" x="49" y="50" source="2_png" rotation="330.53" touchEnabled="false" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout gap="10" paddingTop="40" />
+				</e:layout>
+				<e:ArrayCollection>
+					<e:Array>
+						<e:Object null="" />
+						<e:Object null="" />
+					</e:Array>
+				</e:ArrayCollection>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Group id="group_auto" width="529" height="40" x="34" y="768" anchorOffsetX="0" anchorOffsetY="0">
+			<e:CheckBox id="btn_auto" width="31" height="31" x="11" selected="false" verticalCenter="0">
+				<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*">
+				<e:Image width="100%" height="100%" source="check_png" source.down="check_png"/>
+				<e:Image width="100%" height="100%" source="check_png" source.down="gou_png"/>
+				</e:Skin>
+			</e:CheckBox>
+			<e:Label text="Tự động đánh BOSS" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" x="49" scaleX="1" scaleY="1" textColor="0xFDB200" verticalCenter="0"/>
+			<e:Label text="Phí mỗi lần:" x="289" y="11" size="22"/>
+			<e:Label id="price" text="10" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" bold="true" x="450" scaleX="1" scaleY="1" textColor="0xFDB200" verticalCenter="0"/>
+			<e:Image x="408" verticalCenter="0" source="icon_gold_png"/>
+		</e:Group>
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="FirstRechargePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*"
+	xmlns:panels="legend.panels.*">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false">
+		<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0"
+			touchEnabled="false" x="0" y="0" scaleX="1" scaleY="1">
+			<e:Image source="ui_shop_bg_png" scaleX="1" scaleY="1" verticalCenter="0"
+				horizontalCenter="0" />
+			<e:Image id="btn_help" source="ui_heip_png" x="14.5" y="48" />
+			<e:Image id="img" source="shouchong_bg_png" horizontalCenter="0" verticalCenter="-136" />
+			<e:Image source="shouchong_title_png" y="85" horizontalCenter="0.5" />
+
+			<e:Image source="btn_close_1_png" x="547.73" y="21.22" scaleX="1" scaleY="1"
+				name="btn_close" />
+			<e:Image source="fuli_png" y="12.24" scaleX="1" scaleY="1" horizontalCenter="0" />
+			<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="486" width="520" height="307"
+				x="39.5" scaleX="1" scaleY="1" anchorOffsetY="0" />
+			<e:Label text="Bạn chỉ có một cơ hội!" y="803" size="22" textAlign="center"
+				strokeColor="0x0C3B38" stroke="2" scaleX="1" scaleY="1" width="543"
+				textColor="0xDFEFF8" x="28" />
+			<e:Image y="596.8" source="vip_line_png" horizontalCenter="0" width="482" />
+
+		</e:Group>
+		<e:TabBar id="tabBar_page" y="438" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"
+			selectedIndex="3" width="519" horizontalCenter="0">
+			<e:ArrayCollection>
+				<e:Array>
+					<e:Object name="Ngày đầu" />
+					<e:Object name="Ngày thứ 2" />
+					<e:Object name="Ngày thứ 3" />
+				</e:Array>
+			</e:ArrayCollection>
+			<e:itemRendererSkinName>
+				<e:Skin states="up,down,disabled" width="160">
+					<e:Image source="shopbar_off_png" width="160" source.down="shopbar_on_png"
+						y="48" horizontalCenter="0" scaleY="-1" />
+					<e:Label text="{data.name}" y="14" horizontalCenter="0" size="24"
+						textAlign="center" strokeColor="0x5E3500" stroke="1" textColor="0xF7F397" />
+				</e:Skin>
+			</e:itemRendererSkinName>
+			<e:layout>
+				<e:HorizontalLayout gap="18" />
+			</e:layout>
+		</e:TabBar>
+		<e:Button id="btn_recharge" label="Nạp thêm" x="235" y="712">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg4_png" />
+					<e:Label id="labelDisplay" size="22" horizontalCenter="0" verticalCenter="0"
+						textColor="0xEEE20D" strokeColor="0x000000" stroke="1" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Label id="tip"
+			text="Bạn đã nạp tiền thành công và các vật phẩm nạp lần đầu đã được gửi qua hòm thư"
+			y="654" textColor="0x00ff00" horizontalCenter="0" size="20" stroke="1" width="400" />
+		<e:Scroller width="501" height="108" y="493" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+			scaleY="1" horizontalCenter="0.5">
+			<e:List id="reward_list" itemRendererSkinName="ItemSkin" width="470">
+				<e:layout>
+					<e:HorizontalLayout paddingLeft="15" gap="23" />
+				</e:layout>
+			</e:List>
+
+		</e:Scroller>
+		<e:Scroller id="recharge_scroller" width="510" height="180" y="604" anchorOffsetX="0"
+			anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0">
+			<e:List id="recharge_list" anchorOffsetX="0" width="481" anchorOffsetY="0" height="234"
+				x="10" y="2" itemRendererSkinName="FirstChargeItem">
+				<e:layout>
+					<e:TileLayout horizontalGap="10" verticalGap="10" paddingTop="10" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close"
+			anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+	</e:Group>
+</e:Skin>

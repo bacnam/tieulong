@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DressItem" states="up,down" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing" width="140" height="130">
+	<e:Image source.down="select_png" anchorOffsetX="0" width="100" anchorOffsetY="0" height="96.8" scale9Grid="20,20,20,20" y="0" horizontalCenter="0"/>
+	<e:Label id="label_name" text="U ám mị ảnh" y="77.4" size="18" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0"/>
+	<e:Label id="time" text="6 ngày 5 giờ 55 phút 55 giây" y="114.64" size="14" strokeColor="0x000000" stroke="1" verticalAlign="middle" anchorOffsetX="0" anchorOffsetY="0" textColor="0x00FF00" horizontalCenter="0"/>
+	<e:Label id="power" text="Lực chiến:123456789" y="97.84" size="16" strokeColor="0x000000" stroke="1" verticalAlign="middle" anchorOffsetX="0" anchorOffsetY="0" textColor="0xffc446" horizontalCenter="0"/>
+	<component:BaseItem id="baseItem" y="2" horizontalCenter="0"/>
+	<e:Image id="nohave" x="31.64" y="6.23" source="weiyongyou_png" anchorOffsetX="0" width="82" anchorOffsetY="0" height="42" rotation="21.3"/>
+
+</e:Skin>

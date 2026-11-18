@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TaskPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing" xmlns:panels="legend.panels.*">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false">
+		<component:PanelBG id="panelBG" name="misson_png" />
+		<e:ViewStack id="content_View" width="550" height="694" horizontalCenter="0" verticalCenter="4" selectedIndex="0">
+			<panels:DailyTaskSubPanel name="Hàng ngày"  />
+			<panels:AchievementSubPanel name="Thành tích"  />
+			<panels:JiuYinSubPanel name="Cửu âm"  />
+		</e:ViewStack>
+	</e:Group>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="0" event="DailyTask" subevent="DailyTask"/>
+			<e:Object name="1" event="ActivityTask" subevent="ActivityTask"/>
+			<e:Object name="2" event="JiuYinTask" subevent="JiuYinTask"/>
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

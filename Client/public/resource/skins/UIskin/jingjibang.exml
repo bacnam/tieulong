@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true"/>
+
+	<e:Image source="btn_close_1_png" x="565" y="194" locked="true"/>
+
+
+
+
+
+
+
+	<e:Image source="ui_heip_png" x="38" y="206" locked="true"/>
+	<e:Image source="huodong_png" y="183" horizontalCenter="0" locked="true"/>
+	<e:Image source="list_tab_png" y="287.68" anchorOffsetX="0" width="528" anchorOffsetY="0" height="121.68" scaleX="1" scaleY="1" x="60.99" locked="true"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="297" scaleX="1" scaleY="1" width="541.5" height="694.6" anchorOffsetY="0" x="49" anchorOffsetX="0" locked="true"/>
+	<e:Image source="dark_png" x="54" y="633" anchorOffsetX="0" width="532" anchorOffsetY="0" height="353.33" locked="true"/>
+	<e:Image source="rank_bg_jpg" x="54" y="301" locked="true"/>
+
+	<e:Image id="rank_icon" y="300.65" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" source="title_arenarank_png" x="176" locked="true"/>
+
+
+
+
+
+
+
+
+
+	<e:Label id="endTime" text="23:30:30" x="188.82" y="364.9" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" width="119" anchorOffsetX="0" textColor="0xFFF523" scaleX="1" scaleY="1"/>
+	<e:Label id="label_endTip" text="Kết thúc: " x="59" y="366.24" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" textColor="0xFFF027" scaleX="1" scaleY="1" anchorOffsetY="0" height="22"/>
+	<e:Label id="label_end" text="Hoạt động kết thúc" y="365.24" size="22" textAlign="left" strokeColor="0x700B00" stroke="2" anchorOffsetX="0" bold="true" scaleX="1" scaleY="1" textColor="0xFF0000" x="169.99"/>
+	<e:Group x="77" y="408.87" locked="true">
+		<e:Image id="img_vipIcon" source="ui_vip_png" x="0.010000000000005116" y="89.5" width="62.65" height="22.88" scaleX="1" scaleY="1" touchEnabled="false" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:BitmapLabel id="label_oneVip" x="56.69" y="87.80999999999995" font="vip_number_fnt" text="15" scaleX="0.5" scaleY="0.5" touchEnabled="false"/>
+		<e:Image id="title" source="gaofushuai_png" anchorOffsetX="0" anchorOffsetY="0" width="247.47" height="88.38" x="29.019999999999996" y="0"/>
+		<e:Image source="from_cbg_png" x="0" y="111.96000000000004" scale9Grid="6,6,38,38" anchorOffsetX="0" width="311.46" anchorOffsetY="0" height="104.5"/>
+		<e:Group x="5" y="118.25">
+			<component:ItemRender x="0" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+			<component:ItemRender x="76.33000000000001" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+			<component:ItemRender x="152.33" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+			<component:ItemRender x="228.00999999999996" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Label id="first_name3" text="s.155 Phụ Nữ" x="97.5" y="89.29000000000002" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="171.34" height="21.33" textColor="0xf8f7d3"/>
+	</e:Group>
+	<e:Image source="from_bbg_png" x="62" y="796.66" scale9Grid="6,6,38,38" anchorOffsetX="0" width="517" anchorOffsetY="0" height="159.33"/>
+	<e:Group x="291.82" y="845.79" locked="true">
+		<e:Image source="from_cbg_png" x="0" y="0" scale9Grid="6,6,38,38" anchorOffsetX="0" width="93.66" anchorOffsetY="0" height="103.83"/>
+		<component:ItemRender x="11.180000000000007" y="5.8700000000000045" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Label id="first_name4" text="Hạng đạt 100 nhận: " x="70" y="845.91" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="174.01" height="71.83" textColor="0xFFED29" fontFamily="Arial" lineSpacing="5"/>
+	<e:Label id="first_name5" text="Hạng: " x="70" y="805" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="174.01" height="20.83" fontFamily="Arial" lineSpacing="5" textColor="0xfdb200" bold="true"/>
+	<e:Label id="first_name6" text="123" x="175.15" y="805" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="37.01" height="20.83" fontFamily="Arial" lineSpacing="5" textColor="0xffffff"/>
+	<e:Image id="btn_buy0" source="btn_bg4_png" scale9Grid="5,5,110,34" y="897.02" x="423" width="135" height="45"/>
+	<e:Label id="label_buy0" text="Nạp tiền" y="909.02" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" x="462"/>
+	<e:Label id="label_cost0" text="/300000" y="858.33" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFF0000" scaleX="1" scaleY="1" x="485.65"/>
+	<e:Label id="my_rank0" text="255555" y="858.99" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="417.37" textColor="0x00FF00"/>
+	<e:Label id="my_rank1" text="Hạng 1" y="613.51" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="490.67" textColor="0x00FF00" italic="true"/>
+	<e:Label id="my_rank2" text="Hạng 2" y="808" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="490.67" textColor="0x00FF00" italic="true"/>
+	<e:Label id="my_rank3" text="Hạng 3" y="965.36" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="59" textColor="0x00FF00"/>
+	<e:Image source="vip_line_png" x="66" y="832.5" width="510"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<e:Image id="btn_close1" x="550" y="975" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+	<e:Group x="61" y="635" locked="true">
+		<e:Image source="from_bbg_png" x="1" y="0" scale9Grid="6,6,38,38" anchorOffsetX="0" width="169" anchorOffsetY="0" height="157.33"/>
+		<e:Image source="from_cbg_png" x="6" y="46.62999999999988" scale9Grid="6,6,38,38" anchorOffsetX="0" width="158.66" anchorOffsetY="0" height="105.33"/>
+		<e:Group x="11" y="53">
+			<component:ItemRender x="0" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+			<component:ItemRender x="77.00999999999999" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Image source="rank_line_png" x="0" y="7.330000000000041"/>
+		<e:Label id="first_name0" text="Ngày 2~3" x="49" y="9.440000000000055" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="74.01" height="21.33" textColor="0xffed29" fontFamily="Arial"/>
+	</e:Group>
+	<e:Group x="235" y="635" locked="true">
+		<e:Image source="from_bbg_png" x="1" y="0" scale9Grid="6,6,38,38" anchorOffsetX="0" width="169" anchorOffsetY="0" height="157.33"/>
+		<e:Image source="from_cbg_png" x="7" y="46.62999999999988" scale9Grid="6,6,38,38" anchorOffsetX="0" width="158.66" anchorOffsetY="0" height="105.33"/>
+		<e:Group x="11" y="53">
+			<component:ItemRender x="0" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+			<component:ItemRender x="77.00999999999999" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Image source="rank_line_png" x="0" y="7.330000000000041"/>
+		<e:Label id="first_name1" text="Ngày 4~10" x="42" y="9.440000000000055" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="87.01" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+	</e:Group>
+	<e:Group x="409" y="635" locked="true">
+		<e:Image source="from_bbg_png" x="1" y="0" scale9Grid="6,6,38,38" anchorOffsetX="0" width="169" anchorOffsetY="0" height="157.33"/>
+		<e:Image source="from_cbg_png" x="6" y="46.62999999999988" scale9Grid="6,6,38,38" anchorOffsetX="0" width="158.66" anchorOffsetY="0" height="105.33"/>
+		<e:Group x="11" y="53">
+			<component:ItemRender x="0" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+			<component:ItemRender x="77.00999999999999" y="0" skinName="ItemSkin" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Image source="rank_line_png" x="0" y="7.330000000000041"/>
+		<e:Label id="first_name2" text="Ngày 11~20" x="38" y="9.440000000000055" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="96.01" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+	</e:Group>
+
+</e:Skin>

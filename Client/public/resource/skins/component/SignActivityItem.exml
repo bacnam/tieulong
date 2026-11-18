@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="SignActivityItem" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*" height="175" width="516">
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" x="3" y="3" anchorOffsetX="0" width="507" anchorOffsetY="0" height="168"/>
+	<e:Image source="form_goldtit_png" scale9Grid="84,3,65,27" x="-2" y="3" anchorOffsetX="0" width="516" anchorOffsetY="0" height="41.2"/>
+
+
+	<e:Label id="day" text="Ngày đầu tiên" y="13" size="24" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="84" bold="true" horizontalCenter="0"/>
+	<component:Button_Get id="get" x="411.16" skinName="Button_Get" width="85" height="38" verticalCenter="15.5"/>
+	<e:Button id="btn_resigen" x="411.16" width="85" height="38" verticalCenter="15.5" label="Bổ thêm" visible="false">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="22" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" textAlign="center" horizontalCenter="0" text="Nhận" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image id="lingqu" x="417" y="72" anchorOffsetX="0" anchorOffsetY="0" source="lingqu_png" touchEnabled="false" rotation="19.6" width="80" height="33" visible="false"/>
+	<e:Scroller width="377" height="106" x="27" y="55" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:HorizontalLayout gap="10"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+
+
+
+</e:Skin>

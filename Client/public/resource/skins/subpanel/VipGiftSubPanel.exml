@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="VipGiftSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_tab_png" anchorOffsetX="0" width="527" anchorOffsetY="0" height="203" horizontalCenter="0"  y="2"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="17" anchorOffsetX="0" width="550" anchorOffsetY="0"
+	         height="677"  horizontalCenter="0"/>
+	<e:Image source="dark_png" y="19" anchorOffsetX="0" width="539" anchorOffsetY="0" height="666" horizontalCenter="0.5" />
+	<e:Image source="money_bg_png" scale9Grid="37,2,125,36" y="278.83" anchorOffsetY="0" height="409.33" anchorOffsetX="0"
+	         width="543" horizontalCenter="0.5" />
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="290.34" anchorOffsetX="0" width="518.34" anchorOffsetY="0"
+	         height="379.67" horizontalCenter="0" />
+	<e:Image source="dark_png" y="294" anchorOffsetX="0" width="507" anchorOffsetY="0" height="371" horizontalCenter="0.5" />
+	<e:Label id="tip" text="VIP0级以上可购买" y="577" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1"
+	         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" textColor="0xFFF135" horizontalCenter="0" />
+	<e:Image source="vip_line_png" y="278" horizontalCenter="0" />
+	<e:Image source="vip_line_png" y="337.33" width="507" horizontalCenter="0.5" />
+	<e:Label id="price1" text="价值1888" y="307" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1"
+	         verticalAlign="middle" fontFamily="Arial" x="30" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2" />
+	<e:Image width="110" x="31" y="318.91" source="dark_png" anchorOffsetX="0" anchorOffsetY="0" height="4"/>
+	<e:Label id="price2" text="价值1888" y="307" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1"
+	         verticalAlign="middle" fontFamily="Arial" x="190" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2" />
+	<e:Image id="icon1" source="icon_crystal_png" x="133.34" y="296" />
+	<e:Image id="icon2" source="icon_crystal_png" x="293.66" y="296" />
+	<e:Scroller width="490" height="220" y="347" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="list_content" itemRendererSkinName="ItemSkin">
+			<e:layout>
+				<e:TileLayout horizontalGap="24" paddingLeft="20" />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Button id="btn_buy" label="立即购买" y="610" width="114" height="44" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg4_png" />
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" textColor="0xF7F397" size="22" textAlign="center"
+				         strokeColor="0x000000" stroke="1" />
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Scroller width="520" height="252" y="22.02" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="list">
+			<e:itemRendererSkinName>
+				<e:Skin states="up,down,disabled" width="180" height="252" >
+					<e:Image id="icon" width="180" height="252" horizontalCenter="0" verticalCenter="0"
+					         touchEnabled="false"  source="vipaward_bg_01_jpg"/>
+					<e:Image width="100%" height="100%" source.down="light_png" horizontalCenter="0" verticalCenter="0" />
+		<e:Image x="18" y="200" source="ui_vip_png"/>
+		<e:BitmapLabel id="vip" x="112" y="194" font="vip_number_fnt" text="1"/>
+				</e:Skin>
+			</e:itemRendererSkinName>
+			<e:layout>
+				<e:HorizontalLayout gap="0" />
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Image id="img_over" y="602" horizontalCenter="0"  source="already_buy_png"/>
+</e:Skin>

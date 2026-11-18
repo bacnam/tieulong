@@ -1,0 +1,37 @@
+﻿id	技能名称	技能描述	学习等级	使用优先级	检索用目标	检索策略	受法术影响的目标	选择器 	选择参数	弹道	弹道速度	结算特效	结算类型	结算防御属性	删除Buff-buffid	添加Buff-buffid	1级属性	数值增量	图标	冷却	1级消耗量	消耗增量	战力提升
+id	Name	Describe	Require	Priority	SelectTarget	SelectStrategy	CastTarget	SelectArea	SelectParam	Bullet	BulletSpeed	SettleEffect	SettleType	DefAttr	ClearBuffList	Buff	Attr	AttrAdd	Icon	CD	Gold	GoldAdd	CE
+0	野怪攻击	SkillDescribe_1	0	1	Enemy		Enemy	Single			1000	enemy	Damage	DEF			100	1	item0004_jpg	800	3100	1500	20
+1	SkillName_1	SkillDescribe_1	0	1	Enemy		Enemy	Single		fire	1000	skill_gm	Damage	RGS			100	0.5	skill_gm1_jpg	900	3100	1500	20
+2	SkillName_2	SkillDescribe_2	7	2	Enemy		Enemy	Circle	{"radius":150}		1000	skill_gm2	Damage	RGS			70	0.8	skill_gm2_jpg	5500	3100	1500	40
+3	SkillName_3	SkillDescribe_3	20	3	Enemy		Enemy	Circle	{"radius":150}		1000	skill_gm3	Damage	RGS			80	1	skill_gm3_jpg	9000	3100	1500	80
+4	SkillName_4	SkillDescribe_4	45	4	Enemy		Enemy	Single			1000	skill_ice	Damage	RGS			150	1.7	skill_gm4_jpg	10000	3100	1500	160
+5	SkillName_5	SkillDescribe_5	70	5	Enemy		Enemy	Circle	{"radius":150}	fire	1000	skill_gm5	Damage	RGS			100	1.2	skill_gm5_jpg	13000	3100	1500	320
+11	SkillName_11	SkillDescribe_11	0	1	Enemy		Enemy	Single			1000	skill_tl	Damage	DEF			130	0.2	skill_tl1_jpg	1100	3100	1500	20
+12	SkillName_12	SkillDescribe_12	7	2	Enemy		Enemy	Circle	{"radius":150}		1000	skill_tl1	Damage	DEF			110	0.4	skill_tl2_jpg	5000	3100	1500	40
+13	SkillName_13	SkillDescribe_13	20	3	Enemy		Enemy	Circle	{"radius":50}		1000	skill_tl5	Damage	DEF			150	0.5	skill_tl3_jpg	9000	3100	1500	80
+14	SkillName_14	SkillDescribe_14	45	4	Enemy		Enemy	Single			1000	skill_tl4	Damage	DEF			150	1.5	skill_tl4_jpg	12000	3100	1500	160
+15	SkillName_15	SkillDescribe_15	70	5	Enemy		Enemy	Circle	{"radius":500}		1000	skill_tl3	Damage	DEF			100	1.05	skill_tl5_jpg	15000	3100	1500	320
+21	SkillName_21	SkillDescribe_21	0	1	Enemy		Enemy	Single		firefu	1000	skill_xy1	Damage	RGS			100	0.5	skill_xy1_jpg	1000	3100	1500	20
+22	SkillName_22	SkillDescribe_22	7	2	Enemy		Enemy	Circle	{"radius":150}		1000	skill_xy2	Damage	RGS			70	0.8	skill_xy2_jpg	4100	3100	1500	40
+23	SkillName_23	SkillDescribe_23	20	3	SelfAndAlias	HpMin	SelfAndAlias	Single			1000	skill_xy3	Heal				300	3	skill_xy3_jpg	100000	3100	1500	80
+24	SkillName_24	SkillDescribe_24	45	4	Enemy		Enemy	Single		firefu	1000	skill_xy4	Damage	RGS			50	2	skill_xy4_jpg	9000	3100	1500	160
+25	SkillName_25	SkillDescribe_25	70	5	Enemy		Enemy	Circle	{"radius":500}	firefu	1000	skill_xy5	Damage	RGS			50	1.6	skill_xy5_jpg	11000	3100	1500	320
+1001	Hỏa Kỳ Lân kỹ năng	SkillDescribe_1001	0	1	Enemy		Enemy	Circle	{"radius":1000}		1000	fireboom	Damage	DEF			100			1300			
+1002	Doãn Chí Bình kỹ năng	SkillDescribe_1001	0	1	Enemy		Enemy	Circle	{"radius":1000}		1000	fireboom	Damage	DEF			100		skill_xy5_jpg	1000			
+1003	Boss Thế giới phổ công	SkillDescribe_1001	0	1	Enemy		Enemy	Single			1000	jian	Damage	DEF			100		skill_xy5_jpg	800			
+1004	Hỏa Kỳ Lân không kỹ năng	SkillDescribe_1001	0	2	SelfAndAlias		SelfAndAlias	Single			1000		Damage	DEF			0	0		60000000	0	0	0
+5001	SkillName_5001	SkillDescribe_5001	0	1	Enemy		Enemy	Circle	{"radius":300}		1000	skill_lei	Damage	DEF			105	1	skill_xy3_jpg	7600	10000	2000	300
+5002	SkillName_5002	SkillDescribe_5002	0	1	Group		Group	Circle	{"radius":1001}		1000		Buff			1	105	1	skill_xy4_jpg	10000	50000	10000	5000
+5003	SkillName_5003	SkillDescribe_5003	0	1	Group		Group	Circle	{"radius":1002}		1000		Buff			2	105	1	skill_xy5_jpg	10000	100000	20000	8000
+5004	SkillName_5004	SkillDescribe_5004	0	3	Enemy		Enemy	Single			1000	enemy	Buff		11		100	0	skill_xy5_jpg	60000	0	0	0
+5005	SkillName_5005	SkillDescribe_5005	0	2	Group		Group	Circle	{"radius":100002}		1000		Buff			12	110	2	skill_xy5_jpg	10000	100000	20000	8000
+5006	Băng hồn hồi huyết		0	1	Group		Group	Circle	{"radius":100002}		1000	skill_xy3	Heal				1000000	0	skill_xy3_jpg	10000000	0	0	0
+5007	Kinh mạch phó bản		0	1	SelfAndAlias		SelfAndAlias	Single			1000		Damage	DEF			0	0		600000	0	0	0
+5008	SkillName_5008	SkillDescribe_5008	0	3	Enemy		Enemy	Single			1000	enemy	Buff		13		100	0	skill_xy5_jpg	60000	0	0	0
+5009	Cốt truyện		0	1	SelfAndAlias		SelfAndAlias	Single			1000		Damage	DEF			0	0		600000	0	0	0
+5010	SkillName_5010	SkillDescribe_5010	0	3	Enemy		Enemy	Single			1000	enemy	Buff		14		100	0	skill_xy5_jpg	3000	0	0	0
+5011	SkillName_5011	SkillDescribe_5011	0	1	Group		Group	Circle	{"radius":1002}		1000		Buff			15	5	0.85	skill_xy5_jpg	5000	100000	20000	8500
+5012	SkillName_5012	SkillDescribe_5012	0	1	Group		Group	Circle	{"radius":1002}		1000		Buff			16	10	0.6	skill_xy5_jpg	5000	100000	20000	8500
+5013	SkillName_5013	SkillDescribe_5013	0	1	Enemy		Enemy	Circle	{"radius":300}		1000		Damage	DEF			105	1	skill_xy3_jpg	800	10000	2000	1000
+5014	SkillName_5014	SkillDescribe_5014	0	1	Enemy		Enemy	Circle	{"radius":300}		1000		Damage	DEF			105	1	skill_xy3_jpg	800	10000	2000	500
+5015	SkillName_5015	SkillDescribe_5015	0	1	Enemy		Enemy	Circle	{"radius":300}		1000		Damage	DEF			105	1	skill_xy3_jpg	800	10000	2000	300

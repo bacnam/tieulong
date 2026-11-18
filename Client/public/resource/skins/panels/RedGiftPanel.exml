@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RedGiftPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="342" height="416" x="127" y="417">
+		<e:Image source="redgift_bg_png"/>
+		<e:Label id="label_name" text="某某某某" y="51" textColor="0xfeed43" strokeColor="0xd30a08" stroke="2" size="22" horizontalCenter="2"/>
+		<e:Group id="btn" width="150" height="150" y="232.65" horizontalCenter="0"/>
+	</e:Group>
+</e:Skin>

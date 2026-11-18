@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="JiuYinSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+    <e:Image source="jybg_jpg" y="25.39" horizontalCenter="0.5" />
+    <e:Image source="form_sibg_png" scale9Grid="17,16,16,17" y="525.38" width="490" height="120" scaleX="1" scaleY="1"
+              horizontalCenter="0"/>
+    <e:Image source="ui_tit_bg_png" x="38.34" y="529.38" width="401" />
+    <e:Scroller width="438" height="456" y="48" horizontalCenter="0">
+			<e:List id="list">
+            <e:itemRendererSkinName>
+                <e:Skin  states="up,down,disabled">
+                <e:Image id="icon" source="jy_1_jpg" scaleX="1" scaleY="1"/>
+		    <e:Image scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="0" source="" source.down="select_png" width="146" height="152" scale9Grid="24,24,12,11"/>
+                </e:Skin>
+            </e:itemRendererSkinName>
+				<e:layout>
+					<e:TileLayout horizontalGap="0" verticalGap="0"/>
+				</e:layout>
+            </e:List>
+    </e:Scroller>
+    <e:Label id="description" text="发动3次决战" x="70" y="572" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xF8F7D3" scaleX="1" scaleY="1" anchorOffsetX="0" />
+	<e:Label id="power" text="建议战力:500000" y="565" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1" anchorOffsetX="0" right="50"/>
+    <e:Label id="schedule" text="0" y="538" size="20" textAlign="right" strokeColor="0x000000" stroke="1"
+             textColor="0xF8F7D3" scaleX="1" scaleY="1"  right="47"/>
+    <e:Label id="active" text="0" x="273" y="605" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" height="30" verticalAlign="middle" scaleX="1" scaleY="1" />
+    <e:Label id="rewardPrice" text="0" x="119" y="605" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xFFC446" height="30" verticalAlign="middle" scaleX="1" scaleY="1" />
+
+
+    <e:Image id="img_active" source="vitality_png" x="230" y="600" scaleX="1" scaleY="1" />
+    <e:Label id="taskName" text="Nhiệm vụ" x="70" y="535" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+             textColor="0xC5D9EA" />
+    <e:Image id="complete" source="complete_png" x="398" y="583" />
+
+
+    <component:BaseItem id="rewardIcon" x="70" y="595" scaleX="0.6" scaleY="0.6" />
+	<e:Label width="500" text="Hãy thách đấu Cửu Âm và nhận ngay phần thưởng cấp độ tương ứng khi thành công." size="20" textColor="0x00ff00" horizontalCenter="0"/>
+
+	<e:Button id="btn_dekaron" label="Thách đấu" x="360" y="590" width="130">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<component:Button_Get id="btn_get" x="390" y="590" skinName="Button_Get" width="90"/>
+
+</e:Skin>

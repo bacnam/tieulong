@@ -1,0 +1,1202 @@
+﻿id	场景名称	地图id	挑战boss波数	怪物模型id	怪物等级	怪物血量	怪物经验/只	金币产量/波	怪物掉落组	BossID	Boss掉落组
+id	Name	MapId	Waves	MonsterModel	MonsterLv	MonsterHp	Exp	Gold	Drop	BossID	BossDrop
+1	Đỗ Khang thôn	BattleSceneMap05	0	meizi	1	75	20	150	250001	100001	200001
+2	Tây Vực	BattleSceneMap06	1	huli	1	83	20	150	100002	100002	200002
+3	Tuyệt Tình Cốc	BattleSceneMap07	1	huoshenya	1	90	20	160	100001	100003	200003
+4	Hồ Điệp Cốc	BattleSceneMap08	1	tuzi	2	98	25	160	100002	100004	200004
+5	Thiên Sơn núi tuyết	BattleSceneMap09	1	banbanlu	2	105	25	160	100001	100005	200005
+6	Hoạt tử nhân mộ	BattleSceneMap10	1	chongwuhu	2	113	25	170	100002	100006	200006
+7	Hoa Sơn sơn đạo	BattleSceneMap	2	chongwuzhu	3	113	35	170	100001	100007	210001
+8	Hoa Sơn đỉnh	BattleSceneMap01	2	yuanhou	3	114	35	170	100002	100008	220002
+9	Thái Sơn dưới chân	BattleSceneMap02	2	yezhu	3	115	35	170	100001	100009	230001
+10	Chung Nam chân núi	BattleSceneMap03	2	xiaoshu	4	116	45	180	100002	100010	220001
+11	Trùng dương cung	BattleSceneMap04	2	wenbao	4	117	45	180	100001	100011	230002
+12	Lâm An	BattleFubenMap	2	kongque	4	118	45	180	100002	100012	210002
+13	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	2	lang	5	119	55	190	100001	100013	210001
+14	Lưu li tiên cảnh	BattleFubenMap03	2	jiaowa	5	120	55	190	100003	100014	210003
+15	Mờ mịt tiên động	BattleFubenMap04	2	binghun	5	121	55	190	100004	100015	230004
+16	Tử Tinh bí cảnh	BattleFubenMap05	2	huanghedaxia	6	122	70	200	100003	100016	220004
+17	Giang Nam vùng sông nước	BattleFubenMap06	2	limochou	6	130	70	200	100004	100017	230003
+18	Đại thắng quan	BattleFubenMap07	2	lingmao	6	135	70	200	100003	100018	210004
+19	Linh cung phế tích	BattleSceneMap11	2	luyoujiao	7	140	85	200	100004	100019	220003
+20	Đỗ Khang thôn	BattleSceneMap05s	2	mayu	7	145	85	210	100003	100020	210003
+21	Tây Vực	BattleSceneMap06s	2	qiuchuji	7	150	85	210	100004	100021	230004
+22	Tuyệt Tình Cốc	BattleSceneMap07s	2	qiuqianren	8	155	100	210	100003	100022	220004
+23	Hồ Điệp Cốc	BattleSceneMap08s	2	shouwei	8	160	100	220	100004	100023	230003
+24	Thiên Sơn núi tuyết	BattleSceneMap09s	2	sunpopo	8	165	100	220	100003	100024	210004
+25	Hoạt tử nhân mộ	BattleSceneMap10s	2	yayipangzi	9	170	105	220	100004	100025	220003
+26	Hoa Sơn sơn đạo	BattleSceneMaps	2	yayishouzi	9	175	105	230	100003	100026	210003
+27	Hoa Sơn đỉnh	BattleSceneMap01s	2	yizhiping	9	180	105	230	100004	100027	230004
+28	Thái Sơn dưới chân	BattleSceneMap02s	2	zhaozhijing	10	185	110	230	100003	100028	220004
+29	Chung Nam chân núi	BattleSceneMap03s	2	meizi	10	190	110	230	100004	100029	230003
+30	Trùng dương cung	BattleSceneMap04s	2	huli	10	195	110	240	100003	100030	210004
+31	Đỗ Khang thôn	BattleSceneMap05	2	huoshenya	11	200	120	240	100004	100031	220003
+32	Tây Vực	BattleSceneMap06	2	tuzi	11	205	120	240	100003	100032	210003
+33	Tuyệt Tình Cốc	BattleSceneMap07	2	banbanlu	11	210	120	250	100004	100033	230004
+34	Hồ Điệp Cốc	BattleSceneMap08	2	chongwuhu	12	215	125	250	100003	100034	220004
+35	Thiên Sơn núi tuyết	BattleSceneMap09	2	chongwuzhu	12	220	125	250	100004	100035	230003
+36	Hoạt tử nhân mộ	BattleSceneMap10	2	yuanhou	12	225	125	260	100003	100036	210004
+37	Hoa Sơn sơn đạo	BattleSceneMap	2	yezhu	13	230	130	260	100004	100037	220003
+38	Hoa Sơn đỉnh	BattleSceneMap01	2	xiaoshu	13	235	130	260	100005	100038	220005
+39	Thái Sơn dưới chân	BattleSceneMap02	3	wenbao	13	240	130	260	100006	100039	230006
+40	Chung Nam chân núi	BattleSceneMap03	3	kongque	14	245	135	270	100005	100040	220006
+41	Trùng dương cung	BattleSceneMap04	3	lang	14	250	135	270	100006	100041	230005
+42	Lâm An	BattleFubenMap	3	jiaowa	14	255	135	270	100005	100042	210006
+43	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	3	binghun	15	260	140	280	100006	100043	210005
+44	Lưu li tiên cảnh	BattleFubenMap03	3	huanghedaxia	15	265	140	280	100005	100044	220005
+45	Mờ mịt tiên động	BattleFubenMap04	3	limochou	15	270	140	280	100006	100045	230006
+46	Tử Tinh bí cảnh	BattleFubenMap05	3	lingmao	16	275	140	290	100005	100046	220006
+47	Giang Nam vùng sông nước	BattleFubenMap06	3	luyoujiao	16	280	140	290	100006	100047	230005
+48	Đại thắng quan	BattleFubenMap07	3	mayu	16	285	140	290	100005	100048	210006
+49	Linh cung phế tích	BattleSceneMap11	3	qiuchuji	17	290	145	290	100006	100049	210005
+50	Đỗ Khang thôn	BattleSceneMap05s	3	qiuqianren	17	295	145	300	100005	100050	220005
+51	Tây Vực	BattleSceneMap06s	3	shouwei	17	300	145	300	100006	100051	230006
+52	Tuyệt Tình Cốc	BattleSceneMap07s	3	sunpopo	18	305	150	300	100005	100052	220006
+53	Hồ Điệp Cốc	BattleSceneMap08s	3	yayipangzi	18	310	150	310	100006	100053	230005
+54	Thiên Sơn núi tuyết	BattleSceneMap09s	3	yayishouzi	18	315	150	310	100005	100054	210006
+55	Hoạt tử nhân mộ	BattleSceneMap10s	3	yizhiping	19	320	155	310	100006	100055	210005
+56	Hoa Sơn sơn đạo	BattleSceneMaps	3	zhaozhijing	19	325	155	320	100005	100056	220005
+57	Hoa Sơn đỉnh	BattleSceneMap01s	3	meizi	19	330	155	320	100006	100057	230006
+58	Thái Sơn dưới chân	BattleSceneMap02s	3	huli	20	335	160	320	100005	100058	220006
+59	Chung Nam chân núi	BattleSceneMap03s	3	huoshenya	20	340	160	320	100006	100059	230005
+60	Trùng dương cung	BattleSceneMap04s	3	tuzi	20	345	160	330	100005	100060	210006
+61	Đỗ Khang thôn	BattleSceneMap05	3	banbanlu	21	350	195	330	100006	100061	210005
+62	Tây Vực	BattleSceneMap06	3	chongwuhu	21	355	195	330	100005	100062	220005
+63	Tuyệt Tình Cốc	BattleSceneMap07	3	chongwuzhu	21	360	195	340	100006	100063	230006
+64	Hồ Điệp Cốc	BattleSceneMap08	3	yuanhou	22	365	200	340	100005	100064	220006
+65	Thiên Sơn núi tuyết	BattleSceneMap09	3	yezhu	22	370	200	340	100006	100065	230005
+66	Hoạt tử nhân mộ	BattleSceneMap10	3	xiaoshu	22	375	200	350	100005	100066	210006
+67	Hoa Sơn sơn đạo	BattleSceneMap	3	wenbao	23	380	210	350	100006	100067	210005
+68	Hoa Sơn đỉnh	BattleSceneMap01	3	kongque	23	385	210	350	100005	100068	220005
+69	Thái Sơn dưới chân	BattleSceneMap02	3	lang	23	390	210	350	100006	100069	230006
+70	Chung Nam chân núi	BattleSceneMap03	3	jiaowa	24	395	215	360	100005	100070	220006
+71	Trùng dương cung	BattleSceneMap04	3	binghun	24	400	215	360	100007	100071	230007
+72	Lâm An	BattleFubenMap	3	huanghedaxia	24	405	215	360	100008	100072	210008
+73	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	3	limochou	25	410	225	370	100007	100073	210007
+74	Lưu li tiên cảnh	BattleFubenMap03	3	lingmao	25	415	225	370	100008	100074	220007
+75	Mờ mịt tiên động	BattleFubenMap04	3	luyoujiao	25	420	225	370	100007	100075	230008
+76	Tử Tinh bí cảnh	BattleFubenMap05	3	mayu	26	425	230	380	100008	100076	220008
+77	Giang Nam vùng sông nước	BattleFubenMap06	3	qiuchuji	26	430	230	380	100007	100077	230007
+78	Đại thắng quan	BattleFubenMap07	3	qiuqianren	26	435	230	380	100008	100078	210008
+79	Linh cung phế tích	BattleSceneMap11	3	shouwei	27	440	240	380	100007	100079	210007
+80	Đỗ Khang thôn	BattleSceneMap05s	3	sunpopo	27	445	240	390	100008	100080	220007
+81	Tây Vực	BattleSceneMap06s	3	yayipangzi	27	450	240	390	100007	100081	230008
+82	Tuyệt Tình Cốc	BattleSceneMap07s	3	yayishouzi	28	455	245	390	100008	100082	220008
+83	Hồ Điệp Cốc	BattleSceneMap08s	3	yizhiping	28	460	245	400	100007	100083	230007
+84	Thiên Sơn núi tuyết	BattleSceneMap09s	3	zhaozhijing	28	465	245	400	100008	100084	210008
+85	Hoạt tử nhân mộ	BattleSceneMap10s	3	meizi	29	470	255	400	100007	100085	210007
+86	Hoa Sơn sơn đạo	BattleSceneMaps	3	huli	29	475	255	401	100008	100086	220007
+87	Hoa Sơn đỉnh	BattleSceneMap01s	3	huoshenya	29	480	255	402	100007	100087	230008
+88	Thái Sơn dưới chân	BattleSceneMap02s	3	tuzi	30	485	260	403	100008	100088	220008
+89	Chung Nam chân núi	BattleSceneMap03s	3	banbanlu	30	490	260	404	100007	100089	230007
+90	Trùng dương cung	BattleSceneMap04s	3	chongwuhu	30	495	260	405	100008	100090	210008
+91	Đỗ Khang thôn	BattleSceneMap05	3	chongwuzhu	31	500	265	406	100007	100091	210007
+92	Tây Vực	BattleSceneMap06	3	yuanhou	31	505	265	407	100008	100092	220007
+93	Tuyệt Tình Cốc	BattleSceneMap07	3	yezhu	31	510	265	408	100007	100093	230008
+94	Hồ Điệp Cốc	BattleSceneMap08	3	xiaoshu	32	515	275	409	100008	100094	220008
+95	Thiên Sơn núi tuyết	BattleSceneMap09	3	wenbao	32	520	275	410	100007	100095	230007
+96	Hoạt tử nhân mộ	BattleSceneMap10	3	kongque	32	525	275	411	100008	100096	210008
+97	Hoa Sơn sơn đạo	BattleSceneMap	3	lang	33	530	285	412	100007	100097	210007
+98	Hoa Sơn đỉnh	BattleSceneMap01	3	jiaowa	33	535	285	413	100008	100098	220007
+99	Thái Sơn dưới chân	BattleSceneMap02	3	binghun	33	540	285	414	100007	100099	230008
+100	Chung Nam chân núi	BattleSceneMap03	3	huanghedaxia	34	545	295	415	100008	100100	220008
+101	Trùng dương cung	BattleSceneMap04	3	limochou	34	550	295	416	100007	100101	230007
+102	Lâm An	BattleFubenMap	3	lingmao	34	555	295	417	100008	100102	210008
+103	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	3	luyoujiao	35	560	310	418	100007	100103	210007
+104	Lưu li tiên cảnh	BattleFubenMap03	3	mayu	35	565	310	419	100008	100104	220007
+105	Mờ mịt tiên động	BattleFubenMap04	3	qiuchuji	35	570	310	420	100007	100105	230008
+106	Tử Tinh bí cảnh	BattleFubenMap05	3	qiuqianren	36	575	320	421	100009	100106	230009
+107	Giang Nam vùng sông nước	BattleFubenMap06	3	shouwei	36	580	320	422	100010	100107	220010
+108	Đại thắng quan	BattleFubenMap07	4	sunpopo	36	585	320	423	100009	100108	230010
+109	Linh cung phế tích	BattleSceneMap11	4	yayipangzi	37	590	330	424	100010	100109	210009
+110	Đỗ Khang thôn	BattleSceneMap05s	4	yayishouzi	37	595	330	425	100009	100110	210010
+111	Tây Vực	BattleSceneMap06s	4	yizhiping	37	600	330	426	100010	100111	220009
+112	Tuyệt Tình Cốc	BattleSceneMap07s	4	zhaozhijing	38	605	340	427	100009	100112	230009
+113	Hồ Điệp Cốc	BattleSceneMap08s	4	meizi	38	610	340	428	100010	100113	220010
+114	Thiên Sơn núi tuyết	BattleSceneMap09s	4	huli	38	615	340	429	100009	100114	230010
+115	Hoạt tử nhân mộ	BattleSceneMap10s	4	huoshenya	39	620	350	430	100010	100115	210009
+116	Hoa Sơn sơn đạo	BattleSceneMaps	4	tuzi	39	625	350	431	100009	100116	210010
+117	Hoa Sơn đỉnh	BattleSceneMap01s	4	banbanlu	39	630	350	432	100010	100117	220009
+118	Thái Sơn dưới chân	BattleSceneMap02s	4	chongwuhu	40	635	360	433	100009	100118	230009
+119	Chung Nam chân núi	BattleSceneMap03s	4	chongwuzhu	40	640	360	434	100010	100119	220010
+120	Trùng dương cung	BattleSceneMap04s	4	yuanhou	40	645	360	435	100009	100120	230010
+121	Đỗ Khang thôn	BattleSceneMap05	4	yezhu	41	650	380	436	100010	100121	210009
+122	Tây Vực	BattleSceneMap06	4	xiaoshu	41	655	380	437	100009	100122	210010
+123	Tuyệt Tình Cốc	BattleSceneMap07	4	wenbao	41	660	380	438	100010	100123	220009
+124	Hồ Điệp Cốc	BattleSceneMap08	4	kongque	42	665	390	439	100009	100124	230009
+125	Thiên Sơn núi tuyết	BattleSceneMap09	4	lang	42	670	390	440	100010	100125	220010
+126	Hoạt tử nhân mộ	BattleSceneMap10	4	jiaowa	42	675	390	441	100009	100126	230010
+127	Hoa Sơn sơn đạo	BattleSceneMap	4	binghun	43	680	395	442	100010	100127	210009
+128	Hoa Sơn đỉnh	BattleSceneMap01	4	huanghedaxia	43	685	395	443	100009	100128	210010
+129	Thái Sơn dưới chân	BattleSceneMap02	4	limochou	43	690	395	444	100010	100129	220009
+130	Chung Nam chân núi	BattleSceneMap03	4	lingmao	44	695	405	445	100009	100130	230009
+131	Trùng dương cung	BattleSceneMap04	4	luyoujiao	44	700	405	446	100010	100131	220010
+132	Lâm An	BattleFubenMap	4	mayu	44	705	405	447	100009	100132	230010
+133	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	4	qiuchuji	45	710	415	448	100010	100133	210009
+134	Lưu li tiên cảnh	BattleFubenMap03	4	qiuqianren	45	715	415	449	100009	100134	210010
+135	Mờ mịt tiên động	BattleFubenMap04	4	shouwei	45	720	415	450	100010	100135	220009
+136	Tử Tinh bí cảnh	BattleFubenMap05	4	sunpopo	46	725	425	451	100009	100136	230009
+137	Giang Nam vùng sông nước	BattleFubenMap06	4	yayipangzi	46	730	425	452	100010	100137	220010
+138	Đại thắng quan	BattleFubenMap07	4	yayishouzi	46	735	425	453	100009	100138	230010
+139	Linh cung phế tích	BattleSceneMap11	4	yizhiping	47	740	435	454	100010	100139	210009
+140	Đỗ Khang thôn	BattleSceneMap05s	4	zhaozhijing	47	745	435	455	100009	100140	210010
+141	Tây Vực	BattleSceneMap06s	4	meizi	47	750	435	456	100010	100141	220009
+142	Tuyệt Tình Cốc	BattleSceneMap07s	4	huli	48	755	440	457	100009	100142	230009
+143	Hồ Điệp Cốc	BattleSceneMap08s	4	huoshenya	48	760	440	458	100010	100143	220010
+144	Thiên Sơn núi tuyết	BattleSceneMap09s	4	tuzi	48	765	440	459	100009	100144	230010
+145	Hoạt tử nhân mộ	BattleSceneMap10s	4	banbanlu	49	770	450	460	100010	100145	210009
+146	Hoa Sơn sơn đạo	BattleSceneMaps	4	chongwuhu	49	775	450	461	100009	100146	210010
+147	Hoa Sơn đỉnh	BattleSceneMap01s	4	chongwuzhu	49	780	450	462	100010	100147	220009
+148	Thái Sơn dưới chân	BattleSceneMap02s	4	yuanhou	50	785	460	463	100009	100148	230009
+149	Chung Nam chân núi	BattleSceneMap03s	4	yezhu	50	790	460	464	100010	100149	220010
+150	Trùng dương cung	BattleSceneMap04s	4	xiaoshu	50	795	460	465	100009	100150	230010
+151	Đỗ Khang thôn	BattleSceneMap05	4	wenbao	51	800	500	466	100011	100151	230011
+152	Tây Vực	BattleSceneMap06	4	kongque	51	805	500	467	100012	100152	210012
+153	Tuyệt Tình Cốc	BattleSceneMap07	4	lang	51	810	500	468	100011	100153	210011
+154	Hồ Điệp Cốc	BattleSceneMap08	4	jiaowa	52	815	515	469	100012	100154	220012
+155	Thiên Sơn núi tuyết	BattleSceneMap09	4	binghun	52	820	515	470	100011	100155	230012
+156	Hoạt tử nhân mộ	BattleSceneMap10	4	huanghedaxia	52	825	515	471	100012	100156	220011
+157	Hoa Sơn sơn đạo	BattleSceneMap	4	limochou	53	830	525	472	100011	100157	230011
+158	Hoa Sơn đỉnh	BattleSceneMap01	4	lingmao	53	835	525	473	100012	100158	210012
+159	Thái Sơn dưới chân	BattleSceneMap02	4	luyoujiao	53	840	525	474	100011	100159	210011
+160	Chung Nam chân núi	BattleSceneMap03	4	mayu	54	845	540	475	100012	100160	220012
+161	Trùng dương cung	BattleSceneMap04	4	qiuchuji	54	850	540	476	100011	100161	230012
+162	Lâm An	BattleFubenMap	4	qiuqianren	54	855	540	477	100012	100162	220011
+163	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	4	shouwei	55	860	550	478	100011	100163	230011
+164	Lưu li tiên cảnh	BattleFubenMap03	4	sunpopo	55	865	550	479	100012	100164	210012
+165	Mờ mịt tiên động	BattleFubenMap04	4	yayipangzi	55	870	550	480	100011	100165	210011
+166	Tử Tinh bí cảnh	BattleFubenMap05	4	yayishouzi	56	875	560	481	100012	100166	220012
+167	Giang Nam vùng sông nước	BattleFubenMap06	4	yizhiping	56	880	560	482	100011	100167	230012
+168	Đại thắng quan	BattleFubenMap07	4	zhaozhijing	56	885	560	483	100012	100168	220011
+169	Linh cung phế tích	BattleSceneMap11	4	meizi	57	890	575	484	100011	100169	230011
+170	Đỗ Khang thôn	BattleSceneMap05s	4	huli	57	895	575	485	100012	100170	210012
+171	Tây Vực	BattleSceneMap06s	4	huoshenya	57	900	575	486	100011	100171	210011
+172	Tuyệt Tình Cốc	BattleSceneMap07s	4	tuzi	58	905	585	487	100012	100172	220012
+173	Hồ Điệp Cốc	BattleSceneMap08s	4	banbanlu	58	910	585	488	100011	100173	230012
+174	Thiên Sơn núi tuyết	BattleSceneMap09s	4	chongwuhu	58	915	585	489	100012	100174	220011
+175	Hoạt tử nhân mộ	BattleSceneMap10s	4	chongwuzhu	59	920	600	490	100011	100175	230011
+176	Hoa Sơn sơn đạo	BattleSceneMaps	4	yuanhou	59	925	600	491	100012	100176	210012
+177	Hoa Sơn đỉnh	BattleSceneMap01s	4	yezhu	59	930	600	492	100011	100177	210011
+178	Thái Sơn dưới chân	BattleSceneMap02s	4	xiaoshu	60	935	610	493	100012	100178	220012
+179	Chung Nam chân núi	BattleSceneMap03s	4	wenbao	60	940	610	494	100011	100179	230012
+180	Trùng dương cung	BattleSceneMap04s	4	kongque	60	945	610	495	100012	100180	220011
+181	Đỗ Khang thôn	BattleSceneMap05	4	lang	61	950	625	496	100011	100181	230011
+182	Tây Vực	BattleSceneMap06	4	jiaowa	61	955	625	497	100012	100182	210012
+183	Tuyệt Tình Cốc	BattleSceneMap07	4	binghun	61	960	625	498	100011	100183	210011
+184	Hồ Điệp Cốc	BattleSceneMap08	4	huanghedaxia	62	965	640	499	100012	100184	220012
+185	Thiên Sơn núi tuyết	BattleSceneMap09	4	limochou	62	970	640	500	100011	100185	230012
+186	Hoạt tử nhân mộ	BattleSceneMap10	4	lingmao	62	975	640	501	100012	100186	220011
+187	Hoa Sơn sơn đạo	BattleSceneMap	4	luyoujiao	63	980	655	502	100011	100187	230011
+188	Hoa Sơn đỉnh	BattleSceneMap01	4	mayu	63	985	655	503	100012	100188	210012
+189	Thái Sơn dưới chân	BattleSceneMap02	4	qiuchuji	63	990	655	504	100011	100189	210011
+190	Chung Nam chân núi	BattleSceneMap03	4	qiuqianren	64	995	670	505	100012	100190	220012
+191	Trùng dương cung	BattleSceneMap04	4	shouwei	64	1000	670	506	100011	100191	230012
+192	Lâm An	BattleFubenMap	4	sunpopo	64	1005	670	507	100012	100192	220011
+193	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	4	yayipangzi	65	1010	685	508	100011	100193	230011
+194	Lưu li tiên cảnh	BattleFubenMap03	4	yayishouzi	65	1015	685	509	100012	100194	210012
+195	Mờ mịt tiên động	BattleFubenMap04	4	yizhiping	65	1020	685	510	100011	100195	210011
+196	Tử Tinh bí cảnh	BattleFubenMap05	4	zhaozhijing	66	1025	700	511	100012	100196	220012
+197	Giang Nam vùng sông nước	BattleFubenMap06	4	meizi	66	1030	700	512	100011	100197	230012
+198	Đại thắng quan	BattleFubenMap07	4	huli	66	1035	700	513	100012	100198	220011
+199	Linh cung phế tích	BattleSceneMap11	4	huoshenya	67	1040	715	514	100011	100199	230011
+200	Đỗ Khang thôn	BattleSceneMap05s	4	tuzi	67	1045	715	515	100012	100200	210012
+201	Tây Vực	BattleSceneMap06s	4	banbanlu	67	1050	715	516	100011	100201	210011
+202	Tuyệt Tình Cốc	BattleSceneMap07s	4	chongwuhu	68	1055	730	517	100012	100202	220012
+203	Hồ Điệp Cốc	BattleSceneMap08s	4	chongwuzhu	68	1060	730	518	100011	100203	230012
+204	Thiên Sơn núi tuyết	BattleSceneMap09s	4	yuanhou	68	1065	730	519	100012	100204	220011
+205	Hoạt tử nhân mộ	BattleSceneMap10s	4	yezhu	69	1070	745	520	100011	100205	230011
+206	Hoa Sơn sơn đạo	BattleSceneMaps	4	xiaoshu	69	1075	745	521	100012	100206	210012
+207	Hoa Sơn đỉnh	BattleSceneMap01s	4	wenbao	69	1080	745	522	100011	100207	210011
+208	Thái Sơn dưới chân	BattleSceneMap02s	4	kongque	70	1085	760	523	100012	100208	220012
+209	Chung Nam chân núi	BattleSceneMap03s	4	lang	70	1090	760	524	100011	100209	230012
+210	Trùng dương cung	BattleSceneMap04s	4	jiaowa	70	1095	760	525	100012	100210	220011
+211	Đỗ Khang thôn	BattleSceneMap05	4	binghun	71	1100	830	526	100011	100211	230011
+212	Tây Vực	BattleSceneMap06	4	huanghedaxia	71	1105	830	527	100012	100212	210012
+213	Tuyệt Tình Cốc	BattleSceneMap07	4	limochou	71	1110	830	528	100011	100213	210011
+214	Hồ Điệp Cốc	BattleSceneMap08	4	lingmao	72	1115	840	529	100012	100214	220012
+215	Thiên Sơn núi tuyết	BattleSceneMap09	4	luyoujiao	72	1120	840	530	100011	100215	230012
+216	Hoạt tử nhân mộ	BattleSceneMap10	4	mayu	72	1125	840	531	100012	100216	220011
+217	Hoa Sơn sơn đạo	BattleSceneMap	4	qiuchuji	73	1130	845	532	100011	100217	230011
+218	Hoa Sơn đỉnh	BattleSceneMap01	4	qiuqianren	73	1135	845	533	100012	100218	210012
+219	Thái Sơn dưới chân	BattleSceneMap02	4	shouwei	73	1140	845	534	100011	100219	210011
+220	Chung Nam chân núi	BattleSceneMap03	4	sunpopo	74	1145	855	535	100012	100220	220012
+221	Trùng dương cung	BattleSceneMap04	4	yayipangzi	74	1150	855	536	100011	100221	230012
+222	Lâm An	BattleFubenMap	4	yayishouzi	74	1155	855	537	100012	100222	220011
+223	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	4	yizhiping	75	1160	865	538	100011	100223	230011
+224	Lưu li tiên cảnh	BattleFubenMap03	4	zhaozhijing	75	1165	865	539	100012	100224	210012
+225	Mờ mịt tiên động	BattleFubenMap04	4	meizi	75	1170	865	540	100011	100225	210011
+226	Tử Tinh bí cảnh	BattleFubenMap05	4	huli	76	1175	875	541	100012	100226	220012
+227	Giang Nam vùng sông nước	BattleFubenMap06	4	huoshenya	76	1180	875	542	100011	100227	230012
+228	Đại thắng quan	BattleFubenMap07	4	tuzi	76	1185	875	543	100012	100228	220011
+229	Linh cung phế tích	BattleSceneMap11	4	banbanlu	77	1190	885	544	100011	100229	230011
+230	Đỗ Khang thôn	BattleSceneMap05s	4	chongwuhu	77	1195	885	545	100012	100230	210012
+231	Tây Vực	BattleSceneMap06s	4	chongwuzhu	77	1200	885	546	100011	100231	210011
+232	Tuyệt Tình Cốc	BattleSceneMap07s	4	yuanhou	78	1205	890	547	100012	100232	220012
+233	Hồ Điệp Cốc	BattleSceneMap08s	4	yezhu	78	1210	890	548	100011	100233	230012
+234	Thiên Sơn núi tuyết	BattleSceneMap09s	4	xiaoshu	78	1215	890	549	100012	100234	220011
+235	Hoạt tử nhân mộ	BattleSceneMap10s	4	wenbao	79	1220	900	550	100011	100235	230011
+236	Hoa Sơn sơn đạo	BattleSceneMaps	4	kongque	79	1225	900	551	100012	100236	210012
+237	Hoa Sơn đỉnh	BattleSceneMap01s	4	lang	79	1230	900	552	100011	100237	210011
+238	Thái Sơn dưới chân	BattleSceneMap02s	4	jiaowa	80	1235	910	553	100012	100238	220012
+239	Chung Nam chân núi	BattleSceneMap03s	4	binghun	80	1240	910	554	100011	100239	230012
+240	Trùng dương cung	BattleSceneMap04s	4	huanghedaxia	80	1245	910	555	100012	100240	220011
+241	Đỗ Khang thôn	BattleSceneMap05	4	limochou	81	1250	1010	556	100011	100241	230011
+242	Tây Vực	BattleSceneMap06	4	lingmao	81	1255	1010	557	100012	100242	210012
+243	Tuyệt Tình Cốc	BattleSceneMap07	4	luyoujiao	81	1260	1010	558	100011	100243	210011
+244	Hồ Điệp Cốc	BattleSceneMap08	4	mayu	82	1265	1020	559	100012	100244	220012
+245	Thiên Sơn núi tuyết	BattleSceneMap09	4	qiuchuji	82	1270	1020	560	100011	100245	230012
+246	Hoạt tử nhân mộ	BattleSceneMap10	4	qiuqianren	82	1275	1020	561	100012	100246	220011
+247	Hoa Sơn sơn đạo	BattleSceneMap	4	shouwei	83	1280	1035	562	100011	100247	230011
+248	Hoa Sơn đỉnh	BattleSceneMap01	4	sunpopo	83	1285	1035	563	100012	100248	210012
+249	Thái Sơn dưới chân	BattleSceneMap02	4	yayipangzi	83	1290	1035	564	100011	100249	210011
+250	Chung Nam chân núi	BattleSceneMap03	4	yayishouzi	84	1295	1045	565	100012	100250	220012
+251	Trùng dương cung	BattleSceneMap04	4	yizhiping	84	1300	1045	566	100011	100251	230012
+252	Lâm An	BattleFubenMap	4	zhaozhijing	84	1305	1045	567	100012	100252	220011
+253	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	4	meizi	85	1310	1055	568	100011	100253	230011
+254	Lưu li tiên cảnh	BattleFubenMap03	4	huli	85	1315	1055	569	100012	100254	210012
+255	Mờ mịt tiên động	BattleFubenMap04	4	huoshenya	85	1320	1055	570	100011	100255	210011
+256	Tử Tinh bí cảnh	BattleFubenMap05	4	tuzi	86	1325	1065	571	100012	100256	220012
+257	Giang Nam vùng sông nước	BattleFubenMap06	4	banbanlu	86	1330	1065	572	100011	100257	230012
+258	Đại thắng quan	BattleFubenMap07	4	chongwuhu	86	1335	1065	573	100013	100258	220013
+259	Linh cung phế tích	BattleSceneMap11	4	chongwuzhu	87	1340	1075	574	100014	100259	210014
+260	Đỗ Khang thôn	BattleSceneMap05s	4	yuanhou	87	1345	1075	575	100013	100260	230013
+261	Tây Vực	BattleSceneMap06s	4	yezhu	87	1350	1075	576	100014	100261	210013
+262	Tuyệt Tình Cốc	BattleSceneMap07s	4	xiaoshu	88	1355	1090	577	100013	100262	220014
+263	Hồ Điệp Cốc	BattleSceneMap08s	4	wenbao	88	1360	1090	578	100014	100263	230014
+264	Thiên Sơn núi tuyết	BattleSceneMap09s	5	kongque	88	1365	1090	579	100013	100264	220013
+265	Hoạt tử nhân mộ	BattleSceneMap10s	5	lang	89	1370	1100	580	100014	100265	210014
+266	Hoa Sơn sơn đạo	BattleSceneMaps	5	jiaowa	89	1375	1100	581	100013	100266	230013
+267	Hoa Sơn đỉnh	BattleSceneMap01s	5	binghun	89	1380	1100	582	100014	100267	210013
+268	Thái Sơn dưới chân	BattleSceneMap02s	5	huanghedaxia	90	1385	1195	583	100013	100268	220014
+269	Chung Nam chân núi	BattleSceneMap03s	5	limochou	90	1390	1195	584	100014	100269	230014
+270	Trùng dương cung	BattleSceneMap04s	5	lingmao	90	1395	1195	585	100013	100270	220013
+271	Đỗ Khang thôn	BattleSceneMap05	5	luyoujiao	91	1400	1205	586	100014	100271	210014
+272	Tây Vực	BattleSceneMap06	5	mayu	91	1405	1205	587	100013	100272	230013
+273	Tuyệt Tình Cốc	BattleSceneMap07	5	qiuchuji	91	1410	1205	588	100014	100273	210013
+274	Hồ Điệp Cốc	BattleSceneMap08	5	qiuqianren	92	1415	1220	589	100013	100274	220014
+275	Thiên Sơn núi tuyết	BattleSceneMap09	5	shouwei	92	1420	1220	590	100014	100275	230014
+276	Hoạt tử nhân mộ	BattleSceneMap10	5	sunpopo	92	1425	1220	591	100013	100276	220013
+277	Hoa Sơn sơn đạo	BattleSceneMap	5	yayipangzi	93	1430	1230	592	100014	100277	210014
+278	Hoa Sơn đỉnh	BattleSceneMap01	5	yayishouzi	93	1435	1230	593	100013	100278	230013
+279	Thái Sơn dưới chân	BattleSceneMap02	5	yizhiping	93	1440	1230	594	100014	100279	210013
+280	Chung Nam chân núi	BattleSceneMap03	5	zhaozhijing	94	1445	1245	595	100013	100280	220014
+281	Trùng dương cung	BattleSceneMap04	5	meizi	94	1450	1245	596	100014	100281	230014
+282	Lâm An	BattleFubenMap	5	huli	94	1455	1245	597	100013	100282	220013
+283	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	huoshenya	95	1460	1260	598	100014	100283	210014
+284	Lưu li tiên cảnh	BattleFubenMap03	5	tuzi	95	1465	1260	599	100013	100284	230013
+285	Mờ mịt tiên động	BattleFubenMap04	5	banbanlu	95	1470	1260	600	100014	100285	210013
+286	Tử Tinh bí cảnh	BattleFubenMap05	5	chongwuhu	96	1475	1270	600	100013	100286	220014
+287	Giang Nam vùng sông nước	BattleFubenMap06	5	chongwuzhu	96	1480	1270	600	100014	100287	230014
+288	Đại thắng quan	BattleFubenMap07	5	yuanhou	96	1485	1270	600	100013	100288	220013
+289	Linh cung phế tích	BattleSceneMap11	5	yezhu	97	1490	1285	600	100014	100289	210014
+290	Đỗ Khang thôn	BattleSceneMap05s	5	xiaoshu	97	1495	1285	600	100013	100290	230013
+291	Tây Vực	BattleSceneMap06s	5	wenbao	97	1500	1285	600	100014	100291	210013
+292	Tuyệt Tình Cốc	BattleSceneMap07s	5	kongque	98	1505	1295	600	100013	100292	220014
+293	Hồ Điệp Cốc	BattleSceneMap08s	5	lang	98	1510	1295	600	100014	100293	230014
+294	Thiên Sơn núi tuyết	BattleSceneMap09s	5	jiaowa	98	1515	1295	600	100013	100294	220013
+295	Hoạt tử nhân mộ	BattleSceneMap10s	5	binghun	99	1520	1310	600	100014	100295	210014
+296	Hoa Sơn sơn đạo	BattleSceneMaps	5	huanghedaxia	99	1525	1310	600	100013	100296	230013
+297	Hoa Sơn đỉnh	BattleSceneMap01s	5	limochou	99	1530	1310	600	100014	100297	210013
+298	Thái Sơn dưới chân	BattleSceneMap02s	5	lingmao	100	1535	1420	600	100013	100298	220014
+299	Chung Nam chân núi	BattleSceneMap03s	5	luyoujiao	100	1540	1420	600	100014	100299	230014
+300	Trùng dương cung	BattleSceneMap04s	5	mayu	100	1545	1420	600	100013	100300	220013
+301	Đỗ Khang thôn	BattleSceneMap05	5	qiuchuji	101	1550	1435	600	100014	100301	210014
+302	Tây Vực	BattleSceneMap06	5	qiuqianren	101	1555	1435	600	100013	100302	230013
+303	Tuyệt Tình Cốc	BattleSceneMap07	5	shouwei	101	1560	1435	600	100014	100303	210013
+304	Hồ Điệp Cốc	BattleSceneMap08	5	sunpopo	102	1565	1450	600	100013	100304	220014
+305	Thiên Sơn núi tuyết	BattleSceneMap09	5	yayipangzi	102	1570	1450	600	100014	100305	230014
+306	Hoạt tử nhân mộ	BattleSceneMap10	5	yayishouzi	102	1575	1450	600	100013	100306	220013
+307	Hoa Sơn sơn đạo	BattleSceneMap	5	yizhiping	103	1580	1465	600	100014	100307	210014
+308	Hoa Sơn đỉnh	BattleSceneMap01	5	zhaozhijing	103	1585	1465	600	100013	100308	230013
+309	Thái Sơn dưới chân	BattleSceneMap02	5	meizi	103	1590	1465	600	100014	100309	210013
+310	Chung Nam chân núi	BattleSceneMap03	5	huli	104	1595	1485	600	100013	100310	220014
+311	Trùng dương cung	BattleSceneMap04	5	huoshenya	104	1600	1485	600	100014	100311	230014
+312	Lâm An	BattleFubenMap	5	tuzi	104	1605	1485	600	100013	100312	220013
+313	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	banbanlu	105	1610	1500	600	100014	100313	210014
+314	Lưu li tiên cảnh	BattleFubenMap03	5	chongwuhu	105	1615	1500	600	100013	100314	230013
+315	Mờ mịt tiên động	BattleFubenMap04	5	chongwuzhu	105	1620	1500	600	100014	100315	210013
+316	Tử Tinh bí cảnh	BattleFubenMap05	5	yuanhou	106	1625	1515	600	100013	100316	220014
+317	Giang Nam vùng sông nước	BattleFubenMap06	5	yezhu	106	1630	1515	600	100014	100317	230014
+318	Đại thắng quan	BattleFubenMap07	5	xiaoshu	106	1635	1515	600	100013	100318	220013
+319	Linh cung phế tích	BattleSceneMap11	5	wenbao	107	1640	1530	600	100014	100319	210014
+320	Đỗ Khang thôn	BattleSceneMap05s	5	kongque	107	1645	1530	600	100013	100320	230013
+321	Tây Vực	BattleSceneMap06s	5	lang	107	1650	1530	600	100014	100321	210013
+322	Tuyệt Tình Cốc	BattleSceneMap07s	5	jiaowa	108	1655	1530	600	100013	100322	220014
+323	Hồ Điệp Cốc	BattleSceneMap08s	5	binghun	108	1660	1530	600	100014	100323	230014
+324	Thiên Sơn núi tuyết	BattleSceneMap09s	5	huanghedaxia	108	1665	1530	600	100013	100324	220013
+325	Hoạt tử nhân mộ	BattleSceneMap10s	5	limochou	109	1670	1545	600	100014	100325	210014
+326	Hoa Sơn sơn đạo	BattleSceneMaps	5	lingmao	109	1675	1545	600	100013	100326	230013
+327	Hoa Sơn đỉnh	BattleSceneMap01s	5	luyoujiao	109	1680	1545	600	100014	100327	210013
+328	Thái Sơn dưới chân	BattleSceneMap02s	5	mayu	110	1685	1560	600	100013	100328	220014
+329	Chung Nam chân núi	BattleSceneMap03s	5	qiuchuji	110	1690	1560	600	100014	100329	230014
+330	Trùng dương cung	BattleSceneMap04s	5	qiuqianren	110	1695	1560	600	100013	100330	220013
+331	Đỗ Khang thôn	BattleSceneMap05	5	shouwei	111	1700	1650	600	100014	100331	210014
+332	Tây Vực	BattleSceneMap06	5	sunpopo	111	1705	1650	600	100013	100332	230013
+333	Tuyệt Tình Cốc	BattleSceneMap07	5	yayipangzi	111	1710	1650	600	100014	100333	210013
+334	Hồ Điệp Cốc	BattleSceneMap08	5	yayishouzi	112	1715	1665	600	100013	100334	220014
+335	Thiên Sơn núi tuyết	BattleSceneMap09	5	yizhiping	112	1720	1665	600	100014	100335	230014
+336	Hoạt tử nhân mộ	BattleSceneMap10	5	zhaozhijing	112	1725	1665	600	100013	100336	220013
+337	Hoa Sơn sơn đạo	BattleSceneMap	5	meizi	113	1730	1685	600	100014	100337	210014
+338	Hoa Sơn đỉnh	BattleSceneMap01	5	huli	113	1735	1685	600	100013	100338	230013
+339	Thái Sơn dưới chân	BattleSceneMap02	5	huoshenya	113	1740	1685	600	100014	100339	210013
+340	Chung Nam chân núi	BattleSceneMap03	5	tuzi	114	1745	1700	600	100013	100340	220014
+341	Trùng dương cung	BattleSceneMap04	5	banbanlu	114	1750	1700	600	100014	100341	230014
+342	Lâm An	BattleFubenMap	5	chongwuhu	114	1755	1700	600	100013	100342	220013
+343	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	chongwuzhu	115	1760	1720	600	100014	100343	210014
+344	Lưu li tiên cảnh	BattleFubenMap03	5	yuanhou	115	1765	1720	600	100013	100344	230013
+345	Mờ mịt tiên động	BattleFubenMap04	5	yezhu	115	1770	1720	600	100014	100345	210013
+346	Tử Tinh bí cảnh	BattleFubenMap05	5	xiaoshu	116	1775	1740	600	100013	100346	220014
+347	Giang Nam vùng sông nước	BattleFubenMap06	5	wenbao	116	1780	1740	600	100014	100347	230014
+348	Đại thắng quan	BattleFubenMap07	5	kongque	116	1785	1740	600	100013	100348	220013
+349	Linh cung phế tích	BattleSceneMap11	5	lang	117	1790	1755	600	100014	100349	210014
+350	Đỗ Khang thôn	BattleSceneMap05s	5	jiaowa	117	1795	1755	600	100013	100350	230013
+351	Tây Vực	BattleSceneMap06s	5	binghun	117	1800	1755	600	100014	100351	210013
+352	Tuyệt Tình Cốc	BattleSceneMap07s	5	huanghedaxia	118	1805	1775	600	100013	100352	220014
+353	Hồ Điệp Cốc	BattleSceneMap08s	5	limochou	118	1810	1775	600	100014	100353	230014
+354	Thiên Sơn núi tuyết	BattleSceneMap09s	5	lingmao	118	1815	1775	600	100013	100354	220013
+355	Hoạt tử nhân mộ	BattleSceneMap10s	5	luyoujiao	119	1820	1790	600	100014	100355	210014
+356	Hoa Sơn sơn đạo	BattleSceneMaps	5	mayu	119	1825	1790	600	100013	100356	230013
+357	Hoa Sơn đỉnh	BattleSceneMap01s	5	qiuchuji	119	1830	1790	600	100014	100357	210013
+358	Thái Sơn dưới chân	BattleSceneMap02s	5	qiuqianren	120	1835	1810	600	100013	100358	220014
+359	Chung Nam chân núi	BattleSceneMap03s	5	shouwei	120	1840	1810	600	100014	100359	230014
+360	Trùng dương cung	BattleSceneMap04s	5	sunpopo	120	1845	1810	600	100013	100360	220013
+361	Đỗ Khang thôn	BattleSceneMap05	5	yayipangzi	121	1850	1875	600	100014	100361	210014
+362	Tây Vực	BattleSceneMap06	5	yayishouzi	121	1855	1875	600	100013	100362	230013
+363	Tuyệt Tình Cốc	BattleSceneMap07	5	yizhiping	121	1860	1875	600	100014	100363	210013
+364	Hồ Điệp Cốc	BattleSceneMap08	5	zhaozhijing	122	1865	1895	600	100013	100364	220014
+365	Thiên Sơn núi tuyết	BattleSceneMap09	5	meizi	122	1870	1895	600	100014	100365	230014
+366	Hoạt tử nhân mộ	BattleSceneMap10	5	huli	122	1875	1895	600	100013	100366	220013
+367	Hoa Sơn sơn đạo	BattleSceneMap	5	huoshenya	123	1880	1915	600	100014	100367	210014
+368	Hoa Sơn đỉnh	BattleSceneMap01	5	tuzi	123	1885	1915	600	100013	100368	230013
+369	Thái Sơn dưới chân	BattleSceneMap02	5	banbanlu	123	1890	1915	600	100014	100369	210013
+370	Chung Nam chân núi	BattleSceneMap03	5	chongwuhu	124	1895	1935	600	100013	100370	220014
+371	Trùng dương cung	BattleSceneMap04	5	chongwuzhu	124	1900	1935	600	100014	100371	230014
+372	Lâm An	BattleFubenMap	5	yuanhou	124	1905	1935	600	100013	100372	220013
+373	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	yezhu	125	1910	1960	600	100014	100373	210014
+374	Lưu li tiên cảnh	BattleFubenMap03	5	xiaoshu	125	1915	1960	600	100013	100374	230013
+375	Mờ mịt tiên động	BattleFubenMap04	5	wenbao	125	1920	1960	600	100014	100375	210013
+376	Tử Tinh bí cảnh	BattleFubenMap05	5	kongque	126	1925	1980	600	100013	100376	220014
+377	Giang Nam vùng sông nước	BattleFubenMap06	5	lang	126	1930	1980	600	100014	100377	230014
+378	Đại thắng quan	BattleFubenMap07	5	jiaowa	126	1935	1980	600	100013	100378	220013
+379	Linh cung phế tích	BattleSceneMap11	5	binghun	127	1940	2000	600	100014	100379	210014
+380	Đỗ Khang thôn	BattleSceneMap05s	5	huanghedaxia	127	1945	2000	600	100013	100380	230013
+381	Tây Vực	BattleSceneMap06s	5	limochou	127	1950	2000	600	100014	100381	210013
+382	Tuyệt Tình Cốc	BattleSceneMap07s	5	lingmao	128	1955	2020	600	100013	100382	220014
+383	Hồ Điệp Cốc	BattleSceneMap08s	5	luyoujiao	128	1960	2020	600	100014	100383	230014
+384	Thiên Sơn núi tuyết	BattleSceneMap09s	5	mayu	128	1965	2020	600	100013	100384	220013
+385	Hoạt tử nhân mộ	BattleSceneMap10s	5	qiuchuji	129	1970	2040	600	100014	100385	210014
+386	Hoa Sơn sơn đạo	BattleSceneMaps	5	qiuqianren	129	1975	2040	600	100013	100386	230013
+387	Hoa Sơn đỉnh	BattleSceneMap01s	5	shouwei	129	1980	2040	600	100014	100387	210013
+388	Thái Sơn dưới chân	BattleSceneMap02s	5	sunpopo	130	1985	2060	600	100013	100388	220014
+389	Chung Nam chân núi	BattleSceneMap03s	5	yayipangzi	130	1990	2060	600	100014	100389	230014
+390	Trùng dương cung	BattleSceneMap04s	5	yayishouzi	130	1995	2060	600	100013	100390	220013
+391	Đỗ Khang thôn	BattleSceneMap05	5	yizhiping	131	2000	2150	600	100014	100391	210014
+392	Tây Vực	BattleSceneMap06	5	zhaozhijing	131	2005	2150	600	100013	100392	230013
+393	Tuyệt Tình Cốc	BattleSceneMap07	5	meizi	131	2010	2150	600	100014	100393	210013
+394	Hồ Điệp Cốc	BattleSceneMap08	5	huli	132	2015	2170	600	100013	100394	220014
+395	Thiên Sơn núi tuyết	BattleSceneMap09	5	huoshenya	132	2020	2170	600	100014	100395	230014
+396	Hoạt tử nhân mộ	BattleSceneMap10	5	tuzi	132	2025	2170	600	100013	100396	220013
+397	Hoa Sơn sơn đạo	BattleSceneMap	5	banbanlu	133	2030	2195	600	100014	100397	210014
+398	Hoa Sơn đỉnh	BattleSceneMap01	5	chongwuhu	133	2035	2195	600	100013	100398	230013
+399	Thái Sơn dưới chân	BattleSceneMap02	5	chongwuzhu	133	2040	2195	600	100014	100399	210013
+400	Chung Nam chân núi	BattleSceneMap03	5	yuanhou	134	2045	2220	600	100013	100400	220014
+401	Trùng dương cung	BattleSceneMap04	5	yezhu	134	2050	2220	600	100015	100401	210015
+402	Lâm An	BattleFubenMap	5	xiaoshu	134	2055	2220	600	100016	100402	220016
+403	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	wenbao	135	2060	2245	600	100015	100403	230016
+404	Lưu li tiên cảnh	BattleFubenMap03	5	kongque	135	2065	2245	600	100016	100404	220015
+405	Mờ mịt tiên động	BattleFubenMap04	5	lang	135	2070	2245	600	100015	100405	210016
+406	Tử Tinh bí cảnh	BattleFubenMap05	5	jiaowa	136	2075	2265	600	100016	100406	230015
+407	Giang Nam vùng sông nước	BattleFubenMap06	5	binghun	136	2080	2265	600	100015	100407	210015
+408	Đại thắng quan	BattleFubenMap07	5	huanghedaxia	136	2085	2265	600	100016	100408	220016
+409	Linh cung phế tích	BattleSceneMap11	5	limochou	137	2090	2290	600	100015	100409	230016
+410	Đỗ Khang thôn	BattleSceneMap05s	5	lingmao	137	2095	2290	600	100016	100410	220015
+411	Tây Vực	BattleSceneMap06s	5	luyoujiao	137	2100	2290	600	100015	100411	210016
+412	Tuyệt Tình Cốc	BattleSceneMap07s	5	mayu	138	2105	2315	600	100016	100412	230015
+413	Hồ Điệp Cốc	BattleSceneMap08s	5	qiuchuji	138	2110	2315	600	100015	100413	210015
+414	Thiên Sơn núi tuyết	BattleSceneMap09s	5	qiuqianren	138	2115	2315	600	100016	100414	220016
+415	Hoạt tử nhân mộ	BattleSceneMap10s	5	shouwei	139	2120	2335	600	100015	100415	230016
+416	Hoa Sơn sơn đạo	BattleSceneMaps	5	sunpopo	139	2125	2335	600	100016	100416	220015
+417	Hoa Sơn đỉnh	BattleSceneMap01s	5	yayipangzi	139	2130	2335	600	100015	100417	210016
+418	Thái Sơn dưới chân	BattleSceneMap02s	5	yayishouzi	140	2135	2360	600	100016	100418	230015
+419	Chung Nam chân núi	BattleSceneMap03s	5	yizhiping	140	2140	2360	600	100015	100419	210015
+420	Trùng dương cung	BattleSceneMap04s	5	zhaozhijing	140	2145	2360	600	100016	100420	220016
+421	Đỗ Khang thôn	BattleSceneMap05	5	meizi	141	2150	2375	600	100015	100421	230016
+422	Tây Vực	BattleSceneMap06	5	huli	141	2155	2375	600	100016	100422	220015
+423	Tuyệt Tình Cốc	BattleSceneMap07	5	huoshenya	141	2160	2375	600	100015	100423	210016
+424	Hồ Điệp Cốc	BattleSceneMap08	5	tuzi	142	2165	2400	600	100016	100424	230015
+425	Thiên Sơn núi tuyết	BattleSceneMap09	5	banbanlu	142	2170	2400	600	100015	100425	210015
+426	Hoạt tử nhân mộ	BattleSceneMap10	5	chongwuhu	142	2175	2400	600	100016	100426	220016
+427	Hoa Sơn sơn đạo	BattleSceneMap	5	chongwuzhu	143	2180	2430	600	100015	100427	230016
+428	Hoa Sơn đỉnh	BattleSceneMap01	5	yuanhou	143	2185	2430	600	100016	100428	220015
+429	Thái Sơn dưới chân	BattleSceneMap02	5	yezhu	143	2190	2430	600	100015	100429	210016
+430	Chung Nam chân núi	BattleSceneMap03	5	xiaoshu	144	2195	2455	600	100016	100430	230015
+431	Trùng dương cung	BattleSceneMap04	5	wenbao	144	2200	2455	600	100015	100431	210015
+432	Lâm An	BattleFubenMap	5	kongque	144	2205	2455	600	100016	100432	220016
+433	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	lang	145	2210	2480	600	100015	100433	230016
+434	Lưu li tiên cảnh	BattleFubenMap03	5	jiaowa	145	2215	2480	600	100016	100434	220015
+435	Mờ mịt tiên động	BattleFubenMap04	5	binghun	145	2220	2480	600	100015	100435	210016
+436	Tử Tinh bí cảnh	BattleFubenMap05	5	huanghedaxia	146	2225	2505	600	100016	100436	230015
+437	Giang Nam vùng sông nước	BattleFubenMap06	5	limochou	146	2230	2505	600	100015	100437	210015
+438	Đại thắng quan	BattleFubenMap07	5	lingmao	146	2235	2505	600	100016	100438	220016
+439	Linh cung phế tích	BattleSceneMap11	5	luyoujiao	147	2240	2530	600	100015	100439	230016
+440	Đỗ Khang thôn	BattleSceneMap05s	5	mayu	147	2245	2530	600	100016	100440	220015
+441	Tây Vực	BattleSceneMap06s	5	qiuchuji	147	2250	2530	600	100015	100441	210016
+442	Tuyệt Tình Cốc	BattleSceneMap07s	5	qiuqianren	148	2255	2560	600	100016	100442	230015
+443	Hồ Điệp Cốc	BattleSceneMap08s	5	shouwei	148	2260	2560	600	100015	100443	210015
+444	Thiên Sơn núi tuyết	BattleSceneMap09s	5	sunpopo	148	2265	2560	600	100016	100444	220016
+445	Hoạt tử nhân mộ	BattleSceneMap10s	5	yayipangzi	149	2270	2585	600	100015	100445	230016
+446	Hoa Sơn sơn đạo	BattleSceneMaps	5	yayishouzi	149	2275	2585	600	100016	100446	220015
+447	Hoa Sơn đỉnh	BattleSceneMap01s	5	yizhiping	149	2280	2585	600	100015	100447	210016
+448	Thái Sơn dưới chân	BattleSceneMap02s	5	zhaozhijing	150	2285	2610	600	100016	100448	230015
+449	Chung Nam chân núi	BattleSceneMap03s	5	meizi	150	2290	2610	600	100015	100449	210015
+450	Trùng dương cung	BattleSceneMap04s	5	huli	150	2295	2610	600	100016	100450	220016
+451	Đỗ Khang thôn	BattleSceneMap05	5	huoshenya	151	2300	2695	600	100015	100451	230016
+452	Tây Vực	BattleSceneMap06	5	tuzi	151	2305	2695	600	100016	100452	220015
+453	Tuyệt Tình Cốc	BattleSceneMap07	5	banbanlu	151	2310	2695	600	100015	100453	210016
+454	Hồ Điệp Cốc	BattleSceneMap08	5	chongwuhu	152	2315	2725	600	100016	100454	230015
+455	Thiên Sơn núi tuyết	BattleSceneMap09	5	chongwuzhu	152	2320	2725	600	100015	100455	210015
+456	Hoạt tử nhân mộ	BattleSceneMap10	5	yuanhou	152	2325	2725	600	100016	100456	220016
+457	Hoa Sơn sơn đạo	BattleSceneMap	5	yezhu	153	2330	2755	600	100015	100457	230016
+458	Hoa Sơn đỉnh	BattleSceneMap01	5	xiaoshu	153	2335	2755	600	100016	100458	220015
+459	Thái Sơn dưới chân	BattleSceneMap02	5	wenbao	153	2340	2755	600	100015	100459	210016
+460	Chung Nam chân núi	BattleSceneMap03	5	kongque	154	2345	2785	600	100016	100460	230015
+461	Trùng dương cung	BattleSceneMap04	5	lang	154	2350	2785	600	100015	100461	210015
+462	Lâm An	BattleFubenMap	5	jiaowa	154	2355	2785	600	100016	100462	220016
+463	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	binghun	155	2360	2815	600	100015	100463	230016
+464	Lưu li tiên cảnh	BattleFubenMap03	5	huanghedaxia	155	2365	2815	600	100016	100464	220015
+465	Mờ mịt tiên động	BattleFubenMap04	5	limochou	155	2370	2815	600	100015	100465	210016
+466	Tử Tinh bí cảnh	BattleFubenMap05	5	lingmao	156	2375	2840	600	100016	100466	230015
+467	Giang Nam vùng sông nước	BattleFubenMap06	5	luyoujiao	156	2380	2840	600	100015	100467	210015
+468	Đại thắng quan	BattleFubenMap07	5	mayu	156	2385	2840	600	100016	100468	220016
+469	Linh cung phế tích	BattleSceneMap11	5	qiuchuji	157	2390	2870	600	100015	100469	230016
+470	Đỗ Khang thôn	BattleSceneMap05s	5	qiuqianren	157	2395	2870	600	100016	100470	220015
+471	Tây Vực	BattleSceneMap06s	5	shouwei	157	2400	2870	600	100015	100471	210016
+472	Tuyệt Tình Cốc	BattleSceneMap07s	5	sunpopo	158	2405	2900	600	100016	100472	230015
+473	Hồ Điệp Cốc	BattleSceneMap08s	5	yayipangzi	158	2410	2900	600	100015	100473	210015
+474	Thiên Sơn núi tuyết	BattleSceneMap09s	5	yayishouzi	158	2415	2900	600	100016	100474	220016
+475	Hoạt tử nhân mộ	BattleSceneMap10s	5	yizhiping	159	2420	2930	600	100015	100475	230016
+476	Hoa Sơn sơn đạo	BattleSceneMaps	5	zhaozhijing	159	2425	2930	600	100016	100476	220015
+477	Hoa Sơn đỉnh	BattleSceneMap01s	5	meizi	159	2430	2930	600	100015	100477	210016
+478	Thái Sơn dưới chân	BattleSceneMap02s	5	huli	160	2435	2960	600	100016	100478	230015
+479	Chung Nam chân núi	BattleSceneMap03s	5	huoshenya	160	2440	2960	600	100015	100479	210015
+480	Trùng dương cung	BattleSceneMap04s	5	tuzi	160	2445	2960	600	100016	100480	220016
+481	Đỗ Khang thôn	BattleSceneMap05	5	banbanlu	161	2450	2970	600	100015	100481	230016
+482	Tây Vực	BattleSceneMap06	5	chongwuhu	161	2455	2970	600	100016	100482	220015
+483	Tuyệt Tình Cốc	BattleSceneMap07	5	chongwuzhu	161	2460	2970	600	100015	100483	210016
+484	Hồ Điệp Cốc	BattleSceneMap08	5	yuanhou	162	2465	3000	600	100016	100484	230015
+485	Thiên Sơn núi tuyết	BattleSceneMap09	5	yezhu	162	2470	3000	600	100015	100485	210015
+486	Hoạt tử nhân mộ	BattleSceneMap10	5	xiaoshu	162	2475	3000	600	100016	100486	220016
+487	Hoa Sơn sơn đạo	BattleSceneMap	5	wenbao	163	2480	3035	600	100015	100487	230016
+488	Hoa Sơn đỉnh	BattleSceneMap01	5	kongque	163	2485	3035	600	100016	100488	220015
+489	Thái Sơn dưới chân	BattleSceneMap02	5	lang	163	2490	3035	600	100015	100489	210016
+490	Chung Nam chân núi	BattleSceneMap03	5	jiaowa	164	2495	3065	600	100016	100490	230015
+491	Trùng dương cung	BattleSceneMap04	5	binghun	164	2500	3065	600	100015	100491	210015
+492	Lâm An	BattleFubenMap	5	huanghedaxia	164	2505	3065	600	100016	100492	220016
+493	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	limochou	165	2510	3100	600	100015	100493	230016
+494	Lưu li tiên cảnh	BattleFubenMap03	5	lingmao	165	2515	3100	600	100016	100494	220015
+495	Mờ mịt tiên động	BattleFubenMap04	5	luyoujiao	165	2520	3100	600	100015	100495	210016
+496	Tử Tinh bí cảnh	BattleFubenMap05	5	mayu	166	2525	3130	600	100016	100496	230015
+497	Giang Nam vùng sông nước	BattleFubenMap06	5	qiuchuji	166	2530	3130	600	100015	100497	210015
+498	Đại thắng quan	BattleFubenMap07	5	qiuqianren	166	2535	3130	600	100016	100498	220016
+499	Linh cung phế tích	BattleSceneMap11	5	shouwei	167	2540	3165	600	100015	100499	230016
+500	Đỗ Khang thôn	BattleSceneMap05s	5	sunpopo	167	2545	3165	600	100016	100500	220015
+501	Tây Vực	BattleSceneMap06s	5	yayipangzi	167	2550	3165	600	100015	100501	210016
+502	Tuyệt Tình Cốc	BattleSceneMap07s	5	yayishouzi	168	2555	3195	600	100016	100502	230015
+503	Hồ Điệp Cốc	BattleSceneMap08s	5	yizhiping	168	2560	3195	600	100015	100503	210015
+504	Thiên Sơn núi tuyết	BattleSceneMap09s	5	zhaozhijing	168	2565	3195	600	100016	100504	220016
+505	Hoạt tử nhân mộ	BattleSceneMap10s	5	meizi	169	2570	3230	600	100015	100505	230016
+506	Hoa Sơn sơn đạo	BattleSceneMaps	5	huli	169	2575	3230	600	100016	100506	220015
+507	Hoa Sơn đỉnh	BattleSceneMap01s	5	huoshenya	169	2580	3230	600	100015	100507	210016
+508	Thái Sơn dưới chân	BattleSceneMap02s	5	tuzi	170	2585	3260	600	100016	100508	230015
+509	Chung Nam chân núi	BattleSceneMap03s	5	banbanlu	170	2590	3260	600	100015	100509	210015
+510	Trùng dương cung	BattleSceneMap04s	5	chongwuhu	170	2595	3260	600	100016	100510	220016
+511	Đỗ Khang thôn	BattleSceneMap05	5	chongwuzhu	171	2600	3285	600	100015	100511	230016
+512	Tây Vực	BattleSceneMap06	5	yuanhou	171	2605	3285	600	100016	100512	220015
+513	Tuyệt Tình Cốc	BattleSceneMap07	5	yezhu	171	2610	3285	600	100015	100513	210016
+514	Hồ Điệp Cốc	BattleSceneMap08	5	xiaoshu	172	2615	3320	600	100016	100514	230015
+515	Thiên Sơn núi tuyết	BattleSceneMap09	5	wenbao	172	2620	3320	600	100015	100515	210015
+516	Hoạt tử nhân mộ	BattleSceneMap10	5	kongque	172	2625	3320	600	100016	100516	220016
+517	Hoa Sơn sơn đạo	BattleSceneMap	5	lang	173	2630	3360	600	100015	100517	230016
+518	Hoa Sơn đỉnh	BattleSceneMap01	5	jiaowa	173	2635	3360	600	100016	100518	220015
+519	Thái Sơn dưới chân	BattleSceneMap02	5	binghun	173	2640	3360	600	100015	100519	210016
+520	Chung Nam chân núi	BattleSceneMap03	5	huanghedaxia	174	2645	3395	600	100016	100520	230015
+521	Trùng dương cung	BattleSceneMap04	5	limochou	174	2650	3395	600	100015	100521	210015
+522	Lâm An	BattleFubenMap	5	lingmao	174	2655	3395	600	100016	100522	220016
+523	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	luyoujiao	175	2660	3430	600	100015	100523	230016
+524	Lưu li tiên cảnh	BattleFubenMap03	5	mayu	175	2665	3430	600	100016	100524	220015
+525	Mờ mịt tiên động	BattleFubenMap04	5	qiuchuji	175	2670	3430	600	100015	100525	210016
+526	Tử Tinh bí cảnh	BattleFubenMap05	5	qiuqianren	176	2675	3465	600	100016	100526	230015
+527	Giang Nam vùng sông nước	BattleFubenMap06	5	shouwei	176	2680	3465	600	100015	100527	210015
+528	Đại thắng quan	BattleFubenMap07	5	sunpopo	176	2685	3465	600	100016	100528	220016
+529	Linh cung phế tích	BattleSceneMap11	5	yayipangzi	177	2690	3500	600	100015	100529	230016
+530	Đỗ Khang thôn	BattleSceneMap05s	5	yayishouzi	177	2695	3500	600	100016	100530	220015
+531	Tây Vực	BattleSceneMap06s	5	yizhiping	177	2700	3500	600	100015	100531	210016
+532	Tuyệt Tình Cốc	BattleSceneMap07s	5	zhaozhijing	178	2705	3540	600	100016	100532	230015
+533	Hồ Điệp Cốc	BattleSceneMap08s	5	meizi	178	2710	3540	600	100015	100533	210015
+534	Thiên Sơn núi tuyết	BattleSceneMap09s	5	huli	178	2715	3540	600	100016	100534	220016
+535	Hoạt tử nhân mộ	BattleSceneMap10s	5	huoshenya	179	2720	3575	600	100015	100535	230016
+536	Hoa Sơn sơn đạo	BattleSceneMaps	5	tuzi	179	2725	3575	600	100016	100536	220015
+537	Hoa Sơn đỉnh	BattleSceneMap01s	5	banbanlu	179	2730	3575	600	100015	100537	210016
+538	Thái Sơn dưới chân	BattleSceneMap02s	5	chongwuhu	180	2735	3610	600	100016	100538	230015
+539	Chung Nam chân núi	BattleSceneMap03s	5	chongwuzhu	180	2740	3610	600	100015	100539	210015
+540	Trùng dương cung	BattleSceneMap04s	5	yuanhou	180	2745	3610	600	100016	100540	220016
+541	Đỗ Khang thôn	BattleSceneMap05	5	yezhu	181	2750	3650	600	100015	100541	230016
+542	Tây Vực	BattleSceneMap06	5	xiaoshu	181	2755	3650	600	100016	100542	220015
+543	Tuyệt Tình Cốc	BattleSceneMap07	5	wenbao	181	2760	3650	600	100015	100543	210016
+544	Hồ Điệp Cốc	BattleSceneMap08	5	kongque	182	2765	3690	600	100016	100544	230015
+545	Thiên Sơn núi tuyết	BattleSceneMap09	5	lang	182	2770	3690	600	100015	100545	210015
+546	Hoạt tử nhân mộ	BattleSceneMap10	5	jiaowa	182	2775	3690	600	100016	100546	220016
+547	Hoa Sơn sơn đạo	BattleSceneMap	5	binghun	183	2780	3730	600	100015	100547	230016
+548	Hoa Sơn đỉnh	BattleSceneMap01	5	huanghedaxia	183	2785	3730	600	100016	100548	220015
+549	Thái Sơn dưới chân	BattleSceneMap02	5	limochou	183	2790	3730	600	100015	100549	210016
+550	Chung Nam chân núi	BattleSceneMap03	5	lingmao	184	2795	3770	600	100016	100550	230015
+551	Trùng dương cung	BattleSceneMap04	5	luyoujiao	184	2800	3770	600	100017	100551	210017
+552	Lâm An	BattleFubenMap	5	mayu	184	2805	3770	600	100018	100552	220018
+553	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	5	qiuchuji	185	2810	3810	600	100017	100553	230018
+554	Lưu li tiên cảnh	BattleFubenMap03	5	qiuqianren	185	2815	3810	600	100018	100554	220017
+555	Mờ mịt tiên động	BattleFubenMap04	5	shouwei	185	2820	3810	600	100017	100555	210018
+556	Tử Tinh bí cảnh	BattleFubenMap05	5	sunpopo	186	2825	3850	600	100018	100556	230017
+557	Giang Nam vùng sông nước	BattleFubenMap06	5	yayipangzi	186	2830	3850	600	100017	100557	210017
+558	Đại thắng quan	BattleFubenMap07	5	yayishouzi	186	2835	3850	600	100018	100558	220018
+559	Linh cung phế tích	BattleSceneMap11	6	yizhiping	187	2840	3890	600	100017	100559	230018
+560	Đỗ Khang thôn	BattleSceneMap05s	6	zhaozhijing	187	2845	3890	600	100018	100560	220017
+561	Tây Vực	BattleSceneMap06s	6	meizi	187	2850	3890	600	100017	100561	210018
+562	Tuyệt Tình Cốc	BattleSceneMap07s	6	huli	189	2855	3930	600	100018	100562	230017
+563	Hồ Điệp Cốc	BattleSceneMap08s	6	huoshenya	189	2860	3930	600	100017	100563	210017
+564	Thiên Sơn núi tuyết	BattleSceneMap09s	6	tuzi	189	2865	3930	600	100018	100564	220018
+565	Hoạt tử nhân mộ	BattleSceneMap10s	6	banbanlu	190	2870	3970	600	100017	100565	230018
+566	Hoa Sơn sơn đạo	BattleSceneMaps	6	chongwuhu	190	2875	3970	600	100018	100566	220017
+567	Hoa Sơn đỉnh	BattleSceneMap01s	6	chongwuzhu	190	2880	3970	600	100017	100567	210018
+568	Thái Sơn dưới chân	BattleSceneMap02s	6	yuanhou	191	2885	4010	600	100018	100568	230017
+569	Chung Nam chân núi	BattleSceneMap03s	6	yezhu	191	2890	4010	600	100017	100569	210017
+570	Trùng dương cung	BattleSceneMap04s	6	xiaoshu	191	2895	4010	600	100018	100570	220018
+571	Đỗ Khang thôn	BattleSceneMap05	6	wenbao	192	2900	4165	600	100017	100571	230018
+572	Tây Vực	BattleSceneMap06	6	kongque	192	2905	4165	600	100018	100572	220017
+573	Tuyệt Tình Cốc	BattleSceneMap07	6	lang	192	2910	4165	600	100017	100573	210018
+574	Hồ Điệp Cốc	BattleSceneMap08	6	jiaowa	193	2915	4185	600	100018	100574	230017
+575	Thiên Sơn núi tuyết	BattleSceneMap09	6	binghun	193	2920	4185	600	100017	100575	210017
+576	Hoạt tử nhân mộ	BattleSceneMap10	6	huanghedaxia	193	2925	4185	600	100018	100576	220018
+577	Hoa Sơn sơn đạo	BattleSceneMap	6	limochou	194	2930	4210	600	100017	100577	230018
+578	Hoa Sơn đỉnh	BattleSceneMap01	6	lingmao	194	2935	4210	600	100018	100578	220017
+579	Thái Sơn dưới chân	BattleSceneMap02	6	luyoujiao	194	2940	4210	600	100017	100579	210018
+580	Chung Nam chân núi	BattleSceneMap03	6	mayu	195	2945	4230	600	100018	100580	230017
+581	Trùng dương cung	BattleSceneMap04	6	qiuchuji	195	2950	4230	600	100017	100581	210017
+582	Lâm An	BattleFubenMap	6	qiuqianren	195	2955	4230	600	100018	100582	220018
+583	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	shouwei	196	2960	4250	600	100017	100583	230018
+584	Lưu li tiên cảnh	BattleFubenMap03	6	sunpopo	196	2965	4250	600	100018	100584	220017
+585	Mờ mịt tiên động	BattleFubenMap04	6	yayipangzi	196	2970	4250	600	100017	100585	210018
+586	Tử Tinh bí cảnh	BattleFubenMap05	6	yayishouzi	197	2975	4275	600	100018	100586	230017
+587	Giang Nam vùng sông nước	BattleFubenMap06	6	yizhiping	197	2980	4275	600	100017	100587	210017
+588	Đại thắng quan	BattleFubenMap07	6	zhaozhijing	197	2985	4275	600	100018	100588	220018
+589	Linh cung phế tích	BattleSceneMap11	6	meizi	198	2990	4295	600	100017	100589	230018
+590	Đỗ Khang thôn	BattleSceneMap05s	6	huli	198	2995	4295	600	100018	100590	220017
+591	Tây Vực	BattleSceneMap06s	6	huoshenya	198	3000	4295	600	100017	100591	210018
+592	Tuyệt Tình Cốc	BattleSceneMap07s	6	tuzi	199	3005	4315	600	100018	100592	230017
+593	Hồ Điệp Cốc	BattleSceneMap08s	6	banbanlu	199	3010	4315	600	100017	100593	210017
+594	Thiên Sơn núi tuyết	BattleSceneMap09s	6	chongwuhu	199	3015	4315	600	100018	100594	220018
+595	Hoạt tử nhân mộ	BattleSceneMap10s	6	chongwuzhu	200	3020	4340	600	100017	100595	230018
+596	Hoa Sơn sơn đạo	BattleSceneMaps	6	yuanhou	200	3025	4340	600	100018	100596	220017
+597	Hoa Sơn đỉnh	BattleSceneMap01s	6	yezhu	200	3030	4340	600	100017	100597	210018
+598	Thái Sơn dưới chân	BattleSceneMap02s	6	xiaoshu	201	3035	4360	600	100018	100598	230017
+599	Chung Nam chân núi	BattleSceneMap03s	6	wenbao	201	3040	4360	600	100017	100599	210017
+600	Trùng dương cung	BattleSceneMap04s	6	kongque	201	3045	4360	600	100018	100600	220018
+601	Đỗ Khang thôn	BattleSceneMap05	6	lang	202	3050	4595	600	100017	100601	230018
+602	Tây Vực	BattleSceneMap06	6	jiaowa	202	3055	4595	600	100018	100602	220017
+603	Tuyệt Tình Cốc	BattleSceneMap07	6	binghun	202	3060	4595	600	100017	100603	210018
+604	Hồ Điệp Cốc	BattleSceneMap08	6	huanghedaxia	203	3065	4620	600	100018	100604	230017
+605	Thiên Sơn núi tuyết	BattleSceneMap09	6	limochou	203	3070	4620	600	100017	100605	210017
+606	Hoạt tử nhân mộ	BattleSceneMap10	6	lingmao	203	3075	4620	600	100018	100606	220018
+607	Hoa Sơn sơn đạo	BattleSceneMap	6	luyoujiao	204	3080	4640	600	100017	100607	230018
+608	Hoa Sơn đỉnh	BattleSceneMap01	6	mayu	204	3085	4640	600	100018	100608	220017
+609	Thái Sơn dưới chân	BattleSceneMap02	6	qiuchuji	204	3090	4640	600	100017	100609	210018
+610	Chung Nam chân núi	BattleSceneMap03	6	qiuqianren	205	3095	4665	600	100018	100610	230017
+611	Trùng dương cung	BattleSceneMap04	6	shouwei	205	3100	4665	600	100017	100611	210017
+612	Lâm An	BattleFubenMap	6	sunpopo	205	3105	4665	600	100018	100612	220018
+613	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	yayipangzi	206	3110	4690	600	100017	100613	230018
+614	Lưu li tiên cảnh	BattleFubenMap03	6	yayishouzi	206	3115	4690	600	100018	100614	220017
+615	Mờ mịt tiên động	BattleFubenMap04	6	yizhiping	206	3120	4690	600	100017	100615	210018
+616	Tử Tinh bí cảnh	BattleFubenMap05	6	zhaozhijing	207	3125	4715	600	100018	100616	230017
+617	Giang Nam vùng sông nước	BattleFubenMap06	6	meizi	207	3130	4715	600	100017	100617	210017
+618	Đại thắng quan	BattleFubenMap07	6	huli	207	3135	4715	600	100018	100618	220018
+619	Linh cung phế tích	BattleSceneMap11	6	huoshenya	208	3140	4740	600	100017	100619	230018
+620	Đỗ Khang thôn	BattleSceneMap05s	6	tuzi	208	3145	4740	600	100018	100620	220017
+621	Tây Vực	BattleSceneMap06s	6	banbanlu	208	3150	4740	600	100017	100621	210018
+622	Tuyệt Tình Cốc	BattleSceneMap07s	6	chongwuhu	209	3155	4760	600	100018	100622	230017
+623	Hồ Điệp Cốc	BattleSceneMap08s	6	chongwuzhu	209	3160	4760	600	100017	100623	210017
+624	Thiên Sơn núi tuyết	BattleSceneMap09s	6	yuanhou	209	3165	4760	600	100018	100624	220018
+625	Hoạt tử nhân mộ	BattleSceneMap10s	6	yezhu	210	3170	4785	600	100017	100625	230018
+626	Hoa Sơn sơn đạo	BattleSceneMaps	6	xiaoshu	210	3175	4785	600	100018	100626	220017
+627	Hoa Sơn đỉnh	BattleSceneMap01s	6	wenbao	210	3180	4785	600	100017	100627	210018
+628	Thái Sơn dưới chân	BattleSceneMap02s	6	kongque	211	3185	4810	600	100018	100628	230017
+629	Chung Nam chân núi	BattleSceneMap03s	6	lang	211	3190	4810	600	100017	100629	210017
+630	Trùng dương cung	BattleSceneMap04s	6	jiaowa	211	3195	4810	600	100018	100630	220018
+631	Đỗ Khang thôn	BattleSceneMap05	6	binghun	212	3200	4975	600	100017	100631	230018
+632	Tây Vực	BattleSceneMap06	6	huanghedaxia	212	3205	4975	600	100018	100632	220017
+633	Tuyệt Tình Cốc	BattleSceneMap07	6	limochou	212	3210	4975	600	100017	100633	210018
+634	Hồ Điệp Cốc	BattleSceneMap08	6	lingmao	213	3215	5000	600	100018	100634	230017
+635	Thiên Sơn núi tuyết	BattleSceneMap09	6	luyoujiao	213	3220	5000	600	100017	100635	210017
+636	Hoạt tử nhân mộ	BattleSceneMap10	6	mayu	213	3225	5000	600	100018	100636	220018
+637	Hoa Sơn sơn đạo	BattleSceneMap	6	qiuchuji	214	3230	5030	600	100017	100637	230018
+638	Hoa Sơn đỉnh	BattleSceneMap01	6	qiuqianren	214	3235	5030	600	100018	100638	220017
+639	Thái Sơn dưới chân	BattleSceneMap02	6	shouwei	214	3240	5030	600	100017	100639	210018
+640	Chung Nam chân núi	BattleSceneMap03	6	sunpopo	215	3245	5055	600	100018	100640	230017
+641	Trùng dương cung	BattleSceneMap04	6	yayipangzi	215	3250	5055	600	100017	100641	210017
+642	Lâm An	BattleFubenMap	6	yayishouzi	215	3255	5055	600	100018	100642	220018
+643	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	yizhiping	216	3260	5080	600	100017	100643	230018
+644	Lưu li tiên cảnh	BattleFubenMap03	6	zhaozhijing	216	3265	5080	600	100018	100644	220017
+645	Mờ mịt tiên động	BattleFubenMap04	6	meizi	216	3270	5080	600	100017	100645	210018
+646	Tử Tinh bí cảnh	BattleFubenMap05	6	huli	217	3275	5105	600	100018	100646	230017
+647	Giang Nam vùng sông nước	BattleFubenMap06	6	huoshenya	217	3280	5105	600	100017	100647	210017
+648	Đại thắng quan	BattleFubenMap07	6	tuzi	217	3285	5105	600	100018	100648	220018
+649	Linh cung phế tích	BattleSceneMap11	6	banbanlu	218	3290	5130	600	100017	100649	230018
+650	Đỗ Khang thôn	BattleSceneMap05s	6	chongwuhu	218	3295	5130	600	100018	100650	220017
+651	Tây Vực	BattleSceneMap06s	6	chongwuzhu	218	3300	5130	600	100017	100651	210018
+652	Tuyệt Tình Cốc	BattleSceneMap07s	6	yuanhou	219	3305	5160	600	100018	100652	230017
+653	Hồ Điệp Cốc	BattleSceneMap08s	6	yezhu	219	3310	5160	600	100017	100653	210017
+654	Thiên Sơn núi tuyết	BattleSceneMap09s	6	xiaoshu	219	3315	5160	600	100018	100654	220018
+655	Hoạt tử nhân mộ	BattleSceneMap10s	6	wenbao	220	3320	5185	600	100017	100655	230018
+656	Hoa Sơn sơn đạo	BattleSceneMaps	6	kongque	220	3325	5185	600	100018	100656	220017
+657	Hoa Sơn đỉnh	BattleSceneMap01s	6	lang	220	3330	5185	600	100017	100657	210018
+658	Thái Sơn dưới chân	BattleSceneMap02s	6	jiaowa	221	3335	5210	600	100018	100658	230017
+659	Chung Nam chân núi	BattleSceneMap03s	6	binghun	221	3340	5210	600	100017	100659	210017
+660	Trùng dương cung	BattleSceneMap04s	6	huanghedaxia	221	3345	5210	600	100018	100660	220018
+661	Đỗ Khang thôn	BattleSceneMap05	6	limochou	222	3350	5405	600	100017	100661	230018
+662	Tây Vực	BattleSceneMap06	6	lingmao	222	3355	5405	600	100018	100662	220017
+663	Tuyệt Tình Cốc	BattleSceneMap07	6	luyoujiao	222	3360	5405	600	100017	100663	210018
+664	Hồ Điệp Cốc	BattleSceneMap08	6	mayu	223	3365	5435	600	100018	100664	230017
+665	Thiên Sơn núi tuyết	BattleSceneMap09	6	qiuchuji	223	3370	5435	600	100017	100665	210017
+666	Hoạt tử nhân mộ	BattleSceneMap10	6	qiuqianren	223	3375	5435	600	100018	100666	220018
+667	Hoa Sơn sơn đạo	BattleSceneMap	6	shouwei	224	3380	5460	600	100017	100667	230018
+668	Hoa Sơn đỉnh	BattleSceneMap01	6	sunpopo	224	3385	5460	600	100018	100668	220017
+669	Thái Sơn dưới chân	BattleSceneMap02	6	yayipangzi	224	3390	5460	600	100017	100669	210018
+670	Chung Nam chân núi	BattleSceneMap03	6	yayishouzi	225	3395	5490	600	100018	100670	230017
+671	Trùng dương cung	BattleSceneMap04	6	yizhiping	225	3400	5490	600	100017	100671	210017
+672	Lâm An	BattleFubenMap	6	zhaozhijing	225	3405	5490	600	100018	100672	220018
+673	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	meizi	226	3410	5520	600	100017	100673	230018
+674	Lưu li tiên cảnh	BattleFubenMap03	6	huli	226	3415	5520	600	100018	100674	220017
+675	Mờ mịt tiên động	BattleFubenMap04	6	huoshenya	226	3420	5520	600	100017	100675	210018
+676	Tử Tinh bí cảnh	BattleFubenMap05	6	tuzi	227	3425	5545	600	100018	100676	230017
+677	Giang Nam vùng sông nước	BattleFubenMap06	6	banbanlu	227	3430	5545	600	100017	100677	210017
+678	Đại thắng quan	BattleFubenMap07	6	chongwuhu	227	3435	5545	600	100018	100678	220018
+679	Linh cung phế tích	BattleSceneMap11	6	chongwuzhu	228	3440	5575	600	100017	100679	230018
+680	Đỗ Khang thôn	BattleSceneMap05s	6	yuanhou	228	3445	5575	600	100018	100680	220017
+681	Tây Vực	BattleSceneMap06s	6	yezhu	228	3450	5575	600	100017	100681	210018
+682	Tuyệt Tình Cốc	BattleSceneMap07s	6	xiaoshu	229	3455	5605	600	100018	100682	230017
+683	Hồ Điệp Cốc	BattleSceneMap08s	6	wenbao	229	3460	5605	600	100017	100683	210017
+684	Thiên Sơn núi tuyết	BattleSceneMap09s	6	kongque	229	3465	5605	600	100018	100684	220018
+685	Hoạt tử nhân mộ	BattleSceneMap10s	6	lang	230	3470	5630	600	100017	100685	230018
+686	Hoa Sơn sơn đạo	BattleSceneMaps	6	jiaowa	230	3475	5630	600	100018	100686	220017
+687	Hoa Sơn đỉnh	BattleSceneMap01s	6	binghun	230	3480	5630	600	100017	100687	210018
+688	Thái Sơn dưới chân	BattleSceneMap02s	6	huanghedaxia	231	3485	5660	600	100018	100688	230017
+689	Chung Nam chân núi	BattleSceneMap03s	6	limochou	231	3490	5660	600	100017	100689	210017
+690	Trùng dương cung	BattleSceneMap04s	6	lingmao	231	3495	5660	600	100018	100690	220018
+691	Đỗ Khang thôn	BattleSceneMap05	6	luyoujiao	232	3500	5835	600	100017	100691	230018
+692	Tây Vực	BattleSceneMap06	6	mayu	232	3505	5835	600	100018	100692	220017
+693	Tuyệt Tình Cốc	BattleSceneMap07	6	qiuchuji	232	3510	5835	600	100017	100693	210018
+694	Hồ Điệp Cốc	BattleSceneMap08	6	qiuqianren	233	3515	5865	600	100018	100694	230017
+695	Thiên Sơn núi tuyết	BattleSceneMap09	6	shouwei	233	3520	5865	600	100017	100695	210017
+696	Hoạt tử nhân mộ	BattleSceneMap10	6	sunpopo	233	3525	5865	600	100018	100696	220018
+697	Hoa Sơn sơn đạo	BattleSceneMap	6	yayipangzi	234	3530	5895	600	100017	100697	230018
+698	Hoa Sơn đỉnh	BattleSceneMap01	6	yayishouzi	234	3535	5895	600	100018	100698	220017
+699	Thái Sơn dưới chân	BattleSceneMap02	6	yizhiping	234	3540	5895	600	100017	100699	210018
+700	Chung Nam chân núi	BattleSceneMap03	6	zhaozhijing	235	3545	5925	600	100018	100700	230017
+701	Trùng dương cung	BattleSceneMap04	6	meizi	235	3550	5925	600	100017	100701	210017
+702	Lâm An	BattleFubenMap	6	huli	235	3555	5925	600	100018	100702	220018
+703	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	huoshenya	236	3560	5960	600	100017	100703	230018
+704	Lưu li tiên cảnh	BattleFubenMap03	6	tuzi	236	3565	5960	600	100018	100704	220017
+705	Mờ mịt tiên động	BattleFubenMap04	6	banbanlu	236	3570	5960	600	100017	100705	210018
+706	Tử Tinh bí cảnh	BattleFubenMap05	6	chongwuhu	237	3575	5990	600	100018	100706	230017
+707	Giang Nam vùng sông nước	BattleFubenMap06	6	chongwuzhu	237	3580	5990	600	100017	100707	210017
+708	Đại thắng quan	BattleFubenMap07	6	yuanhou	237	3585	5990	600	100018	100708	220018
+709	Linh cung phế tích	BattleSceneMap11	6	yezhu	238	3590	6020	600	100017	100709	230018
+710	Đỗ Khang thôn	BattleSceneMap05s	6	xiaoshu	238	3595	6020	600	100018	100710	220017
+711	Tây Vực	BattleSceneMap06s	6	wenbao	238	3600	6020	600	100017	100711	210018
+712	Tuyệt Tình Cốc	BattleSceneMap07s	6	kongque	239	3605	6050	600	100018	100712	230017
+713	Hồ Điệp Cốc	BattleSceneMap08s	6	lang	239	3610	6050	600	100017	100713	210017
+714	Thiên Sơn núi tuyết	BattleSceneMap09s	6	jiaowa	239	3615	6050	600	100018	100714	220018
+715	Hoạt tử nhân mộ	BattleSceneMap10s	6	binghun	240	3620	6080	600	100017	100715	230018
+716	Hoa Sơn sơn đạo	BattleSceneMaps	6	huanghedaxia	240	3625	6080	600	100018	100716	220017
+717	Hoa Sơn đỉnh	BattleSceneMap01s	6	limochou	240	3630	6080	600	100017	100717	210018
+718	Thái Sơn dưới chân	BattleSceneMap02s	6	lingmao	241	3635	6110	600	100018	100718	230017
+719	Chung Nam chân núi	BattleSceneMap03s	6	luyoujiao	241	3640	6110	600	100017	100719	210017
+720	Trùng dương cung	BattleSceneMap04s	6	mayu	241	3645	6110	600	100018	100720	220018
+721	Đỗ Khang thôn	BattleSceneMap05	6	qiuchuji	242	3650	6265	600	100017	100721	230018
+722	Tây Vực	BattleSceneMap06	6	qiuqianren	242	3655	6265	600	100018	100722	220017
+723	Tuyệt Tình Cốc	BattleSceneMap07	6	shouwei	242	3660	6265	600	100017	100723	210018
+724	Hồ Điệp Cốc	BattleSceneMap08	6	sunpopo	243	3665	6300	600	100018	100724	230017
+725	Thiên Sơn núi tuyết	BattleSceneMap09	6	yayipangzi	243	3670	6300	600	100017	100725	210017
+726	Hoạt tử nhân mộ	BattleSceneMap10	6	yayishouzi	243	3675	6300	600	100018	100726	220018
+727	Hoa Sơn sơn đạo	BattleSceneMap	6	yizhiping	244	3680	6330	600	100017	100727	230018
+728	Hoa Sơn đỉnh	BattleSceneMap01	6	zhaozhijing	244	3685	6330	600	100018	100728	220017
+729	Thái Sơn dưới chân	BattleSceneMap02	6	meizi	244	3690	6330	600	100017	100729	210018
+730	Chung Nam chân núi	BattleSceneMap03	6	huli	245	3695	6365	600	100018	100730	230017
+731	Trùng dương cung	BattleSceneMap04	6	huoshenya	245	3700	6365	600	100017	100731	210017
+732	Lâm An	BattleFubenMap	6	tuzi	245	3705	6365	600	100018	100732	220018
+733	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	banbanlu	246	3710	6395	600	100017	100733	230018
+734	Lưu li tiên cảnh	BattleFubenMap03	6	chongwuhu	246	3715	6395	600	100018	100734	220017
+735	Mờ mịt tiên động	BattleFubenMap04	6	chongwuzhu	246	3720	6395	600	100017	100735	210018
+736	Tử Tinh bí cảnh	BattleFubenMap05	6	yuanhou	247	3725	6430	600	100018	100736	230017
+737	Giang Nam vùng sông nước	BattleFubenMap06	6	yezhu	247	3730	6430	600	100017	100737	210017
+738	Đại thắng quan	BattleFubenMap07	6	xiaoshu	247	3735	6430	600	100018	100738	220018
+739	Linh cung phế tích	BattleSceneMap11	6	wenbao	248	3740	6460	600	100017	100739	230018
+740	Đỗ Khang thôn	BattleSceneMap05s	6	kongque	248	3745	6460	600	100018	100740	220017
+741	Tây Vực	BattleSceneMap06s	6	lang	248	3750	6460	600	100017	100741	210018
+742	Tuyệt Tình Cốc	BattleSceneMap07s	6	jiaowa	249	3755	6495	600	100018	100742	230017
+743	Hồ Điệp Cốc	BattleSceneMap08s	6	binghun	249	3760	6495	600	100017	100743	210017
+744	Thiên Sơn núi tuyết	BattleSceneMap09s	6	huanghedaxia	249	3765	6495	600	100018	100744	220018
+745	Hoạt tử nhân mộ	BattleSceneMap10s	6	limochou	250	3770	6525	600	100017	100745	230018
+746	Hoa Sơn sơn đạo	BattleSceneMaps	6	lingmao	250	3775	6525	600	100018	100746	220017
+747	Hoa Sơn đỉnh	BattleSceneMap01s	6	luyoujiao	250	3780	6525	600	100017	100747	210018
+748	Thái Sơn dưới chân	BattleSceneMap02s	6	mayu	251	3785	6560	600	100018	100748	230017
+749	Chung Nam chân núi	BattleSceneMap03s	6	qiuchuji	251	3790	6560	600	100017	100749	210017
+750	Trùng dương cung	BattleSceneMap04s	6	qiuqianren	251	3795	6560	600	100018	100750	220018
+751	Đỗ Khang thôn	BattleSceneMap05	6	shouwei	252	3800	6745	600	100019	100751	210019
+752	Tây Vực	BattleSceneMap06	6	sunpopo	252	3805	6745	600	100020	100752	220020
+753	Tuyệt Tình Cốc	BattleSceneMap07	6	yayipangzi	252	3810	6745	600	100019	100753	230020
+754	Hồ Điệp Cốc	BattleSceneMap08	6	yayishouzi	253	3815	7975	600	100020	100754	220019
+755	Thiên Sơn núi tuyết	BattleSceneMap09	6	yizhiping	253	3820	7975	600	100019	100755	210020
+756	Hoạt tử nhân mộ	BattleSceneMap10	6	zhaozhijing	253	3825	7975	600	100020	100756	230019
+757	Hoa Sơn sơn đạo	BattleSceneMap	6	meizi	254	3830	8030	600	100019	100757	210019
+758	Hoa Sơn đỉnh	BattleSceneMap01	6	huli	254	3835	8030	600	100020	100758	220020
+759	Thái Sơn dưới chân	BattleSceneMap02	6	huoshenya	254	3840	8030	600	100019	100759	230020
+760	Chung Nam chân núi	BattleSceneMap03	6	tuzi	255	3845	8065	600	100020	100760	220019
+761	Trùng dương cung	BattleSceneMap04	6	banbanlu	255	3850	8065	600	100019	100761	210020
+762	Lâm An	BattleFubenMap	6	chongwuhu	255	3855	8065	600	100020	100762	230019
+763	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	chongwuzhu	256	3860	8100	600	100019	100763	210019
+764	Lưu li tiên cảnh	BattleFubenMap03	6	yuanhou	256	3865	8100	600	100020	100764	220020
+765	Mờ mịt tiên động	BattleFubenMap04	6	yezhu	256	3870	8100	600	100019	100765	230020
+766	Tử Tinh bí cảnh	BattleFubenMap05	6	xiaoshu	257	3875	8135	600	100020	100766	220019
+767	Giang Nam vùng sông nước	BattleFubenMap06	6	wenbao	257	3880	8135	600	100019	100767	210020
+768	Đại thắng quan	BattleFubenMap07	6	kongque	257	3885	8135	600	100020	100768	230019
+769	Linh cung phế tích	BattleSceneMap11	6	lang	258	3890	8170	600	100019	100769	210019
+770	Đỗ Khang thôn	BattleSceneMap05s	6	jiaowa	258	3895	8170	600	100020	100770	220020
+771	Tây Vực	BattleSceneMap06s	6	binghun	258	3900	8170	600	100019	100771	230020
+772	Tuyệt Tình Cốc	BattleSceneMap07s	6	huanghedaxia	259	3905	8205	600	100020	100772	220019
+773	Hồ Điệp Cốc	BattleSceneMap08s	6	limochou	259	3910	8205	600	100019	100773	210020
+774	Thiên Sơn núi tuyết	BattleSceneMap09s	6	lingmao	259	3915	8205	600	100020	100774	230019
+775	Hoạt tử nhân mộ	BattleSceneMap10s	6	luyoujiao	260	3920	8240	600	100019	100775	210019
+776	Hoa Sơn sơn đạo	BattleSceneMaps	6	mayu	260	3925	8240	600	100020	100776	220020
+777	Hoa Sơn đỉnh	BattleSceneMap01s	6	qiuchuji	260	3930	8240	600	100019	100777	230020
+778	Thái Sơn dưới chân	BattleSceneMap02s	6	qiuqianren	261	3935	8275	600	100020	100778	220019
+779	Chung Nam chân núi	BattleSceneMap03s	6	shouwei	261	3940	8275	600	100019	100779	210020
+780	Trùng dương cung	BattleSceneMap04s	6	sunpopo	261	3945	8275	600	100020	100780	230019
+781	Đỗ Khang thôn	BattleSceneMap05	6	yayipangzi	262	3950	8435	600	100019	100781	210019
+782	Tây Vực	BattleSceneMap06	6	yayishouzi	262	3955	8435	600	100020	100782	220020
+783	Tuyệt Tình Cốc	BattleSceneMap07	6	yizhiping	262	3960	8435	600	100019	100783	230020
+784	Hồ Điệp Cốc	BattleSceneMap08	6	zhaozhijing	263	3965	8475	600	100020	100784	220019
+785	Thiên Sơn núi tuyết	BattleSceneMap09	6	meizi	263	3970	8475	600	100019	100785	210020
+786	Hoạt tử nhân mộ	BattleSceneMap10	6	huli	263	3975	8475	600	100020	100786	230019
+787	Hoa Sơn sơn đạo	BattleSceneMap	6	huoshenya	264	3980	8510	600	100019	100787	210019
+788	Hoa Sơn đỉnh	BattleSceneMap01	6	tuzi	264	3985	8510	600	100020	100788	220020
+789	Thái Sơn dưới chân	BattleSceneMap02	6	banbanlu	264	3990	8510	600	100019	100789	230020
+790	Chung Nam chân núi	BattleSceneMap03	6	chongwuhu	265	3995	8550	600	100020	100790	220019
+791	Trùng dương cung	BattleSceneMap04	6	chongwuzhu	265	4000	8550	600	100019	100791	210020
+792	Lâm An	BattleFubenMap	6	yuanhou	265	4005	8550	600	100020	100792	230019
+793	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	yezhu	266	4010	8585	600	100019	100793	210019
+794	Lưu li tiên cảnh	BattleFubenMap03	6	xiaoshu	266	4015	8585	600	100020	100794	220020
+795	Mờ mịt tiên động	BattleFubenMap04	6	wenbao	266	4020	8585	600	100019	100795	230020
+796	Tử Tinh bí cảnh	BattleFubenMap05	6	kongque	267	4025	8625	600	100020	100796	220019
+797	Giang Nam vùng sông nước	BattleFubenMap06	6	lang	267	4030	8625	600	100019	100797	210020
+798	Đại thắng quan	BattleFubenMap07	6	jiaowa	267	4035	8625	600	100020	100798	230019
+799	Linh cung phế tích	BattleSceneMap11	6	binghun	268	4040	8660	600	100019	100799	210019
+800	Đỗ Khang thôn	BattleSceneMap05s	6	huanghedaxia	268	4045	8660	600	100020	100800	220020
+801	Tây Vực	BattleSceneMap06s	6	limochou	268	4050	8660	600	100019	100801	230020
+802	Tuyệt Tình Cốc	BattleSceneMap07s	6	lingmao	269	4055	8700	600	100020	100802	220019
+803	Hồ Điệp Cốc	BattleSceneMap08s	6	luyoujiao	269	4060	8700	600	100019	100803	210020
+804	Thiên Sơn núi tuyết	BattleSceneMap09s	6	mayu	269	4065	8700	600	100020	100804	230019
+805	Hoạt tử nhân mộ	BattleSceneMap10s	6	qiuchuji	270	4070	8735	600	100019	100805	210019
+806	Hoa Sơn sơn đạo	BattleSceneMaps	6	qiuqianren	270	4075	8735	600	100020	100806	220020
+807	Hoa Sơn đỉnh	BattleSceneMap01s	6	shouwei	270	4080	8735	600	100019	100807	230020
+808	Thái Sơn dưới chân	BattleSceneMap02s	6	sunpopo	271	4085	8775	600	100020	100808	220019
+809	Chung Nam chân núi	BattleSceneMap03s	6	yayipangzi	271	4090	8775	600	100019	100809	210020
+810	Trùng dương cung	BattleSceneMap04s	6	yayishouzi	271	4095	8775	600	100020	100810	230019
+811	Đỗ Khang thôn	BattleSceneMap05	6	yizhiping	272	4100	8960	600	100019	100811	210019
+812	Tây Vực	BattleSceneMap06	6	zhaozhijing	272	4105	8960	600	100020	100812	220020
+813	Tuyệt Tình Cốc	BattleSceneMap07	6	meizi	272	4110	8960	600	100019	100813	230020
+814	Hồ Điệp Cốc	BattleSceneMap08	6	huli	273	4115	9000	600	100020	100814	220019
+815	Thiên Sơn núi tuyết	BattleSceneMap09	6	huoshenya	273	4120	9000	600	100019	100815	210020
+816	Hoạt tử nhân mộ	BattleSceneMap10	6	tuzi	273	4125	9000	600	100020	100816	230019
+817	Hoa Sơn sơn đạo	BattleSceneMap	6	banbanlu	274	4130	9040	600	100019	100817	210019
+818	Hoa Sơn đỉnh	BattleSceneMap01	6	chongwuhu	274	4135	9040	600	100020	100818	220020
+819	Thái Sơn dưới chân	BattleSceneMap02	6	chongwuzhu	274	4140	9040	600	100019	100819	230020
+820	Chung Nam chân núi	BattleSceneMap03	6	yuanhou	275	4145	9080	600	100020	100820	220019
+821	Trùng dương cung	BattleSceneMap04	6	yezhu	275	4150	9080	600	100019	100821	210020
+822	Lâm An	BattleFubenMap	6	xiaoshu	275	4155	9080	600	100020	100822	230019
+823	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	wenbao	276	4160	9125	600	100019	100823	210019
+824	Lưu li tiên cảnh	BattleFubenMap03	6	kongque	276	4165	9125	600	100020	100824	220020
+825	Mờ mịt tiên động	BattleFubenMap04	6	lang	276	4170	9125	600	100019	100825	230020
+826	Tử Tinh bí cảnh	BattleFubenMap05	6	jiaowa	277	4175	9165	600	100020	100826	220019
+827	Giang Nam vùng sông nước	BattleFubenMap06	6	binghun	277	4180	9165	600	100019	100827	210020
+828	Đại thắng quan	BattleFubenMap07	6	huanghedaxia	277	4185	9165	600	100020	100828	230019
+829	Linh cung phế tích	BattleSceneMap11	6	limochou	278	4190	9205	600	100019	100829	210019
+830	Đỗ Khang thôn	BattleSceneMap05s	6	lingmao	278	4195	9205	600	100020	100830	220020
+831	Tây Vực	BattleSceneMap06s	6	luyoujiao	278	4200	9205	600	100019	100831	230020
+832	Tuyệt Tình Cốc	BattleSceneMap07s	6	mayu	279	4205	9245	600	100020	100832	220019
+833	Hồ Điệp Cốc	BattleSceneMap08s	6	qiuchuji	279	4210	9245	600	100019	100833	210020
+834	Thiên Sơn núi tuyết	BattleSceneMap09s	6	qiuqianren	279	4215	9245	600	100020	100834	230019
+835	Hoạt tử nhân mộ	BattleSceneMap10s	6	shouwei	280	4220	9285	600	100019	100835	210019
+836	Hoa Sơn sơn đạo	BattleSceneMaps	6	sunpopo	280	4225	9285	600	100020	100836	220020
+837	Hoa Sơn đỉnh	BattleSceneMap01s	6	yayipangzi	280	4230	9285	600	100019	100837	230020
+838	Thái Sơn dưới chân	BattleSceneMap02s	6	yayishouzi	281	4235	9325	600	100020	100838	220019
+839	Chung Nam chân núi	BattleSceneMap03s	6	yizhiping	281	4240	9325	600	100019	100839	210020
+840	Trùng dương cung	BattleSceneMap04s	6	zhaozhijing	281	4245	9325	600	100020	100840	230019
+841	Đỗ Khang thôn	BattleSceneMap05	6	meizi	282	4250	9485	600	100019	100841	210019
+842	Tây Vực	BattleSceneMap06	6	huli	282	4255	9485	600	100020	100842	220020
+843	Tuyệt Tình Cốc	BattleSceneMap07	6	huoshenya	282	4260	9485	600	100019	100843	230020
+844	Hồ Điệp Cốc	BattleSceneMap08	6	tuzi	283	4265	9530	600	100020	100844	220019
+845	Thiên Sơn núi tuyết	BattleSceneMap09	6	banbanlu	283	4270	9530	600	100019	100845	210020
+846	Hoạt tử nhân mộ	BattleSceneMap10	6	chongwuhu	283	4275	9530	600	100020	100846	230019
+847	Hoa Sơn sơn đạo	BattleSceneMap	6	chongwuzhu	284	4280	9570	600	100019	100847	210019
+848	Hoa Sơn đỉnh	BattleSceneMap01	6	yuanhou	284	4285	9570	600	100020	100848	220020
+849	Thái Sơn dưới chân	BattleSceneMap02	6	yezhu	284	4290	9570	600	100019	100849	230020
+850	Chung Nam chân núi	BattleSceneMap03	6	xiaoshu	285	4295	9615	600	100020	100850	220019
+851	Trùng dương cung	BattleSceneMap04	6	wenbao	285	4300	9615	600	100019	100851	210020
+852	Lâm An	BattleFubenMap	6	kongque	285	4305	9615	600	100020	100852	230019
+853	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	lang	286	4310	9660	600	100019	100853	210019
+854	Lưu li tiên cảnh	BattleFubenMap03	6	jiaowa	286	4315	9660	600	100020	100854	220020
+855	Mờ mịt tiên động	BattleFubenMap04	6	binghun	286	4320	9660	600	100019	100855	230020
+856	Tử Tinh bí cảnh	BattleFubenMap05	6	huanghedaxia	287	4325	9700	600	100020	100856	220019
+857	Giang Nam vùng sông nước	BattleFubenMap06	6	limochou	287	4330	9700	600	100019	100857	210020
+858	Đại thắng quan	BattleFubenMap07	6	lingmao	287	4335	9700	600	100020	100858	230019
+859	Linh cung phế tích	BattleSceneMap11	6	luyoujiao	288	4340	9745	600	100019	100859	210019
+860	Đỗ Khang thôn	BattleSceneMap05s	6	mayu	288	4345	9745	600	100020	100860	220020
+861	Tây Vực	BattleSceneMap06s	6	qiuchuji	288	4350	9745	600	100019	100861	230020
+862	Tuyệt Tình Cốc	BattleSceneMap07s	6	qiuqianren	289	4355	9790	600	100020	100862	220019
+863	Hồ Điệp Cốc	BattleSceneMap08s	6	shouwei	289	4360	9790	600	100019	100863	210020
+864	Thiên Sơn núi tuyết	BattleSceneMap09s	6	sunpopo	289	4365	9790	600	100020	100864	230019
+865	Hoạt tử nhân mộ	BattleSceneMap10s	6	yayipangzi	300	4370	9830	600	100019	100865	210019
+866	Hoa Sơn sơn đạo	BattleSceneMaps	6	yayishouzi	300	4375	9830	600	100020	100866	220020
+867	Hoa Sơn đỉnh	BattleSceneMap01s	6	yizhiping	300	4380	9830	600	100019	100867	230020
+868	Thái Sơn dưới chân	BattleSceneMap02s	6	zhaozhijing	301	4385	9875	600	100020	100868	220019
+869	Chung Nam chân núi	BattleSceneMap03s	6	meizi	301	4390	9875	600	100019	100869	210020
+870	Trùng dương cung	BattleSceneMap04s	6	huli	301	4395	9875	600	100020	100870	230019
+871	Đỗ Khang thôn	BattleSceneMap05	6	huoshenya	302	4400	10010	600	100019	100871	210019
+872	Tây Vực	BattleSceneMap06	6	tuzi	302	4405	10010	600	100020	100872	220020
+873	Tuyệt Tình Cốc	BattleSceneMap07	6	banbanlu	302	4410	10010	600	100019	100873	230020
+874	Hồ Điệp Cốc	BattleSceneMap08	6	chongwuhu	303	4415	10055	600	100020	100874	220019
+875	Thiên Sơn núi tuyết	BattleSceneMap09	6	chongwuzhu	303	4420	10055	600	100019	100875	210020
+876	Hoạt tử nhân mộ	BattleSceneMap10	6	yuanhou	303	4425	10055	600	100020	100876	230019
+877	Hoa Sơn sơn đạo	BattleSceneMap	6	yezhu	304	4430	10105	600	100019	100877	210019
+878	Hoa Sơn đỉnh	BattleSceneMap01	6	xiaoshu	304	4435	10105	600	100020	100878	220020
+879	Thái Sơn dưới chân	BattleSceneMap02	6	wenbao	304	4440	10105	600	100019	100879	230020
+880	Chung Nam chân núi	BattleSceneMap03	6	kongque	305	4445	10195	600	100020	100880	220019
+881	Trùng dương cung	BattleSceneMap04	6	lang	305	4450	10195	600	100019	100881	210020
+882	Lâm An	BattleFubenMap	6	jiaowa	305	4455	10195	600	100020	100882	230019
+883	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	binghun	306	4460	10240	600	100019	100883	210019
+884	Lưu li tiên cảnh	BattleFubenMap03	6	huanghedaxia	306	4465	10240	600	100020	100884	220020
+885	Mờ mịt tiên động	BattleFubenMap04	6	limochou	306	4470	10240	600	100019	100885	230020
+886	Tử Tinh bí cảnh	BattleFubenMap05	6	lingmao	307	4475	10285	600	100020	100886	220019
+887	Giang Nam vùng sông nước	BattleFubenMap06	6	luyoujiao	307	4480	10285	600	100019	100887	210020
+888	Đại thắng quan	BattleFubenMap07	6	mayu	307	4485	10285	600	100020	100888	230019
+889	Linh cung phế tích	BattleSceneMap11	6	qiuchuji	308	4490	10335	600	100019	100889	210019
+890	Đỗ Khang thôn	BattleSceneMap05s	6	qiuqianren	308	4495	10335	600	100020	100890	220020
+891	Tây Vực	BattleSceneMap06s	6	shouwei	308	4500	10335	600	100019	100891	230020
+892	Tuyệt Tình Cốc	BattleSceneMap07s	6	sunpopo	309	4505	10380	600	100020	100892	220019
+893	Hồ Điệp Cốc	BattleSceneMap08s	6	yayipangzi	309	4510	10380	600	100019	100893	210020
+894	Thiên Sơn núi tuyết	BattleSceneMap09s	6	yayishouzi	309	4515	10380	600	100020	100894	230019
+895	Hoạt tử nhân mộ	BattleSceneMap10s	6	yizhiping	310	4520	10425	600	100019	100895	210019
+896	Hoa Sơn sơn đạo	BattleSceneMaps	6	zhaozhijing	310	4525	10425	600	100020	100896	220020
+897	Hoa Sơn đỉnh	BattleSceneMap01s	6	meizi	310	4530	10425	600	100019	100897	230020
+898	Thái Sơn dưới chân	BattleSceneMap02s	6	huli	311	4535	10585	600	100020	100898	220019
+899	Chung Nam chân núi	BattleSceneMap03s	6	huoshenya	311	4540	10585	600	100019	100899	210020
+900	Trùng dương cung	BattleSceneMap04s	6	tuzi	311	4545	10585	600	100020	100900	230019
+901	Đỗ Khang thôn	BattleSceneMap05	6	banbanlu	312	4550	10635	600	100019	100901	210019
+902	Tây Vực	BattleSceneMap06	6	chongwuhu	312	4555	10635	600	100020	100902	220020
+903	Tuyệt Tình Cốc	BattleSceneMap07	6	chongwuzhu	312	4560	10635	600	100019	100903	230020
+904	Hồ Điệp Cốc	BattleSceneMap08	6	yuanhou	313	4565	10680	600	100020	100904	220019
+905	Thiên Sơn núi tuyết	BattleSceneMap09	6	yezhu	313	4570	10680	600	100019	100905	210020
+906	Hoạt tử nhân mộ	BattleSceneMap10	6	xiaoshu	313	4575	10680	600	100020	100906	230019
+907	Hoa Sơn sơn đạo	BattleSceneMap	6	wenbao	314	4580	10730	600	100019	100907	210019
+908	Hoa Sơn đỉnh	BattleSceneMap01	6	kongque	314	4585	10730	600	100020	100908	220020
+909	Thái Sơn dưới chân	BattleSceneMap02	6	lang	314	4590	10730	600	100019	100909	230020
+910	Chung Nam chân núi	BattleSceneMap03	6	jiaowa	315	4595	10780	600	100020	100910	220019
+911	Trùng dương cung	BattleSceneMap04	6	binghun	315	4600	10780	600	100019	100911	210020
+912	Lâm An	BattleFubenMap	6	huanghedaxia	315	4605	10780	600	100020	100912	230019
+913	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	limochou	316	4610	10830	600	100019	100913	210019
+914	Lưu li tiên cảnh	BattleFubenMap03	6	lingmao	316	4615	10830	600	100020	100914	220020
+915	Mờ mịt tiên động	BattleFubenMap04	6	luyoujiao	316	4620	10830	600	100019	100915	230020
+916	Tử Tinh bí cảnh	BattleFubenMap05	6	mayu	317	4625	10880	600	100020	100916	220019
+917	Giang Nam vùng sông nước	BattleFubenMap06	6	qiuchuji	317	4630	10880	600	100019	100917	210020
+918	Đại thắng quan	BattleFubenMap07	6	qiuqianren	317	4635	10880	600	100020	100918	230019
+919	Linh cung phế tích	BattleSceneMap11	6	shouwei	318	4640	10925	600	100019	100919	210019
+920	Đỗ Khang thôn	BattleSceneMap05s	6	sunpopo	318	4645	10925	600	100020	100920	220020
+921	Tây Vực	BattleSceneMap06s	6	yayipangzi	318	4650	10925	600	100019	100921	230020
+922	Tuyệt Tình Cốc	BattleSceneMap07s	6	yayishouzi	319	4655	10975	600	100020	100922	220019
+923	Hồ Điệp Cốc	BattleSceneMap08s	6	yizhiping	319	4660	10975	600	100019	100923	210020
+924	Thiên Sơn núi tuyết	BattleSceneMap09s	6	zhaozhijing	319	4665	10975	600	100020	100924	230019
+925	Hoạt tử nhân mộ	BattleSceneMap10s	6	meizi	320	4670	11025	600	100019	100925	210019
+926	Hoa Sơn sơn đạo	BattleSceneMaps	6	huli	320	4675	11025	600	100020	100926	220020
+927	Hoa Sơn đỉnh	BattleSceneMap01s	6	huoshenya	320	4680	11025	600	100019	100927	230020
+928	Thái Sơn dưới chân	BattleSceneMap02s	6	tuzi	321	4685	11155	600	100020	100928	220019
+929	Chung Nam chân núi	BattleSceneMap03s	6	banbanlu	321	4690	11155	600	100019	100929	210020
+930	Trùng dương cung	BattleSceneMap04s	6	chongwuhu	321	4695	11155	600	100020	100930	230019
+931	Đỗ Khang thôn	BattleSceneMap05	6	chongwuzhu	322	4700	14995	600	100019	100931	210019
+932	Tây Vực	BattleSceneMap06	6	yuanhou	322	4705	14995	600	100020	100932	220020
+933	Tuyệt Tình Cốc	BattleSceneMap07	6	yezhu	322	4710	14995	600	100019	100933	230020
+934	Hồ Điệp Cốc	BattleSceneMap08	6	xiaoshu	323	4715	15045	600	100020	100934	220019
+935	Thiên Sơn núi tuyết	BattleSceneMap09	6	wenbao	323	4720	15045	600	100019	100935	210020
+936	Hoạt tử nhân mộ	BattleSceneMap10	6	kongque	323	4725	15045	600	100020	100936	230019
+937	Hoa Sơn sơn đạo	BattleSceneMap	6	lang	324	4730	15100	600	100019	100937	210019
+938	Hoa Sơn đỉnh	BattleSceneMap01	6	jiaowa	324	4735	15100	600	100020	100938	220020
+939	Thái Sơn dưới chân	BattleSceneMap02	6	binghun	324	4740	15100	600	100019	100939	230020
+940	Chung Nam chân núi	BattleSceneMap03	6	huanghedaxia	325	4745	15150	600	100020	100940	220019
+941	Trùng dương cung	BattleSceneMap04	6	limochou	325	4750	15150	600	100019	100941	210020
+942	Lâm An	BattleFubenMap	6	lingmao	325	4755	15150	600	100020	100942	230019
+943	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	luyoujiao	326	4760	15200	600	100019	100943	210019
+944	Lưu li tiên cảnh	BattleFubenMap03	6	mayu	326	4765	15200	600	100020	100944	220020
+945	Mờ mịt tiên động	BattleFubenMap04	6	qiuchuji	326	4770	15200	600	100019	100945	230020
+946	Tử Tinh bí cảnh	BattleFubenMap05	6	qiuqianren	327	4775	15255	600	100020	100946	220019
+947	Giang Nam vùng sông nước	BattleFubenMap06	6	shouwei	327	4780	15255	600	100019	100947	210020
+948	Đại thắng quan	BattleFubenMap07	6	sunpopo	327	4785	15255	600	100020	100948	230019
+949	Linh cung phế tích	BattleSceneMap11	6	yayipangzi	328	4790	15305	600	100019	100949	210019
+950	Đỗ Khang thôn	BattleSceneMap05s	6	yayishouzi	328	4795	15305	600	100020	100950	220020
+951	Tây Vực	BattleSceneMap06s	6	yizhiping	328	4800	15305	600	100019	100951	230020
+952	Tuyệt Tình Cốc	BattleSceneMap07s	6	zhaozhijing	329	4805	15360	600	100020	100952	220019
+953	Hồ Điệp Cốc	BattleSceneMap08s	6	meizi	329	4810	15360	600	100019	100953	210020
+954	Thiên Sơn núi tuyết	BattleSceneMap09s	6	huli	329	4815	15360	600	100020	100954	230019
+955	Hoạt tử nhân mộ	BattleSceneMap10s	6	huoshenya	330	4820	15410	600	100019	100955	210019
+956	Hoa Sơn sơn đạo	BattleSceneMaps	6	tuzi	330	4825	15410	600	100020	100956	220020
+957	Hoa Sơn đỉnh	BattleSceneMap01s	6	banbanlu	330	4830	15410	600	100019	100957	230020
+958	Thái Sơn dưới chân	BattleSceneMap02s	6	chongwuhu	331	4835	15515	600	100020	100958	220019
+959	Chung Nam chân núi	BattleSceneMap03s	6	chongwuzhu	331	4840	15515	600	100019	100959	210020
+960	Trùng dương cung	BattleSceneMap04s	6	yuanhou	331	4845	15515	600	100020	100960	230019
+961	Đỗ Khang thôn	BattleSceneMap05	6	yezhu	332	4850	15570	600	100019	100961	210019
+962	Tây Vực	BattleSceneMap06	6	xiaoshu	332	4855	15570	600	100020	100962	220020
+963	Tuyệt Tình Cốc	BattleSceneMap07	6	wenbao	332	4860	15570	600	100019	100963	230020
+964	Hồ Điệp Cốc	BattleSceneMap08	6	kongque	333	4865	15625	600	100020	100964	220019
+965	Thiên Sơn núi tuyết	BattleSceneMap09	6	lang	333	4870	15625	600	100019	100965	210020
+966	Hoạt tử nhân mộ	BattleSceneMap10	6	jiaowa	333	4875	15625	600	100020	100966	230019
+967	Hoa Sơn sơn đạo	BattleSceneMap	6	binghun	334	4880	15680	600	100019	100967	210019
+968	Hoa Sơn đỉnh	BattleSceneMap01	6	huanghedaxia	334	4885	15680	600	100020	100968	220020
+969	Thái Sơn dưới chân	BattleSceneMap02	6	limochou	334	4890	15680	600	100019	100969	230020
+970	Chung Nam chân núi	BattleSceneMap03	6	lingmao	335	4895	15735	600	100020	100970	220019
+971	Trùng dương cung	BattleSceneMap04	6	luyoujiao	335	4900	15735	600	100019	100971	210020
+972	Lâm An	BattleFubenMap	6	mayu	335	4905	15735	600	100020	100972	230019
+973	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	qiuchuji	336	4910	15790	600	100019	100973	210019
+974	Lưu li tiên cảnh	BattleFubenMap03	6	qiuqianren	336	4915	15790	600	100020	100974	220020
+975	Mờ mịt tiên động	BattleFubenMap04	6	shouwei	336	4920	15790	600	100019	100975	230020
+976	Tử Tinh bí cảnh	BattleFubenMap05	6	sunpopo	337	4925	15845	600	100020	100976	220019
+977	Giang Nam vùng sông nước	BattleFubenMap06	6	yayipangzi	337	4930	15845	600	100019	100977	210020
+978	Đại thắng quan	BattleFubenMap07	6	yayishouzi	337	4935	15845	600	100020	100978	230019
+979	Linh cung phế tích	BattleSceneMap11	6	yizhiping	338	4940	15900	600	100019	100979	210019
+980	Đỗ Khang thôn	BattleSceneMap05s	6	zhaozhijing	338	4945	15900	600	100020	100980	220020
+981	Tây Vực	BattleSceneMap06s	6	meizi	338	4950	15900	600	100019	100981	230020
+982	Tuyệt Tình Cốc	BattleSceneMap07s	6	huli	339	4955	15955	600	100020	100982	220019
+983	Hồ Điệp Cốc	BattleSceneMap08s	6	huoshenya	339	4960	15955	600	100019	100983	210020
+984	Thiên Sơn núi tuyết	BattleSceneMap09s	6	tuzi	339	4965	15955	600	100020	100984	230019
+985	Hoạt tử nhân mộ	BattleSceneMap10s	6	banbanlu	340	4970	16010	600	100019	100985	210019
+986	Hoa Sơn sơn đạo	BattleSceneMaps	6	chongwuhu	340	4975	16010	600	100020	100986	220020
+987	Hoa Sơn đỉnh	BattleSceneMap01s	6	chongwuzhu	340	4980	16010	600	100019	100987	230020
+988	Thái Sơn dưới chân	BattleSceneMap02s	6	yuanhou	341	4985	16135	600	100020	100988	220019
+989	Chung Nam chân núi	BattleSceneMap03s	6	yezhu	341	4990	16135	600	100019	100989	210020
+990	Trùng dương cung	BattleSceneMap04s	6	xiaoshu	341	4995	16135	600	100020	100990	230019
+991	Đỗ Khang thôn	BattleSceneMap05	6	wenbao	342	5000	16195	600	100019	100991	210019
+992	Tây Vực	BattleSceneMap06	6	kongque	342	5005	16195	600	100020	100992	220020
+993	Tuyệt Tình Cốc	BattleSceneMap07	6	lang	342	5010	16195	600	100019	100993	230020
+994	Hồ Điệp Cốc	BattleSceneMap08	6	jiaowa	343	5015	16250	600	100020	100994	220019
+995	Thiên Sơn núi tuyết	BattleSceneMap09	6	binghun	343	5020	16250	600	100019	100995	210020
+996	Hoạt tử nhân mộ	BattleSceneMap10	6	huanghedaxia	343	5025	16250	600	100020	100996	230019
+997	Hoa Sơn sơn đạo	BattleSceneMap	6	limochou	344	5030	16310	600	100019	100997	210019
+998	Hoa Sơn đỉnh	BattleSceneMap01	6	lingmao	344	5035	16310	600	100020	100998	220020
+999	Thái Sơn dưới chân	BattleSceneMap02	6	luyoujiao	344	5040	16310	600	100019	100999	230020
+1000	Chung Nam chân núi	BattleSceneMap03	6	mayu	345	5045	16370	600	100020	101000	220019
+1001	Tây Vực	BattleSceneMap06s	6	limochou	345	5050	16370	600	100019	101001	230020
+1002	Tuyệt Tình Cốc	BattleSceneMap07s	6	lingmao	345	5055	16370	600	100020	101002	220019
+1003	Hồ Điệp Cốc	BattleSceneMap08s	6	luyoujiao	346	5060	16425	600	100019	101003	210020
+1004	Thiên Sơn núi tuyết	BattleSceneMap09s	6	mayu	346	5065	16425	600	100020	101004	230019
+1005	Hoạt tử nhân mộ	BattleSceneMap10s	6	qiuchuji	346	5070	16425	600	100019	101005	210019
+1006	Hoa Sơn sơn đạo	BattleSceneMaps	6	qiuqianren	347	5075	16485	600	100020	101006	220020
+1007	Hoa Sơn đỉnh	BattleSceneMap01s	6	shouwei	347	5080	16485	600	100019	101007	230020
+1008	Thái Sơn dưới chân	BattleSceneMap02s	6	sunpopo	347	5085	16485	600	100020	101008	220019
+1009	Chung Nam chân núi	BattleSceneMap03s	6	yayipangzi	348	5090	16545	600	100019	101009	210020
+1010	Trùng dương cung	BattleSceneMap04s	6	yayishouzi	348	5095	16545	600	100020	101010	230019
+1011	Đỗ Khang thôn	BattleSceneMap05	6	yizhiping	348	5100	16545	600	100019	101011	210019
+1012	Tây Vực	BattleSceneMap06	6	zhaozhijing	349	5105	16600	600	100020	101012	220020
+1013	Tuyệt Tình Cốc	BattleSceneMap07	6	meizi	349	5110	16600	600	100019	101013	230020
+1014	Hồ Điệp Cốc	BattleSceneMap08	6	huli	349	5115	16600	600	100020	101014	220019
+1015	Thiên Sơn núi tuyết	BattleSceneMap09	6	huoshenya	350	5120	16660	600	100019	101015	210020
+1016	Hoạt tử nhân mộ	BattleSceneMap10	6	tuzi	350	5125	16660	600	100020	101016	230019
+1017	Hoa Sơn sơn đạo	BattleSceneMap	6	banbanlu	350	5130	16660	600	100019	101017	210019
+1018	Hoa Sơn đỉnh	BattleSceneMap01	6	chongwuhu	351	5135	16755	600	100020	101018	220020
+1019	Thái Sơn dưới chân	BattleSceneMap02	6	chongwuzhu	351	5140	16755	600	100019	101019	230020
+1020	Chung Nam chân núi	BattleSceneMap03	6	yuanhou	351	5145	16755	600	100020	101020	220019
+1021	Trùng dương cung	BattleSceneMap04	6	yezhu	352	5150	16820	600	100019	101021	210020
+1022	Lâm An	BattleFubenMap	6	xiaoshu	352	5155	16820	600	100020	101022	230019
+1023	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	wenbao	352	5160	16820	600	100019	101023	210019
+1024	Lưu li tiên cảnh	BattleFubenMap03	6	kongque	353	5165	16880	600	100020	101024	220020
+1025	Mờ mịt tiên động	BattleFubenMap04	6	lang	353	5170	16880	600	100019	101025	230020
+1026	Tử Tinh bí cảnh	BattleFubenMap05	6	jiaowa	353	5175	16880	600	100020	101026	220019
+1027	Giang Nam vùng sông nước	BattleFubenMap06	6	binghun	354	5180	16940	600	100019	101027	210020
+1028	Đại thắng quan	BattleFubenMap07	6	huanghedaxia	354	5185	16940	600	100020	101028	230019
+1029	Linh cung phế tích	BattleSceneMap11	6	limochou	354	5190	16940	600	100019	101029	210019
+1030	Đỗ Khang thôn	BattleSceneMap05s	6	lingmao	355	5195	17005	600	100020	101030	220020
+1031	Tây Vực	BattleSceneMap06s	6	luyoujiao	355	5200	17005	600	100019	101031	230020
+1032	Tuyệt Tình Cốc	BattleSceneMap07s	6	mayu	355	5205	17005	600	100020	101032	220019
+1033	Hồ Điệp Cốc	BattleSceneMap08s	6	qiuchuji	356	5210	17065	600	100019	101033	210020
+1034	Thiên Sơn núi tuyết	BattleSceneMap09s	6	qiuqianren	356	5215	17065	600	100020	101034	230019
+1035	Hoạt tử nhân mộ	BattleSceneMap10s	6	shouwei	356	5220	17065	600	100019	101035	210019
+1036	Hoa Sơn sơn đạo	BattleSceneMaps	6	sunpopo	357	5225	17125	600	100020	101036	220020
+1037	Hoa Sơn đỉnh	BattleSceneMap01s	6	yayipangzi	357	5230	17125	600	100019	101037	230020
+1038	Thái Sơn dưới chân	BattleSceneMap02s	6	yayishouzi	357	5235	17125	600	100020	101038	220019
+1039	Chung Nam chân núi	BattleSceneMap03s	6	yizhiping	358	5240	17250	600	100019	101039	210020
+1040	Trùng dương cung	BattleSceneMap04s	6	zhaozhijing	358	5245	17250	600	100020	101040	230019
+1041	Đỗ Khang thôn	BattleSceneMap05	6	meizi	358	5250	17250	600	100019	101041	210019
+1042	Tây Vực	BattleSceneMap06	6	huli	359	5255	17310	600	100020	101042	220020
+1043	Tuyệt Tình Cốc	BattleSceneMap07	6	huoshenya	359	5260	17310	600	100019	101043	230020
+1044	Hồ Điệp Cốc	BattleSceneMap08	6	tuzi	359	5265	17310	600	100020	101044	220019
+1045	Thiên Sơn núi tuyết	BattleSceneMap09	6	banbanlu	360	5270	17375	600	100019	101045	210020
+1046	Hoạt tử nhân mộ	BattleSceneMap10	6	chongwuhu	360	5275	17375	600	100020	101046	230019
+1047	Hoa Sơn sơn đạo	BattleSceneMap	6	chongwuzhu	360	5280	17375	600	100019	101047	210019
+1048	Hoa Sơn đỉnh	BattleSceneMap01	6	yuanhou	361	5285	17440	600	100020	101048	220020
+1049	Thái Sơn dưới chân	BattleSceneMap02	6	yezhu	361	5290	17440	600	100019	101049	230020
+1050	Chung Nam chân núi	BattleSceneMap03	6	xiaoshu	361	5295	17440	600	100020	101050	220019
+1051	Trùng dương cung	BattleSceneMap04	6	wenbao	362	5300	17505	600	100019	101051	210020
+1052	Lâm An	BattleFubenMap	6	kongque	362	5305	17505	600	100020	101052	230019
+1053	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	lang	362	5310	17505	600	100019	101053	210019
+1054	Lưu li tiên cảnh	BattleFubenMap03	6	jiaowa	363	5315	17570	600	100020	101054	220020
+1055	Mờ mịt tiên động	BattleFubenMap04	6	binghun	363	5320	17570	600	100019	101055	230020
+1056	Tử Tinh bí cảnh	BattleFubenMap05	6	huanghedaxia	363	5325	17570	600	100020	101056	220019
+1057	Giang Nam vùng sông nước	BattleFubenMap06	6	limochou	364	5330	17635	600	100019	101057	210020
+1058	Đại thắng quan	BattleFubenMap07	6	lingmao	364	5335	17635	600	100020	101058	230019
+1059	Linh cung phế tích	BattleSceneMap11	6	luyoujiao	364	5340	17635	600	100019	101059	210019
+1060	Đỗ Khang thôn	BattleSceneMap05s	6	mayu	365	5345	17700	600	100020	101060	220020
+1061	Tây Vực	BattleSceneMap06s	6	qiuchuji	365	5350	17700	600	100019	101061	230020
+1062	Tuyệt Tình Cốc	BattleSceneMap07s	6	qiuqianren	365	5355	17700	600	100020	101062	220019
+1063	Hồ Điệp Cốc	BattleSceneMap08s	6	shouwei	366	5360	17765	600	100019	101063	210020
+1064	Thiên Sơn núi tuyết	BattleSceneMap09s	6	sunpopo	366	5365	17765	600	100020	101064	230019
+1065	Hoạt tử nhân mộ	BattleSceneMap10s	6	yayipangzi	366	5370	17765	600	100019	101065	210019
+1066	Hoa Sơn sơn đạo	BattleSceneMaps	6	yayishouzi	367	5375	17830	600	100020	101066	220020
+1067	Hoa Sơn đỉnh	BattleSceneMap01s	6	yizhiping	367	5380	17830	600	100019	101067	230020
+1068	Thái Sơn dưới chân	BattleSceneMap02s	6	zhaozhijing	367	5385	17830	600	100020	101068	220019
+1069	Chung Nam chân núi	BattleSceneMap03s	6	meizi	368	5390	17895	600	100019	101069	210020
+1070	Trùng dương cung	BattleSceneMap04s	6	huli	368	5395	17895	600	100020	101070	230019
+1071	Đỗ Khang thôn	BattleSceneMap05	6	huoshenya	368	5400	17895	600	100019	101071	210019
+1072	Tây Vực	BattleSceneMap06	6	tuzi	369	5405	17960	600	100020	101072	220020
+1073	Tuyệt Tình Cốc	BattleSceneMap07	6	banbanlu	369	5410	17960	600	100019	101073	230020
+1074	Hồ Điệp Cốc	BattleSceneMap08	6	chongwuhu	369	5415	17960	600	100020	101074	220019
+1075	Thiên Sơn núi tuyết	BattleSceneMap09	6	chongwuzhu	370	5420	18045	600	100019	101075	210020
+1076	Hoạt tử nhân mộ	BattleSceneMap10	6	yuanhou	370	5425	18045	600	100020	101076	230019
+1077	Hoa Sơn sơn đạo	BattleSceneMap	6	yezhu	370	5430	18045	600	100019	101077	210019
+1078	Hoa Sơn đỉnh	BattleSceneMap01	6	xiaoshu	371	5435	18115	600	100020	101078	220020
+1079	Thái Sơn dưới chân	BattleSceneMap02	6	wenbao	371	5440	18115	600	100019	101079	230020
+1080	Chung Nam chân núi	BattleSceneMap03	6	kongque	371	5445	18115	600	100020	101080	220019
+1081	Trùng dương cung	BattleSceneMap04	6	lang	372	5450	18180	600	100019	101081	210020
+1082	Lâm An	BattleFubenMap	6	jiaowa	372	5455	18180	600	100020	101082	230019
+1083	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	binghun	372	5460	18180	600	100019	101083	210019
+1084	Lưu li tiên cảnh	BattleFubenMap03	6	huanghedaxia	373	5465	18250	600	100020	101084	220020
+1085	Mờ mịt tiên động	BattleFubenMap04	6	limochou	373	5470	18250	600	100019	101085	230020
+1086	Tử Tinh bí cảnh	BattleFubenMap05	6	lingmao	373	5475	18250	600	100020	101086	220019
+1087	Giang Nam vùng sông nước	BattleFubenMap06	6	luyoujiao	374	5480	18320	600	100019	101087	210020
+1088	Đại thắng quan	BattleFubenMap07	6	mayu	374	5485	18320	600	100020	101088	230019
+1089	Linh cung phế tích	BattleSceneMap11	6	qiuchuji	374	5490	18320	600	100019	101089	210019
+1090	Đỗ Khang thôn	BattleSceneMap05s	6	qiuqianren	375	5495	18385	600	100020	101090	220020
+1091	Tây Vực	BattleSceneMap06s	6	shouwei	375	5500	18385	600	100019	101091	230020
+1092	Tuyệt Tình Cốc	BattleSceneMap07s	6	sunpopo	375	5505	18385	600	100020	101092	220019
+1093	Hồ Điệp Cốc	BattleSceneMap08s	6	yayipangzi	376	5510	18455	600	100019	101093	210020
+1094	Thiên Sơn núi tuyết	BattleSceneMap09s	6	yayishouzi	376	5515	18455	600	100020	101094	230019
+1095	Hoạt tử nhân mộ	BattleSceneMap10s	6	yizhiping	376	5520	18455	600	100019	101095	210019
+1096	Hoa Sơn sơn đạo	BattleSceneMaps	6	zhaozhijing	377	5525	18525	600	100020	101096	220020
+1097	Hoa Sơn đỉnh	BattleSceneMap01s	6	meizi	377	5530	18525	600	100019	101097	230020
+1098	Thái Sơn dưới chân	BattleSceneMap02s	6	huli	377	5535	18525	600	100020	101098	220019
+1099	Chung Nam chân núi	BattleSceneMap03s	6	huoshenya	378	5540	18590	600	100019	101099	210020
+1100	Trùng dương cung	BattleSceneMap04s	6	tuzi	378	5545	18590	600	100020	101100	230019
+1101	Đỗ Khang thôn	BattleSceneMap05	6	banbanlu	378	5550	18590	600	100019	101101	210019
+1102	Tây Vực	BattleSceneMap06	6	chongwuhu	379	5555	18660	600	100020	101102	220020
+1103	Tuyệt Tình Cốc	BattleSceneMap07	6	chongwuzhu	379	5560	18660	600	100019	101103	230020
+1104	Hồ Điệp Cốc	BattleSceneMap08	6	yuanhou	379	5565	18660	600	100020	101104	220019
+1105	Thiên Sơn núi tuyết	BattleSceneMap09	6	yezhu	380	5570	18715	600	100019	101105	210020
+1106	Hoạt tử nhân mộ	BattleSceneMap10	6	xiaoshu	380	5575	18715	600	100020	101106	230019
+1107	Hoa Sơn sơn đạo	BattleSceneMap	6	wenbao	380	5580	18715	600	100019	101107	210019
+1108	Hoa Sơn đỉnh	BattleSceneMap01	6	kongque	381	5585	18785	600	100020	101108	220020
+1109	Thái Sơn dưới chân	BattleSceneMap02	6	lang	381	5590	18785	600	100019	101109	230020
+1110	Chung Nam chân núi	BattleSceneMap03	6	jiaowa	381	5595	18785	600	100020	101110	220019
+1111	Trùng dương cung	BattleSceneMap04	6	binghun	382	5600	18860	600	100019	101111	210020
+1112	Lâm An	BattleFubenMap	6	huanghedaxia	382	5605	18860	600	100020	101112	230019
+1113	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	limochou	382	5610	18860	600	100019	101113	210019
+1114	Lưu li tiên cảnh	BattleFubenMap03	6	lingmao	383	5615	18930	600	100020	101114	220020
+1115	Mờ mịt tiên động	BattleFubenMap04	6	luyoujiao	383	5620	18930	600	100019	101115	230020
+1116	Tử Tinh bí cảnh	BattleFubenMap05	6	mayu	383	5625	18930	600	100020	101116	220019
+1117	Giang Nam vùng sông nước	BattleFubenMap06	6	qiuchuji	384	5630	19000	600	100019	101117	210020
+1118	Đại thắng quan	BattleFubenMap07	6	qiuqianren	384	5635	19000	600	100020	101118	230019
+1119	Linh cung phế tích	BattleSceneMap11	6	shouwei	384	5640	19000	600	100019	101119	210019
+1120	Đỗ Khang thôn	BattleSceneMap05s	6	sunpopo	385	5645	19075	600	100020	101120	220020
+1121	Tây Vực	BattleSceneMap06s	6	yayipangzi	385	5650	19075	600	100019	101121	230020
+1122	Tuyệt Tình Cốc	BattleSceneMap07s	6	yayishouzi	385	5655	19075	600	100020	101122	220019
+1123	Hồ Điệp Cốc	BattleSceneMap08s	6	yizhiping	386	5660	19145	600	100019	101123	210020
+1124	Thiên Sơn núi tuyết	BattleSceneMap09s	6	zhaozhijing	386	5665	19145	600	100020	101124	230019
+1125	Hoạt tử nhân mộ	BattleSceneMap10s	6	meizi	386	5670	19145	600	100019	101125	210019
+1126	Hoa Sơn sơn đạo	BattleSceneMaps	6	huli	387	5675	19215	600	100020	101126	220020
+1127	Hoa Sơn đỉnh	BattleSceneMap01s	6	huoshenya	387	5680	19215	600	100019	101127	230020
+1128	Thái Sơn dưới chân	BattleSceneMap02s	6	tuzi	387	5685	19215	600	100020	101128	220019
+1129	Chung Nam chân núi	BattleSceneMap03s	6	banbanlu	388	5690	19290	600	100019	101129	210020
+1130	Trùng dương cung	BattleSceneMap04s	6	chongwuhu	388	5695	19290	600	100020	101130	230019
+1131	Đỗ Khang thôn	BattleSceneMap05	6	chongwuzhu	388	5700	19290	600	100019	101131	210019
+1132	Tây Vực	BattleSceneMap06	6	yuanhou	389	5705	19360	600	100020	101132	220020
+1133	Tuyệt Tình Cốc	BattleSceneMap07	6	yezhu	389	5710	19360	600	100019	101133	230020
+1134	Hồ Điệp Cốc	BattleSceneMap08	6	xiaoshu	389	5715	19360	600	100020	101134	220019
+1135	Thiên Sơn núi tuyết	BattleSceneMap09	6	wenbao	390	5720	19430	600	100019	101135	210020
+1136	Hoạt tử nhân mộ	BattleSceneMap10	6	kongque	390	5725	19430	600	100020	101136	230019
+1137	Hoa Sơn sơn đạo	BattleSceneMap	6	lang	390	5730	19430	600	100019	101137	210019
+1138	Hoa Sơn đỉnh	BattleSceneMap01	6	jiaowa	391	5735	27005	600	100020	101138	220020
+1139	Thái Sơn dưới chân	BattleSceneMap02	6	binghun	391	5740	27005	600	100019	101139	230020
+1140	Chung Nam chân núi	BattleSceneMap03	6	huanghedaxia	391	5745	27005	600	100020	101140	220019
+1141	Trùng dương cung	BattleSceneMap04	6	limochou	392	5750	27080	600	100019	101141	210020
+1142	Lâm An	BattleFubenMap	6	lingmao	392	5755	27080	600	100020	101142	230019
+1143	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	luyoujiao	392	5760	27080	600	100019	101143	210019
+1144	Lưu li tiên cảnh	BattleFubenMap03	6	mayu	393	5765	27155	600	100020	101144	220020
+1145	Mờ mịt tiên động	BattleFubenMap04	6	qiuchuji	393	5770	27155	600	100019	101145	230020
+1146	Tử Tinh bí cảnh	BattleFubenMap05	6	qiuqianren	393	5775	27155	600	100020	101146	220019
+1147	Giang Nam vùng sông nước	BattleFubenMap06	6	shouwei	394	5780	27235	600	100019	101147	210020
+1148	Đại thắng quan	BattleFubenMap07	6	sunpopo	394	5785	27235	600	100020	101148	230019
+1149	Linh cung phế tích	BattleSceneMap11	6	yayipangzi	394	5790	27235	600	100019	101149	210019
+1150	Đỗ Khang thôn	BattleSceneMap05s	6	yayishouzi	395	5795	27310	600	100020	101150	220020
+1151	Tây Vực	BattleSceneMap06s	6	yizhiping	395	5800	27310	600	100019	101151	230020
+1152	Tuyệt Tình Cốc	BattleSceneMap07s	6	zhaozhijing	395	5805	27310	600	100020	101152	220019
+1153	Hồ Điệp Cốc	BattleSceneMap08s	6	meizi	396	5810	27385	600	100019	101153	210020
+1154	Thiên Sơn núi tuyết	BattleSceneMap09s	6	huli	396	5815	27385	600	100020	101154	230019
+1155	Hoạt tử nhân mộ	BattleSceneMap10s	6	huoshenya	396	5820	27385	600	100019	101155	210019
+1156	Hoa Sơn sơn đạo	BattleSceneMaps	6	tuzi	397	5825	27460	600	100020	101156	220020
+1157	Hoa Sơn đỉnh	BattleSceneMap01s	6	banbanlu	397	5830	27460	600	100019	101157	230020
+1158	Thái Sơn dưới chân	BattleSceneMap02s	6	chongwuhu	397	5835	27460	600	100020	101158	220019
+1159	Chung Nam chân núi	BattleSceneMap03s	6	chongwuzhu	398	5840	27725	600	100019	101159	210020
+1160	Trùng dương cung	BattleSceneMap04s	6	yuanhou	398	5845	27725	600	100020	101160	230019
+1161	Đỗ Khang thôn	BattleSceneMap05	6	yezhu	398	5850	27725	600	100019	101161	210019
+1162	Tây Vực	BattleSceneMap06	6	xiaoshu	399	5855	27805	600	100020	101162	220020
+1163	Tuyệt Tình Cốc	BattleSceneMap07	6	wenbao	399	5860	27805	600	100019	101163	230020
+1164	Hồ Điệp Cốc	BattleSceneMap08	6	kongque	399	5865	27805	600	100020	101164	220019
+1165	Thiên Sơn núi tuyết	BattleSceneMap09	6	lang	400	5870	27885	600	100019	101165	210020
+1166	Hoạt tử nhân mộ	BattleSceneMap10	6	jiaowa	400	5875	27885	600	100020	101166	230019
+1167	Hoa Sơn sơn đạo	BattleSceneMap	6	binghun	400	5880	27885	600	100019	101167	210019
+1168	Hoa Sơn đỉnh	BattleSceneMap01	6	huanghedaxia	401	5885	27965	600	100020	101168	220020
+1169	Thái Sơn dưới chân	BattleSceneMap02	6	limochou	401	5890	27965	600	100019	101169	230020
+1170	Chung Nam chân núi	BattleSceneMap03	6	lingmao	401	5895	27965	600	100020	101170	220019
+1171	Trùng dương cung	BattleSceneMap04	6	luyoujiao	402	5900	28045	600	100019	101171	210020
+1172	Lâm An	BattleFubenMap	6	mayu	402	5905	28045	600	100020	101172	230019
+1173	Ánh sáng đom đóm rừng rậm	BattleFubenMap02	6	qiuchuji	402	5910	28045	600	100019	101173	210019
+1174	Lưu li tiên cảnh	BattleFubenMap03	6	qiuqianren	403	5915	28120	600	100020	101174	220020
+1175	Mờ mịt tiên động	BattleFubenMap04	6	shouwei	403	5920	28120	600	100019	101175	230020
+1176	Tử Tinh bí cảnh	BattleFubenMap05	6	sunpopo	403	5925	28120	600	100020	101176	220019
+1177	Giang Nam vùng sông nước	BattleFubenMap06	6	yayipangzi	404	5930	28200	600	100019	101177	210020
+1178	Đại thắng quan	BattleFubenMap07	6	yayishouzi	404	5935	28200	600	100020	101178	230019
+1179	Linh cung phế tích	BattleSceneMap11	6	yizhiping	404	5940	28200	600	100019	101179	210019
+1180	Đỗ Khang thôn	BattleSceneMap05s	6	zhaozhijing	405	5945	28280	600	100020	101180	220020
+1181	Tây Vực	BattleSceneMap06s	6	meizi	405	5950	28280	600	100019	101181	230020
+1182	Tuyệt Tình Cốc	BattleSceneMap07s	6	huli	405	5955	28280	600	100020	101182	220019
+1183	Hồ Điệp Cốc	BattleSceneMap08s	6	huoshenya	406	5960	28360	600	100019	101183	210020
+1184	Thiên Sơn núi tuyết	BattleSceneMap09s	6	tuzi	406	5965	28360	600	100020	101184	230019
+1185	Hoạt tử nhân mộ	BattleSceneMap10s	6	banbanlu	406	5970	28360	600	100019	101185	210019
+1186	Hoa Sơn sơn đạo	BattleSceneMaps	6	chongwuhu	407	5975	28365	600	100020	101186	220020
+1187	Hoa Sơn đỉnh	BattleSceneMap01s	6	chongwuzhu	407	5980	28365	600	100019	101187	230020
+1188	Thái Sơn dưới chân	BattleSceneMap02s	6	yuanhou	407	5985	28365	600	100020	101188	220019
+1189	Chung Nam chân núi	BattleSceneMap03s	6	yezhu	408	5990	28445	600	100019	101189	210020
+1190	Trùng dương cung	BattleSceneMap04s	6	xiaoshu	408	5995	28445	600	100020	101190	230019
+1191	Đỗ Khang thôn	BattleSceneMap05	6	wenbao	408	6000	28445	600	100019	101191	210019
+1192	Tây Vực	BattleSceneMap06	6	kongque	409	6005	28530	600	100020	101192	220020
+1193	Tuyệt Tình Cốc	BattleSceneMap07	6	lang	409	6010	28530	600	100019	101193	230020
+1194	Hồ Điệp Cốc	BattleSceneMap08	6	jiaowa	409	6015	28530	600	100020	101194	220019
+1195	Thiên Sơn núi tuyết	BattleSceneMap09	6	binghun	410	6020	28610	600	100019	101195	210020
+1196	Hoạt tử nhân mộ	BattleSceneMap10	6	huanghedaxia	410	6025	28610	600	100020	101196	230019
+1197	Hoa Sơn sơn đạo	BattleSceneMap	6	limochou	410	6030	28610	600	100019	101197	210019
+1198	Hoa Sơn đỉnh	BattleSceneMap01	6	lingmao	411	6035	28695	600	100020	101198	220020
+1199	Thái Sơn dưới chân	BattleSceneMap02	6	luyoujiao	411	6040	28695	600	100019	101199	230020
+1200	Chung Nam chân núi	BattleSceneMap03	6	mayu	411	6045	28695	600	100020	101200	220019

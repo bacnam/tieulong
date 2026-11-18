@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WorldBossRewardPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<e:Group width="591" height="847" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false"  scaleX="1" scaleY="1">
+			<e:Image source="ui_bg_png" x="2.6700000000000017" y="-2" scaleX="1" scaleY="1"/>
+			<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="65.35" scaleX="1" scaleY="1" width="550" height="747" horizontalCenter="0" x="34"/>
+			<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="104.35000000000002" scaleX="1" scaleY="1" width="520" height="540" horizontalCenter="0" x="49"/>
+			<e:Image source="list_tab_png" y="655.02" width="520" height="119" x="37.67" scaleX="1" scaleY="1"/>
+			<e:Image source="btn_close_png" x="518.67" y="10.680000000000007" name="btn_close" scaleX="1" scaleY="1"/>
+			<e:Image source="boss_png" y="2.6699999999999875" x="237.67000000000002" scaleX="1" scaleY="1"/>
+			<e:Label text="Phần thưởng sẽ được gửi vào Hòm thư" y="778.35" size="20" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="500" height="25" textAlign="center" verticalAlign="middle" textColor="0xF9F9F9" x="47.67"/>
+			<e:Label text="Kết thúc" y="706.35" size="22" textAlign="left" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="54.67"/>
+			<e:Label text="Phần thưởng hạ BOSS" y="73.02000000000001" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="400" height="30" verticalAlign="middle" scaleX="1" scaleY="1" horizontalCenter="0" x="109"/>
+		</e:Group>
+		<e:Scroller width="490" height="520" anchorOffsetX="0" anchorOffsetY="0" y="115" scaleX="1" scaleY="1" horizontalCenter="0">
+			<e:Group>
+			<e:List id="outpotlist" width="100%">
+				<e:itemRendererSkinName>
+				<e:Skin>
+					<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" width="490" height="150" scaleX="1" scaleY="1"/>
+					<e:Image source="ui_tit_bg_png" x="4.67" y="5.68" width="401"/>
+					<e:Label id="label_reward" text="Hạng" x="24.67" y="14.01" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xC5D9EA" verticalCenter="-54" verticalAlign="middle"/>
+					<e:Scroller height="97" anchorOffsetY="0" anchorOffsetX="0" width="460" y="45" horizontalCenter="0">
+					<e:Group locked="true">
+						<e:List id="rewardlist" itemRendererSkinName="ItemSkin" anchorOffsetY="0" x="0" height="100%" locked="true">
+						<e:layout>
+							<e:HorizontalLayout gap="10" paddingLeft="5" paddingTop="2"/>
+						</e:layout>
+						</e:List>
+					</e:Group>
+					</e:Scroller>
+				</e:Skin>
+				</e:itemRendererSkinName>
+			</e:List>
+			</e:Group>
+		</e:Scroller>
+		<e:Scroller height="97" anchorOffsetY="0" anchorOffsetX="0" width="371" horizontalCenter="38.5" x="148" y="670" scaleX="1" scaleY="1">
+			<e:Group>
+			<e:List id="killreward" anchorOffsetY="0" x="0" height="100%" itemRendererSkinName="ItemSkin">
+				<e:layout>
+				<e:HorizontalLayout gap="10" paddingLeft="5" paddingTop="2"/>
+				</e:layout>
+			</e:List>
+			</e:Group>
+		</e:Scroller>
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"/>
+
+	</e:Group>
+</e:Skin>

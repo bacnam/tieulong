@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TitleWallSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Scroller width="501" height="647" y="31" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="list" itemRendererSkinName="TitleWallItem">
+			<e:layout>
+				<e:VerticalLayout horizontalAlign="center"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="tip" text="Chưa có danh hiệu" y="318" horizontalCenter="0" textColor="0xFF0000" bold="true" stroke="1" size="35"/>
+</e:Skin>

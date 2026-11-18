@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true"/>
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="259" scaleX="1" scaleY="1" width="540" height="150" horizontalCenter="0"/>
+	<e:Image source="btn_close_1_png" x="565" y="194"/>
+	<e:Image source="yueka_jpg" x="55" y="263" height="140"/>
+	<e:Label text="30 tháng 10:00:00 ngày 1 tháng 11 23:59" y="371" size="22" textAlign="right" strokeColor="0x5e3500" stroke="1" width="349" height="32" verticalAlign="middle" horizontalCenter="82.5" fontFamily="Arial" textColor="0xf7f397"/>
+	<e:Label text="Thời gian sự kiện: " y="415" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" width="126" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="71"/>
+	<e:Label text="30 tháng 10:00:00 ngày 1 tháng 11 23:59" x="186" y="422" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="351" textColor="0xfffefd"/>
+	<e:Label text="Nạp tiền tích lũy: " y="449.5" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" width="126" height="32" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="71"/>
+	<e:Label text="Tích lũy nạp tiền đạt đến một số tiền nhất định để nhận phần thưởng" x="186" y="452.5" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="392" textColor="0xFFFEFD" height="26" verticalAlign="middle"/>
+	<e:Label text="Bạn đã tích luỹ: " y="485" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" textColor="0xF7F397" x="70" verticalAlign="middle"/>
+	<e:Label text="1234567890" x="267" y="488" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="292" textColor="0xFFFEFD" height="26" verticalAlign="middle"/>
+	<e:Image source="vip_line_png" y="528" horizontalCenter="0"/>
+	<e:Image source="vip_line_png" y="748" horizontalCenter="0" x="60"/>
+	<e:Image source="ui_heip_png" x="38" y="206"/>
+	<e:Image source="vip_tit_png" x="40" y="534"/>
+	<e:Image source="24_png" x="187" y="550"/>
+	<e:Image source="04_png" x="204" y="550"/>
+	<e:Image source="04_png" x="222" y="550"/>
+	<e:Image source="04_png" x="239" y="550"/>
+	<e:Image source="y_png" x="260" y="550" width="27" height="27"/>
+	<e:Image source="iconbg_bule_png" x="178" y="590"/>
+	<e:Image source="iconbg_white_png" x="77" y="590"/>
+	<e:Image source="iconbg_purple_png" x="380" y="590"/>
+	<e:Image source="iconbg_green_png" x="279" y="590"/>
+	<e:Label text="10" x="91" y="633" size="20" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="51" height="25" textAlign="right" textColor="0xFFFFFF" verticalAlign="middle"/>
+	<e:Label text="10Nguyên bảo" x="84" y="665" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Label text="10Nguyên bảo" x="388" y="665" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Image source="iconbg_purple_png" x="480" y="590"/>
+	<e:Label text="10Nguyên bảo" x="488" y="665" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Label text="10Nguyên bảo" x="287" y="665" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Label text="10Nguyên bảo" x="186" y="665" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" y="691" horizontalCenter="0" width="80"/>
+	<e:Label text="Nhận" y="702" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="60" fontFamily="Arial" textColor="0xEEE20D" horizontalCenter="0"/>
+	<e:Image source="vip_line_png" y="968" horizontalCenter="0" x="70"/>
+	<e:Image source="vip_tit_png" x="50" y="754"/>
+	<e:Image source="24_png" x="197" y="770"/>
+	<e:Image source="04_png" x="214" y="770"/>
+	<e:Image source="04_png" x="232" y="770"/>
+	<e:Image source="04_png" x="249" y="770"/>
+	<e:Image source="y_png" x="270" y="770" width="27" height="27"/>
+	<e:Image source="iconbg_bule_png" x="188" y="810"/>
+	<e:Image source="iconbg_white_png" x="87" y="810"/>
+	<e:Image source="iconbg_purple_png" x="390" y="810"/>
+	<e:Image source="iconbg_green_png" x="289" y="810"/>
+	<e:Label text="10" x="101" y="853" size="20" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="51" height="25" textAlign="right" textColor="0xFFFFFF" verticalAlign="middle"/>
+	<e:Label text="10Nguyên bảo" x="94" y="885" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Label text="10Nguyên bảo" x="398" y="885" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Image source="iconbg_purple_png" x="490" y="810"/>
+	<e:Label text="10Nguyên bảo" x="498" y="885" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Label text="10Nguyên bảo" x="297" y="885" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Label text="10Nguyên bảo" x="196" y="885" size="16" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFDB200" width="57"/>
+	<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" y="911" horizontalCenter="0" width="80" x="290"/>
+	<e:Label text="Nhận" y="922" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="60" fontFamily="Arial" textColor="0xEEE20D" horizontalCenter="0"/>
+	<e:Image source="huodong_png" y="183" horizontalCenter="0"/>
+</e:Skin>

@@ -1,0 +1,19 @@
+﻿ID	称号类型	称号名称	获得条件	数值范围	到达目标获得奖励	重置间隔（EveryWeek/EveryDay）
+id	Type	Name	Condition	NumRange	MailId	Reset
+1	DroiyanTop	Quyết đấu chi vương	Quyết chiến đệ nhất danh, mỗi ngày 0 điểm kết toán	1~1	100001	
+2	DroiyanTopTen	Quyết chiến thập kiệt	Quyết chiến trước mười tên ( không bao hàm đệ nhất danh ) mỗi ngày 0 điểm kết toán	2~10	100001	
+3	ArenaTop	Thiên hạ đệ nhất	Đấu trường đệ nhất danh, mỗi tuần sáu 2 4 giờ kết toán	1~1	100001	
+4	ArenaTopTen	Thập đại cao thủ	Đấu trường trước mười tên ( không bao hàm đệ nhất danh ) mỗi tuần sáu 2 4 giờ kết toán	2~10	100001	
+5	WingLevel	Triển sí cao phi	Một người nhân vật cánh cấp bậc đạt tới 50 cấp	50~>	1600003	
+6	RechargeTo	Cao phú soái	Hoạt động đạt được, sung giá trị nguyên bảo đạt tới một vạn nhân dân tệ	10000~>	1600004	
+7	RankGuildTopLeader	Đệ nhất bang chủ	Hoạt động trong lúc, bảng đơn đệ nhất bang phái bang chủ	1~1	1600005	EveryDay
+8	RankGuildTopMember	Đệ nhất bang tinh anh	Hoạt động trong lúc, bảng đơn đệ nhất bang phái bang phái thành viên	1~1	1600006	EveryDay
+9	Dungeon_1	Triển lộ tranh vanh	Sấm quan đạt tới 50 tầng	50~>	100001	
+10	WingRank	Dực phi trùng thiên	Cánh chim hướng bảng đệ nhất danh	1~1	100001	
+11	DungeonRank	Nhất kỵ đương thiên	Sấm quan hướng bảng đệ nhất danh	1~1	100001	
+12	LevelRank	Phong mang tất lộ	Cấp bậc hướng bảng đệ nhất danh	1~1	100001	
+13	PowerRank	Kỹ quan quần hùng	Chiến lực hướng bảng đệ nhất danh	1~1	100001	
+14	DroiyanRank	Tuyệt thế vô song	Quyết chiến hướng bảng đệ nhất danh	1~1	100001	
+15	ArtificeRank	Bách luyện thành tiên	Luyện hóa hướng bảng đệ nhất danh	1~1	100001	
+16	GuildRank	Thiên hạ quy tâm	Bang phái hướng bảng đệ nhất danh	1~1	100001	
+17	Marry	Nhất dạ phu thuê	Kết hôn	1~1	100001	

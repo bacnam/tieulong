@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="OneYuanRecordSubPanel" width="520" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Scroller width="494" height="600" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" y="20">
+		<e:List id="list" itemRendererSkinName="OneYuanRecordItem">
+			<e:layout>
+				<e:VerticalLayout gap="10"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

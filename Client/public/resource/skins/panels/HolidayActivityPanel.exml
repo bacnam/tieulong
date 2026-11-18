@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HolidayActivityPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false">
+		<e:Image source="ui_shop_bg_png" horizontalCenter="0" x="0" scaleX="1" scaleY="1" />
+		<e:Image y="8" horizontalCenter="0" x="267" scaleX="1" scaleY="1"  source="title_festival_png"/>
+		<e:Image source="btn_close_1_png" x="545" y="22" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image id="btn_right" x="539" y="70" source="arrow_png" />
+		<e:Image id="btn_left" x="61" y="70" source="arrow_png" scaleX="-1" />
+		<e:Scroller id="scroller" width="472" height="98" x="65" y="50" anchorOffsetX="0">
+			<e:Group id="group_btn" height="86" x="23" y="0" anchorOffsetY="0" anchorOffsetX="0" touchEnabled="false">
+				<e:layout>
+					<e:HorizontalLayout gap="0"  paddingTop="7"/>
+				</e:layout>
+			</e:Group>
+		</e:Scroller>
+		<e:Group id="group_subpanel" width="550" height="694" y="138" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image id="btn_close1" x="534" y="813" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"
+		         scaleX="1" scaleY="1" />
+	</e:Group>
+	<component:EuiMap id="activityDataMap">
+		<e:Array>
+			<e:Object name="WorldRecharge" activity="WorldRecharge" type="ServerCompetition" png="btn_serverrank_png"
+			          class="ServerCompetitionSubPanel" />
+			<e:Object name="WorldConsume" activity="WorldConsume" type="ServerCompetition" png="btn_serverrank_png"
+			          class="ServerCompetitionSubPanel" />
+			<e:Object name="WorldTreasure" activity="WorldTreasure" type="ServerCompetition" png="btn_serverrank_png"
+			          class="ServerCompetitionSubPanel" />
+			<e:Object name="AccumDayRecharge" activity="AccumDayRecharge" type="AccumDayRecharge" png="btn_accumdayrecharge_png" class="ContinuityRechargeSubPanel" />
+			<e:Object name="RedPacket" activity="RedPacket" type="RedPacket" png="icon_redgift_png" class="RedGiftSubPanel" />
+			<e:Object name="AccumConsume" activity="AccumConsume" type="AccumConsume" png="btn_consumergift_png" class="AccumConsumeSubPanel" />
+			<e:Object name="FortuneWheel" activity="FortuneWheel" type="FortuneWheel" png="btn_fortunewheel_png" class="FortuneWheelSubPanel" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="AccumConsume" event="AccumConsume" />
+			<e:Object name="RedPacket" event="RedPacket" />
+			<e:Object name="AccumDayRecharge" event="AccumDayRecharge" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

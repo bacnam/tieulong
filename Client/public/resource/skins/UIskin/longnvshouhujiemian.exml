@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="ui_bg_png" x="25" y="146" locked="true"/>
+	<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="41" y="203" anchorOffsetX="0" width="559.33" anchorOffsetY="0" height="712.01" locked="true"/>
+
+
+	<e:Image source="btn_close_png" x="550" y="151.35" locked="true"/>
+	<e:Image source="ui_heip_png" x="34.67" y="160.01" locked="true"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<e:Image source="guildbattle_bg3_jpg" x="50" y="215" height="400"/>
+	<e:Group x="49" y="623.19">
+		<e:Image source="form_inbg_png" scale9Grid="14,36,23,4" x="0" y="0" anchorOffsetX="0" width="541.34" anchorOffsetY="0" height="277.17"/>
+		<e:Image source="list_bg_jpg" x="4.5" y="3.659999999999968" anchorOffsetY="0" height="268.17" anchorOffsetX="0" width="531.83"/>
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="10.170000000000016" y="6.5" anchorOffsetX="0" width="271.16" anchorOffsetY="0" height="185.84"/>
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="284.83000000000004" y="6.5" anchorOffsetX="0" width="247.83" anchorOffsetY="0" height="185.84"/>
+		<e:Image source="smallui_tbg_png" x="22.310000000000002" y="5.25" anchorOffsetX="0" width="245" anchorOffsetY="0" height="33.56"/>
+		<e:Label text="胜利奖励" x="102.99000000000001" y="13.819999999999936" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" width="90.67" anchorOffsetX="0" anchorOffsetY="0" height="21" bold="true" textColor="0xF7F397"/>
+		<e:Group x="18.970000000000027" y="47.809999999999945">
+			<e:Label text="幽暗魅影" x="0" y="72.32" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+			<e:Image source="iconbg_blue_png" x="1" y="-2.68"/>
+		</e:Group>
+		<e:Group x="108.66000000000003" y="47.809999999999945">
+			<e:Label text="东方幻想" x="0" y="72.32" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+			<e:Image source="iconbg_blue_png" x="1" y="-2.68"/>
+		</e:Group>
+		<e:Group x="197.98000000000002" y="47.809999999999945">
+			<e:Label text="圣诞礼服" x="0" y="72.32" size="18" strokeColor="0x000000" stroke="1" width="74" height="25" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+			<e:Image source="iconbg_blue_png" x="1" y="-2.68"/>
+		</e:Group>
+		<e:Label text="1、报名时间: 每天                  到" x="32.670000000000016" y="196.44999999999993" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="301.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+		<e:Label text="当前傀儡的总数量: " x="302.67" y="13.769999999999982" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="186.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xffffff"/>
+		<e:Label text="你已召唤傀儡数: " x="302.67" y="82.07999999999993" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="179.34" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFFFF"/>
+		<e:Label text="花费           100" x="339.34000000000003" y="117.7399999999999" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="144.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFFFFFF"/>
+		<e:Label text="2、领奖时间: " x="32.670000000000016" y="220.5" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+		<e:Label text="3、守护龙女失败将无法获得奖励" x="32.670000000000016" y="246.57999999999993" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+		<e:Group x="96.67000000000002" y="147.79999999999995">
+			<e:Image source="btn_bg5_png" x="0" y="-2.68" width="95"/>
+			<e:Label text="报 名" x="24" y="5.66" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="47" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+		</e:Group>
+		<e:Group x="367.34" y="147.79999999999995">
+			<e:Image source="btn_bg5_png" x="0" y="-3.35" anchorOffsetX="0" width="95"/>
+			<e:Label text="召唤傀儡" x="7" y="4.32" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="81.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+		</e:Group>
+		<e:Label text="17点59分" y="195.86" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="82.5" height="19" verticalAlign="middle" fontFamily="Arial" x="190.17000000000002" anchorOffsetX="0" textColor="0x00ff00" anchorOffsetY="0"/>
+		<e:Label text="17点59分" y="195.86" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="82.5" height="19" verticalAlign="middle" fontFamily="Arial" x="300.17" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0"/>
+		<e:Label text="20" y="37.729999999999905" size="34" textAlign="left" strokeColor="0x000000" stroke="1" width="45.17" height="37" verticalAlign="middle" fontFamily="Arial" x="398.99999999999994" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0" bold="true"/>
+		<e:Label text="10" y="72.71999999999991" size="24" textAlign="left" strokeColor="0x000000" stroke="1" width="32.17" height="37" verticalAlign="middle" fontFamily="Arial" x="455.99999999999994" anchorOffsetX="0" anchorOffsetY="0" textColor="0xff0000" bold="true"/>
+		<e:Label text="19点至21点59分" y="220.8699999999999" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="145.5" height="19" verticalAlign="middle" fontFamily="Arial" x="151.67000000000002" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0"/>
+		<e:Image source="icon_crystal_png" x="390.67" y="104.78999999999996"/>
+	</e:Group>
+	<e:Image source="tab_off_png" scale9Grid="9,3,108,35" x="64" y="914"/>
+	<e:Image source="ui_tit_bg_png" x="50" y="215" anchorOffsetX="0" width="208.66" anchorOffsetY="0" height="37.33"/>
+	<e:Label text="龙女等级: " x="56.3" y="222" size="22" textAlign="left" strokeColor="0x000000" stroke="1" width="130" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3" bold="true"/>
+	<e:Image source="form_ibg_png" scale9Grid="15,15,23,25" x="115" y="525.33" anchorOffsetX="0" width="411.33" anchorOffsetY="0" height="81.67"/>
+	<e:Label text="感应到     帮派:           帮主: " x="142.67" y="532.45" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="301.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="在                             后将对妾身展开攻击" x="142.67" y="556" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="妾身独木难支，请帮派侠客们尽快报名增援!" x="142.67" y="580.93" size="18" textAlign="left" strokeColor="0x000000" stroke="1" width="502.67" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xF8F7D3"/>
+	<e:Label text="丐帮" y="530" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="42.1" height="19" verticalAlign="middle" fontFamily="Arial" x="268.37" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0"/>
+	<e:Label text="乔峰" y="530" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="82.5" height="19" verticalAlign="middle" fontFamily="Arial" x="374.17" anchorOffsetX="0" textColor="0x00FF00" anchorOffsetY="0"/>
+	<e:Label text="1小时59分30秒" y="555.55" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="145.5" height="19" verticalAlign="middle" fontFamily="Arial" x="167.67" anchorOffsetX="0" anchorOffsetY="0" textColor="0xff0000" bold="true"/>
+	<e:Image source="triangle_png" x="162" y="525.33" anchorOffsetX="0" width="41.07" anchorOffsetY="0" height="30.8" rotation="180.13"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</e:Skin>

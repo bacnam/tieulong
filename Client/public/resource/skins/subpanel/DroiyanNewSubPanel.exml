@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanNewSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Scroller width="500" height="550" y="120" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:Group>
+			<e:List id="list" width="100%">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" width="500" height="111" scaleX="1" scaleY="1" />
+						<e:Label id='time' y="75" size="20" textAlign="right" strokeColor="0x000000" stroke="1"
+						         textColor="0x8D8D8D" height="30" verticalAlign="middle" scaleX="1" scaleY="1" x="330" right="24"/>
+						<e:Label id='content' text="这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据这个试测试数据" y="12" size="20" textAlign="left" strokeColor="0x000000"
+						         stroke="1" width="452" textColor="0xFFFFFF" height="52" verticalAlign="middle" horizontalCenter="0"
+						         x="24" scaleX="1" scaleY="1" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout gap="10" paddingTop="10"/>
+				</e:layout>
+			</e:List>
+		</e:Group>
+	</e:Scroller>
+	<e:Label id="tip" text="暂时没有传闻" y="390" horizontalCenter="0" textColor="0xFF0000" bold="true" stroke="1" size="35"/>
+</e:Skin>

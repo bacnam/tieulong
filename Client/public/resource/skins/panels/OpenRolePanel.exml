@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="OpenRolePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="602.67" height="846.67" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0"
+	         verticalCenter="0">
+		<e:Group width="100%" height="100%" touchEnabled="false">
+			<e:Image source="ui_bg_png" horizontalCenter="0" x="6" y="-3" scaleX="1" scaleY="1" />
+			<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="24" y="65" scaleX="1" scaleY="1" width="550" height="699"
+			         anchorOffsetY="0" />
+			<e:Image source="openrole_jpg" y="75" scaleX="1" scaleY="1" horizontalCenter="0" x="32" />
+			<e:Image source="btn_close_png" x="522" y="10" name="btn_close" scaleX="1" scaleY="1" />
+			<e:Image source="xiake_png" x="261" y="3" scaleX="1" scaleY="1" />
+			<e:Image id="img_vip" x="229" y="692" source="ui_vip_png"/>
+
+			<e:Label id="tip2" text="Mở khóa nhân vật mới" y="690" textColor="0xF8F7D3" x="381" scaleX="1" scaleY="1" visible="false"/>
+			<e:BitmapLabel id="label_vip" x="324" y="685" font="vip_number_fnt" text="1"/>
+			<e:Image id="unlock" x="193" y="683" source="unlock_png"/>
+			<e:BitmapLabel id="tip1" y="690" font="lv_number_fnt" text="L40" scaleX="1.1" scaleY="1.1" right="404"/>
+		</e:Group>
+		<e:Group width="534" height="472" y="98" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="-0.33499999999997954"
+		         x="49" scaleX="1" scaleY="1">
+			<e:RadioButton id="radio_1" label="" x="260" y="430" selected="false" value="1001" scaleX=".9" scaleY=".9"
+			               anchorOffsetX="175.5" anchorOffsetY="466">
+				<e:Skin states="up,down,disabled" xmlns:w="http://ns.egret.com/wing">
+					<e:Image width="100%" height="100%" source="createrole1_png" />
+					<e:Image id="open" width="80" height="240" source="open_png" x="135" y="50" />
+				</e:Skin>
+			</e:RadioButton>
+			<e:RadioButton id="radio_2" label="" x="480" y="350" value="1002" scaleX="0.5" scaleY="0.5" anchorOffsetX="171.06" alpha="0.7"
+			               anchorOffsetY="448.22">
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="createrole2_png" />
+					<e:Image id="open" width="80" height="240" source="open_png" x="150" y="50" />
+				</e:Skin>
+			</e:RadioButton>
+			<e:RadioButton id="radio_3" label="" x="45" y="350" value="1003" scaleX="0.5" scaleY="0.5" anchorOffsetX="175.5" alpha="0.7"
+			               anchorOffsetY="466">
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="createrole3_png" />
+					<e:Image id="open" width="80" height="240" source="open_png" x="135" y="50" />
+				</e:Skin>
+			</e:RadioButton>
+			<e:Component id="tar1" width="20" height="20" x="260" y="430" />
+			<e:Component id="tar2" width="20" height="20" x="480" y="350" />
+			<e:Component id="tar3" width="20" height="20" x="45" y="350" />
+			<e:Image source="guildname_bg_png" x="156" y="30.75" rotation="90" scaleX="1" scaleY="1" anchorOffsetX="0" width="140" anchorOffsetY="0" height="40"/>
+			<e:Label id="open_name" text="峨眉" x="119" y="46.75" size="26" textAlign="left" strokeColor="0x000000" stroke="1" width="28" anchorOffsetX="0" anchorOffsetY="0" height="88" bold="true" scaleX="1" scaleY="1" fontFamily="KaiTi" textColor="0xD5E5E3"/>
+		</e:Group>
+		<e:Button id="btn_open" label="Kích hoạt môn phái" y="618" horizontalCenter="0" x="219" scaleX="1" scaleY="1">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg1_png" />
+					<e:Label id="labelDisplay" size="26" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+					         touchEnabled="false" horizontalCenter="0" verticalCenter="0" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" />
+	</e:Group>
+</e:Skin>

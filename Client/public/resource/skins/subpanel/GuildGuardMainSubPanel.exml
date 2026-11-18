@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildGuardMainSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui">
+	<e:Image source="loading_bg_png" scale9Grid="57,0,409,39" y="410" scaleX="1" scaleY="1" horizontalCenter="0"/>
+	<e:Image id="link" y="428" source="shop_bar_png" anchorOffsetX="0" scaleX="1" scaleY="1" width="426" x="62"/>
+	<e:Label id="exp" text="6000" y="423" size="22" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xF7F397" horizontalCenter="0"/>
+	<e:Group anchorOffsetX="0" width="220" anchorOffsetY="0" height="231.33" scaleX="1" scaleY="1" y="451.3" x="35">
+		<e:Image source="smallui_tbg_png" x="-1" y="-7" anchorOffsetX="0" width="228.13" anchorOffsetY="0" height="52.66"/>
+		<e:Label text="Tặng hoa" x="60.67" y="8.67" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" height="22" bold="true" textColor="0xfdb200"/>
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="3" y="43.33" anchorOffsetX="0" width="217.33" anchorOffsetY="0" height="129.67"/>
+		<e:Label id="consume_gold" text="10000" x="135" y="92" size="20" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" anchorOffsetX="0" anchorOffsetY="0" textColor="0xfdb200"/>
+		<e:Label text="Phí: " x="32" y="92" size="20" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Label text="Cấp: " x="32" y="52" size="20" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Label id="gold_exp" text="+10" x="135" y="52" size="20" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image id="goldIcon" x="81.3" y="83" source="icon_crystal_png"/>
+		<e:Button id="btn_gold" label="Gửi hoa" y="181.71" width="100" height="44" scaleX="1" scaleY="1" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled" xmlns:component="legend.view.component.*">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+		</e:Button>
+		<e:Label text="Thời gian:" y="137.66" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" x="32" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0x00FF00"/>
+		<e:Label id="times" text="6000" y="137.66" size="20" textAlign="left" strokeColor="0x000000" stroke="1" verticalAlign="middle" fontFamily="Arial" x="135" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xFF0000" bold="true"/>
+	</e:Group>
+	<e:Group anchorOffsetX="0" width="220" anchorOffsetY="0" height="231.33" scaleX="1" scaleY="1" y="451.3" x="285">
+		<e:Image source="smallui_tbg_png" x="-1" y="-7" anchorOffsetX="0" width="228.13" anchorOffsetY="0" height="52.66"/>
+		<e:Label text="Tặng KNB" x="47.67" y="8.67" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" height="22" bold="true" textColor="0xfdb200"/>
+		<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" x="3" y="43.33" anchorOffsetX="0" width="217.33" anchorOffsetY="0" height="129.67"/>
+		<e:Label text="Không giới hạn" y="137.66" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0x00FF00" horizontalCenter="0"/>
+		<e:Label text="Phí" x="32" y="92" size="20" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Label text="Cấp: " x="32" y="52" size="20" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image id="crystalIcon" source="icon_crystal_png" x="80.97" y="81"/>
+		<e:Button id="btn_crystal" label="Tặng" y="181.71" width="100" height="44" scaleX="1" scaleY="1" horizontalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled" xmlns:w="http://ns.egret.com/wing">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+		</e:Button>
+		<e:Label id="consume_crystal" text="10000" x="130" y="92" size="20" textAlign="left" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label id="crystal_exp" text="+10" x="130" y="52" size="20" strokeColor="0x000000" stroke="1" height="32" verticalAlign="middle" textColor="0xFAF9FB" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+	</e:Group>
+
+</e:Skin>

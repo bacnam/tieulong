@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RedGiftRecordPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="400" height="460" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="460" x="0" anchorOffsetY="0" scaleX="1"
+		         scaleY="1" />
+		<e:Label id="tip" text="10个红包，    20秒被抢光" x="14.31" y="58" size="20" textAlign="left" strokeColor="0x000000"
+		         stroke="1" anchorOffsetX="0" anchorOffsetY="0" height="20" textColor="0xFFFFFF" />
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="85.69" anchorOffsetX="0" width="384" anchorOffsetY="0"
+		         height="371.16" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image source="smallui_tbg_png" y="11" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image source="btn_close_png" x="331" y="1" scaleX="1" scaleY="1"  name="btn_close"/>
+		<e:Label id="label_name" text="某某某的红包" y="14.5" size="22" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32"
+		         fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1" textColor="0xFDB200"  horizontalCenter="0"/>
+		<e:Scroller width="360" height="350" x="21" y="95.65" anchorOffsetX="0" anchorOffsetY="0">
+			<e:List id="list">
+				<e:itemRendererSkinName>
+					<e:Skin width="360">
+						<e:Label id="label_name" text="某某某某某某" y="7" size="20" strokeColor="0x000000" stroke="1" verticalAlign="middle"
+						         x="45" scaleX="1" scaleY="1" textColor="0xFFFFFF" />
+						<e:Label id="count" text="10" x="275" y="7" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+						         anchorOffsetX="0" anchorOffsetY="0" height="20" textColor="0xFFFFFF" scaleX="1" scaleY="1" />
+						<e:Image source="line_png" y="33.34" scaleX="1" scaleY="1" horizontalCenter="0" />
+						<e:Image source="icon_crystal_png" x="239.06" y="-0.65" height="30" width="30" scaleX="1" scaleY="1" />
+						<e:Label id="rank" text="1" y="7" size="22" textAlign="left" strokeColor="0x8B1725" stroke="2"
+						         textColor="0xFCE795" scaleX="1" scaleY="1" x="20" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+
+	</e:Group>
+</e:Skin>

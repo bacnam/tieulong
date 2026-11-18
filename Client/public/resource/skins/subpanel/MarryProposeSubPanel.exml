@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MarryProposeSubPanel" width="550" height="694" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="list_bg_jpg" anchorOffsetX="0" width="531" anchorOffsetY="0" height="682" horizontalCenter="0" verticalCenter="0"/>
+	<e:Image id="btn_change" source="btn_bg5_png" scale9Grid="3,2,82,32" x="400" y="636.5" width="120" height="44"/>
+	<e:Label id="label_change" text="Thay đổi" y="647.5" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" horizontalCenter="188"/>
+	<e:Image id="btn_search" source="btn_bg5_png" scale9Grid="3,2,82,32" x="426" y="583.5" width="94" height="40" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Label text="Tìm kiếm" x="420" y="593.5" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" touchEnabled="false"/>
+	<e:Label text="Cần có nhẫn cưới, hãy mua ở cửa hàng." y="636.84" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" width="346.33" height="41" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="48.56" anchorOffsetX="0" anchorOffsetY="0"/>
+	<e:Image source="form_zibg_png" scale9Grid="10,9,23,24" x="44" y="583.5" anchorOffsetX="0" width="352" anchorOffsetY="0" height="45"/>
+	<e:Scroller width="511" height="558" y="16" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:List id="list" itemRendererSkinName="MarryProposeItem">
+			<e:layout>
+				<e:VerticalLayout horizontalAlign="center"/>
+			</e:layout>
+		</e:List>
+	</e:Scroller>
+	<e:Label id="tip" text="Không có đối tượng phù hợp" y="289" horizontalCenter="0.5" textColor="0xFF0000" bold="true" stroke="1" size="20"/>
+	<e:TextInput id="input" x="50" y="586" skinName="skins.TextInputSkin" anchorOffsetX="0" width="340" prompt="Nhập vào tên"/>
+</e:Skin>

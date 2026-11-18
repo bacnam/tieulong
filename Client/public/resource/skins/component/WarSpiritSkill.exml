@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WarSpiritSkill" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" height="140" width="495">
+	<w:Config id="1583268efb7"></w:Config>
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" width="495" height="140" scaleX="1" scaleY="1"  anchorOffsetY="0" horizontalCenter="0"/>
+	<e:Label id="skillname" text="Vạn tiễn tề phát 100 cấp" x="112" y="11.5" size="22" scaleX="1" scaleY="1" width="213" height="25" textAlign="left"
+	         textColor="0x2E82F6" bold="true" />
+	<e:Label id="describe" text="Phổ công, viễn trình công kích, viễn trình công kích, viễn trình công kích\n, quần thể thương tổn, đối mục tiêu địch nhân tạo thành 250% thương tổn. Làm lạnh thời gian 0.4 giây." x="112" y="47.5" size="18" scaleX="1" scaleY="1" width="318" height="56" textAlign="left"
+	         textColor="0xFFFFFF" />
+	<e:Image id="skillicon_bg" x="28" scaleX="1" scaleY="1" source="iconbg_white_png" y="34.32"/>
+	<e:Image id="skillicon" x="63" scaleX="1" scaleY="1" source="iconbg_white_png" y="69.32" anchorOffsetX="36" anchorOffsetY="36"/>
+	<e:Image id="price_icon" source="icon_gold_png" x="354" y="9.5" width="29" height="29" scaleX="1" scaleY="1" />
+	<e:Label id="price" x="389" y="16.5" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1"
+	         scaleY="1" textColor="0xBF8A0E"  text="1000"/>
+	<e:Label id="unlock" text="20 cấp mở" x="35" textAlign="center" width="60" verticalCenter="-9.5" size="24" textColor="0xfe0000" bold="true" touchEnabled="false" stroke="2" strokeColor="0x000000"/>
+	<e:Label id="lv" text="99" y="82.4" textAlign="right" size="18" textColor="0x00ff00" right="405" stroke="1"/>
+	<e:Button id="btn_add" x="440.67" y="41.5">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_1_png"/>
+			<e:Image source="ui_+_png" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Label id="tip" text="Tăng lên 1 sao và tăng giới hạn kỹ năng lên 10" size="18" y="111" x="114" textColor="0xff0000" bold="true"/>
+</e:Skin>

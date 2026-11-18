@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RedGiftItem" width="540" height="130" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0" width="540" anchorOffsetY="0" height="130"/>
+	<e:Label id="time" text="Cách đây 1 giờ 44 phút" y="25" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0x00FF00" fontFamily="Arial" right="22"/>
+	<e:Label id="label_name" text="Mỗ mỗ mỗ" x="155" y="25" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xFFED29" fontFamily="Arial"/>
+	<e:Label text="Bao lì xì: " x="155" y="60" size="20" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" fontFamily="Arial" textColor="0xFDFBE0"/>
+	<e:Label id="pos" text="9" x="260" y="60" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" fontFamily="Arial" textColor="0x00FF00"/>
+	<e:Label id="num" text="9" x="260" y="90" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0x00FF00" fontFamily="Arial"/>
+	<e:Label text="Số người nhận: " x="155" y="90" size="18" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xFDFBE0" fontFamily="Arial"/>
+	<e:Image id="img" source="icon_crystal_png" x="318.31" y="53.15" width="35" height="35"/>
+	<e:Image id="lingqu" x="418" y="71" source="lingqu_png"/>
+	<e:Image id="yiqiangwan" x="418" y="74.5" source="yiqiangwan_png"/>
+	<e:Group id="btn_rec" width="100%" height="100%">
+	</e:Group>
+	<component:Portrait id="portrait" x="28" skinName="Portrait" verticalCenter="0"/>
+	<component:Button_Get id="get" x="398" y="65" skinName="Button_Get"/>
+</e:Skin>

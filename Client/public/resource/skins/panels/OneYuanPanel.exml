@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="OneYuanPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:panels="legend.panels.*">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="ui_shop_bg_png" x="0" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_1_png" x="545" y="26.33" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image id="btn_help" source="ui_heip_png" x="18" y="43.67" scaleX="1" scaleY="1" />
+		<e:Image source="list_tab_png" y="107.98" anchorOffsetX="0" width="556.1" anchorOffsetY="0" height="134" scaleX="1"
+		         scaleY="1" horizontalCenter="0" />
+		<e:Image source="huodong_png" y="12.7" horizontalCenter="0" x="267" scaleX="1" scaleY="1" />
+		<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="118.98" anchorOffsetX="0" width="530" anchorOffsetY="0"
+		         height="650" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image source="dark_png" y="122.98" anchorOffsetX="0" width="520" anchorOffsetY="0" height="640.5" scaleX="1"
+		         scaleY="1" horizontalCenter="0" />
+		<e:Image source="huodong_bg_jpg" y="123" anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:TabBar id="tabBar_page" dataProvider="{content_View}" y="767.67" anchorOffsetX="0" anchorOffsetY="0" scaleX="1"
+		          scaleY="1" horizontalCenter="0" selectedIndex="3">
+			<e:itemRendererSkinName>
+				<e:Skin states="up,down,disabled" width="124" xmlns:w="http://ns.egret.com/wing"
+				        xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+					<e:Image source="shopbar_off_png" source.down="shopbar_on_png" y="0" horizontalCenter="0" />
+					<e:Label text="{data}" y="8" horizontalCenter="0" size="24" textAlign="center" strokeColor="0x000000" stroke="1"
+					         textColor="0xfaf9e2" />
+				</e:Skin>
+			</e:itemRendererSkinName>
+		</e:TabBar>
+		<e:ViewStack id="content_View" width="520" height="640" y="123" horizontalCenter="0" selectedIndex="2">
+			<panels:OneYuanInfoSubPanel name="Tham gia" />
+			<panels:OneYuanWaitSubPanel name="Kết quả" />
+			<panels:OneYuanRecordSubPanel name="Số bạn chọn" />
+		</e:ViewStack>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+	</e:Group>
+</e:Skin>

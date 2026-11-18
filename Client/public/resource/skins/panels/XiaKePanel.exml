@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="XiaKePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:ns1="*" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<w:Config id="157e5c70f0d" />
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<component:PanelBG id="panelBG" scaleX="1" scaleY="1" name="xiake_png" verticalCenter="0" horizontalCenter="0" />
+		<e:ViewStack id="content_View" width="550" height="694" scaleX="1" scaleY="1" selectedIndex="0" y="63"
+		             horizontalCenter="0" size="10">
+			<panels:XiaKeSubPanel id="xiaKeSubPanel" x="0" y="0" scaleX="1" scaleY="1" name="Cơ bản" />
+			<panels:SkillSubPanel id="skillSubPanel" x="0" y="0" scaleX="1" scaleY="1" name="Kỹ năng" />
+			<panels:WingSubPanel id="wingSubPanel" x="0" y="0" scaleX="1" scaleY="1" name="Cánh" />
+			<panels:MeridianSubPanel id="meridianSubPanel" x="0" y="0" scaleX="1" scaleY="1" name="Kinh mạch" />
+		</e:ViewStack>
+		<component:RoleSubPanel id="roleSubPanel" scaleX="1" scaleY="1" horizontalCenter="0" skinName="RoleSubPanelSkin"
+		                        verticalCenter="-289" x="20" y="60" />
+		<component:Power id="component_power" skinName="Power" horizontalCenter="0" verticalCenter="-213.5" x="128" y="175"
+		                 scaleX="1" scaleY="1" />
+	</e:Group>
+	<component:EuiMap id="unlockData">
+		<e:Array>
+			<e:Object name="0" system="XiaKe" />
+			<e:Object name="1" system="Skill" />
+			<e:Object name="2" system="Wing" />
+			<e:Object name="3" system="Meridian" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="0" event="OneKeyEquip;Rebirth;Dress;Marry;LingBao" />
+			<e:Object name="1" event="Skill" />
+			<e:Object name="2" event="Wing" />
+			<e:Object name="3" event="Meridian" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

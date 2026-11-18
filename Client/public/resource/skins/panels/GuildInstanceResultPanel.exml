@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildInstanceResultPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="400" height="300" horizontalCenter="0" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="300" anchorOffsetY="0" x="0" scaleX="1" scaleY="1"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="67.39" width="340" height="156.5" scaleX="1" scaleY="1" horizontalCenter="0" x="30" anchorOffsetY="0"/>
+		<e:Label id="label_name" text="Đóng góp của Bang:" y="133" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="80" textColor="0xffffff"/>
+		<e:Label text="Sát thương:" x="80" y="92" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Image source="btn_close_png" x="330" y="-1" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image source="smallui_tbg_png" y="8" scaleX="1" scaleY="1" x="54"/>
+		<e:Label text="Trận chiến kết thúc" y="12" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1" width="101.33" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" scaleX="1" scaleY="1" textColor="0xfdb200" bold="true" x="149"/>
+		<e:Label id="donate" text="701" x="234" y="133" size="22" textAlign="center" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Label id="damage" text="2808万" x="195" y="92" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Image id="icon" x="190" y="123" scaleX="1" scaleY="1" source="icon_guilddonate_png"/>
+		<e:Label id="label_name1" text="Đóng góp của Bang:" y="177.5" size="22" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" x="80" textColor="0xffffff"/>
+		<e:Label id="donate1" text="701" x="234" y="177.5" size="22" textAlign="center" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0xfdb200"/>
+		<e:Image id="icon1" x="190" y="169" scaleX="1" scaleY="1" source="icon_guilddonate_png"/>
+		<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" y="235" scaleX="1" scaleY="1" horizontalCenter="0" name="btn_close"/>
+		<e:Label id="label_time" text="Trở về (9)" y="246.5" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="101" textColor="0xF8F7D3" anchorOffsetX="0" scaleX="1" scaleY="1" horizontalCenter="0" touchEnabled="false"/>
+	</e:Group>
+</e:Skin>

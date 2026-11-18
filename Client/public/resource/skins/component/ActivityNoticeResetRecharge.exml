@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ActivityNoticeResetRecharge" width="550" height="280" xmlns:e="http://ns.egret.com/eui">
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" scaleX="1" scaleY="1" width="550" height="280" anchorOffsetY="0" horizontalCenter="0"/>
+	<e:Image scale9Grid="5,8,40,34" scaleX="1" scaleY="1" anchorOffsetY="0" source="resetrecharge_bg_jpg" anchorOffsetX="0" y="4" x="5"/>
+	<e:Label id="timetip" text="Hoạt động thời gian: " y="22" size="22" textAlign="left" strokeColor="0x5E3500" stroke="1" height="22" verticalAlign="middle" fontFamily="Arial" textColor="0xF7F397" x="65" width="110"/>
+	<e:Label id="label_time" text="Ngày 10 tháng 1 năm 2017 - ngày 17 tháng 1 năm 2017" x="165" y="22" size="18" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFEFD"/>
+	<e:Image id="btn_recharge" x="431" y="202" source="btn_recharge_png"/>
+</e:Skin>

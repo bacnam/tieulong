@@ -1,0 +1,10 @@
+﻿id	价格/角	Vip经验	获得元宝数量	赠送数量	返利对应的每日任务	月卡年卡返利天数	再次购买时间限制	赠送背包	条目Icon（读取Icon表）	装饰物	标题	说明	说明	第三方的产品id
+id	Price	VipExp	First	Crystal	RebateAchievement	RebateDays	RepurchaseDaysLimit	AddPackage	Icon	Decoration	Title	ContentBefore	ContentAfter	ThridProductId
+3001	250	12500	0	0	MonthCardCrystal	30	5	50	Icon_Recharge_A	Recommend	Thường nguyệt tạp	Liên tục 30 thiên mỗi ngày nhưng lãnh 100 nguyên bảo +50000 kinh nghiệm	Còn thừa {0} thiên mỗi ngày nhưng lãnh 100 nguyên bảo +50000 kinh nghiệm	FangCunForIOS:hxyy302
+3002	980	49000	0	0	YearCardCrystal	-1	0	100	Icon_Recharge_B	Recommend	Chí tôn tạp	Trò chơi hoạt động trong lúc mỗi ngày nhưng lĩnh 120 nguyên bảo +50000 kinh nghiệm	Trò chơi hoạt động trong lúc mỗi ngày nhưng lĩnh 120 nguyên bảo +50000 kinh nghiệm	FangCunForIOS:hxyy601
+4001	60	3000	6000	3000		0	0	0	icon_recharge_01_jpg		Rương nhỏ	Lần đầu mua sắm 6000 nguyên bảo, cũng đưa tặng 3000 nguyên bảo	Lần đầu mua sắm 6000 nguyên bảo, cũng đưa tặng 3000 nguyên bảo	FangCunForIOS:hxyy6
+4002	300	15000	30000	15000		0	0	0	icon_recharge_01_jpg	Recommend	Nguyên bảo nhỏ	Lần đầu mua sắm 30000 nguyên bảo, cũng đưa tặng 15000 nguyên bảo	Lần đầu mua sắm 30000 nguyên bảo, cũng đưa tặng 15000 nguyên bảo	FangCunForIOS:hxyy301
+4003	1980	99000	198000	99000		0	0	0	icon_recharge_01_jpg		Đại bảo rương	Lần đầu mua sắm 198000 nguyên bảo, cũng đưa tặng 109000 nguyên bảo	Lần đầu mua sắm 198000 nguyên bảo, cũng đưa tặng 109000 nguyên bảo	FangCunForIOS:hxyy198
+4004	4880	244000	488000	244000		0	0	0	icon_recharge_01_jpg		Rương thường	Lần đầu mua sắm 488000 nguyên bảo, cũng đưa tặng 270000 nguyên bảo	Lần đầu mua sắm 488000 nguyên bảo, cũng đưa tặng 270000 nguyên bảo	FangCunForIOS:hxyy98
+4005	9980	499000	998000	499000		0	0	0	icon_recharge_01_jpg		Siêu bảo rương	Lần đầu mua sắm 998000 nguyên bảo, cũng đưa tặng 644400 nguyên bảo	Lần đầu mua sắm 998000 nguyên bảo, cũng đưa tặng 644400 nguyên bảo	FangCunForIOS:hxyy328
+4006	29980	1499000	2998000	1499000		0	0	0	icon_recharge_01_jpg		Rương lớn	Lần đầu mua sắm 2998000 nguyên bảo, cũng đưa tặng 1944400 nguyên bảo	Lần đầu mua sắm 2998000 nguyên bảo, cũng đưa tặng 1944400 nguyên bảo	FangCunForIOS:hxyy648

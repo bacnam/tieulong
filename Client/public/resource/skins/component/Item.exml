@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ItemSkin" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*"  width="72">
+	<w:Config id="15841eb6c2f" ></w:Config>
+	<component:BaseItem id="baseItem"/>
+	<e:Label id="label_name" text="lv.0" y="75" size="12" textAlign="center" horizontalCenter="0" width="92"/>
+	<e:Label id="label_count" text="0" verticalAlign="justify" size="16" right="8" top="51" stroke="1"/>
+	<e:Label id="label_Type" text="Cổ mộ" y="4" anchorOffsetX="0" size="20" width="20" bold="true" textColor="0xECB70A" height="20" x="3.21"/>
+</e:Skin>

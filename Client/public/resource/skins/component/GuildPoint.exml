@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildPoint" width="220" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        height="218">
+	<e:Component id="effect_bg" width="20" height="20" x="88" y="110" name="battlefire"/>
+
+	<e:Image id="img_noopen" y="127.46" anchorOffsetX="0" anchorOffsetY="0" source="noopen_png" rotation="327.63"
+	         horizontalCenter="0" />
+	<e:Image id="name_bg" width="43" height="91.3" source="stage_bg_png" anchorOffsetX="0" anchorOffsetY="0"
+	         scale9Grid="12,17,8,12" horizontalCenter="-60.7" top="0" />
+
+	<e:Label id="label_name" text="Thiên phú đan" textColor="0xF4BF0C" anchorOffsetX="0" width="20" size="20" stroke="0.5"
+	         strokeColor="0xf4bf0c" horizontalCenter="-62.2" top="10" lineSpacing="5" />
+	<e:Image id="img_namebg" y="104.5" source="form_gbg_png" anchorOffsetY="0" height="51" scale9Grid="74,5,10,32" horizontalCenter="-17.5"/>
+	<e:Label id="label_guildname" text="Mỗ mỗ mỗ bang phái" y="118" stroke="1" size="24" horizontalCenter="-17.5"  bold="true" textColor="0x00ff00"/>
+	<e:Button id="signup" label="Báo danh" width="88" bottom="6" x="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_bg5_png" />
+				<e:Label id="labelDisplay" size="20" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0" />
+			</e:Skin>
+			
+		</e:skinName>
+	</e:Button>
+	<e:Button id="record" label="Thiên phú đan" x="100" width="88" bottom="6">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg5_png"/>
+			<e:Label id="labelDisplay" size="20" stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+
+
+</e:Skin>

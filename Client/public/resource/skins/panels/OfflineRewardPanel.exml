@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RewardPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Group width="505" height="457" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" verticalCenter="0"
+	         touchEnabled="false">
+		<e:Group width="505" height="457"  touchEnabled="false">
+			<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="452" y="3"
+			         scaleX="1" scaleY="1" x="3" />
+			<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="77" scaleX="1" scaleY="1" width="450" horizontalCenter="0"
+			         height="255" x="28" />
+			<e:Image source="btn_close_png" x="436" y="1" name="btn_close" scaleX="1" scaleY="1" />
+			<e:Image source="btn_bg4_png" scale9Grid="5,5,110,34" x="192" y="391" scaleX="1" scaleY="1" />
+			<e:Label text="Thời gian: " x="54" y="340" size="24" textAlign="right" strokeColor="0x000000" stroke="1"
+			         textColor="0xFDB200" width="130" height="29" verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="0" />
+			<e:Image source="smallui_tbg_png" y="19" scaleX="1" scaleY="1" x="107" />
+			<e:Label text="Thưởng Offline" y="23" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32"
+			         fontFamily="Arial" verticalAlign="middle" scaleX="1" scaleY="1"
+			         x="151"  textColor="0xfdb200" bold="true"/>
+			<e:Label text="Nhận" x="194" y="391" size="22" textAlign="center" strokeColor="0x000000" stroke="1"
+			         textColor="0xF8F7D3" anchorOffsetX="0" width="116" anchorOffsetY="0" height="42" verticalAlign="middle"
+			         name="btn_close"  scaleX="1" scaleY="1" />
+		</e:Group>
+		<e:Label id="lbl_time" text="1天23小时34分钟33秒" x="179" y="341" size="24" textAlign="left" strokeColor="0x000000"
+		         stroke="1" textColor="0xFDB200" width="254" height="29" verticalAlign="middle" scaleX="1" scaleY="1"
+		         anchorOffsetX="0" />
+		<e:Scroller width="425.33" height="232.01" y="87.32999999999998" anchorOffsetX="0" anchorOffsetY="0" x="39" scaleX="1"
+		            scaleY="1">
+			<e:List id="list" itemRendererSkinName="ItemSkin">
+				<e:layout>
+					<e:TileLayout horizontalGap="12" verticalGap="10" paddingLeft="10" />
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

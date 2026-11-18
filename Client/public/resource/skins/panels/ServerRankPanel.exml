@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ServerRankPanel" xmlns:e="http://ns.egret.com/eui" width="640" height="1136"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="1583409832b" width="100%" height="100%" />
+	<e:Group id="group" height="598" anchorOffsetY="0" verticalCenter="0" horizontalCenter="0" width="520">
+		<e:Image source="form_hd_png" scale9Grid="40,34,20,32" x="0" y="0" anchorOffsetX="0" width="100%" anchorOffsetY="0" height="100%"/>
+
+		<e:Image y="16" source="rank_line_png" anchorOffsetX="0" width="240" anchorOffsetY="0" height="37"
+		         horizontalCenter="0" />
+		<e:Label text="跨服排行" y="20" textColor="0xffff00" size="28" horizontalCenter="0" />
+		<e:Scroller height="498" y="68" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" width="482">
+			<e:List id="list" anchorOffsetX="0" anchorOffsetY="0">
+				<e:itemRendererSkinName>
+					<e:Skin width="482">
+						<e:Label id="point" text="积分:2000" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1"
+						         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0x00FF00"  x="290"/>
+						<e:Label id="rank" text="第5名: XXXXXX" size="24" textAlign="left" strokeColor="0x5E3500" stroke="1"
+						         verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" anchorOffsetY="0" textColor="0xFFFDE2" />
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image source="btn_close_1_png" x="468" y="4" scaleX="1" scaleY="1" name="btn_close"/>
+		
+
+
+
+
+	</e:Group>
+</e:Skin>

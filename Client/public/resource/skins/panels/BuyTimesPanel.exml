@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BuyTimesPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group id="group_static" width="450" height="245" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" touchEnabled="false" verticalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="450" height="245" scaleX="1" scaleY="1" anchorOffsetX="0" x="1"/>
+		<e:Image id="btn_addTwo" source="btn_bg4_png" scale9Grid="5,5,110,34" x="353.02" y="98" scaleX="1" scaleY="1" width="85"/>
+		<e:Image id="btn_subTwo" source="btn_bg4_png" scale9Grid="5,5,110,34" x="10" y="100" scaleX="1" scaleY="1" width="85" anchorOffsetX="0" anchorOffsetY="0"/>
+		<e:Image id="btn_sub" source="btn_bg4_1_png" x="100" y="100" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_add" source="btn_bg4_1_png" x="306.02" y="98" scaleX="1" scaleY="1"/>
+		<e:Image source="ui_sub_png" x="110" y="119.01" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="ui_+_png" x="314.84" y="108" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" y="100.66" width="100" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="ui_sub_png" x="20" y="119.01" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="ui_+_png" x="365.34" y="108.5" scaleX="1" scaleY="1" touchEnabled="false"/>
+		<e:Image source="smallui_tbg_png" y="7" scaleX="1" scaleY="1" x="80"/>
+		<e:Label id="tittle" text="提  示" y="13" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" height="32" fontFamily="Arial" verticalAlign="middle" x="195" scaleX="1" scaleY="1" bold="true" textColor="0xfdb200"/>
+		<e:Label text="请输入购买次数:" y="49" size="22" textAlign="center" strokeColor="0x000000" stroke="1" height="32" fontFamily="Arial" verticalAlign="middle" horizontalCenter="0" x="190" scaleX="1" scaleY="1" textColor="0xff0000" bold="true"/>
+		<e:Label text="花费" y="148" size="22" textAlign="center" strokeColor="0x000000" stroke="1" height="32" fontFamily="Arial" verticalAlign="middle" horizontalCenter="-54.5" x="200" scaleX="1" scaleY="1" textColor="0xffffff"/>
+		<e:Image id="btn_confirm" source="btn_bg4_png" scale9Grid="5,5,110,34" y="187" width="100" scaleX="1" scaleY="1" horizontalCenter="90"/>
+		<e:Label text="确认" y="198" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" scaleX="1" scaleY="1" horizontalCenter="90"/>
+		<e:Image id="btn_cancel" source="btn_bg4_png" scale9Grid="5,5,110,34" y="187" width="100" name="btn_close" scaleX="1" scaleY="1" horizontalCenter="-90"/>
+		<e:Label text="取消" y="198" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" touchEnabled="false" scaleX="1" scaleY="1" horizontalCenter="-90"/>
+		<e:Image source="btn_close_png" x="379" y="0" name="btn_close" scaleX="1" scaleY="1"/>
+		<e:BitmapLabel id="label_addSup" y="107.66" text="10" font="yuan_fnt" touchEnabled="false" horizontalCenter="183.5" x="409" scaleX="1" scaleY="1"/>
+		<e:BitmapLabel id="label_subSup" y="109.5" font="yuan_fnt" text="10" touchEnabled="false" horizontalCenter="-159.5" x="93" scaleX="1" scaleY="1"/>
+		<e:TextInput id="input" y="106" restrict="0-9" text="1" horizontalCenter="0">
+			<e:skinName>
+			<e:Skin states="normal,disabled,normalWithPrompt,disabledWithPrompt" xmlns:component="legend.view.component.*">
+				<e:EditableText id="textDisplay" verticalCenter="0" textColor.disabled="0xffffff" width="100%" size="28" text="9999999" textColor="0xffffff" height="28" horizontalCenter="0" textAlign="center"/>
+				<e:Label id="promptDisplay" verticalCenter="0" width="100%" size="28" touchEnabled="false" includeIn="normalWithPrompt,disabledWithPrompt" text="请输入" textColor="0xa6a7b6" height="28" horizontalCenter="0" textAlign="center"/>
+			</e:Skin>
+			</e:skinName>
+		</e:TextInput>
+		<e:Image x="201.5" y="147" source="icon_crystal_png" width="30" height="30"/>
+		<e:Label id="crystal" text="20" x="240" y="153.34" size="22" textColor="0xfdb200"/>
+	</e:Group>
+</e:Skin>

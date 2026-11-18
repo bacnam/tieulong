@@ -1,0 +1,6 @@
+﻿id	名称	头像	地图id	等级	增长倍数	减少系数	开始时间	结束时间	击杀奖励邮件id	生命	boss相关信息
+id	Name	Icon	MapId	Level	UpMultiple	DownMultiple	BeginTime	EndTime	MailId	MaxHP	BossId
+1	WorldBoss_Name_1	s_portrait013_png	WorldBossMap01	100	3	1.5	12	13	100101	100000000	300001
+2	WorldBoss_Name_2	s_portrait004_png	WorldBossMap02	100	3	1.5	15	16	100101	200000000	300002
+3	WorldBoss_Name_3	s_portrait017_png	WorldBossMap03	100	3	1.5	18	19	100101	200000000	300003
+4	WorldBoss_Name_4	s_portrait005_png	WorldBossMap04	100	3	1.5	21	22	100101	300000000	300004

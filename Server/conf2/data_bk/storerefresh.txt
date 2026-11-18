@@ -1,0 +1,7 @@
+﻿商店类型	消耗代币	消耗数量	免费刷新最大次数	能否手动刷新	能否自动刷新	是否显示下次刷新时间	商品购买消耗的货币	商店里tab上的icon	商店名字备注	商店名字
+id	UniformId	Count	StoreFreeRefreshTimes	ManualRefresh	AutoRefresh	ShowNextRefreshTime	CurrencyList	Icon	#Name	Name
+EquipStore	2	10	5	TRUE	TRUE	TRUE	1;2		Shop Trang bị	$Win_ShopMarket_SoulStore
+ItemStore	2	10	99999	TRUE	FALSE	TRUE	1;2		Shop Đạo cụ	$Win_ShopMarket_TowerStore
+ArenaStore	2	10	99999	TRUE	FALSE	TRUE	1;2		Shop Đạo cụ	$Win_ShopMarket_TowerStore
+MysteryStore	2	20	3	TRUE	TRUE	TRUE	1;2		Shop Thần bí	$Win_ShopMarket_TowerStore
+GuildStore	19	20	3	TRUE	TRUE	TRUE	1;2		Shop Bang phái	$Win_ShopMarket_TowerStore

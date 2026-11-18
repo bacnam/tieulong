@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="WarSpiritHeadItem" states="up,down,disabled" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="97" height="93">
+	<e:Image id="btn_bg1" source="portrait_bg_off_png" source.down="portrait_bg_png" source.disabled="portrait_bg_off_png" horizontalCenter="0" verticalCenter="0"/>
+	<e:Image id="btn_bg2" source="portrait_bg_none_png" source.down="portrait_bg_png" source.disabled="portrait_bg_none_png" horizontalCenter="0" verticalCenter="0"/>
+	<e:Image id="role_icon" source="tou1_png" width="76" height="76" horizontalCenter="0" verticalCenter="-0.5"/>
+	<e:Image id="attack" y="15.76" source="yichuzhan_png" anchorOffsetX="0" width="76" anchorOffsetY="0" height="34" rotation="29.24" horizontalCenter="0"/>
+	<e:Image id="lock_label" y="15.76" anchorOffsetX="0" width="76" anchorOffsetY="0" height="34" rotation="29.24" source="weiyongyou_png" horizontalCenter="0"/>
+</e:Skin>

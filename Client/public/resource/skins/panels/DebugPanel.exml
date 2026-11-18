@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="157daa27297"/>
+	<e:Label id="btn_open" text="打开Debug" x="456.34" y="56" backgroundColor="0xfafafa" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5e5c5d" scaleX="1" scaleY="1"/>
+	<e:Panel id="pnl_debug" x="30" y="22" anchorOffsetX="0" width="592" anchorOffsetY="0" height="674.12" enabled="true">
+		<e:Rect scaleX="1" scaleY="1" left="0" right="0" top="0" bottom="0" fillAlpha="0.58" anchorOffsetY="0" height="766.31"/>
+		<e:Label id="btn_guide" text="开关新手引导" x="86.33" y="492.71" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1" size="25"/>
+		<e:Label text="登陆key:" x="21.93" y="298.09" scaleX="1" scaleY="1"/>
+		<e:Label text="游戏服IP端口:" x="22.6" y="337.42" scaleX="1" scaleY="1"/>
+		<e:Label text="在登陆之后无法再强登" x="64.6" y="394.08" scaleX="1" scaleY="1"/>
+		<e:Label id="lbl_openid" text="玩家openid" x="155.67" y="112" scaleX="1" scaleY="1"/>
+		<e:Label id="btn_triggleBattle" text="暂停or继续" x="260.33" y="491.71" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1"/>
+		<e:Label id="btn_commitCmd" text="Commit" x="426.335" y="564.6" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="43.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1"/>
+		<e:Label id="btn_test" text="新功能测试" x="85.78" y="435.71" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="43.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1"/>
+		<e:Label id="btn_netmessage" text="开关协议信息" x="418.33" y="491.71" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1" size="22"/>
+		<e:Label id="btn_forcelogin" text="强制登陆" x="413.67" y="381.75" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="42.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1" size="22"/>
+		<e:Label id="btn_clearUser" text="清除账号" x="260.01" y="149.31" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1" size="28"/>
+		<e:Label id="btn_switchlogin" text="爱爱游登陆\n(当前:测试登陆)" x="419.67" y="147.98" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1" size="15"/>
+		<e:TextInput id="txt_command" width="510.91" height="44" y="615.81" x="48.79" textColor="0xffffff" enabled="true" visible="true" scaleX="1" scaleY="1" inputType="input" skinName="skins.TextInputSkin" prompt="[命令] [参数1] [参数2] ..." anchorOffsetX="0"/>
+		<e:TextInput id="txt_server" width="320.24" height="44" y="331.14" x="224.11" textColor="0xffffff" enabled="true" visible="true" scaleX="1" scaleY="1" inputType="input" skinName="skins.TextInputSkin" prompt="格式-xxx.xxx.xxx:9999" anchorOffsetX="0" text="127.0.0.1:9999"/>
+		<e:TextInput id="txt_pid" width="297.58" height="44" y="251.13" x="145.45" textColor="0xffffff" enabled="true" visible="true" scaleX="1" scaleY="1" inputType="input" skinName="skins.TextInputSkin" anchorOffsetX="0" prompt="格式-1008600000000004" text="1008600000001933"/>
+		<e:TextInput id="txt_loginkey" width="297.58" height="44" y="291.8" x="146.12" textColor="0xffffff" enabled="true" visible="true" scaleX="1" scaleY="1" inputType="input" skinName="skins.TextInputSkin" anchorOffsetX="0" prompt="格式-1481183422" text="1481188508"/>
+		<e:Label text="玩家pid:" x="25.26" y="257.42" scaleX="1" scaleY="1"/>
+		<e:Label text="作弊命令:" x="57.92" y="571.21" anchorOffsetX="0" width="134.24" anchorOffsetY="0" height="30.12" scaleX="1" scaleY="1"/>
+		<e:Label text="Open ID:" x="25.28" y="113.42" scaleX="1" scaleY="1"/>
+		<e:Label id="btn_close" text="关闭Debug" x="426.34" y="34" backgroundColor="0xFAFAFA" background="true" anchorOffsetX="0" width="153.34" anchorOffsetY="0" height="51.33" verticalAlign="middle" touchEnabled="true" textColor="0x5E5C5D" scaleX="1" scaleY="1"/>
+	</e:Panel>
+</e:Skin>

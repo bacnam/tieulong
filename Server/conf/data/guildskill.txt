@@ -1,0 +1,7 @@
+﻿ID	buff类型	图标	技能名称	描述	基础值	成长值	需要公会等级
+id	Attribute	IconID	Name	Description	BaseValue	GrowthValue	UnlockLevel
+1001	MaxHP	skill_bp2_jpg	Huyết lượng	Toàn viên huyết lượng	18000	3000	1
+1002	DEF	skill_bp3_jpg	Phòng ngự	Toàn viên phòng ngự	2400	360	2
+1003	RGS	skill_bp4_jpg	Pháp phòng	Toàn viên pháp phòng	2400	360	3
+1004	Dodge	skill_bp5_jpg	Né tránh	Toàn viên né tránh	4500	750	4
+1005	Tenacity	skill_bp6_jpg	Kháng bạo	Toàn viên kháng bạo	5400	810	5

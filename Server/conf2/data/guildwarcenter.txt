@@ -1,0 +1,7 @@
+﻿Id	名称	开放时间	战报奖励	失败邮件	占领奖励
+id	Name	OpenTime	MailId	FailMail	TakeMail
+1	Thần trang mảnh	1~1	1230001	1230006	1230012
+2	Thần trang mảnh	2~2	1230001	1230007	1230012
+3	Tinh thạch	3~4	1230003	1230008	1230014
+4	Luyện hóa thạch	5~5	1230004	1230009	1230015
+5	Nguyên bảo	6~7	1230005	1230010	1230016

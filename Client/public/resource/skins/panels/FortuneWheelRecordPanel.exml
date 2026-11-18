@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="FortuneWheelRecordPanel" xmlns:e="http://ns.egret.com/eui" width="640" height="1136"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<w:Config id="1583409832b" width="100%" height="100%" />
+	<e:Group id="group" horizontalCenter="0.5" verticalCenter="0" height="500">
+		<e:Image source="smallui_bg_png" scale9Grid="50,50,50,20" height="100%" verticalCenter="0" scaleX="1" scaleY="1"
+		         width="490" horizontalCenter="0" />
+		<e:Image source="btn_close_png" scaleX="1" scaleY="1" name="btn_close" y="1.76" x="419.01" />
+		<e:Image y="16" source="rank_line_png" anchorOffsetX="0" width="220" anchorOffsetY="0" height="37"
+		         horizontalCenter="0" />
+		<e:Label text="中奖纪录" y="20" textColor="0xffff00" size="28" horizontalCenter="0" />
+		<e:Scroller height="418" y="68" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+			<e:List id="list">
+				<e:itemRendererSkinName>
+					<e:Skin>
+						<e:Label id="label_name" text="{data.name}" textColor="0xe0e000" size="24" />
+						<e:Label id="tip" text="抽奖获得" size="24" textColor="0xededaf" />
+						<e:Label id="label_reward" text="{data.reward}" size="24" textColor="0x00ff00"/>
+					</e:Skin>
+				</e:itemRendererSkinName>
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="center"/>
+				</e:layout>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

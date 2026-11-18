@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildMemberPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false">
+		<e:Image source="ui_bg_png" verticalCenter="0.5" horizontalCenter="0" x="0" y="0" scaleX="1" scaleY="1"/>
+		<e:Image source="title_guild_png" y="10" scaleX="1" scaleY="1" horizontalCenter="0"/>
+		<e:Image source="btn_close_png" x="518" y="12" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="63" anchorOffsetX="0" width="552" anchorOffsetY="0" height="705" horizontalCenter="0" x="19" scaleX="1" scaleY="1"/>
+		<e:Image source="list_bg_jpg" y="74" anchorOffsetX="0" width="531" anchorOffsetY="0" height="682" horizontalCenter="0" x="30" scaleX="1" scaleY="1"/>
+		<e:Image source="ui_tit_bg_png" x="57" y="79" anchorOffsetY="0" height="41" anchorOffsetX="0" width="406" scaleX="1" scaleY="1"/>
+		<e:Label text="Thành viên:" y="84" size="22" textAlign="right" strokeColor="0x000000" stroke="1" width="217.33" height="32" verticalAlign="middle" fontFamily="Arial" anchorOffsetX="0" x="44.67" scaleX="1" scaleY="1" textColor="0xc5d9ea"/>
+		<e:Label id="num" text="10/ 20" x="260" y="89" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" scaleX="1" scaleY="1"/>
+		<e:Scroller width="520" height="614" y="130" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" x="35" scaleX="1" scaleY="1">
+			<e:List id="list" itemRendererSkinName="GuildMemberItem">
+			<e:layout>
+				<e:VerticalLayout gap="10" horizontalAlign="center"/>
+			</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Image id="btn_close1" x="535" y="800" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"/>
+
+	</e:Group>
+</e:Skin>

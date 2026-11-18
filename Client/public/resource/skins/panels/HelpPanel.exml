@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HelpPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="15842f3be75"/>
+	<e:Group width="409" height="495" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0" verticalCenter="0">
+		<e:Group width="409" height="495" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" scaleX="1" scaleY="1" >
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="400" height="492" horizontalCenter="0" verticalCenter="0" x="5" y="2" scaleX="1" scaleY="1"/>
+		<e:Image source="smallui_tbg_png" y="7" scaleX="1" scaleY="1" x="58"/>
+		<e:Label text="帮 助" y="11" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" verticalAlign="middle" x="102" scaleX="1" scaleY="1" textColor="0xfdb200" bold="true"/>
+		<e:Image source="btn_close_png" x="338" y="-1" name="btn_close" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Scroller width="350" height="400" scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="10" x="29" y="57">
+			<e:Group>
+			<e:Label id="label_content" text="有什么需要帮助的吗？请拨打110.谢谢" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="350" verticalAlign="top" scaleX="1" scaleY="1"/>
+			</e:Group>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

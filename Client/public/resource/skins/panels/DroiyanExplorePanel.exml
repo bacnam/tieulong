@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanExplorePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="158721bdd66"/>
+	<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="560" height="680" horizontalCenter="0" verticalCenter="-41" locked="true"/>
+	<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="258" width="540" height="499" scaleX="1" scaleY="1" horizontalCenter="0" locked="true"/>
+	<e:Image source="btn_close_png" x="532" y="187" scaleX="1" scaleY="1" name="btn_close"/>
+	<e:Image source="list_tab_png" y="760" horizontalCenter="0" height="86" width="500" x="113" scaleX="1" scaleY="1"/>
+	<e:Image source="smallui_tbg_png" y="205" scaleX="1" scaleY="1" x="174"/>
+	<e:Label text="Xem" y="209" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" verticalAlign="middle" x="218" bold="true" textColor="0xfdb200"/>
+	<e:Label text="Hạng của bạn" x="110" y="773" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="94" height="30" verticalAlign="middle"/>
+	<e:Label id="rank" text="55" x="218" y="773" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="275" height="30" verticalAlign="middle"/>
+	<e:Label text="Phần thưởng" x="110" y="806" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="94" height="30" verticalAlign="middle"/>
+	<e:Label id="strengthen" text="12345" x="463" y="806" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="59" textColor="0xFFFFFF" height="29" verticalAlign="middle"/>
+	<e:Image source="icon_gold_png" x="212" y="803" width="35" height="36"/>
+	<e:Label id="gold" text="123456789012" x="263" y="811" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+	<e:Image source="stone_png" x="423" y="803" width="35" height="35"/>
+	<e:Scroller width="515" height="475" y="269" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0">
+		<e:Group>
+			<e:List id="list" width="100%" itemRendererSkinName="DroiyanExploreItem">
+				<e:ArrayCollection>
+					<e:Array>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+						<e:Object null=""/>
+					</e:Array>
+				</e:ArrayCollection>
+				<e:layout>
+					<e:VerticalLayout paddingTop="10" gap="16"/>
+				</e:layout>
+			</e:List>
+		</e:Group>
+	</e:Scroller>
+</e:Skin>

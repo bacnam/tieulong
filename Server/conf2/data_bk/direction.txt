@@ -1,0 +1,11 @@
+﻿类型	名称	方向	角度	翅膀	人物
+id	Name	Direction	ScaleX	Wing	Character
+0	None	0	1	0	1
+1	RightDown	1	1	0	1
+2	Right	2	1	0	1
+3	RightUp	3	1	1	0
+4	Up	4	1	1	0
+5	LeftUp	3	-1	1	0
+6	Left	2	-1	0	1
+7	LeftDown	1	-1	0	0
+8	Down	8	1	0	1

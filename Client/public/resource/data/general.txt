@@ -1,0 +1,296 @@
+﻿唯一标示	数值	说明（程序不读，仅方便填表）
+id	Value	Desction
+CameraRotUp	45	Màn ảnh cúi đầu và ngẩng đầu giác
+FieldOfView	40	Màn ảnh quảng giác
+ModelScale	1.5	Mô hình lớn nhỏ
+FixCastDisFactor	1	Thi pháp khoảng cách tu chỉnh hệ số
+FixWarningFactor	1	Cảnh giới phạm vi tu chỉnh hệ số
+MediumCameraDistance	24	Trạm kiểm soát trung trung đẳng màn ảnh khoảng cách
+MaxCameraDistance	28	Trạm kiểm soát trung lớn nhất màn ảnh khoảng cách
+SkillDistance	14	Đại chiêu khi màn ảnh khoảng cách
+SkillRotUp	36	Đại chiêu khi màn ảnh cúi đầu và ngẩng đầu giác
+SkillOffsetY	3	Đại chiêu khi màn ảnh chếch đi độ cao
+ArenaSkillCameraChange	TRUE	Đấu trường hay không mở ra đại chiêu màn ảnh
+NormalSkillCameraChange	TRUE	Phi đấu trường hay không mở ra đại chiêu màn ảnh
+SkillCameraToCast	TRUE	Đại chiêu màn ảnh cắt khi hay không thiết đến phóng thích giả
+KillBossDistance	18	Đánh chết Boss màn ảnh khoảng cách
+CameraOffsetRate	0.5	Đội trưởng ly hoả điểm chếch đi tỉ lệ 0 - 1
+CameraFowardOffset	10	Màn ảnh mục tiêu đi phía trước chếch đi lượng
+MoveDampingDuration	1	Màn ảnh cam chịu di động tốc độ
+ReturnMoveDuration	1	Màn ảnh phản hồi di động tốc độ
+SkillMoveDampingDuration	0.4	JJC màn ảnh đại chiêu di động tốc độ
+RotDampingDuration	0.5	Màn ảnh cam chịu xoay tròn tốc độ
+ZoomDampingDuration	0.4	Màn ảnh cam chịu kéo gần tốc độ
+AutoBattleSpeedUp	1.5	Tự động chiến đấu khi di động tốc độ bội số
+AdjustTeamMaxSpeedUp	2	Điều chỉnh trận hình khi di động tốc độ lớn nhất hạn chế bội số
+DoubleClickMoveDistance	10	Song đánh khi di động khoảng cách
+DoubleClickSpeedRate	3	Song đánh khi tốc độ tỉ lệ
+NoticeSpeedUp	1.5	Cảnh giới tốc độ tăng lên bội số
+DefendNoticeTime	0.1	Phòng ngự hình tạm dừng thời gian
+NormalNoticeTime	0.6	Mặt khác loại hình tạm dừng thời gian
+EnergyRecoverySecond	0	Mỗi giây tức giận khôi phục giá trị
+EnergyRecoveryHpProportion	0.01	Bị thương tức giận khôi phục sở cần sinh mệnh tỉ lệ
+EnergyRecoveryInjury	0.5	Bị thương tức giận khôi phục giá trị
+EnergyRecoveryBeAttack	0.5	Bị công kích tức giận khôi phục giá trị
+EnergyRecoveryCrit	2	Bạo kích tức giận khôi phục giá trị
+EnergyRecoveryParry	1	Đón đỡ tức giận khôi phục giá trị
+EnergyRecoveryDodge	1	Né tránh tức giận khôi phục giá trị
+LineUpInitialEnergy	50	Thay thế bổ sung ra trận mới bắt đầu tức giận
+BloodSize	12	Bên ta rớt huyết Size
+EnemyBloodSize	12	Địch quân rớt huyết Size
+CritSize	15	Bạo kích Size
+AddBloodSize	12	Thêm huyết Size
+NoticeTime	3.5	Dấu chấm than liên tục thời gian
+GuideHeight	1.5	Tinh linh đối thoại độ cao
+DecorationOcclusionAlphaSpeed	2	Trang sức vật che đậy khi mỗi giây Alpha biến hóa giá trị
+DecorationOcclusionAlpha	0.1	Trang sức vật che đậy khi Alpha biến hóa hạn cuối
+ArenaStartCameraDistance	35	Đấu trường bắt đầu màn ảnh khoảng cách
+ArenaStartCameraUp	40	Đấu trường bắt đầu màn ảnh cúi đầu và ngẩng đầu giác
+ArenaStartCameraSide	0	Đấu trường bắt đầu màn ảnh tả hữu góc độ
+ArenaBattleCameraDistance	25	Đấu trường tiến vào chiến đấu màn ảnh khoảng cách
+ArenaBattleCameraUp	30	Đấu trường tiến vào chiến đấu cúi đầu và ngẩng đầu giác
+TDHeroRange	15	TD anh hùng phạm vi
+TDTowerRange	30	TD tháp phạm vi
+AdjustNavmeshBaseOffset	FALSE	Điều chỉnh navmesh độ cao chếch đi
+AdjustNavmeshInterval	1	Điều chỉnh navmesh độ cao chếch đi thời gian khoảng cách
+QualityWhite	quality_1	Màu trắng phẩm chất
+QualityGreen	quality_2	Màu xanh biếc phẩm chất
+QualityBlue	quality_3	Màu lam phẩm chất
+QualityPurple	quality_4	Màu tím phẩm chất
+QualityOrange	quality_5	Màu cam phẩm chất
+QualityRed	quality_6	Màu đỏ phẩm chất
+QualityWhiteBg	Weapon_Bg1	Màu trắng trang bị đế đồ
+QualityGreenBg	Weapon_Bg2	Màu xanh biếc trang bị đế đồ
+QualityBlueBg	Weapon_Bg3	Màu lam trang bị đế đồ
+QualityPurpleBg	Weapon_Bg4	Màu tím trang bị đế đồ
+QualityOrangeBg	Weapon_Bg5	Màu cam trang bị đế đồ
+QualityRedBg	Weapon_Bg6	Màu đỏ trang bị đế đồ
+AutoBattleOpenIcon	AutoBattleOpen	Tự động chiến đấu mở ra
+AutoBattleCloseIcon	AutoBattleClose	Tự động chiến đấu đóng cửa
+AttackTypeIcon	AttackType	Công kích loại hình
+DefenceTypeIcon	DefenceType	Phòng ngự loại hình
+AuxiliaryTypeIcon	AuxiliaryType	Trị liệu loại hình
+SupportTypeIcon	AuxiliaryType	Phụ trợ loại hình
+NormalLevelPassIcon	NormalPass	Bình thường trạm kiểm soát đã thông quan icon
+NormalLevelOpenIcon	NormalOpen	Bình thường trạm kiểm soát đã mở ra icon
+NormalLevelNotOpenIcon	NormalNotOpen	Bình thường trạm kiểm soát chưa mở ra icon
+BossLevelPassIcon	BossPass	Boss trạm kiểm soát đã thông quan icon
+BossLevelOpenIcon	BossOpen	Boss trạm kiểm soát đã mở ra icon
+BossLevelNotOpenIcon	BossNotOpen	Boss trạm kiểm soát chưa mở ra icon
+SkillPublicCD	1000	Kỹ năng công cộng CD ms
+BossCameraDistance	22	Boss trạm kiểm soát mở màn camera khoảng cách
+BossCameraUp	37	Boss trạm kiểm soát mở màn camera cúi đầu và ngẩng đầu giác
+BossCameraSide	270	Boss trạm kiểm soát mở màn camera tả hữu
+BossShowTime	3	Boss trạm kiểm soát mở màn camera biểu hiện thời gian
+BoxNotOpen	LevelBox_1;LevelBox_4;LevelBox_7	Bảo rương chưa mở ra icon id
+BoxReach	LevelBox_2;LevelBox_5;LevelBox_8	Bảo rương đã tới icon id
+BoxOpen	LevelBox_3;LevelBox_6;LevelBox_9	Bảo rương đã mở ra icon id
+HideLifeBarTime	3	Che dấu huyết điều thời gian
+HideLifeBarLastTime	1	Che dấu huyết điều liên tục thời gian
+FateOpenColor	[fe9b00]	Duyên phận tới nhan sắc
+FateCloseColor	[858786]	Duyên phận chưa tới đạt nhan sắc
+MinFingerCameraDest	15	Nhỏ nhất màn ảnh khoảng cách
+MaxFingerCameraDest	24	Lớn nhất màn ảnh khoảng cách
+TotalSceenDis	0.4	Sở hữu nhưng di động khoảng cách yêu cầu màn hình khoảng cách tỉ lệ
+ArcherNeedDis	500	Công kích khoảng cách lớn hơn này giá trị vì viễn trình
+ArcherMinDis	250	Viễn trình nhưng cho phép công kích phạm vi nhỏ này giá trị bắt đầu di động
+ArcherMoveNeedNum	1	Mỗi lần di động phán định yêu cầu tiến hành công kích số lần
+ArcherMoveChange	0.3	Di động thành công xác suất cực đại 1
+ArcherMoveMaxDis	500	Viễn trình lớn nhất di động khoảng cách hạn chế
+ArenaLimitTime	180	JJC hạn chế thời gian giây
+TrialMultiRefreshTime	30	Thí luyện quần thể phó bản xoát quái thời gian
+TrialProtectRefreshTime	30	Thí luyện bảo hộ phó bản mỗi sóng xoát quái thời gian
+TrialProtectShowButtonTime	15	Thí luyện bảo hộ phó bản mỗi sóng biểu hiện cái nút thời gian
+EqSlot_Weapon	Weapon	Vũ khí trang bị loại hình Icon
+EqSlot_Cloth	Cloth	Quần áo trang bị loại hình Icon
+EqSlot_Head	Head	Mũ giáp trang bị loại hình Icon
+EqSlot_Belt	Belt	Đai lưng trang bị loại hình Icon
+EqSlot_Lection	Lection	Kinh thư trang bị loại hình Icon
+EqSlot_Spell	Spell	Phù khí trang bị loại hình Icon
+UpgradeStarEffect_FlyTime	0.4	Thăng tinh đặc hiệu ngôi sao phi hành biểu hiện thời gian
+UpgradeStarEffect_FlashTime	0.5	Thăng tinh đặc hiệu tinh cấp tăng lên biểu hiện thời gian
+TeachCameraSide	20	Giáo trình trạm kiểm soát cameras
+EnergyArenaExtra	30	Đấu trường thêm vào tức giận
+KillBossTimeScale	0.3	Đánh chết Boss khi tốc độ biến hóa giá trị ( thả chậm )
+ShowKillBossTime	1.5	Đánh chết Boss thả chậm liên tục thời gian
+ShowResultWindowTime	3	Đánh chết bắt đầu đến bắn ra thắng lợi giao diện thời gian
+KillBossBackTime	2	Đánh chết Boss khôi phục bình thường tốc độ sau phản hồi thời gian
+PlayerTalkColor	[FFFFFF]	Người chơi đối thoại nhan sắc
+LeaderTalkColor	[FFFFFF]	Đội trưởng đối thoại nhan sắc
+OtherTalkColor	[FFFFFF]	Mặt khác đối thoại nhan sắc
+ReserveTalkColor	[FFFFFF]	Chi viện NPC đối thoại nhan sắc
+GuideArrowDistance	7	Chỉ lộ màn ảnh khoảng cách người xa gần
+FriendGiveAddShip	6	Bạn tốt đưa tặng gia tăng nghĩa khí giá trị
+FriendAddPhysicalNum	6	Bạn tốt đưa tặng gia tăng thể lực giá trị
+FriendMaxFriendListNum	50	Bạn tốt hệ thống lớn nhất bạn tốt số lượng
+MaxRecommendFriend	10	Hệ thống đề cử bạn tốt số
+TrialMaxMonsterNum	6	Thí luyện lớn nhất quái vật số lượng
+TrialDropGoldFactor	100	Thí luyện rơi xuống đồng vàng hệ số
+NoticeHatred	12	Gặp mặt cừu hận
+ProtectHatred	20	Vô tận người bảo vệ mới bắt đầu cừu hận
+HatredKeepTime	3	Cừu hận bảo trì thời gian
+HatredReduceInterval	1	Cừu hận giảm bớt khoảng cách
+HatredReducePer	10	Cừu hận giảm bớt tỉ lệ phần trăm
+HatredReduceFix	10	Cừu hận giảm bớt cố định giá trị
+ClickAddPer	0.5	Điểm đánh gia tăng phạm vi tỉ lệ
+ClickAddFix	1	Điểm đánh gia tăng phạm vi cố định giá trị
+DailySign	Act_DailySign	Mỗi ngày đánh dấu
+SignInVip	Act_SignInVip	Xa hoa đánh dấu
+SignInPrize	Act_SignInPrize	7 thiên đổ bộ
+SignInOpenServer	Act_SignInOpenServer	Khai phục đầu chu đổ bộ
+SignInFestival	Act_SignInFestival	Ngày hội đánh dấu
+FirstRecharge	Act_FirstRecharge	Đầu sung hoạt động
+AccumRecharge	Act_AccumRecharge	Mệt sung tặng lễ
+DailyRecharge	Act_DailyRecharge	Đơn bút sung giá trị chỉ định ngạch độ
+VipAward	Act_VipAward	Vip lễ bao
+InvestmentPlan	Act_InvestmentPlan	Đầu tư tiền lời
+FightPowerCompete	Act_FightPowerCompete	Khai phục chiến lực thi đua
+TeamLevelCompete	Act_TeamLevelCompete	Khai phục xếp hạng thi đua
+RebateStore	Act_RebateStore	Hạn khi đánh gãy
+OnlineTimeReward	Act_OnlineTimeReward	Ở tuyến lễ bao
+DailyGo	Act_DailyGo	Mỗi ngày hoạt động
+TreasureKing	Act_TreasureKing	Vương chi tài bảo
+RechargeLottery	Act_RechargeLottery	Sung giá trị rút thăm trúng thưởng
+TimeLimitDrawCard	Act_TimeLimitDrawCard	Hạn khi bói toán
+DoubleDrop	Act_DoubleDrop	Gấp đôi rơi xuống
+OpenServer7Days	Act_OpenServer7Days	Khai phục bảy ngày nhạc
+GroupBuying	Act_GroupBuying	Hạn khi đoàn mua
+PlayerReturn	Act_PlayerReturn	Người chơi lâu năm trở về
+CheckAssetTime	600	Tài nguyên giám sát thời gian khoảng cách ( giây )
+FastestRotateSpeed	1	Đĩa quay tốc độ nhanh nhất ( phù điểm )
+SlowestRotateSpeed	30	Đĩa quay chậm nhất tốc độ ( phù điểm )
+BeginRotateSpeed	12	Bắt đầu vận tốc quay ( phù điểm )
+RotateCount	5	Xoay tròn tổng vòng số ( số nguyên, nhớ lấy nhất định là số nguyên )
+SlowCount	4.5	Bắt đầu giảm tốc độ vòng số ( phù điểm, tỷ như chuyển 8 vòng 6 vòng nửa bắt đầu giảm tốc độ )
+SpeedUpSpeed	1.5	Tăng tốc độ ( phù điểm )
+SlowDownSpeed	3	Giảm tốc độ độ ( phù điểm )
+TimeLimitStore_LevelLimit	12	Thần bí thương nhân xuất hiện cấp bậc hạn chế
+LoadingPicNum	2	loading đồ số lượng
+ShopItemPriceNotEnough	[CD1919]	Thương phẩm giá cả nhan sắc ( không đủ )
+ShopItemPriceDiscount	[620D12]	Thương phẩm giá cả nhan sắc ( đánh gãy )
+EquipAttrColor_Add	[135c00]	Thuộc tính tương đối gia tăng nhan sắc
+EquipAttrColor_Cut	[ff0000]	Thuộc tính tương đối giảm bớt nhan sắc
+GemAttr_Add_Color	[00ff00]	Nguyên tố thạch thuộc tính gia tăng nhan sắc
+GemAttr_Cut_Color	[ff0000]	Nguyên tố thạch thuộc tính gia tăng nhan sắc
+CardFateOpenColor	[1a8202]	Thẻ bài duyên phận mở ra nhan sắc
+CardFateUnOpenColor	[705D4B]	Thẻ bài duyên phận chưa mở ra nhan sắc
+TowerLevelTitle_Finish	[FFFFFF]	Đại náo không trung trạm kiểm soát tiêu đề nhan sắc
+TowerLevelTitle_Unlock	[FFF09B]	Đại náo không trung trạm kiểm soát tiêu đề nhan sắc
+TowerLevelTitle_Lock	[808080]	Đại náo không trung trạm kiểm soát tiêu đề nhan sắc
+TowerLevelTitle_Faild	[FFF09B]	Đại náo không trung trạm kiểm soát tiêu đề nhan sắc
+TowerLevelTitle_Finish_Outline	61:62:62	Đại náo không trung trạm kiểm soát tiêu đề miêu biên
+TowerLevelTitle_Unlock_Outline	61:62:62	Đại náo không trung trạm kiểm soát tiêu đề miêu biên
+TowerLevelTitle_Lock_Outline	61:62:62	Đại náo không trung trạm kiểm soát tiêu đề miêu biên
+TowerLevelTitle_Faild_Outline	61:62:62	Đại náo không trung trạm kiểm soát tiêu đề miêu biên
+BreakQualityColor_Quality_White	[FFFFFF]	Đột phá thuộc tính nhan sắc
+BreakQualityColor_Quality_Green	[00FF36]	Đột phá thuộc tính nhan sắc
+BreakQualityColor_Quality_Blue	[00f6ff]	Đột phá thuộc tính nhan sắc
+BreakQualityColor_Quality_Purple	[f533f7]	Đột phá thuộc tính nhan sắc
+BreakQualityColor_Quality_Orange	[fd7200]	Đột phá thuộc tính nhan sắc
+BreakQualityColor_Quality_Red	[ff1800]	Đột phá thuộc tính nhan sắc
+EquipAttrColor_Wash	[ff4d08]	Trang bị thuộc tính mạch lạc sau nhan sắc
+EquipAttrColor_None	[FFFFFF]	Trang bị thuộc tính nguyên thủy nhan sắc
+EquipUIColor3	[b42b22]	Trang bị giao diện hiệu quả nhan sắc 3- đã giải khóa hiệu quả
+EquipUIColor4	[958681]	Trang bị giao diện hiệu quả nhan sắc 4- chưa giải khóa hiệu quả
+GuildWarScaleSpeed	0.01	Hiệp hội chiến chủ giao diện súc phóng tốc độ
+StartDownLoadGuildId	303	Dẫn đường đến này bước bắt đầu download
+SignetAttrColor_UnActivate	[958681]	La bàn thuộc tính chưa kích hoạt khi nhan sắc
+SignetAttrColor_Activate	[B42B22]	La bàn thuộc tính kích hoạt khi nhan sắc
+SignetAttrColor_Zero	[958681]	Chưa trang bị đá quý nhan sắc
+StaminaItemID	61017;61016	Sở hữu thể lực đan ItemID
+ShareHartedPer	1000	Phổ công chia sẻ cừu hận tỉ lệ vạn phần so
+ExtraHartedStartPer	500	Phổ công thêm vào cừu hận bắt đầu tính toán tỉ lệ vạn phần so
+ExtraHartedAddValue	2	Thêm vào cừu hận mỗi 1% gia tăng giá trị
+TeamExpSpriteWidth	2.07	Đội ngũ kinh nghiệm tinh linh độ rộng hệ số
+TeamExpSpriteHeight	0.6	Đội ngũ kinh nghiệm tinh linh độ cao hệ số
+VipExpSpriteWidth	1	Vip kinh nghiệm tinh linh độ rộng hệ số
+VipExpSpriteHeight	0.5	Vip kinh nghiệm tinh linh độ cao hệ số
+UseIgnoreSummon	1	Hay không sử dụng xem nhẹ triệu hoán vật
+WaitWeRecTime	3	Chiến đấu kết thúc đình chỉ video thu khống chế thời gian
+WorldChatInterval	5	Kênh Thế Giới gửi đi tin tức khoảng cách thời gian ( giây )
+WorldVoiceInterval	30	Kênh Thế Giới giọng nói khoảng cách thời gian ( giây )
+PrivateVoiceInterval	5	Trò chuyện riêng giọng nói thời gian khoảng cách ( giây )
+GuildVoiceInterval	15	Hiệp hội giọng nói thời gian khoảng cách ( giây )
+GuardianScale	2.5	Thủ hộ thú tỉ lệ
+InitWeRecTime	1	Video khởi động lại thời gian
+GuildNameLength	6	Bang hội tên chiều dài
+RoleNameLength	6	Nhân vật tên chiều dài
+HonorRoomDefaultCardId	2030	Vinh dự điện phủ tìm không thấy đội trưởng sử dụng cam chịu tạp id
+BossLevelDoubleTime	12:14;18:20	Boss gấp đôi thời gian điểm
+GreenEquipRefineExp	2021	Màu xanh biếc phẩm chất Luyện hóa thạch
+BlueEquipRefineExp	2022	Lam phẩm chất Luyện hóa thạch
+PurpleEquipRefineExp	2023	Màu tím phẩm chất Luyện hóa thạch
+OrangeEquipRefineExp	2024	Màu cam phẩm chất Luyện hóa thạch
+BossLevelRankSize	10	Thủ lĩnh đột kích bảng xếp hạng chiều dài
+BossLevelFightTime	180	Thủ lĩnh đột kích chiến đấu thời gian
+BossLevelFightTimeClient	90	Khách hàng thủ lĩnh đột kích chiến đấu thời gian
+EquipStarUpLuckMax	5	Trang bị thăng tinh may mắn cực đại
+WelkinLow	80	Thiên cung thăm bảo tìm tòi đối thủ khu gian hạn cuối
+WelkinInit	85	Thiên cung thăm bảo tìm tòi đối thủ khởi động lại giai cấp
+WelkinHigh	120	Thiên cung thăm bảo tìm tòi đối thủ khu gian hạn mức cao nhất
+WelkinPreRange	5	Thiên cung thăm bảo tìm tòi đối thủ khu gian biến hóa giá trị
+EquipStarExpUp_Faild	[ff0000]	Trang bị thăng tinh thất bại nhắc nhở nhan sắc
+EquipStarExpUp_Normal	[FFFFFF]	Trang bị thăng tinh bồi dưỡng vô bạo kích nhắc nhở nhan sắc
+EquipStarExpUp_High	[00FF36]	Trang bị thăng tinh bồi dưỡng 2 lần bạo kích nhắc nhở nhan sắc
+EquipStarExpUp_Highest	[00f6ff]	Trang bị thăng tinh bồi dưỡng 3 lần bạo kích nhắc nhở nhan sắc
+EquipStarExpUp_OneKeyTip	[ff4d08]	Trang bị một kiện thăng tinh nhắc nhở nhan sắc
+ArenaEnergyMax	100	Đấu trường tức giận hạn mức cao nhất
+AcitiveSkillBreakEnergy	50	Đấu trường đánh gãy khôi phục tức giận giá trị
+WorldBossNormalAttack	1;2|100;50	Thế giới Boss bình thường công kích đạt được tức giận quyền trọng
+WorldBossRageAttack	1;2;3|100;50;50	Thế giới Boss tức giận công kích đạt được tức giận quyền trọng
+WorldBossDamagePct	500~1500	Thế giới Boss thương tổn di động khu gian
+WorldBossRageMultiple	15000~30000	Thế giới Boss tức giận thương tổn bội số
+GemExpUp_Normal	[00ff00]	Đá quý bồi dưỡng vô bạo kích nhắc nhở nhan sắc
+GemExpUp_High	[ffff00]	Đá quý bồi dưỡng 2 lần bạo kích nhắc nhở nhan sắc
+GemExpUp_Highest	[ff0000]	Đá quý bồi dưỡng 3 lần bạo kích nhắc nhở nhan sắc
+GemExpUp_OneKeyTip	[ff4d08]	Đá quý một kiện bồi dưỡng nhắc nhở nhan sắc
+DiscountTipFont1	[44DDFC]	5 chiết dưới chiết khấu con số thể nhan sắc
+DiscountTipFont2	[7EDF4C]	5-8 chiết chiết khấu con số thể nhan sắc
+DiscountTipFont3	[ffffff]	8 chiết trở lên chiết khấu con số thể nhan sắc
+RuneDetial_BuffName	[630d12]	Phù văn giao diện thuộc tính tên nhan sắc
+RuneDetial_BuffValue	[1a8202]	Phù văn giao diện thuộc tính trị số nhan sắc
+BloodFlyOffset	0.75	Phiêu tuyết chếch đi lượng
+OutLineSize	0.012	outline kích cỡ
+Guild_VicePresidentNotice	我任命{0}为副帮主，请大家多多支持TA！	
+TowerLevel	50	Chú thích vì ngàn kiếp tháp tinh cấp bảng xếp hạng biểu hiện điều số
+initPlayerName	穿越者	Sáng tạo nhân vật khi cam chịu tên
+EquipWashTimes_Times_1	1	Trang bị mạch lạc số lần loại hình đối ứng số lần
+EquipWashTimes_Times_2	10	Trang bị mạch lạc số lần loại hình đối ứng số lần
+EquipWashTimes_Times_3	50	Trang bị mạch lạc số lần loại hình đối ứng số lần
+EquipSlotNothing_Weapon	31201	Trang bị tào vị đối ứng trang bị vì không khi pop-up thu hoạch đường nhỏ
+EquipSlotNothing_Head	31202	Trang bị tào vị đối ứng trang bị vì không khi pop-up thu hoạch đường nhỏ
+EquipSlotNothing_Cloth	31203	Trang bị tào vị đối ứng trang bị vì không khi pop-up thu hoạch đường nhỏ
+EquipSlotNothing_Belt	31204	Trang bị tào vị đối ứng trang bị vì không khi pop-up thu hoạch đường nhỏ
+EquipSlotNothing_Lection	32301	Trang bị tào vị đối ứng trang bị vì không khi pop-up thu hoạch đường nhỏ
+EquipSlotNothing_Spell	33301	Trang bị tào vị đối ứng trang bị vì không khi pop-up thu hoạch đường nhỏ
+MagicEquipUpgradeStuff	31001	Pháp bảo cường hóa tài liệu vì không thời điểm pop-up thu hoạch đường nhỏ
+Fateturncardtimestype	60112;60113;60112:60112;60113:60113;60112:60113	Tùy duyên phiên bài lần tạp xuất hiện loại hình
+Fateturncardtimesweight	2000;2000;2000;2000;2000	Tùy duyên phiên bài lần tạp loại hình xuất hiện tỷ lệ
+FateturncardtimesId	60112;60113	Tùy duyên phiên bài lần tạp Id
+FateturncardtimesNum	2;3	Tùy duyên phiên bài lần tạp lần suất
+DoubleDropNumColor	[135c00]	Gấp đôi rơi xuống số lượng nhan sắc
+RandomCard_Activity_LuckyCard	200	Hạn khi trừu chỉnh tạp may mắn giá trị
+RandomCard_Activity_CardWeight	1	Hạn khi trừu hạn khi tạp quyền trọng
+RandomCard_Activity_LuckyCardChip	800	Hạn khi trừu mảnh may mắn giá trị
+RandomCard_Activity_LuckyCardChipNum	5~10	Hạn khi trừu mảnh số lượng phạm vi
+RandomCard_Activity_TimeLimitDrawCardEliteScore	100	Hạn khi trừu tinh anh bản thượng bảng cơ sở điểm
+RandomCard_Activity_ScoreBase	1	Hạn khi trừu tạp một lần tích phân
+FestivalCollect_Recharge	FestivalCollect_Recharge	Ngày hội hoạt động sung giá trị icon
+FestivalCollect_Sign	FestivalCollect_Sign	Ngày hội hoạt động đánh dấu icon
+FightCheckMaxMonsterNum	30	Chiến báo trong hiệp nghị tiểu quái số lượng hạn chế (0 vì không hạn )
+TextColor_BreakConditionReach	[00ff00]	Thẻ bài đột phá cấp bậc đạt tới tự sắc
+TextColor_BreakConditionUnreach	[ff0000]	Thẻ bài đột phá cấp bậc đạt tới tự sắc
+Hard1LevelSweepLimit	10	Mạo hiểm Hard1 trạm kiểm soát càn quét số lần hạn chế
+Hard2LevelSweepLimit	5	Mạo hiểm Hard2 trạm kiểm soát càn quét số lần hạn chế
+PowerGradeSplit	0;0.26;0.51;0.76	Chiến lực bình xét cấp bậc phân chia phạm vi
+PowerGradeIcon	UpgradeWay_Score_1;UpgradeWay_Score_2;UpgradeWay_Score_3;UpgradeWay_Score_4	Chiến lực bình xét cấp bậc icon
+DungeonBossMap	BattleBossMap	
+ConveyEffect	fly	Truyền tống môn đặc hiệu
+lvUpEffect	lvup	Thăng cấp đặc hiệu
+BattleDroiyanMap	BattleBossMap02	Quyết chiến bản đồ
+GodCharacters	[{"id":1001,"level":1,"type":2,"Model":"gumu5","MaxHP":1000000,"ATK":200000,"DEF":0,"RGS":0,"Hit":367860,"Dodge":149231,"Critical":161045,"Tenacity":256064,"SPD":750,"RNG":180,"skills":[{"id":1,"level":1},{"id":2,"level":1},{"id":3,"level":1},{"id":4,"level":1},{"id":5,"level":1}],"Wing":"wing_8","titleId":"1"},{"id":1002,"level":1,"type":2,"Model":"tianlong5","MaxHP":1500000,"ATK":100000,"DEF":0,"RGS":0,"Hit":367563,"Dodge":149825,"Critical":150237,"Tenacity":252626,"SPD":800,"RNG":100,"skills":[{"id":11,"level":1},{"id":12,"level":1},{"id":13,"level":1},{"id":14,"level":1},{"id":15,"level":1}],"Wing":"wing_9"},{"id":1003,"level":1,"type":2,"Model":"xiaoyao5","MaxHP":1100000,"ATK":150000,"DEF":0,"RGS":0,"Hit":355826,"Dodge":20845,"Critical":150507,"Tenacity":253530,"SPD":700,"RNG":280,"skills":[{"id":21,"level":1},{"id":22,"level":1},{"id":23,"level":1},{"id":24,"level":1},{"id":25,"level":1}],"Wing":"wing_10"}]	Mãn cấp thần trang ba cái nhân vật
+BaseCharacters	[{"id":1001,"level":100,"type":2,"Model":"gumu1","MaxHP":605,"ATK":104,"DEF":38,"RGS":38,"Hit":139,"Dodge":32,"Critical":46,"Tenacity":139,"SPD":750,"RNG":180,"skills":[{"id":1,"level":1}]},{"id":1002,"level":100,"type":2,"Model":"tianlong1","MaxHP":605,"ATK":104,"DEF":38,"RGS":38,"Hit":139,"Dodge":32,"Critical":46,"Tenacity":139,"SPD":800,"RNG":100,"skills":[{"id":11,"level":1}]},{"id":1003,"level":100,"type":2,"Model":"xiaoyao1","MaxHP":605,"ATK":104,"DEF":38,"RGS":38,"Hit":139,"Dodge":32,"Critical":46,"Tenacity":139,"SPD":700,"RNG":280,"skills":[{"id":21,"level":1}]}]	Ba cái sơ cấp nhân vật
+QQServer	https://www.i4sy.com	QQ đàn liên tiếp
+BattleArenaMap	BattleBossMap03	Đấu trường bản đồ
+SiginEffect	btn	Đánh dấu đặc hiệu
+WingUpDoubleEffect	lvup	Cánh bạo kích đặc hiệu

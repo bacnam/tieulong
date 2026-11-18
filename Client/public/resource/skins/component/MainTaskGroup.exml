@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MainTaskGroup" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="279" height="80">
+	<e:Image anchorOffsetY="0" scale9Grid="27,5,166,30" anchorOffsetX="0" touchEnabled="false" source="maintask_bg_png"/>
+	<e:Group id="group" touchEnabled="false" width="279" height="80">
+		<e:Label id="title_task" text="Luyện 1212 lần" x="80" y="20" size="20" stroke="1" touchEnabled="false" scaleX="1" scaleY="1" textColor="0xea8d4b"/>
+		<e:Label id="process_task" text="Luyện" x="180" y="20" size="20" stroke="1" touchEnabled="false" textColor="0x00FF00" scaleX="1" scaleY="1"/>
+		<e:Label id="reward_task" text="Luyện 1212 lần" x="80" y="45" size="20" stroke="1" textColor="0xFFFFFF" touchEnabled="false" scaleX="1" scaleY="1"/>
+		<e:Component id="jiantoubg" width="20" height="20" y="6" anchorOffsetX="10" anchorOffsetY="10" name="jiantou" horizontalCenter="0.5" rotation="90" touchEnabled="false"/>
+		<e:Component id="missonfinsh" width="20" height="20" anchorOffsetX="10" anchorOffsetY="10" name="missonfinsh" horizontalCenter="0.5" touchEnabled="false" y="40"/>
+	</e:Group>
+	<e:Component id="effectbg" width="20" height="20" y="53" scaleX="1.6" scaleY="1.6" anchorOffsetX="10" anchorOffsetY="10" name="misson" x="130" touchEnabled="false"/>
+	<e:Group id="btn_group" width="280" height="80"/>
+</e:Skin>

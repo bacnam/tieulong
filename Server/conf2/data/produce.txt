@@ -1,0 +1,218 @@
+﻿产出ID	说明	说明	跳转图标	跳转类型	跳转值
+ID	Desc	#Desc	BgIcon	OpenType	ProduceValue
+1	Võng mua		Unlock_Divination	Divination	
+2	Máy ATM		Unlock_BuyGold	BuyGold	
+5	Điên cuồng sủng vật thành		Unlock_RichRisk	RichRisk	
+7	Bắt chước khảo		Unlock_PVP	PVP	
+9	Đại náo thiên cung		Unlock_Tower	Tower	
+10	Phân giải		Unlock_Recycle	Recycle	
+13	Kinh thư chuyển phát nhanh		Unlock_TakeLection	TakeLection	
+14	Bạn tốt		Unlock_Friend	Friend	
+20	Rashomon		Unlock_SearchLevel	SearchLevel	
+101	Trảm yêu trừ ma		Unlock_BossLevel	BossLevel	
+102	Trăm biến yêu tiên		Unlock_Trial	Trial	
+103	Yêu Vương đột kích		Unlock_WorldBoss	WorldBoss	
+104	Một trận chiến rốt cuộc		Unlock_SkyArena	SkyArena	
+107	Cạnh kỹ		Unlock_PVP	ArenaSelect	
+108	Tám mươi mốt khó		Unlock_DifficultChallenge	DifficultChallenge	
+109	Luận võ tràng		Unlock_WorldPVP	WorldPVP	
+1001	Tiền mặt cửa hàng		Unlock_Shop	Shop	1
+1002	Danh vọng cửa hàng		Unlock_Shop	Shop	2
+1003	Vinh dự cửa hàng		Unlock_Shop	Shop	3
+1004	Huân chương cửa hàng		Unlock_Shop	Shop	4
+1005	Thần trang cửa hàng		Unlock_Shop	Shop	5
+1006	Nghĩa khí cửa hàng		Unlock_Shop	Shop	6
+1007	Kinh thư cửa hàng		Unlock_Shop	Shop	7
+1008	Sủng vật cửa hàng		Unlock_Shop	Shop	8
+1009	Hồn thạch cửa hàng		Unlock_Shop	Shop	9
+1010	Đặc quyền cửa hàng		Unlock_Shop	Shop	10
+1011	Hạn khi cửa hàng		Unlock_Shop	Shop	11
+1012	Hạn khi cửa hàng		Unlock_Shop	Shop	12
+1013	Đá quý cửa hàng		Unlock_Shop	Shop	13
+1014	Vinh dự cửa hàng		Unlock_Shop	Shop	14
+1015	Bang hội cửa hàng		Unlock_Shop	Shop	15
+1016	Bang hội cửa hàng		Unlock_Shop	Shop	16
+1017	Bang hội cửa hàng		Unlock_Shop	Shop	17
+1018	Mỗi ngày nhiệt bán		Unlock_Shop	Shop	18
+100000	Bình thường trạm kiểm soát		Unlock_Level	NormalLevel	
+200000	Tinh anh trạm kiểm soát		Unlock_Level	HardLevel	
+101012	Tiểu thí ngưu đao		Unlock_Level	NormalLevel	101012
+101022	Trời xui đất khiến		Unlock_Level	NormalLevel	101022
+101033	Tìm hiểu nguồn gốc		Unlock_Level	NormalLevel	101033
+101043	Sống tử mảnh		Unlock_Level	NormalLevel	101043
+101053	Chân tướng		Unlock_Level	NormalLevel	101053
+101063	Thấy việc nghĩa hăng hái làm		Unlock_Level	NormalLevel	101063
+102013	Mạc danh ký ức		Unlock_Level	NormalLevel	102013
+102023	Vùng ngoại ô vết máu		Unlock_Level	NormalLevel	102023
+102033	Hộ hoa sứ giả		Unlock_Level	NormalLevel	102033
+102043	Suy nghĩ bậy bạ		Unlock_Level	NormalLevel	102043
+102053	Tái ngộ cố nhân		Unlock_Level	NormalLevel	102053
+102063	Lén bái phỏng		Unlock_Level	NormalLevel	102063
+102073	Chân tướng đại bạch		Unlock_Level	NormalLevel	102073
+103013	Nói ngắn gọn		Unlock_Level	NormalLevel	103013
+103023	Năm kiện tâm nguyện		Unlock_Level	NormalLevel	103023
+103033	Lần đầu hợp tác		Unlock_Level	NormalLevel	103033
+103043	Đả kích ngấm ngầm hay công khai		Unlock_Level	NormalLevel	103043
+103053	Được như ý nguyện		Unlock_Level	NormalLevel	103053
+103063	Không bằng không thấy		Unlock_Level	NormalLevel	103063
+103073	Thì ra là thế		Unlock_Level	NormalLevel	103073
+103083	Thất bại trong gang tấc		Unlock_Level	NormalLevel	103083
+104013	Đặc huấn bắt đầu		Unlock_Level	NormalLevel	104013
+104023	Trong đầu nơi		Unlock_Level	NormalLevel	104023
+104033	Ác mộng chi sư		Unlock_Level	NormalLevel	104033
+104043	Trường thi kỳ ngộ		Unlock_Level	NormalLevel	104043
+104053	Sợ hãi căn nguyên		Unlock_Level	NormalLevel	104053
+104063	Năm xưa chuyện cũ		Unlock_Level	NormalLevel	104063
+104073	Công thủ gồm nhiều mặt		Unlock_Level	NormalLevel	104073
+104083	Cò kè mặc cả		Unlock_Level	NormalLevel	104083
+104093	Tốt nghiệp khảo thí		Unlock_Level	NormalLevel	104093
+105013	Mộng hồi Thiên cung		Unlock_Level	NormalLevel	105013
+105023	Một đường chiến đấu		Unlock_Level	NormalLevel	105023
+105033	Ai là công đạo		Unlock_Level	NormalLevel	105033
+105043	Nguyên hình tất lộ		Unlock_Level	NormalLevel	105043
+105053	Khí phách hăng hái		Unlock_Level	NormalLevel	105053
+105063	Lần đầu gặp mặt		Unlock_Level	NormalLevel	105063
+105073	Từng trải		Unlock_Level	NormalLevel	105073
+105083	Gió lốc đêm trước		Unlock_Level	NormalLevel	105083
+105093	Số mệnh chi chiến		Unlock_Level	NormalLevel	105093
+105103	Vội vàng năm ấy		Unlock_Level	NormalLevel	105103
+106013	Không vào hang cọp		Unlock_Level	NormalLevel	106013
+106023	Vượt mọi chông gai		Unlock_Level	NormalLevel	106023
+106033	Thù mới hận cũ		Unlock_Level	NormalLevel	106033
+106043	Không biết chuyện gì		Unlock_Level	NormalLevel	106043
+106053	Thủy vương cơn giận		Unlock_Level	NormalLevel	106053
+106063	Chân tướng đại bạch		Unlock_Level	NormalLevel	106063
+106073	Tà mắt Thiên Tôn		Unlock_Level	NormalLevel	106073
+106083	Chuyện cũ năm xưa		Unlock_Level	NormalLevel	106083
+106093	Phiền toái không ngừng		Unlock_Level	NormalLevel	106093
+106103	Nguyên lai là nàng		Unlock_Level	NormalLevel	106103
+107013	Trở lên Thiên cung		Unlock_Level	NormalLevel	107013
+107023	Một đường truy tìm		Unlock_Level	NormalLevel	107023
+107033	Quay lại vội vàng		Unlock_Level	NormalLevel	107033
+107043	Dây dưa không thôi		Unlock_Level	NormalLevel	107043
+107053	Hào khí tận trời		Unlock_Level	NormalLevel	107053
+107063	Trước trận lý luận		Unlock_Level	NormalLevel	107063
+107073	Đại bàng giương cánh		Unlock_Level	NormalLevel	107073
+107083	Chưa xong còn tiếp		Unlock_Level	NormalLevel	107083
+107093	Thiện ác có báo		Unlock_Level	NormalLevel	107093
+107103	Thiên Đạo luân hồi		Unlock_Level	NormalLevel	107103
+108013	Bảo hộ gia viên		Unlock_Level	NormalLevel	108013
+108023	Tiến rất xa		Unlock_Level	NormalLevel	108023
+108033	Mê hoặc nhân tâm		Unlock_Level	NormalLevel	108033
+108043	Khói báo động gió lửa		Unlock_Level	NormalLevel	108043
+108053	Báo thù rửa hận		Unlock_Level	NormalLevel	108053
+108063	Sau lưng tấm màn đen		Unlock_Level	NormalLevel	108063
+108073	Tham tiền tâm hồn		Unlock_Level	NormalLevel	108073
+108083	Mộng hồi đường triều		Unlock_Level	NormalLevel	108083
+108093	Hắc Nhị Lang Thần		Unlock_Level	NormalLevel	108093
+108103	Nguyền rủa vĩnh hằng		Unlock_Level	NormalLevel	108103
+109013	Không dứt		Unlock_Level	NormalLevel	109013
+109023	Nàng cũng là thần		Unlock_Level	NormalLevel	109023
+109033	Hôm qua tái hiện		Unlock_Level	NormalLevel	109033
+109043	Âm hồn không tan		Unlock_Level	NormalLevel	109043
+109053	Thiết huyết thí luyện		Unlock_Level	NormalLevel	109053
+109063	Một lời không hợp		Unlock_Level	NormalLevel	109063
+109073	Càng đánh càng hăng		Unlock_Level	NormalLevel	109073
+109083	Ngoài dự đoán		Unlock_Level	NormalLevel	109083
+109093	Hắc hóa phân thân		Unlock_Level	NormalLevel	109093
+109103	Cuối cùng thí luyện		Unlock_Level	NormalLevel	109103
+110013	Lấy hạt dẻ trong lò lửa		Unlock_Level	NormalLevel	110013
+110023	Thẳng đảo hoàng long		Unlock_Level	NormalLevel	110023
+110033	Người tới người nào		Unlock_Level	NormalLevel	110033
+110043	Trăm ngàn vạn người		Unlock_Level	NormalLevel	110043
+110053	Giang sơn dễ đổi		Unlock_Level	NormalLevel	110053
+110063	Đêm dài gặp gỡ		Unlock_Level	NormalLevel	110063
+110073	Ngân hà đại trận		Unlock_Level	NormalLevel	110073
+110083	Hồng nhan họa thủy		Unlock_Level	NormalLevel	110083
+110093	Hảo ngôn tương đối		Unlock_Level	NormalLevel	110093
+110103	Dư ba khó bình		Unlock_Level	NormalLevel	110103
+201012	Tiểu thí ngưu đao		Unlock_Level	HardLevel	201012
+201022	Trời xui đất khiến		Unlock_Level	HardLevel	201022
+201033	Tìm hiểu nguồn gốc		Unlock_Level	HardLevel	201033
+201043	Sống tử mảnh		Unlock_Level	HardLevel	201043
+201053	Chân tướng		Unlock_Level	HardLevel	201053
+201063	Thấy việc nghĩa hăng hái làm		Unlock_Level	HardLevel	201063
+202013	Mạc danh ký ức		Unlock_Level	HardLevel	202013
+202023	Vùng ngoại ô vết máu		Unlock_Level	HardLevel	202023
+202033	Hộ hoa sứ giả		Unlock_Level	HardLevel	202033
+202043	Suy nghĩ bậy bạ		Unlock_Level	HardLevel	202043
+202053	Tái ngộ cố nhân		Unlock_Level	HardLevel	202053
+202063	Lén bái phỏng		Unlock_Level	HardLevel	202063
+202073	Chân tướng đại bạch		Unlock_Level	HardLevel	202073
+203013	Nói ngắn gọn		Unlock_Level	HardLevel	203013
+203023	Năm kiện tâm nguyện		Unlock_Level	HardLevel	203023
+203033	Lần đầu hợp tác		Unlock_Level	HardLevel	203033
+203043	Đả kích ngấm ngầm hay công khai		Unlock_Level	HardLevel	203043
+203053	Được như ý nguyện		Unlock_Level	HardLevel	203053
+203063	Không bằng không thấy		Unlock_Level	HardLevel	203063
+203073	Thì ra là thế		Unlock_Level	HardLevel	203073
+203083	Thất bại trong gang tấc		Unlock_Level	HardLevel	203083
+204013	Đặc huấn bắt đầu		Unlock_Level	HardLevel	204013
+204023	Trong đầu nơi		Unlock_Level	HardLevel	204023
+204033	Ác mộng chi sư		Unlock_Level	HardLevel	204033
+204043	Trường thi kỳ ngộ		Unlock_Level	HardLevel	204043
+204053	Sợ hãi căn nguyên		Unlock_Level	HardLevel	204053
+204063	Năm xưa chuyện cũ		Unlock_Level	HardLevel	204063
+204073	Công thủ gồm nhiều mặt		Unlock_Level	HardLevel	204073
+204083	Cò kè mặc cả		Unlock_Level	HardLevel	204083
+204093	Tốt nghiệp khảo thí		Unlock_Level	HardLevel	204093
+205013	Mộng hồi Thiên cung		Unlock_Level	HardLevel	205013
+205023	Một đường chiến đấu		Unlock_Level	HardLevel	205023
+205033	Ai là công đạo		Unlock_Level	HardLevel	205033
+205043	Nguyên hình tất lộ		Unlock_Level	HardLevel	205043
+205053	Khí phách hăng hái		Unlock_Level	HardLevel	205053
+205063	Lần đầu gặp mặt		Unlock_Level	HardLevel	205063
+205073	Từng trải		Unlock_Level	HardLevel	205073
+205083	Gió lốc đêm trước		Unlock_Level	HardLevel	205083
+205093	Số mệnh chi chiến		Unlock_Level	HardLevel	205093
+205103	Vội vàng năm ấy		Unlock_Level	HardLevel	205103
+206013	Không vào hang cọp		Unlock_Level	HardLevel	206013
+206023	Vượt mọi chông gai		Unlock_Level	HardLevel	206023
+206033	Thù mới hận cũ		Unlock_Level	HardLevel	206033
+206043	Không biết chuyện gì		Unlock_Level	HardLevel	206043
+206053	Thủy vương cơn giận		Unlock_Level	HardLevel	206053
+206063	Chân tướng đại bạch		Unlock_Level	HardLevel	206063
+206073	Tà mắt Thiên Tôn		Unlock_Level	HardLevel	206073
+206083	Chuyện cũ năm xưa		Unlock_Level	HardLevel	206083
+206093	Phiền toái không ngừng		Unlock_Level	HardLevel	206093
+206103	Nguyên lai là nàng		Unlock_Level	HardLevel	206103
+207013	Trở lên Thiên cung		Unlock_Level	HardLevel	207013
+207023	Một đường truy tìm		Unlock_Level	HardLevel	207023
+207033	Quay lại vội vàng		Unlock_Level	HardLevel	207033
+207043	Dây dưa không thôi		Unlock_Level	HardLevel	207043
+207053	Hào khí tận trời		Unlock_Level	HardLevel	207053
+207063	Trước trận lý luận		Unlock_Level	HardLevel	207063
+207073	Đại bàng giương cánh		Unlock_Level	HardLevel	207073
+207083	Chưa xong còn tiếp		Unlock_Level	HardLevel	207083
+207093	Thiện ác có báo		Unlock_Level	HardLevel	207093
+207103	Thiên Đạo luân hồi		Unlock_Level	HardLevel	207103
+208013	Bảo hộ gia viên		Unlock_Level	HardLevel	208013
+208023	Tiến rất xa		Unlock_Level	HardLevel	208023
+208033	Mê hoặc nhân tâm		Unlock_Level	HardLevel	208033
+208043	Khói báo động gió lửa		Unlock_Level	HardLevel	208043
+208053	Báo thù rửa hận		Unlock_Level	HardLevel	208053
+208063	Sau lưng tấm màn đen		Unlock_Level	HardLevel	208063
+208073	Tham tiền tâm hồn		Unlock_Level	HardLevel	208073
+208083	Mộng hồi đường triều		Unlock_Level	HardLevel	208083
+208093	Hắc Nhị Lang Thần		Unlock_Level	HardLevel	208093
+208103	Nguyền rủa vĩnh hằng		Unlock_Level	HardLevel	208103
+209013	Không dứt		Unlock_Level	HardLevel	209013
+209023	Nàng cũng là thần		Unlock_Level	HardLevel	209023
+209033	Hôm qua tái hiện		Unlock_Level	HardLevel	209033
+209043	Âm hồn không tan		Unlock_Level	HardLevel	209043
+209053	Thiết huyết thí luyện		Unlock_Level	HardLevel	209053
+209063	Một lời không hợp		Unlock_Level	HardLevel	209063
+209073	Càng đánh càng hăng		Unlock_Level	HardLevel	209073
+209083	Ngoài dự đoán		Unlock_Level	HardLevel	209083
+209093	Hắc hóa phân thân		Unlock_Level	HardLevel	209093
+209103	Cuối cùng thí luyện		Unlock_Level	HardLevel	209103
+210013	Lấy hạt dẻ trong lò lửa		Unlock_Level	HardLevel	210013
+210023	Thẳng đảo hoàng long		Unlock_Level	HardLevel	210023
+210033	Người tới người nào		Unlock_Level	HardLevel	210033
+210043	Trăm ngàn vạn người		Unlock_Level	HardLevel	210043
+210053	Giang sơn dễ đổi		Unlock_Level	HardLevel	210053
+210063	Đêm dài gặp gỡ		Unlock_Level	HardLevel	210063
+210073	Ngân hà đại trận		Unlock_Level	HardLevel	210073
+210083	Hồng nhan họa thủy		Unlock_Level	HardLevel	210083
+210093	Hảo ngôn tương đối		Unlock_Level	HardLevel	210093
+210103	Dư ba khó bình		Unlock_Level	HardLevel	210103

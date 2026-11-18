@@ -1,0 +1,284 @@
+﻿语言编号	显示窗口	简体中文
+id	Windows	CN
+BackButton_CardList		[b]Danh sách anh hùng[\b]
+BackButton_CardDetail		[b]Anh hùng[\b]
+BackButton_TrailReady		[b]Mẫu Thí nghiệm[\b]
+BackButton_Trail		[b]Thí nghiệm[\b]
+BackButton_Shop		[b]Cửa hàng[\b]
+BackButton_PetList		[b]Danh sách sủng vật[\b]
+BackButton_Pet		[b]Sủng vật[\b]
+BackButton_Divition		[b]Phân chia[\b]
+BackButton_Arena		[b]Quyết đấu[\b]
+BackButton_ArenaSelect		[b]Cạnh kỹ[\b]
+BackButton_SkyArena		[b]Trận cuối[\b]
+BackButton_WorldBoss		[b]Yêu Vương Chi Nộ[\b]
+BackButton_Bag		[b]Ba lô[\b]
+Attribute_MaxHP		Sinh mệnh
+Attribute_ATK		Công kích
+Attribute_DEF		Phòng ngự
+Attribute_RGS		Pháp phòng
+Attribute_Hit		Mệnh trung
+Attribute_Dodge		Né tránh
+Attribute_Critical		Bạo kích
+Attribute_Tenacity		Bạo kháng
+Attribute_RNG		Công cự
+Attribute_SPD		Di tốc
+Strengthen_MaxHP		Sinh mệnh
+Strengthen_ATK		Công kích
+Strengthen_DEF		Phòng ngự
+Strengthen_RGS		Pháp phòng
+Strengthen_Hit		Mệnh trung
+Strengthen_Dodge		Né tránh
+Strengthen_Critical		Bạo kích
+Strengthen_Tenacity		Bạo kháng
+Strengthen_RNG		Công kích khoảng cách
+Strengthen_SPD		Tốc độ
+None		Vô
+Strengthen_LevelMax		Cường hóa cấp bậc đã đạt hạn mức cao nhất
+Strengthen_PlayerLevelMax		Đã đạt tới người chơi cấp bậc
+Gem_MaxHP		Huyết tinh thạch
+Gem_ATK		Đá công kích
+Gem_DEF		Đá phòng ngự
+Gem_RGS		Đá pháp phòng
+Gem_Hit		Đá mệnh trung
+Gem_Dodge		Đá né tránh
+Gem_Critical		Đá bạo kích
+Gem_Tenacity		Đá kháng
+Gem_RNG		Đá tầm xa
+Gem_SPD		Đá phiêu dật
+SubPanel_Strengthen		Cường hóa
+SubPanel_Gem		Đá quý
+SubPanel_Star		Thăng tinh
+SubPanel_XiaKe		Hiệp khách
+SubPanel_Wing		Cánh
+SubPanel_Skill		Kỹ năng
+SubPanel_Meridian		Kinh mạch
+WingName_1		Cánh Phi Điểu
+WingName_2		Cánh Phiêu Vũ
+WingName_3		Cánh Phi Dực
+WingName_4		Cánh Phi Bằng
+WingName_5		Cánh Ngạo thiên
+WingName_6		Cánh Thiên Huyền
+WingName_7		Cánh Huyền Vũ
+WingName_8		Cánh Vương giả
+WingName_9		Cánh Vinh Quang
+WingName_10		Cánh Thánh Vương
+WingName_11		Cánh Thần Vương
+WingName_12		Cánh chúa tể
+SkillName_1		Ngọc Nữ Tâm Kinh
+SkillName_2		Thiên địa lưu tinh
+SkillName_3		Lôi động cửu thiên
+SkillName_4		Thiên Vũ Bảo Luân
+SkillName_5		Bạch lộ ngưng sương
+SkillName_11		Nhất dương chỉ
+SkillName_12		Bất minh thần công
+SkillName_13		Lục mạc thần kiếm
+SkillName_14		Kim chung cháo
+SkillName_15		Liên hoa diệt đế
+SkillName_21		Thiên tương long công
+SkillName_22		Sinh tử vô thường
+SkillName_23		Nam uyên thần công
+SkillName_24		Thiên sơn chỉ
+SkillName_25		Tiêu dao du
+SkillName_5001		Bát quái trận
+SkillName_5002		Xích luyện chi nộ
+SkillName_5003		Hỏa linh
+SkillName_5004		Thủy tính
+SkillName_5005		Hàn băng cái
+SkillName_5008		Băng linh chi độc
+SkillName_5010		Tam bộ hoa
+SkillName_5011		Hoàng kim chiến giáp
+SkillName_5012		Linh bước đi mạnh mẽ uy vũ
+SkillName_5013		Thủy tính
+SkillName_5014		Băng linh
+SkillName_5015		Thập tam thức
+SkillDescribe_1		<font> Ngọc Nữ tố thân, nhẹ nhàng tăng trưởng. Nga Mi đệ tử nhập môn công phu. Sử dụng lúc sau có thể đối mục tiêu tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_2		<font> thả ra băng châm tổn thương do giá rét địch nhân. Đối khu vực nội địch nhân tạo thành tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_3		<font> chiêu thức tinh diệu, thay đổi thất thường, uốn cong nhưng có khí thế tựa linh xà, viên chuyển như ý. Đối khu vực nội địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_4		<font> Nga Mi tổ sư tuyệt kỹ, như đón gió dương liễu, đao kiếm khó có thể gần người. Đối địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5		<font> cùng tầm thường võ công cực khác, lợi hại chỗ, tất cả tại nội lực. Đối khu vực nội địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_11		<font> mở rộng ra đại hạp, khí thế hùng mại. Thiên long đệ tử nhập môn công phu. Sử dụng lúc sau có thể đối mục tiêu tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) vật lý thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_12		<font> thiên long võ học tượng trưng. Đối khu vực nội địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) vật lý thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_13		<font> có chất vô hình, là một bộ đem kiếm ý hóa thành kiếm khí cao thâm tuyệt học. Đối khu vực nội địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) vật lý thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_14		<font> thiên long bí tàng tuyệt học, bất truyền hậu thế, liền đại lý hoàng tộc cũng không hiểu được. Đối mục tiêu tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) vật lý thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_15		<font> từ phương Tây bí tông thuyền tới không thế tuyệt học, truyền thuyết từ đại Phạn Thiên sáng chế. Đối khu vực nội địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) vật lý thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_21		<font> thanh tĩnh vô vi, như đi vào cõi thần tiên. Tiêu dao đệ tử nhập môn công phu. Sử dụng lúc sau có thể đối mục tiêu tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_22		<font> ngưng thủy thành băng, đem nội lực phụ nhập trong đó, đả thương địch thủ với vô hình. Đối khu vực nội địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_23		<font> có thể hấp thụ người khác nội lực hóa thành mình dùng. Trị liệu sinh mệnh tỉ lệ phần trăm thấp nhất bên ta hiệp khách, khôi phục </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) tự thân lực công kích huyết lượng. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_24		<font> thân pháp như Thiên Sơn thượng linh thứu. Đối địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_25		<font> phái Tiêu Dao bất truyền bí mật, lên trời xuống đất duy ngã độc tôn. Đối mục tiêu khu vực địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5001		<font> đối tiểu phạm vi địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) pháp thuật thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5002		<font size=20 color=0x00ff00 >{3}</font><font> giây nội gia tăng bên ta </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) vật phòng cùng pháp phòng,</font><font size=20 color=0x00ff00 >{4}</font><font> giây nội chỉ có thể kích phát một lần. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5003		<font size=20 color=0x00ff00 >{3}</font><font> giây nội gia tăng bên ta </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) lực công kích,</font><font size=20 color=0x00ff00 >{4}</font><font> giây nội chỉ có thể kích phát một lần. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5004		<font> trên diện rộng rơi chậm lại đá quý phó bản Hỏa Kỳ Lân năng lực </font>
+SkillDescribe_5005		<font> lên sân khấu khi gia tăng bên ta </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) huyết lượng hạn mức cao nhất. </font>
+SkillDescribe_5008		<font> trên diện rộng rơi chậm lại kinh mạch phó bản lĩnh chủ năng lực </font>
+SkillDescribe_5010		<font> trên diện rộng rơi chậm lại cốt truyện phó bản lĩnh chủ năng lực </font>
+SkillDescribe_5011		<font size=20 color=0x00ff00 >{3}</font><font> giây nội giảm bớt bên ta </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) sở bị thương tổn,</font><font size=20 color=0x00ff00 >{4}</font><font> giây nội chỉ có thể kích phát một lần. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5012		<font size=20 color=0x00ff00 >{3}</font><font> giây nội thêm vào gia tăng bên ta </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) mệnh trung suất cùng né tránh suất,</font><font size=20 color=0x00ff00 >{4}</font><font> giây nội chỉ có thể kích phát một lần. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. </font>
+SkillDescribe_5013		<font> đối tiểu phạm vi địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. Ở đây khi trên diện rộng rơi chậm lại đá quý phó bản Hỏa Kỳ Lân chiến lực </font>
+SkillDescribe_5014		<font> đối tiểu phạm vi địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. Ở đây khi trên diện rộng rơi chậm lại kinh mạch phó bản Boss chiến lực </font>
+SkillDescribe_5015		<font> đối tiểu phạm vi địch nhân tạo thành </font><font size=20 color=0x00ff00 >{0}%</font><font> ( +</font><font size=20 color=0x00ff00 >{1}%</font><font> ) thương tổn. Làm lạnh thời gian </font><font size=20 color=0x00ff00 >{2}</font><font> giây. Ở đây khi rơi chậm lại cốt truyện phó bản Boss năng lực </font>
+White_Tip		Bạch danh bảo hộ: Bị đánh bại không chịu tổn thất
+Yellow_Tip		Hoàng danh bảo hộ: Bị đánh bại không chịu tổn thất
+Red_Tip		Hồng danh: Bị đánh bại sẽ rơi ra vật phẩm
+Time_Year		Năm
+Time_Month		Tháng
+Time_Date		Ngày
+Time_Hours		Giờ
+Time_Minutes		Phân
+Time_Seconds		Giây
+WorldBoss_Name_1		Đảo chủ
+WorldBoss_Name_2		Vực vương
+WorldBoss_Name_3		Nam thiên
+WorldBoss_Name_4		Bắc sơn
+WorldBoss_Name_5		Thế giới
+WorldBoss_Name_6		Hiệp giả
+Level		#Lv cấp
+LevelUnlock		#Lv cấp mở
+UnlockRole		[{"text":"Cấp"},{"text":"#Lv ","style": {"size": 35 , "textColor":"#ColorLv" ,"bold":"true"} },{"text":"hoặc "},{"text":"vip#Vip ","style": {"size":35 , "textColor":"#ColorVip" ,"bold":"true"}},{"text":"mở khóa nhân vật mới"}]
+OuputReward		<font>Hạnh </font><font size=35 color=0x00ff00 bold=true>{0}</font><font> Khen thưởng</font>
+WorldBossCD		Còn #Time giây mới có thể khiêu chiến
+BeginGame		{0}
+FirstCharge		<font color=0x00ff00>{0}</font><font> Lần đầu nạp có thể nhận được lễ bao! </font>
+KillWorldBoss		<font color=0x00ff00>{0}</font><font> cho </font><font color=0x00ff00>{1}</font><font> cuối cùng một kích, thu hoạch nặng trĩu chiến lợi phẩm! </font>
+Strengthen		<font color=0x00ff00>{0}</font><font> rốt cuộc đem trang bị cường hóa đến </font><font color=0xffff00>100</font><font> cấp, trở thành tân một thế hệ đại thần! </font>
+Wing		<font color=0x00ff00>{0}</font><font> </font><font color=0x00ff00>{1}</font> cánh đạt tới </font></font><font color=0x00ff00>{2}</font> giai </font>
+UnlockChar		<font color=0x00ff00>{0}</font><font> mở ra tân nhân vật, chiến lực càng thêm mạnh mẽ! </font>
+Gift		<font color=0x00ff00>{0}</font><font> lĩnh hạn lượng đại lễ bao, không lãnh đến hiệp khách nhóm nắm chặt! </font>
+MakeRedEquip		<font color=0x00ff00>{0}</font><font> thành công chế tạo </font><font color=0x00ff00>{1}</font><font>, chiến lực nâng cao một bước! </font>
+CommonAnounce		{0}
+DroiyanRedName		<font color=0x00ff00>{0}</font><font> ở quyết chiến trung bách chiến bách thắng, tấn chức hồng danh! </font>
+DropTreasure		<font color=0x00ff00>{0}</font><font> vừa mới ở giang hồ quyết chiến trung tìm hoạch một quả tàng bảo đồ, có thực lực các đại hiệp chạy nhanh tiến đến tranh đoạt </font>
+RobTreasure		<font color=0x00ff00>{0}</font><font> vừa mới ở giang hồ quyết chiến trung từ cái khác đại hiệp trong tay tranh đoạt một quả tàng bảo đồ, có thực lực các đại hiệp chạy nhanh tiến đến khiêu chiến </font>
+UseTreasure		<font color=0x00ff00>{0}</font><font> ở giang hồ loạn cục trung thế nhưng bằng vào tàng bảo đồ tìm hoạch đại bảo tàng </font>
+DressActive		<font color=0x00ff00>{0}</font><font> mua sắm </font><font color=0x00ff00>{1}</font><font>, chiến lực đại đại tăng lên </font>
+OpenGuildBoss		<font> bang phái </font><font color=0x00ff00>{0}</font><font>,</font><font color=0x00ff00>{1}</font><font> mở ra bang phái phó bản, thỉnh bản bang thành viên mau đi đánh bại bang phái Boss </font>
+VipLogin		<font> Ầm vang một tiếng, </font><font color=0xffff00>VIP{0}</font><font color=0x00ff00>{1}</font><font> lóe sáng trên bầu trời </font>
+PowerLogin		<font> toàn phục sức chiến đấu đệ nhất người chơi </font><font color=0x00ff00>{0}</font><font> khí phách lên sân khấu, đại gia mau đi trước cúng bái </font>
+Artifice		<font color=0x00ff00>{0}</font><font> </font><font color=0x00ff00>{1}</font><font> </font><font color=0x00ff00>{2}</font><font> luyện hóa cấp bậc đạt tới 10 tinh </font>
+Richman		<font color=0x00ff00>{0}</font><font> hào ném vạn kim đạt được cao phú soái danh hiệu </font>
+DroiyanTop		<font> chiến đấu chi vương </font><font color=0x00ff00>{0}</font><font> long trọng lên sân khấu </font>
+ArenaFirstChange		<font color=0x00ff00>{0}</font><font> đánh bại </font><font color=0x00ff00>{1}</font><font>, đoạt được đấu trường đệ nhất bảo tọa </font>
+NewMarry		<font color=0x00ff00>{0}</font><font> cùng </font><font color=0x00ff00>{1}</font><font> hỉ kết liên lí, làm chúng ta cùng nhau hướng bọn họ tỏ vẻ chúc mừng đi! </font>
+LongnvUnderAttack		Ta giúp long nữ gặp công kích, thỉnh tẫn tốc tiếp viện!
+LongnvWaring		Long nữ bảo hộ chiến sắp mở ra, thỉnh bang phái thành viên tẫn tốc báo danh tiếp viện!
+LongnvWin		<font color=0x00ff00>{0}</font><font> bang phái đánh bại </font><font color=0x00ff00>{1}</font><font> bang phái, thành công bảo hộ bang phái long nữ, thắng được long nữ khen thưởng! </font>
+NewsTip_Drop		<font color=0xffc446>{0} </font><font> vừa mới ở giang hồ quyết chiến trung tìm hoạch một quả </font><font color=0x00ff00>{1}</font><font>, có thực lực các đại hiệp chạy nhanh tiến đến tranh đoạt. </font>
+NewsTip_Rob		<font color=0xffc446>{0} </font><font> vừa mới ở giang hồ quyết chiến trung từ cái khác đại hiệp trong tay tranh đoạt một quả </font><font color=0x00ff00>{1}</font><font>, có thực lực các đại hiệp chạy nhanh tiến đến khiêu chiến. </font>
+NewsTip_Open		<font color=0xffc446>{0} </font><font> ở giang hồ loạn cục trung thế nhưng bằng vào </font><font color=0x00ff00>{1}</font><font> tìm hoạch đại bảo tàng </font><font color=0x00ff00>{2}</font>
+FindTreasure		<font> Chúc mừng </font><font color=0x00ff00>{0}</font><font> đang tìm bảo trung đạt được </font><font color=0x00ff00>{1}</font><font>, chiến lực đại đại tăng lên </font>
+WorldBossOpen		<font> các vị đại hiệp chú ý, thế giới Boss </font><font color=0x00ff00>{0}</font><font> đem ở </font><font color=0x00ff00>{1}</font><font> phút sau mở ra! </font>
+EquipType_Head		Mũ giáp
+EquipType_Neck		Giày
+EquipType_Body		Quần áo
+EquipType_Weapon		Vũ khí
+EquipType_Bracelet		Vòng tay
+EquipType_Ring		Nhẫn
+Help_Template		Vui lòng liên hệ GM để xem thêm chi tiết.
+Help_XieKe		1. Điểm đánh một kiện trang bị có thể nhẹ nhàng đổi mới trước mặt ba lô nội tốt nhất trang bị.\n2. Kỹ năng tùy nhân vật cấp bậc mở ra, kỹ năng cấp bậc không thể vượt qua nhân vật cấp bậc. \n3. Bồi dưỡng cánh có thể tăng lên cánh tinh cấp, tăng lên thuộc tính. Mỗi 10 tinh nhưng mở ra tiếp theo giai, tổng cộng có 10 giai. \n4. Tiêu hao kinh mạch đơn tới đả thông kinh mạch, tăng lên thuộc tính.
+Help_GodEquip		1. Nhưng dùng thần trang mảnh nhỏ trực tiếp hợp thành nên bộ vị thần trang.\n2. Hợp thành thần giả dạng làm công sau đem tự động trang bị. \n3. Nhưng ở ba lô luyện cấp thấp thần trang lấy thu hoạch thần trang mảnh nhỏ. \n4. Mỗi lần tầm bảo đều có thể đạt được kinh nghiệm đan.\n5.100 cấp sau, mỗi lần hợp thành thần trang chỉ tăng lên tới 100 cấp hoặc 100 cấp sau tiếp theo chuyển.
+Help_Strengthen		1. Sở hữu cường hóa, thăng tinh, đá quý tăng lên, đều trói định nhân vật bộ vị, đổi mới trang bị sau cấp bậc toàn bộ giữ lại, không cần một lần nữa tăng lên. \n2. Đá quý thông qua gia viên nội phó bản đạt được. \n3. Cường hóa thạch thông qua luyện nhũng dư trang bị đạt được.\n4. Thăng tinh thạch thông qua quyết chiến xếp hạng khen thưởng cùng tàng bảo đồ đạt được
+Help_Droiyan		1. Quyết chiến sẽ đạt được hồng danh giá trị. Hồng danh giá trị tới 100 trở lên liền sẽ trở thành hồng danh người chơi. \n2. Hồng danh giá trị có thể dùng tương đương với thứ nhất nửa nguyên bảo số thanh linh. \n3. Mỗi 20 phút giảm bớt 7 điểm hồng danh giá trị. Quyết chiến thất bại khấu 20 điểm hồng danh giá trị. \n4. Đánh bại người chơi có tỷ lệ tranh đoạt đối phương tàng bảo đồ, dùng cho chính mình tầm bảo. \n5. Hồng danh người chơi sở hữu nhân vật huyết lượng ở chiến đấu sau đem lọt vào tổn thất.\n6. Tàng bảo đồ đều có từng người tầm bảo thời gian. Tầm bảo thời gian sau khi kết thúc đem đạt được khen thưởng vật phẩm.
+Help_Arena		1. Chiến thắng xếp hạng càng cao đối thủ trao đổi xếp hạng.\n2. Mỗi ngày 4 giờ phát xếp hạng khen thưởng. \n3. Cạnh kỹ tệ nhưng đổi vật phẩm.
+Help_Rebirth		1. Thăng cấp tài liệu: Người chơi cấp bậc đạt tới 100 lúc sau, đạt được kinh nghiệm giá trị nhưng dùng cho tăng lên chuyển sang kiếp khác phân thân \n2. Chuyển sang kiếp khác thuyết minh: Mỗi cái chuyển sang kiếp khác giai đoạn có đối ứng cấp bậc hạn mức cao nhất, vừa chuyển hạn mức cao nhất 10 cấp, nhị chuyển hạn mức cao nhất 20 cấp, lấy này loại suy, mãn cấp mười chín chuyển 100 cấp \n3. Chuyển sang kiếp khác điều kiện: Đương ba cái nhân vật đều đạt tới trước mặt chuyển sang kiếp khác giai đoạn lớn nhất cấp bậc, chuyển sang kiếp khác nhưng lên tới tiếp theo giai \n4. Chuyển sang kiếp khác chỗ tốt 1: Gia tăng cơ sở thuộc tính\n5. Chuyển sang kiếp khác chỗ tốt 2: Mỗi lần chuyển sang kiếp khác, trang bị gia tăng 10 cấp cường hóa hạn mức cao nhất \n6. Chuyển sang kiếp khác chỗ tốt 3: Nhưng mặc chiến lực càng cao chuyển sang kiếp khác trang bị
+Help_WarSpirit		1. Chiến linh nhưng thông qua phó bản đạt được\n2. Chuyển sang kiếp khác nhưng đại đại tăng lên chiến linh thuộc tính \n3. Thiên phú nhưng đại đại tăng lên chiến linh thuộc tính \n4. Đem dư thừa kinh nghiệm dùng cho tăng lên chiến linh cấp bậc \n5. Chiến linh triệu hoán nhưng đạt được chiến linh linh thạch, dùng cho tăng cường chiến linh thuộc tính
+Help_Explore		1. Thăm kim tay nhưng từ đối phương trên người đạt được đồng vàng.\n2. Thăm kim số lần càng nhiều, tiêu hao càng lớn, đạt được cũng càng lớn
+Help_Dress		1. Thời trang không chỉ có đẹp, còn thêm sức chiến đấu.\n2. Thời trang yêu cầu trước đạt được mới có thể mặc.
+Help_OneYuan		1. Hoạt động trong lúc người chơi thông qua mệt sung hoạt động có thể đạt được vé xổ số, nhưng tham dự bất đồng đạo cụ đoạt bảo hoạt động. \n2. Mỗi tham dự một lần nhưng đạt được một cái mở thưởng mã, nhưng nhiều lần tham dự. \n3. Mỗi kỳ tổng tham dự số lần đạt tới nhu cầu lập tức mở thưởng, tùy cơ lựa chọn sử dụng một cái dãy số đạt được khen thưởng.\n4 Nếu ngày đó không có đạt tới mở thưởng nhu cầu, tắc ngày kế đem trả về vé xổ số.
+Help_GuildWar		1. Mỗi ngày 10:00 đến 17:59:59 có thể tiến hành giúp chiến báo danh, mỗi cái bang phái mỗi ngày chỉ có thể đối một cái cứ điểm tiến hành báo danh. \n2. Mỗi ngày 19:00 đến 21:59:59 trong lúc mở ra bang chiến, căn cứ báo danh trình tự tiến hành bang chiến, mỗi tràng giúp chiến dài nhất 30 phút.\n3 Bắt đầu giúp chiến hậu, hệ thống tự động đem bang phái thành viên tùy cơ phân phối đến đối ứng 3 con đường tuyến tiến hành chiến đấu, chiến đấu thất bại người chơi nhưng thông qua nguyên bảo tiến hành sống lại tiếp tục tham chiến.\n4. Đương mỗ bang phái đã chiến đến cuối cùng một người người chơi, đương tên này người chơi sau khi thất bại, nên bang mặt khác thành viên không thể lại sống lại, thả bang phái ở giúp chiến trung thất bại.\n5. Đương mỗ điều đường bộ vô bang phái thành viên xuất chiến, tắc nên đường bộ bị đối phương hoàn toàn áp chế, hoàn toàn áp chế tuyến lộ số lượng đem ảnh hưởng cuối cùng khen thưởng.
+Help_FirstRecharge		1. Lần đầu sung giá trị hưởng thụ nhiều lần nguyên bảo phúc lợi
+Help_Marry		1. Kết hôn đem đạt được thêm vào ly tuyến kinh nghiệm.\n2. Kết hôn đem đạt được chuyên chúc thời trang cùng danh hiệu, ly hôn sau tức khắc thu hồi
+Help_GuildGuard		1. Long nữ bảo hộ mỗi ngày mở ra, bang phái thành viên cần báo danh mới nhưng tham dự, thắng lợi đem đạt được đại lượng khen thưởng, thất bại đem không có khen thưởng. \n2. Long nữ bồi dưỡng tăng lên long nữ cấp bậc, đem ảnh hưởng long nữ bảo hộ chiến khen thưởng.
+Help_LingBao		1. Thăng cấp linh bảo nhưng tăng lên linh bảo cấp bậc. Mỗi 10 tinh nhưng mở ra tiếp theo giai.\n2. Mỗi nhất giai linh bảo có bất đồng hình tượng.
+Help_DrawPrize		1. Siêu cấp tầm bảo so bình thường tầm bảo càng cao đoan.\n2. Mỗi lần tầm bảo đều đem đạt được tích phân, tích phân đạt tới nhưng lĩnh tương ứng bảo rương. \n3. Hoạt động sau khi kết thúc đem dựa theo tích phân phát đứng hàng khen thưởng.
+Help_FortuneWheel		1. Hoạt động trong lúc, mỗi ngày đều có một lần miễn phí rút thăm trúng thưởng số lần.\n2 Hoạt động trong lúc, người chơi mỗi sung giá trị mãn 30 nguyên liền có thể đạt được một lần rút thăm trúng thưởng cơ hội.\n3 Hoạt động trong lúc, người chơi mỗi trừu mãn 10 thứ liền có thể đạt được một kinh hỉ khen thưởng.
+TaskTitle_Smelt		Tinh luyện
+TaskTitle_Strengthen		Cường hóa
+TaskTitle_SkillUp		Kỹ năng
+TaskTitle_EquipInstance		Phó bản
+TaskTitle_GemInstance		Phụ bản đá quý
+TaskTitle_MeridianInstance		Phụ bản kinh mạch
+TaskTitle_ArenaFightTimes		Đấu trường
+TaskTitle_WingUp		Tăng cấp cánh
+TaskTitle_DroiyanFightTimes		Quyết đấu
+TaskTitle_StarUp		Thăng tinh
+TaskTitle_ChatTimes		Trò chuyện
+TaskTitle_FindTreasureTimes		Tầm bảo
+TaskTitle_PlayerLevel		Người chơi cấp bậc
+TaskTitle_DungeonLevel		Qua ải
+TaskTitle_StrengthTotal		Cường hóa
+TaskTitle_MeridianTotal		Tăng kinh mạch
+TaskTitle_SkillTotal		Tăng Kỹ năng
+TaskTitle_StarMax		Thăng tinh
+TaskTitle_GemMax		Thăng cấp đá
+TaskTitle_PowerTotal		Tổng lực chiến
+TaskTitle_OneKeyEquip		Rương trang bị
+TaskTitle_UnlockChar		Có được nhân vật
+TaskTitle_MonthCard		Mua sắm
+TaskTitle_YearCard		Mua sắm
+TaskTitle_DroiyanAttack		Quyết đấu công kích số lần
+TaskTitle_ShopTimes		Thương thành mua sắm số lần
+TaskDescription_Smelt		<font> luyện {0} thứ </font>
+TaskDescription_Strengthen		<font> trang bị cường hóa {0} thứ </font>
+TaskDescription_SkillUp		<font> kỹ năng thăng cấp {0} thứ </font>
+TaskDescription_EquipInstance		<font> cốt truyện phó bản thông quan {0} thứ </font>
+TaskDescription_GemInstance		<font> đá quý phó bản thông quan {0} thứ </font>
+TaskDescription_MeridianInstance		<font> kinh mạch phó bản thông quan {0} thứ </font>
+TaskDescription_ArenaFightTimes		<font> đấu trường chiến đấu {0} thứ </font>
+TaskDescription_WingUp		<font> cánh thăng cấp {0} thứ </font>
+TaskDescription_DroiyanFightTimes		<font> quyết chiến chiến đấu {0} thứ </font>
+TaskDescription_StarUp		<font> trang bị thăng tinh {0} thứ </font>
+TaskDescription_ChatTimes		<font> thế giới lên tiếng {0} thứ </font>
+TaskDescription_FindTreasureTimes		<font> tầm bảo {0} thứ </font>
+TaskDescription_PlayerLevel		<font> cấp bậc đạt tới {0}</font>
+TaskDescription_DungeonLevel		<font> thông qua trạm kiểm soát {0}</font>
+TaskDescription_StrengthTotal		<font> trang bị cường hóa cấp bậc tổng hoà đạt tới {0} cấp </font>
+TaskDescription_MeridianTotal		<font> kinh mạch cấp bậc tổng hoà đạt tới {0} </font>
+TaskDescription_SkillTotal		<font> kỹ năng cường hóa số lần đạt tới {0} thứ </font>
+TaskDescription_StarMax		<font> tối cao thăng độ sáng tinh thể cấp đạt tới {0} cấp </font>
+TaskDescription_GemMax		<font> tối cao đá quý cấp bậc đạt tới {0} cấp </font>
+TaskDescription_PowerTotal		<font> tổng chiến lực đạt tới {0}</font>
+TaskDescription_UnlockChar		<font> mở ra đệ {0} cái nhân vật </font>
+TaskDescription_DroiyanAttack		<font> quyết chiến tổng số lần đạt tới {0} thứ </font>
+TaskDescription_MonthCard		<font> lĩnh nguyệt tạp khen thưởng </font>
+TaskDescription_YearCard		<font> mua sắm chung thân tạp khen thưởng </font>
+TaskDescription_ShopTimes		<font> thương thành mua sắm số lần đạt tới {0}</font>
+TaskDescription_OneKeyEquip		<font> một kiện trang bị số lần tới {0} </font>
+Vip_AddPackage		<font > gia tăng ba lô hạn mức cao nhất </font ><font color= "#Color" >+ #Args</font >
+Vip_EquipInstanceTimes		<font > mỗi ngày nhưng khiêu chiến cốt truyện phó bản số lần </font ><font color= "#Color" >+ #Args</font >
+Vip_GemInstanceTimes		<font > mỗi ngày nhưng khiêu chiến đá quý phó bản số lần </font ><font color= "#Color" >+ #Args</font >
+Vip_MeridianInstanceTimes		<font > mỗi ngày kinh mạch phó bản số lần </font ><font color= "#Color" >+ #Args</font >
+Vip_ArenalTimes		<font > mỗi ngày nhưng mua sắm đấu trường số lần </font ><font color= "#Color" >+ #Args</font >
+Vip_DailyRefreshStoreTimes		<font > cửa hàng mỗi ngày lớn nhất đổi mới số lần ( thông dụng ) </font ><font color= "#Color" >+ #Args</font >
+Vip_OfflineDungeonAdd		<font > ly tuyến thêm thành tỉ lệ phần trăm: </font ><font color= "#Color" > #Args</font >
+Vip_StealGold		<font > thăm kim số lần </font ><font color= "#Color" >+ #Args</font >
+Vip_GuildChallengeBuyTimes		<font > mỗi ngày bang phái phó bản mua sắm số lần </font ><font color= "#Color" >+ #Args</font >
+Vip_OpenTreasureTimes		<font > mỗi ngày mở ra tàng bảo đồ số lần </font ><font color= "#Color" >+ #Args</font >
+Guild_President		Bang chủ
+Guild_VicePresident		Phó bang
+Guild_Chief		Trưởng lão
+Guild_Elite		Tinh anh
+Guild_Member		Thành viên
+TitleQuality_1		Bình thường
+TitleQuality_2		Hi hữu
+TitleQuality_3		Trân quý
+TitleQuality_4		Cực phẩm
+TitleQuality_5		Truyền thuyết
+TitleQuality_6		Thần Khí
+SexType_1		Nam
+SexType_2		Nữ
+LingBao_1		Linh bảo hồ lô
+LingBao_2		Luyện yêu hồ
+LingBao_3		Ma linh
+LingBao_4		Tháng thần
+LingBao_5		Viêm phù
+LingBao_6		Kim viêm bát quái
+LingBao_7		Bờ đối diện chi hoa
+LingBao_8		Diệt thế chuyển luân
+LingBao_9		Linh bảo hồ lô
+LingBao_10		Linh bảo hồ lô
+LongnvWarWin		<font >Thành công đánh bại Bang：</font><font color=0x00ff00 >#GuildName</font><font >  Bang chủ：</font><font color=0x00ff00 >#President\n</font><font >Thiếp thân cảm kích các vị đại hiệp trợ giúp，</font><font color=0x00ff00 >Nho nhỏ tạ lễ không thành kính ý</font><font >！</font>
+LongnvWarLost		<font >Thủ thành thất bại long nữ bị trọng thương\n</font><font >Thời gian nhận chức còn</font><font color=0xff0000 >#LeftTime</font>
+LongnvWarFront		<font >Cảm nhận về: </font><font color=0x00ff00 >#GuildName</font><font > bang chủ: </font><font color=0x00ff00 >#President\n</font><font > ở </font><font color=0x00ff00 >#LeftTime</font><font > sau đem đối thiếp thân triển khai công kích \n</font><font > thiếp thân một cây chẳng chống vững nhà, thỉnh bang phái hiệp khách nhóm mau chóng báo danh tiếp viện! </font>
+LongnvWarIn		<font > bang phái: </font><font color=0x00ff00 >#GuildName</font><font > bang chủ: </font><font color=0x00ff00 >#President</font><font color=0xff0000 > đang ở đối thiếp thân triển khai công kích </font><font >, tình hình chiến đấu dị thường giằng co, thỉnh đã tham chiến hiệp khách nhóm phục chế con rối tiếp viện! </font>

@@ -1,0 +1,10 @@
+﻿id	价格/角	Vip经验	获得元宝数量	赠送数量	返利对应的每日任务	月卡年卡返利天数	再次购买时间限制	赠送背包	条目Icon（读取Icon表）	装饰物	标题	说明	说明	第三方的产品id
+id	Price	VipExp	First	Crystal	RebateAchievement	RebateDays	RepurchaseDaysLimit	AddPackage	Icon	Decoration	Title	ContentBefore	ContentAfter	ThridProductId
+3001	39000	12500	0	0	MonthCardCrystal	30	5	50	Icon_Recharge_A	Recommend	Thường nguyệt tạp	Liên tục {0} ngày, mỗi ngày lãnh 100 KNB + 50000 EXP. Có thể cộng dồn khi mua nhiều lần	Liên tục {0} ngày, mỗi ngày lãnh 100 KNB + 50000 EXP. Có thể cộng dồn khi mua nhiều lần	FangCunForIOS:hxyy302
+3002	449000	49000	0	0	YearCardCrystal	365	5	100	Icon_Recharge_B	Recommend	Chí tôn tạp	Liên tục {0} ngày, mỗi ngày lãnh 100 KNB + 50000 EXP. Có thể cộng dồn khi mua nhiều lần	Liên tục {0} ngày, mỗi ngày lãnh 100 KNB + 50000 EXP. Có thể cộng dồn khi mua nhiều lần	FangCunForIOS:hxyy601
+4001	9900	3000	6000	3000		0	0	0	icon_recharge_01_jpg		Rương nhỏ	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	FangCunForIOS:hxyy6
+4002	49000	14900	30000	15000		0	0	0	icon_recharge_01_jpg	Recommend	Rương thường	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	FangCunForIOS:hxyy301
+4003	319000	99000	198000	99000		0	0	0	icon_recharge_01_jpg		Rương lớn	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	FangCunForIOS:hxyy198
+4004	779000	249000	488000	244000		0	0	0	icon_recharge_01_jpg		Bảo rương	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	FangCunForIOS:hxyy98
+4005	1590000	519000	998000	499000		0	0	0	icon_recharge_01_jpg		Bảo rương lớn	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	FangCunForIOS:hxyy328
+4006	4690000	1590000	2998000	1499000		0	0	0	icon_recharge_01_jpg		Siêu bảo rương	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	{0} KNB, lần đầu khuyến mãi thêm {1} KNB	FangCunForIOS:hxyy648

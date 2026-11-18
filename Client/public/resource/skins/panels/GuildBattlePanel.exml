@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildBattlePanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="guildbattle_bg2_jpg" horizontalCenter="0" verticalCenter="0" />
+	<e:Label id="label_name" text="Thành trì Đá quý" y="12" stroke="1" horizontalCenter="235.5" />
+	<e:Label id="guild_title" text="Bang A tấn công Bang B" y="12" stroke="1" x="5" size="20" />
+	<e:Group width="450" height="927.58" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" verticalCenter="32">
+		<e:Image source="birthline_png" x="53" scaleX="1" scaleY="1"  top="0"/>
+		<e:Image source="birthline_png" x="169" scaleX="1" scaleY="1"  top="0"/>
+		<e:Image source="birthline_png" x="289.7" scaleX="1" scaleY="1"  top="0"/>
+		<e:Image source="birthline_png" x="53" scaleX="1" scaleY="1"  bottom="0"/>
+		<e:Image source="birthline_png" x="169" scaleX="1" scaleY="1"  bottom="0"/>
+		<e:Image source="birthline_png" x="288.7" scaleX="1" scaleY="1"  bottom="0"/>
+		<e:Image id="flag_1" x="110" source="hold_flag_png" anchorOffsetX="60" anchorOffsetY="105" y="19.5" />
+		<e:Image x="225" y="19.5" source="hold_flag_png" id="flag_2" anchorOffsetX="60" anchorOffsetY="105" />
+		<e:Image id="flag_3" x="345" y="19.5" source="hold_flag_png" anchorOffsetX="60" anchorOffsetY="105" />
+		<e:Group id="line_1" width="0" height="870" anchorOffsetX="0" x="110" scaleX="1" scaleY="1" name="line_1"  anchorOffsetY="400" y="429">
+		</e:Group>
+		<e:Group id="line_2" width="0" height="870" anchorOffsetX="0" scaleX="1" scaleY="1"
+		         name="line_2"  anchorOffsetY="435" horizontalCenter="0" y="464">
+		</e:Group>
+		<e:Group id="line_3" width="0" height="870" anchorOffsetX="0" scaleX="1" scaleY="1" name="line_1" anchorOffsetY="400" x="344.56" y="429"/>
+
+	</e:Group>
+	<e:Group id="group_green" width="173" height="232" anchorOffsetY="0" verticalCenter="-320" left="0">
+		<e:Image source="green_flag_png" />
+		<e:Image y="217" source="hp_bg1_png" x="2" />
+		<e:Image id="green_line" y="216" x="21" source="green_hp_png" scaleX="1" />
+		<e:Label text="Số người:" y="194" stroke="1" x="25" size="20" />
+		<e:Label id="green_tip" text="守" y="86" stroke="1" size="42" horizontalCenter="-11" bold="true"
+		         strokeColor="0x3aea0e" />
+		<e:Label id="green_name" text="s1.61631某某某" y="132" stroke="1" size="30" horizontalCenter="-12.5"  width="135" textAlign="center"/>
+		<e:Label id="green_num" text="20" y="194" stroke="1" x="75" size="20" />
+		<e:Label id="green_leftnum" text="10/20" y="220" stroke="1" size="20" horizontalCenter="-10" />
+	</e:Group>
+	<e:Group id="group_red" width="173" height="232" anchorOffsetY="0" verticalCenter="322" right="466">
+		<e:Image right="0" source="red_flag_png"  scaleX="-1"/>
+		<e:Image y="217" source="hp_bg1_png" x="2" />
+		<e:Image id="red_line" y="216" x="21" scaleX="1" source="red_hp_png" />
+		<e:Label text="Số người:" y="194" stroke="1" x="25" size="20" />
+		<e:Label id="red_tip" text="攻" y="86" stroke="1" size="42" horizontalCenter="-11" bold="true" strokeColor="0xff0202" />
+		<e:Label id="red_name" text="s1.61631某某某" y="129" stroke="1" size="30" horizontalCenter="-12"  width="135"/>
+		<e:Label id="red_num" text="20" y="194" stroke="1" x="75" size="20" />
+		<e:Label id="red_leftnum" text="10/20" y="220" stroke="1" size="20" horizontalCenter="-10" />
+	</e:Group>
+	<e:Group id="group_resurrection" width="200" height="120" right="0" bottom="281">
+		<e:Image source="gorm_gbg_png" scale9Grid="51,20,8,10" anchorOffsetX="0" width="200" anchorOffsetY="0" height="120" />
+		<e:Label text="Phí" y="24" stroke="1" size="30" horizontalCenter="-53" />
+		<e:Label id="res_price" text="100" y="24" stroke="1" size="30"  x="110"/>
+		<e:Image id="res_icon" width="30" height="30" x="80" y="24" source="icon_crystal_png" />
+		<e:Button id="btn_resurrection" label="Triệu hồi con rối" y="65" horizontalCenter="0" width="120">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_bg5_png" />
+					<e:Label id="labelDisplay" size="24" stroke="1" horizontalCenter="0" verticalCenter="0" />
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+	</e:Group>
+	<e:Group width="100%" height="35" horizontalCenter="0" bottom="0">
+		<e:Image width="100%" height="35" source="dark_png" anchorOffsetY="0" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Label id="dead" text="Bị giết" y="4.5" stroke="1" size="28" x="240" textColor="0xFF0000" bold="true"/>
+		<e:Label text="Thất bại:" y="6" stroke="1" size="24" x="10" textColor="0x52f702" />
+		<e:Label text="Đếm ngược:" y="6" stroke="1" size="24" x="370" textColor="0xff0000" />
+		<e:Label id="time" text="19:00:00" y="6" stroke="1" size="24" x="500" textColor="0xFF0000" />
+		<e:Label id="del_num" text="10" y="6" stroke="1" size="24" x="140" textColor="0x52F702" />
+	</e:Group>
+	<e:Image id="btn_close" source="btn_close_2_png" bottom="42" right="8"  anchorOffsetX="0" width="85" anchorOffsetY="0" height="103.42"/>
+	<e:Scroller height="70" x="7" y="39" anchorOffsetX="0" anchorOffsetY="0">
+		<e:List id="list">
+			<e:itemRendererSkinName>
+				<e:Skin>
+					<e:Label id="label" text="" size="20" stroke="1" textColor="0xff0000"/>
+					<e:Label id='record' text="Tình hình chiến sự" x="50" size="20" stroke="1" textColor="0x00ff00"/>
+				</e:Skin>
+			</e:itemRendererSkinName>
+		</e:List>
+	</e:Scroller>
+</e:Skin>

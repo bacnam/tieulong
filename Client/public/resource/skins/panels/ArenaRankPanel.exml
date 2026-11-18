@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ArenaRankPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:component="legend.view.component.*">
+	<w:Config id="15862bd89a0" />
+	<e:Group id="statics" width="544.24" height="712.73" anchorOffsetX="0" anchorOffsetY="0" 
+	         horizontalCenter="-2" verticalCenter="-46" touchEnabled="false">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="680" y="12" scaleX="1" scaleY="1"
+		          horizontalCenter="0"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="84.73" width="480" height="499" scaleX="1" scaleY="1"
+		          horizontalCenter="0"/>
+		<e:Image source="ui_heip_png" x="55" y="26" name="open_ArenaReward" />
+		<e:Image source="list_tab_png" y="588" height="86" width="500" x="36" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_png" x="454" y="9" name="btn_close" />
+		<e:Image source="smallui_tbg_png" y="27" scaleX="1" scaleY="1" x="132" />
+		<e:Label text="Xếp hạng đấu trường" y="33" size="20" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32"
+		         fontFamily="Arial" textColor="0xF7F397" verticalAlign="middle" x="174" />
+		<e:Label text="Xếp hạng" x="68" y="600.8" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+		         textColor="0xFFC446" width="94" height="30" verticalAlign="middle" />
+		<e:Label text="Phần thưởng giải quyết" x="70" y="638.8" size="20" textAlign="center" strokeColor="0x000000" stroke="1"
+		         textColor="0xFFC446" width="94" height="30" verticalAlign="middle" />
+		<e:Image source="icon_wu_png" x="387.58" y="634.7" />
+		<e:Image source="icon_gold_png" x="175.64" y="633.68" width="35" height="36" />
+	</e:Group>
+	<e:Group width="544.24" height="712.73" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="-2" verticalCenter="-46" touchEnabled="false">
+		<e:Label id="lbl_rank" text="s.170 Tên nhân vật quá dài" x="176" y="599.8" size="20" textAlign="left" strokeColor="0x000000"
+		         stroke="1" textColor="0xF8F7D3" width="275" height="30" verticalAlign="middle" scaleX="1" scaleY="1" />
+		<e:Label id="lbl_token" text="12345" x="426" y="637.2" size="20" textAlign="left" strokeColor="0x000000" stroke="1"
+		         width="59" textColor="0xFFFFFF" height="29" verticalAlign="middle" scaleX="1" scaleY="1" />
+		<e:Label id="lbl_gold" text="123456789012" x="217" y="642.2" size="20" textAlign="left" strokeColor="0x000000"
+		         stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB" />
+		<e:Scroller id="scroller" height="472" y="96" width="450" scaleX="1" scaleY="1" horizontalCenter="0" anchorOffsetY="0">
+			<e:List id="lst_ranks" height="458" itemRendererSkinName="ArenaRank"  y="-90" horizontalCenter="0">
+				<e:layout>
+					<e:VerticalLayout gap="3"/>
+				</e:layout>
+				<e:ArrayCollection>
+					<e:Array>
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+						<e:Object name="Test" rank="1" power="3213" />
+					</e:Array>
+				</e:ArrayCollection>
+			</e:List>
+		</e:Scroller>
+	</e:Group>
+</e:Skin>

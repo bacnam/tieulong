@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildJoinPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<e:Image source="ui_bg_png" x="1" y="1" scaleX="1" scaleY="1"/>
+		<e:Image source="form_bg_png" scale9Grid="16,15,19,18" x="19" y="63" anchorOffsetX="0" width="552" anchorOffsetY="0" height="705" scaleX="1" scaleY="1"/>
+		<e:Image source="list_bg_jpg" x="30" y="74" anchorOffsetX="0" width="531" anchorOffsetY="0" height="682" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_set" scale9Grid="3,2,82,32" x="231" y="687" width="120" height="44" scaleX="1" scaleY="1" source="btn_bg2_png"/>
+		<e:Label text="Tạo Bang" x="241" y="699" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" textColor="0xF8F7D3" touchEnabled="false" scaleX="1" scaleY="1"/>
+		<e:Label id="cd" text="Thời gian:" x="155" y="785" size="22" textAlign="center" strokeColor="0x000000" stroke="1" width="100" touchEnabled="false" scaleX="1" scaleY="1" textColor="0xff0000"/>
+		<e:Label id="label_cd" text="Thời gian:" x="265" y="785" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFF0000" touchEnabled="false" scaleX="1" scaleY="1"/>
+		<e:Image source="title_guild_png" y="7.03" scaleX="1" scaleY="1" x="263"/>
+		<e:Image source="btn_close_png" x="520.32" y="11.68" scaleX="1" scaleY="1" name="btn_close"/>
+		<e:Scroller width="520" height="590" y="81" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" x="35" scaleX="1" scaleY="1">
+			<e:List id="list" itemRendererSkinName="GuildJoinItem">
+			<e:layout>
+				<e:VerticalLayout horizontalAlign="center" gap="10"/>
+			</e:layout>
+			</e:List>
+		</e:Scroller>
+		<e:Label id="tip" text="Hiện không có Bang nào" horizontalCenter="0" textColor="0xFF0000" bold="true" stroke="1" size="35" y="406" x="188" scaleX="1" scaleY="1"/>
+		<e:Image id="btn_close0" x="535" y="800" source="btn_close_2_png" name="btn_close"/>
+	</e:Group>
+
+</e:Skin>

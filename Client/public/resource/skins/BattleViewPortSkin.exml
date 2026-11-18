@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BattleViewPort" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<e:Group id="group_portrait" width="181" height="433" y="150" anchorOffsetX="0"
+		anchorOffsetY="0" left="0">
+		<e:Image source="hp_bg_png" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" />
+		<e:Image id="pre_hp" source="hp_pre_png" x="54.87" y="374.98" width="234.53" height="16"
+			anchorOffsetY="0" scaleY="1" anchorOffsetX="0" rotation="90" scaleX="-1" />
+		<e:Label id="lbl_hp" text="33333333333333333333" size="13" stroke="1" textColor="0xffffff"
+			x="53.09" scaleX="1" scaleY="1" rotation="90" verticalCenter="43" visible="false" />
+		<e:Label id="lbl_name" text="Doãn Chí Bình" x="73" y="149.34" size="24" scaleX="1"
+			scaleY="1" anchorOffsetY="0" height="204" width="1" />
+		<e:Image id="img_portrait" source="s_portrait005_png" x="32.79" y="39.5" anchorOffsetX="0"
+			width="74.08" anchorOffsetY="0" height="68.63" scaleX="1.18" scaleY="1.28" />
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanDekaronPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="1587214741f"/>
+	<e:Group width="500" height="650" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" touchEnabled="false" verticalCenter="0">
+		<e:Group id="group_static" width="500" height="650" touchEnabled="false">
+			<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="650" scaleX="1" scaleY="1" x="0" y="0"/>
+			<e:Image source="form_bg_png" scale9Grid="16,15,19,18" y="73" width="460" height="370" scaleX="1" scaleY="1" x="17"/>
+			<e:Image source="btn_close_png" x="431" y="0" scaleX="1" scaleY="1" name="btn_close"/>
+			<e:Image source="smallui_tbg_png" y="21" scaleX="1" scaleY="1" x="101"/>
+			<e:Label text="Quyết đấu" y="25" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205" height="32" fontFamily="Arial" verticalAlign="middle" x="145" scaleX="1" scaleY="1" textColor="0xfdb200" bold="true"/>
+			<e:Label text="Có thể Quyết đấu" x="37" y="458" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="94" height="30" verticalAlign="middle" scaleX="1" scaleY="1"/>
+			<e:Label text="Phần thưởng" x="37" y="501" size="20" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="94" height="30" verticalAlign="middle" scaleX="1" scaleY="1"/>
+			<e:Image id="rewardIcon" source="icon_gold_png" x="139" y="498" width="35" height="36" scaleX="1" scaleY="1" visible="false"/>
+			<e:Image id="plunderIcon" source="icon_gold_png" x="139" y="456" width="35" height="36" scaleX="1" scaleY="1"/>
+			<e:Label text="Vật phẩm" x="370" y="464" size="20" textAlign="left" scaleX="1" scaleY="1" textColor="0xFD0000" bold="true" visible="false"/>
+			<e:Image id="btn_attack" source="btn_bg4_png" scale9Grid="5,5,110,34" y="589" width="120" scaleX="1" scaleY="1" horizontalCenter="0"/>
+			<e:Label text="Quyết đấu" y="600" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" verticalAlign="middle" touchEnabled="false" scaleX="1" scaleY="1" horizontalCenter="0"/>
+			<e:Label text="Cơ hội nhận thưởng hệ thống: Bản đồ kho báu" y="547" size="22" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" width="480" height="26" verticalAlign="middle" textColor="0x54FF00" x="97"/>
+			<e:Image source="ui_fight_bg_png" y="83" width="273" height="55" x="111" scaleX="1" scaleY="1"/>
+			<e:Label text="EXP:" x="136" y="504" bold="true" size="24" textColor="0x00ff00" scaleX="1" scaleY="1"/>
+		</e:Group>
+		<e:Label id="exp" text="" x="202" y="506" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+		<e:Label id="gold" text="" x="202" y="464" size="20" textAlign="left" strokeColor="0x000000" stroke="1" scaleX="1" scaleY="1" textColor="0xFCFBFB"/>
+		<e:Image id="wing" source="biggumu1_png" anchorOffsetX="256" anchorOffsetY="256" scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="-26"/>
+		<e:Image id="icon" source="biggumu1_png" anchorOffsetX="256" anchorOffsetY="256" scaleX="1" scaleY="1" horizontalCenter="0" verticalCenter="-26"/>
+		<e:Label id="label_name" text="" y="98.5" size="24" textAlign="center" strokeColor="0x8B1725" stroke="2" textColor="0xFCE795" scaleX="1" scaleY="1" x="198"/>
+	</e:Group>
+</e:Skin>

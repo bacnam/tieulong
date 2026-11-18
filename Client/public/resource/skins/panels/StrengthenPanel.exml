@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Strengthen" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<w:Config id="158469ae592" />
+	<e:Group width="591" height="847" touchEnabled="false" verticalCenter="0" horizontalCenter="0">
+		<component:PanelBG id="panelBG" scaleX="1" scaleY="1" horizontalCenter="0" name="zhuangbei_png" verticalCenter="0"
+		                   x="0" y="0" />
+		<e:ViewStack id="content_View" width="550" height="694" scaleX="1" scaleY="1" selectedIndex="3" horizontalCenter="0"
+		             x="20" y="57">
+			<panels:StrengthenSubPanel id="strengthenSubPanel" scaleX="1" scaleY="1" name="Cường hóa" />
+			<panels:GemSubPanel id="gemSubPanel" scaleX="1" scaleY="1" name="Bảo ngọc" />
+			<panels:StarSubPanel id="starSubPanel" scaleX="1" scaleY="1" name="Thăng tinh" />
+			<panels:ArtificeSubPanel id="artificeSubPanel" name="Luyện hóa" />
+		</e:ViewStack>
+		<component:RoleSubPanel id="roleSubPanel" scaleX="1" scaleY="1" horizontalCenter="0" skinName="RoleSubPanelSkin"
+		                        y="37" x="20" />
+		<component:Power id="component_power" skinName="Power" horizontalCenter="0" y="153" x="128" scaleX="1" scaleY="1" />
+	</e:Group>
+	<component:EuiMap id="unlockData">
+		<e:Array>
+			<e:Object name="0" system="Strengthen" />
+			<e:Object name="1" system="Gem" />
+			<e:Object name="2" system="Star" />
+			<e:Object name="3" system="Artifice" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="0" event="Strengthen" />
+			<e:Object name="1" event="Gem" />
+			<e:Object name="2" event="Star" />
+			<e:Object name="3" event="Artifice" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

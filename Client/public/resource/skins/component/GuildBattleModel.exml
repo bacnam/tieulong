@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GuildBattleModel" width="60" height="120" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Component id="component" horizontalCenter="0" bottom="0"/>
+	<e:Label id="label_name" text="xxxxx" y="0" size="20" textColor="0x00FF00" horizontalCenter="0" stroke="1"/>
+	<e:Image id="image_shadow" source="shadow_png" y="121" anchorOffsetX="45" anchorOffsetY="27.5" horizontalCenter="0" scaleX="0.7" scaleY="0.7"/>
+</e:Skin>

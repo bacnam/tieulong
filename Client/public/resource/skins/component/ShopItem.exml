@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ShopItemSkin" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:component="legend.view.component.*" width="165" height="262">
+	<w:Config id="158d2e7ea0a"></w:Config>
+	<e:Image source="shop_bar_jpg" scaleX="1" scaleY="1" height="250" x="14.03" y="11.36" />
+	<e:Label id="label_discount" text="10000" x="54" y="172" size="20" textAlign="left" strokeColor="0x000000"
+	         stroke="1" textColor="0xF8F7D3" background="false" backgroundColor="0x000000" />
+	<e:Label id="label_price" text="Giá gốc:10000" y="172.5" size="20" textAlign="left" strokeColor="0x000000" background="false" backgroundColor="0x000000" textColor="0x272623" horizontalCenter="7" anchorOffsetY="10" visible="false"/>
+	<e:Label id="label_pos" text="Bộ vị: Quần áo" y="133.63" size="16" textAlign="center" strokeColor="0x000000" stroke="1"
+	         textColor="0xFFC446" verticalAlign="middle"  horizontalCenter="9"/>
+	<e:Label id="label_name" text="Tàng bảo đồ" y="107.63" size="18" textAlign="center" strokeColor="0x000000" stroke="1"
+	         verticalAlign="middle" textColor="0xFAF9FB"  horizontalCenter="9"/>
+	<e:Image id="price_icon" source="icon_gold_png" x="37.64" y="181.97" width="28" height="28" anchorOffsetX="14"
+	         anchorOffsetY="14" />
+	<e:Image id="btn_buy" source="btn_bg4_png" scale9Grid="5,5,110,34" y="202.97" x="32.37" />
+	<e:Label id="label_buy" text="Mua hàng" y="215" size="22" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+	         touchEnabled="false"  horizontalCenter="12"/>
+	<component:BaseItem id="baseItem" y="31.96" x="57.04" />
+	<e:Image id="bg_discount" source="zhekou_png" x="1.32" y="-0.01" />
+	<e:BitmapLabel id="discount" text="8" y="5" 
+	         verticalAlign="middle"  horizontalCenter="-56.5" font="shop_number_fnt" scaleX="0.48" scaleY="0.48"/>
+	<e:Label id="label_count" text="1" y="81.97" textAlign="right" size="16" right="41.650000000000006" stroke="1" touchEnabled="false"/>
+	<e:Label id="label_Type" text="Cổ mộ" y="37" anchorOffsetX="0" size="20" width="20" bold="true" textColor="0xECB70A" height="20" x="60.21" visible="false"/>
+	<e:Image id="full" x="24" y="113" source="1_png" rotation="314.73" anchorOffsetX="0" anchorOffsetY="0"/>
+</e:Skin>

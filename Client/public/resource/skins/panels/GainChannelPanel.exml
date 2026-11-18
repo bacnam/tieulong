@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="GainChannelPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+    <e:Group id="group" width="400" height="495" verticalCenter="0" horizontalCenter="0" touchEnabled="false">
+        <e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="100%" height="100%" x="0.32" y="1" scaleX="1"
+                 scaleY="1" />
+        <e:Image source="tit_bg_png" scale9Grid="99,3,314,50" anchorOffsetX="0" width="100%" anchorOffsetY="0"
+                 height="100%" />
+        <e:Image source="tit_bg_png" scale9Grid="99,3,314,50" rotation="89.88" anchorOffsetY="0" height="100%"
+                 anchorOffsetX="0" width="100%" x="400" />
+        <e:Label id="itemName" text="Tên mục" x="115" y="60" size="30" textAlign="left" strokeColor="0x000000" stroke="1"
+                 textColor="0xFDB200" verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="0" />
+        <e:Scroller width="360" height="317" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0" bottom="35">
+            <e:List id="list">
+                <e:itemRendererSkinName>
+                    <e:Skin>
+                        <e:Image source="form_jbg_png" scale9Grid="13,14,24,22" width="340" height="105" scaleX="1"
+                                 scaleY="1" horizontalCenter="0" verticalCenter="0" />
+                        <e:Label id="label_des" text="Cửa hàng" x="120" size="22" textAlign="left" strokeColor="0x000000"
+                                 stroke="1" textColor="0xFDB200" width="125" verticalAlign="middle" scaleX="1"
+                                 scaleY="1" verticalCenter="0" />
+                        <e:Image id="icon" source="icon_shop_png" x="13.5" scaleX="1" scaleY="1" verticalCenter="0" />
+                        <e:Button id="btn_go" label="Đi đến" x="240" anchorOffsetX="0" verticalCenter="0">
+                            <e:skinName>
+                                <e:Skin states="up,down,disabled">
+                                    <e:Image width="100%" height="100%" source="btn_bg5_png" />
+                                    <e:Label id="labelDisplay" size="22" textAlign="center" strokeColor="0x000000"
+                                             stroke="1" textColor="0xF8F7D3" horizontalCenter="0" verticalCenter="0" />
+                                </e:Skin>
+                            </e:skinName>
+                        </e:Button>
+                    </e:Skin>
+                </e:itemRendererSkinName>
+                <e:layout>
+                    <e:VerticalLayout gap="8" paddingRight="0" horizontalAlign="center" />
+                </e:layout>
+            </e:List>
+        </e:Scroller>
+        <component:BaseItem id="baseItem" width="72" height="72" x="32.81" y="53" />
+        <e:Image source="smallui_tbg_png" y="6" scaleX="1" scaleY="1" x="54" />
+        <e:Label text="Cửa hàng" y="10" size="24" textAlign="center" strokeColor="0x5E3500" stroke="1" width="205"
+                 height="32" fontFamily="Arial" verticalAlign="middle" x="98" scaleX="1" scaleY="1" textColor="0xfdb200"
+                 bold="true" />
+        <e:Image source="btn_close_png" x="332.14" y="0.4" scaleX="1" scaleY="1" name="btn_close" />
+        <e:Image source="line_png" scaleX="1" scaleY="2" anchorOffsetX="0" width="330" anchorOffsetY="0" height="1"
+                 bottom="361" horizontalCenter="0" />
+        <e:Label id="tip" text="Giữ nguyên" textColor="0xFF0000" bold="true" stroke="1" size="35" x="187" scaleX="1"
+                 scaleY="1" horizontalCenter="-0.5" bottom="166" />
+        <e:Group id="group_buy" width="400" height="220" y="97" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="1">
+            <e:Label text="Đơn giá:" x="115" y="5" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+                     verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="0" textColor="0xf4ebd4" />
+            <e:Label id="one_price" text="1" x="255" y="5" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+                     verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="0" textColor="0xF4EBD4" />
+            <e:Label text="Vui lòng chọn số lượng:" x="35" y="45" size="22" textAlign="left" strokeColor="0x000000" stroke="1"
+                     textColor="0xF4EBD4" verticalAlign="middle" scaleX="1" scaleY="1" anchorOffsetX="0" />
+            <e:Image id="one_priceIcon" x="215" y="0" source="icon_crystal_png" width="30" height="30" />
+            <e:Image id="btn_addTwo" source="btn_bg4_png" scale9Grid="5,5,110,34" x="299.99" y="76" scaleX="1"
+                     scaleY="1" width="85" />
+            <e:Image id="btn_subTwo" source="btn_bg4_png" scale9Grid="5,5,110,34" x="9.67" y="76" scaleX="1" scaleY="1"
+                     width="85" />
+            <e:Image id="btn_sub" source="btn_bg4_1_png" x="101.65" y="76" scaleX="1" scaleY="1" />
+            <e:Image id="btn_add" source="btn_bg4_1_png" x="253.64" y="76" scaleX="1" scaleY="1" />
+            <e:Image source="ui_sub_png" x="111.65" y="95" scaleX="1" scaleY="1" touchEnabled="false" />
+            <e:Image source="ui_+_png" x="262" y="85" scaleX="1" scaleY="1" touchEnabled="false" />
+            <e:Image source="form_zibg_png" scale9Grid="5,5,30,30" y="78" width="100" horizontalCenter="0" x="149"
+                     scaleX="1" scaleY="1" />
+            <e:Image source="ui_sub_png" x="22" y="95" scaleX="1" scaleY="1" touchEnabled="false" />
+            <e:Image source="ui_+_png" x="312.65" y="85" scaleX="1" scaleY="1" touchEnabled="false" />
+            <e:Label text="Chi phí:" x="104" y="133.97" size="24" textAlign="right" strokeColor="0x000000" stroke="1"
+                     textColor="0xFDB200" width="82" height="29" verticalAlign="middle" scaleX="1" scaleY="1" />
+            <e:Label id="label_consume" text="400" x="240" y="134.97" size="24" textAlign="left" strokeColor="0x000000"
+                     stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1" />
+            <e:Image id="icon_consume" x="194" y="126.97" source="icon_crystal_png" scaleX="1" scaleY="1" />
+            <e:BitmapLabel id="label_addSup" y="85" text="10" font="yuan_fnt" touchEnabled="false"
+                           horizontalCenter="157.5" x="356" scaleX="1" scaleY="1" />
+            <e:BitmapLabel id="label_subSup" y="85" font="yuan_fnt" text="10" touchEnabled="false"
+                           horizontalCenter="-136.5" x="40" scaleX="1" scaleY="1" />
+            <e:TextInput id="input" y="83" horizontalCenter="0" restrict="0-9" text="1323" x="149" scaleX="1" scaleY="1">
+                <e:skinName>
+                    <e:Skin states="normal,disabled,normalWithPrompt,disabledWithPrompt">
+                        <e:EditableText id="textDisplay" verticalCenter="0" textColor.disabled="0xffffff" width="100%"
+                                        size="28" text="9999999" textColor="0xffffff" height="28" horizontalCenter="0"
+                                        textAlign="center" />
+                        <e:Label id="promptDisplay" verticalCenter="0" width="100%" size="28" touchEnabled="false"
+                                 includeIn="normalWithPrompt,disabledWithPrompt" text="请输入" textColor="0xa6a7b6"
+                                 height="28" horizontalCenter="0" textAlign="center" />
+                    </e:Skin>
+                </e:skinName>
+            </e:TextInput>
+            <e:Button id="btn_buy" label="Mua" y="170.66" width="130" scaleX="1" scaleY="1" horizontalCenter="0">
+                <e:skinName>
+                    <e:Skin states="up,down,disabled">
+                        <e:Image width="100%" height="100%" source="btn_bg4_png" />
+                        <e:Label id="labelDisplay" size="26" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3"
+                                 horizontalCenter="0" verticalCenter="0" />
+                    </e:Skin>
+                </e:skinName>
+            </e:Button>
+        </e:Group>
+			<e:Label id="tip2" text="Label" y="467" textColor="0x00ff00" size="22" horizontalCenter="0"/>
+    </e:Group>
+    <component:EuiMap id="dataMap">
+        <e:Array>
+            <e:Object name="1" channel="1;19" />
+            <e:Object name="7" channel="1;3" />
+            <e:Object name="8" channel="5;12;6" />
+            <e:Object name="9" channel="12;9;18" />
+            <e:Object name="10" channel="3;7" />
+            <e:Object name="11" channel="12;18" />
+            <e:Object name="12" channel="8" />
+            <e:Object name="13" channel="3" />
+            <e:Object name="14" channel="3;4" />
+            <e:Object name="15" channel="3" />
+            <e:Object name="16" channel="12;18" />
+            <e:Object name="17" channel="12;18" />
+            <e:Object name="18" channel="5;12;18" />
+            <e:Object name="21" channel="18" />
+            <e:Object name="22" channel="3" />
+            <e:Object name="23" channel="3" />
+            <e:Object name="24" channel="13" />
+            <e:Object name="25" channel="20" />
+            <e:Object name="2001" channel="35" />
+            <e:Object name="2002" channel="4;35" />
+            <e:Object name="2003" channel="4;35" />
+            <e:Object name="2004" channel="4;35" />
+            <e:Object name="2005" channel="3;35" />
+            <e:Object name="2006" channel="4;35" />
+            <e:Object name="2007" channel="4;35" />
+            <e:Object name="2008" channel="4;13" />
+            <e:Object name="2009" channel="3;4" />
+            <e:Object name="2010" channel="35" />
+            <e:Object name="2011" channel="35" />
+            <e:Object name="2012" channel="35" />
+            <e:Object name="101" channel="5;14" />
+            <e:Object name="102" channel="5;14" />
+            <e:Object name="103" channel="5;14" />
+            <e:Object name="104" channel="14;15" />
+            <e:Object name="105" channel="14" />
+            <e:Object name="106" channel="14" />
+            <e:Object name="107" channel="5;16" />
+            <e:Object name="108" channel="5;16" />
+            <e:Object name="109" channel="5;16" />
+            <e:Object name="110" channel="10" />
+            <e:Object name="111" channel="10" />
+            <e:Object name="112" channel="10" />
+            <e:Object name="113" channel="5" />
+            <e:Object name="114" channel="5" />
+            <e:Object name="115" channel="5" />
+            <e:Object name="301" channel="3;16" />
+            <e:Object name="302" channel="15" />
+            <e:Object name="303" channel="3" />
+            <e:Object name="304" channel="11" />
+            <e:Object name="305" channel="3" />
+            <e:Object name="501" channel="15" />
+            <e:Object name="502" channel="24" />
+            <e:Object name="503" channel="22" />
+            <e:Object name="504" channel="29" />
+            <e:Object name="505" channel="21" />
+            <e:Object name="506" channel="23" />
+            <e:Object name="507" channel="25" />
+            <e:Object name="508" channel="30" />
+            <e:Object name="509" channel="8" />
+            <e:Object name="510" channel="8" />
+            <e:Object name="511" channel="31" />
+            <e:Object name="512" channel="31" />
+            <e:Object name="513" channel="32" />
+            <e:Object name="514" channel="32" />
+            <e:Object name="515" channel="33" />
+            <e:Object name="516" channel="10" />
+            <e:Object name="517" channel="34" />
+            <e:Object name="518" channel="10" />
+            <e:Object name="519" channel="10" />
+        </e:Array>
+    </component:EuiMap>
+    <component:EuiMap id="channelMap">
+        <e:Array>
+            <e:Object name="1" img="icon_bag_png" panel="Package" description="Luyện kim" />
+            <e:Object name="2" img="icon_shop_png" panel="Shop.0" description="Vật phẩm" />
+            <e:Object name="3" img="icon_shop_png" panel="Shop.1" description="Đạo cụ" system="Shop" />
+            <e:Object name="4" img="icon_shop_png" panel="Shop.2" description="Đấu trường" system="Shop" />
+            <e:Object name="5" img="icon_shop_png" panel="Shop.3" description="Bang hội" system="Shop" />
+            <e:Object name="6" img="icon_home_png" panel="Instance.1" description="Bảo ngọc" system="GemInstance" />
+            <e:Object name="7" img="icon_home_png" panel="Instance.2" description="Luyện đơn" system="MeridianInstance" />
+            <e:Object name="8" img="btn_jjc_png" panel="Arena" description="Khiếu chiến" system="Arena" />
+            <e:Object name="9" img="icon_battle_png" panel="Droiyan" description="Quyết đấu" system="Droiyan" />
+            <e:Object name="10" img="btn_xialv_png" panel="XiaKe" description="Kết hôn" />
+            <e:Object name="11" img="icon_guildbattle_png" panel="GuildBattleDeclaration" description="Bang chiến" />
+            <e:Object name="12" img="xunbao_png" panel="GodEquip.1" description="Tầm bảo" />
+            <e:Object name="13" img="icon_leichong_png" panel="Activity.AccumRecharge" description="Hoạt động tích lũy" />
+            <e:Object name="14" img="icon_danchong_png" panel="Activity.DailyRecharge" description="Nạp thẻ hàng ngày" />
+            <e:Object name="15" img="icon_frist_png" panel="FirstRecharge" description="Nạp thẻ lần đầu" />
+            <e:Object name="16" img="icon_vipgift_png" panel="Activity.VipAward" description="Quà VIP" />
+            <e:Object name="17" img="icon_boss_png" panel="WorldBossList" description="Boss Thế giới" />
+            <e:Object name="18" img="icon_mishang_png" panel="Activity.MysteryStore" description="Cửa hàng thần bí" />
+            <e:Object name="19" img="tanjinshou_png" panel="Explore" description="Tìm vàng" />
+            <e:Object name="20" img="bangpai_png" panel="GuildGuard" description="Bảo vệ Long nữ" />
+            <e:Object name="21" img="icon_chongbang_png" panel="Activity.WingRank" description="Hạng Cánh" />
+            <e:Object name="22" img="icon_chongbang_png" panel="Activity.DungeonRank" description="Hạng Phó bản" />
+            <e:Object name="23" img="icon_chongbang_png" panel="Activity.LevelRank" description="Hạng cấp độ" />
+            <e:Object name="24" img="icon_chongbang_png" panel="Activity.PowerRank" description="Hạng Lực chiến" />
+            <e:Object name="25" img="icon_chongbang_png" panel="Activity.DroiyanRank" description="Hạng Quyết đấu" />
+            <e:Object name="26" img="icon_chongbang_png" panel="Activity.ArenaRank" description="Hạng Khiếu chiến" />
+            <e:Object name="27" img="icon_chongbang_png" panel="Activity.GumuRank" description="Hạng Nga My" />
+            <e:Object name="28" img="icon_chongbang_png" panel="Activity.TianLongRank" description="Hạng Thiên Long" />
+            <e:Object name="29" img="icon_chongbang_png" panel="Activity.XiaoyaoRank" description="Hạng Tiêu Dao" />
+            <e:Object name="29" img="icon_chongbang_png" panel="Activity.ArtificeRank" description="Hạng Luyện hóa" />
+            <e:Object name="30" img="icon_chongbang_png" panel="Activity.GuildRank" description="Hạng Bang hội" />
+            <e:Object name="31" img="icon_battle_png" panel="Droiyan" description="决战" system="Droiyan" />
+            <e:Object name="32" img="icon_list_png" panel="Rank.8" description="帮会榜" />
+            <e:Object name="33" img="icon_role_png" panel="XiaKe.2" description="强化翅膀" />
+            <e:Object name="34" img="icon_task_png" panel="Task.2" description="任务" />
+            <e:Object name="35" img="icon_warspirit_png" panel="WarSpirit.1" description="战灵召唤" />
+
+        </e:Array>
+    </component:EuiMap>
+</e:Skin>

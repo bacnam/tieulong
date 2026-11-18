@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ActivityPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+        xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*" xmlns:panels="legend.panels.*">
+	<e:Group width="600" height="847" horizontalCenter="0" verticalCenter="0" touchEnabled="false">
+		<e:Image source="ui_shop_bg_png" horizontalCenter="0" x="0" scaleX="1" scaleY="1" />
+		<e:Image source="huodong_png" y="13" horizontalCenter="0" x="267" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_1_png" x="545" y="22" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image id="btn_right" x="539" y="70" source="arrow_png" />
+		<e:Image id="btn_left" x="61" y="70" source="arrow_png" scaleX="-1" />
+		<e:Scroller id="scroller" width="472" height="98" x="65" y="50" anchorOffsetX="0" anchorOffsetY="0">
+			<e:Group id="group_btn" height="86" x="23" y="0" anchorOffsetY="0" anchorOffsetX="0" touchEnabled="false">
+				<e:layout>
+					<e:HorizontalLayout gap="0"  paddingTop="7"/>
+				</e:layout>
+			</e:Group>
+		</e:Scroller>
+		<e:Group id="group_subpanel" width="550" height="694" y="138" scaleX="1" scaleY="1" horizontalCenter="0" />
+		<e:Image id="btn_close1" x="534" y="813" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"
+		         scaleX="1" scaleY="1" />
+	</e:Group>
+	<component:EuiMap id="activityDataMap">
+		<e:Array>
+			<e:Object name="SignInSeven" activity="SignInSeven" type="Sign" png="sevenday_png" class="SignSevenSubPanel" />
+			<e:Object name="SignInPrize" activity="SignInPrize" type="Sign" png="sevenday_png" class="PrizeSevenDaySubPanel" />
+			<e:Object name="SignInOpenServer" activity="SignInOpenServer" type="Sign" png="sevenday_png"
+			          class="ServerSevenDaySubPanel" />
+			<e:Object name="WingRank" activity="WingRank" type="Competition" png="icon_chongbang_png" class="CompetitionSubPanel" />
+			<e:Object name="DungeonRank" activity="DungeonRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="LevelRank" activity="LevelRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="PowerRank" activity="PowerRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="DroiyanRank" activity="DroiyanRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="ArenaRank" activity="ArenaRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="GumuRank" activity="GumuRank" type="Competition" png="icon_chongbang_png" class="CompetitionSubPanel" />
+			<e:Object name="TianLongRank" activity="TianLongRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="XiaoyaoRank" activity="XiaoyaoRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="ArtificeRank" activity="ArtificeRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="GuildRank" activity="GuildRank" type="Competition" png="icon_chongbang_png"
+			          class="CompetitionSubPanel" />
+			<e:Object name="WingRankLimitAward" activity="WingRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="DungeonRankLimitAward" activity="DungeonRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="LevelRankLimitAward" activity="LevelRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="PowerRankLimitAward" activity="PowerRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="DroiyanRankLimitAward" activity="DroiyanRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="ArenaRankLimitAward" activity="ArenaRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="GumuRankLimitAward" activity="GumuRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="TianLongRankLimitAward" activity="TianLongRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="XiaoyaoRankLimitAward" activity="XiaoyaoRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="ArtificeRankLimitAward" activity="ArtificeRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="GuildRankLimitAward" activity="GuildRank" type="CompetitionLimitAward" png="icon_limit_png"
+			          class="LimitGiftSubPanel" />
+			<e:Object name="DailyRecharge" activity="DailyRecharge" type="DailyRecharge" png="icon_danchong_png"
+			          class="SingleRechargeSubPanel" />
+			<e:Object name="AccumRecharge" activity="AccumRecharge" type="AccumRecharge" png="icon_leichong_png"
+			          class="TotalRechargeSubPanel" />
+			<e:Object name="MysteryStore" activity="MysteryStore" type="MysteryStore" png="icon_mishang_png"
+			          class="MysteriousShopSubPanel" />
+			<e:Object name="ActivityInstance" activity="ActivityInstance" type="ActivityInstance" png="icon_instance_png"
+			          class="ActivityInstanceSubPanel" />
+			<e:Object name="VipAward" activity="VipAward" type="VipAward" png="icon_vipgift_png" class="VipGiftSubPanel" />
+			<e:Object name="LevelReward" activity="LevelReward" type="LevelReward" png="icon_levelreward_png" class="LevelRewardSubPanel" />
+
+			
+		</e:Array>
+	</component:EuiMap>
+	
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="SignInOpenServer" event="SignInOpenServer" />
+			<e:Object name="SignInPrize" event="SignInPrize" />
+			<e:Object name="SignInSeven" event="SignInSeven" />
+			<e:Object name="DailyRecharge" event="DailyRecharge" />
+			<e:Object name="AccumRecharge" event="AccumRecharge" />
+			<e:Object name="ActivityInstance" event="ActivityInstance" />
+			<e:Object name="VipAward" event="VipAward" />
+			<e:Object name="LevelReward" event="LevelReward" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

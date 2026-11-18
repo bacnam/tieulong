@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DailyTaskItem" width="500" height="120" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*"
+	xmlns:view="legend.view.*">
+	<e:Image source="form_sibg_png" scale9Grid="17,16,16,17" width="490" height="120" scaleX="1"
+		scaleY="1" horizontalCenter="0" />
+	<e:Image source="ui_tit_bg_png" x="7" y="2" width="401" scaleX="1" scaleY="1" />
+	<e:Label id="description" text="Khởi chạy 3 trận đánh" x="119" y="48" size="20" textAlign="left"
+		strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1"
+		anchorOffsetX="0" />
+	<e:Label id="schedule" text="0" y="9" size="20" textAlign="right" strokeColor="0x000000"
+		stroke="1" textColor="0xF8F7D3" scaleX="1" scaleY="1" right="25" />
+	<e:Label id="active" text="0" x="321" y="76" size="20" textAlign="left" strokeColor="0x000000"
+		stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle" scaleX="1" scaleY="1" />
+	<e:Label id="rewardPrice" text="0" x="169" y="78" size="20" textAlign="left"
+		strokeColor="0x000000" stroke="1" textColor="0xFFC446" height="30" verticalAlign="middle"
+		scaleX="1" scaleY="1" />
+
+
+	<e:Image id="img_active" source="vitality_png" x="280" y="72" scaleX="1" scaleY="1" />
+	<component:BaseItem id="rewardIcon2" x="275" y="71" scaleX="0.6" scaleY="0.6" />
+	<e:Label id="taskName" text="Chiến tích" x="129" y="9" size="22" textAlign="left"
+		strokeColor="0x000000" stroke="1" textColor="0xC5D9EA" />
+	<e:Image id="complete" source="complete_png" x="393" y="57" visible="false" />
+	<e:Image id="go" source="btn_bg5_png" x="389" y="65" touchEnabled="true" visible="false" />
+	<e:Label id="label_go" text="Bắt đầu" x="391" y="73" size="22" textAlign="center"
+		strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="79" touchEnabled="false"
+		visible="false" />
+	<component:BaseItem id="baseItem" x="27" y="41" />
+	<component:BaseItem id="rewardIcon" x="119" y="71" scaleX="0.6" scaleY="0.6" />
+	<component:Button_Get id="get" x="387" y="52" skinName="Button_Get" width="95" />
+</e:Skin>

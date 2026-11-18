@@ -1,0 +1,4 @@
+引导顺序	按钮	是否连接下一步引导	是否出现就标记结束
+id	Sequence	Next	End
+1	[{"Button":"mainPool.MenuPanel.XiaKe"},{"Button":"panelPool.XiaKePanel.xiaKeSubPanel.btn_change"},{"Button":"panelPool.XiaKePanel.panelBG.btn_close"},{"Dialog":5}]		
+2	[{"Button":"panelPool.IndexPanel.btn_challenge"}]		

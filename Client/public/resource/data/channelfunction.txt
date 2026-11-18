@@ -1,0 +1,11 @@
+ÇþµÀid	³äÖµ	ÔÂ¿¨	Àñ°üÂë	QQÈºÁ´½Ó	³äÖµ½ð¶îÉÏÏÞ£¨½Ç£©	·ÖÏí	Î¢¶Ë	ÎÊ¾í	vip¿Í·þ	ÇÐ»»ÕËºÅ	GM¿Í·þÁÄÌì	
+id	Recharge	MonthCard	GiftCode	QQLink	RechargeMax	Share	Micro	Quest	VipCustomer	ChangeAccount	GMTalk	ChangeAccount_Useragent
+DEBUG	TRUE	TRUE	TRUE	https://jq.qq.com/?_wv=1027&k=47fsryk	-1						TRUE	
+None	TRUE	TRUE	TRUE		-1						TRUE	
+1	TRUE	TRUE	TRUE	https://jq.qq.com/?_wv=1027&k=47fsryk	-1						TRUE	
+628	TRUE	TRUE	TRUE	https://jq.qq.com/?_wv=1027&k=455iKvB	-1							
+585	TRUE	TRUE	TRUE		-1							
+694	TRUE	TRUE	TRUE		-1					TRUE	TRUE	MGame
+968	TRUE	TRUE	TRUE		-1							
+915	TRUE	TRUE	TRUE		-1					TRUE	TRUE	MGame
+lncq1.1.0	TRUE				5000							

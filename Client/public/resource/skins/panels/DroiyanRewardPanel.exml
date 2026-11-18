@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanRewardPanel" width="640" height="1136" xmlns:e="http://ns.egret.com/eui"
+	xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="1586b052379" />
+	<e:Group width="524" height="670" anchorOffsetX="0" anchorOffsetY="0" verticalCenter="-5"
+		horizontalCenter="0">
+		<e:Image source="smallui_bg_png" scale9Grid="74,32,53,47" width="500" height="636" x="12"
+			y="17" scaleX="1" scaleY="1" />
+		<e:Image source="btn_close_png" x="443" y="15" name="btn_close" />
+
+		<e:Image source="smallui_tbg_png" y="23" scaleX="1" scaleY="1" x="116" />
+		<e:Label text="Quy tắc thưởng" y="28" size="24" textAlign="center" strokeColor="0x5E3500"
+			stroke="1" width="205" height="32" fontFamily="Arial" verticalAlign="middle" x="160"
+			bold="true" textColor="0xfdb200" />
+		<e:Label text="Hạng" y="89" size="26" textAlign="left" strokeColor="0x8B1725" stroke="2"
+			textColor="0xFCE795" scaleX="1" scaleY="1" x="84" />
+		<e:Label text="Thưởng" y="88" size="26" textAlign="left" strokeColor="0x8B1725" stroke="2"
+			textColor="0xFCE795" scaleX="1" scaleY="1" x="341" anchorOffsetY="0" height="28" />
+		<e:Image source="line_png" y="124" width="460" x="38" scaleX="1" scaleY="1" />
+	</e:Group>
+	<e:List id="lst_rwd" width="458" height="496" anchorOffsetX="0" anchorOffsetY="0"
+		verticalCenter="41.33999999999992" horizontalCenter="0" itemRendererSkinName="DroiyanReward">
+		<e:ArrayCollection>
+			<e:Array>
+				<e:Object gold="120000" rank="1" token="4160" />
+			</e:Array>
+		</e:ArrayCollection>
+	</e:List>
+</e:Skin>

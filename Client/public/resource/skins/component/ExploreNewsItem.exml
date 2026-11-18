@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ExploreNewsItem" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" x="0" y="0" anchorOffsetX="0" width="478" anchorOffsetY="0" height="107.34"/>
+	<e:Image source="dark_png" x="5" y="3" anchorOffsetX="0" width="467" anchorOffsetY="0" height="99.34"/>
+	<e:Label id="time" text="2017-02-16    16:39:37" x="251.68" y="72.64" size="20" textAlign="left" strokeColor="0x000000" stroke="1" width="211.2" anchorOffsetX="0" anchorOffsetY="0" height="21.33" textColor="0xFF0000"/>
+	<e:Image source="line_png" x="14" y="64" width="450"/>
+	<e:Label id="content" text="Người chơi bí ẩn đã đánh cắp đồng xu vàng 500000 của bạn" y="8.99" size="22" strokeColor="0x5E3500" stroke="1" height="45" fontFamily="Arial" anchorOffsetX="0" x="20.5" anchorOffsetY="0" width="439" textAlign="left" verticalAlign="middle" textColor="0xf8f7d3"/>
+</e:Skin>

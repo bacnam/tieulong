@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanEnemiesHead" width="115" height="90" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="portrait_bg_png" y="-1.33" horizontalCenter="0"/>
+	<e:Image id="img_icon" source="tou1_png" y="5.32" width="76" height="76" horizontalCenter="0"/>
+	<e:Image id="img_vipbg" source="ui_vip_bg_png" y="63.69" horizontalCenter="0"/>
+	<e:Image id="img_vip" x="16.66" y="67" width="51" height="19" source="ui_vip_png"/>
+	<e:BitmapLabel id="lbl_vipLv" x="61.97" y="65" height="38" text="5" scaleX="0.45" scaleY="0.45" font="vip_number_fnt"/>
+	<e:Image id="enemiesbg" y="0" horizontalCenter="40.5" anchorOffsetX="0" anchorOffsetY="0" source="redname_icon_png"/>
+	<e:Label id="enemieslabel" text="?i" x="88" y="9" bold="true" size="20" textColor="0xff0000" stroke="1"/>
+	<e:Image id="month_card" x="1" y="-18" source="month_card_png" visible="false"/>
+	<e:Image id="year_card" source="year_card_png" x="25" y="-18" visible="false"/>
+</e:Skin>

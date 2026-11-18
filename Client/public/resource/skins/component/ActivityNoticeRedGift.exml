@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ActivityNoticeRedGift" width="550" height="360" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" scaleX="1" scaleY="1" width="550" height="360" anchorOffsetY="0" horizontalCenter="0"/>
+	<e:Image scale9Grid="5,8,40,34" scaleX="1" scaleY="1" anchorOffsetY="0" anchorOffsetX="0" y="4" x="5" source="redgift_banner_jpg"/>
+	<e:Label id="timetip" text="Thời gian sự kiện: " y="330" size="20" textAlign="left" strokeColor="0x5E3500" stroke="1" height="22" verticalAlign="middle" fontFamily="Arial" x="65" width="110" textColor="0x00ff00"/>
+	<e:Label id="label_time" text="Ngày 10 tháng 1 năm 2017 - ngày 17 tháng 1 năm 2017" x="165" y="330" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0x00ff00"/>
+	<e:Label text="Nạp tiền phát bao lì xì" y="288" size="26" textColor="0xf4d25d" stroke="1" x="238"/>
+	<e:Group id="btn" width="230" height="63" x="190" y="269" anchorOffsetX="0" anchorOffsetY="0"/>
+
+
+</e:Skin>

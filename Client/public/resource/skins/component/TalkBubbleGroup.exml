@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TalkBubbleGroup" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="452" height="66">
+	<e:Image y="0" anchorOffsetX="0" anchorOffsetY="0" scale9Grid="11,8,13,18" touchEnabled="false" source="talkbubble_bg_png"/>
+	<e:Label id="content" text="" x="46" y="18" anchorOffsetX="0" anchorOffsetY="0" size="22" touchEnabled="false" height="22"/>
+</e:Skin>

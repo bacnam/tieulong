@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Welfare" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing"
+        xmlns:panels="legend.panels.*" xmlns:component="legend.view.component.*">
+	<e:Group width="597" height="850" anchorOffsetX="0" anchorOffsetY="0" touchEnabled="false" horizontalCenter="0"
+	         verticalCenter="0">
+		<e:Image source="ui_shop_bg_png" x="0" y="0" scaleX="1" scaleY="1" />
+		<e:Image id="btn_right" x="539" y="70" source="arrow_png" />
+		<e:Image id="btn_left" x="61" y="70" source="arrow_png" scaleX="-1" />
+		<e:Scroller id="scroller" width="472" height="98" x="65" y="50" anchorOffsetX="0" anchorOffsetY="0">
+			<e:Group id="group_btn" height="100" x="23" y="0" anchorOffsetY="0" anchorOffsetX="0" touchEnabled="false">
+				<e:layout>
+					<e:HorizontalLayout gap="0" paddingTop="7" />
+				</e:layout>
+				<component:ActiviteButton id="btn_sign" name="Sign" x="390" y="48">
+					<e:Skin>
+						<e:Image id="bg" source="button_bg_png" x="-7" y="-10" touchEnabled="false" />
+						<e:Image id="img" source="qiandao_png" touchEnabled="false" />
+						<e:Component id="effect_bg" horizontalCenter="0" verticalCenter="0" touchEnabled="false" />
+					</e:Skin>
+				</component:ActiviteButton>
+				<component:ActiviteButton id="btn_activation" name="Gift" x="400" y="58">
+					<e:Skin>
+						<e:Image id="bg" source="button_bg_png" x="-7" y="-10" touchEnabled="false" />
+						<e:Image id="img" source="jhm_png"  touchEnabled="false" />
+						<e:Component id="effect_bg" horizontalCenter="0" verticalCenter="0" touchEnabled="false" />
+					</e:Skin>
+				</component:ActiviteButton>
+				<component:ActiviteButton id="btn_card" name="MonthCard" x="410" y="68">
+					<e:Skin>
+						<e:Image id="bg" source="button_bg_png" x="-7" y="-10" touchEnabled="false" />
+						<e:Image id="img" source="icon_month_png" touchEnabled="false" />
+						<e:Component id="effect_bg" horizontalCenter="0" verticalCenter="0" touchEnabled="false" />
+					</e:Skin>
+				</component:ActiviteButton>
+			</e:Group>
+		</e:Scroller>
+		<e:Image source="btn_close_1_png" x="545" y="22" scaleX="1" scaleY="1" name="btn_close" />
+		<e:Image source="fuli_png" y="11" horizontalCenter="0.5" x="267" scaleX="1" scaleY="1" />
+		<e:ViewStack id="view_content" width="550" height="694" anchorOffsetX="0" anchorOffsetY="0" horizontalCenter="0"
+		             selectedIndex="3" x="23" y="137" scaleX="1" scaleY="1">
+			<panels:SignSubPanel scaleX="1" scaleY="1" name="Sign" visible="false" />
+			<e:Group width="100%" height="100%" name="Gift" visible="false">
+				<e:Image source="women_png" x="-178" y="71" scaleX="1" scaleY="1" />
+				<e:Image source="libaoma_png" x="188" y="195" scaleX="1" scaleY="1" />
+				<e:Image source="form_zibg_png" scale9Grid="5,5,30,30" x="214" y="377" width="325" scaleX="1" scaleY="1" />
+				<e:TextInput id="txt_code" x="220" y="377" skinName="skins.TextInputSkin" textColor="0xffffff" prompt="Nhập mã CODE"
+				             scaleX="1" scaleY="1" />
+				<e:Image source="btn_bg3_png" y="508" x="250" scaleX="1" scaleY="1" />
+				<e:Label id="btn_fetch" text="Xác nhận" y="526" size="26" textAlign="center" strokeColor="0x000000" stroke="1"
+				         textColor="0xFFC446" width="120" height="30" verticalAlign="middle" bold="true" x="300" scaleX="1"
+				         scaleY="1" />
+				<e:Label text="CODE có phân biệt hoa thường" x="244" y="446" size="16" scaleX="1" scaleY="1" />
+				<e:Label text="Lưu ý chữ L và số 1, chữ O và số 0" x="244" y="423" size="16" scaleX="1" scaleY="1" />
+			</e:Group>
+			<e:Group id="group_monthCard" width="550" height="694" name="MonthCard" scaleX="1" scaleY="1">
+				<e:Image source="list_tab_png" anchorOffsetX="0" width="527" anchorOffsetY="0" height="203" horizontalCenter="0"
+				         y="2" />
+				<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="17" width="540" height="310" scaleX="1" scaleY="1"
+				         horizontalCenter="0" />
+				<e:Image source="shop_inbg_png" scale9Grid="5,8,40,34" y="331" width="540" height="310" scaleX="1" scaleY="1"
+				         horizontalCenter="0" />
+				<e:Image source="zska_jpg" y="335" scaleX="1" scaleY="1" horizontalCenter="0" />
+				<e:Image source="yueka_jpg" y="22" scaleX="1" scaleY="1" horizontalCenter="0" />
+				<e:Label id="label_surplus" text="剩余 60/10 天" y="288" size="24" textAlign="center" strokeColor="0x000000" stroke="1"
+				         height="30" verticalAlign="middle" bold="true" scaleX="1" scaleY="1" horizontalCenter="165.5"
+				         textColor="0x00ff00" />
+				<e:Label text="Thẻ tháng và thẻ trọn đời có thể sử dụng cùng lúc, thẻ tháng có thể mua nhiều lần để tích lũy thời gian." y="648" size="22" textAlign="center" strokeColor="0x0C3B38" stroke="2"
+				         scaleX="1" scaleY="1" width="543" horizontalCenter="0" textColor="0xDFEFF8" x="-6" />
+				<e:Button id="btn_buyMonthCard" label="28元购买" x="140.5" y="259">
+					<e:skinName>
+						<e:Skin states="up,down,disabled">
+							<e:Image width="100%" height="100%" source="btn_bg3_png" />
+							<e:Label id="labelDisplay" text="28元抢购" size="26" textAlign="center" strokeColor="0x000000" stroke="1"
+							         height="30" verticalAlign="middle" bold="true" fontFamily="Arial" textColor="0xEEE20D" scaleX="1"
+							         scaleY="1" touchEnabled="false" horizontalCenter="0" verticalCenter="0" />
+						</e:Skin>
+					</e:skinName>
+				</e:Button>
+				<e:Button id="btn_buyYearCard" label="98元购买" x="217" y="575">
+					<e:Skin states="up,down,disabled">
+						<e:Image width="100%" height="100%" source="btn_bg3_png" />
+						<e:Label id="labelDisplay" text="28元抢购" size="26" textAlign="center" strokeColor="0x000000" stroke="1" height="30"
+						         verticalAlign="middle" bold="true" fontFamily="Arial" textColor="0xEEE20D" scaleX="1" scaleY="1"
+						         touchEnabled="false" horizontalCenter="0" verticalCenter="0" />
+					</e:Skin>
+				</e:Button>
+				<e:Label text="(Phần thưởng có thể nhận trong các nhiệm vụ hàng ngày)" y="234" size="20" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1"
+				         scaleY="1" textColor="0x00FF00" x="0" />
+				<e:Label text="(Phần thưởng có thể nhận trong các nhiệm vụ hàng ngày)" y="552" size="20" textAlign="center" strokeColor="0x000000" stroke="1" scaleX="1"
+				         scaleY="1" textColor="0x00FF00" x="0" />
+			</e:Group>
+			<panels:AllWelfareSubPanel name="AllPeopleReward" />
+		</e:ViewStack>
+		<e:Image id="btn_close1" x="530" y="805" source="btn_close_2_png" name="btn_close" anchorOffsetX="0" anchorOffsetY="0"
+		         scaleX="1" scaleY="1" />
+	</e:Group>
+	<component:EuiMap id="cardData">
+		<e:Array>
+			<e:Object name="monthCardId" achieveId="1123" cardId="3001" />
+			<e:Object name="yearCardId" achieveId="1124" cardId="3002" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="activityData">
+		<e:Array>
+			<e:Object name="AllPeopleReward" png="btn_allfuli_png" />
+		</e:Array>
+	</component:EuiMap>
+	<component:EuiMap id="reddotMap">
+		<e:Array>
+			<e:Object name="AllPeopleReward" event="AllPeopleReward" />
+			<e:Object name="btn_sign" event="DailySign" />
+		</e:Array>
+	</component:EuiMap>
+</e:Skin>

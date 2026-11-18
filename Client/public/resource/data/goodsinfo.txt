@@ -1,0 +1,728 @@
+﻿ID	货物标题	UniformItem的ID	打折类型（？）	消费货币类型	消费类型权重	单价	折扣后的价格	限时时间（单位秒，无限时填0）	备注
+ID	Title	UniformID	DiscountType	CostUniformId	CostWeight	Price	Discount	TimeLimit	#Comment
+1	Cấp thấp kinh nghiệm đan	26		2	1	4			Đạo cụ cửa hàng
+2	Trung cấp kinh nghiệm đan	27		2	1	10			Đạo cụ cửa hàng
+3	Cao cấp kinh nghiệm đan	28		2	1	80			Đạo cụ cửa hàng
+4	Trang bị vé vào cửa	13		1	1	100000			Đạo cụ cửa hàng
+5	Đá quý vé vào cửa	14		2	1	50			Đạo cụ cửa hàng
+6	Vé kinh mạch	15		1	1	100000			Đạo cụ cửa hàng
+7	Cường hóa thạch	7		1	1	5000			Đạo cụ cửa hàng
+8	Kinh mạch đan	10		2	1	5			Đạo cụ cửa hàng
+9	Thủy Kỳ Lân	2005		2	1	5000			Đạo cụ cửa hàng
+10	Dao Trì tiên tử	2009		2	1	4980			Đạo cụ cửa hàng
+11	Cánh Ngạo thiên	305		2	1	3000			Đạo cụ cửa hàng
+12	Kết hôn nhẫn	22		2	1	1314			Đạo cụ cửa hàng
+13	Ly hôn cho phép	23		1	1	2000000			Đạo cụ cửa hàng
+14	Hồng liên viêm vũ	301		2	1	1660			Đạo cụ cửa hàng
+15	Ngụy · thánh vương cánh chim	303		2	1	880			Đạo cụ cửa hàng
+101	Đá quý vé vào cửa	14		12	1	600			Cạnh kỹ cửa hàng
+102	Mạc sầu linh thạch	2002		12	1	2000			Cạnh kỹ cửa hàng
+103	Hỏa vũ linh thạch	2003		12	1	10000			Cạnh kỹ cửa hàng
+104	Băng phách linh thạch	2004		12	1	1500			Cạnh kỹ cửa hàng
+105	Băng chuột linh thạch	2006		12	1	5000			Cạnh kỹ cửa hàng
+106	Nguyệt thỏ linh thạch	2007		12	1	3000			Cạnh kỹ cửa hàng
+107	Thủy Kỳ Lân	2005		12	1	10000			Cạnh kỹ cửa hàng
+108	Hổ phách	2008		12	1	50000			Cạnh kỹ cửa hàng
+109	Dao Trì tiên tử	2009		12	1	70000			Cạnh kỹ cửa hàng
+501	Thiên phú đan	18		2	1	20	10		Thần bí cửa hàng
+502	Lông chim	11		2	1	30	15		Thần bí cửa hàng
+503	Thần trang mảnh	16		2	1	80	40		Thần bí cửa hàng
+504	Luyện hóa thạch	17		2	1	120	60		Thần bí cửa hàng
+505	Kinh nghiệm đan ( trung )	21		2	1	2000	1000		Thần bí cửa hàng
+506	Tinh thạch	9		2	1	60	30		Thần bí cửa hàng
+507	Siêu phẩm kinh nghiệm đan	29		2	1	5000	2000		Thần bí cửa hàng
+701	Đá quý	8		19	1	200			Bang phái cửa hàng
+702	Thiên phú đan	18		19	1	400			Bang phái cửa hàng
+703	Kim phong ngọc lộ	101		19	1	12000			Bang phái cửa hàng
+704	Hoàng đồ bá nghiệp	102		19	1	12000			Bang phái cửa hàng
+705	Khói sóng mênh mông	103		19	1	12000			Bang phái cửa hàng
+706	Ngư Tràng Kiếm độc	107		19	1	50000			Bang phái cửa hàng
+707	Thập diện mai phục	108		19	1	50000			Bang phái cửa hàng
+708	Kinh Kha thứ Tần	109		19	1	50000			Bang phái cửa hàng
+709	Tiên hồ Thanh Khâu	113		19	1	20000			Bang phái cửa hàng
+710	Hồ Vương bạch đế	114		19	1	20000			Bang phái cửa hàng
+711	Thiên họa yêu hồ	115		19	1	20000			Bang phái cửa hàng
+712	Đoạn hải sóng to	304		19	1	30000			Bang phái cửa hàng
+1001	1 cấp cổ mộ	11005		1	1	900000			Trang bị cửa hàng
+1002	10 cấp cổ mộ	11041		1	1	1800000			Trang bị cửa hàng
+1003	20 cấp cổ mộ	11077		1	1	3600000			Trang bị cửa hàng
+1004	30 cấp cổ mộ	11113		1	1	4800000			Trang bị cửa hàng
+1005	40 cấp cổ mộ	11149		1	1	6150000			Trang bị cửa hàng
+1006	50 cấp cổ mộ	11185		1	1	7500000			Trang bị cửa hàng
+1007	60 cấp cổ mộ	11221		1	1	8850000			Trang bị cửa hàng
+1008	70 cấp cổ mộ	11257		1	1	10200000			Trang bị cửa hàng
+1009	80 cấp cổ mộ	11293		1	1	15000000			Trang bị cửa hàng
+1010	90 cấp cổ mộ	11329		1	1	20000000			Trang bị cửa hàng
+1011	100 cấp cổ mộ	11365		1	1	25000000			Trang bị cửa hàng
+1012	110 cấp cổ mộ	11401		1	1	30000000			Trang bị cửa hàng
+1013	120 cấp cổ mộ	11437		1	1	35000000			Trang bị cửa hàng
+1014	130 cấp cổ mộ	11473		1	1	40000000			Trang bị cửa hàng
+1015	140 cấp cổ mộ	11509		1	1	45000000			Trang bị cửa hàng
+1016	150 cấp cổ mộ	11545		1	1	50000000			Trang bị cửa hàng
+1017	160 cấp cổ mộ	11581		1	1	55000000			Trang bị cửa hàng
+1018	170 cấp cổ mộ	11617		1	1	60000000			Trang bị cửa hàng
+1019	180 cấp cổ mộ	11653		1	1	65000000			Trang bị cửa hàng
+1020	190 cấp cổ mộ	11689		1	1	70000000			Trang bị cửa hàng
+1021	200 cấp cổ mộ	11725		1	1	75000000			Trang bị cửa hàng
+1022	210 cấp cổ mộ	110005		1	1	95000000			Trang bị cửa hàng
+1023	220 cấp cổ mộ	110041		1	1	115000000			Trang bị cửa hàng
+1024	230 cấp cổ mộ	110077		1	1	135000000			Trang bị cửa hàng
+1025	240 cấp cổ mộ	110113		1	1	155000000			Trang bị cửa hàng
+1026	250 cấp cổ mộ	110149		1	1	175000000			Trang bị cửa hàng
+1027	260 cấp cổ mộ	110185		1	1	195000000			Trang bị cửa hàng
+1028	270 cấp cổ mộ	110221		1	1	215000000			Trang bị cửa hàng
+1029	280 cấp cổ mộ	110257		1	1	235000000			Trang bị cửa hàng
+1030	290 cấp cổ mộ	110293		1	1	255000000			Trang bị cửa hàng
+1031	300 cấp cổ mộ	110329		1	1	275000000			Trang bị cửa hàng
+1101	1 cấp cổ mộ 1 chiết	11005		1	1	30	15		Trang bị cửa hàng
+1102	10 cấp cổ mộ 1 chiết	11041		1	1	60	30		Trang bị cửa hàng
+1103	20 cấp cổ mộ 1 chiết	11077		1	1	120	60		Trang bị cửa hàng
+1104	30 cấp cổ mộ 1 chiết	11113		1	1	160	80		Trang bị cửa hàng
+1105	40 cấp cổ mộ 1 chiết	11149		1	1	205	103		Trang bị cửa hàng
+1106	50 cấp cổ mộ 1 chiết	11185		1	1	250	125		Trang bị cửa hàng
+1107	60 cấp cổ mộ 1 chiết	11221		1	1	295	148		Trang bị cửa hàng
+1108	70 cấp cổ mộ 1 chiết	11257		1	1	340	170		Trang bị cửa hàng
+1109	80 cấp cổ mộ 1 chiết	11293		1	1	500	250		Trang bị cửa hàng
+1110	90 cấp cổ mộ 1 chiết	11329		1	1	667	334		Trang bị cửa hàng
+1111	100 cấp cổ mộ 1 chiết	11365		1	1	833	417		Trang bị cửa hàng
+1112	110 cấp cổ mộ 1 chiết	11401		1	1	1000	500		Trang bị cửa hàng
+1113	120 cấp cổ mộ 1 chiết	11437		1	1	1167	584		Trang bị cửa hàng
+1114	130 cấp cổ mộ 1 chiết	11473		1	1	1333	667		Trang bị cửa hàng
+1115	140 cấp cổ mộ 1 chiết	11509		1	1	1500	750		Trang bị cửa hàng
+1116	150 cấp cổ mộ 1 chiết	11545		1	1	1667	834		Trang bị cửa hàng
+1117	160 cấp cổ mộ 1 chiết	11581		1	1	1833	917		Trang bị cửa hàng
+1118	170 cấp cổ mộ 1 chiết	11617		1	1	2000	1000		Trang bị cửa hàng
+1119	180 cấp cổ mộ 1 chiết	11653		1	1	2167	1084		Trang bị cửa hàng
+1120	190 cấp cổ mộ 1 chiết	11689		1	1	2333	1167		Trang bị cửa hàng
+1121	200 cấp cổ mộ 1 chiết	11725		1	1	2500	1250		Trang bị cửa hàng
+1122	210 cấp cổ mộ 1 chiết	110005		1	1	3167	1584		Trang bị cửa hàng
+1123	220 cấp cổ mộ 1 chiết	110041		1	1	3833	1917		Trang bị cửa hàng
+1124	230 cấp cổ mộ 1 chiết	110077		1	1	4500	2250		Trang bị cửa hàng
+1125	240 cấp cổ mộ 1 chiết	110113		1	1	5167	2584		Trang bị cửa hàng
+1126	250 cấp cổ mộ 1 chiết	110149		1	1	5833	2917		Trang bị cửa hàng
+1127	260 cấp cổ mộ 1 chiết	110185		1	1	6500	3250		Trang bị cửa hàng
+1128	270 cấp cổ mộ 1 chiết	110221		1	1	7167	3584		Trang bị cửa hàng
+1129	280 cấp cổ mộ 1 chiết	110257		1	1	7833	3917		Trang bị cửa hàng
+1130	290 cấp cổ mộ 1 chiết	110293		1	1	8500	4250		Trang bị cửa hàng
+1131	300 cấp cổ mộ 1 chiết	110329		1	1	9167	4584		Trang bị cửa hàng
+1201	1 cấp cổ mộ 5 chiết	11005		1	1	900000	450000		Trang bị cửa hàng
+1202	10 cấp cổ mộ 5 chiết	11041		1	1	1800000	900000		Trang bị cửa hàng
+1203	20 cấp cổ mộ 5 chiết	11077		1	1	3600000	1800000		Trang bị cửa hàng
+1204	30 cấp cổ mộ 5 chiết	11113		1	1	4800000	2400000		Trang bị cửa hàng
+1205	40 cấp cổ mộ 5 chiết	11149		1	1	6150000	3075000		Trang bị cửa hàng
+1206	50 cấp cổ mộ 5 chiết	11185		1	1	7500000	3750000		Trang bị cửa hàng
+1207	60 cấp cổ mộ 5 chiết	11221		1	1	8850000	4425000		Trang bị cửa hàng
+1208	70 cấp cổ mộ 5 chiết	11257		1	1	10200000	5100000		Trang bị cửa hàng
+1209	80 cấp cổ mộ 5 chiết	11293		1	1	15000000	7500000		Trang bị cửa hàng
+1210	90 cấp cổ mộ 5 chiết	11329		1	1	20000000	10000000		Trang bị cửa hàng
+1211	100 cấp cổ mộ 5 chiết	11365		1	1	25000000	12500000		Trang bị cửa hàng
+1212	110 cấp cổ mộ 5 chiết	11401		1	1	30000000	15000000		Trang bị cửa hàng
+1213	120 cấp cổ mộ 5 chiết	11437		1	1	35000000	17500000		Trang bị cửa hàng
+1214	130 cấp cổ mộ 5 chiết	11473		1	1	40000000	20000000		Trang bị cửa hàng
+1215	140 cấp cổ mộ 5 chiết	11509		1	1	45000000	22500000		Trang bị cửa hàng
+1216	150 cấp cổ mộ 5 chiết	11545		1	1	50000000	25000000		Trang bị cửa hàng
+1217	160 cấp cổ mộ 5 chiết	11581		1	1	55000000	27500000		Trang bị cửa hàng
+1218	170 cấp cổ mộ 5 chiết	11617		1	1	60000000	30000000		Trang bị cửa hàng
+1219	180 cấp cổ mộ 5 chiết	11653		1	1	65000000	32500000		Trang bị cửa hàng
+1220	190 cấp cổ mộ 5 chiết	11689		1	1	70000000	35000000		Trang bị cửa hàng
+1221	200 cấp cổ mộ 5 chiết	11725		1	1	75000000	37500000		Trang bị cửa hàng
+1222	210 cấp cổ mộ 5 chiết	110005		1	1	95000000	47500000		Trang bị cửa hàng
+1223	220 cấp cổ mộ 5 chiết	110041		1	1	115000000	57500000		Trang bị cửa hàng
+1224	230 cấp cổ mộ 5 chiết	110077		1	1	135000000	67500000		Trang bị cửa hàng
+1225	240 cấp cổ mộ 5 chiết	110113		1	1	155000000	77500000		Trang bị cửa hàng
+1226	250 cấp cổ mộ 5 chiết	110149		1	1	175000000	87500000		Trang bị cửa hàng
+1227	260 cấp cổ mộ 5 chiết	110185		1	1	195000000	97500000		Trang bị cửa hàng
+1228	270 cấp cổ mộ 5 chiết	110221		1	1	215000000	107500000		Trang bị cửa hàng
+1229	280 cấp cổ mộ 5 chiết	110257		1	1	235000000	117500000		Trang bị cửa hàng
+1230	290 cấp cổ mộ 5 chiết	110293		1	1	255000000	127500000		Trang bị cửa hàng
+1231	300 cấp cổ mộ 5 chiết	110329		1	1	275000000	137500000		Trang bị cửa hàng
+1301	1 cấp cổ mộ màu tím vũ khí	11004		1	1	112500			Trang bị cửa hàng
+1302	10 cấp cổ mộ	11040		1	1	225000			Trang bị cửa hàng
+1303	20 cấp cổ mộ	11076		1	1	450000			Trang bị cửa hàng
+1304	30 cấp cổ mộ	11112		1	1	600000			Trang bị cửa hàng
+1305	40 cấp cổ mộ	11148		1	1	768750			Trang bị cửa hàng
+1306	50 cấp cổ mộ	11184		1	1	937500			Trang bị cửa hàng
+1307	60 cấp cổ mộ	11220		1	1	1106250			Trang bị cửa hàng
+1308	70 cấp cổ mộ	11256		1	1	1275000			Trang bị cửa hàng
+1309	80 cấp cổ mộ	11292		1	1	1875000			Trang bị cửa hàng
+1310	90 cấp cổ mộ	11328		1	1	2500000			Trang bị cửa hàng
+1311	100 cấp cổ mộ	11364		1	1	3125000			Trang bị cửa hàng
+1312	110 cấp cổ mộ	11400		1	1	3750000			Trang bị cửa hàng
+1313	120 cấp cổ mộ	11436		1	1	4375000			Trang bị cửa hàng
+1314	130 cấp cổ mộ	11472		1	1	5000000			Trang bị cửa hàng
+1315	140 cấp cổ mộ	11508		1	1	5625000			Trang bị cửa hàng
+1316	150 cấp cổ mộ	11544		1	1	6250000			Trang bị cửa hàng
+1317	160 cấp cổ mộ	11580		1	1	6875000			Trang bị cửa hàng
+1318	170 cấp cổ mộ	11616		1	1	7500000			Trang bị cửa hàng
+1319	180 cấp cổ mộ	11652		1	1	8125000			Trang bị cửa hàng
+1320	190 cấp cổ mộ	11688		1	1	8750000			Trang bị cửa hàng
+1321	200 cấp cổ mộ	11724		1	1	9375000			Trang bị cửa hàng
+1322	210 cấp cổ mộ	110004		1	1	11875000			Trang bị cửa hàng
+1323	220 cấp cổ mộ	110040		1	1	14375000			Trang bị cửa hàng
+1324	230 cấp cổ mộ	110076		1	1	16875000			Trang bị cửa hàng
+1325	240 cấp cổ mộ	110112		1	1	19375000			Trang bị cửa hàng
+1326	250 cấp cổ mộ	110148		1	1	21875000			Trang bị cửa hàng
+1327	260 cấp cổ mộ	110184		1	1	24375000			Trang bị cửa hàng
+1328	270 cấp cổ mộ	110220		1	1	26875000			Trang bị cửa hàng
+1329	280 cấp cổ mộ	110256		1	1	29375000			Trang bị cửa hàng
+1330	290 cấp cổ mộ	110292		1	1	31875000			Trang bị cửa hàng
+1331	300 cấp cổ mộ	110328		1	1	34375000			Trang bị cửa hàng
+1401	1 cấp cổ mộ màu tím vật trang sức trên tóc	11010		1	1	112500			Trang bị cửa hàng
+1402	10 cấp cổ mộ	11046		1	1	225000			Trang bị cửa hàng
+1403	20 cấp cổ mộ	11082		1	1	450000			Trang bị cửa hàng
+1404	30 cấp cổ mộ	11118		1	1	600000			Trang bị cửa hàng
+1405	40 cấp cổ mộ	11154		1	1	768750			Trang bị cửa hàng
+1406	50 cấp cổ mộ	11190		1	1	937500			Trang bị cửa hàng
+1407	60 cấp cổ mộ	11226		1	1	1106250			Trang bị cửa hàng
+1408	70 cấp cổ mộ	11262		1	1	1275000			Trang bị cửa hàng
+1409	80 cấp cổ mộ	11298		1	1	1875000			Trang bị cửa hàng
+1410	90 cấp cổ mộ	11334		1	1	2500000			Trang bị cửa hàng
+1411	100 cấp cổ mộ	11370		1	1	3125000			Trang bị cửa hàng
+1412	110 cấp cổ mộ	11406		1	1	3750000			Trang bị cửa hàng
+1413	120 cấp cổ mộ	11442		1	1	4375000			Trang bị cửa hàng
+1414	130 cấp cổ mộ	11478		1	1	5000000			Trang bị cửa hàng
+1415	140 cấp cổ mộ	11514		1	1	5625000			Trang bị cửa hàng
+1416	150 cấp cổ mộ	11550		1	1	6250000			Trang bị cửa hàng
+1417	160 cấp cổ mộ	11586		1	1	6875000			Trang bị cửa hàng
+1418	170 cấp cổ mộ	11622		1	1	7500000			Trang bị cửa hàng
+1419	180 cấp cổ mộ	11658		1	1	8125000			Trang bị cửa hàng
+1420	190 cấp cổ mộ	11694		1	1	8750000			Trang bị cửa hàng
+1421	200 cấp cổ mộ	11730		1	1	9375000			Trang bị cửa hàng
+1422	210 cấp cổ mộ	110010		1	1	11875000			Trang bị cửa hàng
+1423	220 cấp cổ mộ	110046		1	1	14375000			Trang bị cửa hàng
+1424	230 cấp cổ mộ	110082		1	1	16875000			Trang bị cửa hàng
+1425	240 cấp cổ mộ	110118		1	1	19375000			Trang bị cửa hàng
+1426	250 cấp cổ mộ	110154		1	1	21875000			Trang bị cửa hàng
+1427	260 cấp cổ mộ	110190		1	1	24375000			Trang bị cửa hàng
+1428	270 cấp cổ mộ	110226		1	1	26875000			Trang bị cửa hàng
+1429	280 cấp cổ mộ	110262		1	1	29375000			Trang bị cửa hàng
+1430	290 cấp cổ mộ	110298		1	1	31875000			Trang bị cửa hàng
+1431	300 cấp cổ mộ	110334		1	1	34375000			Trang bị cửa hàng
+1501	1 cấp cổ mộ màu tím quần áo	11016		1	1	112500			Trang bị cửa hàng
+1502	10 cấp cổ mộ	11052		1	1	225000			Trang bị cửa hàng
+1503	20 cấp cổ mộ	11088		1	1	450000			Trang bị cửa hàng
+1504	30 cấp cổ mộ	11124		1	1	600000			Trang bị cửa hàng
+1505	40 cấp cổ mộ	11160		1	1	768750			Trang bị cửa hàng
+1506	50 cấp cổ mộ	11196		1	1	937500			Trang bị cửa hàng
+1507	60 cấp cổ mộ	11232		1	1	1106250			Trang bị cửa hàng
+1508	70 cấp cổ mộ	11268		1	1	1275000			Trang bị cửa hàng
+1509	80 cấp cổ mộ	11304		1	1	1875000			Trang bị cửa hàng
+1510	90 cấp cổ mộ	11340		1	1	2500000			Trang bị cửa hàng
+1511	100 cấp cổ mộ	11376		1	1	3125000			Trang bị cửa hàng
+1512	110 cấp cổ mộ	11412		1	1	3750000			Trang bị cửa hàng
+1513	120 cấp cổ mộ	11448		1	1	4375000			Trang bị cửa hàng
+1514	130 cấp cổ mộ	11484		1	1	5000000			Trang bị cửa hàng
+1515	140 cấp cổ mộ	11520		1	1	5625000			Trang bị cửa hàng
+1516	150 cấp cổ mộ	11556		1	1	6250000			Trang bị cửa hàng
+1517	160 cấp cổ mộ	11592		1	1	6875000			Trang bị cửa hàng
+1518	170 cấp cổ mộ	11628		1	1	7500000			Trang bị cửa hàng
+1519	180 cấp cổ mộ	11664		1	1	8125000			Trang bị cửa hàng
+1520	190 cấp cổ mộ	11700		1	1	8750000			Trang bị cửa hàng
+1521	200 cấp cổ mộ	11736		1	1	9375000			Trang bị cửa hàng
+1522	210 cấp cổ mộ	110016		1	1	11875000			Trang bị cửa hàng
+1523	220 cấp cổ mộ	110052		1	1	14375000			Trang bị cửa hàng
+1524	230 cấp cổ mộ	110088		1	1	16875000			Trang bị cửa hàng
+1525	240 cấp cổ mộ	110124		1	1	19375000			Trang bị cửa hàng
+1526	250 cấp cổ mộ	110160		1	1	21875000			Trang bị cửa hàng
+1527	260 cấp cổ mộ	110196		1	1	24375000			Trang bị cửa hàng
+1528	270 cấp cổ mộ	110232		1	1	26875000			Trang bị cửa hàng
+1529	280 cấp cổ mộ	110268		1	1	29375000			Trang bị cửa hàng
+1530	290 cấp cổ mộ	110304		1	1	31875000			Trang bị cửa hàng
+1531	300 cấp cổ mộ	110340		1	1	34375000			Trang bị cửa hàng
+1601	1 cấp cổ mộ màu tím giày	11022		1	1	112500			Trang bị cửa hàng
+1602	10 cấp cổ mộ	11058		1	1	225000			Trang bị cửa hàng
+1603	20 cấp cổ mộ	11094		1	1	450000			Trang bị cửa hàng
+1604	30 cấp cổ mộ	11130		1	1	600000			Trang bị cửa hàng
+1605	40 cấp cổ mộ	11166		1	1	768750			Trang bị cửa hàng
+1606	50 cấp cổ mộ	11202		1	1	937500			Trang bị cửa hàng
+1607	60 cấp cổ mộ	11238		1	1	1106250			Trang bị cửa hàng
+1608	70 cấp cổ mộ	11274		1	1	1275000			Trang bị cửa hàng
+1609	80 cấp cổ mộ	11310		1	1	1875000			Trang bị cửa hàng
+1610	90 cấp cổ mộ	11346		1	1	2500000			Trang bị cửa hàng
+1611	100 cấp cổ mộ	11382		1	1	3125000			Trang bị cửa hàng
+1612	110 cấp cổ mộ	11418		1	1	3750000			Trang bị cửa hàng
+1613	120 cấp cổ mộ	11454		1	1	4375000			Trang bị cửa hàng
+1614	130 cấp cổ mộ	11490		1	1	5000000			Trang bị cửa hàng
+1615	140 cấp cổ mộ	11526		1	1	5625000			Trang bị cửa hàng
+1616	150 cấp cổ mộ	11562		1	1	6250000			Trang bị cửa hàng
+1617	160 cấp cổ mộ	11598		1	1	6875000			Trang bị cửa hàng
+1618	170 cấp cổ mộ	11634		1	1	7500000			Trang bị cửa hàng
+1619	180 cấp cổ mộ	11670		1	1	8125000			Trang bị cửa hàng
+1620	190 cấp cổ mộ	11706		1	1	8750000			Trang bị cửa hàng
+1621	200 cấp cổ mộ	11742		1	1	9375000			Trang bị cửa hàng
+1622	210 cấp cổ mộ	110022		1	1	11875000			Trang bị cửa hàng
+1623	220 cấp cổ mộ	110058		1	1	14375000			Trang bị cửa hàng
+1624	230 cấp cổ mộ	110094		1	1	16875000			Trang bị cửa hàng
+1625	240 cấp cổ mộ	110130		1	1	19375000			Trang bị cửa hàng
+1626	250 cấp cổ mộ	110166		1	1	21875000			Trang bị cửa hàng
+1627	260 cấp cổ mộ	110202		1	1	24375000			Trang bị cửa hàng
+1628	270 cấp cổ mộ	110238		1	1	26875000			Trang bị cửa hàng
+1629	280 cấp cổ mộ	110274		1	1	29375000			Trang bị cửa hàng
+1630	290 cấp cổ mộ	110310		1	1	31875000			Trang bị cửa hàng
+1631	300 cấp cổ mộ	110346		1	1	34375000			Trang bị cửa hàng
+2001	1 cấp thiên long	12005		1	1	900000			Trang bị cửa hàng
+2002	10 cấp thiên long	12041		1	1	1800000			Trang bị cửa hàng
+2003	20 cấp thiên long	12077		1	1	3600000			Trang bị cửa hàng
+2004	30 cấp thiên long	12113		1	1	4800000			Trang bị cửa hàng
+2005	40 cấp thiên long	12149		1	1	6150000			Trang bị cửa hàng
+2006	50 cấp thiên long	12185		1	1	7500000			Trang bị cửa hàng
+2007	60 cấp thiên long	12221		1	1	8850000			Trang bị cửa hàng
+2008	70 cấp thiên long	12257		1	1	10200000			Trang bị cửa hàng
+2009	80 cấp thiên long	12293		1	1	15000000			Trang bị cửa hàng
+2010	90 cấp thiên long	12329		1	1	20000000			Trang bị cửa hàng
+2011	100 cấp thiên long	12365		1	1	25000000			Trang bị cửa hàng
+2012	110 cấp thiên long	12401		1	1	30000000			Trang bị cửa hàng
+2013	120 cấp thiên long	12437		1	1	35000000			Trang bị cửa hàng
+2014	130 cấp thiên long	12473		1	1	40000000			Trang bị cửa hàng
+2015	140 cấp thiên long	12509		1	1	45000000			Trang bị cửa hàng
+2016	150 cấp thiên long	12545		1	1	50000000			Trang bị cửa hàng
+2017	160 cấp thiên long	12581		1	1	55000000			Trang bị cửa hàng
+2018	170 cấp thiên long	12617		1	1	60000000			Trang bị cửa hàng
+2019	180 cấp thiên long	12653		1	1	65000000			Trang bị cửa hàng
+2020	190 cấp thiên long	12689		1	1	70000000			Trang bị cửa hàng
+2021	200 cấp thiên long	12725		1	1	75000000			Trang bị cửa hàng
+2022	210 cấp thiên long	120005		1	1	95000000			Trang bị cửa hàng
+2023	220 cấp thiên long	120041		1	1	115000000			Trang bị cửa hàng
+2024	230 cấp thiên long	120077		1	1	135000000			Trang bị cửa hàng
+2025	240 cấp thiên long	120113		1	1	155000000			Trang bị cửa hàng
+2026	250 cấp thiên long	120149		1	1	175000000			Trang bị cửa hàng
+2027	260 cấp thiên long	120185		1	1	195000000			Trang bị cửa hàng
+2028	270 cấp thiên long	120221		1	1	215000000			Trang bị cửa hàng
+2029	280 cấp thiên long	120257		1	1	235000000			Trang bị cửa hàng
+2030	290 cấp thiên long	120293		1	1	255000000			Trang bị cửa hàng
+2031	300 cấp thiên long	120329		1	1	275000000			Trang bị cửa hàng
+2101	1 cấp thiên long 5 chiết	12005		2	1	30	15		Trang bị cửa hàng
+2102	10 cấp thiên long 5 chiết	12041		2	1	60	30		Trang bị cửa hàng
+2103	20 cấp thiên long 5 chiết	12077		2	1	120	60		Trang bị cửa hàng
+2104	30 cấp thiên long 5 chiết	12113		2	1	160	80		Trang bị cửa hàng
+2105	40 cấp thiên long 5 chiết	12149		2	1	205	103		Trang bị cửa hàng
+2106	50 cấp thiên long 5 chiết	12185		2	1	250	125		Trang bị cửa hàng
+2107	60 cấp thiên long 5 chiết	12221		2	1	295	148		Trang bị cửa hàng
+2108	70 cấp thiên long 5 chiết	12257		2	1	340	170		Trang bị cửa hàng
+2109	80 cấp thiên long 5 chiết	12293		2	1	500	250		Trang bị cửa hàng
+2110	90 cấp thiên long 5 chiết	12329		2	1	667	334		Trang bị cửa hàng
+2111	100 cấp thiên long 5 chiết	12365		2	1	833	417		Trang bị cửa hàng
+2112	110 cấp thiên long 5 chiết	12401		2	1	1000	500		Trang bị cửa hàng
+2113	120 cấp thiên long 5 chiết	12437		2	1	1167	584		Trang bị cửa hàng
+2114	130 cấp thiên long 5 chiết	12473		2	1	1333	667		Trang bị cửa hàng
+2115	140 cấp thiên long 5 chiết	12509		2	1	1500	750		Trang bị cửa hàng
+2116	150 cấp thiên long 5 chiết	12545		2	1	1667	834		Trang bị cửa hàng
+2117	160 cấp thiên long 5 chiết	12581		2	1	1833	917		Trang bị cửa hàng
+2118	170 cấp thiên long 5 chiết	12617		2	1	2000	1000		Trang bị cửa hàng
+2119	180 cấp thiên long 5 chiết	12653		2	1	2167	1084		Trang bị cửa hàng
+2120	190 cấp thiên long 5 chiết	12689		2	1	2333	1167		Trang bị cửa hàng
+2121	200 cấp thiên long 5 chiết	12725		2	1	2500	1250		Trang bị cửa hàng
+2122	210 cấp thiên long 5 chiết	120005		2	1	3167	1584		Trang bị cửa hàng
+2123	220 cấp thiên long 5 chiết	120041		2	1	3833	1917		Trang bị cửa hàng
+2124	230 cấp thiên long 5 chiết	120077		2	1	4500	2250		Trang bị cửa hàng
+2125	240 cấp thiên long 5 chiết	120113		2	1	5167	2584		Trang bị cửa hàng
+2126	250 cấp thiên long 5 chiết	120149		2	1	5833	2917		Trang bị cửa hàng
+2127	260 cấp thiên long 5 chiết	120185		2	1	6500	3250		Trang bị cửa hàng
+2128	270 cấp thiên long 5 chiết	120221		2	1	7167	3584		Trang bị cửa hàng
+2129	280 cấp thiên long 5 chiết	120257		2	1	7833	3917		Trang bị cửa hàng
+2130	290 cấp thiên long 5 chiết	120293		2	1	8500	4250		Trang bị cửa hàng
+2131	300 cấp thiên long 5 chiết	120329		2	1	9167	4584		Trang bị cửa hàng
+2201	1 cấp thiên long 5 chiết	12005		1	1	900000	450000		Trang bị cửa hàng
+2202	10 cấp thiên long 5 chiết	12041		1	1	1800000	900000		Trang bị cửa hàng
+2203	20 cấp thiên long 5 chiết	12077		1	1	3600000	1800000		Trang bị cửa hàng
+2204	30 cấp thiên long 5 chiết	12113		1	1	4800000	2400000		Trang bị cửa hàng
+2205	40 cấp thiên long 5 chiết	12149		1	1	6150000	3075000		Trang bị cửa hàng
+2206	50 cấp thiên long 5 chiết	12185		1	1	7500000	3750000		Trang bị cửa hàng
+2207	60 cấp thiên long 5 chiết	12221		1	1	8850000	4425000		Trang bị cửa hàng
+2208	70 cấp thiên long 5 chiết	12257		1	1	10200000	5100000		Trang bị cửa hàng
+2209	80 cấp thiên long 5 chiết	12293		1	1	15000000	7500000		Trang bị cửa hàng
+2210	90 cấp thiên long 5 chiết	12329		1	1	20000000	10000000		Trang bị cửa hàng
+2211	100 cấp thiên long 5 chiết	12365		1	1	25000000	12500000		Trang bị cửa hàng
+2212	110 cấp thiên long 5 chiết	12401		1	1	30000000	15000000		Trang bị cửa hàng
+2213	120 cấp thiên long 5 chiết	12437		1	1	35000000	17500000		Trang bị cửa hàng
+2214	130 cấp thiên long 5 chiết	12473		1	1	40000000	20000000		Trang bị cửa hàng
+2215	140 cấp thiên long 5 chiết	12509		1	1	45000000	22500000		Trang bị cửa hàng
+2216	150 cấp thiên long 5 chiết	12545		1	1	50000000	25000000		Trang bị cửa hàng
+2217	160 cấp thiên long 5 chiết	12581		1	1	55000000	27500000		Trang bị cửa hàng
+2218	170 cấp thiên long 5 chiết	12617		1	1	60000000	30000000		Trang bị cửa hàng
+2219	180 cấp thiên long 5 chiết	12653		1	1	65000000	32500000		Trang bị cửa hàng
+2220	190 cấp thiên long 5 chiết	12689		1	1	70000000	35000000		Trang bị cửa hàng
+2221	200 cấp thiên long 5 chiết	12725		1	1	75000000	37500000		Trang bị cửa hàng
+2222	210 cấp thiên long 5 chiết	120005		1	1	95000000	47500000		Trang bị cửa hàng
+2223	220 cấp thiên long 5 chiết	120041		1	1	115000000	57500000		Trang bị cửa hàng
+2224	230 cấp thiên long 5 chiết	120077		1	1	135000000	67500000		Trang bị cửa hàng
+2225	240 cấp thiên long 5 chiết	120113		1	1	155000000	77500000		Trang bị cửa hàng
+2226	250 cấp thiên long 5 chiết	120149		1	1	175000000	87500000		Trang bị cửa hàng
+2227	260 cấp thiên long 5 chiết	120185		1	1	195000000	97500000		Trang bị cửa hàng
+2228	270 cấp thiên long 5 chiết	120221		1	1	215000000	107500000		Trang bị cửa hàng
+2229	280 cấp thiên long 5 chiết	120257		1	1	235000000	117500000		Trang bị cửa hàng
+2230	290 cấp thiên long 5 chiết	120293		1	1	255000000	127500000		Trang bị cửa hàng
+2231	300 cấp thiên long 5 chiết	120329		1	1	275000000	137500000		Trang bị cửa hàng
+2301	1 cấp thiên long màu tím vũ khí	12004		1	1	112500			Trang bị cửa hàng
+2302	10 cấp thiên long	12040		1	1	225000			Trang bị cửa hàng
+2303	20 cấp thiên long	12076		1	1	450000			Trang bị cửa hàng
+2304	30 cấp thiên long	12112		1	1	600000			Trang bị cửa hàng
+2305	40 cấp thiên long	12148		1	1	768750			Trang bị cửa hàng
+2306	50 cấp thiên long	12184		1	1	937500			Trang bị cửa hàng
+2307	60 cấp thiên long	12220		1	1	1106250			Trang bị cửa hàng
+2308	70 cấp thiên long	12256		1	1	1275000			Trang bị cửa hàng
+2309	80 cấp thiên long	12292		1	1	1875000			Trang bị cửa hàng
+2310	90 cấp thiên long	12328		1	1	2500000			Trang bị cửa hàng
+2311	100 cấp thiên long	12364		1	1	3125000			Trang bị cửa hàng
+2312	110 cấp thiên long	12400		1	1	3750000			Trang bị cửa hàng
+2313	120 cấp thiên long	12436		1	1	4375000			Trang bị cửa hàng
+2314	130 cấp thiên long	12472		1	1	5000000			Trang bị cửa hàng
+2315	140 cấp thiên long	12508		1	1	5625000			Trang bị cửa hàng
+2316	150 cấp thiên long	12544		1	1	6250000			Trang bị cửa hàng
+2317	160 cấp thiên long	12580		1	1	6875000			Trang bị cửa hàng
+2318	170 cấp thiên long	12616		1	1	7500000			Trang bị cửa hàng
+2319	180 cấp thiên long	12652		1	1	8125000			Trang bị cửa hàng
+2320	190 cấp thiên long	12688		1	1	8750000			Trang bị cửa hàng
+2321	200 cấp thiên long	12724		1	1	9375000			Trang bị cửa hàng
+2322	210 cấp thiên long	120004		1	1	11875000			Trang bị cửa hàng
+2323	220 cấp thiên long	120040		1	1	14375000			Trang bị cửa hàng
+2324	230 cấp thiên long	120076		1	1	16875000			Trang bị cửa hàng
+2325	240 cấp thiên long	120112		1	1	19375000			Trang bị cửa hàng
+2326	250 cấp thiên long	120148		1	1	21875000			Trang bị cửa hàng
+2327	260 cấp thiên long	120184		1	1	24375000			Trang bị cửa hàng
+2328	270 cấp thiên long	120220		1	1	26875000			Trang bị cửa hàng
+2329	280 cấp thiên long	120256		1	1	29375000			Trang bị cửa hàng
+2330	290 cấp thiên long	120292		1	1	31875000			Trang bị cửa hàng
+2331	300 cấp thiên long	120328		1	1	34375000			Trang bị cửa hàng
+2401	1 cấp thiên long màu tím vật trang sức trên tóc	12010		1	1	112500			Trang bị cửa hàng
+2402	10 cấp thiên long	12046		1	1	225000			Trang bị cửa hàng
+2403	20 cấp thiên long	12082		1	1	450000			Trang bị cửa hàng
+2404	30 cấp thiên long	12118		1	1	600000			Trang bị cửa hàng
+2405	40 cấp thiên long	12154		1	1	768750			Trang bị cửa hàng
+2406	50 cấp thiên long	12190		1	1	937500			Trang bị cửa hàng
+2407	60 cấp thiên long	12226		1	1	1106250			Trang bị cửa hàng
+2408	70 cấp thiên long	12262		1	1	1275000			Trang bị cửa hàng
+2409	80 cấp thiên long	12298		1	1	1875000			Trang bị cửa hàng
+2410	90 cấp thiên long	12334		1	1	2500000			Trang bị cửa hàng
+2411	100 cấp thiên long	12370		1	1	3125000			Trang bị cửa hàng
+2412	110 cấp thiên long	12406		1	1	3750000			Trang bị cửa hàng
+2413	120 cấp thiên long	12442		1	1	4375000			Trang bị cửa hàng
+2414	130 cấp thiên long	12478		1	1	5000000			Trang bị cửa hàng
+2415	140 cấp thiên long	12514		1	1	5625000			Trang bị cửa hàng
+2416	150 cấp thiên long	12550		1	1	6250000			Trang bị cửa hàng
+2417	160 cấp thiên long	12586		1	1	6875000			Trang bị cửa hàng
+2418	170 cấp thiên long	12622		1	1	7500000			Trang bị cửa hàng
+2419	180 cấp thiên long	12658		1	1	8125000			Trang bị cửa hàng
+2420	190 cấp thiên long	12694		1	1	8750000			Trang bị cửa hàng
+2421	200 cấp thiên long	12730		1	1	9375000			Trang bị cửa hàng
+2422	210 cấp thiên long	120010		1	1	11875000			Trang bị cửa hàng
+2423	220 cấp thiên long	120046		1	1	14375000			Trang bị cửa hàng
+2424	230 cấp thiên long	120082		1	1	16875000			Trang bị cửa hàng
+2425	240 cấp thiên long	120118		1	1	19375000			Trang bị cửa hàng
+2426	250 cấp thiên long	120154		1	1	21875000			Trang bị cửa hàng
+2427	260 cấp thiên long	120190		1	1	24375000			Trang bị cửa hàng
+2428	270 cấp thiên long	120226		1	1	26875000			Trang bị cửa hàng
+2429	280 cấp thiên long	120262		1	1	29375000			Trang bị cửa hàng
+2430	290 cấp thiên long	120298		1	1	31875000			Trang bị cửa hàng
+2431	300 cấp thiên long	120334		1	1	34375000			Trang bị cửa hàng
+2501	1 cấp thiên long màu tím quần áo	12016		1	1	112500			Trang bị cửa hàng
+2502	10 cấp thiên long	12052		1	1	225000			Trang bị cửa hàng
+2503	20 cấp thiên long	12088		1	1	450000			Trang bị cửa hàng
+2504	30 cấp thiên long	12124		1	1	600000			Trang bị cửa hàng
+2505	40 cấp thiên long	12160		1	1	768750			Trang bị cửa hàng
+2506	50 cấp thiên long	12196		1	1	937500			Trang bị cửa hàng
+2507	60 cấp thiên long	12232		1	1	1106250			Trang bị cửa hàng
+2508	70 cấp thiên long	12268		1	1	1275000			Trang bị cửa hàng
+2509	80 cấp thiên long	12304		1	1	1875000			Trang bị cửa hàng
+2510	90 cấp thiên long	12340		1	1	2500000			Trang bị cửa hàng
+2511	100 cấp thiên long	12376		1	1	3125000			Trang bị cửa hàng
+2512	110 cấp thiên long	12412		1	1	3750000			Trang bị cửa hàng
+2513	120 cấp thiên long	12448		1	1	4375000			Trang bị cửa hàng
+2514	130 cấp thiên long	12484		1	1	5000000			Trang bị cửa hàng
+2515	140 cấp thiên long	12520		1	1	5625000			Trang bị cửa hàng
+2516	150 cấp thiên long	12556		1	1	6250000			Trang bị cửa hàng
+2517	160 cấp thiên long	12592		1	1	6875000			Trang bị cửa hàng
+2518	170 cấp thiên long	12628		1	1	7500000			Trang bị cửa hàng
+2519	180 cấp thiên long	12664		1	1	8125000			Trang bị cửa hàng
+2520	190 cấp thiên long	12700		1	1	8750000			Trang bị cửa hàng
+2521	200 cấp thiên long	12736		1	1	9375000			Trang bị cửa hàng
+2522	210 cấp thiên long	120016		1	1	11875000			Trang bị cửa hàng
+2523	220 cấp thiên long	120052		1	1	14375000			Trang bị cửa hàng
+2524	230 cấp thiên long	120088		1	1	16875000			Trang bị cửa hàng
+2525	240 cấp thiên long	120124		1	1	19375000			Trang bị cửa hàng
+2526	250 cấp thiên long	120160		1	1	21875000			Trang bị cửa hàng
+2527	260 cấp thiên long	120196		1	1	24375000			Trang bị cửa hàng
+2528	270 cấp thiên long	120232		1	1	26875000			Trang bị cửa hàng
+2529	280 cấp thiên long	120268		1	1	29375000			Trang bị cửa hàng
+2530	290 cấp thiên long	120304		1	1	31875000			Trang bị cửa hàng
+2531	300 cấp thiên long	120340		1	1	34375000			Trang bị cửa hàng
+2601	1 cấp thiên long màu tím giày	12022		1	1	112500			Trang bị cửa hàng
+2602	10 cấp thiên long	12058		1	1	225000			Trang bị cửa hàng
+2603	20 cấp thiên long	12094		1	1	450000			Trang bị cửa hàng
+2604	30 cấp thiên long	12130		1	1	600000			Trang bị cửa hàng
+2605	40 cấp thiên long	12166		1	1	768750			Trang bị cửa hàng
+2606	50 cấp thiên long	12202		1	1	937500			Trang bị cửa hàng
+2607	60 cấp thiên long	12238		1	1	1106250			Trang bị cửa hàng
+2608	70 cấp thiên long	12274		1	1	1275000			Trang bị cửa hàng
+2609	80 cấp thiên long	12310		1	1	1875000			Trang bị cửa hàng
+2610	90 cấp thiên long	12346		1	1	2500000			Trang bị cửa hàng
+2611	100 cấp thiên long	12382		1	1	3125000			Trang bị cửa hàng
+2612	110 cấp thiên long	12418		1	1	3750000			Trang bị cửa hàng
+2613	120 cấp thiên long	12454		1	1	4375000			Trang bị cửa hàng
+2614	130 cấp thiên long	12490		1	1	5000000			Trang bị cửa hàng
+2615	140 cấp thiên long	12526		1	1	5625000			Trang bị cửa hàng
+2616	150 cấp thiên long	12562		1	1	6250000			Trang bị cửa hàng
+2617	160 cấp thiên long	12598		1	1	6875000			Trang bị cửa hàng
+2618	170 cấp thiên long	12634		1	1	7500000			Trang bị cửa hàng
+2619	180 cấp thiên long	12670		1	1	8125000			Trang bị cửa hàng
+2620	190 cấp thiên long	12706		1	1	8750000			Trang bị cửa hàng
+2621	200 cấp thiên long	12742		1	1	9375000			Trang bị cửa hàng
+2622	210 cấp thiên long	120022		1	1	11875000			Trang bị cửa hàng
+2623	220 cấp thiên long	120058		1	1	14375000			Trang bị cửa hàng
+2624	230 cấp thiên long	120094		1	1	16875000			Trang bị cửa hàng
+2625	240 cấp thiên long	120130		1	1	19375000			Trang bị cửa hàng
+2626	250 cấp thiên long	120166		1	1	21875000			Trang bị cửa hàng
+2627	260 cấp thiên long	120202		1	1	24375000			Trang bị cửa hàng
+2628	270 cấp thiên long	120238		1	1	26875000			Trang bị cửa hàng
+2629	280 cấp thiên long	120274		1	1	29375000			Trang bị cửa hàng
+2630	290 cấp thiên long	120310		1	1	31875000			Trang bị cửa hàng
+2631	300 cấp thiên long	120346		1	1	34375000			Trang bị cửa hàng
+3001	1 cấp tiêu dao	13005		1	1	900000			Trang bị cửa hàng
+3002	10 cấp tiêu dao	13041		1	1	1800000			Trang bị cửa hàng
+3003	20 cấp tiêu dao	13077		1	1	3600000			Trang bị cửa hàng
+3004	30 cấp tiêu dao	13113		1	1	4800000			Trang bị cửa hàng
+3005	40 cấp tiêu dao	13149		1	1	6150000			Trang bị cửa hàng
+3006	50 cấp tiêu dao	13185		1	1	7500000			Trang bị cửa hàng
+3007	60 cấp tiêu dao	13221		1	1	8850000			Trang bị cửa hàng
+3008	70 cấp tiêu dao	13257		1	1	10200000			Trang bị cửa hàng
+3009	80 cấp tiêu dao	13293		1	1	15000000			Trang bị cửa hàng
+3010	90 cấp tiêu dao	13329		1	1	20000000			Trang bị cửa hàng
+3011	100 cấp tiêu dao	13365		1	1	25000000			Trang bị cửa hàng
+3012	110 cấp tiêu dao	13401		1	1	30000000			Trang bị cửa hàng
+3013	120 cấp tiêu dao	13437		1	1	35000000			Trang bị cửa hàng
+3014	130 cấp tiêu dao	13473		1	1	40000000			Trang bị cửa hàng
+3015	140 cấp tiêu dao	13509		1	1	45000000			Trang bị cửa hàng
+3016	150 cấp tiêu dao	13545		1	1	50000000			Trang bị cửa hàng
+3017	160 cấp tiêu dao	13581		1	1	55000000			Trang bị cửa hàng
+3018	170 cấp tiêu dao	13617		1	1	60000000			Trang bị cửa hàng
+3019	180 cấp tiêu dao	13653		1	1	65000000			Trang bị cửa hàng
+3020	190 cấp tiêu dao	13689		1	1	70000000			Trang bị cửa hàng
+3021	200 cấp tiêu dao	13725		1	1	75000000			Trang bị cửa hàng
+3022	210 cấp tiêu dao	130005		1	1	95000000			Trang bị cửa hàng
+3023	220 cấp tiêu dao	130041		1	1	115000000			Trang bị cửa hàng
+3024	230 cấp tiêu dao	130077		1	1	135000000			Trang bị cửa hàng
+3025	240 cấp tiêu dao	130113		1	1	155000000			Trang bị cửa hàng
+3026	250 cấp tiêu dao	130149		1	1	175000000			Trang bị cửa hàng
+3027	260 cấp tiêu dao	130185		1	1	195000000			Trang bị cửa hàng
+3028	270 cấp tiêu dao	130221		1	1	215000000			Trang bị cửa hàng
+3029	280 cấp tiêu dao	130257		1	1	235000000			Trang bị cửa hàng
+3030	290 cấp tiêu dao	130293		1	1	255000000			Trang bị cửa hàng
+3031	300 cấp tiêu dao	130329		1	1	275000000			Trang bị cửa hàng
+3101	1 cấp tiêu dao 1 chiết	13005		1	1	30	15		Trang bị cửa hàng
+3102	10 cấp tiêu dao 1 chiết	13041		1	1	60	30		Trang bị cửa hàng
+3103	20 cấp tiêu dao 1 chiết	13077		1	1	120	60		Trang bị cửa hàng
+3104	30 cấp tiêu dao 1 chiết	13113		1	1	160	80		Trang bị cửa hàng
+3105	40 cấp tiêu dao 1 chiết	13149		1	1	205	103		Trang bị cửa hàng
+3106	50 cấp tiêu dao 1 chiết	13185		1	1	250	125		Trang bị cửa hàng
+3107	60 cấp tiêu dao 1 chiết	13221		1	1	295	148		Trang bị cửa hàng
+3108	70 cấp tiêu dao 1 chiết	13257		1	1	340	170		Trang bị cửa hàng
+3109	80 cấp tiêu dao 1 chiết	13293		1	1	500	250		Trang bị cửa hàng
+3110	90 cấp tiêu dao 1 chiết	13329		1	1	667	334		Trang bị cửa hàng
+3111	100 cấp tiêu dao 1 chiết	13365		1	1	833	417		Trang bị cửa hàng
+3112	110 cấp tiêu dao 1 chiết	13401		1	1	1000	500		Trang bị cửa hàng
+3113	120 cấp tiêu dao 1 chiết	13437		1	1	1167	584		Trang bị cửa hàng
+3114	130 cấp tiêu dao 1 chiết	13473		1	1	1333	667		Trang bị cửa hàng
+3115	140 cấp tiêu dao 1 chiết	13509		1	1	1500	750		Trang bị cửa hàng
+3116	150 cấp tiêu dao 1 chiết	13545		1	1	1667	834		Trang bị cửa hàng
+3117	160 cấp tiêu dao 1 chiết	13581		1	1	1833	917		Trang bị cửa hàng
+3118	170 cấp tiêu dao 1 chiết	13617		1	1	2000	1000		Trang bị cửa hàng
+3119	180 cấp tiêu dao 1 chiết	13653		1	1	2167	1084		Trang bị cửa hàng
+3120	190 cấp tiêu dao 1 chiết	13689		1	1	2333	1167		Trang bị cửa hàng
+3121	200 cấp tiêu dao 1 chiết	13725		1	1	2500	1250		Trang bị cửa hàng
+3122	210 cấp tiêu dao 1 chiết	130005		1	1	3167	1584		Trang bị cửa hàng
+3123	220 cấp tiêu dao 1 chiết	130041		1	1	3833	1917		Trang bị cửa hàng
+3124	230 cấp tiêu dao 1 chiết	130077		1	1	4500	2250		Trang bị cửa hàng
+3125	240 cấp tiêu dao 1 chiết	130113		1	1	5167	2584		Trang bị cửa hàng
+3126	250 cấp tiêu dao 1 chiết	130149		1	1	5833	2917		Trang bị cửa hàng
+3127	260 cấp tiêu dao 1 chiết	130185		1	1	6500	3250		Trang bị cửa hàng
+3128	270 cấp tiêu dao 1 chiết	130221		1	1	7167	3584		Trang bị cửa hàng
+3129	280 cấp tiêu dao 1 chiết	130257		1	1	7833	3917		Trang bị cửa hàng
+3130	290 cấp tiêu dao 1 chiết	130293		1	1	8500	4250		Trang bị cửa hàng
+3131	300 cấp tiêu dao 1 chiết	130329		1	1	9167	4584		Trang bị cửa hàng
+3201	1 cấp tiêu dao 5 chiết	13005		1	1	900000	450000		Trang bị cửa hàng
+3202	10 cấp tiêu dao 5 chiết	13041		1	1	1800000	900000		Trang bị cửa hàng
+3203	20 cấp tiêu dao 5 chiết	13077		1	1	3600000	1800000		Trang bị cửa hàng
+3204	30 cấp tiêu dao 5 chiết	13113		1	1	4800000	2400000		Trang bị cửa hàng
+3205	40 cấp tiêu dao 5 chiết	13149		1	1	6150000	3075000		Trang bị cửa hàng
+3206	50 cấp tiêu dao 5 chiết	13185		1	1	7500000	3750000		Trang bị cửa hàng
+3207	60 cấp tiêu dao 5 chiết	13221		1	1	8850000	4425000		Trang bị cửa hàng
+3208	70 cấp tiêu dao 5 chiết	13257		1	1	10200000	5100000		Trang bị cửa hàng
+3209	80 cấp tiêu dao 5 chiết	13293		1	1	15000000	7500000		Trang bị cửa hàng
+3210	90 cấp tiêu dao 5 chiết	13329		1	1	20000000	10000000		Trang bị cửa hàng
+3211	100 cấp tiêu dao 5 chiết	13365		1	1	25000000	12500000		Trang bị cửa hàng
+3212	110 cấp tiêu dao 5 chiết	13401		1	1	30000000	15000000		Trang bị cửa hàng
+3213	120 cấp tiêu dao 5 chiết	13437		1	1	35000000	17500000		Trang bị cửa hàng
+3214	130 cấp tiêu dao 5 chiết	13473		1	1	40000000	20000000		Trang bị cửa hàng
+3215	140 cấp tiêu dao 5 chiết	13509		1	1	45000000	22500000		Trang bị cửa hàng
+3216	150 cấp tiêu dao 5 chiết	13545		1	1	50000000	25000000		Trang bị cửa hàng
+3217	160 cấp tiêu dao 5 chiết	13581		1	1	55000000	27500000		Trang bị cửa hàng
+3218	170 cấp tiêu dao 5 chiết	13617		1	1	60000000	30000000		Trang bị cửa hàng
+3219	180 cấp tiêu dao 5 chiết	13653		1	1	65000000	32500000		Trang bị cửa hàng
+3220	190 cấp tiêu dao 5 chiết	13689		1	1	70000000	35000000		Trang bị cửa hàng
+3221	200 cấp tiêu dao 5 chiết	13725		1	1	75000000	37500000		Trang bị cửa hàng
+3222	210 cấp tiêu dao 5 chiết	130005		1	1	95000000	47500000		Trang bị cửa hàng
+3223	220 cấp tiêu dao 5 chiết	130041		1	1	115000000	57500000		Trang bị cửa hàng
+3224	230 cấp tiêu dao 5 chiết	130077		1	1	135000000	67500000		Trang bị cửa hàng
+3225	240 cấp tiêu dao 5 chiết	130113		1	1	155000000	77500000		Trang bị cửa hàng
+3226	250 cấp tiêu dao 5 chiết	130149		1	1	175000000	87500000		Trang bị cửa hàng
+3227	260 cấp tiêu dao 5 chiết	130185		1	1	195000000	97500000		Trang bị cửa hàng
+3228	270 cấp tiêu dao 5 chiết	130221		1	1	215000000	107500000		Trang bị cửa hàng
+3229	280 cấp tiêu dao 5 chiết	130257		1	1	235000000	117500000		Trang bị cửa hàng
+3230	290 cấp tiêu dao 5 chiết	130293		1	1	255000000	127500000		Trang bị cửa hàng
+3231	300 cấp tiêu dao 5 chiết	130329		1	1	275000000	137500000		Trang bị cửa hàng
+3301	1 cấp tiêu dao màu tím vũ khí	13004		1	1	112500			Trang bị cửa hàng
+3302	10 cấp tiêu dao	13040		1	1	225000			Trang bị cửa hàng
+3303	20 cấp tiêu dao	13076		1	1	450000			Trang bị cửa hàng
+3304	30 cấp tiêu dao	13112		1	1	600000			Trang bị cửa hàng
+3305	40 cấp tiêu dao	13148		1	1	768750			Trang bị cửa hàng
+3306	50 cấp tiêu dao	13184		1	1	937500			Trang bị cửa hàng
+3307	60 cấp tiêu dao	13220		1	1	1106250			Trang bị cửa hàng
+3308	70 cấp tiêu dao	13256		1	1	1275000			Trang bị cửa hàng
+3309	80 cấp tiêu dao	13292		1	1	1875000			Trang bị cửa hàng
+3310	90 cấp tiêu dao	13328		1	1	2500000			Trang bị cửa hàng
+3311	100 cấp tiêu dao	13364		1	1	3125000			Trang bị cửa hàng
+3312	110 cấp tiêu dao	13400		1	1	3750000			Trang bị cửa hàng
+3313	120 cấp tiêu dao	13436		1	1	4375000			Trang bị cửa hàng
+3314	130 cấp tiêu dao	13472		1	1	5000000			Trang bị cửa hàng
+3315	140 cấp tiêu dao	13508		1	1	5625000			Trang bị cửa hàng
+3316	150 cấp tiêu dao	13544		1	1	6250000			Trang bị cửa hàng
+3317	160 cấp tiêu dao	13580		1	1	6875000			Trang bị cửa hàng
+3318	170 cấp tiêu dao	13616		1	1	7500000			Trang bị cửa hàng
+3319	180 cấp tiêu dao	13652		1	1	8125000			Trang bị cửa hàng
+3320	190 cấp tiêu dao	13688		1	1	8750000			Trang bị cửa hàng
+3321	200 cấp tiêu dao	13724		1	1	9375000			Trang bị cửa hàng
+3322	210 cấp tiêu dao	130004		1	1	11875000			Trang bị cửa hàng
+3323	220 cấp tiêu dao	130040		1	1	14375000			Trang bị cửa hàng
+3324	230 cấp tiêu dao	130076		1	1	16875000			Trang bị cửa hàng
+3325	240 cấp tiêu dao	130112		1	1	19375000			Trang bị cửa hàng
+3326	250 cấp tiêu dao	130148		1	1	21875000			Trang bị cửa hàng
+3327	260 cấp tiêu dao	130184		1	1	24375000			Trang bị cửa hàng
+3328	270 cấp tiêu dao	130220		1	1	26875000			Trang bị cửa hàng
+3329	280 cấp tiêu dao	130256		1	1	29375000			Trang bị cửa hàng
+3330	290 cấp tiêu dao	130292		1	1	31875000			Trang bị cửa hàng
+3331	300 cấp tiêu dao	130328		1	1	34375000			Trang bị cửa hàng
+3401	1 cấp tiêu dao màu tím vật trang sức trên tóc	13010		1	1	112500			Trang bị cửa hàng
+3402	10 cấp tiêu dao	13046		1	1	225000			Trang bị cửa hàng
+3403	20 cấp tiêu dao	13082		1	1	450000			Trang bị cửa hàng
+3404	30 cấp tiêu dao	13118		1	1	600000			Trang bị cửa hàng
+3405	40 cấp tiêu dao	13154		1	1	768750			Trang bị cửa hàng
+3406	50 cấp tiêu dao	13190		1	1	937500			Trang bị cửa hàng
+3407	60 cấp tiêu dao	13226		1	1	1106250			Trang bị cửa hàng
+3408	70 cấp tiêu dao	13262		1	1	1275000			Trang bị cửa hàng
+3409	80 cấp tiêu dao	13298		1	1	1875000			Trang bị cửa hàng
+3410	90 cấp tiêu dao	13334		1	1	2500000			Trang bị cửa hàng
+3411	100 cấp tiêu dao	13370		1	1	3125000			Trang bị cửa hàng
+3412	110 cấp tiêu dao	13406		1	1	3750000			Trang bị cửa hàng
+3413	120 cấp tiêu dao	13442		1	1	4375000			Trang bị cửa hàng
+3414	130 cấp tiêu dao	13478		1	1	5000000			Trang bị cửa hàng
+3415	140 cấp tiêu dao	13514		1	1	5625000			Trang bị cửa hàng
+3416	150 cấp tiêu dao	13550		1	1	6250000			Trang bị cửa hàng
+3417	160 cấp tiêu dao	13586		1	1	6875000			Trang bị cửa hàng
+3418	170 cấp tiêu dao	13622		1	1	7500000			Trang bị cửa hàng
+3419	180 cấp tiêu dao	13658		1	1	8125000			Trang bị cửa hàng
+3420	190 cấp tiêu dao	13694		1	1	8750000			Trang bị cửa hàng
+3421	200 cấp tiêu dao	13730		1	1	9375000			Trang bị cửa hàng
+3422	210 cấp tiêu dao	130010		1	1	11875000			Trang bị cửa hàng
+3423	220 cấp tiêu dao	130046		1	1	14375000			Trang bị cửa hàng
+3424	230 cấp tiêu dao	130082		1	1	16875000			Trang bị cửa hàng
+3425	240 cấp tiêu dao	130118		1	1	19375000			Trang bị cửa hàng
+3426	250 cấp tiêu dao	130154		1	1	21875000			Trang bị cửa hàng
+3427	260 cấp tiêu dao	130190		1	1	24375000			Trang bị cửa hàng
+3428	270 cấp tiêu dao	130226		1	1	26875000			Trang bị cửa hàng
+3429	280 cấp tiêu dao	130262		1	1	29375000			Trang bị cửa hàng
+3430	290 cấp tiêu dao	130298		1	1	31875000			Trang bị cửa hàng
+3431	300 cấp tiêu dao	130334		1	1	34375000			Trang bị cửa hàng
+3501	1 cấp tiêu dao màu tím quần áo	13016		1	1	112500			Trang bị cửa hàng
+3502	10 cấp tiêu dao	13052		1	1	225000			Trang bị cửa hàng
+3503	20 cấp tiêu dao	13088		1	1	450000			Trang bị cửa hàng
+3504	30 cấp tiêu dao	13124		1	1	600000			Trang bị cửa hàng
+3505	40 cấp tiêu dao	13160		1	1	768750			Trang bị cửa hàng
+3506	50 cấp tiêu dao	13196		1	1	937500			Trang bị cửa hàng
+3507	60 cấp tiêu dao	13232		1	1	1106250			Trang bị cửa hàng
+3508	70 cấp tiêu dao	13268		1	1	1275000			Trang bị cửa hàng
+3509	80 cấp tiêu dao	13304		1	1	1875000			Trang bị cửa hàng
+3510	90 cấp tiêu dao	13340		1	1	2500000			Trang bị cửa hàng
+3511	100 cấp tiêu dao	13376		1	1	3125000			Trang bị cửa hàng
+3512	110 cấp tiêu dao	13412		1	1	3750000			Trang bị cửa hàng
+3513	120 cấp tiêu dao	13448		1	1	4375000			Trang bị cửa hàng
+3514	130 cấp tiêu dao	13484		1	1	5000000			Trang bị cửa hàng
+3515	140 cấp tiêu dao	13520		1	1	5625000			Trang bị cửa hàng
+3516	150 cấp tiêu dao	13556		1	1	6250000			Trang bị cửa hàng
+3517	160 cấp tiêu dao	13592		1	1	6875000			Trang bị cửa hàng
+3518	170 cấp tiêu dao	13628		1	1	7500000			Trang bị cửa hàng
+3519	180 cấp tiêu dao	13664		1	1	8125000			Trang bị cửa hàng
+3520	190 cấp tiêu dao	13700		1	1	8750000			Trang bị cửa hàng
+3521	200 cấp tiêu dao	13736		1	1	9375000			Trang bị cửa hàng
+3522	210 cấp tiêu dao	130016		1	1	11875000			Trang bị cửa hàng
+3523	220 cấp tiêu dao	130052		1	1	14375000			Trang bị cửa hàng
+3524	230 cấp tiêu dao	130088		1	1	16875000			Trang bị cửa hàng
+3525	240 cấp tiêu dao	130124		1	1	19375000			Trang bị cửa hàng
+3526	250 cấp tiêu dao	130160		1	1	21875000			Trang bị cửa hàng
+3527	260 cấp tiêu dao	130196		1	1	24375000			Trang bị cửa hàng
+3528	270 cấp tiêu dao	130232		1	1	26875000			Trang bị cửa hàng
+3529	280 cấp tiêu dao	130268		1	1	29375000			Trang bị cửa hàng
+3530	290 cấp tiêu dao	130304		1	1	31875000			Trang bị cửa hàng
+3531	300 cấp tiêu dao	130340		1	1	34375000			Trang bị cửa hàng
+3601	1 cấp tiêu dao màu tím giày	13022		1	1	112500			Trang bị cửa hàng
+3602	10 cấp tiêu dao	13058		1	1	225000			Trang bị cửa hàng
+3603	20 cấp tiêu dao	13094		1	1	450000			Trang bị cửa hàng
+3604	30 cấp tiêu dao	13130		1	1	600000			Trang bị cửa hàng
+3605	40 cấp tiêu dao	13166		1	1	768750			Trang bị cửa hàng
+3606	50 cấp tiêu dao	13202		1	1	937500			Trang bị cửa hàng
+3607	60 cấp tiêu dao	13238		1	1	1106250			Trang bị cửa hàng
+3608	70 cấp tiêu dao	13274		1	1	1275000			Trang bị cửa hàng
+3609	80 cấp tiêu dao	13310		1	1	1875000			Trang bị cửa hàng
+3610	90 cấp tiêu dao	13346		1	1	2500000			Trang bị cửa hàng
+3611	100 cấp tiêu dao	13382		1	1	3125000			Trang bị cửa hàng
+3612	110 cấp tiêu dao	13418		1	1	3750000			Trang bị cửa hàng
+3613	120 cấp tiêu dao	13454		1	1	4375000			Trang bị cửa hàng
+3614	130 cấp tiêu dao	13490		1	1	5000000			Trang bị cửa hàng
+3615	140 cấp tiêu dao	13526		1	1	5625000			Trang bị cửa hàng
+3616	150 cấp tiêu dao	13562		1	1	6250000			Trang bị cửa hàng
+3617	160 cấp tiêu dao	13598		1	1	6875000			Trang bị cửa hàng
+3618	170 cấp tiêu dao	13634		1	1	7500000			Trang bị cửa hàng
+3619	180 cấp tiêu dao	13670		1	1	8125000			Trang bị cửa hàng
+3620	190 cấp tiêu dao	13706		1	1	8750000			Trang bị cửa hàng
+3621	200 cấp tiêu dao	13742		1	1	9375000			Trang bị cửa hàng
+3622	210 cấp tiêu dao	130022		1	1	11875000			Trang bị cửa hàng
+3623	220 cấp tiêu dao	130058		1	1	14375000			Trang bị cửa hàng
+3624	230 cấp tiêu dao	130094		1	1	16875000			Trang bị cửa hàng
+3625	240 cấp tiêu dao	130130		1	1	19375000			Trang bị cửa hàng
+3626	250 cấp tiêu dao	130166		1	1	21875000			Trang bị cửa hàng
+3627	260 cấp tiêu dao	130202		1	1	24375000			Trang bị cửa hàng
+3628	270 cấp tiêu dao	130238		1	1	26875000			Trang bị cửa hàng
+3629	280 cấp tiêu dao	130274		1	1	29375000			Trang bị cửa hàng
+3630	290 cấp tiêu dao	130310		1	1	31875000			Trang bị cửa hàng
+3631	300 cấp tiêu dao	130346		1	1	34375000			Trang bị cửa hàng
+4001	Cường hóa thạch	7		1	1	5000			Trang bị cửa hàng
+4002	Cường hóa thạch 7 chiết	7		1	1	5000	3500		Trang bị cửa hàng
+4003	Cường hóa thạch 3 chiết	7		1	1	5000	1500		Trang bị cửa hàng
+4004	Kinh mạch đan	10		2	1	5			Trang bị cửa hàng
+4005	Kinh mạch đan 6 chiết	10		2	1	5	3		Trang bị cửa hàng
+4006	Kinh mạch đan - đồng tiền	10		1	1	150000			Trang bị cửa hàng
+4007	Tinh thạch	9		2	1	10			Trang bị cửa hàng
+4008	Tinh thạch 5 chiết	9		2	1	10	5		Trang bị cửa hàng
+4009	Tinh thạch - đồng tiền	9		1	1	300000			Trang bị cửa hàng
+4010	Đá quý	8		2	1	20			Trang bị cửa hàng
+4011	Đá quý 5 chiết	8		2	1	20	10		Trang bị cửa hàng
+4012	Đá quý - đồng tiền	8		1	1	600000			Trang bị cửa hàng
+4013	Luyện hóa thạch	17		2	1	30			Trang bị cửa hàng
+4014	Luyện hóa thạch 5 chiết	17		2	1	30	15		Trang bị cửa hàng
+4015	Luyện hóa thạch - đồng tiền	17		1	1	900000			Trang bị cửa hàng
+4016	Thần trang mảnh	16		2	1	50			Trang bị cửa hàng
+4017	Thần trang mảnh 5 chiết	16		2	1	50	25		Trang bị cửa hàng
+4018	Thiên phú đan	18		1	1	30			Trang bị cửa hàng
+4019	Thiên phú đan 5 chiết	18		1	1	30	15		Trang bị cửa hàng
+4020	Thiên phú đan - đồng tiền	18		1	1	900000			Trang bị cửa hàng
+4021	Cấp thấp kinh nghiệm đan	26		2	1	5			Trang bị cửa hàng
+4022	Cấp thấp kinh nghiệm đan 6 chiết	26		2	1	5	3		Trang bị cửa hàng
+4023	Trung cấp kinh nghiệm đan	27		2	1	20			Trang bị cửa hàng
+4024	Trung cấp kinh nghiệm đan 5 chiết	27		2	1	20	10		Trang bị cửa hàng
+4025	Cao cấp kinh nghiệm đan	28		2	1	200			Trang bị cửa hàng
+4026	Cao cấp kinh nghiệm đan 5 chiết	28		2	1	200	100		Trang bị cửa hàng
+4027	Vé kinh mạch	15		2	1	60			Trang bị cửa hàng
+4028	Vé kinh mạch 6 chiết	15		2	1	60	36		Trang bị cửa hàng
+4029	Cốt truyện vé vào cửa	13		2	1	60			Trang bị cửa hàng
+4030	Cốt truyện vé vào cửa 6 chiết	13		2	1	60	36		Trang bị cửa hàng
+4031	Đá quý vé vào cửa	14		2	1	60			Trang bị cửa hàng
+4032	Đá quý vé vào cửa 6 chiết	14		2	1	60	36		Trang bị cửa hàng

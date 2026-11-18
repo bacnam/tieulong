@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="DroiyanListItem" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<w:Config id="15871b4b90e"/>
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" width="500" height="135" scaleX="1" scaleY="1" horizontalCenter="0"/>
+	<e:Label id="label_name" text="s.177 Lỗ Bang Chủ" y="26" size="24" textAlign="left" strokeColor="0x000000" stroke="1" width="220" textColor="0xFFFFFF" height="29" verticalAlign="middle" horizontalCenter="0"/>
+	<e:Label id="lv" text="100 Cấp" y="78" size="24" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xFFC446" width="220" height="30" verticalAlign="middle" x="138"/>
+	<component:Portrait id="portrait" x="16" y="22" skinName="Portrait"/>
+	<e:Button id="btn_dekaron" label="Quyết đấu" x="372" width="124" verticalCenter="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="124"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_explore" label="Tìm kiếm" x="370" width="124" verticalCenter="0">
+		<e:Skin states="up,down,disabled">
+		<e:Image width="100%" height="100%" source="btn_bg4_png"/>
+		<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" size="22" textAlign="center" strokeColor="0x000000" stroke="1" textColor="0xF8F7D3" width="124"/>
+		</e:Skin>
+	</e:Button>
+	<e:Label id="time" text="19:40" size="24" textAlign="center" strokeColor="0x000000" stroke="1" height="44" verticalAlign="middle" textColor="0x54FF00" left="266" verticalCenter="0"/>
+	<e:Label id="label_find" text="Tìm kiếm một đối thủ" x="37" size="24" textAlign="center" strokeColor="0x000000" stroke="1" verticalAlign="middle" textColor="0x54FF00" verticalCenter="0"/>
+</e:Skin>

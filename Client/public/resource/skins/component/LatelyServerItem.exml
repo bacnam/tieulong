@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="LatelyServerItem" width="250" height="130" xmlns:e="http://ns.egret.com/eui" xmlns:component="legend.view.component.*" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="form_sibg_png" scale9Grid="18,19,14,12" x="0" y="0" width="250" height="130" anchorOffsetY="0"/>
+	<e:BitmapLabel id="lbl_lv" x="133.35" y="57.5" font="lv_number_fnt" text="L75" scaleX="1" scaleY="1"/>
+	<e:Image source="form_inbg_png" scale9Grid="5,4,40,41" y="0" width="250" height="147.26" x="-0.67" scaleX="1" scaleY="1" anchorOffsetY="0" anchorOffsetX="0" locked="true" visible="false"/>
+
+
+
+	<component:Portrait id="portrait" y="8.64" skinName="Portrait" anchorOffsetX="0" width="103" anchorOffsetY="0" height="91" horizontalCenter="-51.5"/>
+	<e:Label id="lbl_status" text="Bảo trì máy chủ" y="11.99" size="18" textAlign="left" strokeColor="0x4e4f4e" x="126" scaleX="1" scaleY="1" textColor="0x8e918e" stroke="1"/>
+	<e:Label id="role_name" text="s.177.Tôi là nhân vật chính của nhân vật chính" y="100" size="20" textAlign="left" strokeColor="0x000000" stroke="1" textColor="0xFFFFFF" verticalAlign="middle" x="23"/>
+	<e:Group id="btn" width="100%" height="100%" anchorOffsetX="0" anchorOffsetY="0">
+
+
+
+	</e:Group>
+</e:Skin>

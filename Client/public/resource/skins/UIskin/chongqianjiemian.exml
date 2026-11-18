@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="start" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:component="legend.view.component.*">
+	<e:Image source="ui_shop_bg_png" horizontalCenter="0" verticalCenter="27.5" locked="true"/>
+
+	<e:Image source="btn_close_1_png" x="565" y="194" locked="true"/>
+
+
+
+
+
+
+
+	<e:Image source="ui_heip_png" x="38" y="206" locked="true"/>
+	<e:Image source="huodong_png" y="183" horizontalCenter="0" locked="true"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<e:Group x="51" y="330">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0" width="540" anchorOffsetY="0" height="132.5"/>
+		<e:Image source="form_goldtit_png" x="142" y="29" anchorOffsetX="0" width="180"/>
+		<e:Label id="first_name0" text="Nguyên bảo" x="165" y="32.370000000000005" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="151.51" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+		<e:Label id="first_name2" text="Mua sắm" x="165" y="81.04000000000002" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xfdfbe0"/>
+		<e:Label id="first_name5" text="60" x="266" y="81.38" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xfdb200"/>
+		<e:Image source="icon_crystal_png" x="219.64" y="72.36000000000001" width="40" height="40"/>
+		<e:Group x="380.6600000000001" y="44">
+			<e:Image x="0" y="0" source="btn_bg4_png"/>
+			<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+			<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+		<e:Image source="shop_iconbg_png" x="41.34000000000003" y="18.339999999999975"/>
+		<e:Image source="icon_recharge_01_jpg" x="53.15999999999997" y="28.329999999999984" anchorOffsetX="0" width="75" anchorOffsetY="0" height="75"/>
+		<e:Image source="shop_groom_png" x="-5" y="0.6299999999999955" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Group x="51" y="478" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0" width="540" anchorOffsetY="0" height="132.5"/>
+		<e:Image source="form_goldtit_png" x="142" y="29" anchorOffsetX="0" width="180"/>
+		<e:Label id="first_name10" text="Nguyên bảo" x="165" y="32.370000000000005" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="151.51" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+		<e:Label id="first_name11" text="Mua sắm" x="165" y="81.04000000000002" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xFDFBE0"/>
+		<e:Label id="first_name12" text="60" x="266" y="81.38" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xFDB200"/>
+		<e:Image source="icon_crystal_png" x="219.64" y="72.36000000000001" width="40" height="40"/>
+		<e:Group x="380.6600000000001" y="44">
+		<e:Image x="0" y="0" source="btn_bg4_png"/>
+		<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+		<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+		<e:Image source="shop_iconbg_png" x="41.34000000000003" y="18.339999999999975"/>
+		<e:Image source="icon_recharge_01_jpg" x="53.15999999999997" y="28.329999999999984" anchorOffsetX="0" width="75" anchorOffsetY="0" height="75"/>
+		<e:Image source="shop_groom_png" x="-5" y="0.6299999999999955" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Group x="51" y="626" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0" width="540" anchorOffsetY="0" height="132.5"/>
+		<e:Image source="form_goldtit_png" x="142" y="29" anchorOffsetX="0" width="180"/>
+		<e:Label id="first_name13" text="Nguyên bảo" x="165" y="32.370000000000005" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="151.51" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+		<e:Label id="first_name14" text="Mua sắm" x="165" y="81.04000000000002" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xFDFBE0"/>
+		<e:Label id="first_name15" text="60" x="266" y="81.38" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xFDB200"/>
+		<e:Image source="icon_crystal_png" x="219.64" y="72.36000000000001" width="40" height="40"/>
+		<e:Group x="380.6600000000001" y="44">
+		<e:Image x="0" y="0" source="btn_bg4_png"/>
+		<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+		<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+		<e:Image source="shop_iconbg_png" x="41.34000000000003" y="18.339999999999975"/>
+		<e:Image source="icon_recharge_01_jpg" x="53.15999999999997" y="28.329999999999984" anchorOffsetX="0" width="75" anchorOffsetY="0" height="75"/>
+		<e:Image source="shop_groom_png" x="-5" y="0.6299999999999955" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Group x="51" y="773" locked="true">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0" width="540" anchorOffsetY="0" height="132.5"/>
+		<e:Image source="form_goldtit_png" x="142" y="29" anchorOffsetX="0" width="180"/>
+		<e:Label id="first_name16" text="Nguyên bảo" x="165" y="32.370000000000005" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="151.51" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+		<e:Label id="first_name17" text="Mua sắm" x="165" y="81.04000000000002" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xFDFBE0"/>
+		<e:Label id="first_name18" text="60" x="266" y="81.38" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xFDB200"/>
+		<e:Image source="icon_crystal_png" x="219.64" y="72.36000000000001" width="40" height="40"/>
+		<e:Group x="380.6600000000001" y="44">
+		<e:Image x="0" y="0" source="btn_bg4_png"/>
+		<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+		<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+		<e:Image source="shop_iconbg_png" x="41.34000000000003" y="18.339999999999975"/>
+		<e:Image source="icon_recharge_01_jpg" x="53.15999999999997" y="28.329999999999984" anchorOffsetX="0" width="75" anchorOffsetY="0" height="75"/>
+		<e:Image source="shop_groom_png" x="-5" y="0.6299999999999955" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Group x="51" y="471.3" locked="true" visible="false">
+		<e:Image source="form_hd_png" scale9Grid="43,41,15,20" x="0" y="0" anchorOffsetX="0" width="540" anchorOffsetY="0" height="132.5"/>
+		<e:Image source="form_goldtit_png" x="4.660000000000004" y="50" anchorOffsetX="0" width="200.67"/>
+		<e:Label id="first_name6" text="Nguyên bảo" x="34.33" y="53" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="151.51" height="27.33" textColor="0xFFED29" fontFamily="Arial"/>
+		<e:Label id="first_name7" text="Mua sắm" x="366.3" y="29.710000000000036" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xFDFBE0"/>
+		<e:Label id="first_name8" text="60" x="474.66999999999985" y="30.049999999999955" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xFDB200"/>
+		<e:Image source="icon_crystal_png" x="424.9599999999999" y="21.029999999999973" width="40" height="40"/>
+		<e:Group x="372.66999999999996" y="70.01999999999998">
+			<e:Image x="0" y="0" source="btn_bg4_png"/>
+			<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+			<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+		<e:Group x="216.67999999999995" y="17">
+			<e:Image source="shop_iconbg_png" x="0" y="0"/>
+			<e:Image source="icon_recharge_01_jpg" x="11.82000000000005" y="9.990000000000009" anchorOffsetX="0" width="75" anchorOffsetY="0" height="75"/>
+		</e:Group>
+	</e:Group>
+	<e:Group x="47" y="616.01" locked="true" visible="false">
+		<e:Image source="form_abg_jpg" x="5" y="3.660000000000025" scale9Grid="12,11,27,27" anchorOffsetX="0" width="541.33" anchorOffsetY="0" height="123.33"/>
+		<e:Image source="form_goldtit_png" x="135" y="25" anchorOffsetX="0" width="206"/>
+		<e:Image source="form_bbg_jpg" x="37.670000000000016" y="19.660000000000025" scale9Grid="6,6,38,38" anchorOffsetX="0" width="101.99" anchorOffsetY="0" height="97.34"/>
+		<e:Image source="iconbg_prange_png" x="52" y="31.33000000000004"/>
+		<e:Image source="shop_groom_png" x="0" y="0"/>
+		<e:Image source="icon_recharge_01_jpg" x="56.660000000000025" y="37.32000000000005"/>
+		<e:Label id="first_name1" text="Nguyên bảo" x="171.67000000000002" y="28.03000000000003" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="151.51" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+		<e:Label id="first_name3" text="Mua sắm" x="171.67000000000002" y="76.69999999999999" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xFDFBE0"/>
+		<e:Label id="first_name4" text="60" x="272.67" y="77.04000000000002" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xFDB200"/>
+		<e:Image source="icon_crystal_png" x="226.31" y="68.02000000000004" width="40" height="40"/>
+		<e:Group x="387.3300000000001" y="46.660000000000025">
+			<e:Image x="0" y="0" source="btn_bg4_png"/>
+			<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+			<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+	</e:Group>
+	<e:Group x="47" y="762.6299999999999" locked="true" visible="false">
+		<e:Image source="form_abg_jpg" x="5" y="3.3700000000001182" scale9Grid="12,11,27,27" anchorOffsetX="0" width="541.33" anchorOffsetY="0" height="123.33"/>
+		<e:Image source="form_bbg_jpg" x="223.37" y="16.37000000000012" scale9Grid="6,6,38,38" anchorOffsetX="0" width="101.99" anchorOffsetY="0" height="97.34"/>
+		<e:Image source="iconbg_prange_png" x="238.37" y="29.37000000000012"/>
+		<e:Image source="shop_groom_png" x="0" y="0"/>
+		<e:Image source="icon_recharge_01_jpg" x="244.37" y="35.37000000000012"/>
+		<e:Group x="29" y="48.37000000000012">
+			<e:Image source="form_goldtit_png" x="0" y="1.1368683772161603e-13" anchorOffsetX="0" width="187.33"/>
+			<e:Label id="first_name9" text="Nguyên bảo" x="28" y="3.6500000000002046" size="26" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="131.51" height="21.33" textColor="0xFFED29" fontFamily="Arial"/>
+		</e:Group>
+		<e:Label id="first_name19" text="Mua sắm" x="370.3399999999999" y="30.70000000000016" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="111.01" height="21.33" fontFamily="Arial" textColor="0xFDFBE0"/>
+		<e:Label id="first_name20" text="60" x="471.34000000000003" y="31.040000000000077" size="24" textAlign="left" strokeColor="0x000000" stroke="1" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" width="36.34" height="21.33" fontFamily="Arial" textColor="0xFDB200"/>
+		<e:Image source="icon_crystal_png" x="424.98" y="22.020000000000095" width="40" height="40"/>
+		<e:Group x="374.65" y="67.33000000000015">
+			<e:Image x="0" y="0" source="btn_bg4_png"/>
+			<e:BitmapLabel width="20" height="20" x="33.00999999999999" y="10.480000000000018" font="yuan_fnt" text="6"/>
+			<e:BitmapLabel width="20" height="20" x="57.33000000000004" y="7.810000000000002" font="yuan_fnt" text="Nguyên"/>
+		</e:Group>
+	</e:Group>
+	<e:Image source="shop_groom_png" x="46" y="472.63" locked="true" visible="false"/>
+
+</e:Skin>

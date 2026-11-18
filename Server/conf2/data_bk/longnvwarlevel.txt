@@ -1,0 +1,7 @@
+﻿NPC档次	机器人对应等级	人数	Npc帮派名称	NPC帮主名称
+id	RobotLevel	Amount	GuildName	President
+1	90	20	Võ lâm đồng đạo	Cái thế anh hùng Kiều Phong
+2	100	30	Tây Hạ Nhất Phẩm Đường	Tội ác chồng chất đoạn Duyên Khánh
+3		0	Giang hồ đàn hiệp	Xạ điêu đại hiệp Quách Tĩnh
+4		10	Long nữ toàn minh tinh	Thần tiên tỷ tỷ Vương Ngữ Yên
+5		20	Vượt phục quần hùng	Tiêu dao tổ sư vô nhai tử

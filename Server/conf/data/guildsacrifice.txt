@@ -1,0 +1,4 @@
+﻿祭天类型	祭天类型名字	消耗物品总表ID	消耗物品数量	获得公会祭天进度	获得公会经验	获得贡献度	暴击概率万分比	暴击倍率万分比
+id	SacrificeName	CostItemID	CostCount	SacrificeProgress	GuildExp	GuildDonate	Critical	CriticalValue
+Gold	@guildsacrifice_SacrificeName_Normal	1	100000		5	60	2000	15000
+Crystal	@guildsacrifice_SacrificeName_Middle	2	50		10	300	2000	15000

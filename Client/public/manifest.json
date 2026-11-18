@@ -1,0 +1,22 @@
+{
+    "short_name": "Tiểu Long",
+    "name": "Tiểu Long",
+    "icons": [
+        {
+            "src": "/images/logo.jpg",
+            "type": "image/logo",
+            "sizes": "512x512"
+        }
+    ],
+    "background_color": "#3367D6",
+    "display": "fullscreen",
+    "orientation": "portrait",
+    "description": "Tiểu Long - Đắm mình vào sự trở lại đầy ngoạn mục của loạt giải đấu máu lửa Hùng Bá Thiên Hạ, Thống Nhất Giang Sơn, Hoàng Đồ Bá Nghiệp của Tiểu Long!",
+    "screenshots": [
+        {
+            "src": "/images/intro_bg.jpg",
+            "type": "image/jpg",
+            "sizes": "1920x1152"
+        }
+    ]
+}
