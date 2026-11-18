@@ -29,12 +29,21 @@ services:
     image: mysql:5.7
     platform: linux/amd64
     restart: unless-stopped
+    # Settings passed as flags, not via a mounted .cnf: on Docker Desktop (Windows) bind-mounted files are
+    # world-writable and MySQL silently ignores them. The game code uses mixed-case table names
+    # (worldMail, guildMember...), so lower_case_table_names=1 is mandatory.
+    command:
+      - --lower-case-table-names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --sql-mode=NO_ENGINE_SUBSTITUTION
+      - --max-connections=500
+      - --default-time-zone=+07:00
     environment:
       TZ: ${TZ:-Asia/Ho_Chi_Minh}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/tieulong.cnf:ro
       - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
       - ./Server/database:/sql:ro
     ports:

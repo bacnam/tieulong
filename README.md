@@ -84,7 +84,7 @@ Sau đó mở http://localhost:8080, đăng ký tài khoản rồi vào game.
 - **Console GM (BeanShell)**: `docker attach tieulong-game-1`; thoát ra bằng Ctrl-P rồi Ctrl-Q.
 - **Luồng nạp tiền**: game gọi `http://client/.../orders/create`, client gọi lại `http://game:7501/game/recharge/notify`.
 - **Log**: nằm trong các volume `game-logs` và `world-logs`, hoặc xem bằng `docker compose logs`.
-- **Phiên bản MySQL**: dùng **MySQL 5.7**, vì driver Connector/J 5.1.23 của server không kết nối được với MySQL 8 hay MariaDB 10.10 trở lên. Bắt buộc `lower_case_table_names=1` (đã cấu hình trong `docker/mysql/my.cnf`).
+- **Phiên bản MySQL**: dùng **MySQL 5.7**, vì driver Connector/J 5.1.23 của server không kết nối được với MySQL 8 hay MariaDB 10.10 trở lên. Bắt buộc `lower_case_table_names=1` (truyền bằng `command:` của service `mysql` trong `docker-compose.yml`; không dùng file `.cnf` mount vào vì Docker Desktop trên Windows làm MySQL bỏ qua file đó).
 
 Client (`Client/`) có thêm 3 chỗ sửa nhỏ để đọc cấu hình từ biến môi trường. Khi không đặt các biến này, client vẫn chạy như cũ:
 
