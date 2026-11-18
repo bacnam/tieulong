@@ -43,7 +43,7 @@ Gồm 4 service: `mysql` (5.7), `world` (WorldServer), `game` (GameServer, build
 
 ```bash
 ./tieulong.sh setup         # Linux: tạo .env (mật khẩu ngẫu nhiên), build, khởi động, chờ server sẵn sàng
-.\tieulong.ps1 setup        # Windows / Docker Desktop (chỉ dev/test)
+tieulong.cmd setup          # Windows / Docker Desktop (chỉ dev/test); gọi tieulong.ps1, không cần đổi execution policy
 ```
 
 Script vận hành (`tieulong.sh` trên Linux, `tieulong.ps1` trên Windows, cùng lệnh):
