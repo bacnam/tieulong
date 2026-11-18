@@ -1,0 +1,37 @@
+package core.network.client2game.handler.marry;
+
+import business.player.Player;
+import business.player.feature.marry.MarryFeature;
+import business.player.item.Reward;
+import com.google.gson.Gson;
+import com.zhonglian.server.common.utils.StringUtils;
+import com.zhonglian.server.websocket.exception.WSException;
+import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
+import core.network.client2game.handler.PlayerHandler;
+import java.io.IOException;
+import java.util.List;
+
+public class MarrySignPick extends PlayerHandler {
+    @Override
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        MarrySignPick.Request req = new Gson().fromJson(message, MarrySignPick.Request.class);
+        MarryFeature feature = player.getFeature(MarryFeature.class);
+        Reward reward = feature.pickSignInReward(req.signId);
+        List<Integer> alreadyPick = StringUtils.string2Integer(feature.bo.getSignReward());
+        request.response(new MarrySignPick.Response(alreadyPick, reward));
+    }
+
+    public static class Request {
+        int signId;
+    }
+
+    private static class Response {
+        List<Integer> alreadyPick;
+        Reward reward;
+
+        public Response(List<Integer> alreadyPick, Reward reward) {
+            this.alreadyPick = alreadyPick;
+            this.reward = reward;
+        }
+    }
+}

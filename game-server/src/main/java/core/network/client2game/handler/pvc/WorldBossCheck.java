@@ -1,0 +1,114 @@
+package core.network.client2game.handler.pvc;
+
+import business.global.rank.RankManager;
+import business.global.worldboss.WorldBossMgr;
+import business.player.Player;
+import business.player.PlayerMgr;
+import business.player.feature.PlayerBase;
+import business.player.feature.features.PlayerRecord;
+import business.player.feature.worldboss.WorldBossFeature;
+import com.google.gson.Gson;
+import com.zhonglian.server.common.enums.RankType;
+import com.zhonglian.server.common.enums.ConstEnum.DailyRefresh;
+import com.zhonglian.server.common.utils.CommTime;
+import com.zhonglian.server.websocket.exception.WSException;
+import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
+import core.config.refdata.RefDataMgr;
+import core.database.game.bo.WorldBossBO;
+import core.database.game.bo.WorldBossChallengeBO;
+import core.network.client2game.handler.PlayerHandler;
+import java.io.IOException;
+
+public class WorldBossCheck extends PlayerHandler {
+    @Override
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        WorldBossCheck.Request req = new Gson().fromJson(message, WorldBossCheck.Request.class);
+        RankType type = null;
+        switch (req.bossId) {
+            case 1:
+                type = RankType.WorldBoss1;
+                break;
+            case 2:
+                type = RankType.WorldBoss2;
+                break;
+            case 3:
+                type = RankType.WorldBoss3;
+                break;
+            case 4:
+                type = RankType.WorldBoss4;
+        }
+
+        WorldBossBO worldBoss = WorldBossMgr.getInstance().getBO(req.bossId);
+        long pid = RankManager.getInstance().getPlayerId(type, 1);
+        Player tar = PlayerMgr.getInstance().getPlayer(pid);
+        core.network.proto.Player.Summary summary;
+        if (tar != null) {
+            summary = tar.getFeature(PlayerBase.class).summary();
+        } else {
+            summary = null;
+        }
+
+        long damage = RankManager.getInstance().getValue(type, pid);
+        int myRank = player.getFeature(WorldBossFeature.class).playerDamageRank(req.bossId);
+        long myDamage = player.getFeature(WorldBossFeature.class).playerDamageNum(req.bossId);
+        WorldBossChallengeBO challengBO = player.getFeature(WorldBossFeature.class).getOrCreate();
+        int fightCD = (int)(CommTime.nowSecond() - challengBO.getLeaveFightTime());
+        if (fightCD > RefDataMgr.getFactor("WorldBossAttackCD", 30)) {
+            fightCD = 0;
+        } else {
+            fightCD = RefDataMgr.getFactor("WorldBossAttackCD", 30) - fightCD;
+        }
+
+        long lastKillPid = worldBoss.getLastKillCid();
+        Player lastKillPlayer = PlayerMgr.getInstance().getPlayer(lastKillPid);
+        core.network.proto.Player.Summary LastKillPlayersum = null;
+        if (lastKillPlayer != null) {
+            LastKillPlayersum = lastKillPlayer.getFeature(PlayerBase.class).summary();
+        }
+
+        boolean isAuto = player.getFeature(WorldBossFeature.class).getOrCreate().getAutoChallenge();
+        int autoTimes = player.getFeature(PlayerRecord.class).getValue(DailyRefresh.AutoFightWorldboss);
+        request.response(new WorldBossCheck.BossInfo(worldBoss, summary, damage, challengBO, myRank, myDamage, fightCD, LastKillPlayersum, isAuto, autoTimes));
+    }
+
+    public static class BossInfo {
+        WorldBossBO boss;
+        core.network.proto.Player.Summary summary;
+        long firstDamage;
+        WorldBossChallengeBO challengBO;
+        int myRank;
+        long myDamage;
+        int fightCD;
+        core.network.proto.Player.Summary LastKillPlayer;
+        boolean isAuto;
+        int autoTimes;
+
+        public BossInfo(
+            WorldBossBO boss,
+            core.network.proto.Player.Summary summary,
+            long firstDamage,
+            WorldBossChallengeBO challengBO,
+            int myRank,
+            long myDamage,
+            int fightCD,
+            core.network.proto.Player.Summary LastKillPlayer,
+            boolean isAuto,
+            int autoTimes
+        ) {
+            this.boss = boss;
+            this.summary = summary;
+            this.firstDamage = firstDamage;
+            this.challengBO = challengBO;
+            this.myRank = myRank;
+            this.myDamage = myDamage;
+            this.fightCD = fightCD;
+            this.LastKillPlayer = LastKillPlayer;
+            this.isAuto = isAuto;
+            this.autoTimes = autoTimes;
+        }
+    }
+
+    public static class Request {
+        int bossId;
+    }
+}

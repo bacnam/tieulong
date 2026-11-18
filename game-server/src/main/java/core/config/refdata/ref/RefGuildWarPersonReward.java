@@ -1,0 +1,36 @@
+package core.config.refdata.ref;
+
+import business.player.item.Reward;
+import com.zhonglian.server.common.data.RefContainer;
+import com.zhonglian.server.common.data.RefField;
+import com.zhonglian.server.common.data.ref.matcher.NumberRange;
+import core.config.refdata.RefDataMgr;
+
+public class RefGuildWarPersonReward extends RefBaseGame {
+    @RefField(
+        iskey = true
+    )
+    public int id;
+    public NumberRange Num;
+    public int Reward;
+
+    @Override
+    public boolean Assert() {
+        return true;
+    }
+
+    @Override
+    public boolean AssertAll(RefContainer<?> all) {
+        return true;
+    }
+
+    public static Reward getReward(int num) {
+        for (RefGuildWarPersonReward ref : RefDataMgr.getAll(RefGuildWarPersonReward.class).values()) {
+            if (ref.Num.within(num)) {
+                return RefDataMgr.get(RefReward.class, ref.Reward).genReward();
+            }
+        }
+
+        return null;
+    }
+}

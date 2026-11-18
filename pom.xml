@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>vn.inplay.tieulong</groupId>
+    <artifactId>tieulong-server</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Tieu Long server</name>
+
+    <modules>
+        <module>server-common</module>
+        <module>game-server</module>
+        <module>world-server</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!-- Versions taken from META-INF/maven/*/pom.properties inside the original gameServer.jar -->
+        <logback.version>1.1.3</logback.version>
+        <slf4j.version>1.7.12</slf4j.version>
+        <guava.version>10.0.1</guava.version>
+        <bonecp.version>0.7.1.RELEASE</bonecp.version>
+        <commons-codec.version>1.9</commons-codec.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
+        <commons-pool.version>1.5.4</commons-pool.version>
+        <httpclient.version>4.4.1</httpclient.version>
+        <httpcore.version>4.4.1</httpcore.version>
+        <httpasyncclient.version>4.0.2</httpasyncclient.version>
+        <mina.version>2.0.9</mina.version>
+        <jedis.version>2.1.0</jedis.version>
+        <!-- Read from the driver classes ("mysql-connector-java-5.1.23") -->
+        <mysql.version>5.1.23</mysql.version>
+        <!-- Libraries without a verifiable Maven Central version: shipped in ./third-party/repo -->
+        <thirdparty.version.gson>2.2.4-bundled</thirdparty.version.gson>
+        <thirdparty.version.bsh>2.0b5-bundled</thirdparty.version.bsh>
+        <thirdparty.version.other>bundled</thirdparty.version.other>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>tieulong-third-party</id>
+            <name>Original binaries extracted from gameServer.jar</name>
+            <url>file://${maven.multiModuleProjectDirectory}/third-party/repo</url>
+            <releases><enabled>true</enabled><checksumPolicy>warn</checksumPolicy></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>vn.inplay.tieulong</groupId>
+                <artifactId>server-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- logging -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+            </dependency>
+
+            <!-- common -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-pool</groupId>
+                <artifactId>commons-pool</artifactId>
+                <version>${commons-pool.version}</version>
+            </dependency>
+
+            <!-- database / cache -->
+            <dependency>
+                <groupId>com.jolbox</groupId>
+                <artifactId>bonecp</artifactId>
+                <version>${bonecp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- network -->
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>${mina.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${httpcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore-nio</artifactId>
+                <version>${httpcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpasyncclient</artifactId>
+                <version>${httpasyncclient.version}</version>
+            </dependency>
+
+            <!-- third-party/repo (original bundled binaries) -->
+            <dependency>
+                <groupId>tieulong.thirdparty</groupId>
+                <artifactId>gson</artifactId>
+                <version>${thirdparty.version.gson}</version>
+            </dependency>
+            <dependency>
+                <groupId>tieulong.thirdparty</groupId>
+                <artifactId>bsh</artifactId>
+                <version>${thirdparty.version.bsh}</version>
+            </dependency>
+            <dependency>
+                <groupId>tieulong.thirdparty</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>${thirdparty.version.other}</version>
+            </dependency>
+            <dependency>
+                <groupId>tieulong.thirdparty</groupId>
+                <artifactId>libfb303</artifactId>
+                <version>${thirdparty.version.other}</version>
+            </dependency>
+            <dependency>
+                <groupId>tieulong.thirdparty</groupId>
+                <artifactId>jsr166y</artifactId>
+                <version>${thirdparty.version.other}</version>
+            </dependency>
+            <dependency>
+                <groupId>tieulong.thirdparty</groupId>
+                <artifactId>jsc</artifactId>
+                <version>${thirdparty.version.other}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.5.1</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <filters>
+                                    <filter>
+                                        <artifact>*:*</artifact>
+                                        <excludes>
+                                            <exclude>META-INF/*.SF</exclude>
+                                            <exclude>META-INF/*.DSA</exclude>
+                                            <exclude>META-INF/*.RSA</exclude>
+                                        </excludes>
+                                    </filter>
+                                </filters>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <mainClass>${main.class}</mainClass>
+                                        <manifestEntries>
+                                            <Class-Path>.</Class-Path>
+                                        </manifestEntries>
+                                    </transformer>
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

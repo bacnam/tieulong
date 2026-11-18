@@ -1,0 +1,296 @@
+package core.database.game.bo;
+
+import com.zhonglian.server.common.db.BaseBO;
+import com.zhonglian.server.common.db.annotation.DataBaseField;
+import core.server.ServerConfig;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AchievementBO extends BaseBO {
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "id",
+        comment = "数据库表唯一键值"
+    )
+    private long id;
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "pid",
+        comment = "*玩家ID"
+    )
+    private long pid;
+    @DataBaseField(
+        type = "int(11)",
+        fieldname = "achieveId",
+        comment = "成就ID"
+    )
+    private int achieveId;
+    @DataBaseField(
+        type = "int(11)",
+        fieldname = "completeCount",
+        comment = "完成次数"
+    )
+    private int completeCount;
+    @DataBaseField(
+        type = "int(11)",
+        fieldname = "achieveCount",
+        comment = "达成成就数量(系列成就)"
+    )
+    private int achieveCount;
+    @DataBaseField(
+        type = "varchar(500)",
+        fieldname = "gainPrizeList",
+        comment = "领取列表"
+    )
+    private String gainPrizeList;
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "argument",
+        comment = "附加参数"
+    )
+    private long argument;
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "argument2",
+        comment = "附加参数2"
+    )
+    private long argument2;
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "argument3",
+        comment = "附加参数3"
+    )
+    private long argument3;
+
+    public AchievementBO() {
+        this.id = 0L;
+        this.pid = 0L;
+        this.achieveId = 0;
+        this.completeCount = 0;
+        this.achieveCount = 0;
+        this.gainPrizeList = "";
+        this.argument = 0L;
+        this.argument2 = 0L;
+        this.argument3 = 0L;
+    }
+
+    public AchievementBO(ResultSet rs) throws Exception {
+        this.id = rs.getLong(1);
+        this.pid = rs.getLong(2);
+        this.achieveId = rs.getInt(3);
+        this.completeCount = rs.getInt(4);
+        this.achieveCount = rs.getInt(5);
+        this.gainPrizeList = rs.getString(6);
+        this.argument = rs.getLong(7);
+        this.argument2 = rs.getLong(8);
+        this.argument3 = rs.getLong(9);
+    }
+
+    @Override
+    public void getFromResultSet(ResultSet rs, List list) throws Exception {
+        list.add(new AchievementBO(rs));
+    }
+
+    @Override
+    public long getAsynTaskTag() {
+        return this.getPid();
+    }
+
+    @Override
+    public String getItemsName() {
+        return "`id`, `pid`, `achieveId`, `completeCount`, `achieveCount`, `gainPrizeList`, `argument`, `argument2`, `argument3`";
+    }
+
+    @Override
+    public String getTableName() {
+        return "`achievement`";
+    }
+
+    @Override
+    public String getItemsValue() {
+        StringBuilder strBuf = new StringBuilder();
+        strBuf.append("'").append(this.id).append("', ");
+        strBuf.append("'").append(this.pid).append("', ");
+        strBuf.append("'").append(this.achieveId).append("', ");
+        strBuf.append("'").append(this.completeCount).append("', ");
+        strBuf.append("'").append(this.achieveCount).append("', ");
+        strBuf.append("'").append(this.gainPrizeList == null ? null : this.gainPrizeList.replace("'", "''")).append("', ");
+        strBuf.append("'").append(this.argument).append("', ");
+        strBuf.append("'").append(this.argument2).append("', ");
+        strBuf.append("'").append(this.argument3).append("', ");
+        strBuf.deleteCharAt(strBuf.length() - 2);
+        return strBuf.toString();
+    }
+
+    @Override
+    public ArrayList<byte[]> getInsertValueBytes() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void setId(long iID) {
+        this.id = iID;
+    }
+
+    @Override
+    public long getId() {
+        return this.id;
+    }
+
+    public long getPid() {
+        return this.pid;
+    }
+
+    public void setPid(long pid) {
+        if (pid != this.pid) {
+            this.pid = pid;
+        }
+    }
+
+    public void savePid(long pid) {
+        if (pid != this.pid) {
+            this.pid = pid;
+            this.saveField("pid", pid);
+        }
+    }
+
+    public int getAchieveId() {
+        return this.achieveId;
+    }
+
+    public void setAchieveId(int achieveId) {
+        if (achieveId != this.achieveId) {
+            this.achieveId = achieveId;
+        }
+    }
+
+    public void saveAchieveId(int achieveId) {
+        if (achieveId != this.achieveId) {
+            this.achieveId = achieveId;
+            this.saveField("achieveId", achieveId);
+        }
+    }
+
+    public int getCompleteCount() {
+        return this.completeCount;
+    }
+
+    public void setCompleteCount(int completeCount) {
+        if (completeCount != this.completeCount) {
+            this.completeCount = completeCount;
+        }
+    }
+
+    public void saveCompleteCount(int completeCount) {
+        if (completeCount != this.completeCount) {
+            this.completeCount = completeCount;
+            this.saveField("completeCount", completeCount);
+        }
+    }
+
+    public int getAchieveCount() {
+        return this.achieveCount;
+    }
+
+    public void setAchieveCount(int achieveCount) {
+        if (achieveCount != this.achieveCount) {
+            this.achieveCount = achieveCount;
+        }
+    }
+
+    public void saveAchieveCount(int achieveCount) {
+        if (achieveCount != this.achieveCount) {
+            this.achieveCount = achieveCount;
+            this.saveField("achieveCount", achieveCount);
+        }
+    }
+
+    public String getGainPrizeList() {
+        return this.gainPrizeList;
+    }
+
+    public void setGainPrizeList(String gainPrizeList) {
+        if (!gainPrizeList.equals(this.gainPrizeList)) {
+            this.gainPrizeList = gainPrizeList;
+        }
+    }
+
+    public void saveGainPrizeList(String gainPrizeList) {
+        if (!gainPrizeList.equals(this.gainPrizeList)) {
+            this.gainPrizeList = gainPrizeList;
+            this.saveField("gainPrizeList", gainPrizeList);
+        }
+    }
+
+    public long getArgument() {
+        return this.argument;
+    }
+
+    public void setArgument(long argument) {
+        if (argument != this.argument) {
+            this.argument = argument;
+        }
+    }
+
+    public void saveArgument(long argument) {
+        if (argument != this.argument) {
+            this.argument = argument;
+            this.saveField("argument", argument);
+        }
+    }
+
+    public long getArgument2() {
+        return this.argument2;
+    }
+
+    public void setArgument2(long argument2) {
+        if (argument2 != this.argument2) {
+            this.argument2 = argument2;
+        }
+    }
+
+    public void saveArgument2(long argument2) {
+        if (argument2 != this.argument2) {
+            this.argument2 = argument2;
+            this.saveField("argument2", argument2);
+        }
+    }
+
+    public long getArgument3() {
+        return this.argument3;
+    }
+
+    public void setArgument3(long argument3) {
+        if (argument3 != this.argument3) {
+            this.argument3 = argument3;
+        }
+    }
+
+    public void saveArgument3(long argument3) {
+        if (argument3 != this.argument3) {
+            this.argument3 = argument3;
+            this.saveField("argument3", argument3);
+        }
+    }
+
+    @Override
+    protected String getUpdateKeyValue() {
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append(" `pid` = '").append(this.pid).append("',");
+        sBuilder.append(" `achieveId` = '").append(this.achieveId).append("',");
+        sBuilder.append(" `completeCount` = '").append(this.completeCount).append("',");
+        sBuilder.append(" `achieveCount` = '").append(this.achieveCount).append("',");
+        sBuilder.append(" `gainPrizeList` = '").append(this.gainPrizeList == null ? null : this.gainPrizeList.replace("'", "''")).append("',");
+        sBuilder.append(" `argument` = '").append(this.argument).append("',");
+        sBuilder.append(" `argument2` = '").append(this.argument2).append("',");
+        sBuilder.append(" `argument3` = '").append(this.argument3).append("',");
+        sBuilder.deleteCharAt(sBuilder.length() - 1);
+        return sBuilder.toString();
+    }
+
+    public static String getSql_TableCreate() {
+        return "CREATE TABLE IF NOT EXISTS `achievement` (`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',`pid` bigint(20) NOT NULL DEFAULT '0' COMMENT '*玩家ID',`achieveId` int(11) NOT NULL DEFAULT '0' COMMENT '成就ID',`completeCount` int(11) NOT NULL DEFAULT '0' COMMENT '完成次数',`achieveCount` int(11) NOT NULL DEFAULT '0' COMMENT '达成成就数量(系列成就)',`gainPrizeList` varchar(500) NOT NULL DEFAULT '' COMMENT '领取列表',`argument` bigint(20) NOT NULL DEFAULT '0' COMMENT '附加参数',`argument2` bigint(20) NOT NULL DEFAULT '0' COMMENT '附加参数2',`argument3` bigint(20) NOT NULL DEFAULT '0' COMMENT '附加参数3',KEY `pid` (`pid`),PRIMARY KEY (`id`)) COMMENT='成就信息'  DEFAULT CHARSET=utf8 AUTO_INCREMENT="
+            + (ServerConfig.getInitialID() + 1L);
+    }
+}

@@ -1,0 +1,117 @@
+package core.network.client2game.handler.player;
+
+import BaseCommon.CommLog;
+import business.global.recharge.RechargeMgr;
+import business.player.Player;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.zhonglian.server.common.utils.secure.MD5;
+import com.zhonglian.server.http.client.IResponseHandler;
+import com.zhonglian.server.http.server.GMParam;
+import com.zhonglian.server.http.server.HttpUtils;
+import com.zhonglian.server.websocket.def.ErrorCode;
+import com.zhonglian.server.websocket.exception.WSException;
+import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
+import core.config.refdata.RefDataMgr;
+import core.config.refdata.ref.RefRecharge;
+import core.network.client2game.handler.PlayerHandler;
+import core.server.ServerConfig;
+import java.io.IOException;
+
+public class RechargeOrder extends PlayerHandler {
+    private static RechargeMgr rechargeManager = null;
+
+    @Override
+    public void handle(final Player player, final WebSocketRequest request, String message) throws WSException, IOException {
+        if (rechargeManager == null) {
+            rechargeManager = RechargeMgr.getInstance();
+        }
+
+        RechargeOrder.Request req = new Gson().fromJson(message, RechargeOrder.Request.class);
+        final RefRecharge ref = RefDataMgr.get(RefRecharge.class, req.goodsId);
+        if (ref == null) {
+            throw new WSException(ErrorCode.RechargeOrderFailed, "产品%s不存在", req.goodsId);
+        } else {
+            GMParam params = new GMParam();
+            params.put("carrier", "aiaiu");
+            params.put("adfrom", "aiaiu");
+            params.put("adfrom2", "aiaiu");
+            params.put("app_id", "10294");
+            params.put("amount", ref.Price);
+            params.put("quantity", 1);
+            params.put("crystal", ref.Price);
+            params.put("productid", req.goodsId);
+            params.put("uid", player.getOpenId());
+            params.put("cid", player.getPid());
+            String createorderurl = System.getProperty("RechargeCreateOrderAddr", "http://106.75.142.3:8099/aiaiyou/createOrder");
+            HttpUtils.RequestGM(createorderurl, params, new IResponseHandler() {
+                @Override
+                public void compeleted(String response) {
+                    try {
+                        JsonObject resJson = new JsonParser().parse(response).getAsJsonObject();
+                        if (resJson.get("code").getAsInt() != 1000) {
+                            CommLog.error("充值回调结果：{}", response);
+                            request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败1");
+                            return;
+                        }
+
+                        RechargeOrder.PayData data = new RechargeOrder.PayData();
+                        data.open_id = player.getOpenId();
+                        data.access_token = player.getClientSession().getAccessToken();
+                        data.bill_no = resJson.get("bill_no").getAsString();
+                        data.goods_name = ref.Title;
+                        data.total_fee = ref.Price;
+                        data.ext = String.valueOf(resJson.get("bill_no").getAsString());
+                        String signsrc = data.getSignSrc();
+                        data.sign = MD5.md5(signsrc);
+                        CommLog.info("sign src: {}, \nsign:{}", signsrc, data.sign);
+                        request.response(data);
+                    } catch (Exception var5) {
+                        request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败2", var5);
+                        CommLog.error("订单充值失败,error", (Throwable)var5);
+                    }
+                }
+
+                @Override
+                public void failed(Exception exception) {
+                    request.error(ErrorCode.RechargeOrderFailed, "充值创建订单失败3");
+                }
+            });
+        }
+    }
+
+    private static class PayData {
+        String open_id;
+        String access_token;
+        String goods_name;
+        String bill_no;
+        int total_fee;
+        String ext;
+        String sign;
+
+        private PayData() {
+        }
+
+        public String getSignSrc() {
+            return "access_token="
+                + this.access_token
+                + "&bill_no="
+                + this.bill_no
+                + "&ext="
+                + this.ext
+                + "&goods_name="
+                + this.goods_name
+                + "&open_id="
+                + this.open_id
+                + "&secret_key="
+                + ServerConfig.AAY_SecretKey()
+                + "&total_fee="
+                + this.total_fee;
+        }
+    }
+
+    private static class Request {
+        String goodsId;
+    }
+}

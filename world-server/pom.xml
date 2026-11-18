@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>vn.inplay.tieulong</groupId>
+        <artifactId>tieulong-server</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>world-server</artifactId>
+    <packaging>jar</packaging>
+    <name>Tieu Long - WorldServer</name>
+
+    <properties>
+        <main.class>core.server.WorldServer</main.class>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>vn.inplay.tieulong</groupId>
+            <artifactId>server-common</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Same file name as the jar the original start scripts (Server/1.sh, Server/2.sh) run -->
+        <finalName>worldServer</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,314 @@
+package core.database.world.bo;
+
+import com.zhonglian.server.common.db.BaseBO;
+import com.zhonglian.server.common.db.annotation.DataBaseField;
+import core.server.ServerConfig;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ActivityRecordBO extends BaseBO {
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "id",
+        comment = "数据库表唯一键值"
+    )
+    private long id;
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "pid",
+        comment = "所属玩家pid"
+    )
+    private long pid;
+    @DataBaseField(
+        type = "bigint(20)",
+        fieldname = "aid",
+        comment = "对应活动主键Id"
+    )
+    private long aid;
+    @DataBaseField(
+        type = "int(11)",
+        fieldname = "serverId",
+        comment = "服务器id"
+    )
+    private int serverId;
+    @DataBaseField(
+        type = "varchar(500)",
+        fieldname = "activity",
+        comment = "所属活动"
+    )
+    private String activity;
+    @DataBaseField(
+        type = "int(11)",
+        size = 5,
+        fieldname = "extInt",
+        comment = "int型扩展字段"
+    )
+    private List<Integer> extInt;
+    @DataBaseField(
+        type = "varchar(500)",
+        size = 4,
+        fieldname = "extStr",
+        comment = "string型扩展字段"
+    )
+    private List<String> extStr;
+
+    public ActivityRecordBO() {
+        this.id = 0L;
+        this.pid = 0L;
+        this.aid = 0L;
+        this.serverId = 0;
+        this.activity = "";
+        this.extInt = new ArrayList<>(5);
+
+        for (int i = 0; i < 5; i++) {
+            this.extInt.add(0);
+        }
+
+        this.extStr = new ArrayList<>(4);
+
+        for (int i = 0; i < 4; i++) {
+            this.extStr.add("");
+        }
+    }
+
+    public ActivityRecordBO(ResultSet rs) throws Exception {
+        this.id = rs.getLong(1);
+        this.pid = rs.getLong(2);
+        this.aid = rs.getLong(3);
+        this.serverId = rs.getInt(4);
+        this.activity = rs.getString(5);
+        this.extInt = new ArrayList<>(5);
+
+        for (int i = 0; i < 5; i++) {
+            this.extInt.add(rs.getInt(i + 6));
+        }
+
+        this.extStr = new ArrayList<>(4);
+
+        for (int i = 0; i < 4; i++) {
+            this.extStr.add(rs.getString(i + 11));
+        }
+    }
+
+    @Override
+    public void getFromResultSet(ResultSet rs, List list) throws Exception {
+        list.add(new ActivityRecordBO(rs));
+    }
+
+    @Override
+    public long getAsynTaskTag() {
+        return 0L;
+    }
+
+    @Override
+    public String getItemsName() {
+        return "`id`, `pid`, `aid`, `serverId`, `activity`, `extInt_0`, `extInt_1`, `extInt_2`, `extInt_3`, `extInt_4`, `extStr_0`, `extStr_1`, `extStr_2`, `extStr_3`";
+    }
+
+    @Override
+    public String getTableName() {
+        return "`activityRecord`";
+    }
+
+    @Override
+    public String getItemsValue() {
+        StringBuilder strBuf = new StringBuilder();
+        strBuf.append("'").append(this.id).append("', ");
+        strBuf.append("'").append(this.pid).append("', ");
+        strBuf.append("'").append(this.aid).append("', ");
+        strBuf.append("'").append(this.serverId).append("', ");
+        strBuf.append("'").append(this.activity == null ? null : this.activity.replace("'", "''")).append("', ");
+
+        for (int i = 0; i < this.extInt.size(); i++) {
+            strBuf.append("'").append(this.extInt.get(i)).append("', ");
+        }
+
+        for (int i = 0; i < this.extStr.size(); i++) {
+            strBuf.append("'").append(this.extStr.get(i) == null ? null : this.extStr.get(i).replace("'", "''")).append("', ");
+        }
+
+        strBuf.deleteCharAt(strBuf.length() - 2);
+        return strBuf.toString();
+    }
+
+    @Override
+    public ArrayList<byte[]> getInsertValueBytes() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void setId(long iID) {
+        this.id = iID;
+    }
+
+    @Override
+    public long getId() {
+        return this.id;
+    }
+
+    public long getPid() {
+        return this.pid;
+    }
+
+    public void setPid(long pid) {
+        if (pid != this.pid) {
+            this.pid = pid;
+        }
+    }
+
+    public void savePid(long pid) {
+        if (pid != this.pid) {
+            this.pid = pid;
+            this.saveField("pid", pid);
+        }
+    }
+
+    public long getAid() {
+        return this.aid;
+    }
+
+    public void setAid(long aid) {
+        if (aid != this.aid) {
+            this.aid = aid;
+        }
+    }
+
+    public void saveAid(long aid) {
+        if (aid != this.aid) {
+            this.aid = aid;
+            this.saveField("aid", aid);
+        }
+    }
+
+    public int getServerId() {
+        return this.serverId;
+    }
+
+    public void setServerId(int serverId) {
+        if (serverId != this.serverId) {
+            this.serverId = serverId;
+        }
+    }
+
+    public void saveServerId(int serverId) {
+        if (serverId != this.serverId) {
+            this.serverId = serverId;
+            this.saveField("serverId", serverId);
+        }
+    }
+
+    public String getActivity() {
+        return this.activity;
+    }
+
+    public void setActivity(String activity) {
+        if (!activity.equals(this.activity)) {
+            this.activity = activity;
+        }
+    }
+
+    public void saveActivity(String activity) {
+        if (!activity.equals(this.activity)) {
+            this.activity = activity;
+            this.saveField("activity", activity);
+        }
+    }
+
+    public int getExtIntSize() {
+        return this.extInt.size();
+    }
+
+    public List<Integer> getExtIntAll() {
+        return new ArrayList<>(this.extInt);
+    }
+
+    public void setExtIntAll(int value) {
+        for (int i = 0; i < this.extInt.size(); i++) {
+            this.extInt.set(i, value);
+        }
+    }
+
+    public void saveExtIntAll(int value) {
+        this.setExtIntAll(value);
+        this.saveAll();
+    }
+
+    public int getExtInt(int index) {
+        return this.extInt.get(index);
+    }
+
+    public void setExtInt(int index, int value) {
+        if (value != this.extInt.get(index)) {
+            this.extInt.set(index, value);
+        }
+    }
+
+    public void saveExtInt(int index, int value) {
+        if (value != this.extInt.get(index)) {
+            this.extInt.set(index, value);
+            this.saveField("extInt_" + index, this.extInt.get(index));
+        }
+    }
+
+    public int getExtStrSize() {
+        return this.extStr.size();
+    }
+
+    public List<String> getExtStrAll() {
+        return new ArrayList<>(this.extStr);
+    }
+
+    public void setExtStrAll(String value) {
+        for (int i = 0; i < this.extStr.size(); i++) {
+            this.extStr.set(i, value);
+        }
+    }
+
+    public void saveExtStrAll(String value) {
+        this.setExtStrAll(value);
+        this.saveAll();
+    }
+
+    public String getExtStr(int index) {
+        return this.extStr.get(index);
+    }
+
+    public void setExtStr(int index, String value) {
+        if (!value.equals(this.extStr.get(index))) {
+            this.extStr.set(index, value);
+        }
+    }
+
+    public void saveExtStr(int index, String value) {
+        if (!value.equals(this.extStr.get(index))) {
+            this.extStr.set(index, value);
+            this.saveField("extStr_" + index, this.extStr.get(index));
+        }
+    }
+
+    @Override
+    protected String getUpdateKeyValue() {
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append(" `pid` = '").append(this.pid).append("',");
+        sBuilder.append(" `aid` = '").append(this.aid).append("',");
+        sBuilder.append(" `serverId` = '").append(this.serverId).append("',");
+        sBuilder.append(" `activity` = '").append(this.activity == null ? null : this.activity.replace("'", "''")).append("',");
+
+        for (int i = 0; i < this.extInt.size(); i++) {
+            sBuilder.append(" `extInt_").append(i).append("` = '").append(this.extInt.get(i)).append("',");
+        }
+
+        for (int i = 0; i < this.extStr.size(); i++) {
+            sBuilder.append(" `extStr_").append(i).append("` = '").append(this.extStr == null ? null : this.extStr.get(i).replace("'", "''")).append("',");
+        }
+
+        sBuilder.deleteCharAt(sBuilder.length() - 1);
+        return sBuilder.toString();
+    }
+
+    public static String getSql_TableCreate() {
+        return "CREATE TABLE IF NOT EXISTS `activityRecord` (`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',`pid` bigint(20) NOT NULL DEFAULT '0' COMMENT '所属玩家pid',`aid` bigint(20) NOT NULL DEFAULT '0' COMMENT '对应活动主键Id',`serverId` int(11) NOT NULL DEFAULT '0' COMMENT '服务器id',`activity` varchar(500) NOT NULL DEFAULT '' COMMENT '所属活动',`extInt_0` int(11) NOT NULL DEFAULT '0' COMMENT 'int型扩展字段',`extInt_1` int(11) NOT NULL DEFAULT '0' COMMENT 'int型扩展字段',`extInt_2` int(11) NOT NULL DEFAULT '0' COMMENT 'int型扩展字段',`extInt_3` int(11) NOT NULL DEFAULT '0' COMMENT 'int型扩展字段',`extInt_4` int(11) NOT NULL DEFAULT '0' COMMENT 'int型扩展字段',`extStr_0` varchar(500) NOT NULL DEFAULT '' COMMENT 'string型扩展字段',`extStr_1` varchar(500) NOT NULL DEFAULT '' COMMENT 'string型扩展字段',`extStr_2` varchar(500) NOT NULL DEFAULT '' COMMENT 'string型扩展字段',`extStr_3` varchar(500) NOT NULL DEFAULT '' COMMENT 'string型扩展字段',PRIMARY KEY (`id`)) COMMENT='活动参与记录信息，记录每个玩家参加活动的参与记录'  DEFAULT CHARSET=utf8 AUTO_INCREMENT="
+            + (ServerConfig.getInitialID() + 1L);
+    }
+}

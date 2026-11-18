@@ -1,0 +1,100 @@
+package com.zhonglian.server.common.db;
+
+import BaseCommon.CommLog;
+import com.jolbox.bonecp.BoneCPDataSource;
+import com.zhonglian.server.common.utils.CommTime;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class DatabaseFactory implements IDBConnectionFactory {
+    private BoneCPDataSource _source = null;
+    private static final String db_driver = "com.mysql.jdbc.Driver";
+    private String _url;
+
+    private void setDataSourceParams() {
+        int maxconnPerPartition = Integer.getInteger("boneCP.maxconnPerPartition", 20);
+        int minconnPerPartition = Integer.getInteger("boneCP.minconnPerPartition", 10);
+        this._source.setMaxConnectionsPerPartition(maxconnPerPartition);
+        this._source.setMinConnectionsPerPartition(minconnPerPartition);
+        this._source.setIdleConnectionTestPeriodInMinutes(2L);
+        this._source.setIdleMaxAgeInMinutes(6L);
+        this._source.setAcquireIncrement(5);
+        this._source.setReleaseHelperThreads(3);
+    }
+
+    public DatabaseFactory(String url, String user, String password) {
+        CommLog.info("数据库连接地址：{}", url);
+        this._url = url;
+        this._source = new BoneCPDataSource();
+        this._source.setDriverClass("com.mysql.jdbc.Driver");
+        this._source.setJdbcUrl(url);
+        this._source.setUsername(user);
+        this._source.setPassword(password);
+        this.setDataSourceParams();
+    }
+
+    @Override
+    public String getCatalog() {
+        Connection conn = null;
+
+        try {
+            conn = this._source.getConnection();
+            return conn.getCatalog();
+        } catch (SQLException var12) {
+            CommLog.error(var12.getMessage(), (Throwable)var12);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException var11) {
+                    CommLog.error(var11.getMessage(), (Throwable)var11);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public PrintWriter getLogWriter() throws SQLException {
+        return this._source.getLogWriter();
+    }
+
+    @Override
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        this._source.setLogWriter(out);
+    }
+
+    @Override
+    public void shutdown() {
+        try {
+            this._source.close();
+            this._source.setLogWriter(null);
+        } catch (Throwable var2) {
+            CommLog.error(null, var2);
+        }
+    }
+
+    @Override
+    public Connection getConnection() {
+        try {
+            long ms = CommTime.nowMS();
+            Connection conn = this._source.getConnection();
+            long usedMs = CommTime.nowMS() - ms;
+            if (usedMs > 100L) {
+                CommLog.warn("DatabaseFactory getConnection() used {} ms, url {}", usedMs, this._url);
+            }
+
+            return conn;
+        } catch (SQLException var6) {
+            CommLog.error(null, var6);
+            return null;
+        }
+    }
+
+    @Override
+    public int getUsedConnectCount() {
+        return this._source.getTotalLeased();
+    }
+}

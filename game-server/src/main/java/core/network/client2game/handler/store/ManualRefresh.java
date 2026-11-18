@@ -1,0 +1,27 @@
+package core.network.client2game.handler.store;
+
+import business.player.Player;
+import business.player.feature.store.PlayerStore;
+import business.player.feature.store.StoreFeature;
+import com.google.gson.Gson;
+import com.zhonglian.server.common.enums.StoreType;
+import com.zhonglian.server.websocket.exception.WSException;
+import com.zhonglian.server.websocket.handler.requset.WebSocketRequest;
+import core.network.client2game.handler.PlayerHandler;
+import java.io.IOException;
+
+public class ManualRefresh extends PlayerHandler {
+    @Override
+    public void handle(Player player, WebSocketRequest request, String message) throws WSException, IOException {
+        ManualRefresh.Request req = new Gson().fromJson(message, ManualRefresh.Request.class);
+        PlayerStore store = player.getFeature(StoreFeature.class).getOrCreate(req.storeType);
+        store.manualRefresh();
+        player.pushProto("store.RefreshInfo", store.refreshInfo());
+        player.pushProto("store.GoodsList", store.getGoodsList());
+        request.response();
+    }
+
+    private static class Request {
+        StoreType storeType;
+    }
+}

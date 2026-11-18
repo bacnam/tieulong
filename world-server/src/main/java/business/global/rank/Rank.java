@@ -1,0 +1,230 @@
+package business.global.rank;
+
+import business.global.mail.MailCenter;
+import com.zhonglian.server.common.db.DBCons;
+import com.zhonglian.server.common.db.SQLExecutor;
+import com.zhonglian.server.common.enums.RankType;
+import com.zhonglian.server.common.utils.CommTime;
+import core.config.refdata.ref.RefRankReward;
+import core.database.world.bo.RankRecordBO;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public abstract class Rank {
+    private RankType type;
+    List<Record> list;
+    Map<Long, Record> map;
+    private Comparator<RankRecordBO> comparator;
+
+    public Rank(RankType type, Comparator<RankRecordBO> comparator) {
+        this.type = type;
+        this.comparator = comparator;
+        this.list = new ArrayList<>();
+        this.list.add(null);
+        this.map = new HashMap<>();
+    }
+
+    void resort() {
+        for (Record record : this.map.values()) {
+            if (record.recordBO.getValue() != 0L) {
+                this.list.add(record);
+            }
+        }
+
+        this.list.sort((left, right) -> {
+            if (left == null) {
+                return -1;
+            } else {
+                return right == null ? 1 : this.comparator.compare(left.recordBO, right.recordBO);
+            }
+        });
+        int i = 1;
+
+        while (i < this.list.size()) {
+            this.list.get(i).rank = i++;
+        }
+    }
+
+    public int getRank(long ownerid) {
+        Record record = this.map.get(ownerid);
+        return record == null ? 0 : record.rank;
+    }
+
+    protected abstract boolean filter(long var1);
+
+    public int update(long ownerid, long value, int serverId, long... ext) {
+        if (this.filter(ownerid)) {
+            return 0;
+        } else {
+            synchronized (this) {
+                Record record = this.map.get(ownerid);
+                if (record == null) {
+                    RankRecordBO recordBO = this.createRecordBO(ownerid, value, serverId);
+                    this.map.put(ownerid, record = new Record(recordBO));
+                    record.rank = 0;
+                }
+
+                return record.rank != 0 ? this.setValue(record, value) : this.insert(record);
+            }
+        }
+    }
+
+    private int setValue(Record record, long value) {
+        if (record.recordBO.getValue() == value) {
+            return record.rank;
+        } else {
+            RankRecordBO recordBO = record.copy();
+            recordBO.setValue(value);
+            int pos = this.getInsertPos(recordBO);
+            record.saveValue(value);
+            if (record.rank != pos && record.rank != pos - 1) {
+                if (record.rank > pos) {
+                    int i = record.rank;
+
+                    while (i > pos) {
+                        Record r = this.list.get(i - 1);
+                        this.list.set(i, r);
+                        r.rank = i--;
+                    }
+
+                    this.list.set(pos, record);
+                    record.rank = pos;
+                } else {
+                    int i = record.rank;
+
+                    while (i < pos - 1) {
+                        Record r = this.list.get(i + 1);
+                        this.list.set(i, r);
+                        r.rank = i++;
+                    }
+
+                    this.list.set(pos - 1, record);
+                    record.rank = pos - 1;
+                }
+
+                return record.rank;
+            } else {
+                return pos;
+            }
+        }
+    }
+
+    public long getValue(long ownerid) {
+        Record record = this.map.get(ownerid);
+        return record != null ? record.recordBO.getValue() : 0L;
+    }
+
+    private int insert(Record record) {
+        int pos = this.getInsertPos(record.recordBO);
+        this.list.add(pos, record);
+        record.rank = pos;
+        int i = pos + 1;
+
+        while (i < this.list.size()) {
+            this.list.get(i).rank = i++;
+        }
+
+        return pos;
+    }
+
+    protected RankRecordBO createRecordBO(long ownerid, long value, int serverId) {
+        RankRecordBO recordBO = new RankRecordBO();
+        recordBO.setType(this.type.ordinal());
+        recordBO.setOwner(ownerid);
+        recordBO.setValue(value);
+        recordBO.setUpdateTime(CommTime.nowSecond());
+        recordBO.setServerId(serverId);
+        recordBO.insert();
+        return recordBO;
+    }
+
+    private int getInsertPos(RankRecordBO recordBo) {
+        int left = 0;
+        int right = this.list.size();
+
+        while (right - left > 1) {
+            int m = (left + right) / 2;
+            RankRecordBO mid = this.list.get(m).recordBO;
+            if (this.comparator.compare(mid, recordBo) < 0) {
+                left = m;
+            } else if (this.comparator.compare(mid, recordBo) > 0) {
+                right = m;
+            } else {
+                right = m;
+                left = m;
+            }
+        }
+
+        return left + 1;
+    }
+
+    public void sendReward() {
+        if (this.list.size() != 0) {
+            for (RefRankReward ref : RefRankReward.getRewards(this.type)) {
+                for (int rnk = ref.MinRank; rnk <= ref.MaxRank && rnk < this.list.size(); rnk++) {
+                    Record r = this.list.get(rnk);
+                    if (r != null) {
+                        MailCenter.getInstance().sendMail(r.recordBO.getOwner(), ref.MailId, "", "", "");
+                    }
+                }
+            }
+        }
+    }
+
+    public void clear() {
+        int deleteTime = CommTime.nowSecond();
+        String delsql = String.format("DELETE from rank_record where value=0 and type=%d and updateTime<%d;", this.type.ordinal(), deleteTime);
+        SQLExecutor.execute(delsql, DBCons.getDBFactory());
+        String updatesql = String.format("UPDATE rank_record SET value=0, updateTime=%d where type=%d;", CommTime.nowSecond(), this.type.ordinal());
+        SQLExecutor.executeUpdate(updatesql, DBCons.getDBFactory());
+        this.list.clear();
+        this.list.add(null);
+        List<Record> todel = new ArrayList<>();
+
+        for (Record record : this.map.values()) {
+            if (record.recordBO.getUpdateTime() < deleteTime) {
+                todel.add(record);
+            } else {
+                record.rank = 0;
+                record.recordBO.setValue(0L);
+            }
+        }
+
+        for (Record recordx : todel) {
+            this.map.remove(recordx.recordBO.getOwner());
+        }
+    }
+
+    public int add(long ownerid, long value, int serverId) {
+        Record record = this.map.get(ownerid);
+        if (record == null) {
+            RankRecordBO recordBO = this.createRecordBO(ownerid, value, serverId);
+            this.map.put(ownerid, record = new Record(recordBO));
+            record.rank = 0;
+        }
+
+        return record.rank != 0 ? this.setValue(record, record.getValue() + value) : this.insert(record);
+    }
+
+    public int minus(long ownerid, int value) {
+        Record record = this.map.get(ownerid);
+        return record == null ? 0 : this.setValue(record, Math.max(0L, record.getValue() - value));
+    }
+
+    synchronized void del(long ownerid) {
+        Record record = this.map.get(ownerid);
+        if (record != null) {
+            this.map.remove(ownerid);
+            this.list.remove(record);
+
+            for (int i = record.rank; i < this.list.size(); i++) {
+                if (this.list.get(i) != null) {
+                    this.list.get(i).rank = i;
+                }
+            }
+        }
+    }
+}
