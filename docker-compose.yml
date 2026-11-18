@@ -109,6 +109,8 @@ services:
       APP_NAME: ${APP_NAME:-Tieu Long}
       APP_ENV: ${APP_ENV:-production}
       APP_DEBUG: ${APP_DEBUG:-false}
+      # Must stay "false": otherwise gm/gmNotice!loadConfig returns DB credentials to anyone
+      DEBUG: "false"
       APP_KEY: ${APP_KEY:?set APP_KEY in .env}
       APP_TIMEZONE: ${TZ:-Asia/Ho_Chi_Minh}
       LOG_CHANNEL: stderr
