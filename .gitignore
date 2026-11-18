@@ -36,3 +36,7 @@ logs/
 
 # Docker
 .env
+
+# tieulong.sh / tieulong.ps1
+backups/
+.tieulong-state

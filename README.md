@@ -42,6 +42,28 @@ Server cần thư mục `conf/` (properties, `data/`, `map/`), MySQL với `lowe
 Gồm 4 service: `mysql` (5.7), `world` (WorldServer), `game` (GameServer, build từ source trong image) và `client` (web portal + H5 client, PHP 8.2/Apache).
 
 ```bash
+./tieulong.sh setup         # Linux: tạo .env (mật khẩu ngẫu nhiên), build, khởi động, chờ server sẵn sàng
+.\tieulong.ps1 setup        # Windows / Docker Desktop (chỉ dev/test)
+```
+
+Script vận hành (`tieulong.sh` trên Linux, `tieulong.ps1` trên Windows, cùng lệnh):
+
+| Lệnh | Việc làm |
+|---|---|
+| `setup` | Lần đầu: tạo `.env`, build image, khởi động, chờ GameServer báo sẵn sàng |
+| `start` | Khởi động, chờ sẵn sàng, mở lại đăng nhập |
+| `stop [--force]` | Dừng an toàn: chặn đăng nhập (`OnlineLimit=0`), kick người chơi, chờ hàng đợi ghi DB về 0, dừng game → world → web → MySQL |
+| `restart` | `stop` + `start` |
+| `deploy` | Build image mới trong lúc server vẫn chạy, sao lưu DB, dừng an toàn, khởi động bản mới |
+| `status` | Trạng thái container, số người online, hàng đợi ghi DB, giới hạn online |
+| `logs [service]` | Xem log trực tiếp |
+| `backup` / `restore <file>` | Sao lưu tất cả DB vào `backups/` / khôi phục (tự dừng an toàn trước) |
+| `console [game\|world]` | Vào console BeanShell (thoát bằng Ctrl-P Ctrl-Q) |
+| `gm '<beanshell>'` | Chạy một câu lệnh BeanShell trên GameServer qua API GM |
+
+Thêm `-y` (`-Yes` với PowerShell) để chạy không hỏi. Không dùng script thì làm tay:
+
+```bash
 cp .env.example .env        # đổi MYSQL_ROOT_PASSWORD, APP_KEY, GAME_PUBLIC_HOST
 docker compose up -d --build
 docker compose logs -f game # chờ dòng "[服务器启动完毕]!"
